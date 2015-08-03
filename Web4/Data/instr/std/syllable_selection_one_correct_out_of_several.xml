@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.langmaster.com/new/author/coursemodelschema.xsd">
+  <head>
+    <title></title>
+    <style />
+  </head>
+  <body xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <h1 class="techInstr  ">{{th17|TEXT SELECTION (MARKING) - ONE CORRECT ANSWER}}</h1>
+  <p>{{tp7|Your task is to mark sentence parts, words, word parts or syllables while you may choose from several items but only one choice is correct. Proceed as follows:}}</p>
+  <ol>
+    <li>{{tli26|Place the mouse cursor over the item (sentence part, word, word part or syllable) you wish to select.}}</li>
+    <li>{{tli27|Left click the item, it will be marked (selected).}}</li>
+  </ol>
+  <p>{{tp8|To change your selection select a different item.}}</p>
+</body>
+</html>

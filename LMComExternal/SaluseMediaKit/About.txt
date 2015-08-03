@@ -1,0 +1,2 @@
+﻿http://salusemediakit.codeplex.com/
+Vyhodit WaveFormatExtensible.cs file, to je upravene v Media adresari

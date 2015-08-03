@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="NewLMCom" EntityNamespace="NewDataNet35" ContextNamespace="NewDataNet35" Class="Container" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=PZ-W8VIRTUAL\SQLEXPRESS;Initial Catalog=NewLMCom;Integrated Security=True" SettingsObjectName="ScormExNet35.Properties.Settings" SettingsPropertyName="NewLMComConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.LANGMasterScorms" Member="LANGMasterScorms">
+    <Type Name="LANGMasterScorm">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserId" Type="System.String" DbType="NVarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="AttemptId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="AttemptIdStr" Type="System.String" DbType="NVarChar(120)" CanBeNull="true" />
+      <Column Name="AttemptIdGuid" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="Key1Str" Type="System.String" DbType="NVarChar(120)" CanBeNull="true" />
+      <Column Name="Key2Str" Type="System.String" DbType="NVarChar(120)" CanBeNull="true" />
+      <Column Name="Key1Int" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="Key2Int" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="Data1" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Data2" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Date" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="RowVersion" Type="System.Data.Linq.Binary" DbType="rowversion NOT NULL" CanBeNull="false" IsVersion="true" />
+    </Type>
+  </Table>
+</Database>

@@ -1,0 +1,56 @@
+﻿AppData databáze obsahuje tabulku Products s informacemi o produktech. 
+
+==== AppData plnění ====
+
+Informace se primárně plní stránkou http://localhost/LMCom/Services/ProductsToLMComData.aspx na základě sitemap a podmínky:
+   LowUtils.allNodes(SiteMap.Provider.FindSiteMapNode("~/cz/web/lang/Pages/home.lmp"),... subNd["className"] == "LMComLib.Cms.Product" ...
+Mimo plain informací je v Data sloupci objekt ProductCatalogueItem, plněný pomocí ProductCatalogueItem prodLow = LMComLib.Cms.Product.CreateProductCatalogue(ui.SiteId);
+Mimo lm.cz by se ke všem produktovým informacím mělo přistupovat přes AppData.Products místo přes CMS objekty.
+
+==== Přístup k AppData datům ====
+
+Objekty ProductCatalogue (knihovna, cachování apod.) a ProductCatalogueItem (obsah Data sloupce v AppData.Products tabulce)
+ProductCatalogue:
+- cachuje ProductCatalogueItem dle jazykove verze. Jazykova verze je již předvyplněna, takže se jazykové informace nevytváří až při použití.
+- pristup k ProductCatalogueItem je dle ProductId (ID v CMS), CourseId a Site (online kurzy), ProsperId (ucetni ID)
+
+==== Identifikace ====
+ProductId: ProductCatalogueItem.ProductId = AppData.Products.ProductId = LMComLib.Cms.Product.dbId: ID prevzate z jednoznačného dbId v CMS.
+CommerceId: Uměle dosazené ID do těch prvků CMS, které jsou produktem
+ProsperId: ID, vzniklé z CommerceId a z ProductLicenceType (neboli je jedno ProsperId pro každý produkt a každou jeho licenci)
+CourseId: u produktů, které jsou zároveň EA kurzy: obsahuje hodnotu CourseIds enum.
+
+==== Prosper plnění ====
+Plní se stránkou http://localhost/LMCom/Services/ProductsToProsper.aspx
+Pro každé ProsperId (= každý produkt a jeho dostupné licence) vznikne jeden Prosper produkt.
+
+==== Products.xml (v lmcom AppData nebo v rootu EA) ====
+
+Objekty ProductInfos, ProductInfo
+Informace o kurzech (= produkt z pohledu EA a CD ROM), napr.
+- Line
+- sezname titulu (spaces), tvoricich CD ROM produkt
+- ovlivnuje generaci HTML s daty kurzu (pravý panel)
+- atd.
+
+==== Licence ====
+
+Objekt ProductLicence.
+Každý produkt může mít více variant dle licence (ProductLicenceType, např. full, month3, fixStartDate, multiPrice, multi20Full apod.).
+Seznam povolených licencí je v ProductCatalogueItem.Licences (Dictionary<ProductLicenceType, ProductLicence>)
+Licence má titulek, ceny a další množství commerce informací.
+Licence má ProsperId (viz výše).
+
+==== Prvek košíku ====
+
+Objekt OrderItem.
+
+Do objednavky se přidává prvek pomocí Order.addProduct(ProductLicence licObj, int quantity, Currency? externalPrice)
+Tj. je určen licencí (ProductLicence), množstvím, externí informací ExternalPrice.
+Z ProductLicence se do něj plní ProsperId (=CommerceId+ProductLicenceType) i dbId (=ProductId).
+Jednoznačným klíčem v items je ProsperId (dle něj se rozhoduje, zdali vznikne nová položka objednávky nebo se zvýší počet u staré).
+
+Lang se bere z objednavky (MyOrder field). Lang je důležitý pro zpětné dohledání ProductLicence v ProductCatalogue:
+  Následně lze dohledat ProductLicence (pomocí ProductCatalogueItem = ProductCatalogue.get(dbId, MyOrder.Lang), dale licence z ProductCatalogueItem.
+Přes ProductLicence lze získat ProductCatalogueItem se všemi lokalizovaleknými info o produktu.
+

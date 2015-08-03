@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Database EntityNamespace="EduPortal" ContextNamespace="EduPortal" Class="EduPortalDB" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=pzika-notebook;Initial Catalog=LMComData;Integrated Security=True" SettingsObjectName="LMComLib.Properties.Settings" SettingsPropertyName="LMComDataConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="" Member="Schools">
+    <Type Name="School">
+      <Column Name="Id" Type="System.Int32" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" CanBeNull="false" />
+      <Column Name="Redizo" Type="System.String" CanBeNull="false" />
+      <Association Name="School_Class" Member="Classes" ThisKey="Id" OtherKey="SchoolId" Type="Class" />
+      <Association Name="School_Teacher" Member="Teachers" ThisKey="Id" OtherKey="SchoolId" Type="Teacher" />
+    </Type>
+  </Table>
+  <Table Name="" Member="Classes">
+    <Type Name="Class">
+      <Column Name="Id" Type="System.Int32" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Number" Type="System.Int16" CanBeNull="false" />
+      <Column Name="Letter" Type="System.Char" CanBeNull="false" />
+      <Column Name="SchoolId" Type="System.Int32" CanBeNull="false" />
+      <Association Name="Class_ClassTeacher" Member="ClassTeachers" ThisKey="Id" OtherKey="ClassId" Type="ClassTeacher" />
+      <Association Name="Class_Pupil" Member="Pupils" ThisKey="Id" OtherKey="ClassId" Type="Pupil" />
+      <Association Name="School_Class" Member="School" ThisKey="SchoolId" OtherKey="Id" Type="School" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="" Member="ClassTeachers">
+    <Type Name="ClassTeacher">
+      <Column Name="TeacherId" Type="System.Int32" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ClassId" Type="System.Int32" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Subject" Type="System.Int16" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Class_ClassTeacher" Member="Class" ThisKey="ClassId" OtherKey="Id" Type="Class" IsForeignKey="true" />
+      <Association Name="Teacher_ClassTeacher" Member="Teacher" ThisKey="TeacherId" OtherKey="Id" Type="Teacher" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="" Member="Persons">
+    <Type Name="Person" InheritanceCode="0">
+      <Column Name="Id" Type="System.Int32" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Type" Type="System.Int16" CanBeNull="false" IsDiscriminator="true" />
+      <Column Name="FirstName" Type="System.String" CanBeNull="false" />
+      <Column Name="LastName" Type="System.String" CanBeNull="false" />
+      <Column Name="DiffName" Type="System.String" CanBeNull="false" />
+      <Type Name="Pupil" IsInheritanceDefault="true">
+        <Column Name="ClassId" Type="System.Int32" CanBeNull="false" />
+        <Association Name="Class_Pupil" Member="Class" ThisKey="ClassId" OtherKey="Id" Type="Class" IsForeignKey="true" />
+      </Type>
+      <Type Name="Teacher">
+        <Column Name="SchoolId" Type="System.Int32" CanBeNull="false" />
+        <Association Name="School_Teacher" Member="School" ThisKey="SchoolId" OtherKey="Id" Type="School" IsForeignKey="true" />
+        <Association Name="Teacher_ClassTeacher" Member="ClassTeachers" ThisKey="Id" OtherKey="TeacherId" Type="ClassTeacher" />
+      </Type>
+    </Type>
+  </Table>
+</Database>

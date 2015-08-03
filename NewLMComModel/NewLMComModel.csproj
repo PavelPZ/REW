@@ -1,0 +1,570 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{81713F8F-6D25-4E48-AE82-AC1BD2565442}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NewData</RootNamespace>
+    <AssemblyName>NewLMComModel</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <IsCompassProject>True</IsCompassProject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;debugMode</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BoneSoft.CSS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\Web4\packages\BoneSoft.CSS.1.0.0\lib\BoneSoft.CSS.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ClearScript, Version=5.4.2.1, Culture=neutral, PublicKeyToken=935d0c957da47c73, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClearScript.V8.5.4.2.1\lib\net40\ClearScript.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EcmaScript.NET, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\Web4\packages\EcmaScript.Net.1.0.1.0\lib\net20\EcmaScript.NET.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServerCompact, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.1.3\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EPPlus, Version=4.0.4.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.0.4\lib\net20\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.4.9.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AnalysisServices, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft SQL Server\110\SDK\Assemblies\Microsoft.AnalysisServices.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AnalysisServices.AdomdClient, Version=8.0.700.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft.NET\ADOMD.NET\110\Microsoft.AnalysisServices.AdomdClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Edm, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Edm.5.6.4\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.OData.5.6.4\lib\net40\Microsoft.Data.OData.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services.Client, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Services.Client.5.6.4\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Microsoft SQL Server\110\SDK\Assemblies\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Microsoft SQL Server\110\SDK\Assemblies\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Smo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Microsoft SQL Server\110\SDK\Assemblies\Microsoft.SqlServer.Smo.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.3.1.0\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Web4\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ModelCssView">
+      <HintPath>..\ModelTextCss\ModelCssView.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\Web4\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Web4\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Spatial, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Spatial.5.6.4\lib\net40\System.Spatial.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Web4\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Web4\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Web4\packages\Microsoft.AspNet.Web.Optimization.1.1.0\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Yahoo.Yui.Compressor, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YUICompressor.NET.2.7.0.0\lib\NET20\Yahoo.Yui.Compressor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\LMDatabaseExtension\DBExtensionCommon.cs">
+      <Link>Design\DBExtensionCommon.cs</Link>
+    </Compile>
+    <Compile Include="azure\HumanEval.cs" />
+    <Compile Include="azure\TestMe.cs" />
+    <Compile Include="azure\db\Company.cs" />
+    <Compile Include="azure\db\Configuration.cs" />
+    <Compile Include="azure\db\Context.cs" />
+    <Compile Include="azure\db\SystemAdmin.cs" />
+    <Compile Include="azure\db\User.cs" />
+    <Compile Include="azure\Course.cs" />
+    <Compile Include="Design\jsWebApiProxy\WebApiProxyTempl.cs">
+      <DependentUpon>WebApiProxyTempl.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Design\jsWebApiProxy\WebApiProxyTemplPar.cs" />
+    <Compile Include="Design\jsWebApiProxy\WebApiProxy.cs" />
+    <Compile Include="Design\BingGoogleTranslators.cs" />
+    <Compile Include="Design\Company.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Design\CompanyDepartment.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Design\CompanyLicence.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Design\CompanyUser.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Design\CourseData.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Design\CourseUser.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Design\CourseVSNet.cs" />
+    <Compile Include="Design\DictFree.cs" />
+    <Compile Include="Design\DictLingea.cs" />
+    <Compile Include="Design\DictK.cs" />
+    <Compile Include="Design\DictWiki.cs" />
+    <Compile Include="Design\DictUltralingea.cs" />
+    <Compile Include="Design\Dump.cs" />
+    <Compile Include="Design\Dictionaries.cs" />
+    <Compile Include="Design\JSCrambler.cs" />
+    <Compile Include="Design\LANGMasterScorm.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Design\Model.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Design\Model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Design\Model.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Design\PackagerConsts.cs" />
+    <Compile Include="Design\ReleaseDeploy.cs" />
+    <Compile Include="Design\CourseProducts.cs" />
+    <Compile Include="Design\renameTool.cs" />
+    <Compile Include="Design\Templates\htmlHead.cs">
+      <DependentUpon>htmlHead.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Design\Templates\html.cs">
+      <DependentUpon>html.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Design\Templates\ImsManifest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ImsManifest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Design\Templates\Templates.cs" />
+    <Compile Include="Design\TtsBuild.cs" />
+    <Compile Include="Design\User.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UserLicence.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201401072228406_v001.cs" />
+    <Compile Include="Migrations\201401072228406_v001.Designer.cs">
+      <DependentUpon>201401072228406_v001.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201402071100047_v002.cs" />
+    <Compile Include="Migrations\201402071100047_v002.Designer.cs">
+      <DependentUpon>201402071100047_v002.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201402170833388_v003.cs" />
+    <Compile Include="Migrations\201402170833388_v003.designer.cs">
+      <DependentUpon>201402170833388_v003.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201403110942521_v004.cs" />
+    <Compile Include="Migrations\201403110942521_v004.Designer.cs">
+      <DependentUpon>201403110942521_v004.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201406041050347_v005.cs" />
+    <Compile Include="Migrations\201406041050347_v005.Designer.cs">
+      <DependentUpon>201406041050347_v005.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409101518437_v006.cs" />
+    <Compile Include="Migrations\201409101518437_v006.Designer.cs">
+      <DependentUpon>201409101518437_v006.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411211223118_v007.cs" />
+    <Compile Include="Migrations\201411211223118_v007.Designer.cs">
+      <DependentUpon>201411211223118_v007.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201412221224373_v008.cs" />
+    <Compile Include="Migrations\201412221224373_v008.Designer.cs">
+      <DependentUpon>201412221224373_v008.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501041026270_v009.cs" />
+    <Compile Include="Migrations\201501041026270_v009.Designer.cs">
+      <DependentUpon>201501041026270_v009.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501271152287_v010.cs" />
+    <Compile Include="Migrations\201501271152287_v010.Designer.cs">
+      <DependentUpon>201501271152287_v010.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502201521474_v011.cs" />
+    <Compile Include="Migrations\201502201521474_v011.Designer.cs">
+      <DependentUpon>201502201521474_v011.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503051624487_v012.cs" />
+    <Compile Include="Migrations\201503051624487_v012.Designer.cs">
+      <DependentUpon>201503051624487_v012.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503061948258_v013.cs" />
+    <Compile Include="Migrations\201503061948258_v013.Designer.cs">
+      <DependentUpon>201503061948258_v013.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503131400547_v014.cs" />
+    <Compile Include="Migrations\201503131400547_v014.Designer.cs">
+      <DependentUpon>201503131400547_v014.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503140910561_v015.cs" />
+    <Compile Include="Migrations\201503140910561_v015.Designer.cs">
+      <DependentUpon>201503140910561_v015.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505052135549_azure001.cs" />
+    <Compile Include="Migrations\201505052135549_azure001.Designer.cs">
+      <DependentUpon>201505052135549_azure001.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\LMConfiguration.cs" />
+    <Compile Include="azure\AdminCompany.cs" />
+    <Compile Include="azure\AdminProductsAndLicences.cs" />
+    <Compile Include="azure\My.cs" />
+    <Compile Include="azure\AdminGlobal.cs" />
+    <Compile Include="azure\Login.cs" />
+    <Compile Include="azure\AzureLib.cs" />
+    <Compile Include="Runtime\lmConsole\lmconsole.cs" />
+    <Compile Include="Runtime\lmConsole\index.cs">
+      <DependentUpon>index.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Runtime\lmConsole\serverComp.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>serverComp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Runtime\lmConsole\withError.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>withError.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Runtime\ModelCSharpToTypescript.cs" />
+    <Compile Include="Runtime\Reports.cs" />
+    <Compile Include="Runtime\StatisticsToc.cs" />
+    <Compile Include="Runtime\Author.cs" />
+    <Content Include="Design\Templates\html.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>html.cs</LastGenOutput>
+    </Content>
+    <Content Include="Design\Templates\htmlHead.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>htmlHead.cs</LastGenOutput>
+    </Content>
+    <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\CompanyDepartment.cs" />
+    <Compile Include="Models\CompanyLicence.cs" />
+    <Compile Include="Models\CompanyUser.cs" />
+    <Compile Include="Models\CourseData.cs" />
+    <Compile Include="Models\CourseUser.cs" />
+    <Compile Include="Models\Mapping\CompanyDepartmentMap.cs" />
+    <Compile Include="Models\Mapping\CompanyLicenceMap.cs" />
+    <Compile Include="Models\Mapping\CompanyMap.cs" />
+    <Compile Include="Models\Mapping\CompanyUserMap.cs" />
+    <Compile Include="Models\Mapping\CourseDataMap.cs" />
+    <Compile Include="Models\Mapping\CourseUserMap.cs" />
+    <Compile Include="Models\Mapping\ScormExMap.cs" />
+    <Compile Include="Models\Mapping\UserLicenceMap.cs" />
+    <Compile Include="Models\Mapping\UserMap.cs" />
+    <Compile Include="Models\NewLMComContext.cs" />
+    <Compile Include="Models\ScormEx.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserLicence.cs" />
+    <Compile Include="Properties\Settings1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Runtime\Admin.cs" />
+    <Compile Include="Design\Bundle.cs" />
+    <Compile Include="Design\Deployment.cs" />
+    <Compile Include="Design\ImportRwBooks.cs" />
+    <Compile Include="Design\Lib.cs" />
+    <Compile Include="Design\Noesis.cs" />
+    <Compile Include="Design\Packager.cs" />
+    <Compile Include="Design\CourseMeta.cs" />
+    <Compile Include="Design\SchoolsServices.cs" />
+    <Compile Include="Runtime\DictForOldLMCom.cs" />
+    <Compile Include="Runtime\Handlers.cs" />
+    <Compile Include="Runtime\Statistics.cs" />
+    <Compile Include="Runtime\RewRpcLib.cs" />
+    <Compile Include="Runtime\Scorm.cs" />
+    <None Include="Design\Model.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Model.Context.cs</LastGenOutput>
+      <DependentUpon>Model.edmx</DependentUpon>
+    </None>
+    <None Include="Design\Model.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Model.cs</LastGenOutput>
+      <DependentUpon>Model.edmx</DependentUpon>
+    </None>
+    <Compile Include="Runtime\My.cs" />
+    <Compile Include="Runtime\Lib.cs" />
+    <Compile Include="Runtime\NewDataScorm.cs" />
+    <Compile Include="Runtime\Login.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Licenses\ClearScript.main.license" />
+    <None Include="Licenses\v8.main.license" />
+    <None Include="Licenses\v8.strongtalk.license" />
+    <None Include="Licenses\v8.v8.license" />
+    <None Include="Licenses\v8.valgrind.license" />
+    <None Include="Runtime\lmConsole\index.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>index.cs</LastGenOutput>
+    </None>
+    <None Include="Runtime\lmConsole\serverComp.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>serverComp.cs</LastGenOutput>
+    </None>
+    <None Include="Runtime\lmConsole\withError.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>withError.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Design\Model.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Design\Templates\ImsManifest.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ImsManifest.cs</LastGenOutput>
+    </Content>
+    <None Include="Design\jsWebApiProxy\WebApiProxyTempl.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>WebApiProxyTempl.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LMComExternal\LMComExternal.csproj">
+      <Project>{a0024fc2-c528-45f8-9391-4b45889e53d9}</Project>
+      <Name>LMComExternal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LMComLib\LMComLib.csproj">
+      <Project>{c4201447-b3c3-4f3a-9e5f-4ff9b5f48570}</Project>
+      <Name>LMComLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ObjectModel\ObjectModel.csproj">
+      <Project>{e88c653d-5518-4b96-9b99-6efbd46a9141}</Project>
+      <Name>ObjectModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\Debug.sql" />
+    <Content Include="Data\Lmcom.sql" />
+    <Content Include="Data\NewData.ScormExecs.sql" />
+    <Content Include="Data\NewData.Create.sql" />
+    <Content Include="Design\NewData.edmx.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\" />
+    <Folder Include="Doc\" />
+    <Folder Include="ModelStat\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201412221224373_v008.resx">
+      <DependentUpon>201412221224373_v008.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501041026270_v009.resx">
+      <DependentUpon>201501041026270_v009.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401072228406_v001.resx">
+      <DependentUpon>201401072228406_v001.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402071100047_v002.resx">
+      <DependentUpon>201402071100047_v002.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402170833388_v003.resx">
+      <DependentUpon>201402170833388_v003.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403110942521_v004.resx">
+      <DependentUpon>201403110942521_v004.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406041050347_v005.resx">
+      <DependentUpon>201406041050347_v005.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409101518437_v006.resx">
+      <DependentUpon>201409101518437_v006.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411211223118_v007.resx">
+      <DependentUpon>201411211223118_v007.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501271152287_v010.resx">
+      <DependentUpon>201501271152287_v010.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502201521474_v011.resx">
+      <DependentUpon>201502201521474_v011.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503051624487_v012.resx">
+      <DependentUpon>201503051624487_v012.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503061948258_v013.resx">
+      <DependentUpon>201503061948258_v013.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503131400547_v014.resx">
+      <DependentUpon>201503131400547_v014.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503140910561_v015.resx">
+      <DependentUpon>201503140910561_v015.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505052135549_azure001.resx">
+      <DependentUpon>201505052135549_azure001.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>a
+    if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
+    xcopy /s /y "$(SolutionDir)packages\Noesis.Javascript.0.7.1.0\NativeBinaries\net40\x86\*.*" "$(TargetDir)x86"
+    if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
+    xcopy /s /y "$(SolutionDir)packages\Noesis.Javascript.0.7.1.0\NativeBinaries\net40\amd64\*.*" "$(TargetDir)amd64"
+    if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
+    if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"
+
+if not exist "$(TargetDir)" md "$(TargetDir)"
+xcopy /s /y "$(SolutionDir)packages\ClearScript.V8.5.3.10.0\tools\native\x86\*.*" "$(TargetDir)"
+if not exist "$(TargetDir)" md "$(TargetDir)"
+xcopy /s /y "$(SolutionDir)packages\ClearScript.V8.5.3.10.0\tools\native\amd64\*.*" "$(TargetDir)"
+
+if not exist "$(TargetDir)" md "$(TargetDir)"
+xcopy /s /y "$(SolutionDir)packages\ClearScript.V8.5.4.2.1\tools\native\x86\*.*" "$(TargetDir)"
+if not exist "$(TargetDir)" md "$(TargetDir)"
+xcopy /s /y "$(SolutionDir)packages\ClearScript.V8.5.4.2.1\tools\native\amd64\*.*" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

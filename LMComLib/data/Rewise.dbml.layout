@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="Rewise">
+  <DataContextMoniker Name="/RewiseDataContext" />
+  <nestedChildShapes>
+    <classShape Id="d7c3e27d-7dac-4d51-8b94-3c5eb1bf2fee" absoluteBounds="3.5, 1.125, 2, 1.5891951497395829">
+      <DataClassMoniker Name="/RewiseDataContext/RwFactDiff" />
+      <nestedChildShapes>
+        <elementListCompartment Id="88bfc5c5-07c1-4603-82bb-8f8764590c05" absoluteBounds="3.515, 1.585, 1.9700000000000002, 1.0291951497395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="04db2ac4-d2bc-46b6-90af-afe570503999" absoluteBounds="0.75, 0.875, 2, 2.0822371419270826">
+      <DataClassMoniker Name="/RewiseDataContext/RwUser" />
+      <nestedChildShapes>
+        <elementListCompartment Id="69e176c4-2b5d-4573-94d9-f83a0c66271f" absoluteBounds="0.765, 1.335, 1.9700000000000002, 1.5222371419270833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.75 : 1.91959757486979); (3.5 : 1.91959757486979)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RewiseDataContext/RwUser/RwUser_RwFactDiff" />
+      <nodes>
+        <classShapeMoniker Id="04db2ac4-d2bc-46b6-90af-afe570503999" />
+        <classShapeMoniker Id="d7c3e27d-7dac-4d51-8b94-3c5eb1bf2fee" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

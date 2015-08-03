@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Database Name="Rewise" EntityNamespace="RewiseData" ContextNamespace="RewiseData" Class="RewiseDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=ACER-PZ\SQLEXPRESS;Initial Catalog=Rewise;Integrated Security=True" SettingsObjectName="LMComLib.Properties.Settings" SettingsPropertyName="RewiseConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.RwFactDiff" Member="RwFactDiffs">
+    <Type Name="RwFactDiff">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DataFormat" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Data" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="FactUniqueId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="RwUser_RwFactDiff" Member="RwUser" ThisKey="UserId" OtherKey="Id" Type="RwUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RwUser" Member="RwUsers">
+    <Type Name="RwUser">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserId" Type="System.String" DbType="Char(32) NOT NULL" CanBeNull="false" />
+      <Column Name="Site" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Line" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Lang" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="DailyInfo" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Settings" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Facts" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="RwUser_RwFactDiff" Member="RwFactDiffs" ThisKey="Id" OtherKey="UserId" Type="RwFactDiff" />
+    </Type>
+  </Table>
+</Database>

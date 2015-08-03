@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <h1 class="techInstr  ">{{th371|READING with FILLING IN}}</h1>
+    <p>{{tp371|Your task is to fill in the empty boxes based on the initial text. We recommend to proceed as follows:}}</p>
+    <ol>
+      <li>{{tli371|First, go through the incomplete texts.}}</li>
+      <li>
+        {{tli372|Then, go back to the initial text above. Read the text carefully and try to capture the information concerning the incomplete texts. When reading, you can simultaneously fill in the correct answers.}}
+      </li>
+      <li>{{tli373|Click on the empty gap, a blinking cursor appears.}}</li>
+      <li>{{tli374|Type in the text using your keyboard.}}</li>
+    </ol>
+  </body>
+</html>
