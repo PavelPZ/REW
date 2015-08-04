@@ -650,7 +650,7 @@ namespace CourseMeta {
           byte[] jsonProdTree, rjsonProdTree; products ps;
           WebDataBatch.getJSSitemap(prods.Items.Cast<product>(), out jsonProdTree, out rjsonProdTree, out ps);
           var prodTreeStr = Encoding.UTF8.GetString(rjsonProdTree);
-          var fn = Machines.basicPath + @"rew\Web4\siteroot.all.js"; if (File.Exists(fn)) File.SetAttributes(fn, FileAttributes.Archive); File.WriteAllText(fn, prodTreeStr, Encoding.UTF8);
+          var fn = Machines.rootPath + @"siteroot.all.js"; if (File.Exists(fn)) File.SetAttributes(fn, FileAttributes.Archive); File.WriteAllText(fn, prodTreeStr, Encoding.UTF8);
         } catch (Exception exp) {
           log.ErrorExp("CourseMeta.Lib.init, prods = new products", exp);
           return;
@@ -928,7 +928,7 @@ namespace CourseMeta {
           }
         }
         //rusky slovnik
-        lock (typeof(Lib)) if (russianDict == null) russianDict = File.ReadLines(Machines.basicPath + @"rew\Web4\App_Data\russianDict.txt").Select(l => l.Split('=')).ToDictionary(l => @"/lm/oldea/" + l[0].Replace('\\', '/'), l => l[1].Insert(l[1].LastIndexOf('\\'), "\\app_localresources"));
+        lock (typeof(Lib)) if (russianDict == null) russianDict = File.ReadLines(Machines.rootPath + @"App_Data\russianDict.txt").Select(l => l.Split('=')).ToDictionary(l => @"/lm/oldea/" + l[0].Replace('\\', '/'), l => l[1].Insert(l[1].LastIndexOf('\\'), "\\app_localresources"));
         string rd;
         if (russianDict.TryGetValue(ex.url, out rd))
           sents = sents.Concat(Machines.getTradosContext(false).Sentences.Where(s => s.Page.FileName.Contains(rd) && s.SrcLang == (short)Langs.cs_cz && s.TransLang == (short)Langs.en_gb)).ToArray();

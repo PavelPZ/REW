@@ -14,7 +14,7 @@ namespace ClearScript {
     public static string JSON2RJSON(string inpJson) {
       using (var engine = new Microsoft.ClearScript.V8.V8ScriptEngine()) {
         var script = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\RJSON.js";
-        if (!File.Exists(script)) script = Machines.basicPath + @"rew\Web4\JsLib\JS\External\RJSON.js";
+        if (!File.Exists(script)) script = Machines.rootPath + @"JsLib\JS\External\RJSON.js";
         engine.Execute(script, File.ReadAllText(script));
         var par = new rjsonObj { inpJson = inpJson };
         engine.AddHostObject("inpJson", par);

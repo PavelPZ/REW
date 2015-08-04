@@ -1,0 +1,5 @@
+﻿1. LMComLibDLL: dat spravne d:\LMCom\rew\Web4\BinImport\???ChilkatDotNet4.dll
+2. NewLMComModel: dat spravne d:\LMCom\rew\Web4\BinImport\???Noesis.Javascript.dll
+3. Web4: Properties, Build, x86 x x64, dat spravne ChilkatDotNet4 a Noesis.Javascript
+4. Zmenit localhost ApplicationPool aby mel Advanced Setting, Enable 32 but app = true (x86) nebo false (x64)
+5. Restart IIS

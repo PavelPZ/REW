@@ -354,7 +354,7 @@ namespace Packager {
     }
 
     static void DownloadProduct(Config cfg) {
-      File.WriteAllText(Machines.basicPath + @"rew\Downloads\Common\IIS\indexTemplate-download.htm", HomePage(cfg));
+      File.WriteAllText(Machines.rootPath + @"rew\Downloads\Common\IIS\indexTemplate-download.htm", HomePage(cfg));
       var prodPathPrefix = issDestPath + "products\\" + cfg.prod.url.Replace('/', '-');
       // TODO Consts.saveISSFile(uniqFiles(productFiles(cfg).Concat(productSwFiles(cfg))), prodPathPrefix + "_files.iss");
     }

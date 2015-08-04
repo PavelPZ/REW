@@ -294,11 +294,11 @@ public static class RwBooksDesign {
   }
   static Regex rxCommentSoundBracket = new Regex(@"\{%.*?%\}", RegexOptions.Singleline); //asi poznamky pro mluvciho
   static RwBooksMeta[] RWMeta { get { return rwMeta == null ? rwMeta = XmlUtils.FileToObject<RwBooksMeta[]>(metaPath) : rwMeta; } set { rwMeta = value; XmlUtils.ObjectToFile(metaPath, value); } } static RwBooksMeta[] rwMeta;
-  static string destPath = Machines.basicPath + @"rew\Web4\RwBooks\";
+  static string destPath = Machines.rootPath + @"RwBooks\";
   static string textsPath = destPath + @"Texts\";
   static string metaPath = destPath + "BookMeta.xml";
-  static string courseRewise = Machines.basicPath + @"rew\Web4\Schools\EARewise\";
-  static string rewFileName(Langs lng, string fn) { return string.Format(Machines.basicPath + @"rew\Web4\RwBooks\Runtime\{0}\{1}", lng.ToString().Replace('_', '-'), fn); }
+  static string courseRewise = Machines.rootPath + @"Schools\EARewise\";
+  static string rewFileName(Langs lng, string fn) { return string.Format(Machines.rootPath + @"RwBooks\Runtime\{0}\{1}", lng.ToString().Replace('_', '-'), fn); }
   const double locRatio = 0.7; //pomer, od ktereho se povazuje kniha za lokalizovanou
 
   //odvozeni space email pro course level z jmena rewise slovnicku

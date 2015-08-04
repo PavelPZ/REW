@@ -93,7 +93,7 @@ namespace LMComLib {
       yield return typeof(BooleanEx);
       yield return typeof(VerifyStates);
     }
-    public string TsPath() { return Machines.basicPath + @"rew\web4\JsLib\JS\GenLMComLib.ts"; }
+    public string TsPath() { return Machines.rootPath + @"JsLib\JS\GenLMComLib.ts"; }
     public string Module() { return "LMComLib"; }
     public IEnumerable<string> Uses() { yield break; }
     public bool generateFeature(FeatureType type) {
@@ -124,7 +124,7 @@ namespace AzureData {
       yield break;
     }
 
-    public string TsPath() { return Machines.basicPath + @"rew\web4\schools\GenAzure.ts"; }
+    public string TsPath() { return Machines.rootPath + @"schools\GenAzure.ts"; }
     public string Module() { return "AzureData"; }
 
     public IEnumerable<string> Uses() { yield break; }
@@ -149,7 +149,7 @@ namespace CourseModel {
       return getAll.Enums();
     }
 
-    public string TsPath() { return Machines.basicPath + @"rew\web4\Courses\GenCourseModel.ts"; }
+    public string TsPath() { return Machines.rootPath + @"Courses\GenCourseModel.ts"; }
     public string Module() { return "CourseModel"; }
 
     public IEnumerable<string> Uses() { yield return "../jslib/js/GenLMComLib.ts"; yield return "../schools/GenSchools.ts"; }
@@ -194,7 +194,7 @@ namespace CourseMeta {
       yield return typeof(testNeeds);
     }
 
-    public string TsPath() { return Machines.basicPath + @"rew\web4\Courses\GenCourseMeta.ts"; }
+    public string TsPath() { return Machines.rootPath + @"Courses\GenCourseMeta.ts"; }
     public string Module() { return "CourseMeta"; }
 
     public IEnumerable<string> Uses() { yield break; }// return "../jslib/js/GenLMComLib.ts"; yield return "../schools/GenSchools.ts"; }
@@ -232,7 +232,7 @@ namespace testMe {
       //yield return typeof(CmdSkrivanekErrors);
     }
 
-    public string TsPath() { return Machines.basicPath + @"rew\web4\testMe\GenTestModel.ts"; }
+    public string TsPath() { return Machines.rootPath + @"testMe\GenTestModel.ts"; }
     public string Module() { return "testMe"; }
 
     public IEnumerable<string> Uses() { yield break; }
@@ -253,7 +253,7 @@ namespace schools {
     public IEnumerable<Type> Enums() {
       yield break;
     }
-    public string TsPath() { return Machines.basicPath + @"rew\web4\Schools\GenLMComLib.ts"; }
+    public string TsPath() { return Machines.rootPath + @"Schools\GenLMComLib.ts"; }
     public string Module() { return "LMComLib"; }
 
     public IEnumerable<string> Uses() { yield return "../jslib/js/GenLMComLib.ts"; }
@@ -276,7 +276,7 @@ namespace schools {
       //yield return typeof(Course.TestStatus);
       //yield return typeof(Course.Skills);
     }
-    public string TsPath() { return Machines.basicPath + @"rew\web4\Schools\GenCourse.ts"; }
+    public string TsPath() { return Machines.rootPath + @"Schools\GenCourse.ts"; }
     public string Module() { return "Course"; }
 
     public IEnumerable<string> Uses() { yield break; }
@@ -348,7 +348,7 @@ namespace schools {
       //yield return typeof(LicenceType);
       //yield return typeof(DictUrltype);
     }
-    public string TsPath() { return Machines.basicPath + @"rew\web4\Schools\GenSchools.ts"; }
+    public string TsPath() { return Machines.rootPath + @"Schools\GenSchools.ts"; }
     public string Module() { return "schools"; }
 
     public IEnumerable<string> Uses() { yield break; } // yield return "../jslib/js/GenLMComLib.ts"; yield return "GenCourse.ts"; }
@@ -371,7 +371,7 @@ namespace Rew {
     public IEnumerable<Type> Enums() {
       yield return typeof(Rw.CreativeCommonLic);
     }
-    public string TsPath() { return Machines.basicPath + @"rew\web4\Rewise\GenRw.ts"; }
+    public string TsPath() { return Machines.rootPath + @"Rewise\GenRw.ts"; }
     public string Module() { return "Rw"; }
 
     public IEnumerable<string> Uses() { yield break; }
@@ -392,7 +392,7 @@ namespace Rew {
       yield return typeof(Rw.CreativeCommonLic);
       yield return typeof(FactTypes);
     }
-    public string TsPath() { return Machines.basicPath + @"rew\web4\Rewise\GenLMComLib.ts"; }
+    public string TsPath() { return Machines.rootPath + @"Rewise\GenLMComLib.ts"; }
     public string Module() { return "LMComLib"; }
 
     public IEnumerable<string> Uses() { yield break; }
@@ -450,7 +450,7 @@ namespace Rew {
     public IEnumerable<Type> Enums() {
       yield return typeof(FactStatus);
     }
-    public string TsPath() { return Machines.basicPath + @"rew\web4\Rewise\GenRew.ts"; }
+    public string TsPath() { return Machines.rootPath + @"Rewise\GenRew.ts"; }
     public string Module() { return "Rew"; }
 
     public IEnumerable<string> Uses() { yield return "GenLMComLib.ts"; yield return "GenRw.ts"; }
@@ -540,7 +540,7 @@ namespace Login {
       yield return typeof(EnterLicenceResult);
       yield return typeof(CmdReportType);
     }
-    public string TsPath() { return Machines.basicPath + @"rew\web4\Login\GenLogin.ts"; }
+    public string TsPath() { return Machines.rootPath + @"Login\GenLogin.ts"; }
     public string Module() { return "Login"; }
 
     public IEnumerable<string> Uses() { yield return "../jslib/js/GenLMComLib.ts"; }
@@ -632,7 +632,7 @@ namespace Admin {
       //yield return typeof(OKCrsReason);
       yield break;
     }
-    public string TsPath() { return Machines.basicPath + @"rew\web4\Admin\GenAdmin.ts"; }
+    public string TsPath() { return Machines.rootPath + @"Admin\GenAdmin.ts"; }
     public string Module() { return "Admin"; }
 
     public IEnumerable<string> Uses() { yield return "../login/GenLogin.ts"; }
@@ -699,7 +699,7 @@ namespace scorm {
     public IEnumerable<Type> Enums() {
       yield break;
     }
-    public string TsPath() { return Machines.basicPath + @"rew\web4\schools\GenScorm.ts"; }
+    public string TsPath() { return Machines.rootPath + @"schools\GenScorm.ts"; }
     public string Module() { return "scorm"; }
 
     public IEnumerable<string> Uses() { yield break; }

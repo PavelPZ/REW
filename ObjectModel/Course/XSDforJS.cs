@@ -242,7 +242,7 @@ namespace metaJS {
       yield return typeof(xsdPropConstrains);
     }
 
-    public string TsPath() { return Machines.basicPath + @"rew\web4\authorWeb\js\MetaJSGen.ts"; }
+    public string TsPath() { return Machines.rootPath + @"authorWeb\js\MetaJSGen.ts"; }
     public string Module() { return "metaJS"; }
 
     public IEnumerable<string> Uses() { yield break; }

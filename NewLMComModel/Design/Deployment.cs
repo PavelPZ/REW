@@ -706,8 +706,8 @@ public static class Grammar {
 
 public static class eTestMe {
 
-  static string englishBasicPath = Machines.basicPath + @"rew\Web4\RwTests\English";
-  static string elementsBasicPath = Machines.basicPath + @"rew\Web4\RwTests\ElementTests";
+  static string englishBasicPath = Machines.rootPath + @"RwTests\English";
+  static string elementsBasicPath = Machines.rootPath + @"RwTests\ElementTests";
 
   public static void CreateMaps() {
     CreateEnglishMap(LineIds.English, englishBasicPath);

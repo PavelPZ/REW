@@ -68,6 +68,9 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ChilkatDotNet4">
+      <HintPath>..\dlls\ChilkatDotNet4.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetOpenAuth.AspNet, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetOpenAuth.AspNet.4.3.4.13329\lib\net45-full\DotNetOpenAuth.AspNet.dll</HintPath>
       <Private>True</Private>
@@ -258,6 +261,8 @@
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.js" />
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.structure.css" />
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.theme.css" />
+    <Content Include="links.aspx" />
+    <Content Include="packs\repositories.config" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -1341,6 +1346,9 @@
     <TypeScriptCompile Include="Courses\GapFill.ts" />
     <TypeScriptCompile Include="Courses\GenCourseMeta.ts" />
     <Content Include="logins.html" />
+    <Content Include="packs\Nuget.txt" />
+    <Content Include="packs\SqlServerCompact.txt" />
+    <Content Include="packs\x64.txt" />
     <Content Include="Schools\CourseMetaGui.html" />
     <Content Include="Schools\Design\DefaultDict.aspx" />
     <Content Include="Schools\Design\Default.aspx" />
@@ -1511,9 +1519,6 @@
     <Content Include="JsLib\css\img\DictAbout\pic3.PNG" />
     <Content Include="JsLib\css\img\DictAbout\pic4.PNG" />
     <Content Include="JsLib\JS\Bowser.html" />
-    <Content Include="packages\SqlServerCompact.txt" />
-    <Content Include="packages\x64.txt" />
-    <Content Include="packages\Nuget.txt" />
     <Content Include="Schools\Design\jsCrambler.aspx" />
     <Content Include="ScormExNet35.ashx" />
     <Content Include="DynamicScript.ashx" />
@@ -2390,6 +2395,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="links.aspx.cs">
+      <DependentUpon>links.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="links.aspx.designer.cs">
+      <DependentUpon>links.aspx</DependentUpon>
+    </Compile>
     <Compile Include="mp3Uploader.ashx.cs">
       <DependentUpon>mp3Uploader.ashx</DependentUpon>
     </Compile>
@@ -2641,9 +2653,6 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Login\Service.ashx" />
-    <Content Include="packages\repositories.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Service.ashx" />
     <Content Include="Schools\Design\wget.cmd" />
   </ItemGroup>

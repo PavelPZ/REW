@@ -1,0 +1,21 @@
+﻿Update-Package –reinstall  
+SL:
+Install-Package Rx-Silverlight
+
+ELSE:
+Install-Package Rx-Main
+Install-Package Newtonsoft.Json 
+Install-Package EntityFramework 
+Install-Package EntityFramework.SqlServerCompact -Version 6.0.2
+
+Install-Package ClearScript.V8 
+
+Install-Package Noesis.Javascript
+	http://javascriptdotnet.codeplex.com/ !!! POUZE x86 platform !!!
+Install-Package Microsoft.AspNet.Web.Optimization
+Install-Package HtmlAgilityPack
+
+OPTION:
+Install-Package EntityFramework.SqlServerCompact 
+Install-Package YUICompressor.NET
+Install-Package morelinq -Version 1.0.16006

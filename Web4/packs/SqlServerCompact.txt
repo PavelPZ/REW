@@ -1,0 +1,4 @@
+﻿http://erikej.blogspot.cz/2013/02/fixing-entity-framework-designer.html
+http://stackoverflow.com/questions/9827712/sql-server-compact-4-0-with-entity-framework-conditional-string-comparison 
+
+Zmena SQL CE <=> SQL: spustit generaci SQL pomoci Generate Database from Model v NewData.edmx. Asi se nekde uklada SqlCE x Sql provider.

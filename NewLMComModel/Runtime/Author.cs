@@ -104,9 +104,9 @@ namespace Author {
             //zaregistruj produkt
             if (regs.IndexOf(prodUrl) == -1) { regs.Add(prodUrl); File.WriteAllLines(regProductsFn, regs); }
             //ticket
-            var ticketFn = Machines.basicPath + @"rew\Web4\App_Data\tickets\" + par.ticket.name;
+            var ticketFn = Machines.rootPath + @"App_Data\tickets\" + par.ticket.name;
             LowUtils.AdjustFileDir(ticketFn);
-            XmlUtils.ObjectToFile(Machines.basicPath + @"rew\Web4\App_Data\tickets\" + par.ticket.name, par.ticket);
+            XmlUtils.ObjectToFile(Machines.rootPath + @"App_Data\tickets\" + par.ticket.name, par.ticket);
           }
 
           //common - refresh publisher siteroot.js
@@ -287,7 +287,7 @@ namespace Author {
 
     public static void allToRename() {
       var resName = @"d:\LMCom\rew\Web4\renamed\allxml.txt";
-      var allFiles = validDirs.SelectMany(d => Directory.EnumerateFiles(Machines.basicPath + @"rew\web4" + d.Replace('/', '\\'), "*.xml", SearchOption.AllDirectories)).Select(f => f.ToLower()).Where(f => !f.EndsWith("meta.xml")).Concat(File.ReadAllLines(@"d:\LMCom\rew\OldToNewData\fileGroups\allXmlNew.txt")).ToArray();
+      var allFiles = validDirs.SelectMany(d => Directory.EnumerateFiles(Machines.rootDir + d.Replace('/', '\\'), "*.xml", SearchOption.AllDirectories)).Select(f => f.ToLower()).Where(f => !f.EndsWith("meta.xml")).Concat(File.ReadAllLines(@"d:\LMCom\rew\OldToNewData\fileGroups\allXmlNew.txt")).ToArray();
       File.WriteAllLines(resName, allFiles);
       return;
       LoggerMemory log = new LoggerMemory(true);
