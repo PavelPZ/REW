@@ -1401,7 +1401,10 @@
     <Content Include="Temp\mediumJS\rangy-classapplier.js" />
     <Content Include="Temp\mediumJS\rangy-core.js" />
     <TypeScriptCompile Include="Courses\Ordering.ts" />
+    <None Include="JsLib\JSD\HtmlAudio\waa.d - Copy.ts_" />
+    <TypeScriptCompile Include="JsLib\JSD\HtmlAudio\waa.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\jquery-ui.d.ts" />
+    <TypeScriptCompile Include="JsLib\JSD\lib-lm.d.ts" />
     <TypeScriptCompile Include="Temp\mediumJS\ts\Base.ts" />
     <TypeScriptCompile Include="Temp\mediumJS\ts\Cache.ts" />
     <TypeScriptCompile Include="Temp\mediumJS\ts\Cursor.ts" />
@@ -1519,7 +1522,6 @@
     <TypeScriptCompile Include="JsLib\Controls\TreeView\TreeView.ts" />
     <TypeScriptCompile Include="JsLib\JSD\HtmlAudio\MediaStream.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\HtmlAudio\RTCPeerConnection.d.ts" />
-    <TypeScriptCompile Include="JsLib\JSD\HtmlAudio\waa.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\jquery.validation.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\knockout.validation.d.ts" />
     <TypeScriptCompile Include="JsLib\JS\Boot.ts" />
@@ -2457,12 +2459,14 @@
     <Compile Include="Temp\CodeFile1.cs" />
     <Compile Include="Temp\DBClearUnusedLMComUserData.aspx.cs">
       <DependentUpon>DBClearUnusedLMComUserData.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Temp\DBClearUnusedLMComUserData.aspx.designer.cs">
       <DependentUpon>DBClearUnusedLMComUserData.aspx</DependentUpon>
     </Compile>
     <Compile Include="Temp\WebForm1.aspx.cs">
       <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Temp\WebForm1.aspx.designer.cs">
       <DependentUpon>WebForm1.aspx</DependentUpon>

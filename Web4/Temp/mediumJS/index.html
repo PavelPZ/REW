@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="rangy-core.js"></script>
+  <script type="text/javascript" src="rangy-classapplier.js"></script>
+  <script type="text/javascript" src="rangy-textrange.js"></script>
+  <script type="text/javascript" src="bililiteRange.js"></script>
+  <script type="text/javascript" src="undo.js"></script>
+
+  <script type="text/javascript" src="medium.js"></script>
+
+  <!--<script type="text/javascript" src="ts/Utilities.js"></script>
+  <script type="text/javascript" src="ts/base.js"></script>
+  <script type="text/javascript" src="ts/Action.js"></script>
+  <script type="text/javascript" src="ts/Cache.js"></script>
+  <script type="text/javascript" src="ts/Cursor.js"></script>
+  <script type="text/javascript" src="ts/Drag.js"></script>
+  <script type="text/javascript" src="ts/Element.js"></script>
+  <script type="text/javascript" src="ts/Html.js"></script>
+  <script type="text/javascript" src="ts/Injector.js"></script>
+  <script type="text/javascript" src="ts/Selection.js"></script>
+  <script type="text/javascript" src="ts/Undoable.js"></script>-->
+
+  <script type="text/javascript" src="mediumJS.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" />
+  <style type="text/css">
+    .ed-editor {
+      font-family:Menlo,Monaco,Consolas,"Courier New",monospace;
+      padding:5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-3">
+        <div class="bg-info ed-editor" id="editor">
+          wrwrwrwr
+          <div class="bg-success read-only">rorororo</div>
+          wrwrwrwr
+        </div>
+      </div>
+      <div class="col-xs-3">
+        <div id="editor2" ></div>
+      </div>
+      <div class="col-xs-6">
+        <div id="viewer">
+<pre><code id="code" contenteditable="true">
+{#block
+  *
+  {#table
+    h1 | h2
+    =======
+    c1 | c2
+  }
+  * data data data
+  data data data
+block#}
+</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    //mediumJS.start(['#editor', '#editor2']);
+    mediumJS.start('#editor');
+    var medium = new Medium({
+      element: $('#editor2')[0],
+      mode: Medium.richMode,
+      pasteAsText: true,
+      autoHR: false,
+    });
+    mediumJS.range();
+  </script>
+</body>
+</html>

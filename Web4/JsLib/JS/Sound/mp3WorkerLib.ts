@@ -126,7 +126,7 @@ module mp3Worker {
     //  url += '&SamplesPerSecond=' + cfg.in_samplerate.toString() + '&BitsPerSample=16&Channels=1';
     xmlDoc.open('POST', url, false);
     xmlDoc.setRequestHeader("Content-type", 'text/plain');
-    xmlDoc.onerror = ev => console.log('slAjax error: message=' + ev.message);
+    xmlDoc.onerror = (ev: ErrorEvent) => console.log('slAjax error: message=' + ev.message);
     mp3WorkerLib.log('slAjax, base64.length=' + base64.length);
     xmlDoc.send(base64);
   }
@@ -152,7 +152,7 @@ module mp3Worker {
     //  url += '&SamplesPerSecond=' + cfg.in_samplerate.toString() + '&BitsPerSample=16&Channels=1';
     xmlDoc.open('POST', url, false);
     xmlDoc.setRequestHeader("Content-type", 'text/plain');
-    xmlDoc.onerror = ev => console.log('slAjax error: message=' + ev.message);
+    xmlDoc.onerror = (ev: ErrorEvent) => console.log('slAjax error: message=' + ev.message);
     mp3WorkerLib.log('uploadChunks ajax ' + toUploadData.length.toString());
     xmlDoc.send(toUploadData.buffer);
     toUploadChunks = []; toUploadChunksLen = 0;

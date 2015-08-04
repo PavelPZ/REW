@@ -1,0 +1,19 @@
+﻿[
+    "Page",
+    {
+        "id": "sklonenie",
+        "url": "lm/oldea/russian1/lesson5/grammatika/sklonenie",
+        "title": "Склонение",
+        "instrs": "",
+        "isPassive": "true",
+        "isOldEA": "true"
+    },
+    "\n  1\n  ",
+    [
+        "div",
+        "\n    2",
+        [ "span", "4" ],
+        "\n  "
+    ],
+    "\n  3\n"
+]

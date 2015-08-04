@@ -283,10 +283,10 @@ module Course {
     getScore(): CourseModel.Score { return this.evalPage.getScore(); }// getORScore(this.evalItems); }
 
     processReadOnlyEtc(done: boolean, provideData: boolean): void {
-      _.each(_.filter(this.items, it => it.isEval()),(eval: evalControlImpl) => {
-        if (!eval.isReadOnly() && !eval.isSkipEvaluation()) return;
-        if (provideData && eval.isSkipEvaluation()) eval.provideData();
-        eval.acceptData(eval.isReadOnly() || done);
+      _.each(_.filter(this.items, it => it.isEval()),(ev: evalControlImpl) => {
+        if (!ev.isReadOnly() && !ev.isSkipEvaluation()) return;
+        if (provideData && ev.isSkipEvaluation()) ev.provideData();
+        ev.acceptData(ev.isReadOnly() || done);
       });
     }
     //Helper

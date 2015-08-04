@@ -1,0 +1,6 @@
+﻿{
+    "default": "cm",
+    "class": "table-bordered",
+    "col_1": { "default": "l", "color": "text-warning" },
+    "col_2": "rt"
+}

@@ -1,0 +1,87 @@
+﻿@import "../bs3/less/variables.less";
+
+.sm-text {
+  position: relative;
+  background-color: white;
+  overflow: hidden;
+
+  textarea, pre, span {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 0px;
+    border-radius: 0px;
+    overflow: hidden;
+    margin: 0px;
+    resize:none;
+
+    text-decoration:none;
+    line-height: 1em;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-variant: normal;
+    font-size:14px;
+    font-style: normal;
+    letter-spacing: normal;
+    text-transform:none;
+    text-align:left;
+    direction:ltr;
+    font-size-adjust:none;
+    //word-wrap:break-word;
+    //word-break:break-all;
+    white-space: pre-wrap; //klicove pro Chrome a FF. V kodu je pro IE prepsan na 'pre'
+    word-spacing:0;
+
+  }
+
+  > .sm-view {
+    display: block;
+    //color: transparent;
+    color: red;
+    background: transparent;
+
+    .span {
+      background-color: darken(@state-success-bg, 15%);
+    }
+
+    .error {
+      background-color: darken(@state-danger-bg, 15%);
+    }
+
+    .inline {
+      background-color: darken(@state-warning-bg, 15%);
+    }
+
+    .style {
+      background-color: darken(@state-info-bg, 15%);
+    }
+    /*.span { background-color: lighten(@brand-success, 15%);}
+    .error {background-color: lighten(@brand-danger, 15%);}
+    .inline {background-color: lighten(@brand-warning, 15%);}
+    .style {background-color: lighten(@brand-info, 15%);}*/
+    .block {
+      background-color: @state-info-bg;
+    }
+  }
+
+  > textarea {
+    background: transparent;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    &:focus {
+      border: none;
+      border-color: transparent;
+      outline: none;
+    }
+  }
+}
+
+.sm-block {
+  .sm-block-body {
+    margin-left: 20px;
+  }
+}

@@ -1,0 +1,29 @@
+﻿<html>
+  <head>
+    <title>Dialogue</title>
+    <style>
+/*
+gap-fill, drop-down {
+  width: 0;}
+gap-fill, drop-down {
+  width: 0;}
+*/
+</style>
+  </head>
+  <body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="_0" url="/lm/examples/temp_pj/uselanguage/dialog-no-text">
+    <media-text id="on_1" subset="0" _sent-group-id="seq_0" is-old-to-new="true">
+      <_media-replica icon-id="a" dlg-left="true" actor="Fiona">
+        <_media-sent idx="0">nice to <gap-fill id="g166" correct-value="see" width="0" /> you.</_media-sent>
+      </_media-replica>
+    </media-text>
+    <_snd-page>
+      <_snd-file-group media-url="/lm/oldea/english2wma/lesson01/hueex1_l01_a01a.mp3">
+        <_snd-group id="seq_0">
+          <_snd-interval>
+            <_snd-sent idx="0" beg-pos="18873" end-pos="19919" actor="Fiona" />
+          </_snd-interval>
+        </_snd-group>
+      </_snd-file-group>
+    </_snd-page>
+  </body>
+</html>
