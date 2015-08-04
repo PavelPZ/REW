@@ -57,9 +57,7 @@
   <ItemGroup>
     <Compile Include="ClientScript.cs" />
     <Compile Include="ControlsEx.cs" />
-    <Compile Include="ControlsLib.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="ControlsLib.cs" />
     <Compile Include="Deployment.cs" />
     <Compile Include="Handlers.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -78,9 +76,7 @@
     <Compile Include="OldToNew\OldToNew_Xref.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoundMarkersLib.cs" />
-    <Compile Include="Survival.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Survival.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LMComExternal\LMComExternal.csproj">
