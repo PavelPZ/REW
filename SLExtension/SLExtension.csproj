@@ -61,9 +61,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
-    <Reference Include="SharpZipLib.Silverlight4">
-      <HintPath>..\..\..\temp\Bin\Release\SharpZipLib.Silverlight4.dll</HintPath>
-    </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core">
