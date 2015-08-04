@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bundle minify="true" runOnBuild="true" output="EA.js">
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\starttrace.js</file> 
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\Silverlight.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\ac_runactivecontent.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\atlas\microsoftajax.js</file>
+
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\LMSys.js</file>    
+  <!--<file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\Doctor.js</file>-->        
+  <!--<file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\JSON_RPC.js</file>--> 
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\LMCommon.js</file>  
+  <!--<file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\LicencePlayer.js</file>-->   
+  <!--<file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\dictconnector.js</file>--> 
+ 
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\atlastoolkit\Timer.js</file>    
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\atlastoolkit\Common.js</file> 
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\atlastoolkit\BaseScripts.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\atlastoolkit\DragDropScripts.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\atlastoolkit\Animations.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\atlastoolkit\AlwaysVisibleControlBehavior.js</file>
+
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\Ordering.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\Other.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\Selections.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\Sounds.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\EvalGroup.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\Course.js</file> 
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\GapFill.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\GapFillSource.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\HideText.js</file>
+
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\Controls\Other\hide_control.js</file>  
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\Controls\Sound\Sound.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\Controls\GapFill\Gap_Fill.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\Controls\Marks\eval_mark.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\Controls\Orderings\orderings.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\Controls\Selections\selections.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\Controls\GapFill\cross_word.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\Controls\GapFill\Gap_Fill_Source.js</file>
+
+  <!--<file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\js\slplayer\new_licence.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\js\slplayer\new_slplayer.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\js\slplayer\new_player.js</file>-->
+
+</bundle>
