@@ -1,5 +1,5 @@
-﻿using ICSharpCode.SharpZipLib.GZip;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+﻿//using ICSharpCode.SharpZipLib.GZip;
+//using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
 using System.Collections.Generic;
 using System.IO;

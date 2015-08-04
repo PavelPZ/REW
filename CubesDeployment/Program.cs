@@ -1,7 +1,7 @@
 ﻿using LMComLib;
 using LMNetLib;
-using Microsoft.AnalysisServices;
-using Microsoft.AnalysisServices.AdomdClient;
+//using Microsoft.AnalysisServices;
+//using Microsoft.AnalysisServices.AdomdClient;
 using System.Linq;
 using System.Collections.Generic;
 using System.Data.Linq;
