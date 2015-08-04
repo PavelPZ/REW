@@ -1,0 +1,1827 @@
+﻿
+<!DOCTYPE html>
+<!--[if lt IE 8]>  
+<html class='no-media ie7'> 
+<![endif]-->
+<!--[if IE 8]>
+<html class='no-ie7 no-media ie8'>
+<![endif]-->
+<!--[if IE 9]>
+<html class='ie ie9'> 
+<![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html class='no-ie7 no-ie8'>
+<!--<![endif]-->
+
+<head runat='server'>
+  <meta http-equiv='X-UA-Compatible' content='IE=Edge' />
+  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+  <meta name='viewport' content='width=device-width'/>
+  <title>LANGMaster</title>
+  <link href='../bs3/css/_bootstrap.css' rel='stylesheet'/>
+  <link href='../font-awesome/css/_font-awesome.css' rel='stylesheet'/>
+  <link href='../jslib/ea/_ea.css' rel='stylesheet'/>
+  <link href='../jslib/css/_rew_web.css' rel='stylesheet'/>
+  
+<!--[if IE 7]>
+  <link href='../font-awesome/css/_font-awesome-ie7.css' rel='stylesheet'/>
+  
+<![endif]-->
+  <script src='_external.js'></script>
+  <script src='_rew_web.js'></script>
+  <script src='_ea.js'></script>
+
+  <script src='loc/tradosdata.vi-vn.js'></script>
+  <script src='../jslib/scripts/cultures/globalize.culture.vi-vn.js'></script>
+
+<!-- head.htm -->
+</head>
+<body
+>
+  <div id='root' data-bind='template:rootTemplate'></div>
+  <script id='dummy' type='text/x-jsrender' data-for='Dummy'>
+    {{for ~ActPage()}}{{/for}}
+  </script>
+<script id='tbreadcrumb' type='text/x-jsrender'>
+<ul class="hidden-small breadcrumb">
+  {{for breadcrumbs()}}
+  <li>{{:jsonId}}<a href="{{:url}}"><span class="icon-{{:icon}}"></span>&nbsp;&nbsp;{{:title}}</a></li>
+  {{/for}}
+  <li class="active"><i class="icon-{{:icon()}}"></i>&nbsp;&nbsp;{{:title()}}</li>
+</ul>
+
+</script>
+<script id='tinput' type='text/x-jsrender'>
+  <div class="control-group" data-bind="css: { 'has-error': {{:name}}.hasError}">
+    <label class="control-label" for="inputEmail">{{:title}}</label>
+    <div class="controls">
+      <input class="form-control" type="{{:textType}}" placeholder="{{:title}}" id="input{{:title}}" data-bind="value: {{:name}}, valueUpdate: 'afterkeydown', hasfocus: {{:name}}.hasfocus" />
+      <span class="help-block" data-bind="visibility: {{:name}}.message, text: {{:name}}.message"></span>
+    </div>
+  </div>
+
+</script>
+<script id='tinputbtn' type='text/x-jsrender'>
+  <div class="control-group" data-bind="css: { 'has-error': {{:name}}.hasError}">
+    <label class="control-label" for="inputEmail">{{:title}}</label>
+    <div class="controls">
+      <div class="form-control input-group">
+        <input class="form-control" type="{{:textType}}" placeholder="{{:title}}" id="input{{:title}}" data-bind="value: {{:name}}, valueUpdate: 'afterkeydown', hasfocus: {{:name}}.hasfocus" />
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button" data-bind="click: {{:name}}.validOk">{{:btnTitle}}</button>
+        </span>
+      </div>
+      <span class="help-block" data-bind="visibility: {{:name}}.message, text: {{:name}}.message"></span>
+    </div>
+  </div>
+
+</script>
+<script id='tmenuitem' type='text/x-jsrender'>
+  <li><a href="#" data-click="{{:actionName()}}" data-delegate-index="{{:id}}"><span class="icon-{{:icon}}"></span>&nbsp;&nbsp;{{:title}}</a></li>
+
+
+</script>
+<script id='tokcancel' type='text/x-jsrender'>
+  <div class="{{:~numConverter(button,'lm-ok-cancel2', 'lm-ok2', 'lm-cancel2')}}">
+    <div class="lmbtn-ok2">
+      <div class="btn btn-large btn-success" data-bind="click: ok">
+        <span class="icon-ok"></span>&nbsp;&nbsp;{{:~CSLocalize('b47affafabfb4971a311b80cdc1c1dc7', 'OK')}}
+      </div>
+    </div>
+    <div class="lmbtn-cancel2">
+      <div class="btn btn-default btn-large" data-bind="click: cancel">
+        <span class="icon-remove"></span>&nbsp;&nbsp;{{:~CSLocalize('75ec6299556c4e2497dde2a7ec5626b2', 'Cancel')}}
+      </div>
+    </div>
+  </div>
+
+</script>
+<script id='ttwocolumn' type='text/x-jsrender'>
+  <div class="row">
+    <div class="col-md-{{:#data[0].width}} lm-col-first">
+      {{for #data[0].data tmpl=~T(#data[0].tmpl)/}}
+    </div>
+    {{if #data[1] && #data[1].data}}
+    <div class="col-md-{{:#data[1].width}} lm-col">
+      {{for #data[1].data tmpl=~T(#data[1].tmpl)/}}
+    </div>
+    {{/if}}
+  </div>
+</script>
+<script id='tcrsitem' type='text/x-jsrender'>
+  <div class="crsitem crsitem-{{:data.color}} {{:progressCls}} {{:~boolConverter(hasMenu,'crsitem-menu','crsitem-nomenu')}}" >
+    <div class="crsitem-coll">
+      <div class="crsitem-btn">
+        <div class="crsitem-right lm-clickable {{:moreDisabled}}">
+          <div data-toggle="menu" data-target="#{{:id}}"><i class="icon-chevron-down"></i></div>
+        </div>
+        <div class="crsitem-left lm-clickable {{:disabled}}" {{:progressInfo}} {{:clickModeStr}}>
+          <div>{{for data tmpl=~T(tmplBtn)/}}</div>
+        </div>
+      </div>
+      {{if hasMenu}}
+        <ul id="{{:id}}" data-role="menu" class="dropdown-menu">
+          {{for data.menu tmpl=~T('TMenuItem')/}}
+        </ul>
+      {{/if}}
+
+      {{if tmplMore }} 
+      <div class="crsitem-expanded">
+        {{for data tmpl=~T(tmplMore)/}}
+      </div>
+      {{/if}}
+    </div>
+    <div class="crsitem-colr">
+      {{for data tmpl=~T(tmplRight)/}}
+    </div>
+  </div>
+</script>
+<script id='confirmregistration' type='text/x-jsrender' data-for='confirmregistration'>
+  {{for ~ActPage()}}
+  
+  <div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-login">
+    {{for #data tmpl=~T('TTopBarLogin')/}}
+    <div class="container form-horizontal">
+      <fieldset>
+        <legend>{{:~CSLocalize('ca0fb06a7d714a5ebeddc27ea19210d7', 'LANGMaster.com')}}</legend>
+        <div class="alert alert-success" data-bind="visible: !Utils.Empty(success()), text: success"></div>
+        <div class="alert alert-danger" data-bind="visible: !Utils.Empty(errorText()), html: errorText"></div>
+      </fieldset>
+    </div>
+  </div>
+
+
+
+  {{/for}}
+</script>
+
+<script id='temailconfirmation' type='text/x-jsrender'>
+  <p>
+    {{:~CSLocalize('e83a008e8fe04ce79dce7f66e1232102', 'congratulations, you have created your account.')}}
+  </p>
+  <p>
+    {{:~CSLocalize('acb86672a2bd49ec97b7529de8f1078f', 'To activate your account, you must click the following')}}
+    <a href="{{:url}}">{{:url}}</a>
+    {{:~CSLocalize('3c1f1e384c1a4203af4e348abd752801', 'or by entering this address to your Internet browser.')}}
+  </p>
+  <p style="margin: 0 0 1em 0;">
+    {{:~CSLocalize('2e541679fe4f4c0fa2ffeb5eb56c98fe', 'Login details for your account:')}}
+  </p>
+  <p style="margin: 0 0 1em 0;">
+    {{:~CSLocalize('e77a59b8a83d42479e3d003b6ad9c26c', 'Name:')}} <b>{{:name}}</b><br />
+    {{:~CSLocalize('9e4fddf55c1140f79c503db9c2d32592', 'Password:')}} <b>{{:password}}</b><br />
+    <br />
+    {{:~CSLocalize('abd50e8f397944f79e173393c65f1670', 'Please, keep your login details safe.')}}
+  </p>
+</script>
+<script id='temailforgotpassword' type='text/x-jsrender'>
+  <p style="margin: 0 0 1em 0;">
+    {{:~CSLocalize('4294d283e79b4429a889df8278a773b0', 'we are sending you your forgotten password:')}}
+  </p>
+  <p style="margin: 0 0 1em 0;">
+    {{:~CSLocalize('7301b1be9c174e698530560b6aab11b6', 'Name:')}} <b>{{:name}}</b>
+    <br />
+    {{:~CSLocalize('e285068dc2f44fe99fb402993f47caee', 'Password:')}} <b>$PASSWORD$</b>
+    <br />
+  </p>
+  <p>
+    {{:~CSLocalize('5f37fed9581d4998b9116d548e0b8cf2', 'Please, keep your login details safe.')}}
+  </p>
+</script>
+<script id='temail' type='text/x-jsrender'>
+  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="cs" lang="cs">
+  <head>
+    <title>{{:Subject}}
+    </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Language" content="cs" />
+    <meta name="Author" content="LANGMaster.com, s.r.o." />
+    <meta name="Copyright" content="© LANGMaster.com, s.r.o." />
+  </head>
+  <body style="background: white; color: black; font-family: Tahoma, Arial, sans-serif; font-size: 13px; margin: 0; padding: 0; text-align: center;">
+    <div style="background: white; color: black; font-family: Tahoma, Arial, sans-serif; font-size: 13px; margin: 0; padding: 0; text-align: center;">
+      <a name="top" id="A1"></a>
+      <table style="text-align: left; width: 600px; margin: 0 auto; border: 0; background: none; font-size: 100%; border-collapse: separate;"
+        cellspacing="0">
+        <tr>
+          <td style="margin: 0; border: 0; padding: 10px 20px; background: #E6F7FD; font-size: 11px; border-left: 6px solid #DEDEDE; border-right: 6px solid #DEDEDE; border-top: 6px solid #DEDEDE">
+            <h1>{{:~CSLocalize('40a0fd23d8d745ddb0a7aa0e6e8010a3', 'LANGMaster.com:')}} {{:Subject}}</h1>
+          </td>
+        </tr>
+        <tr>
+          <td style="margin: 0; border: 0; padding: 0; background: none; border-left: 6px solid #DEDEDE; border-right: 6px solid #DEDEDE;">
+            <table style="margin: 0; border: 0; padding: 0; background: none; width: 100%; text-align: left; font-size: 100%; border-collapse: separate;"
+              cellspacing="0">
+              <tr>
+                <td style="padding: 20px; border: 0;">
+                  <h1 style="margin: 5px 0 10px 0; padding: 0 0 6px 0; font-weight: normal; font-family: 'Franklin Gothic Medium', Tahoma, Arial, Helvetica, sans-serif; font-size: 192.3%; line-height: 1.0; color: black;">{{:title}}
+                  </h1>
+                  <p style="margin: 0 0 1em 0;">
+                    {{:~CSLocalize('6acada0ea49b462a9d1806a4f8dc576e', 'Hello')}}
+                  </p>
+                  {{for #data tmpl=~T(emailId)/}}
+                  <p>
+                    {{:~CSLocalize('06eb87db06e14cf2bad2607093c2bfe7', 'We wish you success with LANGMaster educational products.')}}
+                  </p>
+                  <p style="margin: 0 0 1em 0;">
+                    {{:~CSLocalize('492b8ffcb4bd40a6ab9d2deb0556c900', 'Best regards')}}<br />
+                    {{:~CSLocalize('f217bebab2ad4bfaa456264c9d0ab51d', 'LANGMaster team')}}
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="margin: 0; border: 0; padding: 10px 20px; background: #E6F7FD; font-size: 11px; border-left: 6px solid #DEDEDE; border-right: 6px solid #DEDEDE; border-bottom: 6px solid #DEDEDE">
+            <p style="margin: 0 0 1em 0;">
+              LANGMaster, Branicka 107, 147 00 Praha 4, Czech Republic,
+              <a href="mailto:info@langmaster.cz">info@langmaster.cz</a>, <a href="http://www.langmaster.com">www.langmaster.com</a>.
+            </p>
+            <p style="margin: 0 0 1em 0;">
+              {{:~CSLocalize('e164156254c441bb9e78936f8bc73fc5', '© 2014 LANGMaster. All rights reserved.')}}
+            </p>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+  </html>
+
+</script>
+<script id='forgotpassword' type='text/x-jsrender' data-for='forgotpassword'>
+  {{for ~ActPage()}}
+  
+  <div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-login">
+    {{for #data tmpl=~T('TTopBarLogin')/}}
+    <div class="container form-horizontal">
+      <fieldset>
+        <legend>{{:~CSLocalize('c2ab3e05ece6438397515ee876f27fe6', 'Sending of the forgotten password')}}</legend>
+        <div data-bind="visible: Utils.Empty(success())">
+          {{for viewModel tmpl=~T('TInput')/}}
+          <div class="alert alert-danger" data-bind="visible: !Utils.Empty(errorText()), html: errorText"></div>
+          {{for #data tmpl=~T('TOkCancel')/}}
+        </div>
+      </fieldset>
+      <div class="alert alert-success lm-login-success" data-bind="visible: !Utils.Empty(success()), text: success"></div>
+    </div>
+  </div>
+
+
+  {{/for}}
+</script>
+
+<script id='changepassword' type='text/x-jsrender' data-for='changepassword'>
+  {{for ~ActPage()}}
+  
+  <div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-login">
+    {{for #data tmpl=~T('TTopBarLogin')/}}
+    <div class="container form-horizontal">
+      <fieldset>
+        <legend>{{:~CSLocalize('f7465ddee0dd4c0ebbf74e112e78c68e', 'Change Password')}}</legend>
+        <div data-bind="visible: Utils.Empty(success())">
+          {{for viewModel tmpl=~T('TInput')/}}
+        </div>
+        <div class="alert alert-danger" data-bind="visible: !Utils.Empty(errorText()), html: errorText"></div>
+        <div class="alert alert-success lm-login-success" data-bind="visible: !Utils.Empty(success()), text: success"></div>
+        {{for #data tmpl=~T('TOkCancel')/}}
+      </fieldset>
+      
+    </div>
+  </div>
+
+
+  {{/for}}
+</script>
+
+<script id='lmlogin' type='text/x-jsrender' data-for='lmlogin,lmloginnoemail'>
+  {{for ~ActPage()}}
+  
+  <div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-login">
+    {{for #data tmpl=~T('TTopBarLogin')/}}
+    <div class="container form-horizontal">
+      <fieldset>
+        <legend>{{:~CSLocalize('f7ca7ceba0904c24b2494f048fb37c82', 'Login')}}</legend>
+        {{for viewModel tmpl=~T('TInput')/}}
+          <div class="alert alert-danger" data-bind="visible: !Utils.Empty(errorText()), html: errorText"></div>
+        {{for #data tmpl=~T('TOkCancel')/}}
+      </fieldset>
+      <ul class="breadcrumb">
+        <li><a class="active" href="{{:~loginUrl('registerModel')}}" data-bind="click: gotoRegister">{{:~CSLocalize('b24ea1e72f9a4d60bbc930db412797e2', 'User Registration')}}</a></li>
+        <li><a class="active" href="{{:~loginUrl('forgotPasswordModel')}}" data-bind="visible: isEMail">{{:~CSLocalize('d12681c9037b4db8af0364ecd210a1e4', 'Send forgotten password by e-mail')}}</a></li>
+      </ul>
+    </div>
+  </div>
+
+
+
+  {{/for}}
+</script>
+
+<script id='login' type='text/x-jsrender' data-for='login'>
+  {{for ~ActPage()}}
+  
+  <div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-login">
+    {{for #data tmpl=~T('TTopBarLogin')/}}
+    <div class="container form-horizontal">
+      <fieldset>
+        <legend>{{:~CSLocalize('305188cfd4314deeadfde6eb5c5f44f9', 'Log in in one of the following ways:')}}</legend>
+        {{for viewModel}}
+        <div class="login-icon login-{{:name}} lm-clickable" data-click="call_provider" data-delegate-index="{{:id}}"></div>
+        {{/for}}
+        <div class="clearfix"></div>
+        <br />
+        {{for #data tmpl=~T('TOkCancel')/}}
+      </fieldset>
+      
+    </div>
+  </div>
+
+
+  {{/for}}
+</script>
+
+<script id='ttopbarlogin' type='text/x-jsrender'>
+  <div class="navbar navbar-inverse lm-header">
+    <div class="container">
+      <ul class="nav pull-right">
+      </ul>
+      <a href="#" class="lm-logo-black"></a>
+    </div>
+  </div>
+
+</script>
+<script id='profile' type='text/x-jsrender' data-for='profile'>
+  {{for ~ActPage()}}
+  
+  <div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-login">
+    {{for #data tmpl=~T('TTopBarLogin')/}}
+    <div class="container form-horizontal">
+      <fieldset>
+        <legend><span class="icon-user"></span>&nbsp;&nbsp;{{:~userName()}}</legend>
+        <div data-bind="visible: Utils.Empty(success())">
+          {{for viewModel tmpl=~T('TInput')/}}
+        </div>
+        <div class="alert alert-danger" data-bind="visible: !Utils.Empty(errorText()), html: errorText"></div>
+        <div class="alert alert-success lm-login-success" data-bind="visible: !Utils.Empty(success()), text: success"></div>
+        {{for #data tmpl=~T('TOkCancel')/}}
+      </fieldset>
+      {{if ~isLMComCookie()}}
+      <ul class="breadcrumb">
+        <li><a href="{{:~loginUrl('changePasswordModel')}}">{{:~CSLocalize('b716b770e72d487384caf8a94dba6bbf', 'Change Password')}}</a></li>
+      </ul>
+      {{/if}}
+    </div>
+  </div>
+
+
+
+  {{/for}}
+</script>
+
+<script id='register' type='text/x-jsrender' data-for='register,registernoemail'>
+  {{for ~ActPage()}}
+  
+  <div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-login">
+    {{for #data tmpl=~T('TTopBarLogin')/}}
+    <div class="container form-horizontal">
+      <fieldset>
+        <legend>{{:~CSLocalize('3c05d331b7004f0e99d1cda8080f0884', 'User Registration')}}</legend>
+        <div data-bind="visible: Utils.Empty(success())">
+          {{for viewModel tmpl=~T('TInput')/}}
+          <div class="alert alert-danger" data-bind="visible: !Utils.Empty(errorText()), html: errorText"></div>
+          {{for #data tmpl=~T('TOkCancel')/}}
+        </div>
+      </fieldset>
+      <div class="alert alert-success lm-login-success" data-bind="visible: !Utils.Empty(success()), text: success"></div>
+    </div>
+  </div>
+
+
+
+  {{/for}}
+</script>
+
+<script id='schooladmin' type='text/x-jsrender' data-for='schooladmin'>
+  {{for ~ActPage()}}
+  
+  <div data-bind="with: Pager.ActPage" class="app-admin">
+    {{for #data tmpl=~T('TTopBarNew')/}}
+    <div class="container">
+      {{if ~Cookie()}}
+      <h3>{{:title()}}</h3>
+
+      
+      <div class="panel panel-default" data-bind="visible: Login.isRoleAdmin()">
+        <div class="panel-heading">{{:~CSLocalize('a7874d64e5aa4985b779cac83c2a89ed', 'System administrators')}}</div>
+        <table class="table table-condensed table-hover">
+          <tbody data-bind="foreach: role_Admin">
+            <tr data-bind="css: { success: !Deleted(), danger: Deleted }">
+              <td style="vertical-align: middle;">
+                <span data-bind="text: data.EMail"></span>
+              </td>
+              <td class="ad-btn-last">
+                <button class="btn btn-default" data-bind="click: $parent.admin_del">
+                  <span data-bind="css: { 'icon-plus': Deleted(), 'icon-remove': !Deleted() }" ></span>
+                  &nbsp;<span data-bind="text: (Deleted() ? 'Undelete' : 'Delete')"></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-condensed">
+          <tbody>
+            <tr>
+              <td>
+                <label class="control-label">{{:~CSLocalize('4301852cce604dcca76480a627e92694', 'Add System administrator')}}</label>
+                <input class="form-control" type="text" placeholder="{{:~CSLocalize('308ad4d9b8f342b9946450345efacc6a', 'enter e-Mail')}}" data-bind="value: admin_EMail, valueUpdate: 'afterkeydown', hasfocus: admin_EMail.hasfocus" />
+                <span class="help-block" data-bind="visibility: admin_EMail.message, text: admin_EMail.message"></span>
+              </td>
+              <td class="ad-btn-add">
+                <button class="btn  btn-default" data-bind="click: admin_add"><span class="icon-plus"></span>&nbsp;{{:~CSLocalize('e8366c5bd8ba4cb6bbcb70c84d06c8e1', 'Add')}}</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      
+      <div class="panel panel-default" data-bind="visible: Login.isRoleComps()">
+        <div class="panel-heading">{{:~CSLocalize('0fb3793cac4247b2a8a73ed00795c5d7', 'Companies')}}</div>
+        
+        <table class="table table-condensed table-hover">
+          <tbody data-bind="foreach: role_Comps">
+            
+            <tr data-bind="visible: edited()" class="success">
+              <td>
+                <input class="form-control" type="text" placeholder="{{:~CSLocalize('7f8697080ad144e5b813f4c4768ec787', 'enter name')}}" data-bind="value: name, valueUpdate: 'afterkeydown', hasfocus: name.hasfocus" />
+                <span class="help-block" data-bind="visibility: name.message, text: name.message"></span>
+              </td>
+              <td>
+                <input class="form-control" type="text" placeholder="{{:~CSLocalize('423438afc261483da6e76c1ef9b902af', 'enter e-Mail')}}" data-bind="value: email, valueUpdate: 'afterkeydown', hasfocus: email.hasfocus" />
+                <span class="help-block" data-bind="visibility: email.message, text: email.message"></span>
+              </td>
+              <td class="ad-btn-last">
+                <div class="btn-group">
+                  <button class="btn btn-default" data-bind="click: $parent.company_editCancel">
+                    <span class="icon-remove"></span>&nbsp;{{:~CSLocalize('9fa67ed1ffe84b0c948a7d885919213d', 'Cancel')}}
+                  </button>
+                  <button class="btn btn-default" data-bind="click: $parent.company_editOk">
+                    <span class="icon-ok"></span>&nbsp;{{:~CSLocalize('9db4b90fec144147b798e57e70d67cd2', 'OK')}}
+                  </button>
+                </div>
+              </td>
+            </tr>
+            
+            <tr data-bind="visible: !edited(), css: { danger: Deleted(), success: !Deleted() }" class="danger">
+              <td colspan="2">
+                <b data-bind="text: name"></b>
+                (<span data-bind="text: email"></span>)
+              </td>
+              <td style="text-align: right;">
+                <button class="btn btn-default" data-bind="click: $parent.company_undel, visible: Deleted">
+                  <span class="icon-plus"></span>&nbsp;{{:~CSLocalize('06ac9eebb3284c67ac65bc1a52d15196', 'Undelete')}}
+                </button>
+                <div class="btn-group" data-bind="visible: !Deleted()">
+                  <button class="btn btn-default" data-bind="click: $parent.company_edit">
+                    <span class="icon-pencil"></span>&nbsp;{{:~CSLocalize('4a95201a0d374438a5a7357509e02baa', 'Edit')}}</button>
+                  <button class="btn btn-default" data-bind="click: $parent.company_del">
+                    <span class="icon-remove"></span>&nbsp;{{:~CSLocalize('c0320cb4f3c0491eaa8bc8054cd56282', 'Delete')}}
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <table class="table table-condensed">
+          <tbody>
+            <tr>
+              <td>
+                <label class="control-label">{{:~CSLocalize('a96ec4fe1d7b4e8eac4e1a744da4a03b', 'Company name')}}</label>
+                <input class="form-control" type="text" placeholder="{{:~CSLocalize('6261935ec80f4091b713117abe9ab717', 'enter name')}}" data-bind="value: comps_Name, valueUpdate: 'afterkeydown', hasfocus: comps_Name.hasfocus" />
+                <span class="help-block" data-bind="visibility: comps_Name.message, text: comps_Name.message"></span>
+              </td>
+              <td>
+                <label class="control-label">{{:~CSLocalize('63ca57fb95f949dd84579b2a2a1ef0e2', 'Master Company administrator')}}</label>
+                <input class="form-control" type="text" placeholder="{{:~CSLocalize('4b990da9ad7542f9b737b147df34656d', 'enter e-Mail')}}" data-bind="value: comps_EMail, valueUpdate: 'afterkeydown', hasfocus: comps_EMail.hasfocus" />
+                <span class="help-block" data-bind="visibility: comps_EMail.message, text: comps_EMail.message"></span>
+              </td>
+              <td class="ad-btn-add">
+                <button class="btn btn-default" type="button" data-bind="click: company_add"><span class="icon-plus"></span>&nbsp;{{:~CSLocalize('40d9f8b1832d4c9b8292c42f360b7551', 'Add')}}</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      {{for #data tmpl=~T('TOkCancel')/}}
+      {{else}}
+        <h3>{{:~CSLocalize('2da6dabca4bf49ceb1e22f76ee0cbf99', 'Login first')}}</h3>
+      {{/if}}
+    </div>
+  </div>
+
+
+  {{/for}}
+</script>
+
+<script id='schoolcompadmins' type='text/x-jsrender' data-for='schoolcompadmins'>
+  {{for ~ActPage()}}
+  
+  <div data-bind="with: Pager.ActPage" class="app-admin">
+    {{for #data tmpl=~T('TTopBarNew')/}}
+    <div class="container">
+      {{if ~Cookie()}}
+      <h3>{{:title()}}</h3>
+
+      
+      <div data-bind="foreach: comp_Admin">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            {{:~CSLocalize('9c41d54edd8645329fcdd1c71d02e9e9', 'Administrators and their roles')}}
+          </div>
+          <table class="table table-condensed  table-hover" data-bind="foreach: Items">
+            <tr data-bind="css: { success: !Deleted(), danger: Deleted }">
+              <td>
+                <b data-bind="text: data.EMail"></b>
+              </td>
+              <!-- ko foreach: options -->
+              <td>
+                <span class="checkbox">
+                  <label>
+                    <input type="checkbox" data-bind="checked: checked" />
+                    <span data-bind="text: title"></span>
+                  </label>
+                </span>
+              </td>
+              <!-- /ko -->
+              <td class="ad-btn-last">
+                <button class="btn btn-default" data-bind="click: $parent.compAdmin_del">
+                  <span data-bind="css: { 'icon-plus': Deleted(), 'icon-remove': !Deleted() }" ></span>
+                  &nbsp;<span data-bind="text: (Deleted() ? 'Undelete' : 'Delete')"></span>
+                </button>
+              </td>
+            </tr>
+          </table>
+          <table class="table table-condensed">
+            <tbody>
+              <tr>
+                <td>
+                  <label class="control-label">{{:~CSLocalize('9917aeb542ad4080b9b965265ac85253', 'Add Company administrator')}}</label>
+                  <input class="form-control" type="text" placeholder="enter eMail" data-bind="value: newEMail, valueUpdate: 'afterkeydown', hasfocus: newEMail.hasfocus" />
+                  <span class="help-block" data-bind="visibility: newEMail.message, text: newEMail.message"></span>
+                </td>
+                <td class="ad-btn-add">
+                  <button class="btn btn-default" data-bind="click: newEMail_Add"><span class="icon-plus"></span>&nbsp;{{:~CSLocalize('425a022b46634c20bb1c68fa6d105b50', 'Add')}}</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {{for #data tmpl=~T('TOkCancel')/}}
+      {{else}}
+        <h3>{{:~CSLocalize('6b2ef67e83d14d29be92798917c1c0af', 'Login first')}}</h3>
+      {{/if}}
+    </div>
+  </div>
+
+
+  {{/for}}
+</script>
+
+<script id='tadminemailkeys' type='text/x-jsrender'>
+  <p>
+    {{:~CSLocalize('59f1ac558cce43cc844235c97006442f', 'We are sending you license keys for the product:')}}
+  </p>
+  <p>
+    <b>{{:productName}}</b>
+  </p>
+
+
+</script>
+<script id='schoolkeygen' type='text/x-jsrender' data-for='schoolkeygen'>
+  {{for ~ActPage()}}
+  
+  <div data-bind="with: Pager.ActPage" class="app-admin">
+    {{for #data tmpl=~T('TTopBarNew')/}}
+    <div class="container">
+      {{if ~Cookie()}}
+      <h3>{{:title()}}</h3>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          1. {{:~CSLocalize('d73c8d989df647dc94b12b47157d20e1', 'Select the Course and License')}}
+        </div>
+        {{for products tmpl=~T('TTwoColumn')/}}
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          2. {{:~CSLocalize('d49d1aa07f2e4b14bae478fa5cc4aa30', 'Enter the number of keys')}}
+        </div>
+        <input class="form-control" type="text" placeholder={{:~CSLocalize('4eee9427a0304738902cc189f2e35615', 'Enter the number of keys')}} data-bind="value: num, valueUpdate: 'afterkeydown', hasfocus: num.hasfocus, enable: selProd()" />
+        <span class="help-block" data-bind="visibility: num.message, text: num.message"></span>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          3.
+          <div class="btn btn-primary" data-bind="click: generate, enable: selProd()">{{:~CSLocalize('1ecf7038aeb447cc92251fcd9cb7dd85', 'Generate License keys')}}</div>
+        </div>
+        <div class="alert alert-success" data-bind="visible: genOK">
+          {{:~CSLocalize('5b6576daeff4413eb74e41e5170ad5c1', 'Generated License keys have been sent to you by email.')}}
+        </div>
+      </div>
+      {{for #data tmpl=~T('TOkCancel')/}}
+      {{else}}
+        <h3>{{:~CSLocalize('2a8ad266bc2b4451a4068e991d46af41', 'Login first')}}</h3>
+      {{/if}}
+    </div>
+  </div>
+
+
+  {{/for}}
+</script>
+
+<script id='tprodcard' type='text/x-jsrender'>
+  
+  <div class="panel panel-info">
+    <div class="radio">
+      <label>
+        <input type="radio" name="prods" value="{{:Id}}" data-bind="checked: selProd" />
+        <span class="flag-small flag-small-{{:~productLineTxtLower(ProductId)}}"></span>
+        <b>{{:my.title}} / days: {{:Days}}</b><br />
+        {{:~CSLocalize('baf9e0fd8101472b9cd0435aa18b72a3', 'Keys generated:')}} {{:LastCounter}},
+        {{:~CSLocalize('bb6fa8ecaf7c4e48b530fa94d86a0eaf', 'Keys used:')}} {{:UsedKeys}}
+      </label>
+    </div>
+  </div>
+
+</script>
+<script id='schoolproducts' type='text/x-jsrender' data-for='schoolproducts'>
+  {{for ~ActPage()}}
+  
+  <div data-bind="with: Pager.ActPage" class="app-admin">
+    {{for #data tmpl=~T('TTopBarNew')/}}
+    <div class="container">
+      {{if ~Cookie()}}
+      <h3>{{:title()}}</h3>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">{{:~CSLocalize('210fe1ad34de4568b34a12c0a4b171be', 'Courses and Licenses')}}</div>
+        
+        <table class="table table-condensed table-hover">
+          <tbody data-bind="foreach: products">
+            
+            <tr data-bind="visible: edited()" class="success">
+              <td>
+                <select class="form-control" data-bind="options: $parent.allProducts(), optionsCaption: '{{:~CSLocalize('1bfaa314d0ea4d9fb0af537173f8532f', 'Select a product...')}}', value: product, optionsText: 'title', optionsValue: 'courseId'"></select>
+                <span class="help-block" data-bind="visibility: product.message, text: product.message"></span>
+              </td>
+              <td>
+                <input class="form-control" type="text" placeholder="{{:~CSLocalize('51be7671f95b41ee8a6d95adf10949c0', 'Enter the number of days')}}" data-bind="value: days, valueUpdate: 'afterkeydown', hasfocus: days.hasfocus" />
+                <span class="help-block" data-bind="visibility: days.message, text: days.message"></span>
+              </td>
+              <td class="ad-btn-last">
+                <div class="btn-group">
+                  <button class="btn btn-default" data-bind="click: $parent.editCancel">
+                    <span class="icon-remove"></span>&nbsp;{{:~CSLocalize('aded595d9c524e6d961871ba3c2e21ef', 'Cancel')}}
+                  </button>
+                  <button class="btn btn-default" data-bind="click: $parent.editOk">
+                    <span class="icon-ok"></span>&nbsp;{{:~CSLocalize('ee3560f386f74847ac61f62ed03c9383', 'OK')}}
+                  </button>
+                </div>
+              </td>
+            </tr>
+            
+            <tr data-bind="visible: !edited(), css: { danger: Deleted(), success: !Deleted() }" class="danger">
+              <td colspan="2">
+                <span class="flag-small" data-bind="css : 'flag-small-' + lineTxt()"></span>
+                <b><span data-bind="text: title"></span> / days: <span data-bind="text: days"></span></b><br />
+                {{:~CSLocalize('d2e908b32c3143258d944adae1737869', 'Keys generated:')}} 
+                <span data-bind="text: data.LastCounter"></span>
+              </td>
+              <td style="text-align: right;">
+                <button class="btn btn-default" data-bind="click: $parent.undel, visible: Deleted">
+                  <span class="icon-plus"></span>&nbsp;{{:~CSLocalize('f0292779b21f48ddb86b49fce5df779e', 'Undelete')}}
+                </button>
+                <div class="btn-group" data-bind="visible: !Deleted() && data.LastCounter == 0">
+                  <button class="btn btn-default" data-bind="click: $parent.edit">
+                    <span class="icon-pencil"></span>&nbsp;{{:~CSLocalize('695655489df54167abc3d6bd89060203', 'Edit')}}</button>
+                  <button class="btn btn-default" data-bind="click: $parent.del">
+                    <span class="icon-remove"></span>&nbsp;{{:~CSLocalize('08e9a57e29224453bf3bb094f2bb3723', 'Delete')}}
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <table class="table table-condensed">
+          <tbody>
+            <tr>
+              <td>
+                <label class="control-label">{{:~CSLocalize('4edc64ba610c4538b0dcf71d7c8482cd', 'Product')}}</label>
+                <select class="form-control" data-bind="options: allProducts(), optionsCaption: '{{:~CSLocalize('baa3b9079a224b459c23d2cf4ec27981', 'Select a product...')}}', value: product, optionsText: 'title', optionsValue: 'courseId'"></select>
+                <span class="help-block" data-bind="visibility: product.message, text: product.message"></span>
+              </td>
+              <td>
+                <label class="control-label">{{:~CSLocalize('a74303b7b46a4772b34ce47ad691eba3', 'License validity (in days)')}}</label>
+                <input class="form-control" type="text" placeholder="{{:~CSLocalize('a863e3d6f8964188be8ac18f641abdbd', 'Enter the number of days')}}" data-bind="value: days, valueUpdate: 'afterkeydown', hasfocus: days.hasfocus" />
+                <span class="help-block" data-bind="visibility: days.message, text: days.message"></span>
+              </td>
+              <td class="ad-btn-add">
+                <button class="btn btn-default" type="button" data-bind="click: add"><span class="icon-plus"></span>&nbsp;{{:~CSLocalize('59455c4276ed49b2ad94dec3e1335986', 'Add')}}</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      {{for #data tmpl=~T('TOkCancel')/}}
+      {{else}}
+        <h3>{{:~CSLocalize('e931dec4ba064748a99a04a5d7cd3d54', 'Login first')}}</h3>
+      {{/if}}
+    </div>
+  </div>
+
+
+  {{/for}}
+</script>
+
+<script id='c_gen' type='text/x-jsrender'>
+{{include tmpl=~cT(#data)/}}
+</script>
+<script id='c_genitems' type='text/x-jsrender'>
+{{for Items}}{{include tmpl=~cT(#data)/}}{{/for}}
+</script>
+<script id='c_tag' type='text/x-jsrender'>
+{{:~c_tagstart(#data)}}
+  {{include tmpl=~T("c_genitems")/}}
+{{:~c_tagend(#data)}}
+</script>
+<script id='c_page' type='text/x-jsrender'>
+<div id="exercise_page" class="{{:~classes(#data)}}">
+  {{include tmpl=~T("c_genitems")/}}
+</div>
+</script>
+<script id='' type='text/x-jsrender'></script>
+<script id='c_gapfill' type='text/x-jsrender'>
+<!-- ko with: getItem('{{:id}}') -->
+<div class="{{:~classes(#data)}}" data-id="{{:id}}" data-bind="css:st" >
+  <input class="user-input form-control gap-fill-ctrl" type="text" placeholder="{{:PlaceHolder}}" data-bind="value: user, valueUpdate: 'afterkeydown'" />
+  <div class="teacher" data-bind="text: teacher"></div>
+  <div class="user-res" data-bind="text: user"></div>
+</div>
+<!-- /ko -->
+</script>
+<script id='' type='text/x-jsrender'></script>
+<script id='c_pairing' type='text/x-jsrender'>
+<!-- ko with: getItem('{{:id}}') -->
+<div class="{{:~classes(#data)}}" data-id="{{:id}}" data-bind="delegatedHandler: ['select_left', 'select_right'], css: { 'left-selected': leftSelected, 'noleft-selected': !leftSelected(), normal: myPage.normalStatus, evaluated: !myPage.normalStatus() }">
+  <table>
+    <tr class="help">
+      <td>
+        <div class="help-left alert alert-info">
+          <i class="icon-arrow-down info"></i>&nbsp;{{:~CSLocalize('8ea9f179b07244ca9523580477681b08', 'Click to')}}<i class="icon-hand-right icon-border hand"></i>&nbsp;{{:~CSLocalize('64d35057f86a49b184cca73e5eaeebee', 'to select a left item')}}
+        </div>
+      </td>
+      <td>
+        <div class="middle">&nbsp;</div>
+      </td>
+      <td>
+        <div class="help-right alert alert-info">
+          <i class="icon-arrow-down info"></i>&nbsp;{{:~CSLocalize('ae36fa97f71d41519956897d24660aa7', 'Select the right item matching the selected left item')}}
+        </div>
+      </td>
+    </tr>
+    {{for control.random}}
+    <!-- ko with: items[{{:selfIdx}}] -->
+    <tr class="pairing-item" data-bind="css: { 'act_left': leftSelected, 'noact_left': !leftSelected() }">
+      <td class="left-cell">
+        <div class="left-cell-div">
+          <div class="sel-btn" data-click="select_left" data-delegate-index="{{:selfIdx}}"><i class="icon-hand-right icon-2x icon-border"></i></div>
+          <div class="left-content xnowrap">
+            {{for data.Items}}{{include tmpl=~cT(#data)/}}{{/for}}
+          </div>
+        </div>
+      </td>
+      <td class="middle" data-bind="css: { 'join-line': ok, 'not-join-line': !ok() }">
+        <div class="content">
+          <div class="left-end icon-circle-blank"></div>
+          <div class="line"></div>
+          <div class="right-end icon-circle-blank"></div>
+        </div>
+      </td>
+      <td class="right-cell" data-click="select_right" data-delegate-index="{{:selfIdx}}">
+        <div class="c-edit right-pair" data-bind="css: st">
+          <div class="user-input" data-bind="text: userText"></div>
+          <div class="teacher" data-bind="text: teacher"></div>
+          <div class="user-res" data-bind="text: userText"></div>
+        </div>
+      </td>
+    </tr>
+    <!-- /ko -->
+    {{/for}}
+  </table>
+</div>
+<!-- /ko -->
+
+</script>
+<script id='' type='text/x-jsrender'></script>
+<script id='c_singlechoice' type='text/x-jsrender'>
+<!-- ko with: getItem('{{:id}}') -->
+<div class="{{:~classes(#data)}}" data-bind="delegatedHandler: ['click_item'], css: { normal: myPage.normalStatus, evaluated: !myPage.normalStatus() }">
+  <table class="table c-table-checkitem-list">
+    {{for control.items}}
+    <tr data-bind="with: items[{{:#index}}]">
+      <td class="c-left" data-bind="css: { selected: selected, noselected: !selected() }">
+        <div class="left-def" data-click="click_item" data-delegate-index="{{:#index}}" data-bind="css: evalCss">
+          <i class="icon-2x icon-border"></i>
+        </div>
+        <div class="left-strike" data-bind="css: evalCss">
+          <span class="icon-stack icon-2x">
+            <i class="icon-ok"></i>
+            <i class="icon-ban-circle icon-stack-base"></i>
+          </span>
+        </div>
+      </td>
+      <td class="c-right">{{for content tmpl=~cT(content)/}}
+      </td>
+    </tr>
+    {{/for}}
+  </table>
+</div>
+<!-- /ko -->
+</script>
+<script id='c_wordselection' type='text/x-jsrender'>
+<!-- ko with: getItem('{{:id}}') -->
+<div class="{{:~classes(#data)}}" data-bind="delegatedHandler: ['click_item'], css: { normal: myPage.normalStatus, evaluated: !myPage.normalStatus() }">
+  {{for control.items}}
+    <!-- ko with: items[{{:#index}}] -->
+    <div class="item" data-bind="css: { selected: selected, noselected: !selected() }" data-click="click_item" data-delegate-index="{{:#index}}">
+      <div class="text" data-bind="css: evalCss">{{:content.Title}}</div>
+    </div>
+    <!-- /ko -->
+  {{/for}}
+</div>
+<!-- /ko -->
+</script>
+<script id='' type='text/x-jsrender'></script>
+<script id='c_media' type='text/x-jsrender'>
+<!-- ko with: getItem('{{:id}}') -->
+<a href="{{:control.installSlUrl()}}" data-bind="css: { show: needInstall(), hide: !needInstall() }">Install Silverlight</a>
+<div class="c-video" data-bind="visible: !needInstall(), css: { playing: playing, noplaying: !playing(), muted: muted, nomuted: !muted(), loading: loading, noloading: !loading(), 'text-visible': textVisible, 'notext-visible': !textVisible(), cpvvisible: cpvVisible, nocpvvisible: !cpvVisible() }">
+  <div class="loading-div text-center">
+    <i class="icon-spinner icon-spin icon-4x"></i>
+  </div>
+  <div class="loaded-div">
+    {{include tmpl=~T("c_genitems")/}}
+  </div>
+</div>
+<!-- /ko -->
+
+</script>
+<script id='c_mediavideo' type='text/x-jsrender'>
+{{for ~cFindMedia(#data)}}
+<!-- ko with: getItem('{{:id}}') -->
+<div data-bind="style: { width: width() + 'px' }">
+  <div id="sldiv_video" data-bind="visible: !needInstall(), style: { width: width() + 'px', height: height() + 'px' }"></div>
+  {{if !HideBar}}
+  <div class="media-bar">
+    <div class="slider" id="slider"></div>
+    <div class="alert alert-warning">
+      <div class="buttons">
+        <div class="content">
+          <span class="icon-stack text-btn btn-icon" data-bind="click: toogleText">
+            <i class="icon-text-width icon-large"></i>
+            <i class="icon-ban-circle icon-stack-base"></i>
+          </span>
+          <i class="icon-microphone icon-large btn-icon" data-bind="click: showCpv"></i>
+          <i class="icon-fast-backward icon-large btn-icon" data-bind="click: prevActor"></i>
+          <i class="icon-backward icon-large btn-icon" data-bind="click: prevSent"></i>
+          <i class="icon-border icon-3x play" data-bind="click: playStop"></i>
+          <i class="icon-forward icon-large btn-icon" data-bind="click: nextSent"></i>
+          <i class="icon-fast-forward icon-large btn-icon" data-bind="click: nextActor"></i>
+          <span class="icon-stack volume-btn btn-icon" data-bind="click: changeMuted">
+            <i class="icon-volume-up icon-large"></i>
+            <i class="icon-ban-circle icon-stack-base"></i>
+          </span>
+        </div>
+      </div>
+      <span class="text-area">
+        <span class="actor-text" data-bind="text: actor()"></span>
+        <span class="speech-text" data-bind="text: speech"></span>
+      </span>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+  {{for control tmpl=~T('TSchoolCpv')/}}
+  {{/if}}
+</div>
+<!-- /ko -->
+{{/for}}
+
+</script>
+<script id='c_mediadialog' type='text/x-jsrender'>
+{{for ~cFindMedia(#data)}}
+<!-- ko with: getItem('{{:id}}') -->
+<div class="c-dialog" data-bind="template: dialogTemplate, delegatedHandler: ['sent_click']" {{:control.style()}}></div>
+<!-- /ko -->
+{{/for}}
+
+</script>
+<script id='c_mediadialogloaded' type='text/x-jsrender'>
+{{for file.blocks}}
+  <!-- ko with: file.blocks['{{:#index}}'] -->
+  <div class="c-replica {{:css()}}" data-bind="css: {active: active}">
+    <b>{{:block.Name}}</b>: 
+    {{for sents}}
+    <!-- ko with: sents['{{:#index}}'] -->
+    <span class="c-sent" data-bind="css: { active: active }" data-click="sent_click" data-delegate-index="{{:uniqueId}}"><i class="icon-volume-off"></i>&nbsp;{{:sent.Text}}</span>
+    <!-- /ko -->
+    {{/for}}
+  </div>
+  <!-- /ko -->
+{{/for}}
+</script>
+<script id='c_passivedialog' type='text/x-jsrender'>
+<!-- ko with: getItem('{{:id}}') -->
+<div class="c-dialog" {{:control.style()}}>
+  {{for Items tmpl=~T('c_gen')/}}
+</div>
+<!-- /ko -->
+</script>
+<script id='c_replica' type='text/x-jsrender'>
+<!-- ko with: getItem('{{:id}}') -->
+<div class="c-replica {{:control.css()}}">
+  <b>{{:Name}}</b>: 
+  {{for Items tmpl=~T('c_gen')/}}
+</div>
+<!-- /ko -->
+</script>
+<script id='' type='text/x-jsrender'></script>
+<script id='c_checkitem' type='text/x-jsrender'>
+<div class="c-checkitemctrl {{:control.textType}}">
+  <!-- ko with: getItem('{{:id}}') -->
+  <div class="{{:~classes(#data)}} " data-bind="click: click, css: { normal: myPage.normalStatus, evaluated: !myPage.normalStatus() }">
+    <span class="nowrap">
+      <span data-bind="click: yesClick, css: yesEval">
+        <span class="icon-border icon-ok" data-bind="css: { selected: yes, noselected: !yes() }" />
+        <span class="text">{{:control.trueText}}</span>
+      </span>
+      <span data-bind="click: noClick, css: noEval">
+        <span class="icon-border icon-ok" data-bind="css: { selected: no, noselected: !no() }" />
+        <span class="text">{{:control.falseText}}</span>
+      </span>
+    </span>
+  </div>
+  <!-- /ko -->
+  <div class="content">
+    {{for specItems  tmpl=~T('c_gen')/}}
+  </div>
+</div>
+<div class="clearfix"></div>
+</script>
+<script id='' type='text/x-jsrender'></script>
+<script id='c_possibilities' type='text/x-jsrender'>
+<!-- ko with: getItem('{{:id}}') -->
+<div class="{{:~classes(#data)}}" data-id="{{:id}}">
+  {{for control.words}}
+    <span>{{:#data}}</span>
+  {{/for}}
+</div>
+<!-- /ko -->
+</script>
+<script id='c_dragsource' type='text/x-jsrender'>
+<!-- ko with: getItem('{{:id}}') -->
+<div class="{{:~classes(#data)}}">
+  {{for control.words}}
+    <!-- ko with: words[{{:#index}}] -->
+  <span data-bind="css: st"><i class="icon-check-sign"></i>{{:title()}}</span>
+  <!-- /ko -->
+  {{/for}}
+</div>
+<div class="dropdown-menu c-drag-popup" data-role="menu" id="menu{{:id}}">
+  {{for control.words}}
+  <!-- ko with: words[{{:#index}}] -->
+  <button class="btn btn-primary" data-bind="css: st, click: click"><i class="icon-check-sign"></i>&nbsp;<span data-bind="text: title()"></span></button>
+  <!-- /ko -->
+  {{/for}}
+</div>
+<!-- /ko -->
+
+</script>
+<script id='c_dragtarget' type='text/x-jsrender'>
+<!-- ko with: getItem('{{:id}}') -->
+<div class="{{:~classes(#data)}}" data-id="{{:id}}" data-bind="css: st">
+  <div class="user-input c-drag-btn" data-bind="click: click" data-toggle="menu" data-target="#menu{{:control.source.data.id}}">
+    <div class="pull-right"><i class="icon-chevron-down"></i></div><div data-bind="text: userText, click: click"></div>
+  </div>
+  <div class="teacher" data-bind="text: teacher"></div>
+  <div class="user-res" data-bind="text: userText"></div>
+</div>
+<!-- /ko -->
+</script>
+<script id='' type='text/x-jsrender'></script>
+<script id='c_listgroup' type='text/x-jsrender'>
+<ul class="list-group {{~boolConverter(IsStriped,'c-striped-list'}} {{:~classes(#data)}}" {{:control.style()}}>
+  {{for Items}}
+  <li class="list-group-item">
+    {{for #data tmpl=~T('c_gen')/}}
+  </li>
+  {{/for}}
+</ul>
+</script>
+<script id='c_panel' type='text/x-jsrender'>
+  <div class="panel panel-default {{:~classes(#data)}}" {{:control.style()}}>
+    <div class="panel-heading">
+      {{for Item tmpl=~T('c_gen')/}}
+    </div>
+    <div class="panel-body">
+      {{for specItems  tmpl=~T('c_gen')/}}
+    </div>
+  </div>
+</script>
+<script id='c_noop' type='text/x-jsrender'>
+{{for Items  tmpl=~T('c_gen')/}}
+</script>
+<script id='c_twocolumn' type='text/x-jsrender'>
+<div class="row {{:~classes(#data)}}" {{:control.style()}}>
+{{for Items}}
+  <div class="col-md-6">
+    {{for #data tmpl=~T('c_gen')/}}
+  </div>
+  {{if ~tuppleDelimiter()}}
+  <div class="clearfix"></div>
+  {{/if}}
+{{/for}}
+</div></script>
+<script id='schoolcourse' type='text/x-jsrender' data-for='schoolcourse'>
+  {{for ~ActPage()}}
+  
+<div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-school">
+  {{for #data tmpl=~T('TMaster')/}}
+</div>
+
+  {{/for}}
+</script>
+
+<script id='tlesson' type='text/x-jsrender'>
+  <div class="well">
+    {{for ~crs_item_par('"tmplBtn":"TLessonLeft", "hasMenu": true, "tmplRight": "TLessonRight", "clickMode": "actionName_id"', #data) tmpl=~T('TCrsItem')/}}
+  </div>
+
+</script>
+<script id='tlessonleft' type='text/x-jsrender'>
+<span class="lm-crs-head"><span class="icon-{{:icon}}"></span>&nbsp;&nbsp;<b>{{:title()}}</b><br />
+  <span class="label label-danger">{{if progress>=0}}
+      {{:~CSLocalize('0505d2ed64eb4f93a4f9d10148498f08', 'Progress')}} {{:progress}}%
+    {{/if}}
+    {{:statusText()}}
+  </span>
+</span>
+</script>
+<script id='tlessonright' type='text/x-jsrender'>
+{{for #data tmpl=~T('TCourseRight')/}}
+
+
+</script>
+<script id='schoolex' type='text/x-jsrender' data-for='schoolex'>
+  {{for ~ActPage()}}
+  
+  <div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-school">
+    {{for #data tmpl=~T('TTopBarNew')/}}
+    {{if ~Cookie()}}
+    <div class="container">
+      {{for #data tmpl=~T('TSchoolCpv')/}}
+      {{if tb.hasBreadcrumb()}}
+      {{for #data tmpl=~T('TBreadcrumb')/}}
+      
+      <div class="container visible-small">
+        <div id="collapse-breadcrumb" data-role="collapsed" class="list-group lm-collapse ">
+          {{for #data tmpl=~T('TCollapseClose')/}}
+          <div class="list-group-item active"><span class="icon-{{:icon}}"></span>&nbsp;{{:title()}}</div>
+          {{for ~reverse(breadcrumbs())}}
+          <a href="{{:url}}" class="list-group-item"><span class="icon-{{:icon}}"></span>&nbsp;{{:title}}</a>
+          {{/for}}
+        </div>
+      </div>
+      {{/if}}
+      
+      <div class="container visible-small">
+        <div id="collapse-context-gr" data-role="collapsed" class="list-group lm-collapse">
+          {{for #data tmpl=~T('TCollapseClose')/}}
+          <div data-bind="template: seeAlsoTemplateSmall"></div>
+        </div>
+      </div>
+      
+      <div class="container visible-small">
+        <div id="collapse-instr" data-role="collapsed" class="lm-collapse instr">
+          <div class="panel panel-default">
+            <div class="panel-heading" data-bind="text: instrTitle"></div>
+            {{for #data tmpl=~T('TCollapseClose')/}}
+            <div class="panel-body" data-bind="html: instrBody"></div>
+          </div>
+        </div>
+      </div>
+      <div class="instr" data-bind="css: tb.exerciseEvaluated() ? 'hide' : 'hidden-small'">
+        <a class="btn btn-link btn-block btn-default" data-toggle="collapse" data-target="#collapse-instr2">
+          <span class="icon-info-sign icon-large"></span>&nbsp;&nbsp;
+          <span data-bind="text: instrTitle"></span>
+        </a>
+        <div id="collapse-instr2" class="lm-collapse" data-role="collapsed" data-bind="html: instrBody"></div>
+      </div>
+      <div class="alert alert-success ex-evaluated" data-bind="css: tb.exerciseEvaluated() ? 'hidden-small' : 'hide'">
+        <i class="icon-ok-sign icon-large"></i>&nbsp;&nbsp;<span>{{:~CSLocalize('5c55a75e584e457d89734dad6256617d', 'Task completed')}}&nbsp;</span><span data-bind="text: tb.score() ? ': ' + tb.score() : ''"></span>
+        <button data-bind="click: tb.resetClick" class="btn btn-default"><i class="icon-repeat"></i>&nbsp;{{:~CSLocalize('cbde47480d4942968a885559075e39ea', 'Reset')}}</button>
+      </div>
+    </div>
+    {{/if}}
+    <div class="container">
+      {{if ~Cookie()}}
+        <h3 class="hidden-small"><span class="icon-{{:icon()}}"></span>&nbsp;{{:title()}}</h3>
+        <div id="exercise" data-bind="html: exerciseHtml" class="visibleHidden {{:exerciseCls}}"></div>
+        <div data-bind="template: seeAlsoTemplate"></div>
+      {{else}}
+        {{for #data tmpl=~T('TLoginFirst')/}}
+      {{/if}}
+    </div>
+  </div>
+
+
+  {{/for}}
+</script>
+
+<script id='tseealsotemplate' type='text/x-jsrender'>
+<div class="hidden-small panel panel-default" data-bind="delegatedHandler: ['click']">
+  <div class="panel-heading">{{:~CSLocalize('94ef19883c634d2c99dd27a2081ac215', 'See also')}}:</div>
+  <ul class="list-inline">
+    {{for seeAlso}}
+    <li ><a href="#" data-click="seeAlsoClick" data-delegate-index="{{:type}}|{{:url}}"><span class="icon-external-link"></span>&nbsp;{{:title}}</a></li>
+    {{/for}}
+  </ul>
+</div>
+</script>
+<script id='tseealsotemplatesmall' type='text/x-jsrender'>
+{{for seeAlso}}
+<a href="#" data-click="seeAlsoClick" data-delegate-index="{{:type}}|{{:url}}" class="visible-small list-group-item"><span class="icon-external-link"></span>&nbsp;{{:title}}</a>
+{{/for}}</script>
+<script id='tgiintro' type='text/x-jsrender' data-for='tgiintro'>
+  {{for ~ActPage()}}
+  
+  <div class="panel-heading">Intro</div>
+  <p>
+    Vše se projde zelenou šipkou
+  </p>
+  <p>
+    Kurz je obohacen o Slovník, kontextovou Gramatiku a Listen&amp;Talk (*).
+  </p>
+  <div class="checkbox">
+    <label>
+      <input class="form-control" type="checkbox" data-bind="checked: intro_DontShow" />
+      Don"t show again
+    </label>
+  </div>
+  <p>
+    (*) Listen&amp;Talk je k dispozici pouze pro platformy, umožňující nahrávání zvuku pomocí mikrofonu.
+  </p>
+
+
+  {{/for}}
+</script>
+
+<script id='tgitestfailedaskreset' type='text/x-jsrender'>
+  <div class="panel-heading">Reset course?</div>
+
+</script>
+<script id='tgitestfailed' type='text/x-jsrender'>
+  <div class="panel-heading">Course reseted</div>
+
+</script>
+<script id='tgitestok' type='text/x-jsrender'>
+  <div class="panel-heading">congratulation, test OK</div>
+
+</script>
+<script id='tgipretestok' type='text/x-jsrender'>
+  <div class="panel-heading">Pretest OK</div>
+
+</script>
+<script id='tgicoursepartok' type='text/x-jsrender'>
+  <div class="panel-heading">Course part OK</div>
+
+</script>
+<script id='tgicourseok' type='text/x-jsrender'>
+  <div class="panel-heading">Course part OK</div>
+
+</script>
+<script id='tgilessonok' type='text/x-jsrender'>
+  <div class="panel-heading">Lesson OK</div>
+
+</script>
+<script id='tgimoduleok' type='text/x-jsrender'>
+  <div class="panel-heading">Module OK</div>
+
+
+</script>
+<script id='ttopbarnew' type='text/x-jsrender'>
+  <div class="navbar navbar-inverse">
+    <div class="container">
+      
+      
+      {{if tb.logoBig()}}
+          <a href="#" class="navbar-brand lm-logo-black"></a>
+      {{else tb.logoSmall()}}
+          <a href="#" class="navbar-brand lm-logo-black lm-logo-black-small"></a>
+      {{/if}}
+
+      
+      {{if tb.backToCourse()}}
+        <div class="btn btn-large btn-info lm-green-btn" data-bind="click: tb.backToCourseClick">
+          {{:~CSLocalize('d50f5552764d4912a9f327506cf714c3', 'Course')}}
+          <span class="icon-reply"></span>
+        </div>
+      {{/if}}
+
+      
+      {{if tb.isTitle()}}
+        <h4 data-bind="text: tb.title"></h4>
+      {{/if}}
+
+      
+      {{if tb.greenArrow()}}
+      <div class="btn btn-large lm-green-btn" data-bind="click: schools.continueCrs, disable: schools.greenDisabled, css: 'btn-' + schools.greenCss()">
+        <span data-bind="css: 'icon-' + schools.greenIcon()"></span>
+        <span data-bind="text: schools.greenTitle()"></span>
+      </div>
+      {{/if}}
+
+      
+      {{if tb.hasSupl()}}
+        {{for #data tmpl=~T('TSuplements')/}}
+      {{/if}}
+
+      
+      
+      {{if tb.needsLogin()}}
+        <a class="pull-right btn btn-default navbar-btn" href="{{:tb.loginUrl()}}">{{:~CSLocalize('7b8522365b1f4aaba4493174a478e987', 'Login')}}</a>
+      {{/if}}
+
+      
+      {{if tb.phoneMore()}}
+        <button class="visible-small pull-right btn btn-default navbar-btn icon-reorder" data-toggle="collapse" data-target="{{:tb.phoneMore()}}"></button>
+      {{/if}}
+
+      
+      <div class="hidden-small">
+        {{if tb.logoutAndProfile()}}
+        
+        <button class="btn btn-default pull-right navbar-btn" data-bind="click: Login.newProfileUrl"><i class="icon-user"></i>&nbsp;{{:~userName()}}</button>
+        <button class="btn btn-default pull-right navbar-btn" data-bind="click: LMStatus.Logout">{{:~CSLocalize('4eccfc355fbc4b91b236d1678516ddad', 'Logout')}}</button>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+
+  <div class="container visible-small">
+    <div id="collapse-logout" data-role="collapsed" class="list-group lm-collapse">
+      {{for #data tmpl=~T('TCollapseClose')/}}
+      <a class="list-group-item" href="#" data-bind="click: LMStatus.Logout" target="_blank">{{:~CSLocalize('97c7e0eefa844f78a33f7280232afc4b', 'Logout')}}</a>
+      <a href="#" class="list-group-item" data-bind="click: Login.newProfileUrl"><i class="icon-user"></i>&nbsp;{{:~userName()}}</a>
+    </div>
+  </div>
+</script>
+<script id='tcollapseclose' type='text/x-jsrender'>
+  <div class="lm-close btn btn-default icon-remove-sign" data-bind="click: anim.collapseExpandedSlow"></div>
+</script>
+<script id='tloginfirst' type='text/x-jsrender'>
+  <h3>{{:~CSLocalize('97ebf616cc5844548f95bb4ac8109df9', 'Login first')}}</h3>
+</script>
+<script id='tsuplements' type='text/x-jsrender'>
+
+<button class="btn btn-default navbar-btn pull-left" data-bind="css: tb.suplCtxtGrammar() ? 'visible-small' : 'hide'" data-toggle="collapse" data-target="#collapse-context-gr"><b>G</b></button>
+<button class="btn btn-default navbar-btn pull-left" data-bind="click: tb.grammarClick, css: tb.suplGrammarIcon() && tb.suplGrammarLink() ? 'visible-small' : 'hide'"><b>G</b></button>
+{{if tb.suplGrammarLink()}}
+  <button class="pull-right btn btn-default navbar-btn hidden-small" data-bind="click: tb.grammarClick"><i class="icon-external-link"></i>&nbsp;{{:~CSLocalize('840c9e55cdcd47709fb67061d5a1ead9', 'Grammar')}}</button>
+{{/if}}
+{{if tb.suplVocabulary()}}
+  <button class="visible-small btn btn-default navbar-btn pull-left" data-bind="click: tb.vocabularyClick"><b>Voc</b></button>
+  <button class="hidden-small pull-right btn btn-default navbar-btn " data-bind="click: tb.vocabularyClick"><i class="icon-external-link"></i>&nbsp;Vocabulary</button>
+{{/if}}
+{{if tb.suplDict()}}
+  <button class="visible-small btn btn-default navbar-btn pull-left" data-bind="click: tb.dictClick"><i class="icon-search"></i></button>
+  <button class="hidden-small pull-right btn btn-default navbar-btn " data-bind="click: tb.dictClick"><i class="icon-external-link"></i>&nbsp;{{:~CSLocalize('a07fc4c277c24ae189fd69dea416660a', 'Dictionary')}}</button>
+{{/if}}
+{{if tb.suplBreadcrumb()}}
+  <button class="visible-small btn btn-default navbar-btn pull-left" data-toggle="collapse" data-target="#collapse-breadcrumb"><i class="icon-ellipsis-horizontal "></i></button>
+{{/if}}
+{{if tb.suplEval()}}
+  <button data-bind="css: tb.exerciseEvaluated() ? 'visible-small' : 'hide', click: tb.resetClick" class="btn btn-default navbar-btn pull-left small-repeat-btn" >
+    <span class="label label-success"><i class="icon-ok"></i>&nbsp;<span data-bind="text:tb.score"></span></span>&nbsp;&nbsp;<i class="icon-refresh"></i>
+  </button>
+{{/if}}
+{{if tb.suplInstr()}}
+  <button data-bind="css: tb.exerciseEvaluated() ? 'hide' : 'visible-small'" class=" btn btn-default navbar-btn pull-left" data-toggle="collapse" data-target="#collapse-instr"><i class="icon-info-sign "></i></button>
+{{/if}}
+</script>
+<script id='schoolhome' type='text/x-jsrender' data-for='schoolhome'>
+  {{for ~ActPage()}}
+  
+  <div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-school">
+    {{for #data tmpl=~T('TMaster')/}}
+  </div>
+
+
+  {{/for}}
+</script>
+
+<script id='tmaster' type='text/x-jsrender'>
+  {{for #data tmpl=~T('TTopBarNew')/}}
+  <div class="container">
+    {{if ~Cookie()}}
+      {{if tb.hasBreadcrumb()}}
+      {{for #data tmpl=~T('TBreadcrumb')/}}
+      {{/if}}
+      <div>
+        <h3 class="{{:prevNextVisible ? 'pull-left' : ''}}">{{if tb.hasBreadcrumb()}}
+          <span class="visible-small-inline btn btn-link btn-large icon-ellipsis-horizontal" data-toggle="collapse" data-target="#collapse-breadcrumb"></span>
+          {{/if}}
+          <span class="icon-{{:icon()}}"></span>&nbsp;&nbsp;{{:title()}}
+        </h3>
+        {{if prevNextVisible}}
+        <ul class="pager pull-right">
+          {{if !ignorePrevNext}}
+          <li data-bind="css: { disabled: !hasPrev() }">
+            <a href="#" data-bind="click: prevClick">&larr; {{:~CSLocalize('ab6df62e5ecf41c6877b20a1a2d83591', 'Previous')}}</a>
+          </li>
+          {{/if}}
+          <li>
+            <a href="#" data-bind="text: idxFrom(), click: grammContentClick"></a>
+          </li>
+          {{if !ignorePrevNext}}
+          <li data-bind="css: { disabled: !hasNext() }">
+            <a href="#" data-bind="click: nextClick">{{:~CSLocalize('ea5d6770e47346beaebda00862e5eab8', 'Next')}} &rarr;</a>
+          </li>
+          {{/if}}
+        </ul>
+        {{/if}}
+      </div>
+    <div class="clearfix"></div>
+    <div id="collapse-breadcrumb" data-role="collapsed" class="list-group lm-collapse">
+      {{for #data tmpl=~T('TCollapseClose')/}}
+      {{for ~reverse(breadcrumbs())}}
+          <a href="{{:url}}" class="list-group-item"><span class="icon-{{:icon}}"></span>&nbsp;&nbsp;{{:title}}</a>
+      {{/for}}
+    </div>
+    {{if perexTmpl}}
+        {{for #data tmpl=~T(perexTmpl)/}}
+      {{/if}}
+      {{if bodyTmpl}}
+        {{for #data tmpl=~T(bodyTmpl)/}}
+      {{else}}
+        {{for viewModel tmpl=~T('TTwoColumn')/}}
+      {{/if}}
+    {{else}}
+      {{for #data tmpl=~T('TLoginFirst')/}}
+    {{/if}}
+  </div>
+
+
+
+</script>
+<script id='tpretest' type='text/x-jsrender'>
+  <div class="well">
+    {{for ~crs_item_par('"tmplBtn":"TPretestLeft", "hasMenu": true, "tmplRight": "TPretestRight", "clickMode": "actionName_id"', #data) tmpl=~T('TCrsItem')/}}
+  </div>
+
+</script>
+<script id='tpretestleft' type='text/x-jsrender'>
+  <span class="lm-crs-head icon-{{:icon}}"></span>&nbsp;&nbsp;<b>{{:~CSLocalize('3d79ddd2a62c4083b35a0262a063c217', 'Pretest')}}</b><br />
+<span class="label label-danger">{{:statusText()}}</span>
+
+</script>
+<script id='tpretestright' type='text/x-jsrender'>
+  {{if notRunnableMsg}} 
+    <div class="alert alert-info extra-small">{{:notRunnableMsg}}</div>
+{{else}}
+     <h4><small>{{:~CSLocalize('cbecad75514845ccad9b2b9f05751720', 'Pretest recomendation:')}}<br />
+       {{:~CSLocalize('ca4316c5fb1341c2b8dbd42a17822890', 'Run')}}</small> {{:runCrsTitle}}</h4>
+{{/if}}
+
+
+
+</script>
+<script id='tcourse' type='text/x-jsrender'>
+  <div class="well">
+    {{for ~crs_item_par('"tmplBtn":"TCourseLeft", "hasMenu": true, "clickMode": "actionName_id", "tmplRight": "TCourseRight"', #data) tmpl=~T('TCrsItem')/}}
+  </div>
+
+</script>
+<script id='tcourseleft' type='text/x-jsrender'>
+  <span class="lm-crs-head icon-{{:icon}}"></span>&nbsp;&nbsp;<b>{{:title()}}</b><br />
+<span class="label label-danger">{{if progress>=0 }}
+    {{:~CSLocalize('aaa21af080064dc199c2b2c53fc2de1d', 'Progress')}} {{:progress}}%,
+    {{/if}}
+    {{:statusText()}}
+</span>
+
+</script>
+<script id='tcourseright' type='text/x-jsrender'>
+  {{if !notRunnableMsg}}
+    {{for #data tmpl=~T('TCourseRunable')/}}
+  {{else}}
+    <div class="alert alert-info extra-small">{{:notRunnableMsg}}</div>
+{{/if}}
+
+</script>
+<script id='tcourserunable' type='text/x-jsrender'>
+{{if score>=0}}
+<div class="progress">
+  <div class="progress-bar progress-bar-success" style="width: {{:score}}%;">
+    <div class="text">{{:~CSLocalize('b6d267c00ab246f5934b08ac91b6d938', 'Score')}} {{:score}}%</div>
+  </div>
+</div>
+{{/if}}
+<div class="extra-small">
+  {{if date}}{{:date}}<br />
+  {{/if}}
+  {{if elapsed}}{{:~CSLocalize('a3be38a8651b4506b363008a6de904d7', 'Elapsed time')}}: {{:elapsed}}{{/if}}
+</div>
+
+
+
+</script>
+<script id='ttest' type='text/x-jsrender'>
+  <div class="well">
+    {{for ~crs_item_par('"tmplBtn":"TTestLeft", "hasMenu": true, "clickMode": "actionName_id", "tmplRight": "TTestRight"', #data) tmpl=~T('TCrsItem')/}}
+  </div>
+
+</script>
+<script id='ttestleft' type='text/x-jsrender'>
+  <span class="lm-crs-head icon-{{:icon}}"></span>&nbsp;&nbsp;<b>{{:~CSLocalize('66a1c0a56fa24879b67b0bc29d2056f2', 'Test')}}</b><br />
+<span class="label label-danger">{{:statusText()}}</span>
+
+</script>
+<script id='ttestright' type='text/x-jsrender'>
+  {{if !notRunnableMsg}}
+  <div class="progress">
+    <div class="progress-bar  progress-bar-success" style="width: {{:score}}%;">
+      <div class="text">{{:~CSLocalize('4633d148265e4e28bb7bcc6b8d77a8e4', 'Score')}} {{:score}}%</div>
+    </div>
+  </div>
+<div class="extra-small">
+  {{:date}}<br />
+  {{:~CSLocalize('50e1f7f8f5e74671981906048eb365cf', 'interrupts')}}: {{:interrupts}}
+</div>
+{{else}}
+  <div class="alert alert-info extra-small">{{:notRunnableMsg}}</div>
+{{/if}}
+
+</script>
+<script id='schoollesson' type='text/x-jsrender' data-for='schoollesson'>
+  {{for ~ActPage()}}
+  
+<div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-school">
+  {{for #data tmpl=~T('TMaster')/}}
+</div>
+
+  {{/for}}
+</script>
+
+<script id='tmodule' type='text/x-jsrender'>
+<div class="well">
+  {{for ~crs_item_par('"tmplBtn":"TModuleLeft", "hasMenu": true, "tmplRight": "TModuleRight", "clickMode": "actionName_id"', #data) tmpl=~T('TCrsItem')/}}
+</div>
+</script>
+<script id='tmoduleleft' type='text/x-jsrender'>
+<span class="lm-crs-head"><span class="icon-{{:icon}}"></span>&nbsp;&nbsp;<b>{{:title()}}</b><br />
+  <span class="label label-danger">{{if progress>=0}}
+    {{:~CSLocalize('f124b261dbf9482d9c92e0c1b029f98a', 'Progress')}} {{:progress}}%,
+    {{/if}}
+    {{:statusText()}}
+  </span>
+</span>
+</script>
+<script id='tmoduleright' type='text/x-jsrender'>
+{{for #data tmpl=~T('TCourseRight')/}}
+</script>
+<script id='tvocabulary' type='text/x-jsrender'>
+{{if tb.suplVocabulary()}}
+<div class="row">
+  <div class="col-12 lm-col-first">
+    <div class="well">
+      <div class="btn btn-large btn-success" data-bind="click: tb.vocabularyClick">Vocabulary</div>
+    </div>
+  </div>
+</div>
+{{/if}}
+
+</script>
+<script id='schoolmodule' type='text/x-jsrender' data-for='schoolmodule'>
+  {{for ~ActPage()}}
+  
+  <div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-school  lm-has-green-arrow">
+    {{for #data tmpl=~T('TMaster')/}}
+  </div>
+
+
+  {{/for}}
+</script>
+
+<script id='texercise' type='text/x-jsrender'>
+  <div class="well">
+    {{for ~crs_item_par('"tmplBtn":"TExerciseLeft", "hasMenu": true, "tmplRight": "TExerciseRight", "clickMode": "actionName_id"', #data) tmpl=~T('TCrsItem')/}}
+  </div>
+
+</script>
+<script id='texerciseleft' type='text/x-jsrender'>
+  <span class="lm-crs-head"><span class="icon-{{:icon}}"></span>&nbsp;&nbsp;<b>{{:title()}}</b><br />
+  <span class="label label-warning">{{:statusText()}}</span>
+  </span>
+
+</script>
+<script id='texerciseright' type='text/x-jsrender'>
+  {{if !notRunnableMsg}}
+  {{if score>=0}}
+  <div class="progress">
+    <div class="progress-bar progress-bar-success" style="width: {{:score}}%;">
+      <div class="text">{{:~CSLocalize('8f5f1a9f566e4d91ab37dfa159dcbe9e', 'Score')}} {{:score}}%</div>
+    </div>
+  </div>
+  {{/if}}
+  {{else}}
+    <div class="alert alert-info extra-small">{{:notRunnableMsg}}</div>
+  {{/if}}
+
+</script>
+<script id='tmodulerunable' type='text/x-jsrender'>
+
+
+</script>
+<script id='schoolmy' type='text/x-jsrender' data-for='schoolmy'>
+  {{for ~ActPage()}}
+  
+  <div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-school">
+    {{for #data tmpl=~T('TTopBarNew')/}}
+    <div class="container">
+      {{if ~Cookie()}}
+      <div class="my-header">
+        <div class="btn btn-success pull-right" data-toggle="collapse" data-target="#collapse-lickey">{{:~CSLocalize('502ee6a5e71e451f99d0a1998ae0eb37', 'License key')}}&nbsp;<span class="icon-expand"></span></div>
+        <h3><span class="icon-home"></span>&nbsp;{{:title()}}</h3>
+      </div>
+      
+      <div id="collapse-lickey" data-role="collapsed" class="collapse lm-collapse-low">
+        <div class="panel panel-default" style="margin-top: 0px;">
+          {{for #data tmpl=~T('TCollapseClose')/}}
+          <div class="panel-heading">{{:~CSLocalize('2ab9856443ee4b048fd64f8724f435ba', 'Add license key')}}</div>
+          <div class="panel-body input-group">
+            <input class="form-control" type="text" placeholder="{{:~CSLocalize('95215a1b210744289381d4deb0f209a3', 'enter License key')}}" data-bind="value: licKey, valueUpdate: 'afterkeydown', hasfocus: licKey.hasfocus" />
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button" data-bind="click: licKeyOK">{{:~CSLocalize('b5d056c21d2a4c7693281db4bf3aa6e9', 'OK')}}</button>
+            </span>
+          </div>
+          <span class="help-block" data-bind="visibility: licKey.message, text: licKey.message"></span>
+        </div>
+      </div>
+      {{for companies}}
+        <div class="panel panel-default" data-bind="with: companies[{{:#index}}]">
+          <div class="panel-heading"><b>{{:title}}</b></div>
+          <div class="list-group">
+            {{for courses}}
+            <a class="list-group-item h4" href="#{{:gotoUrl}}">
+              <span class="{{:~midFlagCls(line,true)}}"></span>{{:title}} <small>({{:~CSLocalize('921ea69c2a574ad48762372a6c294c19', 'license valid to')}} {{:~intToDateLong(expired)}})</small>
+              <span class="icon-chevron-right"></span>
+            </a>
+            {{/for}}
+            {{for items}}
+            <!-- ko with: items[{{:#index}}] -->
+            <a class="list-group-item" href="#" data-bind="click: gotoItem">{{:title}}
+              <span class="icon-chevron-right"></span>
+            </a>
+            <!-- /ko -->
+            {{/for}}
+          </div>
+        </div>
+      {{/for}}
+      {{if gotoAdmin}}
+      <div class="panel panel-default">
+        <div class="panel-heading">{{:~CSLocalize('f2e725a2b4a8426683753d7a837261ca', 'Companies')}}</div>
+        <div class="list-group">
+          <a class="list-group-item" href="#" data-bind="click: gotoAdmin">{{:~CSLocalize('77327cfe60ac42f6accab159cf0ae3a5', 'Companies and their Master administrators')}}
+            <span class="icon-chevron-right"></span>
+          </a>
+        </div>
+      </div>
+      {{/if}}
+      
+      {{else}}
+        {{for #data tmpl=~T('TLoginFirst')/}}
+      {{/if}}
+    </div>
+  </div>
+
+
+
+  {{/for}}
+</script>
+
+<script id='tschoolcpv' type='text/x-jsrender'>
+<!-- ko with: cpv -->
+<div id="{{:cpv.id}}" data-role="collapsed" class="cpv lm-collapse">
+  <div class="panel panel-default">
+    <div class="lm-close btn btn-default icon-remove-sign" data-bind="click: hide"></div>
+    <div class="panel-heading" data-bind="text: title"></div>
+    {{for #data tmpl=~T('TSchoolCpvBody')/}}
+  </div>
+</div>
+<div id="sldiv{{:cpv.id}}" class="slcpv" data-bind="css: { 'show': !needInstall() && !alowMicrophone() && slvisible() }"></div>
+<!-- /ko -->
+</script>
+<script id='tschoolcpvdict' type='text/x-jsrender'>
+<!-- ko with: cpv -->
+<div id="{{:cpv.id}}" data-role="collapsed" class="cpv lm-collapse cpv-dict">
+  <div class="lm-close btn btn-default icon-remove-sign" data-bind="click: hide"></div>
+  {{for #data tmpl=~T('TSchoolCpvBody')/}}
+</div>
+<div id="sldiv{{:cpv.id}}" class="slcpv" data-bind="css: { 'show': !needInstall() && !alowMicrophone() && slvisible() }"></div>
+<!-- /ko -->
+</script>
+<script id='tschoolcpvbody' type='text/x-jsrender'>
+<a href="{{:cpv.installSlUrl()}}" data-bind="css: { show: needInstall(), hide: !needInstall() }">Install Silverlight</a>
+<div class="cpv-content" data-bind="visible: !needInstall() && alowMicrophone()">
+  <!-- ko with: play -->
+  <div class="cpv-item cpv-play" data-bind="css: { 'cpv-active': active() }">
+    <div class="btn btn-large btn-default" data-bind="css: { disabled: disabled() }, click: click">
+      <div class="icon-spinner icon-spin" data-bind="css: { invisible: !playing() }"></div>
+      <span data-bind="css: iconClass()" class="icon-2x"></span>
+    </div>
+    <div class="cpv-text" data-bind="text: text()"></div>
+  </div>
+  <!-- /ko -->
+  <!-- ko with: record -->
+  <div class="cpv-item cpv-record" data-bind="css: { 'cpv-active': active() }">
+    <div class="btn btn-large btn-default" data-bind="css: { disabled: disabled() }, click: click">
+      <div class="icon-spinner icon-spin" data-bind="css: { invisible: !playing() }"></div>
+      <span data-bind="css: iconClass()" class="icon-2x"></span>
+    </div>
+    <div class="cpv-text" data-bind="text: text()"></div>
+  </div>
+  <!-- /ko -->
+  <!-- ko with: replay -->
+  <div class="cpv-item cpv-replay" data-bind="css: { 'cpv-active': active() }">
+    <div class="btn btn-large btn-default" data-bind="css: { disabled: disabled() }, click: click">
+      <div class="icon-spinner icon-spin" data-bind="css: { invisible: !playing() }"></div>
+      <span data-bind="css: iconClass()" class="icon-2x"></span>
+    </div>
+    <div class="cpv-text" data-bind="text: text()"></div>
+  </div>
+  <!-- /ko -->
+</div>
+</script>
+<script id='' type='text/x-jsrender'></script>
+<script id='schoolgramm' type='text/x-jsrender' data-for='schoolgramm'>
+  {{for ~ActPage()}}
+  
+<div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-school gramm">
+  {{for #data tmpl=~T('TMaster')/}}
+</div>
+
+  {{/for}}
+</script>
+
+<script id='tgramlink' type='text/x-jsrender'>
+<div class="btn btn-large btn-info btn-block gram-link" data-click="nodeClick" data-delegate-index="{{:type() + ':' + node.id}}">{{:node.title}}</div>
+</script>
+<script id='schoolgrammpage' type='text/x-jsrender' data-for='schoolgrammpage'>
+  {{for ~ActPage()}}
+  
+<div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-school gramm">
+  {{for #data tmpl=~T('TMaster')/}}
+</div>
+
+  {{/for}}
+</script>
+
+<script id='tschoolgrammbody' type='text/x-jsrender'>
+{{:html()}}
+</script>
+<script id='schoolgrammcontent' type='text/x-jsrender' data-for='schoolgrammcontent'>
+  {{for ~ActPage()}}
+  
+<div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-school gramm">
+  {{for #data tmpl=~T('TMaster')/}}
+</div>
+
+  {{/for}}
+</script>
+
+<script id='tschoolgrammcontentbody' type='text/x-jsrender'>
+{{for items tmpl=~T('TSchoolGrammContentItem')/}}
+</script>
+<script id='tschoolgrammcontentitem' type='text/x-jsrender'>
+{{if items}}
+<b>{{:title}}</b>
+<blockquote>
+  {{for items tmpl=~T('TSchoolGrammContentItem')/}}
+</blockquote>
+{{else}}
+<div>
+  <a href="#" data-click="nodeClick" data-delegate-index="{{:'schoolGrammPageModel:' + id}}">{{:idx+1}}. {{:title}}</a>
+</div>
+{{/if}}
+</script>
+<script id='schooldictinfo' type='text/x-jsrender' data-for='schooldictinfo'>
+  {{for ~ActPage()}}
+  
+<div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-school gramm">
+  {{for #data tmpl=~T('TMaster')/}}
+</div>
+
+  {{/for}}
+</script>
+
+<script id='' type='text/x-jsrender'></script>
+<script id='tschooldictinfobody' type='text/x-jsrender'>
+  <div class="alert alert-success">
+    {{:~CSLocalize('fa7463febeca40cc99cef42ef81e6462', 'When working with LANGMaster courses we recommend to use a bilingual dictionary. The dictionary is directly linked with the course and includes many advanced functions:')}}
+    <ul>
+      <li>{{:~CSLocalize('c43671435e30484a9ca0e7f908ae066e', 'You can display translation of any unfamiliar word, which makes comprehension of a foreign text much easier.')}}</li>
+      <li>{{:~CSLocalize('134ba3073e72470aa0431b88ce0e5b36', 'You can listen to the correct pronunciation of the words and phrases from the course (recorded by native speakers).')}}</li>
+      <li>{{:~CSLocalize('5919a369ef80407c83d4210ec4b52ca4', 'You can practice listening to and pronouncing the words and phrases from the course.')}}</li>
+    </ul>
+  </div>
+  <br />
+  <h2>
+    {{:~CSLocalize('03d9eec2e340421fb1d6647ca6c8def1', 'How to work with the dictionary')}}</h2>
+  <ol>
+    <li><b>{{:~CSLocalize('67b8b0075a0942d1939a34b747c00996', 'Place the mouse cursor over an unfamiliar word.')}}</b></li>
+    <li><b>{{:~CSLocalize('4615f62fc77b4c7e91051c72470739ef', 'Press the key combination "Ctrl+Q" or "CTRL+C".')}}</b></li>
+    <li>{{:~CSLocalize('2ec3f5f28879499fa4a1afa7f733a83a', 'A window with a translation and an offer of additional dictionary functions will appear.')}}</li>
+  </ol>
+  <br />
+  <h2>
+    {{:~CSLocalize('134a676348714aa190dd3737deb97551', 'Dictionary demonstration')}}</h2>
+  <ol>
+    <li><b>{{:~CSLocalize('65e60c89ecc84b9697008b5308721221', 'Display the dictionary window placing the mouse cursor over a word and pressing "Ctrl+Q" or "CTRL+C".')}}</b><br />
+      <img src="../jslib/css/img/dictabout/pic1.png" alt="" style="border: 1px solid #000000;padding:5px; margin:10px 0" />
+      <br />
+    </li>
+    <li><b>{{:~CSLocalize('a6c891e89fb7403f8bd8dc58f032e0d1', 'Listen to the correct pronunciation using the speaker icon.')}}</b>
+      <br />
+      <img src="../jslib/css/img/dictabout/pic2.png" alt="" style="padding:5px; margin:10px 0"/>
+    </li>
+    <li><b>{{:~CSLocalize('94960b0287e847ee8e87a050c1fac956', 'Practice listening and pronunciation. Click on the microphone ... ')}}</b>
+      <br />
+      <img src="../jslib/css/img/dictabout/pic3.png" alt="" style="padding:5px; margin:10px 0"/>
+    </li>
+    <li><b>{{:~CSLocalize('ba24cd31ffdd436c84ea4a7d474b2cab', '... and after launching Listen & Talk you can start listening and pronunciation practice.')}}</b>
+      <br />
+      <img src="../jslib/css/img/dictabout/pic4.png" alt="" style="padding:5px; margin:10px 0"/>
+    </li>
+  </ol>
+  <br />
+  <h2>
+    {{:~CSLocalize('70fd030fbb2441d28f93c570bd29609e', 'Other dictionary functions')}}</h2>
+  <ul>
+    <li>{{:~CSLocalize('bbc6ff1853d04f26b71d8913185c5a05', 'Automatic language recognition: You don’t have to worry about the direction of your translation as you work. The dictionary will automatically recognize which language the searched word comes from.')}}</li>
+    <li>{{:~CSLocalize('e17147e83ccf4e49b22f10f9ea41dfe2', 'Search course words in any form: You can translate a word regardless of its case, number, gender, or tense. For example, with the English word "went", the dictionary will correctly search the entry "go".')}}</li>
+    <li>{{:~CSLocalize('939b2e6b60414d4fbb1e07d638c25313', 'Related links: Other links to the entry are looked up simultaneously, such as: Synonyms, phrase words, derived words, collocations, etc.')}}</li>
+  </ul>
+</script>
+<script id='' type='text/x-jsrender'></script>
+<script id='schooltest' type='text/x-jsrender' data-for='schooltest'>
+  {{for ~ActPage()}}
+  
+<div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-school">
+  {{for #data tmpl=~T('TTopBarNew')/}}
+  <div class="container">
+    {{if !~Cookie()}}{{for #data tmpl=~T('TLoginFirst')/}}{{else}}
+    <div id="sldivtest"></div>
+    {{/if}}
+  </div>
+</div>
+
+  {{/for}}
+</script>
+
+<script id='' type='text/x-jsrender'></script>
+<script id='dict' type='text/x-jsrender'>
+<div class="panel panel-primary lm-dict" data-role="menu">
+  <div class="panel-heading">
+    <b data-bind="text: header"></b>
+  </div>
+  <div class="panel-body">
+    {{for #data tmpl=~T('TSchoolCpvDict')/}}
+    <div class="panel-content" data-bind="html: body"></div>
+  </div>
+</div>
+</script>
+<script id='' type='text/x-jsrender'></script>
+
+  <script type='text/javascript'>
+    function jsInit() { schoolInit.init_school_master({"failLimit":75,"canSkipCourse":true,"canSkipTest":true,"canResetCourse":true,"canResetTest":true,"ForceSoundPlayer":0,"EADataPath":"eaimgmp3/","noCpv":false,"target":0,"persistType":1,"rootCourse":-1,"forceServiceUrl":null,"dictType":2,"dictNoSound":false,"dictForceLoc":0,"scorm_AlowFinish":false,"debug_AddTimespanToJsonUrl":false,"vocabulary":false}); }
+    jsInit();    
+  </script>
+</body>
+</html>

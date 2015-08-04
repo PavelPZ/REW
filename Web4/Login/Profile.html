@@ -1,0 +1,23 @@
+!profile
+###
+  <div data-bind="test:'login-editprofile', with: Pager.ActPage, delegatedHandler: ['click']" class="app-login rtl">
+  {{for #data tmpl=~T('TTopBarLogin')/}}
+  <div class="container form-horizontal">
+    <fieldset>
+      <legend><span class="fa fa-user"></span>&nbsp;&nbsp;{{:~userName()}}</legend>
+      <div data-bind="visible: Utils.Empty(success())">
+        {{for viewModel tmpl=~T('TInput')/}}
+      </div>
+      <div class="alert alert-danger" data-bind="visible: !Utils.Empty(errorText()), html: errorText"></div>
+      <div class="alert alert-success lm-login-success" data-bind="visible: !Utils.Empty(success()), text: success"></div>
+      {{for #data tmpl=~T('TOkCancel')/}}
+    </fieldset>
+    {{if ~isLMComCookie()}}
+    <ul class="breadcrumb">
+      <li><a href="{{:~loginUrl('changePasswordModel')}}">{{:~CSLocalize('b716b770e72d487384caf8a94dba6bbf', 'Change Password')}}</a></li>
+    </ul>
+    {{/if}}
+  </div>
+</div>
+
+

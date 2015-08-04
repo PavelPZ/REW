@@ -1,0 +1,319 @@
+﻿.flag-mid {
+  background-image: url("img/flag-mid.png");
+  background-repeat: no-repeat;
+  display: inline-block;
+  line-height: 32px;
+  vertical-align: text-bottom;
+  width: 45px;
+  height: 32px;
+}
+.flag-mid-bg {
+  background-image: url("img/flag-mid.png");
+  background-repeat: no-repeat;
+  display: inline-block;
+  line-height: 32px;
+  vertical-align: text-bottom;
+  width: 45px;
+  height: 32px;
+  padding-left: 54px;
+}
+.flag-mid-afrikaans {
+  background-position: 0 0;
+}
+.flag-mid-albanian {
+  background-position: 0 -82px;
+}
+.flag-mid-arabic {
+  background-position: 0 -164px;
+}
+.flag-mid-assamese {
+  background-position: 0 -246px;
+}
+.flag-mid-azeri {
+  background-position: 0 -328px;
+}
+.flag-mid-basque {
+  background-position: 0 -410px;
+}
+.flag-mid-bengali {
+  background-position: 0 -492px;
+}
+.flag-mid-breton {
+  background-position: 0 -574px;
+}
+.flag-mid-bulgarian {
+  background-position: 0 -656px;
+}
+.flag-mid-cantonese {
+  background-position: 0 -738px;
+}
+.flag-mid-catalan {
+  background-position: 0 -820px;
+}
+.flag-mid-chinese_mandarin {
+  background-position: 0 -902px;
+}
+.flag-mid-corsican {
+  background-position: 0 -984px;
+}
+.flag-mid-croatian {
+  background-position: 0 -1066px;
+}
+.flag-mid-czech {
+  background-position: 0 -1148px;
+}
+.flag-mid-danish {
+  background-position: 0 -1230px;
+}
+.flag-mid-dutch {
+  background-position: 0 -1312px;
+}
+.flag-mid-english {
+  background-position: 0 -1394px;
+}
+.flag-mid-estonian {
+  background-position: 0 -1476px;
+}
+.flag-mid-finnish {
+  background-position: 0 -1558px;
+}
+.flag-mid-french {
+  background-position: 0 -1640px;
+}
+.flag-mid-galician {
+  background-position: 0 -1722px;
+}
+.flag-mid-georgian {
+  background-position: 0 -1804px;
+}
+.flag-mid-german {
+  background-position: 0 -1886px;
+}
+.flag-mid-greek {
+  background-position: -95px 0;
+}
+.flag-mid-hausa {
+  background-position: -95px -82px;
+}
+.flag-mid-hebrew {
+  background-position: -95px -164px;
+}
+.flag-mid-hungarian {
+  background-position: -95px -246px;
+}
+.flag-mid-icelandic {
+  background-position: -95px -328px;
+}
+.flag-mid-igbo {
+  background-position: -95px -410px;
+}
+.flag-mid-indonesian {
+  background-position: -95px -492px;
+}
+.flag-mid-irish {
+  background-position: -95px -574px;
+}
+.flag-mid-italian {
+  background-position: -95px -656px;
+}
+.flag-mid-japanese {
+  background-position: -95px -738px;
+}
+.flag-mid-khmer {
+  background-position: -95px -820px;
+}
+.flag-mid-kirghiz {
+  background-position: -95px -902px;
+}
+.flag-mid-korean {
+  background-position: -95px -984px;
+}
+.flag-mid-latvian {
+  background-position: -95px -1066px;
+}
+.flag-mid-lithuanian {
+  background-position: -95px -1148px;
+}
+.flag-mid-macedonian {
+  background-position: -95px -1230px;
+}
+.flag-mid-malay {
+  background-position: -95px -1312px;
+}
+.flag-mid-maltese {
+  background-position: -95px -1394px;
+}
+.flag-mid-maori {
+  background-position: -95px -1476px;
+}
+.flag-mid-mongolian {
+  background-position: -95px -1558px;
+}
+.flag-mid-norwegian {
+  background-position: -95px -1640px;
+}
+.flag-mid-occitan {
+  background-position: -95px -1722px;
+}
+.flag-mid-pashto {
+  background-position: -95px -1804px;
+}
+.flag-mid-persian {
+  background-position: -95px -1886px;
+}
+.flag-mid-polish {
+  background-position: -190px 0;
+}
+.flag-mid-portuguese {
+  background-position: -190px -82px;
+}
+.flag-mid-portuguese_brazilian {
+  background-position: -190px -164px;
+}
+.flag-mid-quechua {
+  background-position: -190px -246px;
+}
+.flag-mid-romanian {
+  background-position: -190px -328px;
+}
+.flag-mid-russian {
+  background-position: -190px -410px;
+}
+.flag-mid-serbian {
+  background-position: -190px -492px;
+}
+.flag-mid-sesotho {
+  background-position: -190px -574px;
+}
+.flag-mid-slovak {
+  background-position: -190px -656px;
+}
+.flag-mid-slovenian {
+  background-position: -190px -738px;
+}
+.flag-mid-spanish {
+  background-position: -190px -820px;
+}
+.flag-mid-swahili {
+  background-position: -190px -902px;
+}
+.flag-mid-swedish {
+  background-position: -190px -984px;
+}
+.flag-mid-thai {
+  background-position: -190px -1066px;
+}
+.flag-mid-tibetian {
+  background-position: -190px -1148px;
+}
+.flag-mid-tswana {
+  background-position: -190px -1230px;
+}
+.flag-mid-turkish {
+  background-position: -190px -1312px;
+}
+.flag-mid-ukrainian {
+  background-position: -190px -1394px;
+}
+.flag-mid-urdu {
+  background-position: -190px -1476px;
+}
+.flag-mid-uzbek {
+  background-position: -190px -1558px;
+}
+.flag-mid-vietnamese {
+  background-position: -190px -1640px;
+}
+.flag-mid-xhosa {
+  background-position: -190px -1722px;
+}
+.flag-mid-yoruba {
+  background-position: -190px -1804px;
+}
+.flag-mid-zulu {
+  background-position: -190px -1886px;
+}
+
+.flag-small {
+    background-image: url("img/flag-small.png");
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 17px;
+    line-height: 17px;
+    vertical-align: text-bottom; 
+    width: 21px; 
+}
+.flag-small-afrikaans{ background-position: 0 0; width: 21px; height: 17px; } 
+.flag-small-albanian{ background-position: 0 -67px; width: 21px; height: 17px; } 
+.flag-small-arabic{ background-position: 0 -134px; width: 21px; height: 17px; } 
+.flag-small-assamese{ background-position: 0 -201px; width: 21px; height: 17px; } 
+.flag-small-azeri{ background-position: 0 -268px; width: 21px; height: 17px; } 
+.flag-small-basque{ background-position: 0 -335px; width: 21px; height: 17px; } 
+.flag-small-bengali{ background-position: 0 -402px; width: 21px; height: 17px; } 
+.flag-small-breton{ background-position: 0 -469px; width: 21px; height: 17px; } 
+.flag-small-bulgarian{ background-position: 0 -536px; width: 21px; height: 17px; } 
+.flag-small-cantonese{ background-position: 0 -603px; width: 21px; height: 17px; } 
+.flag-small-catalan{ background-position: 0 -670px; width: 21px; height: 17px; } 
+.flag-small-chinese_mandarin{ background-position: 0 -737px; width: 21px; height: 17px; } 
+.flag-small-corsican{ background-position: 0 -804px; width: 21px; height: 17px; } 
+.flag-small-croatian{ background-position: 0 -871px; width: 21px; height: 17px; } 
+.flag-small-czech{ background-position: 0 -938px; width: 21px; height: 17px; } 
+.flag-small-danish{ background-position: 0 -1005px; width: 21px; height: 17px; } 
+.flag-small-dutch{ background-position: 0 -1072px; width: 21px; height: 17px; } 
+.flag-small-english{ background-position: 0 -1139px; width: 21px; height: 17px; } 
+.flag-small-estonian{ background-position: 0 -1206px; width: 21px; height: 17px; } 
+.flag-small-finnish{ background-position: 0 -1273px; width: 21px; height: 17px; } 
+.flag-small-french{ background-position: 0 -1340px; width: 21px; height: 17px; } 
+.flag-small-galician{ background-position: 0 -1407px; width: 21px; height: 17px; } 
+.flag-small-georgian{ background-position: 0 -1474px; width: 21px; height: 17px; } 
+.flag-small-german{ background-position: 0 -1541px; width: 21px; height: 17px; } 
+.flag-small-greek{ background-position: 0 -1608px; width: 21px; height: 17px; } 
+.flag-small-hausa{ background-position: 0 -1675px; width: 21px; height: 17px; } 
+.flag-small-hebrew{ background-position: 0 -1742px; width: 21px; height: 17px; } 
+.flag-small-hungarian{ background-position: 0 -1809px; width: 21px; height: 17px; } 
+.flag-small-icelandic{ background-position: 0 -1876px; width: 21px; height: 17px; } 
+.flag-small-igbo{ background-position: 0 -1943px; width: 21px; height: 17px; } 
+.flag-small-indonesian{ background-position: -71px 0; width: 21px; height: 17px; } 
+.flag-small-irish{ background-position: -71px -67px; width: 21px; height: 17px; } 
+.flag-small-italian{ background-position: -71px -134px; width: 21px; height: 17px; } 
+.flag-small-japanese{ background-position: -71px -201px; width: 21px; height: 17px; } 
+.flag-small-khmer{ background-position: -71px -268px; width: 21px; height: 17px; } 
+.flag-small-kirghiz{ background-position: -71px -335px; width: 21px; height: 17px; } 
+.flag-small-korean{ background-position: -71px -402px; width: 21px; height: 17px; } 
+.flag-small-latvian{ background-position: -71px -469px; width: 21px; height: 17px; } 
+.flag-small-lithuanian{ background-position: -71px -536px; width: 21px; height: 17px; } 
+.flag-small-macedonian{ background-position: -71px -603px; width: 21px; height: 17px; } 
+.flag-small-malay{ background-position: -71px -670px; width: 21px; height: 17px; } 
+.flag-small-maltese{ background-position: -71px -737px; width: 21px; height: 17px; } 
+.flag-small-maori{ background-position: -71px -804px; width: 21px; height: 17px; } 
+.flag-small-mongolian{ background-position: -71px -871px; width: 21px; height: 17px; } 
+.flag-small-norwegian{ background-position: -71px -938px; width: 21px; height: 17px; } 
+.flag-small-occitan{ background-position: -71px -1005px; width: 21px; height: 17px; } 
+.flag-small-pashto{ background-position: -71px -1072px; width: 21px; height: 17px; } 
+.flag-small-persian{ background-position: -71px -1139px; width: 21px; height: 17px; } 
+.flag-small-polish{ background-position: -71px -1206px; width: 21px; height: 17px; } 
+.flag-small-portuguese{ background-position: -71px -1273px; width: 21px; height: 17px; } 
+.flag-small-portuguese_brazilian{ background-position: -71px -1340px; width: 21px; height: 17px; } 
+.flag-small-quechua{ background-position: -71px -1407px; width: 21px; height: 17px; } 
+.flag-small-romanian{ background-position: -71px -1474px; width: 21px; height: 17px; } 
+.flag-small-russian{ background-position: -71px -1541px; width: 21px; height: 17px; } 
+.flag-small-serbian{ background-position: -71px -1608px; width: 21px; height: 17px; } 
+.flag-small-sesotho{ background-position: -71px -1675px; width: 21px; height: 17px; } 
+.flag-small-slovak{ background-position: -71px -1742px; width: 21px; height: 17px; } 
+.flag-small-slovenian{ background-position: -71px -1809px; width: 21px; height: 17px; } 
+.flag-small-spanish{ background-position: -71px -1876px; width: 21px; height: 17px; } 
+.flag-small-swahili{ background-position: -71px -1943px; width: 21px; height: 17px; } 
+.flag-small-swedish{ background-position: -142px 0; width: 21px; height: 17px; } 
+.flag-small-thai{ background-position: -142px -67px; width: 21px; height: 17px; } 
+.flag-small-tibetian{ background-position: -142px -134px; width: 21px; height: 17px; } 
+.flag-small-tswana{ background-position: -142px -201px; width: 21px; height: 17px; } 
+.flag-small-turkish{ background-position: -142px -268px; width: 21px; height: 17px; } 
+.flag-small-ukrainian{ background-position: -142px -335px; width: 21px; height: 17px; } 
+.flag-small-urdu{ background-position: -142px -402px; width: 21px; height: 17px; } 
+.flag-small-uzbek{ background-position: -142px -469px; width: 21px; height: 17px; } 
+.flag-small-vietnamese{ background-position: -142px -536px; width: 21px; height: 17px; } 
+.flag-small-xhosa{ background-position: -142px -603px; width: 21px; height: 17px; } 
+.flag-small-yoruba{ background-position: -142px -670px; width: 21px; height: 17px; } 
+.flag-small-zulu{ background-position: -142px -737px; width: 21px; height: 17px; } 
+
+/*.column-fixed-fluid (200);*/

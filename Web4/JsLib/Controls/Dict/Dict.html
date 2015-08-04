@@ -1,0 +1,13 @@
+﻿Dict
+###
+<div class="panel panel-primary lm-dict" data-role="menu">
+  <div class="panel-heading">
+    <div class="close close-primary fa fa-times" data-bind="test:'close', click: anim.hideMenus"></div>
+    <b data-bind="text: header"></b>
+  </div>
+  <div class="panel-body">
+    {{for #data tmpl=~T('TSchoolCpvDict')/}}
+    <div class="panel-content" data-bind="html: body"></div>
+  </div>
+</div>
+###

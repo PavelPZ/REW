@@ -1,0 +1,78 @@
+!schoolEx
+###
+  <div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-school">
+    {{for #data tmpl=~T('TTopBarNew')/}}
+    {{if ~Cookie()}}
+    <div class="container">
+      {{for #data tmpl=~T('TSchoolCpv')/}}
+      {{if tb.hasBreadcrumb()}}
+      {{for #data tmpl=~T('TBreadcrumb')/}}
+      <%-- breadcrumb --%>
+      <div class="container visible-small">
+        <div id="collapse-breadcrumb" data-role="collapsed" class="list-group lm-collapse ">
+          {{for #data tmpl=~T('TCollapseClose')/}}
+          <div class="list-group-item active"><span class="icon-{{:icon}}"></span>&nbsp;{{:title()}}</div>
+          {{for ~reverse(breadcrumbs())}}
+          <a href="{{:url}}" class="list-group-item"><span class="icon-{{:icon}}"></span>&nbsp;{{:title}}</a>
+          {{/for}}
+        </div>
+      </div>
+      {{/if}}
+      <%-- See Also --%>
+      <div class="container visible-small">
+        <div id="collapse-context-gr" data-role="collapsed" class="list-group lm-collapse">
+          {{for #data tmpl=~T('TCollapseClose')/}}
+          <div data-bind="template: seeAlsoTemplateSmall"></div>
+        </div>
+      </div>
+      <%-- instrukce --%>
+      <div class="container visible-small">
+        <div id="collapse-instr" data-role="collapsed" class="lm-collapse instr">
+          <div class="panel panel-default">
+            <div class="panel-heading" data-bind="text: instrTitle"></div>
+            {{for #data tmpl=~T('TCollapseClose')/}}
+            <div class="panel-body" data-bind="html: instrBody"></div>
+          </div>
+        </div>
+      </div>
+      <div class="instr" data-bind="css: tb.exerciseEvaluated() ? 'hide' : 'hidden-small'">
+        <a class="btn btn-link btn-block btn-default" data-toggle="collapse" data-target="#collapse-instr2">
+          <span class="icon-info-sign icon-large"></span>&nbsp;&nbsp;
+          <span data-bind="text: instrTitle"></span>
+        </a>
+        <div id="collapse-instr2" class="lm-collapse" data-role="collapsed" data-bind="html: instrBody"></div>
+      </div>
+      <div class="alert alert-success ex-evaluated" data-bind="css: tb.exerciseEvaluated() ? 'hidden-small' : 'hide'">
+        <i class="icon-ok-sign icon-large"></i>&nbsp;&nbsp;<span>{{:~CSLocalize('5c55a75e584e457d89734dad6256617d', 'Task completed')}}&nbsp;</span><span data-bind="text: tb.score() ? ': ' + tb.score() : ''"></span>
+        <button data-bind="click: tb.resetClick" class="btn btn-default"><i class="icon-repeat"></i>&nbsp;{{:~CSLocalize('cbde47480d4942968a885559075e39ea', 'Reset')}}</button>
+      </div>
+    </div>
+    {{/if}}
+    <div class="container">
+      {{if ~Cookie()}}
+        <h3 class="hidden-small"><span class="icon-{{:icon()}}"></span>&nbsp;{{:title()}}</h3>
+        <div id="exercise" data-bind="html: exerciseHtml" class="visibleHidden {{:exerciseCls}}"></div>
+        <div data-bind="template: seeAlsoTemplate"></div>
+      {{else}}
+        {{for #data tmpl=~T('TLoginFirst')/}}
+      {{/if}}
+    </div>
+  </div>
+
+###
+TSeeAlsoTemplate
+###
+<div class="hidden-small panel panel-default" data-bind="delegatedHandler: ['click']">
+  <div class="panel-heading">{{:~CSLocalize('94ef19883c634d2c99dd27a2081ac215', 'See also')}}:</div>
+  <ul class="list-inline">
+    {{for seeAlso}}
+    <li ><a href="#" data-click="seeAlsoClick" data-delegate-index="{{:type}}|{{:url}}"><span class="icon-external-link"></span>&nbsp;{{:title}}</a></li>
+    {{/for}}
+  </ul>
+</div>
+###
+TSeeAlsoTemplateSmall
+###
+{{for seeAlso}}
+<a href="#" data-click="seeAlsoClick" data-delegate-index="{{:type}}|{{:url}}" class="visible-small list-group-item"><span class="icon-external-link"></span>&nbsp;{{:title}}</a>
+{{/for}}

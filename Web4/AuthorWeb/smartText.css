@@ -1,0 +1,206 @@
+.sm-edit-content {
+  background-color: #eeeeee;
+  padding-left: 10px;
+}
+.sm-edit-content .sm-block > .sm-block-body {
+  margin-left: 35px;
+}
+.sm-edit-content .sm-block .sm-block-header,
+.sm-edit-content .sm-block .sm-block-footer {
+  background-color: #337ab7;
+  color: #fff;
+}
+a.sm-edit-content .sm-block .sm-block-header:hover,
+a.sm-edit-content .sm-block .sm-block-footer:hover {
+  background-color: #286090;
+}
+.sm-edit-content .sm-block .sm-block-header .sm-block-name,
+.sm-edit-content .sm-block .sm-block-footer .sm-block-name {
+  font-weight: bold;
+  color: yellow;
+}
+.sm-edit-content .sm-block .sm-block-header .sm-block-name {
+  cursor: pointer;
+  text-decoration: underline;
+}
+.sm-edit-content .sm-block .sm-block-footer {
+  width: 20px;
+}
+.sm-edit-content .sm-text {
+  position: relative;
+  background-color: white;
+  overflow: hidden;
+}
+.sm-edit-content .sm-text textarea,
+.sm-edit-content .sm-text .sm-view {
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 0px;
+  border-radius: 0px;
+  overflow: hidden;
+  margin: 0px;
+  resize: none;
+}
+.sm-edit-content .sm-text textarea,
+.sm-edit-content .sm-text pre,
+.sm-edit-content .sm-text pre > span {
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: pre-wrap;
+  text-decoration: none;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-variant: normal;
+  font-size: 14px;
+  font-style: normal;
+  line-height: 1.4em;
+  letter-spacing: normal;
+  text-transform: none;
+  text-align: left;
+  direction: ltr;
+  font-size-adjust: none;
+  word-spacing: 0;
+}
+.sm-edit-content .sm-text > .sm-view {
+  display: block;
+  color: transparent;
+  background: transparent;
+}
+.sm-edit-content .sm-text > .sm-view .span {
+  background-color: #d0e9c6;
+}
+.sm-edit-content .sm-text > .sm-view .error {
+  background-color: #ebcccc;
+}
+.sm-edit-content .sm-text > .sm-view .inline {
+  background-color: #faf2cc;
+}
+.sm-edit-content .sm-text > .sm-view .style {
+  background-color: #eef7fb;
+}
+.sm-edit-content .sm-text > .sm-view .block {
+  background-color: #c4e3f3;
+}
+.sm-edit-content .sm-text > .sm-view .prop-name {
+  background-color: #f0db70;
+}
+.sm-edit-content .sm-text > .sm-view .prop-value {
+  background-color: #c4e3f3;
+}
+.sm-edit-content .sm-text > textarea {
+  background: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  resize: none;
+  width: 100%;
+}
+.sm-edit-content .sm-text > textarea:focus,
+.sm-edit-content .sm-text > textarea:hover {
+  border: none;
+  border-color: transparent;
+  outline: none;
+}
+.sm-edit-content .in.modal-backdrop {
+  background-color: #ffffff;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+.sm-edit-content .modal-dialog {
+  margin: 0;
+  position: absolute;
+  right: auto;
+  bottom: auto;
+  top: auto;
+  left: auto;
+}
+.sm-edit-content .modal-dialog .modal-header,
+.sm-edit-content .modal-dialog .modal-footer {
+  padding: 5px;
+  padding-left: 10px;
+  background-color: #f5f5f5;
+}
+.sm-edit-content .modal-dialog .sm-btn-span {
+  background-color: #d0e9c6;
+  border-color: #a3d48e;
+  color: #333333;
+  font-weight: bold;
+}
+.sm-edit-content .modal-dialog .sm-btn-span:hover,
+.sm-edit-content .modal-dialog .sm-btn-span:focus {
+  background-color: #a3d48e;
+  border-color: #93cd7c;
+}
+.sm-edit-content .modal-dialog .sm-btn-inline {
+  background-color: #faf2cc;
+  border-color: #f2e187;
+  color: #333333;
+  font-weight: bold;
+}
+.sm-edit-content .modal-dialog .sm-btn-inline:hover,
+.sm-edit-content .modal-dialog .sm-btn-inline:focus {
+  background-color: #f2e187;
+  border-color: #f0db70;
+}
+.sm-edit-content .modal-dialog .sm-btn-style {
+  background-color: #eef7fb;
+  border-color: #afd9ee;
+  color: #333333;
+  font-weight: bold;
+}
+.sm-edit-content .modal-dialog .sm-btn-style:hover,
+.sm-edit-content .modal-dialog .sm-btn-style:focus {
+  background-color: #afd9ee;
+  border-color: #9acfea;
+}
+.sm-edit-content .modal-dialog .sm-btn-block {
+  font-weight: bold;
+}
+.sm-edit-content .lm-modal {
+  width: 500px;
+}
+.sm-edit-content .lm-modal .modal-content {
+  background-color: #f5f5f5;
+  padding: 5px;
+}
+.sm-edit-content .lm-modal .dlg-title {
+  font-weight: bold;
+  color: #d9534f;
+  margin: 5px;
+}
+.sm-edit-content .lm-modal .descr {
+  margin: 5px;
+  font-size: 12px;
+  color: #777777;
+}
+.sm-edit-content .lm-modal .button-footer {
+  text-align: right;
+}
+.sm-edit-content .lm-modal .modal-content {
+  border-radius: 0;
+}
+.sm-edit-content .lm-modal hr {
+  margin: 5px 0;
+  border-color: #5bc0de;
+}
+.sm-edit-content .lm-modal [class*="col-"] {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.sm-edit-content .lm-modal .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+.sm-edit-content .lm-modal .container-fluid {
+  margin: 0;
+  padding: 0;
+}
+.sm-edit-content .lm-modal select {
+  background-color: #eeeeee;
+}
+.sm-edit-content .lm-modal select:focus {
+  background-color: white;
+}

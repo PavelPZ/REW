@@ -1,0 +1,11 @@
+﻿!schoolTest
+###
+<div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-school">
+  {{for #data tmpl=~T('TTopBarNew')/}}
+  <div class="container">
+    {{if !~Cookie()}}{{for #data tmpl=~T('TLoginFirst')/}}{{else}}
+    <div id="sldivtest"></div>
+    {{/if}}
+  </div>
+</div>
+###

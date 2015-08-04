@@ -1,0 +1,137 @@
+!schoolAdmin
+###
+<div data-bind="with: Pager.ActPage" class="app-admin rtl">
+  {{for #data tmpl=~T('TTopBarNew')/}}
+  <div class="container" data-bind="test:'admin'">
+    {{if ~Cookie()}}
+    <h3>{{:title()}}</h3>
+
+    <%-- ************ Company Creators *******************--%>
+    <div class="panel panel-default" data-bind="test:'creator', visible: Login.isSystemAdmin()">
+      <div class="panel-heading">{{:~CSLocalize('a7874d64e5aa4985b779cac83c2a89ed', 'System administrators')}}</div>
+      <table class="table table-condensed table-hover">
+        <tbody data-bind="foreach: role_Admin">
+          <tr data-bind="css: { success: !Deleted(), danger: Deleted }">
+            <td style="vertical-align: middle;">
+              <span data-bind="text: data.EMail"></span>
+            </td>
+            <td class="ad-btn-last">
+              <button class="btn btn-default" data-bind="test:'del-undel-' + $index(), click: $parent.admin_del">
+                <span class="fa" data-bind="css: { 'fa-plus': Deleted(), 'fa-times': !Deleted() }"></span>
+                &nbsp;<span data-bind="text: (Deleted() ? '{{:~CSLocalize('e7d0664419be4fcab8c380767ff2f79a', 'Undelete')}}' : '{{:~CSLocalize('a5f3a504f12c4a9ba822d415519eb95a', 'Delete')}}')"></span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="table table-condensed">
+        <tbody>
+          <tr>
+            <td>
+              <label class="control-label">{{:~CSLocalize('4301852cce604dcca76480a627e92694', 'Add System administrator')}}</label>
+              <input class="form-control" type="text" placeholder="{{:~CSLocalize('308ad4d9b8f342b9946450345efacc6a', 'enter e-Mail')}}" data-bind="test:'email-txt', value: admin_EMail, valueUpdate: 'afterkeydown', hasfocus: admin_EMail.hasfocus" />
+              <span class="help-block" data-bind="visibility: admin_EMail.message, text: admin_EMail.message"></span>
+            </td>
+            <td class="ad-btn-add">
+              <button class="btn btn-default" data-bind="test:'email-ok', click: admin_add"><span class="fa fa-plus"></span>&nbsp;{{:~CSLocalize('e8366c5bd8ba4cb6bbcb70c84d06c8e1', 'Add')}}</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <%-- ************ Companies *******************--%>
+    <div class="panel panel-default" data-bind="visible: Login.isRoleComps()">
+      <div class="panel-heading">{{:~CSLocalize('0fb3793cac4247b2a8a73ed00795c5d7', 'Companies')}}</div>
+      <%-- LIST --%>
+      <table class="table table-condensed table-hover">
+        <tbody data-bind="test:'edit', foreach: role_Comps">
+          <%-- EDIT --%>
+          <tr data-bind="visible: edited()" class="success">
+            <td>
+              <div>
+                <input class="form-control" type="text" placeholder="{{:~CSLocalize('7f8697080ad144e5b813f4c4768ec787', 'enter name')}}" data-bind="test:'name-' + $index(), value: name, valueUpdate: 'afterkeydown', hasfocus: name.hasfocus" />
+                <span class="help-block" data-bind="visibility: name.message, text: name.message"></span>
+              </div>
+              <%--<div>
+                <input class="form-control" type="text" placeholder="{{:~CSLocalize('d993806d489f47e3ab84721c7c6c22f8', 'enter Publisher ID')}}" data-bind="test:'publisherId-' + $index(), value: publisherId, valueUpdate: 'afterkeydown', hasfocus: publisherId.hasfocus" />
+                <span class="help-block" data-bind="visibility: publisherId.message, text: publisherId.message"></span>
+              </div>--%>
+            </td>
+            <td>
+              <div>
+                <input class="form-control" type="text" placeholder="{{:~CSLocalize('423438afc261483da6e76c1ef9b902af', 'enter e-Mail')}}" data-bind="test:'email-' + $index(), value: email, valueUpdate: 'afterkeydown', hasfocus: email.hasfocus" />
+                <span class="help-block" data-bind="visibility: email.message, text: email.message"></span>
+              </div>
+            </td>
+            <td class="ad-btn-last">
+              <div class="btn-group">
+                <button class="btn btn-default" data-bind="test:'cancel-btn-' + $index(), click: $parent.company_editCancel">
+                  <span class="fa fa-times"></span>&nbsp;{{:~CSLocalize('9fa67ed1ffe84b0c948a7d885919213d', 'Cancel')}}
+                </button>
+                <button class="btn btn-default" data-bind="test:'ok-btn-' + $index(), click: $parent.company_editOk">
+                  <span class="fa fa-check"></span>&nbsp;{{:~CSLocalize('9db4b90fec144147b798e57e70d67cd2', 'OK')}}
+                </button>
+              </div>
+            </td>
+          </tr>
+          <%-- PREVIEW --%>
+          <tr data-bind="test:'preview', visible: !edited(), css: { danger: Deleted(), success: !Deleted() }" class="danger">
+            <td colspan="2">
+              <b data-bind="text: name"></b>
+              (<span data-bind="text: email"></span>)
+            </td>
+            <td style="text-align: right;">
+              <button class="btn btn-default" data-bind="test:'undel-' + $index(), click: $parent.company_undel, visible: Deleted">
+                <span class="fa fa-plus"></span>&nbsp;{{:~CSLocalize('06ac9eebb3284c67ac65bc1a52d15196', 'Undelete')}}
+              </button>
+              <div class="btn-group" data-bind="visible: !Deleted()">
+                <button class="btn btn-default" data-bind="test:'edit-' + $index(), click: $parent.company_edit">
+                  <span class="fa fa-pencil"></span>&nbsp;{{:~CSLocalize('4a95201a0d374438a5a7357509e02baa', 'Edit')}}
+                </button>
+                <button class="btn btn-default" data-bind="test:'del-' + $index(), click: $parent.company_del">
+                  <span class="fa fa-times"></span>&nbsp;{{:~CSLocalize('c0320cb4f3c0491eaa8bc8054cd56282', 'Delete')}}
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <%-- NEW --%>
+      <table class="table table-condensed" data-bind="test:'new'">
+        <tbody>
+          <tr>
+            <td>
+              <div>
+                <label class="control-label">{{:~CSLocalize('a96ec4fe1d7b4e8eac4e1a744da4a03b', 'Company name')}}</label>
+                <input class="form-control" type="text" placeholder="{{:~CSLocalize('6261935ec80f4091b713117abe9ab717', 'enter name')}}" data-bind="test:'name', value: comps_Name, valueUpdate: 'afterkeydown', hasfocus: comps_Name.hasfocus" />
+                <span class="help-block" data-bind="visibility: comps_Name.message, text: comps_Name.message"></span>
+              </div>
+              <%--<div>
+                <label class="control-label">{{:~CSLocalize('649671eed1ae4fffaab7a1b73e7fc2db', 'Unique Publisher ID')}}</label>
+                <input class="form-control" type="text" placeholder="{{:~CSLocalize('e26435ef74cf496ea4f6bbb55b4f9937', 'enter Publisher ID')}}" data-bind="test:'publisherId', value: comps_PublisherId, valueUpdate: 'afterkeydown', hasfocus: comps_PublisherId.hasfocus" />
+                <span class="help-block" data-bind="visibility: comps_PublisherId.message, text: comps_PublisherId.message"></span>
+              </div>--%>
+            </td>
+            <td>
+              <div>
+                <label class="control-label">{{:~CSLocalize('63ca57fb95f949dd84579b2a2a1ef0e2', 'Master Company administrator')}}</label>
+                <input class="form-control" type="text" placeholder="{{:~CSLocalize('4b990da9ad7542f9b737b147df34656d', 'enter e-Mail')}}" data-bind="test:'email', value: comps_EMail, valueUpdate: 'afterkeydown', hasfocus: comps_EMail.hasfocus" />
+                <span class="help-block" data-bind="visibility: comps_EMail.message, text: comps_EMail.message"></span>
+              </div>
+            </td>
+            <td class="ad-btn-add">
+              <button class="btn btn-default" type="button" data-bind="test:'ok-btn', click: company_add"><span class="fa fa-plus"></span>&nbsp;{{:~CSLocalize('40d9f8b1832d4c9b8292c42f360b7551', 'Add')}}</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    {{for #data tmpl=~T('TOkCancel')/}}
+    {{else}}
+    {{for #data tmpl=~T('TLoginFirst')/}}
+    {{/if}}
+  </div>
+</div>
+

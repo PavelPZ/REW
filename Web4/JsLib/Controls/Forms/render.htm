@@ -1,0 +1,12 @@
+﻿<%@ Control Language="C#" ClassName="forms_render" %>
+<vm:JsRenderScript runat="server" Name="TInput">
+<%--  <label>Label name</label>
+  <input type="text" placeholder="Type something…">
+  <span class="help-block">Example block-level help text here.</span>--%>
+  <div class="form-input" data-bind="css: { error: {{:name}}.hasError }">
+    <div class="form-input-title">{{:title}}</div>
+    <input type="{{:textType}}" placeholder="{{:title}}" data-bind="value: {{:name}}, valueUpdate: 'afterkeydown', hasfocus: {{:name}}.hasfocus">
+    <div class="form-input-error" data-bind="visibility: {{:name}}.message, text: {{:name}}.message"></div>
+  </div>
+</vm:JsRenderScript>
+

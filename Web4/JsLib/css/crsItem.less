@@ -1,0 +1,355 @@
+@import "LMMixins.less";
+
+/******************** new Navig buttons **************************/
+.crsbtn {
+  position: relative;
+
+  &.well {
+    padding: 10px;
+    padding-bottom: 5px;
+  }
+
+  .cbtn {
+    clear: both;
+    overflow: hidden;
+    border-radius: 4px;
+    //  border: 1px solid;
+    padding: 5px;
+    padding-right: 5px;
+    position: relative;
+    cursor: pointer;
+    background-repeat: repeat-y;
+    margin-bottom: 3px;
+
+    .disabled {
+      cursor: default;
+      .opacity(.65);
+    }
+  }
+  /*.cbtn-content {
+    position: relative;
+
+    .pull-left {
+      margin-left: 5px;
+      margin-right: 10px;
+      margin-top: 10px;
+      font-size: 24px;
+    }
+  }
+
+
+  .cbtn-right {
+    text-align: center;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: 2px solid;
+    padding-top: 5px;
+  }*/
+  //http://www.pagecolumn.com/liquidfixed/3_col_fix-liquid-fix.htm
+  //http://www.dynamicdrive.com/style/layouts/category/C13/P10/
+  .cbtn-content {
+    margin:0 auto;
+    width:100%;
+    z-index:10;
+    position:relative;
+  }
+
+  .cbtn-left {
+    float:left;
+    width: 34px;
+    margin-left:-100%;
+    font-size: 18px;
+    padding-top:10px;
+    padding-left:10px;
+  }
+
+  .cbtn-wrap-center {
+    float:left;
+    width:100%;
+  }
+
+  .cbtn-center {
+    margin-left:35px;
+    margin-right:40px;
+  }
+
+  .cbtn-right {
+    float:left;
+    width:40px;
+    margin-left:-40px;
+
+    text-align: center;
+    height: 40px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: 2px solid;
+    padding-top: 5px;
+  }
+
+  .btn-icon-hidden {
+    .cbtn-left {
+      display:none;
+    }
+    .cbtn-center {
+      margin-left:5px;
+    }
+  }
+
+  .cbtn-color {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+
+    &.c1 {
+      background-color: @gray-light;
+      left: 0px;
+    }
+
+    &.c2 {
+      background-color: @btn-success-bg;
+    }
+
+    &.c3 {
+      background-color: @btn-info-bg;
+      right: 0px;
+    }
+  }
+
+  .cbtn-title {
+    font-size: 14px;
+    font-weight: bold;
+    //margin-left: -7px;
+  }
+
+  .cbtn-instr {
+    font-size: 11px;
+  }
+
+  .cbtn-skin(@color, @bg, @border) {
+    background-color: @bg;
+    border-color: @border;
+    color: @color;
+
+    * {
+      color: @color;
+    }
+  }
+
+  .cbtn-success {
+    .cbtn-skin(@btn-success-color, @btn-success-bg, @btn-success-border);
+    background-image: url("img/bkgnd-info.png");
+  }
+
+  .cbtn-info {
+    .cbtn-skin(@btn-info-color, @btn-info-bg, @btn-info-border);
+  }
+
+  .cbtn-disabled {
+    cursor: not-allowed;
+    .cbtn-skin(@gray-light, @gray-lighter, @btn-default-border);
+
+    .cbtn-right {
+      cursor: pointer;
+      .cbtn-skin(@btn-default-color, @btn-default-bg, @btn-default-border);
+    }
+  }
+}
+
+.cprogress {
+  .inline();
+  vertical-align: middle;
+  width: 100px;
+  height: 18px;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: lighten(@btn-danger-bg, 25%);
+
+  .cprogress-bar {
+    position: relative;
+    float: left;
+    height: 100%;
+    background-color: @btn-success-border;
+  }
+
+  .cprogress-text {
+    position: absolute;
+    padding-left: 5px;
+    color: @btn-success-color;
+    z-index: 2;
+    white-space: nowrap;
+    font-size: 11px;
+  }
+
+  .cinfo {
+    font-size: 12px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+}
+
+
+
+/*
+.crsitem {
+  overflow: hidden;
+  clear: both;
+
+  .crsitem-coll, .crsitem-colr {
+    float: left;
+    margin-right: -100%;
+  }
+
+  .crsitem-coll {
+    width: 58%;
+  }
+
+  .crsitem-colr {
+    margin-left: 60%;
+    width: 40%;
+  }
+}
+
+.crsitem-open.crsitem-nomenu {
+  .crsitem-btn {
+    .border-bottom-radius(0);
+    margin-bottom: 0px;
+    border-bottom: 0;
+  }
+
+  .crsitem-right {
+    span:before {
+      content: @chevron-up;
+    }
+  }
+
+  .crsitem-expanded {
+    display: block;
+  }
+}
+
+.crsitem-expanded {
+  border: 1px solid;
+  border-top: none;
+  .border-bottom-radius (4px);
+  display: none;
+}
+
+.crsitem-btn {
+  clear: both;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid;
+}
+
+.crsitem-left, .crsitem-right {
+  padding-bottom: 4000px;
+  margin-bottom: -4000px;
+}
+
+.crsitem-left {
+  margin-right: 40px;
+  min-height: 40px;
+  border-right: 2px solid;
+
+  > * {
+    padding: 5px;
+    *padding: 10px;
+  }
+}
+
+
+.crsitem-right {
+  text-align: center;
+  width: 40px;
+  min-height: 40px;
+  float: right;
+  font-size: 18px;
+
+  > * {
+    line-height: 55px;
+  }
+
+  span:before {
+    content: @chevron-down;
+  }
+}
+
+.crsitem-progress .crsitem-left {
+  background-repeat: repeat-y;
+}
+
+.crsitem-skin(@col, @text: white, @white: true) {
+
+  .crsitem-left, .crsitem-right {
+    .background-(@col);
+
+    * {
+      color: @text;
+    }
+  }
+
+  .crsitem-left {
+    .border-right-d(@col);
+  }
+
+  .crsitem-expanded {
+    .border-d(@col);
+  }
+
+  .crsitem-btn {
+    .border-d(@col);
+  }
+
+  &.crsitem-progress .crsitem-left {
+    .background-d(@col);
+    .background-image-(@col);
+  }
+}
+
+.crsitem-default {
+  .crsitem-skin(@lm-default);
+}
+
+.crsitem-primary {
+  .crsitem-skin(@lm-primary);
+}
+
+.crsitem-warning {
+  .crsitem-skin(@lm-warning);
+}
+
+.crsitem-danger {
+  .crsitem-skin(@lm-danger);
+}
+
+.crsitem-info {
+  .crsitem-skin(@lm-info);
+}
+
+.crsitem-success {
+  .crsitem-skin(@lm-success);
+}
+
+.crsitem-skin(@lm-default); //default
+
+.crsitem-default .crsitem-right {
+  .background-(@lm-info);
+
+  * {
+    color: white;
+  }
+}
+
+  .crsitem-default .crsitem-right:disabled {
+    .background-(@lm-default);
+
+    * {
+      color: white;
+    }
+  }
+*/

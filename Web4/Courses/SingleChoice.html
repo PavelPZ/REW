@@ -1,0 +1,40 @@
+﻿c_radiobutton
+###
+<div class="clearfix {{:~classes(#data)}}" {{:srcPosition()}}>
+  <!-- ko with: getItem('{{:id}}') -->
+  <div class="oli-cancel-stop-sound ctrl" data-bind="css: { selected: selected, noselected: !selected(), normal: !done(), evaluated: done }">
+    <div class="left-normal" data-bind="click:click">
+      <i class="fa fa-2x fa-border fa-circle-o"></i>
+    </div>
+    <div class="left-eval" data-bind="css: myCss">
+      <span class="no-strike-part fa fa-2x fa-border fa-circle-o" />
+      <span class="strike-part fa fa-2x fa-border fa-circle-o" />
+    </div>
+  </div>
+  <!-- /ko -->
+  <div class="oli-cancel-stop-sound content">
+    <div>
+      {{if !#data.Items}}&nbsp;{{else}}{{for #data tmpl=~T('c_genitems')/}}{{/if}}
+    </div>
+  </div>
+</div>
+###
+
+c_wordselection
+###
+<!-- ko with: getItem('{{:id}}') -->
+<div class="oli-wordselection oli-cancel-stop-sound" data-bind="delegatedHandler: ['click_item'], css: { normal: !done(), evaluated: done }" {{:srcPosition()}}>
+  {{for items}}
+  <!-- ko with: items[{{:#index}}] -->
+  <div class="item" data-bind="css: { selected: selected, noselected: !selected() }, click:click, clickBubble: false">
+    <div class="text" data-bind="css: myCss">{{:content}}</div>
+  </div>
+  <!-- /ko -->
+  {{/for}}
+</div>
+<!-- /ko -->
+###
+
+c_wordmultiselection
+###
+{{include tmpl=~T("c_wordselection")/}}

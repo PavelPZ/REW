@@ -1,0 +1,164 @@
+﻿!docprops
+###
+{{for #data tmpl=~T('docTagAttrs')/}}
+###
+
+!doctypes
+###
+{{for #data tmpl=~T('docTagAttrs')/}}
+###
+
+!dochprops
+###
+{{for #data tmpl=~T('docTagAttrs')/}}
+###
+
+!dochtypes
+###
+{{for #data tmpl=~T('docTagAttrs')/}}
+###
+
+!docprop
+###
+{{for #data tmpl=~T('doctype')/}}
+###
+
+!doctype
+###
+<div data-bind="with: Pager.ActPage" class="app-doc">
+  {{for #data tmpl=~T('docHeader')/}}
+  <div class="container">
+    <h2 class="page-header">
+      {{if backUrl}}<a href="#{{:backUrl}}"><span class="fa fa-arrow-circle-o-left"></span></a>{{/if}}
+      {{>actImpl.codeTitle()}}
+    </h2>
+    <div class="lead">{{for actImpl.summary tmpl=~T('c_gen')/}}</div>
+    <div>{{for actImpl tmpl=~T('c_gen')/}}</div>
+    {{if isTypePage()}}
+    <table class="table table-striped table-bordered ">
+      <thead>
+        <tr>
+          <th>{{if isTypePage()}}Attribute{{else}}Tag{{/if}}</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{for actImpl.childs() tmpl=~T('detailRow')/}}
+      </tbody>
+    </table>
+    {{/if}}
+    {{!--if actImpl.xref}}
+    {{for actImpl.xrefs()}}
+    <a href="author.aspx?forceeval=true&mode=displayEx&url={{:#data}}">{{:#data}}</a> |
+    {{/for}}
+    {{else-->}}
+    <div id="exercise" class="{{:~CourseMeta.gui.exerciseCls()}}">
+      {{:~CourseMeta.gui.exerciseHtml()}}
+    </div>
+  </div>
+</div>
+###
+
+docTagAttrs
+###
+<div data-bind="with: Pager.ActPage" class="app-doc">
+  {{for #data tmpl=~T('docHeader')/}}
+  <div class="container">
+    <h2 class="page-header">{{if isTypesPage()}}Tags{{else isPropsPage()}}Attributes{{else ishTypesPage()}}HTML Tags{{else ishPropsPage()}}HTML Attributes{{/if}}</h2>
+    <table class="table table-striped table-bordered ">
+      <thead>
+        <tr>
+          <th>{{if isTypesPage() || ishTypesPage()}}Tag{{else}}Attribute{{/if}}</th>
+          <th>{{if isTypesPage() || isPropsPage()}}Description{{else ishTypesPage()}}... and its attributes{{else}}... of tags{{/if}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{for childs() tmpl=~T('docRow')/}}
+      </tbody>
+    </table>
+  </div>
+</div>
+###
+
+docHeader
+###
+<nav class="navbar navbar-{{:~CourseMeta.navBar()}}" role="navigation">
+  <div class="container">
+    <a href="#" class="navbar-brand lm-logo-black lm-logo-black-small"></a>
+    <ul class="nav navbar-nav">
+      <li class="{{if isTypesPage()}}active{{/if}}"><a href="#{{:typesLink()}}">Tags</a></li>
+      <li class="{{if isPropsPage()}}active{{/if}}"><a href="#{{:propsLink()}}">Attributes</a></li>
+      <li class="{{if ishTypesPage()}}active{{/if}}"><a href="#{{:htypesLink()}}">HTML Tags</a></li>
+      <li class="{{if ishPropsPage()}}active{{/if}}"><a href="#{{:hpropsLink()}}">HTML Attributes</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="author.aspx?mode=xref">Cross reference</a></li>
+    </ul>
+  </div>
+</nav>
+###
+
+docRow
+###
+<tr>
+  <td class="row-left">
+    <code>
+      {{if actPage().isHtml}}{{>codeTitle()}}{{else}}<a href="#{{:href()}}">{{>codeTitle()}}</a>{{/if}}
+    </code>
+  </td>
+  <td class="row-right">
+    {{if !actPage().isHtml && summary }}
+    {{for summary tmpl=~T('c_gen')/}}
+    {{/if}}
+    <div class="small">
+      {{for childs() tmpl=~T('docLink')/}}
+    </div>
+  </td>
+</tr>
+###
+
+docLink
+###
+{{if actPage().isHtml}}{{:name}} | {{else}}<code><a href="#{{:href()}}">{{>codeTitle()}}</a></code> | {{/if}}
+###
+
+detailRow
+###
+<tr>
+  <td class="row-left">
+    <code>
+      <a href="#{{:href()}}">{{>codeTitle()}}</a>
+    </code>
+  </td>
+  <td class="row-right">
+    {{for summary tmpl=~T('c_gen')/}}
+  </td>
+</tr>
+###
+
+c_docExample
+###
+<!-- ko with: getItem('{{:id}}') -->
+<div class="{{:~classes(#data)}}">
+  {{for header tmpl=~T('c_gen')/}}
+  {{for descr tmpl=~T('c_gen')/}}
+  <div class="doc-example">
+    {{if evalBtn}}
+    {{for evalBtn tmpl=~T('c_evalbtn')/}}
+    {{/if}}
+    <h4 class="example-title">Example</h4>
+    <div>{{for Items tmpl=~T('c_gen')/}}</div>
+  </div>
+  <div class="source-code">
+    <div class="btn-group btns">
+      <div class="btn btn-default btn-xs" data-bind="click:copyPage">Copy: page</div>
+      <div class="btn btn-default btn-xs" data-bind="click:copyFragment">fragment</div>
+      <div class="btn btn-default btn-xs" data-bind="click:copyExpanded">expanded</div>
+    </div>
+    <pre class="prettyprint lang-html">
+       {{for codeListing tmpl=~T('c_gen')/}}
+    </pre>
+  </div>
+</div>
+<!-- /ko -->
+

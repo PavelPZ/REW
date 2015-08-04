@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <link rel="stylesheet" href="grid.css" media="screen" />
+  </style>
+</head>
+<!-- 
+  http://stackoverflow.com/questions/2779554/css-auto-height-on-containing-div-100-height-on-background-div-inside-contain
+    http://www.positioniseverything.net/articles/onetruelayout/equalheight
+    http://css-tricks.com/fluid-width-equal-height-columns/
+    -->
+<body>
+  <div class="grid-1" style="background-color: orange;">
+    <div class="col-1 grid-2" style="background-color: orange">
+      <div class="col-1" style="background-color: red;">
+        <div style="padding: 10px;">Button Button Button Button Button Button</div>
+      </div>
+      <div class="col-2" style="background-color: blue;">
+        <div style="line-height: 40px; text-align: center;">More</div>
+      </div>
+    </div>
+    <div class="col-2" style="background-color: yellow">
+      <div style="padding: 10px;">asdf as fa sf as f asf asd fds a</div>
+    </div>
+  </div>
+  <div>xxxx</div>
+  <div class="grid-3" style="background-color: orange;">
+    <div class="col-1" style="background-color: yellow">
+      asdf as fa sf as f asf asd fds a asdf as fa sf as f asf asd fds a asdf as fa sf as f asf asd fds a
+    </div>
+    <div class="col-2" style="background-color: blue">
+      asdf as fa sf as f asf asd fds a asdf as fa sf as f asf asd fds a
+    </div>
+    <div class="col-3" style="background-color: red">
+      asdf as fa sf as f asf asd fds a
+    </div>
+  </div>
+  <div>xxxx</div>
+  <div class="grid-3" style="background-color: orange;">
+    <div class="col-1" style="background-color: yellow">
+      asdf as fa sf as f asf asd fds a asdf as fa sf as f asf asd fds a asdf as fa sf as f asf asd fds a
+    </div>
+    <div class="col-23" style="background-color: blue">
+      asdf as fa sf as f asf asd fds a asdf as fa sf as f asf asd fds a
+    </div>
+  </div>
+  <div>xxxx</div>
+  <div class="grid-3" style="background-color: orange;">
+    <div class="col-12" style="background-color: yellow">
+      asdf as fa sf as f asf asd fds a asdf as fa sf as f asf asd fds a asdf as fa sf as f asf asd fds a
+    </div>
+    <div class="col-3" style="background-color: blue">
+      asdf as fa sf as f asf asd fds a asdf as fa sf as f asf asd fds a
+    </div>
+  </div>
+  <div>xxxx</div>
+  <div class="grid-3-height" style="background-color: orange;">
+    <div class="col-1" style="background-color: yellow">
+      asdf as fa sf as f asf asd fds a asdf as fa sf as f asf asd fds a asdf as fa sf as f asf asd fds a
+    </div>
+    <div class="push-1 col-1" style="background-color: blue">
+      asdf as fa sf as f asf asd fds a asdf as fa sf as f asf asd fds a
+    </div>
+    <div class="push-2 col-1" style="background-color: red">
+      asdf as fa sf as f asf asd fds a
+    </div>
+  </div>
+  <div>xxxx</div>
+</body>
+</html>

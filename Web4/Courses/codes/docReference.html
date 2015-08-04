@@ -1,0 +1,99 @@
+﻿docxsd
+###
+<div class="doc">
+  {{if pars.forRename}}
+  <h1>Elements</h1>
+  {{for data.rnRoot(false)}}{{include tmpl=~T('rndoctype')/}}{{/for}}
+  <h1>Enumerations</h1>
+  {{for data.rnEnums()}}{{include tmpl=~T('rndocenum')/}}{{/for}}
+  <h1>New elements</h1>
+  {{for data.rnElements()}}{{include tmpl=~T('rndoctypenew')/}}{{/for}}
+  <h1>ToRename</h1>
+  <textarea style="width:100%" rows="10">
+    {{>data.rnRenameJson()}}
+  </textarea>
+  <h1>Helper elements</h1>
+  {{for data.rnRoot(true)}}{{include tmpl=~T('rndoctype')/}}{{/for}}
+  {{else}}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2><a href="#" class="fa fa-minus" data-bind="click: data.tooglePanel"></a> Elements</h2>
+    </div>
+    <div class="panel-body">
+      {{for data.dcElements(false)}}{{include tmpl=~T('doctype')/}}{{/for}}
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2><a href="#" class="fa fa-plus" data-bind="click: data.tooglePanel"></a> Sound Cut Elements</h2>
+    </div>
+    <div class="panel-body" style="display:none;">
+      {{for data.dcElements(true)}}{{include tmpl=~T('doctype')/}}{{/for}}
+    </div>
+  </div>
+  {{/if}}
+</div>
+###
+
+doctype
+###
+<h3>{{:name}}</h3>
+<blockquote class="doc-type">
+  {{for rnPropsNew()}}{{include tmpl=~T('docproppointer')/}}{{/for}}
+  <div class="alert alert-warning alert-dismissible" style="display:none">
+    <button type="button" class="close fa fa-close"></button>
+    <div class="prop-descr">
+      <div class="summary"></div>
+      <div class="descr"></div>
+    </div>
+  </div>
+</blockquote>
+###
+
+docproppointer
+###
+<span><a href="#" data-bind="click: function(model, ev) {data.showProp(ev, '{{:propOf}}', '{{:name}}'); }">{{:name}}</a> |</span>
+###
+
+rndoctype
+###
+<h3>{{:rnName()}}</h3>
+{{if rnProps()}}
+<div class="props">
+  {{for rnProps()}}{{include tmpl=~T('rndocprop')/}}{{/for}}
+</div>
+{{/if}}
+{{if rnDescendants()}}
+<div class="descendants">
+  {{for rnDescendants()}}{{include tmpl=~T('rndoctype')/}}{{/for}}
+</div>
+{{/if}}
+###
+
+rndoctypenew
+###
+<h3>{{:rnNameNew()}} <small>{{for rnPropsNew()}}{{include tmpl=~T('rndocpropnew')/}}{{/for}}</small></h3>
+###
+
+rndocpropnew
+###
+<span class="prop-new">{{:rnNameNew()}},</span>
+###
+
+rndocprop
+###
+<h4>{{:rnName()}}</h4>
+###
+
+rndocenum
+###
+<h3>{{:rnName()}}</h3>
+<div class="enums">
+  {{for enumData}}{{include tmpl=~T('rndocenumitem')/}}{{/for}}
+</div>
+###
+
+rndocenumitem
+###
+<h4>{{:rnName()}}</h4>
+###

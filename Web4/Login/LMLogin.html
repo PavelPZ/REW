@@ -1,0 +1,19 @@
+﻿!lmLogin,lmLoginNoEMail
+###
+<div data-bind="test:'login-lm', with: Pager.ActPage, delegatedHandler: ['click']" class="app-login rtl">
+  {{for #data tmpl=~T('TTopBarLogin')/}}
+  <div class="container form-horizontal">
+    <fieldset>
+      <legend>{{:~CSLocalize('f7ca7ceba0904c24b2494f048fb37c82', 'Login')}}</legend>
+      {{for viewModel tmpl=~T('TInput')/}}
+      <div class="alert alert-danger" data-bind="visible: !Utils.Empty(errorText()), html: errorText"></div>
+      {{for #data tmpl=~T('TOkCancel')/}}
+    </fieldset>
+    <ul class="breadcrumb">
+      <li><a class="active" href="{{:~loginUrl('registerModel')}}" data-bind="test:'reg'">{{:~CSLocalize('b24ea1e72f9a4d60bbc930db412797e2', 'User Registration')}}</a></li>
+      <li><a class="active" href="{{:~loginUrl('forgotPasswordModel')}}" data-bind="test:'forgot', visible: isEMail">{{:~CSLocalize('d12681c9037b4db8af0364ecd210a1e4', 'Send forgotten password by e-mail')}}</a></li>
+    </ul>
+  </div>
+</div>
+
+

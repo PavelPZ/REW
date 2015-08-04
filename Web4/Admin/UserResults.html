@@ -1,0 +1,56 @@
+!schoolUserResults
+###
+<div data-bind="with: Pager.ActPage" class="app-admin rtl">
+    {{for #data tmpl=~T('TTopBarNew')/}}
+    <div class="container">
+        {{if !~Cookie()}}
+        {{for #data tmpl=~T('TLoginFirst')/}}
+        {{else}}
+        <h3>{{:title()}}</h3>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>{{:~CSLocalize('665e49d698a547b8aad0b6d642a5c51e', 'Reports and Statistics for Language Tests')}}</h4>
+            </div>
+            <div class="panel-body">
+                <p>
+                {{:~CSLocalize('e813f52f80824d69b3508cfee6a24a1a', 'To view the students results in the language tests click Download button')}}
+                </p>
+                <div class="btn btn-success" data-bind="click:downloadTestReport">{{:~CSLocalize('5f5cbb8890bf454c87a3206c83869946', 'Download')}}</div>
+                <!--<p>
+                    and open the file in Spreadsheet applicition (preferably Excel 2007 of higher or Libre office). Details see bellow.
+                    the Excel file with complete students results will appear then.</p>-->
+            </div>
+            <div class="panel-footer">
+                <p>
+                    {{:~CSLocalize('7fed74ddfb5d48388cb11db95b906456', 'Procedure:')}}
+                    <ol>
+                        <li>
+                            {{:~CSLocalize('81c16e752a624a519a6fe9d03ff64df7', 'Click Download button and open the results in one of the following applications:')}}
+                            <ul>
+                                <li>{{:~CSLocalize('47ce5d955d4549a98addf4fb0dcb82c0', 'Excel 2007 or higher')}}</li>
+                                <li>Libre Office (<a href="http://www.libreoffice.org">{{:~CSLocalize('5fd010f2d49242df9132f768589d951f', 'free download here')}}</a>)</li>
+                            </ul>
+                        </li>
+                        <li>
+                            {{:~CSLocalize('6c76f6bcdb8047b39f88666abc88e436', 'Click')}} <i>{{:~CSLocalize('830b1031dcc349deb681fa3cab686d5a', 'Enable editing')}}</i> {{:~CSLocalize('9c7417d7f62c4a608d3519d0601b1591', 'in top bar if required')}}
+                        </li>
+                        <li>
+                            {{:~CSLocalize('36303b9d40cd48c6ab9fb7e843fa733a', 'Then you can work with the available tables and create any reports that your organization needs:')}}
+                            <ul>
+                                <li>{{:~CSLocalize('1c7fc0629c87407b81687454496868be', 'students can be grouped according to different criteria')}}</li>
+                                <li>{{:~CSLocalize('60f013ae04a14c1b8d14cf49e88d0fa2', 'you can use different filters, hide/display columns etc.')}}</li>
+                                <li>{{:~CSLocalize('57e0c402fc0f425890ade554ed42132e', 'you can view detailed information about students including their certificates')}}</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </p>
+                <!--<img src="../admin/img/report1.jpg" alt="Report example" />-->
+
+
+                <!--There you can group students according to different criteria and prepare various reports according to your requirements.-->
+                <!--Strucny navod: download, open in excel verze 2007 nebo lepsi, nebo libre office (link na stazeni zdarma), Povolit upravy, ...-->
+            </div>
+        </div>
+        {{/if}}
+    </div>
+</div>

@@ -1,0 +1,45 @@
+﻿<script type="text/template" id="dlg-open-bracket">
+  <div id="dlg-open-bracket" tabindex="-1" class="modal modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        Select bracket using arrow keys and press Enter
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="exampleInputEmail1">{+...element...}:</label><br />
+          <div class="btn-group" role="group">
+            <button class="btn btn-sm btn-warning sm-btn-inline" data-sm-gen="{+gap-fill() |}" data-dlg-res="inline:gap-fill" data-focus-grid="0:0">gap-fill</button>
+            <button class="btn btn-sm btn-warning sm-btn-inline" data-sm-gen="{+word-selection() |}" data-dlg-res="inline:word-selection" data-focus-grid="0:1">word-selection</button>
+            <button class="btn btn-sm btn-warning sm-btn-inline" data-sm-gen="{+drop-down() |}" data-dlg-res="inline:drop-down" data-focus-grid="0:2">drop-down</button>
+            <button class="btn btn-sm btn-warning sm-btn-inline" data-sm-gen="{+offering() |}" data-dlg-res="inline:offering" data-focus-grid="0:3">offering</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">{*...text formating...*}:</label><br />
+          <div class="btn-group" role="group">
+            <button class="btn btn-sm btn-success sm-btn-span" data-sm-gen="{*| *}" data-dlg-res="span:" data-focus-grid="1:0">formating</button><br />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">{#...block...#}:</label><br />
+          <div class="btn-group" role="group">
+            <button class="btn btn-sm btn-primary sm-btn-block" data-dlg-res="block:table" data-focus-grid="2:0">Table</button>
+            <button class="btn btn-sm btn-primary sm-btn-block" data-dlg-res="block:panel" data-focus-grid="2:1">Panel</button>
+            <button class="btn btn-sm btn-primary sm-btn-block" data-dlg-res="block:alert" data-focus-grid="2:2">Alert</button>
+            <button class="btn btn-sm btn-primary sm-btn-block" data-dlg-res="block:pairing" data-focus-grid="2:3">Pairing</button>
+            <button class="btn btn-sm btn-primary sm-btn-block" data-dlg-res="block:gap-fill-offering" data-focus-grid="2:4">Gap-fill Offering</button>
+            <button class="btn btn-sm btn-primary sm-btn-block" data-dlg-res="block:drop-down-offering" data-focus-grid="2:5">Drop-down Offering</button>
+            <button class="btn btn-sm btn-primary sm-btn-block" data-dlg-res="block:block" data-focus-grid="2:6">Default</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">{!...special style...}:</label><br />
+          <div class="btn-group" role="group">
+            <button class="btn btn-sm btn-info sm-btn-style" data-sm-gen="{!|}" data-dlg-res="style:" data-focus-grid="3:0">special style</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>

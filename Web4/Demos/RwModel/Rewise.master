@@ -1,0 +1,97 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/BS.Master" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="server">
+  <%=System.Web.Optimization.Styles.Render("~/cssRewise") %>
+  <link href="rewise.css" rel="stylesheet" />
+  <link href="btn.css" rel="stylesheet" />
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
+  <asp:ContentPlaceHolder ID="NavBarPlace" runat="server">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target="#topbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <!-- Left: Learn -->
+        <!-- Left: Vocabulary -->
+        <ul class="nav">
+          <li class="learn-flag"><a class="btn btn-inverse" href="040_Learn.aspx"><i class="flag-mid flag-mid-english"></i>Learn English</a></li>
+          <!-- large -->
+          <li class="large-vocab dropdown">
+            <a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">Vocabulary<i class="icon-chevron-down icon-white"></i></a>
+            <ul id="vocabs" class="dropdown-menu">
+              <li><a href="020_Vocabulary-own.aspx">Own words</a></li>
+              <li><a href="030_Vocabulary-wordlist.aspx">Words from Word Lists</a></li>
+            </ul>
+          </li>
+          <!-- small -->
+          <li class="small-vocab dropdown">
+            <a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-book icon-white"></i>&nbsp;<i class="icon-chevron-down icon-white"></i></a>
+            <ul class="dropdown-menu">
+              <li><a href="020_Vocabulary-own.aspx">Own words</a></li>
+              <li><a href="030_Vocabulary-wordlist.aspx">Words from Word Lists</a></li>
+            </ul>
+          </li>
+        </ul>
+        <!-- Right: Login for tablets -->
+        <ul class="nav pull-right tablet-login">
+          <li><a class="btn btn-inverse" href="005_Login.aspx"><span class="label label-important">Login</span></a></li>
+        </ul>
+        <!-- movable items (from desktop to tablet More menu) -->
+        <div class="nav-collapse collapse navbar-inverse-collapse" id="topbar">
+          <!-- Left
+          <div class="navbar-search input-append ">
+            <input id="search" type="text" placeholder="Search">
+            <a class="btn btn-inverse"><i class="flag-small flag-small-english"></i></a>
+            <a class="btn btn-inverse"><i class="flag-small flag-small-czech"></i></a>
+          </div>
+             -->
+          <!-- Right -->
+          <ul class="nav pull-right">
+            <li><a class="btn btn-inverse" href="040_Learn.aspx"><i class="flag-small flag-small-german"></i>Learn German</a></li>
+            <!-- Fake movable right (not visible for deskto) -->
+            <li class="hidden-desktop"><a class="btn btn-inverse" href="000_SelectLang.aspx">Add another Language to learn</a></li>
+            <li class="hidden-desktop"><a class="btn btn-inverse" href="000_SelectLang.aspx">Change Czech as your Native language</a></li>
+            <li class="hidden-desktop"><a class="btn btn-inverse" href="000_SelectLang.aspx">Change Czech as a Language of Application</a></li>
+            <li class="tablet-logout"><a class="btn btn-inverse" href="#">Logout</a></li>
+            <!-- Visible for desktop, not visible for tablets -->
+            <!-- Right: Login for desktop -->
+            <li class="desktop-login"><a class="btn btn-inverse" href="005_Login.aspx"><span class="label label-important">Login</span></a></li>
+            <li class="visible-desktop"><a class="btn btn-inverse" href="000_SelectLang.aspx">Czech&nbsp<i class="icon-play icon-white"></i></a></li>
+            <!-- More menu for desktop -->
+            <li class="dropdown visible-desktop">
+              <a id="desktop-btn-navbar" class="btn btn-inverse btn-navbar dropdown-toggle" data-toggle="dropdown">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="000_SelectLang.aspx">Add another Language to learn</a></li>
+                <li><a href="000_SelectLang.aspx">Change Czech as your Native language</a></li>
+                <li class="desktop-logout"><a href="#">Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </asp:ContentPlaceHolder>
+
+  <asp:ContentPlaceHolder ID="OkCancelPlace" runat="server">
+    <div class="navbar navbar-fixed-bottom">
+      <div class="navbar-inner">
+        <ul class="nav">
+          <li><a class="btn btn-large btn-primary" href="#">OK</a></li>
+          <li><a class="btn btn-large" href="#">Cancel</a></li>
+        </ul>
+      </div>
+    </div>
+  </asp:ContentPlaceHolder>
+
+  <div id="content">
+    <asp:ContentPlaceHolder ID="RwContent" runat="server">
+    </asp:ContentPlaceHolder>
+  </div>
+</asp:Content>

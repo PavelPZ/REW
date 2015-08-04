@@ -1,0 +1,99 @@
+﻿@import "LMMixins.less";
+
+.app-doc {
+  .row-left code {
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+
+  .navbar .navbar-nav li {
+    &.active, &.active a, a:hover {
+      background-color: #606060 !important;
+    }
+
+    a {
+      color: white !important;
+      font-weight: bold;
+    }
+  }
+
+  .oli-docexample {
+    padding-top: 20px;
+  }
+
+  .doc-example {
+    position: relative;
+    border: 1px solid @panel-default-border;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    padding: 10px;
+    margin-top: 10px;
+
+    > .oli-evalbtn {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+    }
+
+    .example-title {
+      color: lightgray;
+      margin-left:100px;
+      margin-top:0;
+      margin-bottom:20px;
+    }
+  }
+
+  .oli-docexample .source-code {
+    position: relative;
+    padding: 10px;
+    padding-bottom: 0;
+    padding-top: 16px;
+    border: 1px solid @panel-default-border;
+    border-top-width: 0px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background-color: @panel-footer-bg;
+
+    .btns {
+      position: absolute;
+      top: -1px;
+      right: -1px;
+    }
+
+    pre {
+      border: 0 !important;
+    }
+  }
+
+  &.xref {
+    .tab-page {
+      border: 1px solid @panel-default-border;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      border-top-width: 0px;
+      padding: 20px;
+    }
+
+    .project-link {
+      color:@brand-danger;
+    }
+
+    h3 {
+      margin-top: 5px;
+    }
+
+    .lm-tag {
+      background-color: @alert-danger-bg;
+    }
+
+    .lm-error {
+      background-color: red;
+
+      a {
+        color: white;
+        font-weight:bold;
+      }
+    }
+  }
+}

@@ -1,0 +1,192 @@
+﻿!xrefbrowse
+###
+  {{for #data tmpl=~T('xref')/}}
+###
+
+!xrefbrowsePropValues
+###
+  {{for #data tmpl=~T('xref')/}}
+###
+
+!xreflinks
+###
+  {{for #data tmpl=~T('xref')/}}
+###
+
+xref
+###
+<div data-bind="with: Pager.ActPage" class="app-doc xref">
+  <nav class="navbar navbar-{{:~CourseMeta.navBar()}}" role="navigation">
+    <div class="container">
+      <a href="author.aspx?mode=xref" class="navbar-brand lm-logo-black lm-logo-black-small"></a>
+      <a href="author.aspx?mode=xref" class="navbar-brand">Cross reference</a>
+      {{if urlContext()}}
+      <ul class="nav navbar-nav navbar-left">
+        <li><a href="#" data-bind="click:refresh, text:refreshText"></a></li>
+      </ul>
+      {{/if}}
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="author.aspx?mode=doc">Documentation</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+    {{if !urlContext()}}
+    {{for sitemap tmpl=~T('xrefSitemapPanel')/}}
+    {{else}}
+    <h2>{{:urlContext()}}</h2>
+    <ul class="nav nav-tabs nav-justified" role="tablist">
+      <li role="presentation" class="{{:db_SitemapTabActive(0)}}"><a href="#{{:mainTabHash(0)}}">Info</a></li>
+      <li role="presentation" class="{{:db_SitemapTabActive(1)}}"><a href="#{{:mainTabHash(1)}}">Tags</a></li>
+      <li role="presentation" class="{{:db_SitemapTabActive(2)}}"><a href="#{{:mainTabHash(2)}}">Attributes</a></li>
+    </ul>
+    <div class="tab-page">
+      {{if mainTab==0}}
+      <h1>info</h1>
+      <div data-bind="html:refreshError"></div>
+      {{else mainTab==1}}
+      {{for typeMap tmpl=~T('xrefTypeMapPanel')/}}
+      {{if actType}}
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="{{:db_PropTabActive(0)}}"><a href="#{{:typePropHash(actProp)}}">Links</a></li>
+        <li role="presentation" class="{{:db_PropTabActive(1)}}"><a href=" #{{:typePropValuesHash()}}">Values</a></li>
+      </ul>
+      <div class="tab-page">
+        {{if links}}{{for links tmpl=~T('xrefLinkPanel')/}}{{/if}}
+        {{if propValues}}{{for propValues tmpl=~T('xrefPropValuePanel')/}}{{/if}}
+      </div>
+      {{/if}}
+      {{else mainTab==2}}
+      {{for propMap tmpl=~T('xrefPropMapPanel')/}}
+      {{if actProp}}
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="{{:db_PropTabActive(0)}}"><a href="#{{:propHash(actProp)}}">Links</a></li>
+        <li role="presentation" class="{{:db_PropTabActive(1)}}"><a href=" #{{:propValuesHash()}}">Values</a></li>
+      </ul>
+      <div class="tab-page">
+        {{if links}}{{for links tmpl=~T('xrefLinkPanel')/}}{{/if}}
+        {{if propValues}}{{for propValues tmpl=~T('xrefPropValuePanel')/}}{{/if}}
+      </div>
+      {{/if}}
+      {{/if}}
+    </div>
+    {{/if}}
+  </div>
+</div>
+###
+
+xrefSitemapPanel
+###
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4>Sitemap filter</h4>
+  </div>
+  <div class="panel-body">
+    {{if parents}}
+    <ol class="breadcrumb">
+      {{for parents tmpl=~T('xrefSitemapBreadCrumbs')/}}
+      <li class="active">{{:actNd.title}}</li>
+    </ol>
+    {{/if}}
+    <h3>
+      {{if isProject()}}
+      <a class="project-link" href="{{:nodeXrefUrl()}}">{{:actNd.title}} <i class="fa fa-arrow-circle-right"></i></a>
+      {{else}}
+      {{:actNd.title}}
+      {{/if}}
+    </h3>
+    {{if actNd.Items}}
+    <div class="sm-childs">
+      {{for actNd.Items tmpl=~T('xrefSitemapChild')/}}
+    </div>
+    {{/if}}
+  </div>
+</div>
+###
+
+xrefSitemapBreadCrumbs
+###
+<li><a href="#{{:~xref.root.nodeHash(uniqId)}}">{{:title}}</a></li>
+###
+
+xrefSitemapChild
+###
+{{if #index>0}}|{{/if}}
+<a href="#{{:~xref.root.nodeHash(uniqId)}}">{{:title}}</a>
+###
+
+xrefTypeMapPanel
+###
+<div class="alert alert-warning" role="alert">
+  {{if owner.propValueIdx}}
+  <h3><a href="#{{:owner.mainTabHash(1)}}">Show tags</a>: <a href="#{{:~xref.root.typeHash(owner.actType)}}">&lt;{{:~Utils.fromCammelCase(owner.actType)}}</a> <a href="#{{:~xref.root.typePropHash(owner.actProp)}}">{{:~Utils.fromCammelCase(owner.actProp)}}</a>="{{:~xref.idxToVal[owner.propValueIdx]}}"</h3>
+  {{else owner.actProp && owner.actType}}
+  <h3><a href="#{{:owner.mainTabHash(1)}}">Show tags</a>: <a href="#{{:~xref.root.typeHash(owner.actType)}}">&lt;{{:~Utils.fromCammelCase(owner.actType)}}</a> {{:~Utils.fromCammelCase(owner.actProp)}}=</h3>
+  {{else owner.actType}}
+  <h3><a href="#{{:owner.mainTabHash(1)}}">Show tags</a>: &lt;{{:~Utils.fromCammelCase(owner.actType)}}&gt;</h3>
+  {{for props tmpl=~T('xrefTypeMapPropLink')/}}
+  {{else}}
+  {{for types tmpl=~T('xrefTypeMapTypeLink')/}}
+  {{/if}}
+</div>
+###
+
+xrefTypeMapTypeLink
+###
+<code class="{{if tag=='error'}}lm-error{{else lmtag}}lm-tag{{/if}}"><a href="#{{:~xref.root.typeHash(tag)}}">&lt;{{:~Utils.fromCammelCase(tag)}}&gt;</a></code>
+###
+
+xrefTypeMapPropLink
+###
+<code><a href="#{{:~xref.root.typePropHash(#data)}}">{{:~Utils.fromCammelCase(#data)}}=</a></code>
+###
+
+xrefLinkPanel
+###
+<table class="table table-striped table-condensed">
+  <thead><tr><th>&nbsp;</th><th>Path</th><th>Title</th></tr></thead>
+  <tbody>
+    {{for links tmpl=~T('xrefLinkPanelLink')/}}
+  </tbody>
+</table>
+###
+
+xrefLinkPanelLink
+###
+<tr>
+  <td><a href="#" class="fa fa-clipboard" onclick="return xref.pathToClip('{{:url}}')"></a></td>
+  <td><a href="author.aspx?forceEval=true&mode=displayEx&url={{:url}}">{{:url}}</a></td>
+  <td>{{:title}}</td>
+</tr>
+###
+
+xrefPropValuePanel
+###
+<div>
+  {{for values tmpl=~T('xrefPropValuePanelLink')/}}
+</div>
+###
+
+xrefPropValuePanelLink
+###
+<code><a href="#{{:~xref.root.typePropValueHash(#data)}}">{{:~xref.idxToVal[#data]}}</a></code>
+###
+
+xrefPropMapPanel
+###
+<div class="alert alert-warning" role="alert">
+  {{if owner.propValueIdx}}
+  <h3><a href="#{{:owner.mainTabHash(2)}}">Show attributes</a>: <a href="#{{:~xref.root.propHash(owner.actProp)}}">{{:~Utils.fromCammelCase(owner.actProp)}}</a>="{{:~xref.idxToVal[owner.propValueIdx]}}"</h3>
+  {{else owner.actProp}}
+  <h3><a href="#{{:owner.mainTabHash(2)}}">Show attributes</a>: &lt;{{:~Utils.fromCammelCase(owner.actProp)}}&gt;</h3>
+  {{else}}
+  {{for props tmpl=~T('xrefPropMapTypeLink')/}}
+  {{/if}}
+</div>
+###
+
+xrefPropMapTypeLink
+###
+<code><a href="#{{:~xref.root.propHash(#data)}}">{{:~Utils.fromCammelCase(#data)}}=</a></code>
+###
+

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bundle minify="true" runOnBuild="false" output="Schools.js">
+  <!-- ~/jsexternal -->
+  <file>q:\LMCom\rew\web4\jslib\scripts\jquery.js</file>
+  <file>q:\LMCom\rew\web4\jslib\scripts\jquery-migrate.js</file>
+  <file>q:\LMCom\rew\web4\jslib\scripts\globalize.js</file>
+  <file>q:\LMCom\rew\web4\jslib\scripts\jquery.ba-hashchange.js</file>
+  <file>q:\LMCom\rew\web4\jslib\scripts\json2.js</file>
+  <file>q:\LMCom\rew\web4\jslib\scripts\jsRender.js</file>
+  <file>q:\LMCom\rew\web4\jslib\scripts\knockout.js</file>
+  <file>q:\LMCom\rew\web4\jslib\scripts\knockout-delegatedEvents.js</file>
+  <file>q:\LMCom\rew\web4\jslib\scripts\underscore.js</file>
+  <file>q:\LMCom\rew\web4\jslib\js\external\KnockOut_JsRender.js</file>
+  <file>q:\LMCom\rew\web4\Bootstrap\js\Bootstrap.js</file>
+  <file>q:\LMCom\rew\web4\jslib\js\external\ClosureLib.js</file>
+  <file>q:\LMCom\rew\web4\jslib\js\external\ClosureLibLow.js</file>
+  <file>q:\LMCom\rew\web4\jslib\js\GenLMComLib.js</file>
+  <file>q:\LMCom\rew\web4\jslib\js\gui.js</file>
+
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\starttrace.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\Silverlight.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\ac_runactivecontent.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\atlas\microsoftajax.js</file>
+
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\LMSys.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\Doctor.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\JSON_RPC.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\LMCommon.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\LicencePlayer.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\dictconnector.js</file>
+
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\atlastoolkit\Timer.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\atlastoolkit\Common.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\atlastoolkit\BaseScripts.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\atlastoolkit\DragDropScripts.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\atlastoolkit\Animations.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\atlastoolkit\AlwaysVisibleControlBehavior.js</file>
+
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\Ordering.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\Other.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\Selections.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\Sounds.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\EvalGroup.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\Course.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\GapFill.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\GapFillSource.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\lm\HideText.js</file>
+
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\Controls\Other\hide_control.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\Controls\Sound\Sound.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\Controls\GapFill\Gap_Fill.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\Controls\Marks\eval_mark.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\Controls\Orderings\orderings.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\Controls\Selections\selections.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\Controls\GapFill\cross_word.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\Controls\GapFill\Gap_Fill_Source.js</file>
+
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\js\slplayer\new_licence.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\js\slplayer\new_slplayer.js</file>
+  <file>q:\LMNet2\WebApps\EduAuthorNew\framework\script\js\slplayer\new_player.js</file>
+
+  <!-- ~/jsModel -->
+  <file>q:\LMCom\rew\web4\jslib\js\ModelBase.js</file>
+  <file>q:\LMCom\rew\web4\jslib\js\Utils.js</file>
+  <file>q:\LMCom\rew\web4\jslib\js\ViewBase.js</file>
+  <file>q:\LMCom\rew\web4\jslib\js\Ajax.js</file>
+ 
+  <!-- ~\jsSchool -->
+  <file>q:\LMCom\rew\web4\jslib\scripts\waitforimages.js</file>
+  <file>q:\LMCom\rew\web4\schools\GenCourse.js</file>
+  <file>q:\LMCom\rew\web4\schools\GenSchools.js</file>
+  <file>q:\LMCom\rew\web4\schools\Interfaces.js</file>
+  <file>q:\LMCom\rew\web4\jslib\js\sound\sound.js</file>
+  <file>q:\LMCom\rew\web4\jslib\js\unicode.js</file>
+  <file>q:\LMCom\rew\web4\jslib\ea\eaextension.js</file>
+  <file>q:\LMCom\rew\web4\schools\model.js</file>
+  <file>q:\LMCom\rew\web4\schools\persist.js</file>
+  <file>q:\LMCom\rew\web4\schools\persistLocal.js</file>
+  <file>q:\LMCom\rew\web4\schools\Home.js</file>
+  <file>q:\LMCom\rew\web4\schools\Course.js</file>
+  <file>q:\LMCom\rew\web4\schools\Lesson.js</file>
+  <file>q:\LMCom\rew\web4\schools\Module.js</file>
+  <file>q:\LMCom\rew\web4\schools\exercise.js</file>
+
+</bundle>

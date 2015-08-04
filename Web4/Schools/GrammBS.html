@@ -1,0 +1,57 @@
+!schoolGramm
+###
+<div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-school gramm">
+  {{for #data tmpl=~T('TMaster')/}}
+</div>
+###
+
+TGramLink
+###
+<div class="btn btn-large btn-info btn-block gram-link" data-click="nodeClick" data-delegate-index="{{:type() + ':' + node.id}}">{{:node.title}}</div>
+###
+
+!schoolGrammPage
+###
+<div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-school gramm">
+  {{for #data tmpl=~T('TMaster')/}}
+</div>
+###
+
+TSchoolGrammBody
+###
+{{:html()}}
+###
+
+!schoolGrammContent
+###
+<div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-school gramm">
+  {{for #data tmpl=~T('TMaster')/}}
+</div>
+###
+
+TSchoolGrammContentBody
+###
+{{for items tmpl=~T('TSchoolGrammContentItem')/}}
+###
+
+TSchoolGrammContentItem
+###
+{{if items}}
+<b>{{:title}}</b>
+<blockquote>
+  {{for items tmpl=~T('TSchoolGrammContentItem')/}}
+</blockquote>
+{{else}}
+<div>
+  <a href="#" data-click="nodeClick" data-delegate-index="{{:'schoolGrammPageModel:' + id}}">{{:idx+1}}. {{:title}}</a>
+</div>
+{{/if}}
+###
+
+!schoolDictInfo
+###
+<div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-school gramm">
+  {{for #data tmpl=~T('TMaster')/}}
+</div>
+###
+

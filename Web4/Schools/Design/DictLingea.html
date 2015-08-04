@@ -1,0 +1,24 @@
+dictLinegaRoot
+###
+<h1>Dict Lingea</h1>
+<select data-bind="options: allDicts, optionsText: 'title', value: selectedDict, optionsCaption:'Choose dict'"></select>
+<%--<select data-bind="options: allReasons, optionsText: 'title', value: selectedReason, optionsCaption:'Choose reason'"></select>--%>
+<button class="btn btn-default" data-bind="click:loadDict">Load dict</button>
+<table class="table" style="width:auto;" data-bind="foreach: entries">
+  <tr data-bind="css: handOkCrs()==0 ? 'danger' : ''">
+    <td><span data-bind="html: html"></span></td>
+    <td><button class="btn btn-default" data-bind="visible:!!soundMaster, click:play"><span class="fa fa-play fa-lg text-info" style="cursor:pointer"></span></button></td>
+    <!-- ko foreach: hands-->
+    <td><button class="btn" style="font-weight:bold;" data-bind="click:click, css:css, text:title()"></button></td>
+    <!-- /ko -->
+  </tr>
+</table>
+<div class="panel panel-default">
+  <div class="panel-heading" data-bind="click:statistics">Statistics <button class=" btn btn-default">Refresh</button> <span class="label label-info" data-bind="text: ok() + ' / ' + todo() + ' / ' + all()"></span></div>
+  <div class="panel-body" data-bind="foreach: dicts">
+    <p>
+      <span data-bind="html: dict"></span>
+      <span class="label" data-bind="html: title, css:css"></span>
+    </p>
+  </div>
+</div>

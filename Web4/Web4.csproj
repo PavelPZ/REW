@@ -1,0 +1,2712 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A34E819D-607A-45FA-87C2-CFEF760F58F1}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>web4</RootNamespace>
+    <AssemblyName>web4</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SilverlightApplicationList>
+    </SilverlightApplicationList>
+    <TypeScriptSourceMap>False</TypeScriptSourceMap>
+    <TypeScriptModuleKind>none</TypeScriptModuleKind>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <IsCompassProject>True</IsCompassProject>
+    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptIncludeComments>true</TypeScriptIncludeComments>
+    <TypeScriptSourceMap>False</TypeScriptSourceMap>
+    <TypeScriptGeneratesDeclarations>false</TypeScriptGeneratesDeclarations>
+    <TypeScriptModuleKind>none</TypeScriptModuleKind>
+    <PlatformTarget>x86</PlatformTarget>
+    <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
+    <PublishDatabases>true</PublishDatabases>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+    <!--<TypeScriptModuleKind>AMD</TypeScriptModuleKind>-->
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptIncludeComments>true</TypeScriptIncludeComments>
+    <TypeScriptSourceMap>False</TypeScriptSourceMap>
+    <TypeScriptGeneratesDeclarations>false</TypeScriptGeneratesDeclarations>
+    <TypeScriptModuleKind>none</TypeScriptModuleKind>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotNetOpenAuth.AspNet, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>packages\DotNetOpenAuth.AspNet.4.3.4.13329\lib\net45-full\DotNetOpenAuth.AspNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>packages\DotNetOpenAuth.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>packages\DotNetOpenAuth.OAuth.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.Consumer, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>packages\DotNetOpenAuth.OAuth.Consumer.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>packages\DotNetOpenAuth.OpenId.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OpenId.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>packages\DotNetOpenAuth.OpenId.RelyingParty.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServerCompact, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\EntityFramework.SqlServerCompact.6.0.2\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.6.0.7\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Net.Http">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Security">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.DynamicData">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Entity">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.ApplicationServices">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Microsoft.AspNet.Web.Optimization.1.1.2\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Configuration">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Services">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.EnterpriseServices">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Admin\Departments.html" />
+    <Content Include="Admin\HumanEvalManager.html" />
+    <Content Include="Admin\HumanEval.html" />
+    <Content Include="Admin\UserResults.html" />
+    <Content Include="AuthorWeb\dialogs\dlg-edit-inline.html" />
+    <Content Include="AuthorWeb\dialogs\dlg-enum-value.html" />
+    <Content Include="AuthorWeb\dialogs\dlg-prop-name.html" />
+    <Content Include="AuthorWeb\dialogs\ed-enum.html" />
+    <Content Include="AuthorWeb\dialogs\ed-prop-name.html" />
+    <Content Include="AuthorWeb\dialogs\dlg-edit-block.html" />
+    <Content Include="AuthorWeb\externals\bootstrap.js" />
+    <Content Include="AuthorWeb\externals\commonMark\dist\commonmark.js" />
+    <Content Include="AuthorWeb\dialogs\dlg-open-bracket.html" />
+    <Content Include="AuthorWeb\externals\jsRender.js" />
+    <Content Include="AuthorWeb\externals\knockout.js" />
+    <Content Include="AuthorWeb\trash\lib\blocks.js" />
+    <Content Include="AuthorWeb\trash\lib\common.js" />
+    <Content Include="AuthorWeb\trash\lib\decode.js" />
+    <Content Include="AuthorWeb\trash\lib\encode.js" />
+    <Content Include="AuthorWeb\trash\lib\from-code-point.js" />
+    <Content Include="AuthorWeb\trash\lib\html.js" />
+    <Content Include="AuthorWeb\trash\lib\html5-entities.js" />
+    <Content Include="AuthorWeb\trash\lib\index.js" />
+    <Content Include="AuthorWeb\trash\lib\inlines.js" />
+    <Content Include="AuthorWeb\trash\lib\node.js" />
+    <Content Include="AuthorWeb\trash\lib\normalize-reference.js" />
+    <Content Include="AuthorWeb\trash\lib\xml.js" />
+    <Content Include="AuthorWeb\trash\jquery-textrange.js" />
+    <Content Include="AuthorWeb\externals\jquery-ui-core.js" />
+    <Content Include="AuthorWeb\externals\jquery\jquery-1.js" />
+    <Content Include="AuthorWeb\externals\jquery\jquery-2.js" />
+    <Content Include="AuthorWeb\trash\jquery-migrate.js" />
+    <Content Include="AuthorWeb\trash\jquery-ui\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="AuthorWeb\trash\jquery-ui\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="AuthorWeb\trash\jquery-ui\images\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="AuthorWeb\trash\jquery-ui\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="AuthorWeb\trash\jquery-ui\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="AuthorWeb\trash\jquery-ui\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="AuthorWeb\trash\jquery-ui\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <Content Include="AuthorWeb\trash\jquery-ui\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="AuthorWeb\trash\jquery-ui\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="AuthorWeb\trash\jquery-ui\images\ui-icons_222222_256x240.png" />
+    <Content Include="AuthorWeb\trash\jquery-ui\images\ui-icons_228ef1_256x240.png" />
+    <Content Include="AuthorWeb\trash\jquery-ui\images\ui-icons_ef8c08_256x240.png" />
+    <Content Include="AuthorWeb\trash\jquery-ui\images\ui-icons_ffd27a_256x240.png" />
+    <Content Include="AuthorWeb\trash\jquery-ui\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="AuthorWeb\trash\jquery-ui\index.html" />
+    <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.css" />
+    <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.js" />
+    <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.structure.css" />
+    <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.theme.css" />
+    <TypeScriptCompile Include="AuthorWeb\js\compRenderTag.ts" />
+    <TypeScriptCompile Include="AuthorWeb\js\encodeLib.ts" />
+    <TypeScriptCompile Include="AuthorWeb\js\docBlock.ts" />
+    <TypeScriptCompile Include="AuthorWeb\js\marksLow.ts" />
+    <TypeScriptCompile Include="AuthorWeb\js\marks.ts" />
+    <TypeScriptCompile Include="AuthorWeb\js\compiler.ts" />
+    <TypeScriptCompile Include="AuthorWeb\js\metaJSGen.ts" />
+    <TypeScriptCompile Include="AuthorWeb\js\jquery-textrange.ts" />
+    <Content Include="AuthorWeb\trash\ModalPopover.css" />
+    <Content Include="AuthorWeb\trash\ModalPopover.js" />
+    <Content Include="AuthorWeb\index.aspx" />
+    <Content Include="AuthorWeb\KnowHow\commonMark\Index.html" />
+    <Content Include="AuthorWeb\KnowHow\PopoverEditor.html" />
+    <Content Include="AuthorWeb\trash\layout\source\stable\callbacks\jquery.layout.callbacks-latest.js" />
+    <Content Include="AuthorWeb\trash\layout\source\stable\callbacks\jquery.layout.pseudoClose.js" />
+    <Content Include="AuthorWeb\trash\layout\source\stable\callbacks\jquery.layout.resizeDataTable.js" />
+    <Content Include="AuthorWeb\trash\layout\source\stable\callbacks\jquery.layout.resizePaneAccordions.js" />
+    <Content Include="AuthorWeb\trash\layout\source\stable\callbacks\jquery.layout.resizeTabLayout.js" />
+    <Content Include="AuthorWeb\trash\layout\source\stable\jquery.layout_and_plugins.js" />
+    <Content Include="AuthorWeb\trash\layout\source\stable\layout-default.css" />
+    <Content Include="AuthorWeb\KnowHow\Layout with Accordion.htm" />
+    <Content Include="AuthorWeb\trash\IndexEx.html" />
+    <Content Include="AuthorWeb\KnowHow\AzureChunkUpload.html" />
+    <Content Include="App_Data\testMe\TestMeCertifikat.pdf" />
+    <Content Include="App_Data\testMe\TestMeCertifikatSpecimen.pdf" />
+    <None Include="AuthorWeb\KnowHow\smartText\smartText.less" />
+    <Content Include="AuthorWeb\KnowHow\smartText\smartText.html" />
+    <Content Include="Author\Author.aspx" />
+    <Content Include="Author\ExFormData.htm" />
+    <Content Include="Author\ExTemplate.htm" />
+    <Content Include="Author\ModTemplate.htm" />
+    <Content Include="Author\SchemaDefinition.xml" />
+    <Content Include="Author\tagsMeta.xml" />
+    <Content Include="Author\xref.html" />
+    <Content Include="Author\doc.html" />
+    <Content Include="Author\vsNet.html" />
+    <Content Include="Author\xref.xml" />
+    <Content Include="Author\xrefSitemap.js" />
+    <Content Include="BS3\js\modal.js" />
+    <Content Include="BS3\js\tooltip.js" />
+    <Content Include="BS3\less\RTL\button-groups-rtl.css">
+      <DependentUpon>button-groups-rtl.less</DependentUpon>
+    </Content>
+    <Content Include="BS3\less\RTL\grid-rtl.css">
+      <DependentUpon>grid-rtl.less</DependentUpon>
+    </Content>
+    <Content Include="BS3\less\RTL\lm-rtl.css">
+      <DependentUpon>lm-rtl.less</DependentUpon>
+    </Content>
+    <Content Include="BS3\less\RTL\lm-rtl.min.css">
+      <DependentUpon>lm-rtl.less</DependentUpon>
+    </Content>
+    <Content Include="BS3\less\RTL\merged-rtl.css">
+      <DependentUpon>merged-rtl.less</DependentUpon>
+    </Content>
+    <Content Include="BS3\less\RTL\type-rtl.css">
+      <DependentUpon>type-rtl.less</DependentUpon>
+    </Content>
+    <Content Include="BS3\less\RTL\variables.css">
+      <DependentUpon>variables.less</DependentUpon>
+    </Content>
+    <Content Include="BS3\less\RTL\variables.min.css">
+      <DependentUpon>variables.less</DependentUpon>
+    </Content>
+    <Content Include="Courses\codes\docReference.html" />
+    <Content Include="Courses\codes\chinhSpeaking.html" />
+    <Content Include="Courses\GapFill.html" />
+    <Content Include="Courses\Macro.html" />
+    <Content Include="Courses\ordering.html" />
+    <Content Include="Global.asax" />
+    <Content Include="JsLib\Controls\TreeView\TreeView.html" />
+    <Content Include="BS3\less\input-groups.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\responsive-embed.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\theme.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\alerts.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\background-variant.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\border-radius.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\buttons.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\center-block.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\clearfix.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\forms.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\gradients.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\grid-framework.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\grid.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\hide-text.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\image.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\labels.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\list-group.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\nav-divider.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\nav-vertical-align.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\opacity.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\pagination.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\panels.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\progress-bar.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\reset-filter.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\resize.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\responsive-visibility.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\size.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\tab-focus.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\table-row.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\text-emphasis.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\text-overflow.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins\vendor-prefixes.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="AuthorWeb\doc.less" />
+    <None Include="AuthorWeb\trash\styles.less_" />
+    <Content Include="AuthorWeb\smartText.less" />
+    <None Include="Author\CourseModelSchema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Author\xhtml5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Courses\xhtml5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="JsLib\css\Author.less" />
+    <Content Include="JsLib\css\img\flag-mid.png" />
+    <Content Include="JsLib\css\img\flag-small.png" />
+    <Content Include="JsLib\css\img\line_conn.gif" />
+    <Content Include="JsLib\css\Statistics.less" />
+    <Content Include="JsLib\EA\EA.css" />
+    <Content Include="JsLib\EA\eaRepl.js" />
+    <Content Include="JsLib\JS\Sound\lame\about.html" />
+    <Content Include="JsLib\JS\Sound\lame\abr.html" />
+    <Content Include="JsLib\JS\Sound\lame\BladeMP3EncDLL.c" />
+    <Content Include="JsLib\JS\Sound\lame\BladeMP3EncDLL.h" />
+    <Content Include="JsLib\JS\Sound\lame\cbr.html" />
+    <Content Include="JsLib\JS\Sound\lame\contact.html" />
+    <Content Include="JsLib\JS\Sound\lame\contributors.html" />
+    <Content Include="JsLib\JS\Sound\lame\detailed.html" />
+    <Content Include="JsLib\JS\Sound\lame\history.html" />
+    <Content Include="JsLib\JS\Sound\lame\index.html" />
+    <Content Include="JsLib\JS\Sound\lame\introduction.html" />
+    <Content Include="JsLib\JS\Sound\lame\lame.h" />
+    <Content Include="JsLib\JS\Sound\lame\links.html" />
+    <Content Include="JsLib\JS\Sound\lame\list.html" />
+    <Content Include="JsLib\JS\Sound\lame\ms_stereo.html" />
+    <Content Include="JsLib\JS\Sound\lame\usage.html" />
+    <Content Include="JsLib\JS\Sound\lame\vbr.html" />
+    <Content Include="JsLib\JS\trash\libmp3lame.js" />
+    <Content Include="JsLib\JS\trash\pako_deflate.js" />
+    <Content Include="JsLib\JS\trash\pako_deflate.min.js" />
+    <Content Include="JsLib\JS\Sound\Test.html" />
+    <Content Include="JsLib\Scripts\intl\Intl.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\aa-DJ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\aa-ER.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\aa-ET.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\aa.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\af-NA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\af-ZA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\af.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\agq-CM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\agq.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ak-GH.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ak.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\am-ET.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\am.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-001.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-AE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-BH.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-DJ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-DZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-EG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-EH.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-ER.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-IL.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-IQ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-JO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-KM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-KW.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-LB.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-LY.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-MA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-MR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-OM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-PS.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-QA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-SA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-SD.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-SO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-SS.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-SY.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-TD.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-TN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar-YE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ar.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\as-IN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\as.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\asa-TZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\asa.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ast-ES.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ast.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\az-Cyrl-AZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\az-Cyrl.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\az-Latn-AZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\az-Latn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\az.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bas-CM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bas.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\be-BY.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\be.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bem-ZM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bem.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bez-TZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bez.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bg-BG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bg.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bm-Latn-ML.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bm-Latn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bm-ML.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bm.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bn-BD.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bn-IN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bo-CN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bo-IN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bo.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\br-FR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\br.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\brx-IN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\brx.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bs-Cyrl-BA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bs-Cyrl.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bs-Latn-BA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bs-Latn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\bs.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\byn-ER.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\byn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ca-AD.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ca-ES-VALENCIA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ca-ES.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ca-FR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ca-IT.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ca.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\cgg-UG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\cgg.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\chr-US.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\chr.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\cs-CZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\cs.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\cy-GB.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\cy.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\da-DK.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\da-GL.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\da.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\dav-KE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\dav.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\de-AT.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\de-BE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\de-CH.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\de-DE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\de-LI.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\de-LU.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\de.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\dje-NE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\dje.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\dsb-DE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\dsb.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\dua-CM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\dua.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\dyo-SN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\dyo.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\dz-BT.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\dz.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ebu-KE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ebu.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ee-GH.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ee-TG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ee.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\el-CY.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\el-GR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\el.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-001.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-150.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-AG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-AI.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-AS.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-AU.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-BB.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-BE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-BM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-BS.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-BW.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-BZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-CA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-CC.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-CK.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-CM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-CX.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-DG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-DM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-Dsrt-US.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-Dsrt.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-ER.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-FJ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-FK.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-FM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-GB.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-GD.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-GG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-GH.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-GI.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-GM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-GU.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-GY.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-HK.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-IE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-IM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-IN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-IO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-JE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-JM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-KE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-KI.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-KN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-KY.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-LC.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-LR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-LS.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-MG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-MH.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-MO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-MP.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-MS.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-MT.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-MU.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-MW.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-MY.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-NA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-NF.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-NG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-NR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-NU.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-NZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-PG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-PH.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-PK.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-PN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-PR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-PW.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-RW.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-SB.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-SC.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-SD.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-SG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-SH.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-SL.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-SS.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-SX.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-SZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-TC.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-TK.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-TO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-TT.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-TV.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-TZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-UG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-UM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-US.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-VC.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-VG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-VI.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-VU.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-WS.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-ZA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-ZM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en-ZW.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\en.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\eo-001.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\eo.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-419.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-AR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-BO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-CL.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-CO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-CR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-CU.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-DO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-EA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-EC.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-ES.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-GQ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-GT.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-HN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-IC.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-MX.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-NI.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-PA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-PE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-PH.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-PR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-PY.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-SV.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-US.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-UY.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es-VE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\es.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\et-EE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\et.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\eu-ES.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\eu.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ewo-CM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ewo.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fa-AF.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fa-IR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fa.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ff-CM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ff-GN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ff-MR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ff-SN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ff.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fi-FI.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fi.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fil-PH.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fil.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fo-FO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fo.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-BE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-BF.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-BI.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-BJ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-BL.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-CA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-CD.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-CF.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-CG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-CH.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-CI.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-CM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-DJ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-DZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-FR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-GA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-GF.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-GN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-GP.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-GQ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-HT.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-KM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-LU.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-MA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-MC.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-MF.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-MG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-ML.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-MQ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-MR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-MU.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-NC.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-NE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-PF.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-PM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-RE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-RW.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-SC.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-SN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-SY.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-TD.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-TG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-TN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-VU.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-WF.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr-YT.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fr.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fur-IT.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fur.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fy-NL.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\fy.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ga-IE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ga.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\gd-GB.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\gd.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\gl-ES.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\gl.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\gsw-CH.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\gsw-FR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\gsw-LI.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\gsw.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\gu-IN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\gu.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\guz-KE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\guz.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\gv-GB.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\gv-IM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\gv.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ha-Latn-GH.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ha-Latn-NE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ha-Latn-NG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ha-Latn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ha.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\haw-US.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\haw.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\he-IL.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\he.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\hi-IN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\hi.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\hr-BA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\hr-HR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\hr.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\hsb-DE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\hsb.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\hu-HU.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\hu.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\hy-AM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\hy.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ia-FR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ia.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\id-ID.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\id.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ig-NG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ig.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ii-CN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ii.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\is-IS.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\is.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\it-CH.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\it-IT.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\it-SM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\it.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ja-JP.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ja.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\jgo-CM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\jgo.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\jmc-TZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\jmc.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ka-GE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ka.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kab-DZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kab.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kam-KE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kam.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kde-TZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kde.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kea-CV.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kea.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\khq-ML.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\khq.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ki-KE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ki.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kk-Cyrl-KZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kk-Cyrl.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kk.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kkj-CM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kkj.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kl-GL.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kl.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kln-KE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kln.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\km-KH.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\km.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kn-IN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ko-KP.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ko-KR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ko.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kok-IN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kok.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ks-Arab-IN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ks-Arab.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ks.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ksb-TZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ksb.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ksf-CM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ksf.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ksh-DE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ksh.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kw-GB.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\kw.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ky-Cyrl-KG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ky-Cyrl.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ky-KG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ky.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\lag-TZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\lag.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\lb-LU.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\lb.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\lg-UG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\lg.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\lkt-US.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\lkt.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ln-AO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ln-CD.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ln-CF.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ln-CG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ln.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\lo-LA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\lo.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\lt-LT.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\lt.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\lu-CD.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\lu.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\luo-KE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\luo.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\luy-KE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\luy.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\lv-LV.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\lv.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mas-KE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mas-TZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mas.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mer-KE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mer.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mfe-MU.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mfe.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mg-MG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mg.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mgh-MZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mgh.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mgo-CM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mgo.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mk-MK.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mk.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ml-IN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ml.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mn-Cyrl-MN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mn-Cyrl.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mr-IN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mr.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ms-Latn-BN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ms-Latn-MY.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ms-Latn-SG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ms-Latn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ms.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mt-MT.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mt.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mua-CM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\mua.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\my-MM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\my.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\naq-NA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\naq.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nb-NO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nb-SJ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nb.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nd-ZW.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nd.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ne-IN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ne-NP.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ne.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nl-AW.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nl-BE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nl-BQ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nl-CW.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nl-NL.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nl-SR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nl-SX.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nl.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nmg-CM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nmg.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nn-NO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nnh-CM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nnh.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nr-ZA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nr.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nso-ZA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nso.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nus-SD.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nus.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nyn-UG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\nyn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\om-ET.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\om-KE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\om.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\or-IN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\or.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\os-GE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\os-RU.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\os.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\pa-Arab-PK.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\pa-Arab.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\pa-Guru-IN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\pa-Guru.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\pa.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\pl-PL.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\pl.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ps-AF.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ps.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\pt-AO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\pt-BR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\pt-CV.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\pt-GW.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\pt-MO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\pt-MZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\pt-PT.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\pt-ST.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\pt-TL.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\pt.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\qu-BO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\qu-EC.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\qu-PE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\qu.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\rm-CH.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\rm.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\rn-BI.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\rn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ro-MD.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ro-RO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ro.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\rof-TZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\rof.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\root.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ru-BY.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ru-KG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ru-KZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ru-MD.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ru-RU.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ru-UA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ru.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\rw-RW.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\rw.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\rwk-TZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\rwk.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sah-RU.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sah.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\saq-KE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\saq.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sbp-TZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sbp.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\se-FI.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\se-NO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\se-SE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\se.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\seh-MZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\seh.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ses-ML.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ses.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sg-CF.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sg.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\shi-Latn-MA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\shi-Latn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\shi-Tfng-MA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\shi-Tfng.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\shi.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\si-LK.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\si.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sk-SK.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sk.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sl-SI.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sl.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\smn-FI.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\smn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sn-ZW.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\so-DJ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\so-ET.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\so-KE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\so-SO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\so.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sq-AL.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sq-MK.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sq-XK.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sq.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sr-Cyrl-BA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sr-Cyrl-ME.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sr-Cyrl-RS.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sr-Cyrl-XK.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sr-Cyrl.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sr-Latn-BA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sr-Latn-ME.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sr-Latn-RS.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sr-Latn-XK.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sr-Latn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sr.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ss-SZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ss-ZA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ss.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ssy-ER.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ssy.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\st-LS.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\st-ZA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\st.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sv-AX.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sv-FI.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sv-SE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sv.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sw-KE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sw-TZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sw-UG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\sw.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\swc-CD.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\swc.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ta-IN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ta-LK.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ta-MY.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ta-SG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ta.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\te-IN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\te.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\teo-KE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\teo-UG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\teo.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\tg-Cyrl-TJ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\tg-Cyrl.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\tg.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\th-TH.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\th.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ti-ER.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ti-ET.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ti.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\tig-ER.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\tig.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\tn-BW.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\tn-ZA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\tn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\to-TO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\to.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\tr-CY.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\tr-TR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\tr.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ts-ZA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ts.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\twq-NE.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\twq.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\tzm-Latn-MA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\tzm-Latn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\tzm.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ug-Arab-CN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ug-Arab.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ug.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\uk-UA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\uk.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ur-IN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ur-PK.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ur.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\uz-Arab-AF.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\uz-Arab.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\uz-Cyrl-UZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\uz-Cyrl.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\uz-Latn-UZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\uz-Latn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\uz.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\vai-Latn-LR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\vai-Latn.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\vai-Vaii-LR.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\vai-Vaii.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\vai.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ve-ZA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\ve.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\vi-VN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\vi.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\vo-001.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\vo.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\vun-TZ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\vun.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\wae-CH.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\wae.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\wal-ET.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\wal.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\xh-ZA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\xh.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\xog-UG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\xog.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\yav-CM.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\yav.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\yi-001.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\yi.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\yo-BJ.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\yo-NG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\yo.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\zgh-MA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\zgh.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\zh-Hans-CN.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\zh-Hans-HK.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\zh-Hans-MO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\zh-Hans-SG.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\zh-Hans.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\zh-Hant-HK.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\zh-Hant-MO.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\zh-Hant-TW.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\zh-Hant.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\zh.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\zu-ZA.js" />
+    <Content Include="JsLib\Scripts\intl\jsonp\zu.js" />
+    <Content Include="JsLib\Scripts\jquery2.js" />
+    <Content Include="JsLib\Scripts\jqvalidator\core.js" />
+    <Content Include="JsLib\Scripts\jqvalidator\delegate.js" />
+    <Content Include="JsLib\Scripts\jqvalidator\localization\messages_cs.js" />
+    <Content Include="JsLib\Scripts\prettify.css" />
+    <Content Include="JsLib\Scripts\prettify.js" />
+    <Content Include="JsLib\Scripts\query.autosize.js" />
+    <Content Include="JsLib\Scripts\typescript.js" />
+    <Content Include="JsLib\Scripts\ui\jquery-ui.js" />
+    <Content Include="JsLib\skins\chinh\css.css">
+      <DependentUpon>css.less</DependentUpon>
+    </Content>
+    <Content Include="JsLib\skins\chinh\img\logo-small.png" />
+    <Content Include="JsLib\skins\chinh\img\logo.png" />
+    <Content Include="JsLib\skins\chinh\img\login.png" />
+    <Content Include="JsLib\skins\grafia\css.css">
+      <DependentUpon>css.less</DependentUpon>
+    </Content>
+    <Content Include="JsLib\skins\grafia\css.less" />
+    <Content Include="App_Data\testMe\langmaster_pdf.pfx" />
+    <Content Include="App_Data\testMe\verdana.ttf" />
+    <Content Include="App_Data\testMe\verdanab.ttf" />
+    <None Include="BS3\less\1pxdeep\1pxdeep.less_" />
+    <None Include="BS3\less\1pxdeep\scheme.less_" />
+    <Content Include="BS3\less\bootsWatch-flatly\bootswatch.less" />
+    <Content Include="BS3\less\bootsWatch-flatly\variables.less" />
+    <Content Include="BS3\less\bootstrap-externals.less" />
+    <None Include="BS3\less\lavish\bootstrap.less_" />
+    <None Include="BS3\less\variables.less" />
+    <Content Include="JsLib\css\lm-bootswatch-flatly.less" />
+    <Content Include="JsLib\css\lm.less" />
+    <Content Include="font-awesome\lm\externals.less" />
+    <Content Include="font-awesome\lm\externals-bootsWatch-flatly.less" />
+    <Content Include="JsLib\css\variables.less" />
+    <Content Include="JsLib\css\variables-bootswatch-flatly.less" />
+    <Content Include="JsLib\css\variables-default.less" />
+    <Content Include="JsLib\skins\skrivanek\css.css">
+      <DependentUpon>css.less</DependentUpon>
+    </Content>
+    <Content Include="JsLib\skins\skrivanek\html.html" />
+    <Content Include="JsLib\skins\skrivanek\img\eu.png" />
+    <Content Include="JsLib\skins\skrivanek\img\login.png" />
+    <Content Include="JsLib\skins\skrivanek\img\logo-small.png" />
+    <Content Include="JsLib\skins\skrivanek\img\logo.png" />
+    <Content Include="JsLib\skins\default\eTestMeCertifikat.pdf" />
+    <Content Include="JsLib\skins\skrivanek\eTestMeCertifikat.pdf" />
+    <Content Include="JsLib\skins\skrivanek\css.less" />
+    <Content Include="JsLib\css\img\logo-jjlearning.png" />
+    <Content Include="JsLib\Scripts\dx.phonejs.js" />
+    <Content Include="JsLib\Scripts\jquery.transit.js" />
+    <Content Include="JsLib\Scripts\knockout.validation.js" />
+    <Content Include="JsLib\Scripts\knockout.js" />
+    <Content Include="JsLib\Scripts\knockout_mapping.js" />
+    <Content Include="JsLib\Scripts\Validator\jQuery-Validator.Knockout.js" />
+    <Content Include="JsLib\Scripts\Validator\jQuery.Validator.Checkbox.js" />
+    <Content Include="JsLib\Scripts\Validator\jQuery.Validator.CheckboxGroup.js" />
+    <Content Include="JsLib\Scripts\Validator\jQuery.Validator.CultureCode.js" />
+    <Content Include="JsLib\Scripts\Validator\jQuery.Validator.EmailPlugin.js" />
+    <Content Include="JsLib\Scripts\Validator\jQuery.Validator.FieldMatch.js" />
+    <Content Include="JsLib\Scripts\Validator\jQuery.Validator.js" />
+    <Content Include="JsLib\Scripts\Validator\jQuery.Validator.KendoMultiselect.js" />
+    <Content Include="JsLib\Scripts\Validator\jQuery.Validator.Phonenumber.js" />
+    <Content Include="JsLib\Scripts\Validator\jQuery.Validator.Url.js" />
+    <Content Include="JsLib\skins\grafia\css.min.css">
+      <DependentUpon>css.less</DependentUpon>
+    </Content>
+    <Content Include="JsLib\skins\grafia\html.html" />
+    <Content Include="JsLib\skins\grafia\img\logo.png" />
+    <Content Include="JsLib\skins\grafia\img\logo-small.png" />
+    <TypeScriptCompile Include="Admin\HumanEvalManager.ts" />
+    <TypeScriptCompile Include="Admin\HumanEval.ts" />
+    <None Include="AuthorWeb\trash\Layout.ts_" />
+    <TypeScriptCompile Include="AuthorWeb\js\metaJS.ts" />
+    <TypeScriptCompile Include="AuthorWeb\js\docObjects.ts" />
+    <TypeScriptCompile Include="AuthorWeb\dialogs\dialogs.ts" />
+    <TypeScriptCompile Include="AuthorWeb\js\docText.ts" />
+    <TypeScriptCompile Include="AuthorWeb\js\marksInline.ts" />
+    <TypeScriptCompile Include="AuthorWeb\js\metaMarks.ts" />
+    <TypeScriptCompile Include="AuthorWeb\KnowHow\smartText\smartText.ts" />
+    <TypeScriptCompile Include="Author\xref.ts" />
+    <TypeScriptCompile Include="Author\doc.ts" />
+    <TypeScriptCompile Include="Author\GenerateReflection.ts" />
+    <TypeScriptCompile Include="Author\vsNet.ts" />
+    <TypeScriptCompile Include="BS3\js\bootstrap.d.ts" />
+    <TypeScriptCompile Include="Courses\codes\chinhSpeaking.ts" />
+    <TypeScriptCompile Include="Courses\codes\docReference.ts" />
+    <TypeScriptCompile Include="Courses\CourseLib.ts" />
+    <TypeScriptCompile Include="Courses\CourseModel.ts" />
+    <TypeScriptCompile Include="Courses\CourseMeta.ts" />
+    <TypeScriptCompile Include="Courses\DesignDictSource.ts" />
+    <TypeScriptCompile Include="Courses\Eval.ts" />
+    <TypeScriptCompile Include="Courses\GapFill.ts" />
+    <TypeScriptCompile Include="Courses\GenCourseMeta.ts" />
+    <Content Include="logins.html" />
+    <Content Include="Schools\CourseMetaGui.html" />
+    <Content Include="Schools\Design\DefaultDict.aspx" />
+    <Content Include="Schools\Design\Default.aspx" />
+    <Content Include="Schools\Design\Design - Copy.js">
+      <DependentUpon>ExtractWords.ts</DependentUpon>
+    </Content>
+    <Content Include="Schools\Design\DictLingea.js" />
+    <Content Include="Schools\Design\lmConsole.aspx" />
+    <Content Include="Schools\Design\QueryBuilder.aspx" />
+    <Content Include="Schools\Design\sitemap.xml" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="mp3Uploader.ashx" />
+    <Content Include="JsLib\skins\chinh\css.less" />
+    <None Include="Schools\Statistics.odc" />
+    <Content Include="Schools\Design\DictLingea.html" />
+    <Content Include="Schools\NewEAProtected.aspx" />
+    <Content Include="Schools\Design\DictLingea.aspx" />
+    <Content Include="Schools\Splash.html" />
+    <Content Include="Schools\Statistics.html" />
+    <Content Include="Schools\Design\ExtractWords.aspx" />
+    <Content Include="Schools\GenProxy.aspx" />
+    <None Include="Statistics\Default.ascx_" />
+    <None Include="Statistics\Toc.ascx_" />
+    <Content Include="Temp\file1.js" />
+    <Content Include="Temp\GoogleLogin.html" />
+    <Content Include="Temp\HtmlPage1.html" />
+    <Content Include="Temp\HtmlPage2.html" />
+    <Content Include="Temp\HtmlPage3.html" />
+    <Content Include="Temp\htmlPublishing.aspx" />
+    <Content Include="Temp\JavaScript1.js" />
+    <Content Include="Temp\jsonml-xml.js" />
+    <Content Include="Temp\htmlPublishing\index.html" />
+    <Content Include="Temp\LFE3.html" />
+    <Content Include="Temp\local.html" />
+    <None Include="Statistics\Ground.Master_" />
+    <None Include="Temp\Data.json" />
+    <Content Include="Temp\mediumJS\bililiteRange.js" />
+    <Content Include="Temp\mediumJS\index.html" />
+    <Content Include="Temp\mediumJS\lib\Action.js" />
+    <Content Include="Temp\mediumJS\lib\base.js" />
+    <Content Include="Temp\mediumJS\lib\Cache.js" />
+    <Content Include="Temp\mediumJS\lib\Cursor.js" />
+    <Content Include="Temp\mediumJS\lib\Drag.js" />
+    <Content Include="Temp\mediumJS\lib\Element.js" />
+    <Content Include="Temp\mediumJS\lib\environmentCorrection.js" />
+    <Content Include="Temp\mediumJS\lib\Html.js" />
+    <Content Include="Temp\mediumJS\lib\Injector.js" />
+    <Content Include="Temp\mediumJS\lib\Selection.js" />
+    <Content Include="Temp\mediumJS\lib\Toolbar.js" />
+    <Content Include="Temp\mediumJS\lib\Undoable.js" />
+    <Content Include="Temp\mediumJS\lib\Utilities.js" />
+    <Content Include="Temp\mediumJS\lib\wrapper.js" />
+    <Content Include="Temp\mediumJS\medium.js" />
+    <Content Include="Temp\mediumJS\rangy-classapplier.js" />
+    <Content Include="Temp\mediumJS\rangy-core.js" />
+    <TypeScriptCompile Include="Courses\Ordering.ts" />
+    <TypeScriptCompile Include="JsLib\JSD\jquery-ui.d.ts" />
+    <TypeScriptCompile Include="Temp\mediumJS\ts\Base.ts" />
+    <TypeScriptCompile Include="Temp\mediumJS\ts\Cache.ts" />
+    <TypeScriptCompile Include="Temp\mediumJS\ts\Cursor.ts" />
+    <TypeScriptCompile Include="Temp\mediumJS\ts\Utilities.ts" />
+    <TypeScriptCompile Include="Temp\mediumJS\ts\Selection.ts" />
+    <TypeScriptCompile Include="Temp\mediumJS\ts\Undoable.ts" />
+    <TypeScriptCompile Include="Temp\mediumJS\ts\Action.ts" />
+    <TypeScriptCompile Include="Temp\mediumJS\ts\Element.ts" />
+    <TypeScriptCompile Include="Temp\mediumJS\ts\Drag.ts" />
+    <TypeScriptCompile Include="Temp\mediumJS\ts\Html.ts" />
+    <TypeScriptCompile Include="Temp\mediumJS\ts\Injector.ts" />
+    <Content Include="Temp\mediumJS\rangy-highlighter.js" />
+    <Content Include="Temp\mediumJS\rangy-textrange.js" />
+    <Content Include="Temp\mediumJS\undo.js" />
+    <Content Include="Temp\StyleSheet1.css" />
+    <Content Include="Temp\TextTemplate1.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TextTemplate1.tt</DependentUpon>
+    </Content>
+    <Content Include="Temp\Typescript.html" />
+    <Content Include="Temp\typescript.js" />
+    <Content Include="Temp\WebSimple.aspx" />
+    <Content Include="Temp\TestTransit.aspx" />
+    <Content Include="Temp\TestPhoneJS.aspx" />
+    <Content Include="Temp\XMLEvals.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Temp\XMLSound.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Temp\XMLFile2.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_Data\JsonML.xslt" />
+    <Content Include="TestMe\forPlaying.mp3" />
+    <Content Include="TestMe\forPlaying.xml" />
+    <Content Include="TestMe\TestHome.html" />
+    <Content Include="TestMe\forRecording.xml" />
+    <Content Include="TestMe\TestResult.html" />
+    <Content Include="TestMe\TestExercise.html" />
+    <Content Include="Trados\Default.aspx" />
+    <Content Include="Trados\EditPage.ascx" />
+    <Content Include="Trados\EditPage.aspx" />
+    <Content Include="Trados\LookupManager.aspx" />
+    <Content Include="Trados\Manager.aspx" />
+    <Content Include="Trados\ManagerBatch.aspx" />
+    <Content Include="Trados\_ManagerBatch.aspx" />
+    <Content Include="Trados\Partner.aspx" />
+    <Content Include="Trados\PartnerEdit.aspx" />
+    <Content Include="Trados\Partner_Search.aspx" />
+    <Content Include="Trados\Statistics.aspx" />
+    <Content Include="Trados\TopBar.ascx" />
+    <Content Include="Trados\Unlock.aspx" />
+    <None Include="configs\Web.Alpha.AppSetting.config" />
+    <None Include="configs\Web.Alpha.ConnectionStrings.config" />
+    <Content Include="Temp\TextFile3.json" />
+    <Content Include="Temp\TextTemplate1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TextTemplate1.txt</LastGenOutput>
+    </Content>
+    <Content Include="Temp\mediumJS\jquery.sendkeys.js" />
+    <None Include="Temp\XMLSchema1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Temp\XMLSchema2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="font-awesome\less\bordered-pulled.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="font-awesome\less\fixed-width.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="font-awesome\less\larger.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="font-awesome\less\list.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="font-awesome\less\rotated-flipped.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="font-awesome\less\spinning.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="font-awesome\less\stacked.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="JsLib\css\img\DictAbout\pic1.PNG" />
+    <Content Include="JsLib\css\img\DictAbout\pic2.PNG" />
+    <Content Include="JsLib\css\img\DictAbout\pic3.PNG" />
+    <Content Include="JsLib\css\img\DictAbout\pic4.PNG" />
+    <Content Include="JsLib\JS\Bowser.html" />
+    <Content Include="packages\SqlServerCompact.txt" />
+    <Content Include="packages\x64.txt" />
+    <Content Include="packages\Nuget.txt" />
+    <Content Include="Schools\Design\jsCrambler.aspx" />
+    <Content Include="ScormExNet35.ashx" />
+    <Content Include="DynamicScript.ashx" />
+    <TypeScriptCompile Include="Admin\UserResults.ts" />
+    <TypeScriptCompile Include="Admin\Departments.ts" />
+    <TypeScriptCompile Include="JsLib\Controls\TreeView\TreeView.ts" />
+    <TypeScriptCompile Include="JsLib\JSD\HtmlAudio\MediaStream.d.ts" />
+    <TypeScriptCompile Include="JsLib\JSD\HtmlAudio\RTCPeerConnection.d.ts" />
+    <TypeScriptCompile Include="JsLib\JSD\HtmlAudio\waa.d.ts" />
+    <TypeScriptCompile Include="JsLib\JSD\jquery.validation.d.ts" />
+    <TypeScriptCompile Include="JsLib\JSD\knockout.validation.d.ts" />
+    <TypeScriptCompile Include="JsLib\JS\Boot.ts" />
+    <TypeScriptCompile Include="JsLib\JS\Bowser.ts" />
+    <TypeScriptCompile Include="JsLib\JS\External\jqvalidator.ts" />
+    <TypeScriptCompile Include="JsLib\JS\lmconsoleinit.ts" />
+    <TypeScriptCompile Include="JsLib\JS\lmconsole.ts" />
+    <TypeScriptCompile Include="JsLib\JS\trash\gzipWorker.ts" />
+    <TypeScriptCompile Include="JsLib\JS\Sound\wavWorker.ts" />
+    <TypeScriptCompile Include="JsLib\JS\trash\pako.d.ts" />
+    <TypeScriptCompile Include="JsLib\JS\trash\libmp3lame.d.ts" />
+    <TypeScriptCompile Include="JsLib\JS\trash\mp3Worker.ts" />
+    <TypeScriptCompile Include="JsLib\JS\Sound\mp3WorkerLib.ts" />
+    <TypeScriptCompile Include="JsLib\JS\Sound\WavePCM.ts" />
+    <TypeScriptCompile Include="JsLib\Scripts\jqvalidator\lm_remote.ts" />
+    <TypeScriptCompile Include="JsLib\skins\chinh\script.ts" />
+    <TypeScriptCompile Include="JsLib\skins\grafia\script.ts" />
+    <TypeScriptCompile Include="JsLib\skins\skrivanek\script.ts" />
+    <TypeScriptCompile Include="Schools\CourseMetaGui.ts" />
+    <TypeScriptCompile Include="Schools\Design\DictLingea.ts" />
+    <TypeScriptCompile Include="Schools\Design\ExtractWords.ts" />
+    <TypeScriptCompile Include="Schools\GenAzure.ts" />
+    <TypeScriptCompile Include="Schools\GenProxyTest.ts" />
+    <TypeScriptCompile Include="Schools\GenProxy.ts" />
+    <TypeScriptCompile Include="Schools\PersistMemory.ts" />
+    <Content Include="Schools\Design\LANGMasterAuthorGalery.aspx" />
+    <Content Include="Schools\Design\TTS.aspx" />
+    <Content Include="Schools\DictAbout.html" />
+    <None Include="Properties\PublishProfiles\Test.pubxml" />
+    <Content Include="Schools\Design\Statistic_CourseStructure.xml" />
+    <Content Include="Schools\Design\Statistic_CourseStructureEx.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schools\Design\Statistic_Grammar.xml" />
+    <Content Include="Admin\EMails.html" />
+    <TypeScriptCompile Include="(.*?)\.ts" />
+    <Content Include="Courses\page.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Courses\TestForm.aspx" />
+    <Content Include="font-awesome\css\font-awesome.css" />
+    <Content Include="Courses\page.json" />
+    <Content Include="font-awesome\less\core.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="font-awesome\less\mixins.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="font-awesome\less\path.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="font-awesome\less\variables.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Schools\SLExtension.xap" />
+    <Content Include="Temp\DBClearUnusedLMComUserData.aspx" />
+    <Content Include="Temp\TransformerUtils.js" />
+    <Content Include="Web.ConnectionStrings.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Web.AppSetting.config">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="ScormEx.ashx" />
+    <TypeScriptCompile Include="JsLib\JSD\jquery-migrate.d.ts" />
+    <Content Include="Schools\Design\Vocabularies\Debug.sql" />
+    <Content Include="Schools\test.html" />
+    <Content Include="Temp\TestForm.aspx" />
+    <Content Include="Schools\player.swf" />
+    <Content Include="Schools\DebugDownloadTestPage.aspx" />
+    <Content Include="JsLib\Controls\Common\Breadcrumb.html" />
+    <Content Include="JsLib\Controls\Common\Input.html" />
+    <Content Include="JsLib\Controls\Common\MenuItem.html" />
+    <Content Include="JsLib\Controls\Common\OkCancel.html" />
+    <Content Include="JsLib\Controls\Common\TwoColumn.html" />
+    <Content Include="JsLib\css\img\lm-logo-black.png" />
+    <Content Include="JsLib\css\img\login-providers.png" />
+    <None Include="Temp\JavaScript1.json" />
+    <Content Include="JsLib\EA\img\microphone.png" />
+    <Content Include="JsLib\EA\img\microphoneon.png" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.af-ZA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.af.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.am-ET.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.am.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ar-AE.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ar-BH.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ar-DZ.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ar-EG.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ar-IQ.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ar-JO.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ar-KW.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ar-LB.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ar-LY.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ar-MA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ar-OM.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ar-QA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ar-SA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ar-SY.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ar-TN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ar-YE.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ar.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.arn-CL.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.arn.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.as-IN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.as.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.az-Cyrl-AZ.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.az-Cyrl.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.az-Latn-AZ.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.az-Latn.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.az.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ba-RU.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ba.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.be-BY.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.be.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.bg-BG.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.bg.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.bn-BD.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.bn-IN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.bn.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.bo-CN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.bo.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.br-FR.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.br.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.bs-Cyrl-BA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.bs-Cyrl.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.bs-Latn-BA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.bs-Latn.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.bs.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ca-ES.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ca.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.co-FR.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.co.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.cs-CZ.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.cs.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.cy-GB.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.cy.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.da-DK.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.da.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.de-AT.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.de-CH.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.de-DE.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.de-LI.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.de-LU.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.de.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.dsb-DE.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.dsb.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.dv-MV.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.dv.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.el-GR.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.el.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.en-029.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.en-AU.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.en-BZ.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.en-CA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.en-GB.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.en-IE.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.en-IN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.en-JM.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.en-MY.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.en-NZ.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.en-PH.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.en-SG.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.en-TT.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.en-US.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.en-ZA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.en-ZW.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-AR.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-BO.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-CL.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-CO.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-CR.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-DO.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-EC.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-ES.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-GT.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-HN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-MX.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-NI.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-PA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-PE.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-PR.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-PY.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-SV.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-US.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-UY.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es-VE.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.es.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.et-EE.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.et.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.eu-ES.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.eu.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.fa-IR.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.fa.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.fi-FI.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.fi.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.fil-PH.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.fil.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.fo-FO.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.fo.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.fr-BE.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.fr-CA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.fr-CH.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.fr-FR.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.fr-LU.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.fr-MC.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.fr.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.fy-NL.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.fy.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ga-IE.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ga.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.gd-GB.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.gd.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.gl-ES.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.gl.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.gsw-FR.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.gsw.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.gu-IN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.gu.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ha-Latn-NG.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ha-Latn.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ha.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.he-IL.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.he.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.hi-IN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.hi.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.hr-BA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.hr-HR.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.hr.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.hsb-DE.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.hsb.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.hu-HU.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.hu.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.hy-AM.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.hy.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.id-ID.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.id.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ig-NG.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ig.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ii-CN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ii.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.is-IS.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.is.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.it-CH.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.it-IT.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.it.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.iu-Cans-CA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.iu-Cans.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.iu-Latn-CA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.iu-Latn.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.iu.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ja-JP.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ja.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ka-GE.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ka.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.kk-KZ.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.kk.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.kl-GL.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.kl.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.km-KH.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.km.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.kn-IN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.kn.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ko-KR.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ko.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.kok-IN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.kok.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ky-KG.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ky.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.lb-LU.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.lb.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.lo-LA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.lo.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.lt-LT.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.lt.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.lv-LV.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.lv.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.mi-NZ.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.mi.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.mk-MK.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.mk.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ml-IN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ml.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.mn-Cyrl.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.mn-MN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.mn-Mong-CN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.mn-Mong.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.mn.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.moh-CA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.moh.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.mr-IN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.mr.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ms-BN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ms-MY.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ms.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.mt-MT.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.mt.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.nb-NO.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.nb.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ne-NP.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ne.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.nl-BE.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.nl-NL.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.nl.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.nn-NO.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.nn.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.no.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.nso-ZA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.nso.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.oc-FR.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.oc.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.or-IN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.or.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.pa-IN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.pa.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.pl-PL.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.pl.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.prs-AF.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.prs.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ps-AF.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ps.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.pt-BR.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.pt-PT.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.pt.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.qut-GT.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.qut.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.quz-BO.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.quz-EC.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.quz-PE.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.quz.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.rm-CH.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.rm.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ro-RO.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ro.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ru-RU.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ru.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.rw-RW.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.rw.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sa-IN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sa.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sah-RU.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sah.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.se-FI.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.se-NO.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.se-SE.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.se.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.si-LK.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.si.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sk-SK.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sk.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sl-SI.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sl.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sma-NO.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sma-SE.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sma.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.smj-NO.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.smj-SE.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.smj.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.smn-FI.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.smn.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sms-FI.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sms.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sq-AL.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sq.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sr-Cyrl-BA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sr-Cyrl-CS.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sr-Cyrl-ME.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sr-Cyrl-RS.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sr-Cyrl.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sr-Latn-BA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sr-Latn-CS.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sr-Latn-ME.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sr-Latn-RS.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sr-Latn.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sr.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sv-FI.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sv-SE.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sv.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sw-KE.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.sw.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.syr-SY.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.syr.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ta-IN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ta.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.te-IN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.te.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.tg-Cyrl-TJ.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.tg-Cyrl.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.tg.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.th-TH.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.th.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.tk-TM.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.tk.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.tn-ZA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.tn.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.tr-TR.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.tr.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.tt-RU.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.tt.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.tzm-Latn-DZ.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.tzm-Latn.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.tzm.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ug-CN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ug.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.uk-UA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.uk.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ur-PK.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.ur.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.uz-Cyrl-UZ.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.uz-Cyrl.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.uz-Latn-UZ.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.uz-Latn.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.uz.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.vi-VN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.vi.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.wo-SN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.wo.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.xh-ZA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.xh.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.yo-NG.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.yo.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.zh-CHS.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.zh-CHT.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.zh-CN.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.zh-Hans.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.zh-Hant.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.zh-HK.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.zh-MO.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.zh-SG.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.zh-TW.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.zh.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.zu-ZA.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.culture.zu.js" />
+    <Content Include="JsLib\Scripts\cultures\globalize.cultures.js" />
+    <Content Include="Langs.html" />
+    <Content Include="links.html" />
+    <Content Include="Login\EMails.html" />
+    <Content Include="JsLib\EA\EA.js">
+      <DependentUpon>EA.js.bundle</DependentUpon>
+    </Content>
+    <Content Include="JsLib\EA\img\sdMark.gif" />
+    <Content Include="JsLib\EA\img\sdMarkBig.gif" />
+    <Content Include="JsLib\EA\img\sdMarkBigOn.gif" />
+    <Content Include="JsLib\EA\img\sdMarkOn.gif" />
+    <TypeScriptCompile Include="JsLib\JSD\globalize.d.ts" />
+    <TypeScriptCompile Include="JsLib\JSD\jquery.d.ts" />
+    <TypeScriptCompile Include="JsLib\JSD\JsRender.d.ts" />
+    <TypeScriptCompile Include="JsLib\JSD\knockout.d.ts" />
+    <TypeScriptCompile Include="JsLib\JSD\underscore.d.ts" />
+    <Content Include="JsLib\Scripts\globalize.js" />
+    <Content Include="JsLib\Scripts\jquery-migrate.js" />
+    <Content Include="JsLib\Scripts\jquery.ba-hashchange.js" />
+    <Content Include="JsLib\Scripts\jquery.js" />
+    <Content Include="JsLib\Scripts\json2.js" />
+    <Content Include="JsLib\Scripts\jsRender.js" />
+    <Content Include="JsLib\Scripts\knockout-delegatedEvents.js" />
+    <Content Include="JsLib\Scripts\underscore.js" />
+    <Content Include="JsLib\Scripts\WaitForImages.js" />
+    <Content Include="Temp\nuget.org.txt" />
+    <Content Include="Schools\NewEA.aspx" />
+    <Content Include="Schools\Design\Grammar.aspx" />
+    <Content Include="Schools\Design\HtmlEditor.xap" />
+    <TypeScriptCompile Include="Schools\GenLMComLib.ts" />
+    <Content Include="Schools\Loc\tradosData.vi-vn.js" />
+    <Content Include="Schools\Loc\tradosData.cs-cz.js" />
+    <Content Include="Temp\TextFile1.txt" />
+    <Content Include="Temp\TextFile2.txt" />
+    <Content Include="Temp\WebForm1.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="BS3\less\alerts.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\mixins.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\navbar.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\utilities.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\wells.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="font-awesome\less\font-awesome.less">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="font-awesome\less\icons.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\breadcrumbs.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\type.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\bootstrap.less">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\buttons.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\code.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\grid.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\normalize.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\print.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\responsive-utilities.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\scaffolding.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\tables.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="Admin\Admin.html">
+      <DependentUpon>Admin.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Admin\Admin.ts" />
+    <Content Include="Admin\CompAdmins.html">
+      <DependentUpon>CompAdmins.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Admin\CompAdmins.ts" />
+    <Content Include="Admin\KeyGen.html">
+      <DependentUpon>KeyGen.ts</DependentUpon>
+    </Content>
+    <Content Include="Admin\KeyGen.js">
+      <DependentUpon>KeyGen.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Admin\KeyGen.ts" />
+    <Content Include="Admin\Products.html">
+      <DependentUpon>Products.ts</DependentUpon>
+    </Content>
+    <Content Include="Admin\Products.js">
+      <DependentUpon>Products.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Admin\Products.ts" />
+    <Content Include="BS3\less\RTL\button-groups-rtl.less">
+      <Compile>True</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\RTL\grid-rtl.less">
+      <Compile>True</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\RTL\lm-rtl.less">
+      <Compile>True</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\RTL\merged-rtl.less">
+      <Compile>True</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\RTL\type-rtl.less">
+      <Compile>True</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\RTL\variables.less">
+      <Compile>True</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="JsLib\css\common.less">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="JsLib\css\Course.less">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="JsLib\css\crsItem.less">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="JsLib\css\dict.less">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="JsLib\css\LMMixins.less">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="JsLib\css\Login.less">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="JsLib\css\Schools.less">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <TypeScriptCompile Include="JsLib\JS\Sound\Html5Recorder.ts" />
+    <TypeScriptCompile Include="JsLib\JS\Sound\SoundNew.ts" />
+    <Content Include="Schools\Cpv.html">
+      <DependentUpon>Cpv.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Schools\Cpv.ts" />
+    <Content Include="Schools\Exercise.html">
+      <DependentUpon>Exercise.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Schools\Exercise.ts" />
+    <Content Include="Schools\Gramm.html">
+      <DependentUpon>Gramm.ts</DependentUpon>
+    </Content>
+    <Content Include="Schools\Gramm.js">
+      <DependentUpon>Gramm.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Schools\Gramm.ts" />
+    <Content Include="Schools\My.html">
+      <DependentUpon>My.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Schools\My.ts" />
+    <Content Include="Login\ConfirmRegistration.html">
+      <DependentUpon>ConfirmRegistration.ts</DependentUpon>
+    </Content>
+    <Content Include="Login\ConfirmRegistration.js">
+      <DependentUpon>ConfirmRegistration.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Login\ConfirmRegistration.ts" />
+    <Content Include="Schools\Products.js">
+      <DependentUpon>Products.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Schools\Products.ts" />
+    <Content Include="Courses\CheckItem.html">
+      <DependentUpon>CheckItem.ts</DependentUpon>
+    </Content>
+    <Content Include="Courses\CheckItem.ts" />
+    <Content Include="Courses\Media.html">
+      <DependentUpon>Media.ts</DependentUpon>
+    </Content>
+    <Content Include="Courses\Media.ts" />
+    <Content Include="Courses\Pairing.html">
+      <DependentUpon>Pairing.ts</DependentUpon>
+    </Content>
+    <Content Include="Courses\Pairing.ts" />
+    <Content Include="Courses\SingleChoice.html">
+      <DependentUpon>SingleChoice.ts</DependentUpon>
+    </Content>
+    <Content Include="Courses\SingleChoice.ts" />
+    <Content Include="Courses\Course.html">
+      <DependentUpon>Course.ts</DependentUpon>
+    </Content>
+    <Content Include="Courses\Course.ts" />
+    <Content Include="Courses\Debug.js">
+      <DependentUpon>Debug.ts</DependentUpon>
+    </Content>
+    <Content Include="Courses\Debug.ts" />
+    <Content Include="Courses\GenCourseModel.ts" />
+    <TypeScriptCompile Include="Schools\PersistScormEx.ts" />
+    <Content Include="Schools\PersistScormEx.js">
+      <DependentUpon>PersistScormEx.ts</DependentUpon>
+    </Content>
+    <Content Include="Admin\GenAdmin.js">
+      <DependentUpon>GenAdmin.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Admin\GenAdmin.ts" />
+    <Content Include="JsLib\EA\EAExtension.js">
+      <DependentUpon>EAExtension.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="JsLib\EA\EAExtension.ts" />
+    <TypeScriptCompile Include="JsLib\JS\GenLMComLib.ts" />
+    <TypeScriptCompile Include="JsLib\JS\Utils.ts" />
+    <Content Include="Schools\TopBar.html">
+      <DependentUpon>TopBar.ts</DependentUpon>
+    </Content>
+    <Content Include="Schools\TopBar.js">
+      <DependentUpon>TopBar.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Schools\Splash.ts" />
+    <None Include="Statistics\Statistics.ts_" />
+    <TypeScriptCompile Include="Temp\htmlPublishing\ko-comp.ts" />
+    <TypeScriptCompile Include="Temp\mediumJS\mediumJS.ts" />
+    <TypeScriptCompile Include="Temp\TestTransit.ts" />
+    <TypeScriptCompile Include="Schools\TopBar.ts" />
+    <Content Include="Schools\PersistDownload.js">
+      <DependentUpon>PersistDownload.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Schools\PersistDownload.ts" />
+    <Content Include="Schools\PersistLocal.js">
+      <DependentUpon>PersistLocal.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Schools\PersistLocal.ts" />
+    <Content Include="JsLib\Controls\CrsItem\CrsItem.html">
+      <DependentUpon>CrsItem.ts_</DependentUpon>
+    </Content>
+    <Content Include="JsLib\Controls\CrsItem\CrsItem.js">
+      <DependentUpon>CrsItem.ts_</DependentUpon>
+    </Content>
+    <None Include="JsLib\Controls\CrsItem\CrsItem.ts_" />
+    <Content Include="JsLib\Controls\Dict\Dict.html">
+      <DependentUpon>Dict.ts</DependentUpon>
+    </Content>
+    <Content Include="JsLib\Controls\Dict\Dict.js">
+      <DependentUpon>Dict.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="JsLib\Controls\Dict\Dict.ts" />
+    <Content Include="JsLib\JS\Base32.js">
+      <DependentUpon>Base32.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="JsLib\JS\Base32.ts" />
+    <TypeScriptCompile Include="JsLib\JS\Scorm.ts" />
+    <TypeScriptCompile Include="JsLib\JS\Keys.ts" />
+    <TypeScriptCompile Include="JsLib\JS\EMailer.ts" />
+    <Content Include="JsLib\JS\External\ClosureLib.js">
+      <DependentUpon>ClosureLib.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="JsLib\JS\External\ClosureLib.ts" />
+    <Content Include="JsLib\JS\External\ClosureLibLow.js">
+      <DependentUpon>ClosureLibLow.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="JsLib\JS\External\ClosureLibLow.ts" />
+    <Content Include="JsLib\JS\External\KnockOut_JsRender.js">
+      <DependentUpon>KnockoutPlugins.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="JsLib\JS\External\KnockoutPlugins.ts" />
+    <Content Include="JsLib\JS\External\RJSON.js">
+      <DependentUpon>RJSON.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="JsLib\JS\External\RJSON.ts" />
+    <TypeScriptCompile Include="JsLib\JS\Validate.ts" />
+    <TypeScriptCompile Include="JsLib\JS\OAuth.ts" />
+    <Content Include="Login\ChangePassword.html">
+      <DependentUpon>ChangePassword.ts</DependentUpon>
+    </Content>
+    <Content Include="Login\ChangePassword.js">
+      <DependentUpon>ChangePassword.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Login\ChangePassword.ts" />
+    <Content Include="Login\ForgotPassword.html">
+      <DependentUpon>ForgotPassword.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Login\ForgotPassword.ts" />
+    <Content Include="Login\LMLogin.html">
+      <DependentUpon>LMLogin.ts</DependentUpon>
+    </Content>
+    <Content Include="Login\LMLogin.js">
+      <DependentUpon>LMLogin.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Login\LMLogin.ts" />
+    <Content Include="Login\Login.html">
+      <DependentUpon>Login.ts</DependentUpon>
+    </Content>
+    <Content Include="Login\Login.js">
+      <DependentUpon>Login.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Login\Login.ts" />
+    <Content Include="Login\Profile.html">
+      <DependentUpon>Profile.ts</DependentUpon>
+    </Content>
+    <Content Include="Login\Profile.js">
+      <DependentUpon>Profile.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Login\Profile.ts" />
+    <Content Include="Login\Register.html">
+      <DependentUpon>Register.ts</DependentUpon>
+    </Content>
+    <Content Include="Login\Register.js">
+      <DependentUpon>Register.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Login\Register.ts" />
+    <Content Include="Login\GenLogin.js">
+      <DependentUpon>GenLogin.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Login\GenLogin.ts" />
+    <Content Include="Login\Model.js">
+      <DependentUpon>Model.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Login\Model.ts" />
+    <Content Include="JsLib\JS\Ajax.js">
+      <DependentUpon>Ajax.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="JsLib\JS\Ajax.ts" />
+    <TypeScriptCompile Include="JsLib\JS\Gui.ts" />
+    <TypeScriptCompile Include="JsLib\JS\ModelBase.ts" />
+    <TypeScriptCompile Include="JsLib\JS\unicode.ts" />
+    <TypeScriptCompile Include="JsLib\JS\ViewBase.ts" />
+    <Content Include="Schools\PersistPhonegap.js">
+      <DependentUpon>PersistPhonegap.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Schools\PersistPhonegap.ts" />
+    <Content Include="Schools\Lib.js">
+      <DependentUpon>Lib.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Schools\Lib.ts" />
+    <Content Include="Schools\GenScorm.js">
+      <DependentUpon>GenScorm.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Schools\GenScorm.ts" />
+    <Content Include="Schools\Model.js">
+      <DependentUpon>Model.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Schools\Model.ts" />
+    <Content Include="Schools\PersistNewEA.js">
+      <DependentUpon>PersistNewEA.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Schools\PersistNewEA.ts" />
+    <Content Include="Schools\Persist.js">
+      <DependentUpon>Persist.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Schools\Persist.ts" />
+    <Content Include="Schools\GenCourse.js">
+      <DependentUpon>GenCourse.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Schools\GenCourse.ts" />
+    <Content Include="Schools\GenSchools.js">
+      <DependentUpon>GenSchools.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Schools\GenSchools.ts" />
+    <Content Include="Schools\Interfaces.js">
+      <DependentUpon>Interfaces.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Schools\Interfaces.ts" />
+    <TypeScriptCompile Include="Temp\file1.ts" />
+    <TypeScriptCompile Include="Temp\transformer.ts" />
+    <TypeScriptCompile Include="TestMe\TestResult.ts" />
+    <TypeScriptCompile Include="TestMe\TestExercise.ts" />
+    <TypeScriptCompile Include="TestMe\GenTestModel.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AuthorWeb\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AuthorWeb\index.aspx.designer.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Author\Author.aspx.cs">
+      <DependentUpon>Author.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Author\Author.aspx.designer.cs">
+      <DependentUpon>Author.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Code\LibMp3Lame.cs" />
+    <Compile Include="Code\NormalizeProjectFile.cs" />
+    <Compile Include="Code\Skrivanek.cs" />
+    <Compile Include="Courses\Debug.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="mp3Uploader.ashx.cs">
+      <DependentUpon>mp3Uploader.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Schools\Design\DefaultDict.aspx.cs">
+      <DependentUpon>DefaultDict.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Schools\Design\DefaultDict.aspx.designer.cs">
+      <DependentUpon>DefaultDict.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Schools\Design\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Schools\Design\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Schools\Design\LANGMasterAuthorGalery.aspx.cs">
+      <DependentUpon>LANGMasterAuthorGalery.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Schools\Design\LANGMasterAuthorGalery.aspx.designer.cs">
+      <DependentUpon>LANGMasterAuthorGalery.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Schools\Design\jsCrambler.aspx.cs">
+      <DependentUpon>jsCrambler.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Schools\Design\jsCrambler.aspx.designer.cs">
+      <DependentUpon>jsCrambler.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Schools\Design\lmConsole.aspx.cs">
+      <DependentUpon>lmConsole.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Schools\Design\lmConsole.aspx.designer.cs">
+      <DependentUpon>lmConsole.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Schools\Design\QueryBuilder.aspx.cs">
+      <DependentUpon>QueryBuilder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Schools\Design\QueryBuilder.aspx.designer.cs">
+      <DependentUpon>QueryBuilder.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Schools\Design\TTS.aspx.cs">
+      <DependentUpon>TTS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Schools\Design\TTS.aspx.designer.cs">
+      <DependentUpon>TTS.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Schools\Design\DictLingea.aspx.cs">
+      <DependentUpon>DictLingea.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Schools\Design\DictLingea.aspx.designer.cs">
+      <DependentUpon>DictLingea.aspx</DependentUpon>
+    </Compile>
+    <None Include="Statistics\DevExLib.cs_" />
+    <Compile Include="Temp\CodeFile1.cs" />
+    <Compile Include="Temp\DBClearUnusedLMComUserData.aspx.cs">
+      <DependentUpon>DBClearUnusedLMComUserData.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Temp\DBClearUnusedLMComUserData.aspx.designer.cs">
+      <DependentUpon>DBClearUnusedLMComUserData.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Temp\WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Temp\WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Trados\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Trados\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Trados\EditPage.ascx.cs">
+      <DependentUpon>EditPage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Trados\EditPage.ascx.designer.cs">
+      <DependentUpon>EditPage.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Trados\EditPage.aspx.cs">
+      <DependentUpon>EditPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Trados\EditPage.aspx.designer.cs">
+      <DependentUpon>EditPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Trados\LookupManager.aspx.cs">
+      <DependentUpon>LookupManager.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Trados\LookupManager.aspx.designer.cs">
+      <DependentUpon>LookupManager.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Trados\Manager.aspx.cs">
+      <DependentUpon>Manager.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Trados\Manager.aspx.designer.cs">
+      <DependentUpon>Manager.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Trados\ManagerBatch.aspx.cs">
+      <DependentUpon>ManagerBatch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Trados\ManagerBatch.aspx.designer.cs">
+      <DependentUpon>ManagerBatch.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Trados\Partner.aspx.cs">
+      <DependentUpon>Partner.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Trados\Partner.aspx.designer.cs">
+      <DependentUpon>Partner.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Trados\PartnerEdit.aspx.cs">
+      <DependentUpon>PartnerEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Trados\PartnerEdit.aspx.designer.cs">
+      <DependentUpon>PartnerEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Trados\Partner_Search.aspx.cs">
+      <DependentUpon>Partner_Search.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Trados\Partner_Search.aspx.designer.cs">
+      <DependentUpon>Partner_Search.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Trados\Statistics.aspx.cs">
+      <DependentUpon>Statistics.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Trados\Statistics.aspx.designer.cs">
+      <DependentUpon>Statistics.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Trados\TopBar.ascx.cs">
+      <DependentUpon>TopBar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Trados\TopBar.ascx.designer.cs">
+      <DependentUpon>TopBar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Trados\Unlock.aspx.cs">
+      <DependentUpon>Unlock.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Trados\Unlock.aspx.designer.cs">
+      <DependentUpon>Unlock.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BS3\less\badges.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\button-groups.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\carousel.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\close.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\component-animations.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\dropdowns.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\forms.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\jumbotron.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\labels.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\list-group.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\media.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="BS3\less\modals.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\navs.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\pager.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\pagination.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\panels.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\popovers.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\progress-bars.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\thumbnails.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <Content Include="BS3\less\tooltip.less">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+    </Content>
+    <None Include="JsLib\EA\EA.js.bundle">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Login\Service.ashx" />
+    <Content Include="packages\repositories.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Service.ashx" />
+    <Content Include="Schools\Design\wget.cmd" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\licenses.licx_" />
+    <EmbeddedResource Include="trados_globalresources\rew_schoolcs.cs-cz.resx" />
+    <EmbeddedResource Include="trados_globalresources\rew_schoolcs.resx" />
+    <EmbeddedResource Include="trados_globalresources\rew_schoolcs.vi-vn.resx" />
+    <EmbeddedResource Include="trados_globalresources\rew_schooljs.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BS3\css\" />
+    <Folder Include="ClientBin\" />
+    <Folder Include="JsLib\css\img\Reports\" />
+    <Folder Include="Schools\EAData\" />
+    <Folder Include="Temp\Sql\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EduAuthor\EduAuthor.csproj">
+      <Project>{0e71cdce-d1c8-459e-ac82-2869f3200953}</Project>
+      <Name>EduAuthor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LMComExternal\LMComExternal.csproj">
+      <Project>{a0024fc2-c528-45f8-9391-4b45889e53d9}</Project>
+      <Name>LMComExternal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LMComLib\LMComLib.csproj">
+      <Project>{c4201447-b3c3-4f3a-9e5f-4ff9b5f48570}</Project>
+      <Name>LMComLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NewLMComModel\NewLMComModel.csproj">
+      <Project>{81713f8f-6d25-4e48-ae82-ac1bd2565442}</Project>
+      <Name>NewLMComModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ObjectModel\ObjectModel.csproj">
+      <Project>{e88c653d-5518-4b96-9b99-6efbd46a9141}</Project>
+      <Name>ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="ScormExNet35\ScormExNet35.csproj">
+      <Project>{3d1e3beb-ccf3-4e18-82fa-b7db4ddffdf6}</Project>
+      <Name>ScormExNet35</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>62792</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/rew</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <UserProperties Temp_2TextFile3_1json__JSONSchema="http://json-schema.org/address" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

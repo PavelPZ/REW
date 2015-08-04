@@ -1,0 +1,44 @@
+﻿c_wordordering
+###
+<!-- ko with: getItem('{{:id}}') -->
+<div id="ordering-{{:id}}" class="{{:~classes(#data)}} oli-cancel-stop-sound oli-ordering" data-bind="css: {evaluated:evaluated}">
+  <div class="edit-block">
+    <div class="dest-block">
+    </div>
+    <div class="src-block">
+      {{for randomItems}}<!-- ko with: randomItems[{{:#index}}] --><div class="item" data-bind="click:click, clickBubble: false"><i class="fa fa-chevron-left icon-left"></i> {{:~c_unescape(text)}} <i class="fa fa-chevron-right icon-right"></i></div><!-- /ko -->{{/for}}
+    </div>
+  </div>
+  <div class="eval-block" data-bind="css: evalStatus">
+    <div class="teacher" data-bind="html: teacher"></div>
+    <div class="user-res" data-bind="html: user"></div>
+  </div>
+</div>
+<!-- /ko -->
+###
+
+c_sentenceordering
+###
+<!-- ko with: getItem('{{:id}}') -->
+<div id="ordering-{{:id}}" class="{{:~classes(#data)}} oli-cancel-stop-sound oli-ordering" data-bind="css: {evaluated:evaluated}">
+  <div class="dest-block">
+  </div>
+  <div class="src-block">
+    {{for randomItems}}
+    <div data-bind="with:randomItems[{{:#index}}]">
+      <div class="item" data-bind="click:click, clickBubble: false">
+        <i class="fa fa-chevron-up icon-left"></i>
+        <i class="fa fa-chevron-down icon-right"></i>
+        {{:~c_unescape(text)}}
+      </div>
+      <div class="eval-block" data-bind="css: evalStatus">
+        <div class="teacher" data-bind="html: teacher"></div>
+        <div class="user-res" data-bind="html: text"></div>
+      </div>
+    </div>
+    {{/for}}
+  </div>
+</div>
+<!-- /ko -->
+###
+

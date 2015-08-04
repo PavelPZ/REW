@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <title>Layout with Accordion</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="language" content="en" />
+
+  <!--************** JQUERY ****************** -->
+  <!--[if lt IE 9]>
+  <script type="text/javascript" src="externals/jquery/jquery-1.js"></script>
+  <![endif]-->
+  <!--[if (gte IE 9)]><!-->
+  <script type="text/javascript" src="externals/jquery/jquery-2.js"></script>
+  <!--<![endif]-->
+  <script type="text/javascript" src="externals/jquery/jquery-migrate.js"></script>
+  <script type="text/javascript" src="externals/jquery-ui/jquery-ui.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="externals/jquery-ui/jquery-ui.css" />
+  <link rel="stylesheet" type="text/css" href="externals/jquery-ui/jquery-ui.structure.css" />
+  <link rel="stylesheet" type="text/css" href="externals/jquery-ui/jquery-ui.theme.css" />
+  <!--************** BOOTSTRAP font-awesome ****************** -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.js"></script>
+
+  <link rel=" stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" />
+
+  <!--************** LAYOUT ****************** -->
+  <script type="text/javascript" src="externals/layout/source/stable/jquery.layout_and_plugins.js"></script>
+
+  <script type="text/javascript" src="externals/layout/source/stable/callbacks/jquery.layout.callbacks-latest.js"></script>
+  <script type="text/javascript" src="externals/layout/source/stable/callbacks/jquery.layout.pseudoClose.js"></script>
+  <script type="text/javascript" src="externals/layout/source/stable/callbacks/jquery.layout.resizeDataTable.js"></script>
+  <script type="text/javascript" src="externals/layout/source/stable/callbacks/jquery.layout.resizePaneAccordions.js"></script>
+  <script type="text/javascript" src="externals/layout/source/stable/callbacks/jquery.layout.resizeTabLayout.js"></script>
+  <link rel="stylesheet" type="text/css" href="externals/layout/source/stable/layout-default.css" />
+
+  <!--************** LM ****************** -->
+  <script type="text/javascript" src="js/layout.js"></script>
+  <link rel="stylesheet" type="text/css" href="styles.css" />
+
+
+</head>
+<body>
+  <div class="ui-layout-north ui-widget-content" style="display: none;">
+    North
+  </div>
+  <div class="ui-layout-south ui-widget-content ui-state-error" style="display: none;">
+    South
+  </div>
+  <div class="ui-layout-center" style="display: none;">
+    <div role="tabpanel">
+      <ul id="center-tabs" class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#tabs-center-source" aria-controls="home" role="tab" data-toggle="tab">Source</a></li>
+        <li role="presentation" ><a href="#tabs-center-view" aria-controls="home" role="tab" data-toggle="tab">View</a></li>
+      </ul>
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active" id="tabs-center-source">
+          Source
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="tabs-center-view">
+          view
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui-layout-west" style="display: none;">
+    <div class="lm-header bg-primary">Outer - west</div>
+    West
+  </div>
+  <div class="ui-layout-east" style="display: none;">
+    <div class="lm-header bg-primary">Outer - East</div>
+    <div role="tabpanel">
+      <ul id="east-tabs" class="nav nav-tabs" role="tablist">
+        <li role="presentation" ><a href="#tabs-center-project" aria-controls="home" role="tab" data-toggle="tab">Project</a></li>
+        <li role="presentation" class="active"><a href="#tabs-center-properties" aria-controls="home" role="tab" data-toggle="tab">Properties</a></li>
+      </ul>
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active active" id="tabs-center-project">
+          project
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="tabs-center-properties">
+          properties
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

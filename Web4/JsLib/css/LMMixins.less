@@ -1,0 +1,204 @@
+﻿@import "variables.less";
+@import "../../bs3/less/mixins.less";
+@import "../../font-awesome/less/variables.less";
+
+
+.dynamic-property(@property, @value, @prefixes: '', @base: true) {
+  -less-property: ~`(function(){var a=@{prefixes}.split(/\s+/),r=' property',i=0;@{base}&&@{prefixes}&&a.push('');for(;i<a.length;++i)b=a[i],r+=';\n  '+(b?'-'+b+'-':b)+'@{property}: '+'@{value}';return r})()`;
+}
+//http://www.dynamicdrive.com/style/layouts/item/css-liquid-layout-21-fixed-fluid/
+/*
+<div class="ff-content-progress">
+  <div class="content-inner">right column</div>
+</div>
+<div class="ff-left-progress">
+  left column
+</div>
+<div class="clearfix"></div>
+*/
+.column-fixed-fluid (@name, @left-width) {
+  .ff-content-@{name} {
+    float: left;
+    width: 100%;
+
+    .content-inner {
+      margin-left: unit(@left-width,px);
+    }
+  }
+
+  .ff-left-@{name} {
+    float: left;
+    width: unit(@left-width,px);
+    margin-left: -100%;
+  }
+}
+
+.column-fixed-fluid-right (@name, @right-width) {
+  .ffr-content-@{name} {
+    float: right;
+    width: 100%;
+
+    .content-inner {
+      margin-right: unit(@right-width,px);
+    }
+  }
+
+  .ffr-right-@{name} {
+    float: right;
+    width: unit(@right-width,px);
+    margin-right: -100%;
+  }
+}
+
+.well() {
+  min-height: 20px;
+  padding: 19px;
+  margin-bottom: 20px;
+  background-color: @well-bg;
+  border: 1px solid @well-border;
+  border-radius: @border-radius-base;
+  .box-shadow(inset 0 1px 1px rgba(0,0,0,.05));
+
+  blockquote {
+    border-color: #ddd;
+    border-color: rgba(0,0,0,.15);
+  }
+}
+// Sizes
+.well-lg() {
+  padding: 24px;
+  border-radius: @border-radius-large;
+}
+
+.well-sm() {
+  padding: 9px;
+  border-radius: @border-radius-small;
+}
+
+
+.default() {
+  background-color: @panel-default-heading-bg;
+  color: @panel-default-text;
+  border-color: @panel-default-border;
+}
+
+@media-large-desktop: ~"(min-width: 1200px)";
+@media-desktop: ~"(min-width: 992px)";
+@media-not-desktop: ~"(max-width: 991px)";
+@media-tablet: ~"(min-width: 768px)";
+@media-tablet-only: ~"(min-width: 768px) and (max-width: 991px)";
+@media-mobile: ~"(max-width: 767px)";
+@media-mobile-portrait: ~"screen and (max-width: 490px)";
+@media-not-mobile-portrait: ~"screen and (min-width: 491px)";
+
+.inline() {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
+
+.pull-right () {
+  float: right;
+}
+
+.pull-left () {
+  float: left;
+}
+// Toggling content
+// -------------------------
+.hide() {
+  display: none !important;
+}
+
+.show() {
+  display: block !important;
+}
+
+.invisible() {
+  visibility: hidden;
+}
+
+.visible() {
+  visibility: visible;
+}
+
+.lm-font-icon(@inner) {
+
+  &:before {
+    content: @inner;
+  }
+
+  @v:~"expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf";
+  @ic:~`@{inner}.substring(1)`;
+  *zoom: ~"@{v}@{ic};')";
+}
+
+.fa-spin() {
+  -webkit-animation: spin 2s infinite linear;
+  -moz-animation: spin 2s infinite linear;
+  -o-animation: spin 2s infinite linear;
+  animation: spin 2s infinite linear;
+}
+
+
+.bubble(@width,@ptr) {
+  @m: (@ptr * 2) + 1;
+  width: @width;
+  border-radius: 10px;
+  border: solid 2px transparent;
+  padding: 8px;
+  *padding: 0;
+  position: relative;
+
+  &:before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: @ptr solid transparent;
+    border-bottom: @ptr solid transparent;
+  }
+
+  &.dlg-left {
+    margin-left: @m;
+
+    &:before {
+      border-right: @m solid transparent;
+      margin: -2px 0 0 -@m;
+      left: 0;
+      margin: -2px 0 0 -@m;
+      *border: 0;
+      *margin: 0;
+    }
+  }
+
+  &.dlg-right {
+    margin-right: @m;
+
+    &:before {
+      border-left: @m solid transparent;
+      margin: -2px -@m 0 0;
+      right: 0;
+      *border: 0;
+      *margin: 0;
+    }
+  }
+}
+
+.bubble-bkgnd(@bkgnd) {
+  background-color: @bkgnd;
+  border-color: @bkgnd;
+
+  &.dlg-left:before {
+    border-right-color: @bkgnd;
+  }
+
+  &.dlg-right:before {
+    border-left-color: @bkgnd;
+  }
+}
+// Responsive utilities
+.video-responsive-invisibility() {
+  width: 1px !important;
+  height: 1px !important;
+}

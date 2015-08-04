@@ -1,0 +1,143 @@
+﻿skrivanek_home_footer
+###
+<br /><br /><br />
+<div class="row">
+  <div class="col-sm-12 xcol-sm-offset-2">
+    <h4>O projektu Testováni jazykových znalostí</h4>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        Testování jazykových znalostí a určení aktuální jazykové úrovně formou on-line testu v 6 světových jazycích vzniklo v rámci grantového projektu
+        <b>„Vývoj a metodická koncepce testovacího nástroje jazykového vzdělávání, r.č. CZ.1.07/3.2.11/02.0072“</b>.
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        Pro bližší informace o jazykových úrovních dle Společného Evropského referenčního rámce <a href="http://www.skrivanek.cz/cz/jazykova-skola/rozrazovaci-testy/jazykove-urovne/" target="_blank" alt="SERR">klikněte zde</a>.
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        Projekt je spolufinancován z Evropského sociálního fondu a státního rozpočtu České republiky.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="eu img-responsive center-block"></div>
+
+###
+!skrivanek_home
+###
+<div data-bind="with: Pager.ActPage" class="app-school rtl">
+  <div class="rtl">{{for #data tmpl=~T('TTopBarNew')/}}</div>
+  <form id="lm-form">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <h2>1. Zadejte registrační údaje</h2>
+        </div>
+        <div class="form">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="loginInput">Přihlašovací jméno</label>
+              <input type="text" class="form-control" id="loginInput" name="loginInput" placeholder="Napište přihlašovací jméno">
+            </div>
+            <div class="form-group">
+              <label for="passwordInput">Heslo</label>
+              <input type="password" class="form-control" id="passwordInput" name="passwordInput" placeholder="Napište heslo">
+            </div>
+            <div class="form-group">
+              <label for="confirmPasswordInput">Potvrzení hesla</label>
+              <input type="password" class="form-control" id="confirmPasswordInput" name="confirmPasswordInput" placeholder="Napište heslo znovu">
+            </div>
+            <div class="form-group">
+              <label for="firstName">Křestní jméno</label>
+              <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Napište křestní jméno">
+            </div>
+            <div class="form-group">
+              <label for="lastName">Příjmení</label>
+              <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Napište příjmení">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Napište email">
+          </div>
+          <div class="form-group">
+            <label for="address">Bydliště nebo pracoviště ve Středočeském kraji</label>
+            <textarea id="address" name="address" class="form-control" rows="5" placeholder="Napište adresu"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="phone">Telefon (nepovinný údaj)</label>
+            <input type="text" class="form-control" id="phone" name="phone" placeholder="Napište telefon">
+          </div>
+          <div class="form-group">
+            <label for="birthday">Datum narození (nepovinný údaj)</label>
+            <input type="text" class="form-control" id="birthday" name="birthday" placeholder="Napište datum narození">
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 xcol-sm-offset-2">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              Čestně prohlašuji, že veškeré mnou uvedené údaje jsou pravdivé. <br />
+              Čestně prohlašuji, že nečerpám dvojí podporu na identické aktivity.<br />
+              Souhlasím s využitím mých osobních údajů pro účely evidence, monitorování a kontroly projektu a  souhlasím též s tím,
+              že tyto údaje mohou být využívány třetí osobou pověřenou poskytovatelem podpory, případně Evropskou komisí,
+              a to pouze k účelům evidence, monitorování a kontroly projektu.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <h2>2. Vyberte test</h2>
+          {{for tests}}
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <div class="h4"><div class="flag-mid-bg flag-mid-{{:line}}"></div> {{:title}}</div>
+            </div>
+            <table class="table">
+              <tr>
+                {{for levels ~test=#data}}
+                <td><div class="btn btn-info btn-lg" onclick="Pager.ActPage.runTest('/skrivanek/prods/etestme-std/{{:~test.line}}/{{:title}}/')">{{:title}}&nbsp;&nbsp;<i class="fa fa-long-arrow-right "></i></div></td>
+                {{/for}}
+              </tr>
+            </table>
+          </div>
+          {{/for}}
+        </div>
+      </div>
+
+      <br /><br /><br />
+      <div class="row">
+        <div class="col-sm-12 xcol-sm-offset-2">
+          <h4>O projektu Testováni jazykových znalostí</h4>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              Testování jazykových znalostí a určení aktuální jazykové úrovně formou on-line testu v 6 světových jazycích vzniklo v rámci grantového projektu
+              <b>„Vývoj a metodická koncepce testovacího nástroje jazykového vzdělávání, r.č. CZ.1.07/3.2.11/02.0072“</b>.
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              Pro bližší informace o jazykových úrovních dle Společného Evropského referenčního rámce <a href="http://www.skrivanek.cz/cz/jazykova-skola/rozrazovaci-testy/jazykove-urovne/" target="_blank" alt="SERR">klikněte zde</a>.
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              Projekt je spolufinancován z Evropského sociálního fondu a státního rozpočtu České republiky.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eu img-responsive center-block"></div>
+    </div>
+  </form>
+</div>

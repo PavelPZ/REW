@@ -1,0 +1,1461 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="a815ebcae6bb419db07ce3c645be19fd" xml:space="preserve">
+    <value>Departments</value>
+  </data>
+  <data name="4b5fde74d58f4e018ddc17ea7355b5a5" xml:space="preserve">
+    <value>Keys</value>
+  </data>
+  <data name="ec533f48bf76461c9c517852cb53f41a" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="be895a5caef442c189deb82bf0497e8f" xml:space="preserve">
+    <value>Results</value>
+  </data>
+  <data name="5302653a14e441b994c1044ad2e10b1d" xml:space="preserve">
+    <value>Publisher</value>
+  </data>
+  <data name="f97ac29fced34a8d81c3760b1e7a9a4f" xml:space="preserve">
+    <value>Evaluation Manager</value>
+  </data>
+  <data name="bb4c401401ad413fbbf55c4906fb87ed" xml:space="preserve">
+    <value>User with this email already added</value>
+  </data>
+  <data name="98b0616339a54314a3b865f7d76b99d8" xml:space="preserve">
+    <value>Company with this title already added</value>
+  </data>
+  <data name="248d58dd36784f258b4f49391dfac024" xml:space="preserve">
+    <value>Publisher ID with this title already added</value>
+  </data>
+  <data name="b2b7224389dd4118816f50890aececa4" xml:space="preserve">
+    <value>Administrator Console</value>
+  </data>
+  <data name="4fcfb15370a746578b50052ebaa35f74" xml:space="preserve">
+    <value>Publisher ID with this title already added</value>
+  </data>
+  <data name="af6fb39c97c042fb8d06e0ca1645846d" xml:space="preserve">
+    <value>User with this email already added</value>
+  </data>
+  <data name="bd38a1ebc3f041779ffd7a5bcf34dfe8" xml:space="preserve">
+    <value>User with this email already added</value>
+  </data>
+  <data name="59f1ac558cce43cc844235c97006442f" xml:space="preserve">
+    <value>We are sending you license keys for the product:</value>
+  </data>
+  <data name="c270a7643d5b4fba8569342961ee108c" xml:space="preserve">
+    <value>License keys</value>
+  </data>
+  <data name="8139bf0c5fed4b92ba7ce97a50034aa6" xml:space="preserve">
+    <value>The same product with the same license validity already exists!</value>
+  </data>
+  <data name="a7874d64e5aa4985b779cac83c2a89ed" xml:space="preserve">
+    <value>System administrators</value>
+  </data>
+  <data name="e7d0664419be4fcab8c380767ff2f79a" xml:space="preserve">
+    <value>Undelete</value>
+  </data>
+  <data name="a5f3a504f12c4a9ba822d415519eb95a" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="4301852cce604dcca76480a627e92694" xml:space="preserve">
+    <value>Add System administrator</value>
+  </data>
+  <data name="308ad4d9b8f342b9946450345efacc6a" xml:space="preserve">
+    <value>enter e-Mail</value>
+  </data>
+  <data name="e8366c5bd8ba4cb6bbcb70c84d06c8e1" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="0fb3793cac4247b2a8a73ed00795c5d7" xml:space="preserve">
+    <value>Companies</value>
+  </data>
+  <data name="7f8697080ad144e5b813f4c4768ec787" xml:space="preserve">
+    <value>enter name</value>
+  </data>
+  <data name="d993806d489f47e3ab84721c7c6c22f8" xml:space="preserve">
+    <value>enter Publisher ID</value>
+  </data>
+  <data name="423438afc261483da6e76c1ef9b902af" xml:space="preserve">
+    <value>enter e-Mail</value>
+  </data>
+  <data name="9fa67ed1ffe84b0c948a7d885919213d" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="9db4b90fec144147b798e57e70d67cd2" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="06ac9eebb3284c67ac65bc1a52d15196" xml:space="preserve">
+    <value>Undelete</value>
+  </data>
+  <data name="4a95201a0d374438a5a7357509e02baa" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="c0320cb4f3c0491eaa8bc8054cd56282" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="a96ec4fe1d7b4e8eac4e1a744da4a03b" xml:space="preserve">
+    <value>Company name</value>
+  </data>
+  <data name="6261935ec80f4091b713117abe9ab717" xml:space="preserve">
+    <value>enter name</value>
+  </data>
+  <data name="649671eed1ae4fffaab7a1b73e7fc2db" xml:space="preserve">
+    <value>Unique Publisher ID</value>
+  </data>
+  <data name="e26435ef74cf496ea4f6bbb55b4f9937" xml:space="preserve">
+    <value>enter Publisher ID</value>
+  </data>
+  <data name="63ca57fb95f949dd84579b2a2a1ef0e2" xml:space="preserve">
+    <value>Master Company administrator</value>
+  </data>
+  <data name="4b990da9ad7542f9b737b147df34656d" xml:space="preserve">
+    <value>enter e-Mail</value>
+  </data>
+  <data name="40d9f8b1832d4c9b8292c42f360b7551" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="9c41d54edd8645329fcdd1c71d02e9e9" xml:space="preserve">
+    <value>Administrators and their roles</value>
+  </data>
+  <data name="d9ebb6b97c4d49b5962946994de26944" xml:space="preserve">
+    <value>Undelete</value>
+  </data>
+  <data name="6ef4ac37937d407a863a981a1cf2f13e" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="9917aeb542ad4080b9b965265ac85253" xml:space="preserve">
+    <value>Add Company administrator</value>
+  </data>
+  <data name="dbcc966875024fa78638582e514b45c0" xml:space="preserve">
+    <value>enter E-mail</value>
+  </data>
+  <data name="425a022b46634c20bb1c68fa6d105b50" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="d73c8d989df647dc94b12b47157d20e1" xml:space="preserve">
+    <value>Select the Course and License</value>
+  </data>
+  <data name="d49d1aa07f2e4b14bae478fa5cc4aa30" xml:space="preserve">
+    <value>Enter the number of keys</value>
+  </data>
+  <data name="4eee9427a0304738902cc189f2e35615" xml:space="preserve">
+    <value>Enter the number of keys</value>
+  </data>
+  <data name="1ecf7038aeb447cc92251fcd9cb7dd85" xml:space="preserve">
+    <value>Generate License keys</value>
+  </data>
+  <data name="5b6576daeff4413eb74e41e5170ad5c1" xml:space="preserve">
+    <value>Generated License keys have been sent to you by email.</value>
+  </data>
+  <data name="baf9e0fd8101472b9cd0435aa18b72a3" xml:space="preserve">
+    <value>Keys generated:</value>
+  </data>
+  <data name="bb6fa8ecaf7c4e48b530fa94d86a0eaf" xml:space="preserve">
+    <value>Keys used:</value>
+  </data>
+  <data name="210fe1ad34de4568b34a12c0a4b171be" xml:space="preserve">
+    <value>Courses and Licenses</value>
+  </data>
+  <data name="1bfaa314d0ea4d9fb0af537173f8532f" xml:space="preserve">
+    <value>Select a product...</value>
+  </data>
+  <data name="51be7671f95b41ee8a6d95adf10949c0" xml:space="preserve">
+    <value>Enter the number of days</value>
+  </data>
+  <data name="aded595d9c524e6d961871ba3c2e21ef" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ee3560f386f74847ac61f62ed03c9383" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="d2e908b32c3143258d944adae1737869" xml:space="preserve">
+    <value>Keys generated:</value>
+  </data>
+  <data name="f0292779b21f48ddb86b49fce5df779e" xml:space="preserve">
+    <value>Undelete</value>
+  </data>
+  <data name="695655489df54167abc3d6bd89060203" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="08e9a57e29224453bf3bb094f2bb3723" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="4edc64ba610c4538b0dcf71d7c8482cd" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="baa3b9079a224b459c23d2cf4ec27981" xml:space="preserve">
+    <value>Select a product...</value>
+  </data>
+  <data name="a74303b7b46a4772b34ce47ad691eba3" xml:space="preserve">
+    <value>License validity (in days)</value>
+  </data>
+  <data name="a863e3d6f8964188be8ac18f641abdbd" xml:space="preserve">
+    <value>Enter the number of days</value>
+  </data>
+  <data name="59455c4276ed49b2ad94dec3e1335986" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="3859695377c4444abce16f7af9f5d2ec" xml:space="preserve">
+    <value>Pretest</value>
+  </data>
+  <data name="e64fb875261a4c5e849a9952ecc4ae63" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="2882c6a2ef6343089ae90c898cac63f6" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="e06a4208d7c84c8ba97c1a700f00046c" xml:space="preserve">
+    <value>Course completed!</value>
+  </data>
+  <data name="f124b261dbf9482d9c92e0c1b029f98a" xml:space="preserve">
+    <value>Progress</value>
+  </data>
+  <data name="d96c8f11b16d4c9aa91ac8d8142267fa" xml:space="preserve">
+    <value>skipped</value>
+  </data>
+  <data name="01fbc5f8a77c4e2491a9ed3ede74e966" xml:space="preserve">
+    <value>completed</value>
+  </data>
+  <data name="1fe40e2548924e519e9b226d4ced7bce" xml:space="preserve">
+    <value>run</value>
+  </data>
+  <data name="b7ed3c7fc67640ceb98417153f731d63" xml:space="preserve">
+    <value>browse</value>
+  </data>
+  <data name="b8601c3b0385401b912f5f104b8d728e" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="4f40988151d646308e50bf2225211081" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="9a48bff2169240759d9e5b1c87618c1b" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="0b129b06c25b49908cd4576008025495" xml:space="preserve">
+    <value>Evaluate</value>
+  </data>
+  <data name="89024e890690456aaaf0251de3225fd6" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="d874aa91bc914690ad75fe97a707e196" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="ba88aabeae6d4d59b235c927472c6440" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="88d6dd9f77994a68a8035f5809c24703" xml:space="preserve">
+    <value>Yes|No</value>
+  </data>
+  <data name="7f51a49e0ad14a848362eb7282d62116" xml:space="preserve">
+    <value>True|False</value>
+  </data>
+  <data name="8ea9f179b07244ca9523580477681b08" xml:space="preserve">
+    <value>Click on</value>
+  </data>
+  <data name="64d35057f86a49b184cca73e5eaeebee" xml:space="preserve">
+    <value>to select a left item</value>
+  </data>
+  <data name="ae36fa97f71d41519956897d24660aa7" xml:space="preserve">
+    <value>Select the right item matching the selected left item</value>
+  </data>
+  <data name="b47affafabfb4971a311b80cdc1c1dc7" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="75ec6299556c4e2497dde2a7ec5626b2" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="27747c60f8a24429855917008c65521f" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="74a95445936f44558cd585dd8b3d7b29" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="16636e21101c4ebf8a1bae8f358da7b5" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="8dd00c8210854c5eb8fb7bc017cfa21e" xml:space="preserve">
+    <value>This field is required.</value>
+  </data>
+  <data name="c913db0985a940c09d95ebfa7459a4be" xml:space="preserve">
+    <value>Please enter a valid email address.</value>
+  </data>
+  <data name="9a47c9f99dce4e43859d7029e9ae6955" xml:space="preserve">
+    <value>Please enter the same value again.</value>
+  </data>
+  <data name="106ee5f0757b4829af9c71cc2c557093" xml:space="preserve">
+    <value>Please enter at least 3 characters.</value>
+  </data>
+  <data name="915e1b2dbd2d44df89cdf4e9bbdee3df" xml:space="preserve">
+    <value>Please enter a value between {0} and {1} characters long.</value>
+  </data>
+  <data name="f03951d4577b484ca04b639ad6d96514" xml:space="preserve">
+    <value>Please enter a value greater than or equal to {0}.</value>
+  </data>
+  <data name="f9726cae800748ef83e29f8d3c2cbb98" xml:space="preserve">
+    <value>Allow microphone</value>
+  </data>
+  <data name="f7465ddee0dd4c0ebbf74e112e78c68e" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="4ec7f9623a684f708844bce43ad51d26" xml:space="preserve">
+    <value>Password changed successfully</value>
+  </data>
+  <data name="150a40688a494a72a11b26081b46e515" xml:space="preserve">
+    <value>The e-mail address was not found in the database.</value>
+  </data>
+  <data name="ca0fb06a7d714a5ebeddc27ea19210d7" xml:space="preserve">
+    <value>LANGMaster.com</value>
+  </data>
+  <data name="b28146649ad7498cb4109b6b1276fcef" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="c0b339ea24054072999d990c2e7b8db9" xml:space="preserve">
+    <value>was activated.</value>
+  </data>
+  <data name="0262a5d780784acd842bc31bd2800579" xml:space="preserve">
+    <value>The e-mail address was not found in the database.</value>
+  </data>
+  <data name="0cc1324eadf741c4b25f04ad1c8b1917" xml:space="preserve">
+    <value>Wrong confirmation page url:</value>
+  </data>
+  <data name="e83a008e8fe04ce79dce7f66e1232102" xml:space="preserve">
+    <value>congratulations, you have created your account.</value>
+  </data>
+  <data name="acb86672a2bd49ec97b7529de8f1078f" xml:space="preserve">
+    <value>To activate your account, you must click the following</value>
+  </data>
+  <data name="3c1f1e384c1a4203af4e348abd752801" xml:space="preserve">
+    <value>or by entering this address to your Internet browser.</value>
+  </data>
+  <data name="2e541679fe4f4c0fa2ffeb5eb56c98fe" xml:space="preserve">
+    <value>Login details for your account:</value>
+  </data>
+  <data name="e77a59b8a83d42479e3d003b6ad9c26c" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="9e4fddf55c1140f79c503db9c2d32592" xml:space="preserve">
+    <value>Password:</value>
+  </data>
+  <data name="abd50e8f397944f79e173393c65f1670" xml:space="preserve">
+    <value>Please, keep your login details safe.</value>
+  </data>
+  <data name="4294d283e79b4429a889df8278a773b0" xml:space="preserve">
+    <value>we are sending you your forgotten password:</value>
+  </data>
+  <data name="7301b1be9c174e698530560b6aab11b6" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="e285068dc2f44fe99fb402993f47caee" xml:space="preserve">
+    <value>Password:</value>
+  </data>
+  <data name="5f37fed9581d4998b9116d548e0b8cf2" xml:space="preserve">
+    <value>Please, keep your login details safe.</value>
+  </data>
+  <data name="6acada0ea49b462a9d1806a4f8dc576e" xml:space="preserve">
+    <value>Hello</value>
+  </data>
+  <data name="492b8ffcb4bd40a6ab9d2deb0556c900" xml:space="preserve">
+    <value>Best regards</value>
+  </data>
+  <data name="c2ab3e05ece6438397515ee876f27fe6" xml:space="preserve">
+    <value>Sending of the forgotten password</value>
+  </data>
+  <data name="3c2e4788779446b5ac07319284964624" xml:space="preserve">
+    <value>Sending of the forgotten password</value>
+  </data>
+  <data name="5ccd166083844fd49a180596afdfb330" xml:space="preserve">
+    <value>The password has been sent to your e-mail address.</value>
+  </data>
+  <data name="f7ca7ceba0904c24b2494f048fb37c82" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="b24ea1e72f9a4d60bbc930db412797e2" xml:space="preserve">
+    <value>User Registration</value>
+  </data>
+  <data name="d12681c9037b4db8af0364ecd210a1e4" xml:space="preserve">
+    <value>Send forgotten password by e-mail</value>
+  </data>
+  <data name="f14d4f45b2184ec2b114ae702e34b8d0" xml:space="preserve">
+    <value>Wrong password or login name was not found in the database.</value>
+  </data>
+  <data name="305188cfd4314deeadfde6eb5c5f44f9" xml:space="preserve">
+    <value>Log in in one of the following ways:</value>
+  </data>
+  <data name="620972c027ab41a28bcb0306b233b0ce" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="03500780ce2c476a9719c9e8e3202465" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="275229db239c41f0a7d3038e0072323f" xml:space="preserve">
+    <value>Old password</value>
+  </data>
+  <data name="e0bc9a352e364c40b87d261f44697515" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="b716b770e72d487384caf8a94dba6bbf" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="e56e6bad75e54dea9191cab418eda74d" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="bb6463807fdf453191f0315f034f01e0" xml:space="preserve">
+    <value>Wrong old password</value>
+  </data>
+  <data name="3c05d331b7004f0e99d1cda8080f0884" xml:space="preserve">
+    <value>User Registration</value>
+  </data>
+  <data name="d809fff52b9f4f5391ab889a0a1afe80" xml:space="preserve">
+    <value>Creating of an account - confirmation</value>
+  </data>
+  <data name="dd97d1b2919d451cbb43ee63091a147c" xml:space="preserve">
+    <value>A confirmation e-mail has been sent to your e-mail address.</value>
+  </data>
+  <data name="d60caf13057c46c2ba63f5cd361271e5" xml:space="preserve">
+    <value>User name already exists</value>
+  </data>
+  <data name="b6d267c00ab246f5934b08ac91b6d938" xml:space="preserve">
+    <value>Score</value>
+  </data>
+  <data name="bc2c338d1b1c4eaebaa8000bd08dcaa6" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="a3be38a8651b4506b363008a6de904d7" xml:space="preserve">
+    <value>Elapsed time</value>
+  </data>
+  <data name="ab6df62e5ecf41c6877b20a1a2d83591" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="ea5d6770e47346beaebda00862e5eab8" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="97ebf616cc5844548f95bb4ac8109df9" xml:space="preserve">
+    <value>Login first</value>
+  </data>
+  <data name="d348b1d49cc9424a8c1c3a840ad9d4dd" xml:space="preserve">
+    <value>Your answers are not all correct. Do you really want to evaluate the exercise?</value>
+  </data>
+  <data name="af026337fdf44d3287ade389c8d925f9" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="2c9b18c8e2a8449b891a3639691e1999" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="ba8042332a3c4520bc758e9bc851ae2b" xml:space="preserve">
+    <value>Run</value>
+  </data>
+  <data name="7f9d15221d9f471f934a944b1a949dca" xml:space="preserve">
+    <value>Undo Skip</value>
+  </data>
+  <data name="27f1cba5240643fc9d0993cb6b5931b7" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="9f77df2b307e48ad91291b0907fcbf4a" xml:space="preserve">
+    <value>Run a new test</value>
+  </data>
+  <data name="f48f9615e3374fd2b6e1c377d1b8b0d3" xml:space="preserve">
+    <value>Cancel and skip the test</value>
+  </data>
+  <data name="4bbab8260cf44783ade8f733a142866d" xml:space="preserve">
+    <value>Listen to the original</value>
+  </data>
+  <data name="e409b368170645e58cfd835473cb9561" xml:space="preserve">
+    <value>Record</value>
+  </data>
+  <data name="0590834dbf264906ae88c717f81170cf" xml:space="preserve">
+    <value>Check your recording</value>
+  </data>
+  <data name="7da1fdbb748447bb83e9bbe135e543cc" xml:space="preserve">
+    <value>Allow microphone</value>
+  </data>
+  <data name="fa7463febeca40cc99cef42ef81e6462" xml:space="preserve">
+    <value>When working with LANGMaster courses we recommend to use a bilingual dictionary. The dictionary is directly linked with the course and includes many advanced functions:</value>
+  </data>
+  <data name="c43671435e30484a9ca0e7f908ae066e" xml:space="preserve">
+    <value>You can display translation of any unfamiliar word, which makes comprehension of a foreign text much easier.</value>
+  </data>
+  <data name="134ba3073e72470aa0431b88ce0e5b36" xml:space="preserve">
+    <value>You can listen to the correct pronunciation of the words and phrases from the course (recorded by native speakers).</value>
+  </data>
+  <data name="5919a369ef80407c83d4210ec4b52ca4" xml:space="preserve">
+    <value>You can practice listening to and pronouncing the words and phrases from the course.</value>
+  </data>
+  <data name="03d9eec2e340421fb1d6647ca6c8def1" xml:space="preserve">
+    <value>How to work with the dictionary</value>
+  </data>
+  <data name="67b8b0075a0942d1939a34b747c00996" xml:space="preserve">
+    <value>Place the mouse cursor over an unfamiliar word.</value>
+  </data>
+  <data name="4615f62fc77b4c7e91051c72470739ef" xml:space="preserve">
+    <value>Press the key combination "Ctrl+Q" or "CTRL+C".</value>
+  </data>
+  <data name="2ec3f5f28879499fa4a1afa7f733a83a" xml:space="preserve">
+    <value>A window with a translation and an offer of additional dictionary functions will appear.</value>
+  </data>
+  <data name="134a676348714aa190dd3737deb97551" xml:space="preserve">
+    <value>Dictionary demonstration</value>
+  </data>
+  <data name="65e60c89ecc84b9697008b5308721221" xml:space="preserve">
+    <value>Display the dictionary window placing the mouse cursor over a word and pressing "Ctrl+Q" or "CTRL+C".</value>
+  </data>
+  <data name="a6c891e89fb7403f8bd8dc58f032e0d1" xml:space="preserve">
+    <value>Listen to the correct pronunciation using the speaker icon.</value>
+  </data>
+  <data name="94960b0287e847ee8e87a050c1fac956" xml:space="preserve">
+    <value>Practice listening and pronunciation. Click on the microphone ... </value>
+  </data>
+  <data name="ba24cd31ffdd436c84ea4a7d474b2cab" xml:space="preserve">
+    <value>... and after launching Listen &amp; Talk you can start listening and pronunciation practice.</value>
+  </data>
+  <data name="70fd030fbb2441d28f93c570bd29609e" xml:space="preserve">
+    <value>Other dictionary functions</value>
+  </data>
+  <data name="bbc6ff1853d04f26b71d8913185c5a05" xml:space="preserve">
+    <value>Automatic language recognition: You don’t have to worry about the direction of your translation as you work. The dictionary will automatically recognize which language the searched word comes from.</value>
+  </data>
+  <data name="e17147e83ccf4e49b22f10f9ea41dfe2" xml:space="preserve">
+    <value>Search course words in any form: You can translate a word regardless of its case, number, gender, or tense. For example, with the English word "went", the dictionary will correctly search the entry "go".</value>
+  </data>
+  <data name="939b2e6b60414d4fbb1e07d638c25313" xml:space="preserve">
+    <value>Related links: Other links to the entry are looked up simultaneously, such as: Synonyms, phrase words, derived words, collocations, etc.</value>
+  </data>
+  <data name="5c55a75e584e457d89734dad6256617d" xml:space="preserve">
+    <value>Task completed</value>
+  </data>
+  <data name="cbde47480d4942968a885559075e39ea" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="94ef19883c634d2c99dd27a2081ac215" xml:space="preserve">
+    <value>See also</value>
+  </data>
+  <data name="0f6df5cdf72342198616971c1c7c8419" xml:space="preserve">
+    <value>Bilingual Dictionary</value>
+  </data>
+  <data name="fe6997da0e5e407288cda87e156820a0" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="49dd8f327c6f484aaff1c9412690b970" xml:space="preserve">
+    <value>content</value>
+  </data>
+  <data name="5592859748ca440d97b0e2bcdd1ff22b" xml:space="preserve">
+    <value>content</value>
+  </data>
+  <data name="5c4e78c9f3884816a78d1d4d9fe1f458" xml:space="preserve">
+    <value>My Online Courses and Tests</value>
+  </data>
+  <data name="0cf19a3b455d40828295252fb0a321b7" xml:space="preserve">
+    <value>Assessment test for Beginners</value>
+  </data>
+  <data name="1d2a3c242b284bca9259b776852b0b9a" xml:space="preserve">
+    <value>Assessment test for Advanced</value>
+  </data>
+  <data name="1eb1c7d6e2184db88ce765cdc2ab2efa" xml:space="preserve">
+    <value>Assessment test for Advanced</value>
+  </data>
+  <data name="22562c9261a844319eeb5b604bfded79" xml:space="preserve">
+    <value>chapters</value>
+  </data>
+  <data name="2d31eeae1c5d483db53452f07d20e0d9" xml:space="preserve">
+    <value>Your answers are not all correct. Do you really want to evaluate the exercise?</value>
+  </data>
+  <data name="2ee8666492594108b4ac42d5900f1e2e" xml:space="preserve">
+    <value>Congratulations! You have completed the questionnaire. We recommend you do the</value>
+  </data>
+  <data name="2fb0c828db9141ca9dcf0890e3256a51" xml:space="preserve">
+    <value>Do you really want to remove this chapter from the learning process?</value>
+  </data>
+  <data name="2fdca34d83c342c6bdf8f99ed718f8be" xml:space="preserve">
+    <value>Assessment test for Pre-intermediate</value>
+  </data>
+  <data name="324ea9db901844619d3d1de5d05293fd" xml:space="preserve">
+    <value>Assessment test for Beginners</value>
+  </data>
+  <data name="344390c563454f23baea0758357cd6bf" xml:space="preserve">
+    <value>Congratulations! You have completed the questionnaire. We recommend you do the</value>
+  </data>
+  <data name="3b2515a8ef6540feb9aa61ba57223ce5" xml:space="preserve">
+    <value>Assessment test for Pre-intermediate</value>
+  </data>
+  <data name="3b473d38d79342a18501f9401b734eb6" xml:space="preserve">
+    <value>Congratulations! You have completed the chapter.</value>
+  </data>
+  <data name="3de6029a9178476b8bb5b620a31cc546" xml:space="preserve">
+    <value>Assessment test for Beginners</value>
+  </data>
+  <data name="43073e32fb5c4ee08d247e501c45a3df" xml:space="preserve">
+    <value>Congratulations! You have completed the entrance test.</value>
+  </data>
+  <data name="4b7b50da82224dac90931a97fa8b4bd2" xml:space="preserve">
+    <value>The test is not completed, do you really wish to interrupt it? Note: Your results will be saved anyway.</value>
+  </data>
+  <data name="4e20b0cbab9f42508ee43c7f236eb061" xml:space="preserve">
+    <value>Congratulations! You have completed the questionnaire. We recommend you do the</value>
+  </data>
+  <data name="58507bbcbd8144caa48d2742ae906200" xml:space="preserve">
+    <value>Finished:</value>
+  </data>
+  <data name="5ac28df92076478d93e8913ea2c2b6b9" xml:space="preserve">
+    <value>Assessment test for Beginners</value>
+  </data>
+  <data name="6c18d525496449aea1095bc4d51a3071" xml:space="preserve">
+    <value>The test is not completed, do you really wish to interrupt it? Note: Your results will be saved anyway.</value>
+  </data>
+  <data name="6ca45688007e4d2cbb6337be6121c148" xml:space="preserve">
+    <value>Score</value>
+  </data>
+  <data name="71661be93a204b0398c4628f52611b46" xml:space="preserve">
+    <value>done</value>
+  </data>
+  <data name="781a102bcc5041c583e7481d9b24a3d3" xml:space="preserve">
+    <value>Assessment test for Beginners</value>
+  </data>
+  <data name="7e1cd46186014c21b971f869981dfff4" xml:space="preserve">
+    <value>Do you really want to set the starting point of your study to the chapter</value>
+  </data>
+  <data name="825d0d1d7d014d84a8c00f767bd18f69" xml:space="preserve">
+    <value>Congratulations! You have completed the chapter.</value>
+  </data>
+  <data name="863ecfa04f0d438ba29f4d9f570bd523" xml:space="preserve">
+    <value>Score:</value>
+  </data>
+  <data name="8d9a5fde99a44f0d8e0012c43b9e2a98" xml:space="preserve">
+    <value>Assessment test for Advanced</value>
+  </data>
+  <data name="8e457cd200f44e67bb943f27c20a3b8f" xml:space="preserve">
+    <value>Score</value>
+  </data>
+  <data name="90e3f558723446fe9e70f5acfb8eb502" xml:space="preserve">
+    <value>The test is not completed, do you really wish to interrupt it? Note: Your results will be saved anyway.</value>
+  </data>
+  <data name="9ce505e50f954a72a64921f397eb1a1e" xml:space="preserve">
+    <value>Congratulations! You have completed the questionnaire. We recommend you do the</value>
+  </data>
+  <data name="a988706addc34fb9b23bb8ccde488bec" xml:space="preserve">
+    <value>For a better assessment of your language knowledge you will get</value>
+  </data>
+  <data name="b6652a077fb0401faebb8c283e4b8117" xml:space="preserve">
+    <value>Congratulations! You have completed the questionnaire. We recommend you do the</value>
+  </data>
+  <data name="b933199b227a4239b27e4ba75a4a2035" xml:space="preserve">
+    <value>The test is not completed, do you really wish to interrupt it? Note: Your results will be saved anyway.</value>
+  </data>
+  <data name="c97bd8fbd7434033adb520be906efb6e" xml:space="preserve">
+    <value>Assessment test for Advanced</value>
+  </data>
+  <data name="cf1af1547fdf4219b0a5d5f20dc3422f" xml:space="preserve">
+    <value>Congratulations! You have completed the chapter. Click on the \'Continue\' button to continue.</value>
+  </data>
+  <data name="d831ae9ba2bc418382d361c2c29a3763" xml:space="preserve">
+    <value>Do you really want to return this chapter to the learning process?</value>
+  </data>
+  <data name="e3e1407956114f62b924b8911f1deeb7" xml:space="preserve">
+    <value>This chapter is not completed, do you really wish to interrupt your study? Note: Your results will be saved anyway.</value>
+  </data>
+  <data name="e931e33b05af468e93c874190465fa52" xml:space="preserve">
+    <value>Do you really want to restore this chapter to the initial (uncompleted) state, so that you can go through it again? By restoring you will lose the results of all exercises from this chapter.</value>
+  </data>
+  <data name="f45743416d034fe6a67f7c8d44ed859f" xml:space="preserve">
+    <value>Assessment test for Advanced</value>
+  </data>
+  <data name="f5f06b394fea4d4aa850b2d4e5a05470" xml:space="preserve">
+    <value>The test is not completed, do you really wish to interrupt it? Note: Your results will be saved anyway.</value>
+  </data>
+  <data name="502ee6a5e71e451f99d0a1998ae0eb37" xml:space="preserve">
+    <value>License key</value>
+  </data>
+  <data name="2ab9856443ee4b048fd64f8724f435ba" xml:space="preserve">
+    <value>Add license key</value>
+  </data>
+  <data name="95215a1b210744289381d4deb0f209a3" xml:space="preserve">
+    <value>enter License key</value>
+  </data>
+  <data name="947f8200ac904d818fee3f35917ee1b5" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="aec5cceee034447299bb47652988ed85" xml:space="preserve">
+    <value>company department</value>
+  </data>
+  <data name="59816661c3134968905910c431d3057e" xml:space="preserve">
+    <value>change</value>
+  </data>
+  <data name="b59c11fb07664db6a42eccc058a7d7b4" xml:space="preserve">
+    <value>Select your department</value>
+  </data>
+  <data name="f2e725a2b4a8426683753d7a837261ca" xml:space="preserve">
+    <value>Companies</value>
+  </data>
+  <data name="77327cfe60ac42f6accab159cf0ae3a5" xml:space="preserve">
+    <value>Companies and their Master administrators</value>
+  </data>
+  <data name="f0cf4b7269c548a4bcba8947deaefffe" xml:space="preserve">
+    <value>Test Results</value>
+  </data>
+  <data name="524c2241bfcd43a7b5b5172bcc2d8450" xml:space="preserve">
+    <value>tests</value>
+  </data>
+  <data name="c59a5b7764e64f2892f3a46928f20960" xml:space="preserve">
+    <value>available licences</value>
+  </data>
+  <data name="921ea69c2a574ad48762372a6c294c19" xml:space="preserve">
+    <value>license valid to</value>
+  </data>
+  <data name="52e17a9a1f654e1893f5cb9131cc1762" xml:space="preserve">
+    <value>Incorrect format of the License key. Please, check if you entered it correctly.</value>
+  </data>
+  <data name="28df461f6e2c47f7a8cde96ed974be9e" xml:space="preserve">
+    <value>License key used by another user</value>
+  </data>
+  <data name="7a824dbe23b34680b5149663ac66ed24" xml:space="preserve">
+    <value>License key already entered</value>
+  </data>
+  <data name="6e8be0cf1d8e411cb0876ae1aea57c4c" xml:space="preserve">
+    <value>License key accepted</value>
+  </data>
+  <data name="7dbd71d1e623446e884febbd07c72f9f" xml:space="preserve">
+    <value>Manage administrators and their roles</value>
+  </data>
+  <data name="fd0acec43f7d487ba635b4a55343b23a" xml:space="preserve">
+    <value>Manage products</value>
+  </data>
+  <data name="643da9a0b02b4e209e26e20ca620f54c" xml:space="preserve">
+    <value>Generate license keys</value>
+  </data>
+  <data name="9231de5764184fd7a75389aa2ecfdad5" xml:space="preserve">
+    <value>Edit Department structure and criteria for tracking study results</value>
+  </data>
+  <data name="2fb8a691d86e4f4181dba3f48708a363" xml:space="preserve">
+    <value>View Student results</value>
+  </data>
+  <data name="f8fce20059f24b5e82b52bd41fef4bd4" xml:space="preserve">
+    <value>Evaluate Speaking and Writing skills</value>
+  </data>
+  <data name="e72a70b3d05244759ea5469440921ff2" xml:space="preserve">
+    <value>Assign Tests to Evaluators</value>
+  </data>
+  <data name="6e852a7128f54a27b9fb667b03b48a6e" xml:space="preserve">
+    <value>Advanced assign to evaluators</value>
+  </data>
+  <data name="bce009c57f4b418c9ff42e30c7998479" xml:space="preserve">
+    <value>Configure Evaluators</value>
+  </data>
+  <data name="a85c8a527bb44bda9a7ee0721707d2ef" xml:space="preserve">
+    <value>Choose company department (by clicking on [Change] link above)</value>
+  </data>
+  <data name="d50f5552764d4912a9f327506cf714c3" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="7b8522365b1f4aaba4493174a478e987" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="4eccfc355fbc4b91b236d1678516ddad" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="97c7e0eefa844f78a33f7280232afc4b" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="840c9e55cdcd47709fb67061d5a1ead9" xml:space="preserve">
+    <value>Grammar</value>
+  </data>
+  <data name="a07fc4c277c24ae189fd69dea416660a" xml:space="preserve">
+    <value>Dictionary</value>
+  </data>
+  <data name="39e15614bf92467a80574e3d3ce15879" xml:space="preserve">
+    <value>Summary reports</value>
+  </data>
+  <data name="46c1e338e2c04b9991d55739c8609f53" xml:space="preserve">
+    <value>Grouped by content of the course</value>
+  </data>
+  <data name="b235a3d7f85e4fe58c646b4ec652344e" xml:space="preserve">
+    <value>Grouped by departments</value>
+  </data>
+  <data name="f6627ef3ea18406d89bc0040a6c6bc8a" xml:space="preserve">
+    <value>Grouped by study periods</value>
+  </data>
+  <data name="b05b18ca78d04a2e8970420d7e16d39e" xml:space="preserve">
+    <value>Monthly reports</value>
+  </data>
+  <data name="204247a660434f818291e7c86c41b432" xml:space="preserve">
+    <value>Grouped by score</value>
+  </data>
+  <data name="c2f91e353d95495c9bcac84afd679e1b" xml:space="preserve">
+    <value>Grouped by spent time</value>
+  </data>
+  <data name="b417735ce40c4c8ea4d54c7f6e92660c" xml:space="preserve">
+    <value>Reports for periods</value>
+  </data>
+  <data name="c198c1a6e8b449f2930e742180be8874" xml:space="preserve">
+    <value>Grouped by score</value>
+  </data>
+  <data name="80c3d98bf14a42ac835c3686c45703e9" xml:space="preserve">
+    <value>Grouped by spent time</value>
+  </data>
+  <data name="ece88a7b1d46448d85e8864852ffe77d" xml:space="preserve">
+    <value>Course</value>
+  </data>
+  <data name="f9e4b42614fc4f47b2c378e2da896c0b" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="ef9d93c9d2a548c398e5ff6b6a54024b" xml:space="preserve">
+    <value>Exports</value>
+  </data>
+  <data name="23d79430363445b08a70cedb06abb148" xml:space="preserve">
+    <value>How to go through the test ...</value>
+  </data>
+  <data name="910d5502d7df4f9ba7ba5d39977ef5c3" xml:space="preserve">
+    <value>To go through the test click repeatedly on the green button in the upper left corner.</value>
+  </data>
+  <data name="3158bb0a6d654cf6ac77ac9459b385e1" xml:space="preserve">
+    <value>Notice:</value>
+  </data>
+  <data name="af838e91d7c9453089fcfa9a0a644b9e" xml:space="preserve">
+    <value>Do not use internet browser controls when doing the test (Back, Forward, Refresh page etc.).</value>
+  </data>
+  <data name="2a7e9a2d571740b3a4a1f07cbf576d25" xml:space="preserve">
+    <value>Do not interrupt the test. Each interruption will be reported (including its length).</value>
+  </data>
+  <data name="5a3ee876ed354b80a85cdf7687bf2bb4" xml:space="preserve">
+    <value>Before you start ...</value>
+  </data>
+  <data name="56220af5cf374f799014c6809cb73cf5" xml:space="preserve">
+    <value>... to test your language skills we recommend you to make a short preparation for the test.</value>
+  </data>
+  <data name="95afc86c11e949659cac14e4fea41ff6" xml:space="preserve">
+    <value>Check your computer</value>
+  </data>
+  <data name="bda4fdcd2d89435ba385fae853acf507" xml:space="preserve">
+    <value>Do not start the test in case of any problem with playing/recording sound.</value>
+  </data>
+  <data name="7f861695b98c46c5802a4be0a9c849bf" xml:space="preserve">
+    <value>Check the sound playing (it is necessary to connect and set your headphones or loudspeakers correctly):</value>
+  </data>
+  <data name="a347d2f7093b4d168fb9494f75a9ec8b" xml:space="preserve">
+    <value>Can you hear the sound? Is the volume ok?</value>
+  </data>
+  <data name="41d34d70c24447d9a0414eb2efeb2cb3" xml:space="preserve">
+    <value>Check the sound playing (it is necessary to connect and set your headphones or loudspeakers correctly):</value>
+  </data>
+  <data name="388b4cdc1eb047e4819c8c2dcd2cd3dc" xml:space="preserve">
+    <value>Can you hear the sound? Is the volume ok?</value>
+  </data>
+  <data name="9b48e4652edb4ba7b07ddda922fd53a3" xml:space="preserve">
+    <value>Check the sound recording (it is necessary to have a functional microphone). </value>
+  </data>
+  <data name="c2d0b61903ff4918b57535d66f745565" xml:space="preserve">
+    <value>Record your voice. Can you hear the recording? Is the volume ok?</value>
+  </data>
+  <data name="de9653293fef416eb5bf8197b882603c" xml:space="preserve">
+    <value>Run a Demo Test</value>
+  </data>
+  <data name="cdadfe6ffd3d4ea2b1c640a2eeeebbcc" xml:space="preserve">
+    <value>You can try out all the activities occurring in the real test.</value>
+  </data>
+  <data name="4b20254a262c4a96944474836e7b4a7d" xml:space="preserve">
+    <value>After completing demo test click Back to Home and run the real test.</value>
+  </data>
+  <data name="7a4830eea0124e47a42e9083887fd87c" xml:space="preserve">
+    <value>Run</value>
+  </data>
+  <data name="8a2d137bcbfa4350a0c7e4beac0bc301" xml:space="preserve">
+    <value>How it works</value>
+  </data>
+  <data name="f09443047b2f4744bdc5da04daf5f0e7" xml:space="preserve">
+    <value>How to go through the test ...</value>
+  </data>
+  <data name="851b493cda294b0eb868f913ab67280d" xml:space="preserve">
+    <value>Each test consists of several sections (e.g. Grammar and Vocabulary, Listening, Writing etc.).</value>
+  </data>
+  <data name="6563f4c75a57434b9272a35a9478b9d6" xml:space="preserve">
+    <value>There is a time limit for each section (e.g. 20 minutes). When the time limit expires, you will be automatically redirected to the next section.</value>
+  </data>
+  <data name="62304537efbe4c7fab65ccb2264eada0" xml:space="preserve">
+    <value>After completing a section (or when its time limit expires), you will not be allowed to go back to this section.</value>
+  </data>
+  <data name="980101f7fa89477c83c3758175d7cbb5" xml:space="preserve">
+    <value>How to complete one section of the test ...</value>
+  </data>
+  <data name="c8906e4721e44ab69fd2f3de3c6f428b" xml:space="preserve">
+    <value>Each section of the test consists of several tasks.</value>
+  </data>
+  <data name="905f064fafac4ac7a1304753ea885942" xml:space="preserve">
+    <value>To move forward through the individual tasks, use the green Continue button. </value>
+  </data>
+  <data name="86bcaa80735546138719501a77d1afb4" xml:space="preserve">
+    <value>For each task read the detailed instructions first. </value>
+  </data>
+  <data name="d6f2c79d89b64a0791824770f2f7497a" xml:space="preserve">
+    <value>If you do not know the answer to some question, use the Skip button. It will be possible to return to it and solve it later.</value>
+  </data>
+  <data name="dd8d09b5086f4fa1ac0855b498208fb5" xml:space="preserve">
+    <value>When you complete all the tasks in the given section, use the Finish button to continue with the next section. After that you will not be allowed to check/correct your answers from the previous section.</value>
+  </data>
+  <data name="98cb0f8f7f5748699695ed1044cc7774" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="687d6f9678a94a90a286823673265b60" xml:space="preserve">
+    <value>Finish</value>
+  </data>
+  <data name="20c1ce9cee3d4c02b9e9cb4a76fdb2f4" xml:space="preserve">
+    <value>Demo test</value>
+  </data>
+  <data name="cabaf1ac6e8e4e219201e43b28852705" xml:space="preserve">
+    <value>Finish Self-evaluation form</value>
+  </data>
+  <data name="130c662ad53e4f5589557fdd620e47a5" xml:space="preserve">
+    <value>Run test</value>
+  </data>
+  <data name="4baea1f87da040baa7431720c340eac2" xml:space="preserve">
+    <value>Finish</value>
+  </data>
+  <data name="ae062730194a47a58d7e8b4b04a0e299" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="fc80a4f55fcd438c88417436eb8a20ea" xml:space="preserve">
+    <value>Time limit for this section has expired!</value>
+  </data>
+  <data name="d3e3441ec93045d0afd3e9ff25049570" xml:space="preserve">
+    <value>Time limit for this section has expired.</value>
+  </data>
+  <data name="5ae8d0cbcd5e44b68843f2010ec215b7" xml:space="preserve">
+    <value>Fill in all parts of the self-evaluation form</value>
+  </data>
+  <data name="8f8d748c9209489b8710fa30b10905d3" xml:space="preserve">
+    <value>The following test will be started now</value>
+  </data>
+  <data name="883fd55fbeb14d3a9461ffc130bfb6fa" xml:space="preserve">
+    <value>Finishing of the section</value>
+  </data>
+  <data name="8705c1b208864ed1aba65ab1697bb816" xml:space="preserve">
+    <value>Do you really want to finish this section?</value>
+  </data>
+  <data name="92e75ac9aeb44296878c7bcff2ecc030" xml:space="preserve">
+    <value>After that you will not be allowed to check and correct your answers.</value>
+  </data>
+  <data name="eaddb5e3f7be4215abc0174d0e5b25e8" xml:space="preserve">
+    <value>Grammar and  Vocabulary</value>
+  </data>
+  <data name="74cebd49d27c458cb7393fdc3efa5131" xml:space="preserve">
+    <value>Reading</value>
+  </data>
+  <data name="55989a271c5e490d8323792e5be89ac6" xml:space="preserve">
+    <value>Speaking</value>
+  </data>
+  <data name="701d44c0f6e648b4ba6c20a98d3a2a8e" xml:space="preserve">
+    <value>Listening</value>
+  </data>
+  <data name="8e2f5a7271a6408884371e33fd5ed593" xml:space="preserve">
+    <value>Writing</value>
+  </data>
+  <data name="02bea28a09a847cca2488a6791e87e2a" xml:space="preserve">
+    <value>Introduction</value>
+  </data>
+  <data name="ba059f7aff4a4a2f965ffb17656b0e60" xml:space="preserve">
+    <value>Results</value>
+  </data>
+  <data name="adc2a0e182f24c24ae2cd5076e89764a" xml:space="preserve">
+    <value>...waiting for evaluation</value>
+  </data>
+  <data name="5b14d9f8cacb489f94f50305aad3ec76" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="3a7ca744774f433185d2a19ffac18426" xml:space="preserve">
+    <value>Elapsed</value>
+  </data>
+  <data name="c48686aa38404cffa86c79fabd78f49f" xml:space="preserve">
+    <value>Interruptions</value>
+  </data>
+  <data name="32a11f1214ed4d42935957ace60c1b1e" xml:space="preserve">
+    <value>Back to home</value>
+  </data>
+  <data name="84008549bc8f40d095a425441069b5c5" xml:space="preserve">
+    <value>Test Report</value>
+  </data>
+  <data name="f2fa15b86360402cb0279c5909866d45" xml:space="preserve">
+    <value>Dowload test certificate</value>
+  </data>
+  <data name="0293cab382904145b6a4ae244d370618" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="caeebb7a1b774d21a6064bb2a1d40688" xml:space="preserve">
+    <value>...waiting for evaluation</value>
+  </data>
+  <data name="10debe0d1ca64c2fadd0ad6e8512874b" xml:space="preserve">
+    <value>Score</value>
+  </data>
+  <data name="0b0c1fb7c1694303aa7988cefac3b9f9" xml:space="preserve">
+    <value>Date of Examination</value>
+  </data>
+  <data name="270ea9abeb364273b588aaf44c0d5c90" xml:space="preserve">
+    <value>Elapsed time</value>
+  </data>
+  <data name="f6dae62016da4c2594d3d2768178fccd" xml:space="preserve">
+    <value>Test ID</value>
+  </data>
+  <data name="0379cf779a514e9fb0dd36fdbffcc917" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="466d5efcaa0f4943bad0914cbeb70a57" xml:space="preserve">
+    <value>Skills</value>
+  </data>
+  <data name="522e862cf75c48bf8d85265db4f2c2b0" xml:space="preserve">
+    <value>...waiting for evaluation</value>
+  </data>
+  <data name="608ca1ff2a904e60be1f6d90bfc270b0" xml:space="preserve">
+    <value>Score</value>
+  </data>
+  <data name="dc91db17d6f34b019595b6e826845828" xml:space="preserve">
+    <value>weight</value>
+  </data>
+  <data name="017b10f8b3434129abbd439fcee34bb7" xml:space="preserve">
+    <value>Date of Examination</value>
+  </data>
+  <data name="8936275039604f4f83f0a45e93aa3382" xml:space="preserve">
+    <value>Elapsed time</value>
+  </data>
+  <data name="e6df4035ca5a448792f6f5b65638d93a" xml:space="preserve">
+    <value>Log</value>
+  </data>
+  <data name="f5664d06c5cc4c73a0f0dfd5b59f1078" xml:space="preserve">
+    <value>No interruptions, IP address</value>
+  </data>
+  <data name="961478d5192f4607b31ec922fc8d06af" xml:space="preserve">
+    <value>Interruptions</value>
+  </data>
+  <data name="fb3c9580c28041d2a132e8835a85890a" xml:space="preserve">
+    <value>IP addresses</value>
+  </data>
+  <data name="081c33944f3341b9a507b0bbb7ffa025" xml:space="preserve">
+    <value>Interruption details</value>
+  </data>
+  <data name="a7a5400c8af942a39b2dc0f8bb5816b8" xml:space="preserve">
+    <value>Finished</value>
+  </data>
+  <data name="ed50c6f5b2ce427a8ffc9f6293016528" xml:space="preserve">
+    <value>Elapsed</value>
+  </data>
+  <data name="27f59d5049ea421b9ad1d9516d2d667e" xml:space="preserve">
+    <value>IP address</value>
+  </data>
+  <data name="a53742d3c7f247ebaa8f43bc3d51be7a" xml:space="preserve">
+    <value>Interpretation of result</value>
+  </data>
+  <data name="8b5b6d7dc039442abc7bdd30d3152fd9" xml:space="preserve">
+    <value>Score in %</value>
+  </data>
+  <data name="cdaa444cb068483a8970cbf922ba1e05" xml:space="preserve">
+    <value>Accomplishment of the tested level in accordance with the criteria of CEFR</value>
+  </data>
+  <data name="fdb1911921cb4f5da8b2b82062914f95" xml:space="preserve">
+    <value>91% and more</value>
+  </data>
+  <data name="db5865d5276341168b83303e8ad87810" xml:space="preserve">
+    <value>passed exceptionally well, could pass a test one level up</value>
+  </data>
+  <data name="96f9946938b44fe0b7e38055667b7cef" xml:space="preserve">
+    <value>passed well</value>
+  </data>
+  <data name="d051eaba8fa24481a2853df50033694d" xml:space="preserve">
+    <value>passed</value>
+  </data>
+  <data name="075b8834e15f4141b1755d34862f94bc" xml:space="preserve">
+    <value>failed, could pass a test one level down</value>
+  </data>
+  <data name="8b258d47f0014f7790607eea8db99db5" xml:space="preserve">
+    <value>59% and less</value>
+  </data>
+  <data name="c9bd2b2f11194aaaad0311742db2bbb7" xml:space="preserve">
+    <value>failed</value>
+  </data>
+  <data name="ee6f54e31d3c4743883b7bf5175867a8" xml:space="preserve">
+    <value>duration</value>
+  </data>
+  <data name="69de79ea3b61498fb5464ad45fddd5d7" xml:space="preserve">
+    <value>User name already exists</value>
+  </data>
+  <data name="99eed25487184fe195aa42fa3b390d4f" xml:space="preserve">
+    <value>Test level</value>
+  </data>
+  <data name="5598d88071e7473c81f51a42a5f689eb" xml:space="preserve">
+    <value>Recorded (recommended / actual):</value>
+  </data>
+  <data name="d52e817f6ba641e8942e4f002e92cbba" xml:space="preserve">
+    <value>Time for this</value>
+  </data>
+  <data name="0678a00299d94c5687550cf14a6de9a6" xml:space="preserve">
+    <value>section:</value>
+  </data>
+  <data name="28f5255b167040b1a3eeaffb75868b00" xml:space="preserve">
+    <value>Finish and save recording</value>
+  </data>
+  <data name="80a6c3eec76f4d49a4964fda77142f7f" xml:space="preserve">
+    <value>Cancel recording</value>
+  </data>
+  <data name="970fc05ef14441cb8fa9189c6df41c5d" xml:space="preserve">
+    <value>Test level</value>
+  </data>
+  <data name="2edc33573a70474bbb6214ebb672dacf" xml:space="preserve">
+    <value>Number of written words (recommended / actual):</value>
+  </data>
+  <data name="9f25fd96c2444cbd9d716114dc526e36" xml:space="preserve">
+    <value>Evaluation:</value>
+  </data>
+  <data name="7093100fa5354430a34c608be34e4adc" xml:space="preserve">
+    <value>To play or record sound it is necessary</value>
+  </data>
+  <data name="81796d7f94e34f90bc2cf18680715b62" xml:space="preserve">
+    <value>to Install Silverlight</value>
+  </data>
+  <data name="1d981d749c974f918008f57e77cf6b6d" xml:space="preserve">
+    <value>or to use the latest version of </value>
+  </data>
+  <data name="b8c48a0294c149fabcf83d3098d0b7bd" xml:space="preserve">
+    <value>written</value>
+  </data>
+  <data name="0ed651b15e15485bb16b9a8f6eba61eb" xml:space="preserve">
+    <value>words</value>
+  </data>
+  <data name="816063b2c5e248e98d782e6c72ccb0a7" xml:space="preserve">
+    <value>minimum</value>
+  </data>
+  <data name="c33d47b0e8714300b2a0bbebb5dcc0c5" xml:space="preserve">
+    <value>maximum</value>
+  </data>
+  <data name="876f5ad503044c2a988f59852eedbe03" xml:space="preserve">
+    <value>words</value>
+  </data>
+  <data name="6cfd3dde69134155b12a5613a2bd5e90" xml:space="preserve">
+    <value>minimum</value>
+  </data>
+  <data name="1eec4e5b539348bca19de5d8849b8356" xml:space="preserve">
+    <value>words</value>
+  </data>
+  <data name="00c41ba93408472792afc9af724256eb" xml:space="preserve">
+    <value>maximum</value>
+  </data>
+  <data name="acc174b843a1481b8a0dea1acee2f35f" xml:space="preserve">
+    <value>words</value>
+  </data>
+  <data name="9259ce32c3a14bb29b657b9430be2f83" xml:space="preserve">
+    <value>Maximum time limit reached. Your recording was finished and saved.</value>
+  </data>
+  <data name="94708246af584ffdacf8dd4c8c4521c8" xml:space="preserve">
+    <value>recorded</value>
+  </data>
+  <data name="23aacf6c308d4ffa95fa6f9cad88285d" xml:space="preserve">
+    <value>recommended</value>
+  </data>
+  <data name="06eb87db06e14cf2bad2607093c2bfe7" xml:space="preserve">
+    <value>We wish you success with LANGMaster educational products.</value>
+  </data>
+  <data name="f217bebab2ad4bfaa456264c9d0ab51d" xml:space="preserve">
+    <value>LANGMaster team</value>
+  </data>
+  <data name="a032f158000f4ac68ca644ecbe7d3355" xml:space="preserve">
+    <value>There are no tests waiting for evaluation.</value>
+  </data>
+  <data name="2e7c4991e341469e919a12323704ff5a" xml:space="preserve">
+    <value>Select the tested language</value>
+  </data>
+  <data name="561a017232cd474899df97bdfe5b7319" xml:space="preserve">
+    <value>Number of tests waiting for evaluation</value>
+  </data>
+  <data name="7c0855906bea4f5ebd8706a869cce331" xml:space="preserve">
+    <value>Finish</value>
+  </data>
+  <data name="d7f20cc1ecfc43808358b43fa8e1457a" xml:space="preserve">
+    <value>Assign the new tests that are waiting for evaluation to available evaluators.</value>
+  </data>
+  <data name="a82db8b991554ad7b54055428b29ab6c" xml:space="preserve">
+    <value>Number of completed tests that are not assigned to evaluators yet</value>
+  </data>
+  <data name="f960b1765cb84b6696686ed34922552a" xml:space="preserve">
+    <value>Number of tests that are already assigned to evaluators but are not evaluated yet</value>
+  </data>
+  <data name="7d6e776a6bf04777a2a84ee8607cf38b" xml:space="preserve">
+    <value>The new tests will be automatically assigned to evaluators in a proportional way.  You can change this default assignment by filling in new number(s) to input field(s).</value>
+  </data>
+  <data name="fd78d9e8994a48fa81c19c517ab41c49" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="f9d8859098984fcdb9a774d320f20688" xml:space="preserve">
+    <value>In case you want to additionally change the assignment of tests, proceed as follows</value>
+  </data>
+  <data name="1e993cf482344af59a831b2cae019947" xml:space="preserve">
+    <value>Take away required number of tests from one or more evaluators (decrease a number of assigned tests in the corresponding input field)</value>
+  </data>
+  <data name="d7311eaaaadd4840a8a553604938b009" xml:space="preserve">
+    <value>Add these tests to other evaluators (increase a number of assigned tests in the corresponding input field)</value>
+  </data>
+  <data name="620bdc90a0464f6e80b12e36d7513e8d" xml:space="preserve">
+    <value>There is no evaluator available for the tested language.</value>
+  </data>
+  <data name="5892f5c523c74d4088f774aacce64efa" xml:space="preserve">
+    <value>Evaluator</value>
+  </data>
+  <data name="92cf7f9de42b446f9b25dfde1ec19db9" xml:space="preserve">
+    <value>Number of Tests</value>
+  </data>
+  <data name="9f8c4ac43d0743a28afd34b30f9f91f8" xml:space="preserve">
+    <value>assigned (old status)</value>
+  </data>
+  <data name="a5655cf53e9f4e07899d8189b546be77" xml:space="preserve">
+    <value>removed</value>
+  </data>
+  <data name="afc7f33fc4ee425f84d339cc2eb9c9c0" xml:space="preserve">
+    <value>added</value>
+  </data>
+  <data name="07e0f03d475f474c81985933adde5a1a" xml:space="preserve">
+    <value>assigned (new status)</value>
+  </data>
+  <data name="88a68b8941f446269ef3cd7c0b55052f" xml:space="preserve">
+    <value>change to</value>
+  </data>
+  <data name="3967dc229e3742ea997aa863532c74b5" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="8bba3a2ef33c435fa4e9291303dc3d37" xml:space="preserve">
+    <value>Evaluators work report</value>
+  </data>
+  <data name="73fad39853984afcb59fca8135c592f3" xml:space="preserve">
+    <value>Download report</value>
+  </data>
+  <data name="e97b75b6e8a44acd86c51509334ed2f2" xml:space="preserve">
+    <value>Add new evaluator</value>
+  </data>
+  <data name="ad4b52cf7bc94d9da1c7a201179aa57e" xml:space="preserve">
+    <value>Finish</value>
+  </data>
+  <data name="8ca2f068042a49f9baf4d3276d821aa5" xml:space="preserve">
+    <value>Email address</value>
+  </data>
+  <data name="8425677377dc4dcdbebef0764df5d1ae" xml:space="preserve">
+    <value>Evaluation of the following languages</value>
+  </data>
+  <data name="5ba099546beb4e4c895914b8a343b02b" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="d1305b88002b47e7a12e0e34b80546a3" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="b5f75d59260c4e2cbec83400b4a1928e" xml:space="preserve">
+    <value>There are no tests waiting for evaluation</value>
+  </data>
+  <data name="93e09975ce6742a8bf251e7e587480e2" xml:space="preserve">
+    <value>Assigned</value>
+  </data>
+  <data name="966ed7c8115f4a719c66fc107263f245" xml:space="preserve">
+    <value>Title of the test</value>
+  </data>
+  <data name="fee13c58d3394e168e24bbd75bd07068" xml:space="preserve">
+    <value>Finish</value>
+  </data>
+  <data name="a6fd34e95c934fd5b92a179cda788bab" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="2cc6d3c4a9fa459c89a998f83aa99289" xml:space="preserve">
+    <value>There are no tests waiting for evaluation</value>
+  </data>
+  <data name="495ccadce4d34bdc920bd1898aa0fed7" xml:space="preserve">
+    <value>or let the field empty.</value>
+  </data>
+  <data name="4724072775e1467eb90aaaa4cd7a5068" xml:space="preserve">
+    <value>Do you really want to remove this Evaluator from the system?</value>
+  </data>
+  <data name="44461a0351fc4224845dd09794b580f0" xml:space="preserve">
+    <value>email address already exists</value>
+  </data>
+  <data name="dea496b88f524c4ab10895368de79d0f" xml:space="preserve">
+    <value>At least one language must be selected</value>
+  </data>
+  <data name="be46325868c844ca8c6f1d433437ffd3" xml:space="preserve">
+    <value>Person with this email address is not registered in the system</value>
+  </data>
+  <data name="469d05c7cef5487fb29048505902a1a8" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="94606ae1ef72415f848daeb779f0f259" xml:space="preserve">
+    <value>German</value>
+  </data>
+  <data name="66ea06373abb486dbb0dd8598b895dc6" xml:space="preserve">
+    <value>Italian</value>
+  </data>
+  <data name="a82c4ec950354576ab605a5191ce8988" xml:space="preserve">
+    <value>Spanish</value>
+  </data>
+  <data name="d694058048d242459d329a9b19a15f66" xml:space="preserve">
+    <value>French</value>
+  </data>
+  <data name="ad2f4d121a3d4518a035ea7949473dc4" xml:space="preserve">
+    <value>Russian</value>
+  </data>
+  <data name="8817520256884045b0e94bcb005f02d0" xml:space="preserve">
+    <value>Finish</value>
+  </data>
+  <data name="9c834aec8bd94de284855521356f2fbd" xml:space="preserve">
+    <value>Finish</value>
+  </data>
+  <data name="232eaf4801724f4e9dc69ce12091c26d" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="be62382f71e84e96a1837a8a5c565f66" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="665e49d698a547b8aad0b6d642a5c51e" xml:space="preserve">
+    <value>Reports and Statistics for Language Tests</value>
+  </data>
+  <data name="e813f52f80824d69b3508cfee6a24a1a" xml:space="preserve">
+    <value>To view the students results in the language tests click Download button</value>
+  </data>
+  <data name="5f5cbb8890bf454c87a3206c83869946" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="7fed74ddfb5d48388cb11db95b906456" xml:space="preserve">
+    <value>Procedure:</value>
+  </data>
+  <data name="81c16e752a624a519a6fe9d03ff64df7" xml:space="preserve">
+    <value>Click Download button and open the results in one of the following applications:</value>
+  </data>
+  <data name="47ce5d955d4549a98addf4fb0dcb82c0" xml:space="preserve">
+    <value>Excel 2007 or higher</value>
+  </data>
+  <data name="5fd010f2d49242df9132f768589d951f" xml:space="preserve">
+    <value>free download here</value>
+  </data>
+  <data name="6c76f6bcdb8047b39f88666abc88e436" xml:space="preserve">
+    <value>Click</value>
+  </data>
+  <data name="830b1031dcc349deb681fa3cab686d5a" xml:space="preserve">
+    <value>Enable editing</value>
+  </data>
+  <data name="9c7417d7f62c4a608d3519d0601b1591" xml:space="preserve">
+    <value>in top bar if required</value>
+  </data>
+  <data name="36303b9d40cd48c6ab9fb7e843fa733a" xml:space="preserve">
+    <value>Then you can work with the available tables and create any reports that your organization needs:</value>
+  </data>
+  <data name="1c7fc0629c87407b81687454496868be" xml:space="preserve">
+    <value>students can be grouped according to different criteria</value>
+  </data>
+  <data name="60f013ae04a14c1b8d14cf49e88d0fa2" xml:space="preserve">
+    <value>you can use different filters, hide/display columns etc.</value>
+  </data>
+  <data name="57e0c402fc0f425890ade554ed42132e" xml:space="preserve">
+    <value>you can view detailed information about students including their certificates</value>
+  </data>
+</root>

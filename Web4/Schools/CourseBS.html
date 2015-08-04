@@ -1,0 +1,10 @@
+﻿!schoolCourse
+###
+<div data-bind="with: Pager.ActPage, delegatedHandler: ['click']" class="app-school">
+  {{for #data tmpl=~T('TMaster')/}}
+</div>
+###
+
+TLesson
+###
+{{for ~crs_item_par(#data, "TCourseRight") tmpl=~T('TCrsItem')/}}

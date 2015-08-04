@@ -1,0 +1,234 @@
+﻿!schoolHumanEvalManagerLangs
+###
+<div data-bind="with: Pager.ActPage" class="app-admin rtl">
+  {{for #data tmpl=~T('TTopBarNew')/}}
+  <div class="container">
+    {{if !~Cookie()}}
+    {{for #data tmpl=~T('TLoginFirst')/}}
+    {{else}}
+    <h3>{{:title()}}</h3>
+    {{if langs.length==0}}
+    <div class="alert alert-warning">
+      <h4>{{:~CSLocalize('a032f158000f4ac68ca644ecbe7d3355', 'There are no tests waiting for evaluation.')}}</h4>
+    </div>
+    {{else}}
+    <h4>{{:~CSLocalize('2e7c4991e341469e919a12323704ff5a', 'Select the tested language')}}</h4>
+    <div class="list-group">
+      {{for langs}}
+      <a href="#" class="list-group-item list-group-item-success" data-bind="click:function() {click({{:#index}});}">
+        <span class="flag-small flag-small-{{:langTitle}}"></span>&nbsp;{{:title}} ({{:~CSLocalize('561a017232cd474899df97bdfe5b7319', 'Number of tests waiting for evaluation')}}: {{:count}})
+      </a>
+      {{/for}}
+    </div>
+    {{/if}}
+    <p>
+      <hr />
+      <div class="btn btn-default" data-bind="click:close">{{:~CSLocalize('7c0855906bea4f5ebd8706a869cce331', 'Finish')}}</div>
+    </p>
+    {{/if}}
+  </div>
+</div>
+###
+
+!schoolHumanEvalManager
+###
+<div data-bind="with: Pager.ActPage" class="app-admin rtl">
+  {{for #data tmpl=~T('TTopBarNew')/}}
+  <div class="container">
+    {{if !~Cookie()}}
+    {{for #data tmpl=~T('TLoginFirst')/}}
+    {{else}}
+    <h3>{{:title()}}</h3>
+    <div class="alert alert-warning">
+      <h4>{{:~CSLocalize('d7f20cc1ecfc43808358b43fa8e1457a', 'Assign the new tests that are waiting for evaluation to available evaluators.')}}</h4>
+
+      <p>{{:~CSLocalize('a82db8b991554ad7b54055428b29ab6c', 'Number of completed tests that are not assigned to evaluators yet')}}: <span class="label label-primary">{{:data.toEvaluate.length}}</span>.</p>
+      <p>{{:~CSLocalize('f960b1765cb84b6696686ed34922552a', 'Number of tests that are already assigned to evaluators but are not evaluated yet')}}: <span class="label label-default">{{:olds}}</span>.</p>
+      <p>{{:~CSLocalize('7d6e776a6bf04777a2a84ee8607cf38b', 'The new tests will be automatically assigned to evaluators in a proportional way.  You can change this default assignment by filling in new number(s) to input field(s).')}}</p>
+
+      <p><b>{{:~CSLocalize('fd78d9e8994a48fa81c19c517ab41c49', 'Note')}}:</b></p>
+      <p>{{:~CSLocalize('f9d8859098984fcdb9a774d320f20688', 'In case you want to additionally change the assignment of tests, proceed as follows')}}:</p>
+      <ol>
+        <li>{{:~CSLocalize('1e993cf482344af59a831b2cae019947', 'Take away required number of tests from one or more evaluators (decrease a number of assigned tests in the corresponding input field)')}}</li>
+        <li>{{:~CSLocalize('d7311eaaaadd4840a8a553604938b009', 'Add these tests to other evaluators (increase a number of assigned tests in the corresponding input field)')}}</li>
+      </ol>
+    </div>
+    <form id="human-form" class="form-inline">
+      {{if evaluators.length==0}}
+      <div class="alert alert-danger">
+        {{:~CSLocalize('620bdc90a0464f6e80b12e36d7513e8d', 'There is no evaluator available for the tested language.')}}
+      </div>
+      {{else}}
+      <table class="table oli-cell-center oli-cell-middle">
+        <thead>
+          <tr class="warning">
+            <td rowspan="2" class="oli-cell-left">{{:~CSLocalize('5892f5c523c74d4088f774aacce64efa', 'Evaluator')}}</td>
+            <td colspan="7">{{:~CSLocalize('92cf7f9de42b446f9b25dfde1ec19db9', 'Number of Tests')}}</td>
+          </tr>
+          <tr class="warning">
+            <td>{{:~CSLocalize('9f8c4ac43d0743a28afd34b30f9f91f8', 'assigned (old status)')}}</td>
+            <td>&nbsp;</td>
+            <td>{{:~CSLocalize('a5655cf53e9f4e07899d8189b546be77', 'removed')}}</td>
+            <td>&nbsp;</td>
+            <td>{{:~CSLocalize('afc7f33fc4ee425f84d339cc2eb9c9c0', 'added')}}</td>
+            <td>&nbsp;</td>
+            <td>{{:~CSLocalize('07e0f03d475f474c81985933adde5a1a', 'assigned (new status)')}}</td>
+          </tr>
+        </thead>
+        <tbody>
+          {{for evaluators}}
+          <tr data-bind="with:evaluators[{{:#index}}]">
+            <th class="oli-cell-left">
+              <span class="form-control-static">{{:email}}<br />({{:name}})</span>
+            </th>
+            <td>
+              <span class="label label-default oli-h4 oli-margin-right">{{:olds}}</span>
+            </td>
+            <td>
+              <span class="oli-h4 oli-margin-left-right"> - </span>
+            </td>
+            <td>
+              <span class="label label-default oli-h4 oli-margin-right" data-bind="text: oldRemoved"></span>
+            </td>
+            <td>
+              <span class="oli-h4 oli-margin-left-right"> + </span>
+            </td>
+            <td>
+              <span class="label label-primary oli-h4 oli-margin-right" data-bind="text: news"></span>
+            </td>
+            <td>
+              <span class="oli-h4 oli-margin-left-right"> = </span>
+            </td>
+            <td class="oli-cell-left">
+              <div class="form-group">
+                <span class="label label-success oli-h4 oli-margin-right" data-bind="text: all"></span>
+                ({{:~CSLocalize('88a68b8941f446269ef3cd7c0b55052f', 'change to')}}: <input id="new-input-{{:#index}}" name="new-input-{{:#index}}" class="form-control " data-bind="textInput:attemptAllForce" style="width:50px" /> )
+              </div>
+            </td>
+          </tr>
+          {{/for}}
+        </tbody>
+        <tfoot>
+          <tr class="warning">
+            <td class="oli-cell-left">{{:~CSLocalize('3967dc229e3742ea997aa863532c74b5', 'Summary')}}</td>
+            <td>
+              <span class="label label-default oli-h4 oli-margin-right">{{:olds}}</span>
+            </td>
+            <td>-</td>
+            <td>
+              <span class="label label-default oli-h4 oli-margin-right" data-bind="text:oldRemoved"></span>
+            </td>
+            <td>+</td>
+            <td>
+              <span class="label label-primary oli-h4 oli-margin-right" data-bind="text:news"></span>
+            </td>
+            <td>=</td>
+            <td class="oli-cell-left">
+              <span class="label label-success oli-h4 oli-margin-right">{{:all}}</span>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      {{/if}}
+    </form>
+    {{for #data tmpl=~T('TOkCancel')/}}
+    {{/if}}
+  </div>
+</div>
+###
+
+!schoolHumanEvalManagerEvs
+###
+<div data-bind="with: Pager.ActPage" class="app-admin rtl">
+  {{for #data tmpl=~T('TTopBarNew')/}}
+  <div class="container">
+    {{if !~Cookie()}}
+    {{for #data tmpl=~T('TLoginFirst')/}}
+    {{else}}
+    <h3>{{:title()}}</h3>
+    <div class="panel panel-default">
+      <div class="panel-heading">{{:~CSLocalize('8bba3a2ef33c435fa4e9291303dc3d37', 'Evaluators work report')}}</div>
+      <div class="panel-body">
+        <div class="btn btn-default btn-lg" data-bind="click:downloadReport">{{:~CSLocalize('73fad39853984afcb59fca8135c592f3', 'Download report')}}</div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="btn btn-success" data-bind="click:add">{{:~CSLocalize('e97b75b6e8a44acd86c51509334ed2f2', 'Add new evaluator')}}</div>
+      </div>
+      <div class="panel-body">
+        <ul class="list-group">
+          {{for evaluators}}
+          <li class="list-group-item list-group-item-success">
+            <div class="btn btn-info pull-right" data-bind="click: function() {del({{:data.companyUserId}})}">
+              Delete
+            </div>
+            <div class="btn btn-info pull-right oli-margin-right" data-bind="click: function() {edit({{:data.companyUserId}})}">
+              Edit
+            </div>
+            <div>
+              <p><b><a href="mailto:{{:data.email}}">{{:data.email}}</a>, {{:data.name}}</b></p>
+              <p>
+                {{for langs}}
+                <span class="flag-small flag-small-{{:langTitle}}"></span>&nbsp;{{:title}} |
+                {{/for}}
+              </p>
+            </div>
+          </li>
+          {{/for}}
+        </ul>
+      </div>
+    </div>
+    <p>
+      <hr />
+      <div class="btn btn-default" data-bind="click:close">{{:~CSLocalize('ad4b52cf7bc94d9da1c7a201179aa57e', 'Finish')}}</div>
+    </p>
+    {{/if}}
+  </div>
+
+  <div id="evaluator-modal-dlg" class="modal fade" role="dialog" data-backdrop="static" data-show="false" data-bind="with: modalDlg">
+    <div class="modal-dialog modal-lg">
+      <form>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 data-bind="visible:isEdit(), text:email()"></h4>
+            <div class="form-group" data-bind="visible:!isEdit()">
+              <label for="human-email-input">{{:~CSLocalize('8ca2f068042a49f9baf4d3276d821aa5', 'Email address')}}:</label>
+              <input id="human-email-input" name="human-email-input" class="form-control" data-bind="textInput:email" />
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="form-group" id="human-langs">
+              <label>{{:~CSLocalize('8425677377dc4dcdbebef0764df5d1ae', 'Evaluation of the following languages')}}:</label><br />
+              {{for modalDlg.langs}}
+              <label class="checkbox-inline" data-bind="with: langs[{{:#index}}]">
+                <input type="checkbox" value="{{:lang}}" data-bind="checked: checked"> <span class="flag-small flag-small-{{:langTitle}}"></span>&nbsp;{{:title}}
+              </label>
+              {{/for}}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-bind="click: ok">{{:~CSLocalize('5ba099546beb4e4c895914b8a343b02b', 'OK')}}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{:~CSLocalize('d1305b88002b47e7a12e0e34b80546a3', 'Cancel')}}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+###
+
+!schoolHumanEvalManagerEx
+###
+<div data-bind="with: Pager.ActPage" class="app-admin rtl">
+  {{for #data tmpl=~T('TTopBarNew')/}}
+  <div class="container">
+    {{if !~Cookie()}}
+    {{for #data tmpl=~T('TLoginFirst')/}}
+    {{else}}
+    <h3>{{:title()}}</h3>
+    <h3>schoolHumanEvalManagerEx</h3>
+    {{/if}}
+  </div>
+</div>

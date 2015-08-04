@@ -1,0 +1,106 @@
+@import "LMMixins.less";
+
+.radio-btn {
+
+  &[disabled] {
+    opacity: 1.0;
+    font-weight: bold;
+    background-color: darken(@btn-success-bg,8%);
+  }
+}
+
+.stat-content {
+  .panel-heading {
+    position: relative;
+  }
+
+  .close-btn {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+  }
+}
+
+#outline_user_main_place {
+  .list-expand-levels {
+    margin-top: 10px;
+
+    .btn {
+      font-weight: bold;
+    }
+  }
+}
+
+#topbar {
+  .title {
+    .inline;
+    float: none;
+    font-weight: bold;
+  }
+
+  .stat-select {
+    .btn {
+      padding-top: 4px;
+      padding-bottom: 5px;
+      position: relative;
+    }
+
+    h4 {
+      padding-right: 5px;
+    }
+
+    .fa {
+      position: absolute;
+      top: 15px;
+      left: 5px;
+      font-size: 18px;
+    }
+  }
+}
+
+.dx-bar {
+  position: relative;
+  height: 20px;
+
+  .bar-title {
+    position: relative;
+    font-size: 11px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    padding-top: 3px;
+
+    small {
+      font-size: 9px;
+      font-weight: normal;
+    }
+  }
+
+  .bar {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+  }
+}
+
+.dx-progress {
+  background-color: @btn-info-bg;
+
+  .c1 {
+    background-color: @gray-light;
+    left: 0px;
+  }
+
+  .c2 {
+    background-color: @btn-success-bg;
+  }
+}
+
+.dx-score {
+  background-color: @btn-danger-bg;
+
+  .c1 {
+    background-color: @btn-success-border;
+    left: 0px;
+  }
+}

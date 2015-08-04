@@ -1,0 +1,51 @@
+﻿c_pairing
+###
+<!-- ko with: getItem('{{:id}}') -->
+<div class="{{:~classes(#data)}} oli-cancel-stop-sound {{:leftWidthCls()}}" data-bind="css: { 'left-selected': leftSelected, 'noleft-selected': !leftSelected(), normal: !done(), evaluated: done }" {{:srcPosition()}}>
+  <table>
+    <tr class="help">
+      <td>
+        <div class="help-left alert alert-info">
+          <i class="fa fa-arrow-down info"></i>&nbsp;{{:~CSLocalize('8ea9f179b07244ca9523580477681b08', 'Click on')}}<i class="fa fa-hand-o-right fa-border hand"></i>&nbsp;{{:~CSLocalize('64d35057f86a49b184cca73e5eaeebee', 'to select a left item')}}
+        </div>
+      </td>
+      <td>
+        <div class="middle">&nbsp;</div>
+      </td>
+      <td>
+        <div class="help-right alert alert-info">
+          <i class="fa fa-arrow-down info"></i>&nbsp;{{:~CSLocalize('ae36fa97f71d41519956897d24660aa7', 'Select the right item matching the selected left item')}}
+        </div>
+      </td>
+    </tr>
+    {{for actItems()}}
+    <!-- ko with: Items[{{:selfIdx}}] -->
+    <tr class="pairing-item" data-bind="css: { 'act_left': leftSelected, 'noact_left': !leftSelected() }">
+      <td class="left-cell">
+        <div class="left-cell-div">
+          <div class="sel-btn" data-bind="click:select_left"><i class="fa fa-hand-o-right fa-2x fa-border"></i></div>
+          <div class="left-content">
+            {{for Items}}{{include tmpl=~cT(#data)/}}{{/for}}
+          </div>
+        </div>
+      </td>
+      <td class="middle" data-bind="css: { 'join-line': ok, 'not-join-line': !ok() }">
+        <div class="content">
+          <div class="left-end fa fa-circle-o"></div>
+          <div class="line"></div>
+          <div class="right-end fa fa-circle-o"></div>
+        </div>
+      </td>
+      <td class="right-cell" data-bind="click:select_right">
+        <div class="oli-edit right-pair" data-bind="css: st">
+          <div class="user-input" data-bind="html: userText"></div>
+          <div class="teacher" data-bind="html: teacherTxt"></div>
+          <div class="user-res" data-bind="html: userText"></div>
+        </div>
+      </td>
+    </tr>
+    <!-- /ko -->
+    {{/for}}
+  </table>
+</div>
+<!-- /ko -->

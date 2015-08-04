@@ -1,0 +1,22 @@
+treeview
+###
+<li>
+  <div data-bind="itsMe: itsMeHover, css: cutCopyFlag">
+    <span class="fa fa-fw expand" data-bind="click: expandCollapse, css: 'fa-' + icon()"></span>
+    <input type='checkbox' data-bind="display: model.options.withCheckbox, checked: checked" />
+    <span class="fa fa-lock" data-bind="display: isLocked"></span>
+    <span class="title" data-bind="itsMe: itsMeEdit, text: title, display: !model.options.onLinkClick"></span>
+    <a href="#" data-bind="text: title, display: !!model.options.onLinkClick, click:model.options.onLinkClick"></a>
+    <span class="tools" data-bind="display: displayTools()">
+      <span class="fa fa-plus right pad-left" title="{{:~CSLocalize('1e033f65fec24ca898e9316c5288526f', 'Add Inside')}}" data-bind="display: displayAddFirst, click: doAddFirst"></span>
+      <span class="fa fa-plus bottom" title="{{:~CSLocalize('da8478cf2e0b4e3e947120d24ea3c03d', 'Add Next')}}" data-bind="display: displayAddNext, click: doAddNext"></span>
+      <span class="fa fa-pencil-square-o pad-left" title="{{:~CSLocalize('e9e40abe9d02412e8d3144daa167133c', 'Edit')}}" data-bind="display: displayEdit, click: doEdit"></span>
+      <span class="fa fa-times" title="{{:~CSLocalize('f4fdd6a0009e4651bb4e2d08fc8afbdc', 'Delete')}}" data-bind="display: displayDelete, click: doDelete"></span>
+      <span class="fa fa-copy pad-left" title="{{:~CSLocalize('12a6a36cbea74a6e932c1b0831d98ae9', 'Copy')}}" data-bind="display: displayCopy, click: doCopy"></span>
+      <span class="fa fa-cut" title="{{:~CSLocalize('857b030be54a4e3386b369b59b9c9257', 'Cut')}}" data-bind="display: displayCut, click: doCut"></span>
+      <span class="fa fa-paste right pad-left" title="{{:~CSLocalize('85ed0a39e304496997f54cc8ed39f6d5', 'Paste Inside')}}" data-bind="display: displayPasteFirst, click: doPasteFirst"></span>
+      <span class="fa fa-paste bottom" title="{{:~CSLocalize('0a036b89b8dc49cea6d69904d0fe0e9f', 'Paste Next')}}" data-bind="display: displayPasteNext, click: doPasteNext"></span>
+    </span>
+  </div>
+  <ul class="fa-ul" data-bind="template: { name: 'treeview', foreach: $data.items }, style: { display: expanded() ? '' : 'none' }"></ul>
+</li>

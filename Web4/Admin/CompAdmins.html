@@ -1,0 +1,60 @@
+!schoolCompAdmins
+###
+  <div data-bind="test:'comp-admin', with: Pager.ActPage" class="app-admin rtl">
+  {{for #data tmpl=~T('TTopBarNew')/}}
+  <div class="container">
+    {{if ~Cookie()}}
+    <h3>{{:title()}}</h3>
+
+    <%-- ************ Company Administrators *******************--%>
+    <div data-bind="foreach: comp_Admin">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          {{:~CSLocalize('9c41d54edd8645329fcdd1c71d02e9e9', 'Administrators and their roles')}}
+        </div>
+        <table class="table table-condensed  table-hover" data-bind="foreach: Items">
+          <tr data-bind="css: { success: !Deleted(), danger: Deleted }">
+            <td>
+              <b data-bind="text: data.EMail"></b>
+            </td>
+            <!-- ko foreach: options -->
+            <td>
+              <span class="checkbox">
+                <label>
+                  <input type="checkbox" data-bind="test:'cb-' + $index() + '-' +  $parentContext.$index(), checked: checked" />
+                  <span data-bind="text: title"></span>
+                </label>
+              </span>
+            </td>
+            <!-- /ko -->
+            <td class="ad-btn-last">
+              <button class="btn btn-default" data-bind="test:'del-undel-' + $index(), click: $parent.compAdmin_del">
+                <span class="fa" data-bind="css: { 'fa-plus': Deleted(), 'fa-times': !Deleted() }"></span>
+                &nbsp;<span data-bind="text: (Deleted() ? '{{:~CSLocalize('d9ebb6b97c4d49b5962946994de26944', 'Undelete')}}' : '{{:~CSLocalize('6ef4ac37937d407a863a981a1cf2f13e', 'Delete')}}')"></span>
+              </button>
+            </td>
+          </tr>
+        </table>
+        <table class="table table-condensed">
+          <tbody>
+            <tr>
+              <td>
+                <label class="control-label">{{:~CSLocalize('9917aeb542ad4080b9b965265ac85253', 'Add Company administrator')}}</label>
+                <input class="form-control" type="text" placeholder="{{:~CSLocalize('dbcc966875024fa78638582e514b45c0', 'enter E-mail')}}" data-bind="test:'email', value: newEMail, valueUpdate: 'afterkeydown', hasfocus: newEMail.hasfocus" />
+                <span class="help-block" data-bind="visibility: newEMail.message, text: newEMail.message"></span>
+              </td>
+              <td class="ad-btn-add">
+                <button class="btn btn-default" data-bind="test:'ok-btn', click: newEMail_Add"><span class="fa fa-plus"></span>&nbsp;{{:~CSLocalize('425a022b46634c20bb1c68fa6d105b50', 'Add')}}</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {{for #data tmpl=~T('TOkCancel')/}}
+    {{else}}
+    {{for #data tmpl=~T('TLoginFirst')/}}
+    {{/if}}
+  </div>
+</div>
+

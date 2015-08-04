@@ -1,0 +1,165 @@
+﻿/*#source Q:\LMCom\rew\web4\jslib\css\Schools.css */
+/*.icon-white (@white) when (@white) {
+    background-image: url("../../bootstrap/img/glyphicons-halflings-white.png");
+}
+
+.icon-white (@white) when not (@white) {
+}*/
+/*
+.background-(@lm-default);
+.background-l(@lm-default);
+.background-image-(@lm-default);
+.background-image-l(@lm-default);
+.icon-white (true);
+.icon-white (false);
+*/
+/*********************** GRID ****************************/
+/*
+http://chrisplaneta.com/freebies/negativegrid-fluid-css-grid-by-chris-planeta/
+http://stackoverflow.com/questions/2779554/css-auto-height-on-containing-div-100-height-on-background-div-inside-contain
+http://www.positioniseverything.net/articles/onetruelayout/equalheight
+http://css-tricks.com/fluid-width-equal-height-columns/
+
+*/
+body {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.lm-collapse-low {
+  margin: 0;
+}
+.lm-collapse-low.in {
+  margin-bottom: 20px;
+}
+.lm-collapse-low .active {
+  z-index: 2;
+  color: #ffffff;
+  background-color: #428bca;
+  border-color: #428bca;
+}
+.lm-collapse-low .lm-close {
+  position: absolute;
+  top: 3px;
+  right: 20px;
+  z-index: 1000;
+}
+.lm-collapse {
+  margin: 0;
+}
+.lm-collapse.in {
+  margin-bottom: 20px;
+}
+.lm-collapse .active {
+  z-index: 2;
+  color: #ffffff;
+  background-color: #428bca;
+  border-color: #428bca;
+}
+.lm-collapse .lm-close {
+  position: absolute;
+  top: 3px;
+  right: 20px;
+  z-index: 1000;
+}
+.lm-collapse .list-group-item:first-child,
+.lm-collapse .panel {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  border-top: none;
+}
+.app-school .lm-phone-ex-menu li {
+  height: 50px;
+}
+.app-school .lm-phone-ex-menu a {
+  font-size: 20px;
+}
+.app-school .lm-phone-ex-menu b {
+  font-size: 24px;
+}
+.app-school .sch-title .btn {
+  margin-top: -6px;
+  padding-top: 9px;
+  height: 35px;
+}
+.app-school .lm-green-btn {
+  float: left;
+  position: relative;
+  padding-top: 14px;
+  padding-left: 10px;
+  padding-right: 45px;
+  text-align: left;
+  min-width: 200px;
+  height: 50px;
+}
+.app-school .lm-green-btn .glyphicon {
+  position: absolute;
+  top: 14px;
+  right: 13px;
+  font-size: 20px;
+}
+.app-school .lm-logo-black {
+  float: left;
+}
+.app-school [class*='col-span-'] {
+  position: static;
+}
+.app-school .open.dropdown-menu {
+  display: block;
+}
+.app-school .dropdown-menu {
+  position: absolute;
+  top: 0;
+  display: none;
+}
+.app-school .crsitem .alert {
+  padding: 5px;
+}
+.app-school .lm-crs-head {
+  font-size: 16px;
+}
+.app-school .progress {
+  height: 20px;
+  margin-bottom: 3px;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  background-image: none;
+  background-color: #d9534f;
+}
+.app-school .progress .text {
+  position: absolute;
+  z-index: 2;
+  color: white;
+  padding-left: 5px;
+}
+.app-school .progress .bar {
+  text-align: left;
+}
+.app-school .well {
+  padding: 8px;
+  background-color: #f8f8f8;
+}
+.app-school .well .alert {
+  margin-bottom: 0px;
+}
+.app-school .navbar .container {
+  padding-left: 0;
+}
+@media (max-width: 991px) {
+  .lm-ex .navbar {
+    padding-left: 0;
+  }
+  .lm-ex .navbar .lm-green-btn {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+  }
+}
+.no-media .lm-ex .navbar {
+  padding-left: 0;
+}
+.no-media .lm-ex .navbar .lm-green-btn {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+.logged .lm-ex h3 {
+  margin-top: 5px;
+}
+

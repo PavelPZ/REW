@@ -1,0 +1,32 @@
+﻿chinhspeaking
+###
+<div data-bind="css: {hide:done}">
+  <div class="panel panel-success">
+    <div class="panel-heading">
+      <b>In this part you will gradually record your answers to several speaking questions according to the instructions on the screen.</b>
+    </div>
+
+    <div class="panel-body">
+      <ol>
+        <li>
+          In case of <i>recorded questions</i> just listen to the question and then record your answer. You will get 1 minute time limit for the recording.
+          After that you will get another question.
+        </li>
+        <li>
+          In case of the <i>written questions</i> read the assignment and prepare your answer for one minute.
+          Then you will get 2 minutes time limit for the recording. After that you will get another question.
+        </li>
+      </ol>
+      <b>
+        If you are prepared to start, ensure that your headphones and microphone are ready to use and click Start button.
+      </b>
+    </div>
+    <div class="panel-footer center">
+      <p><a href="#" class="btn btn-success btn-lg" role="button" data-bind="click:run"><b>Start</b>&nbsp;&nbsp;&nbsp;<span class="fa fa-play"></span></a> </p>
+    </div>
+  </div>
+
+</div>
+<div data-bind="css: {hide:!done()}">
+  Congratulations. You have completed the Speaking section. Click Continue to finish the test.
+</div>
