@@ -208,3 +208,10 @@ FakesAssemblies/
 *.plg
 
 # Visual Studio 6 workspace option               
+
+!web4/app_data/testme/verdanab.ttf
+!web4/app_data/testme/verdana.ttf
+!web4/app_data/testme/testmecertifikatspecimen.pdf
+!web4/app_data/testme/testmecertifikat.pdf
+!web4/app_data/testme/langmaster_pdf.pfx
+

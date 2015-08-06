@@ -14,7 +14,7 @@
     <RootNamespace>web4</RootNamespace>
     <AssemblyName>web4</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -2715,7 +2715,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>62792</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:59546/</IISUrl>
+          <IISUrl>http://localhost/Web4</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
