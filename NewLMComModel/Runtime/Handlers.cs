@@ -50,7 +50,7 @@ namespace Handlers {
         //kontrola session
         if (user.actSes == sessionId) return true; //stejna session
         if (user.oldSess != null && user.oldSess.Contains(sessionId)) return false; //expired session
-        //dej puvodni act session do oldSess a aktualizuj act session
+                                                                                    //dej puvodni act session do oldSess a aktualizuj act session
         if (user.oldSess == null) user.oldSess = new HashSet<long>();
         user.oldSess.Add(user.actSes); //jina session - dej act session do oldSess
         user.actSes = sessionId; //nastav actSes
@@ -438,6 +438,7 @@ namespace Handlers {
         case "lm":
         case "data":
         case "media":
+        case "publ":
         case "grafia":
         case "skrivanek":
         case "edusoft":

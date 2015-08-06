@@ -25,7 +25,7 @@
     <TypeScriptModuleKind>none</TypeScriptModuleKind>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
     <IsCompassProject>True</IsCompassProject>
-    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.5</TypeScriptToolsVersion>
     <TargetFrameworkProfile />
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
@@ -42,7 +42,7 @@
     <TypeScriptSourceMap>False</TypeScriptSourceMap>
     <TypeScriptGeneratesDeclarations>false</TypeScriptGeneratesDeclarations>
     <TypeScriptModuleKind>none</TypeScriptModuleKind>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
     <PublishDatabases>true</PublishDatabases>
     <UseVSHostingProcess>true</UseVSHostingProcess>
@@ -64,10 +64,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="ChilkatDotNet4">
       <HintPath>..\dlls\ChilkatDotNet4.dll</HintPath>
     </Reference>
@@ -100,22 +96,18 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServerCompact, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.0.2\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.1.3\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -183,7 +175,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.2\lib\net40\System.Web.Optimization.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows.Forms" />
@@ -200,12 +192,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Yahoo.Yui.Compressor, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YUICompressor.NET.2.3.0.0\lib\NET20\Yahoo.Yui.Compressor.dll</HintPath>
+    <Reference Include="Yahoo.Yui.Compressor, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YUICompressor.NET.2.7.0.0\lib\NET20\Yahoo.Yui.Compressor.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -263,6 +251,11 @@
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.theme.css" />
     <Content Include="links.aspx" />
     <Content Include="packs\repositories.config" />
+    <Content Include="Licenses\v8.valgrind.license" />
+    <Content Include="Licenses\v8.v8.license" />
+    <Content Include="Licenses\v8.strongtalk.license" />
+    <Content Include="Licenses\v8.main.license" />
+    <Content Include="Licenses\ClearScript.main.license" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -1335,6 +1328,7 @@
     <TypeScriptCompile Include="Author\doc.ts" />
     <TypeScriptCompile Include="Author\GenerateReflection.ts" />
     <TypeScriptCompile Include="Author\vsNet.ts" />
+    <TypeScriptCompile Include="Blended\home.ts" />
     <TypeScriptCompile Include="BS3\js\bootstrap.d.ts" />
     <TypeScriptCompile Include="Courses\codes\chinhSpeaking.ts" />
     <TypeScriptCompile Include="Courses\codes\docReference.ts" />

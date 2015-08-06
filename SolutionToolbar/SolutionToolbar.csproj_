@@ -1,9 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="11.0">
   <PropertyGroup>
-    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
+    <!--<MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>-->
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>11.0</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -41,10 +62,6 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ClearScript, Version=5.4.2.1, Culture=neutral, PublicKeyToken=935d0c957da47c73, processorArchitecture=MSIL">
-      <HintPath>..\packages\ClearScript.V8.5.4.2.1\lib\net40\ClearScript.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.OLE.Interop" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop" />
@@ -62,9 +79,9 @@
     <Reference Include="Microsoft.VisualStudio.Shell.Immutable.10.0" />
     <Reference Include="Microsoft.VisualStudio.Shell.Immutable.11.0" />
     <Reference Include="Microsoft.VisualStudio.Shell.Immutable.12.0" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Web4\packages\Newtonsoft.Json.6.0.7\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -177,12 +194,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Licenses\ClearScript.main.license" />
-    <None Include="Licenses\v8.main.license" />
-    <None Include="Licenses\v8.strongtalk.license" />
-    <None Include="Licenses\v8.v8.license" />
-    <None Include="Licenses\v8.valgrind.license" />
-    <None Include="packages.config" />
     <Content Include="Resources\App.config">
       <SubType>Designer</SubType>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -191,6 +202,8 @@
       <SubType>Designer</SubType>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Resources\PZApp.config">
       <SubType>Designer</SubType>
     </None>
@@ -380,8 +393,20 @@
       <Link>Resources\data\instr\std\yes_no_questions.xml</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="ClearScriptV8-32.dll">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ClearScriptV8-64.dll">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Resources\Package.ico" />
     <Content Include="RJSON.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="v8-ia32.dll">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="v8-x64.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
   </ItemGroup>
@@ -403,6 +428,18 @@
       <Name>ObjectModel</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <PropertyGroup>
     <UseCodebase>true</UseCodebase>
   </PropertyGroup>
@@ -410,10 +447,7 @@
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup>
     <PostBuildEvent>
-if not exist "$(TargetDir)" md "$(TargetDir)"
-xcopy /s /y "$(SolutionDir)packages\ClearScript.V8.5.4.2.1\tools\native\x86\*.*" "$(TargetDir)"
-if not exist "$(TargetDir)" md "$(TargetDir)"
-xcopy /s /y "$(SolutionDir)packages\ClearScript.V8.5.4.2.1\tools\native\amd64\*.*" "$(TargetDir)"</PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
