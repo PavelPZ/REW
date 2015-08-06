@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{A4B29FE9-48FA-4973-A5A4-B02F9920761A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{A4B29FE9-48FA-4973-A5A4-B02F9920761A}" 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SLLibs", "SLLibs", "{AA8F1558-9FE4-4C50-9F9F-2DC43EEA5232}"
 EndProject
@@ -33,28 +33,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMComLib", "LMComLib\LMComL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CubesDeployment", "CubesDeployment\CubesDeployment.csproj", "{0FC085A6-D00C-4C2A-80F9-CAB83E9F5DF4}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "eduauthornew", "http://localhost/eduauthornew", "{A4DF6805-30FC-4D35-84F7-245473324DE2}"
-	ProjectSection(WebsiteProperties) = preProject
-		UseIISExpress = "false"
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		ProjectReferences = "{0e71cdce-d1c8-459e-ac82-2869f3200953}|EduAuthor.dll;{A0024FC2-C528-45F8-9391-4B45889E53D9}|LMComExternal.dll;{C4201447-B3C3-4F3A-9E5F-4FF9B5F48570}|LMComLib.dll;{E88C653D-5518-4B96-9B99-6EFBD46A9141}|ObjectModel.dll;{81713F8F-6D25-4E48-AE82-AC1BD2565442}|NewLMComModel.dll;{0FD4B1DD-45A8-4F02-BEB0-5881CD512573}|CommonMark.dll;"
-		Debug.AspNetCompiler.VirtualPath = "/eduauthornew"
-		Debug.AspNetCompiler.PhysicalPath = "EduAuthorNew\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\eduauthornew\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/eduauthornew"
-		Release.AspNetCompiler.PhysicalPath = "EduAuthorNew\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\eduauthornew\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "EduAuthorNew\"
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionToolbar", "SolutionToolbar\SolutionToolbar.csproj", "{6F8BE115-A31C-46B7-8C93-58093FAD8CD8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchemaDefinition", "SchemaDefinition\SchemaDefinition.csproj", "{427558D5-EF8D-40CF-90EA-91BBAB759FE6}"
@@ -64,6 +42,27 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonMark.Base", "CommonMark\CommonMark.Base.csproj", "{0FD4B1DD-45A8-4F02-BEB0-5881CD512573}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScormExNet35", "ScormExNet35\ScormExNet35.csproj", "{3D1E3BEB-CCF3-4E18-82FA-B7DB4DDFFDF6}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "EduAuthorNew", "http://localhost:59768", "{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}"
+	ProjectSection(WebsiteProperties) = preProject
+		UseIISExpress = "true"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_59768"
+		Debug.AspNetCompiler.PhysicalPath = "EduAuthorNew\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_59768\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_59768"
+		Release.AspNetCompiler.PhysicalPath = "EduAuthorNew\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_59768\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		SlnRelativePath = "EduAuthorNew\"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -279,29 +278,6 @@ Global
 		{0FC085A6-D00C-4C2A-80F9-CAB83E9F5DF4}.SingleImage|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{0FC085A6-D00C-4C2A-80F9-CAB83E9F5DF4}.SingleImage|Mixed Platforms.Build.0 = Debug|Any CPU
 		{0FC085A6-D00C-4C2A-80F9-CAB83E9F5DF4}.SingleImage|x86.ActiveCfg = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.CD_ROM|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.CD_ROM|Any CPU.Build.0 = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.CD_ROM|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.CD_ROM|Mixed Platforms.Build.0 = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.CD_ROM|x86.ActiveCfg = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.DVD-5|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.DVD-5|Mixed Platforms.Build.0 = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.DVD-5|x86.ActiveCfg = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.Release|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.Release|Mixed Platforms.Build.0 = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.Release|x86.ActiveCfg = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.SingleImage|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.SingleImage|Any CPU.Build.0 = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.SingleImage|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.SingleImage|Mixed Platforms.Build.0 = Debug|Any CPU
-		{A4DF6805-30FC-4D35-84F7-245473324DE2}.SingleImage|x86.ActiveCfg = Debug|Any CPU
 		{6F8BE115-A31C-46B7-8C93-58093FAD8CD8}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
 		{6F8BE115-A31C-46B7-8C93-58093FAD8CD8}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
 		{6F8BE115-A31C-46B7-8C93-58093FAD8CD8}.CD_ROM|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -431,6 +407,36 @@ Global
 		{3D1E3BEB-CCF3-4E18-82FA-B7DB4DDFFDF6}.SingleImage|Mixed Platforms.Build.0 = Release|Any CPU
 		{3D1E3BEB-CCF3-4E18-82FA-B7DB4DDFFDF6}.SingleImage|x86.ActiveCfg = Release|Any CPU
 		{3D1E3BEB-CCF3-4E18-82FA-B7DB4DDFFDF6}.SingleImage|x86.Build.0 = Release|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.CD_ROM|Any CPU.ActiveCfg = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.CD_ROM|Any CPU.Build.0 = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.CD_ROM|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.CD_ROM|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.CD_ROM|x86.ActiveCfg = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.CD_ROM|x86.Build.0 = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.Debug|x86.Build.0 = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.DVD-5|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.DVD-5|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.DVD-5|x86.ActiveCfg = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.DVD-5|x86.Build.0 = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.Release|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.Release|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.Release|x86.ActiveCfg = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.Release|x86.Build.0 = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.SingleImage|Any CPU.ActiveCfg = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.SingleImage|Any CPU.Build.0 = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.SingleImage|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.SingleImage|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.SingleImage|x86.ActiveCfg = Debug|Any CPU
+		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.SingleImage|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
