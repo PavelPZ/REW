@@ -98,10 +98,7 @@ var Pager;
         }
         if (hash && hash.charAt(0) == '#')
             hash = hash.substring(1);
-        if (blended.isAngularHash(hash)) {
-            completed(Pager.angularPage);
-            return;
-        }
+        //if (blended.isAngularHash(hash)) { completed(angularPage); return; }
         if (!hash || hash.length < 3) {
             completed(null);
             return;

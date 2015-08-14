@@ -57,7 +57,7 @@ module Pager {
       completed(Pager.ignorePage); return;
     }
     if (hash && hash.charAt(0) == '#') hash = hash.substring(1);
-    if (blended.isAngularHash(hash)) { completed(angularPage); return; }
+    //if (blended.isAngularHash(hash)) { completed(angularPage); return; }
     if (!hash || hash.length < 3) { completed(null); return; }
     //hash = hash.toLowerCase();
     var parts = hash.split("@"); if (parts.length < 2) { completed(null); return; }
