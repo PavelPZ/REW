@@ -1,0 +1,8 @@
+﻿<script type="text/template" id="ed-prop-name">
+  <div>
+    Select <span class="dlg-title">{{:mark.name}}</span> value:<br />
+    <select class="form-control" size="{{:list.length}}" data-dlg-res="prop" data-focus-grid="0:0" data-arrow-ignore="true"
+            data-bind="value:value, options:list, optionsText:'name', event: {change:changed}"></select>
+    <div class="descr" data-bind="html:descr"></div>
+  </div>
+</script>

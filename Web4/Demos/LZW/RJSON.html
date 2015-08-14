@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+</head>
+<body>
+  <script type="text/javascript" src="LZWData.js"></script>
+  <script type="text/javascript" src="../../scripts/json2.js"></script>
+  <script type="text/javascript" src="../../JS/External/RJson.js"></script>
+  <script type="text/javascript">
+    function compress() {
+      var origLen = JSON.stringify(data).length;
+      var pack = RJSON.pack(data);
+      var packLen = JSON.stringify(pack).length;
+      var res = RJSON.unpack(pack);
+    }
+    var data = [
+      {
+        num: 0,
+        txt: "xxx",
+        subObj: null,
+        subObj2: null
+      },
+      {
+        num: 0,
+        txt: "xxx",
+        subObj: null,
+        subObj2: null
+      },
+      {
+        num: 0,
+        txt: "xxx",
+        subObj: null,
+        subObj2: null
+      },
+      {
+        num: 0,
+        txt: "xxx",
+        subObj: null,
+        subObj2: null
+      }
+    ];
+  </script>
+  <div onclick="compress()">Compress</div>
+</body>
+</html>

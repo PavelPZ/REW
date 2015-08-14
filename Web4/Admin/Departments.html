@@ -1,0 +1,119 @@
+!schoolDepartment
+###
+<div data-bind="with: Pager.ActPage" class="app-admin rtl">
+  {{for #data tmpl=~T('TTopBarNew')/}}
+  <div class="container lmtree">
+    {{if ~Cookie()}}
+    <h3>{{:title()}}</h3>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <a href="#" data-toggle="collapse" data-target="#collapse-department"><h4 class="panel-title">{{:~CSLocalize('43e35b50aee84255b3a922d84df1fdb7', 'Department structure')}} <span class="caret"></span></h4></a>
+      </div>
+      <div class="panel-body" id="collapse-department" data-role="collapsed">
+        <div data-bind="template: th"></div>
+      </div>
+      <div class="panel-body help lm-collapse-low" id="collapse-department-help" data-role="collapsed">
+        TODO Hover mouse nad given node a zvolte jednu z nasledujicich operaci:
+        <div class="tools">
+          <span class="fa fa-plus right fa-fw"></span> {{:~CSLocalize('b1b482beedd24737b3f14995184adab9', 'Add Inside')}} - {{:~CSLocalize('a3ae2dfff1744c9dbc3b1e75c12061af', 'add a new node inside the given node')}}
+        </div>
+        <div class="tools">
+          <span class="fa fa-plus bottom fa-fw"></span> {{:~CSLocalize('43cafa432083442f8959fef529823ea0', 'Add Next')}} - {{:~CSLocalize('550a0f60e18e420c9811c2cb00526d5d', 'add a new node next to the given node')}}
+        </div>
+        <div class="tools">
+          <span class="fa fa-pencil-square-o fa-fw"></span> {{:~CSLocalize('e669dba264024b3790113aa1b239d3d3', 'Edit')}} - {{:~CSLocalize('4a544ae1d16944b2ab7301603911f0c0', 'edit title of the node')}}
+        </div>
+        <div>
+          <span class="fa fa-times fa-fw"></span> {{:~CSLocalize('8307e79267fe4fa4b2242749eed421e9', 'Delete')}} - {{:~CSLocalize('726601508f6b486ab609acdd53dd690c', 'delete the given node')}}
+        </div>
+        <div class="tools">
+          <span class="fa fa-copy fa-fw"></span> {{:~CSLocalize('3a63c1babf3c46efb0b870977313d0a8', 'Copy')}} - {{:~CSLocalize('1f513f13ca414d9b99e9ee9176809630', 'copy the given node to the clipboard')}}
+        </div>
+        <div class="tools">
+          <span class="fa fa-cut fa-fw"></span> {{:~CSLocalize('b0e5631779da4a50929b48afe837e5e5', 'Cut')}} - {{:~CSLocalize('27b2d32eba20492b80c502d8f89b3e8e', 'cut the given department to the clipboard')}}
+        </div>
+        <div class="tools">
+          <span class="fa fa-paste right fa-fw"></span> {{:~CSLocalize('bf22a530de424a9e9c5209acac680453', 'Paste Inside')}} - {{:~CSLocalize('ee1ae7659279468fb1edbb3d69302f5b', 'paste node inside the given node')}}
+        </div>
+        <div class="tools">
+          <span class="fa fa-paste bottom fa-fw"></span> {{:~CSLocalize('d6950075505340ff8cf0a618d8a9604d', 'Paste Next')}} - {{:~CSLocalize('2409b867792a42ae864255d44489dcea', 'paste node next to the given node')}}
+        </div>
+      </div>
+    </div>
+    {{for listModels}}
+    <!-- ko with: listModels[{{:#index}}] -->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <a href="#" data-toggle="collapse" id="{{:id}}" data-target="#collapse-{{:#index}}"><h4 class="panel-title">{{:title}} <span class="caret"></span></h4></a>
+      </div>
+      <div class="panel-body lm-collapse-low" id="collapse-{{:#index}}" style="display:none" data-role="collapsed">
+        <div class="list-editor" data-bind="template: template"></div>
+      </div>
+      {{if #index==0}}
+      <div class="panel-body tools help lm-collapse-low" id="collapse-0-help" data-role="collapsed">
+        TODO help Study
+      </div>
+      {{/if}}
+      {{if #index==1}}
+      <div class="panel-body tools help lm-collapse-low" id="collapse-1-help" data-role="collapsed">
+        TODO help Time
+      </div>
+      {{/if}}
+      {{if #index==2}}
+      <div class="panel-body tools help lm-collapse-low" id="collapse-2-help" data-role="collapsed">
+        TODO help Intervals
+      </div>
+      {{/if}}
+    </div>
+    <!-- /ko -->
+    {{/for}}
+    {{for #data tmpl=~T('TOkCancel')/}}
+    {{else}}
+    {{for #data tmpl=~T('TLoginFirst')/}}
+    {{/if}}
+  </div>
+</div>
+###
+depTreeTemplate
+###
+<ul class="lmtree fa-ul" data-bind="template: { name: 'treeview', foreach: [treeModel.root] }"></ul>
+###
+depListTemplate
+###
+<table class="table table-bordered table-striped">
+  <thead><tr><th>{{:~CSLocalize('56da29920b974d1cba307e8a80364177', 'Value')}}</th><th>{{:~CSLocalize('6255b2a18cf64097913d57f6514ba6ad', 'Description')}}</th><th>{{:~CSLocalize('7733ce6dca90460b87d7e2eb6c0a141b', 'Custom description')}}</th></tr></thead>
+  <tbody>
+    <!-- ko template: { name: 'depListRow', foreach: model.items } -->
+    <!-- /ko -->
+    <tr>
+      <td>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="{{:~CSLocalize('3fdeae2266d64c4eaa8da11a25fff3ab', 'enter new item')}}" data-bind="value: model.newItem, enterEscape:model.onEnterEscClick">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" data-bind="click: model.onEnterEscClick"><span class="fa fa-check"></span> {{:~CSLocalize('50856d3a5b9a4abc8176c9ce0473a42d', 'OK')}}</button>
+          </span>
+        </div>
+      </td>
+      <td colspan="3">&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+###
+depListRow
+###
+<tr>
+  <!-- ko template: { name: 'depListCell', foreach: value } -->
+  <!-- /ko -->
+  <td class="descr"><span data-bind="text: descr"></span></td>
+  <!-- ko template: { name: 'depListCell', foreach: title } -->
+  <!-- /ko -->
+  <td class="del-column" data-bind="click: doDelete"><span class="fa fa-times" title="{{:~CSLocalize('f25cd71e5f944a1c8f16b444d5b40ae8', 'Delete')}}"></span></td>
+</tr>
+###
+depListCell
+###
+<td data-bind="attr: {id:'td_' + id}, click: doEdit">
+  <span class="fa fa-pencil-square-o" title="{{:~CSLocalize('eba89d1ff7d94c30af9020b5a893e5fa', 'Edit')}}"></span>
+  <span data-bind="text: title, visible: !editing()"></span>
+  <input data-bind="attr: {id:'input_' + id}, value: title, visible: editing, hasFocus: editing, enterEscape:onEnterEscape" />
+</td>

@@ -1,0 +1,70 @@
+.rtl-hide {
+  display: none;
+}
+
+.rtl-able .rtl {
+  .lm-collapse-low .lm-close, .lm-collapse .lm-close {
+    left: 4px;
+    right: auto;
+  }
+
+  .rtl-block {
+    display: block;
+  }
+
+  .rtl-inline {
+    display: inline;
+  }
+
+  &.app-school .lm-green-btn {
+    text-align: right;
+    padding-right: 10px;
+    padding-left: 45px;
+  }
+
+  .navbar .lm-logo-black-small {
+    margin-left: 15px;
+  }
+
+  .crsbtn {
+    .cmore {
+      right: auto;
+      left: 5px;
+    }
+
+    .cbtn {
+      padding-right: 5px;
+      padding-left: 40px;
+    }
+  }
+
+  &.ex-evaluated .btn { 
+    left: 0;
+    right: auto;
+  }
+
+  &.instr .btn-link {
+    text-align: right;
+  }
+
+  .flag-mid-bg {
+    padding: 0px;
+    margin-left: 10px;
+  }
+
+  &.app-login .container {
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 991px) {
+  .rtl-able .rtl .container {
+    max-width: none;
+  }
+}
+
+@media (min-width: 992px) {
+  .rtl-able .rtl .container {
+    max-width: 970px;
+  }
+}

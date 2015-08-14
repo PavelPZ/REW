@@ -62,15 +62,15 @@ namespace Admin {
 
     public static Admin.DictEntryRes processCommand(Admin.DictEntryCmd cmd) {
       Func<Langs, Langs, IEnumerable<ByHand>> getHands = (crsL, natL) => {
-        var fn = Machines.basicPath + string.Format(@"rew\Web4\RwDicts\Sources\LingeaOld\design\byHand_{0}_{1}.xml", crsL, natL);
-        IEnumerable<string> fns = File.Exists(fn) ? XExtension.Create(fn) : Directory.EnumerateFiles(Machines.basicPath + @"rew\Web4\RwDicts\Sources\LingeaOld\design", string.Format("byHand_{0}_{1}*.xml", crsL, natL));
+        var fn = Machines.rootPath + string.Format(@"RwDicts\Sources\LingeaOld\design\byHand_{0}_{1}.xml", crsL, natL);
+        IEnumerable<string> fns = File.Exists(fn) ? XExtension.Create(fn) : Directory.EnumerateFiles(Machines.rootPath + @"RwDicts\Sources\LingeaOld\design", string.Format("byHand_{0}_{1}*.xml", crsL, natL));
         return fns.SelectMany(f => XmlUtils.FileToObject<List<ByHand>>(f));
       };
       var hands = getHands(cmd.crsLang, cmd.natLang).ToDictionary(bh => bh.id(), bh => bh);
-      var handFn = Machines.basicPath + string.Format(@"rew\Web4\RwDicts\Sources\LingeaOld\design\byHand_{0}_{1}.xml", cmd.crsLang, cmd.natLang);
+      var handFn = Machines.rootPath + string.Format(@"RwDicts\Sources\LingeaOld\design\byHand_{0}_{1}.xml", cmd.crsLang, cmd.natLang);
       ByHand edited;
       if (entries == null) entries = LingeaDictionary.getOldLingeaEntries();
-      if (dictEntries == null) dictEntries = XmlUtils.FileToObject<LingeaDictionary.DictEntry[]>(Machines.basicPath + @"rew\Web4\RwDicts\Sources\LingeaOld\design\entriesInfo.xml");
+      if (dictEntries == null) dictEntries = XmlUtils.FileToObject<LingeaDictionary.DictEntry[]>(Machines.rootPath + @"RwDicts\Sources\LingeaOld\design\entriesInfo.xml");
       switch (cmd.type) {
         case Admin.DictEntryCmdType.loadDict:
           Func<LingeaDictionary.DictEntry, Langs> getHand = de => hands.TryGetValue(de.id(), out edited) ? edited.okCrs : Langs.no;
@@ -145,7 +145,7 @@ public static class LingeaDictionary {
       var natWord = new Dictionary<Langs, Dictionary<string, string>>(); _wordToId.Add(natLng, natWord);
       var natEntry = new Dictionary<Langs, Dictionary<string, XElement>>(); _idToEntry.Add(natLng, natEntry);
       foreach (var lng in DictLib.crsLangs) {
-        var dictFn = Machines.basicPath + @"rew\Web4\RwDicts\Sources\LingeaOld\lingea_" + natLng.ToString() + "_" + lng.ToString() + ".xml";
+        var dictFn = Machines.rootPath + @"RwDicts\Sources\LingeaOld\lingea_" + natLng.ToString() + "_" + lng.ToString() + ".xml";
         if (!File.Exists(dictFn)) continue;
         XElement root = XElement.Load(dictFn);
         natWord.Add(
@@ -190,7 +190,7 @@ public static class LingeaDictionary {
         //var courses = courseWordFiles.SelectMany(f => JArray.Parse(File.ReadAllText(Machines.basicPath + @"rew\Web4\RwDicts\" + f + ".json")));
         //d:\LMCom\rew\Web4\RwDicts\CourseWords.xml, grafia.xml apod.
         var wordInfos = courseWordFiles.
-          SelectMany(f => XmlUtils.FileToObject<schools.DictWords>(Machines.basicPath + @"rew\Web4\RwDicts\UsedWords\" + f + ".xml").courses.
+          SelectMany(f => XmlUtils.FileToObject<schools.DictWords>(Machines.rootPath + @"RwDicts\UsedWords\" + f + ".xml").courses.
             SelectMany(crs => crs.exs.
               SelectMany(ex => ex.normalized.Split(' '). //.words.
                 Select(w => new wordInf() {
@@ -201,7 +201,7 @@ public static class LingeaDictionary {
                 }))));
         //slovicka pro RJ wordlisty z d:\LMCom\rew\Web4\RwDicts\RJ_Lingea.txt
         wordInfos = wordInfos.Concat(
-          textWordFiles.SelectMany(tf => File.ReadAllLines(Machines.basicPath + @"rew\Web4\RwDicts\UsedWords\" + tf.Item1 /*RJ_Lingea*/ + ".txt").Select(t => new wordInf() {
+          textWordFiles.SelectMany(tf => File.ReadAllLines(Machines.rootPath + @"RwDicts\UsedWords\" + tf.Item1 /*RJ_Lingea*/ + ".txt").Select(t => new wordInf() {
             courseLang = tf.Item2, /*Langs.en_gb*/
             word = t, /*neprelozene slovicko z d:\LMCom\rew\Web4\RwDicts\RJ_Lingea.txt*/
             exId = tf.Item2.ToString(), /*"en_gb"*/
@@ -217,7 +217,7 @@ public static class LingeaDictionary {
   static void captureLingea(Langs courseLang, Langs nativeLang, string dictCode, bool updateOnly = true, bool tryNullEntries = false) {
     if (!DictLib.crsLangs.Contains(courseLang)) return;
     //if (courseLang != Langs.ru_ru) return;
-    string fn = Machines.basicPath + @"rew\Web4\RwDicts\Sources\LingeaOld\lingea_" + nativeLang.ToString() + "_" + courseLang.ToString() + ".xml";
+    string fn = Machines.rootPath + @"RwDicts\Sources\LingeaOld\lingea_" + nativeLang.ToString() + "_" + courseLang.ToString() + ".xml";
 
     _idToEntry = null; _wordToId = null;
     //doposud nactena entry dej do dictionary
@@ -264,7 +264,7 @@ public static class LingeaDictionary {
   static void captureLingeaOld(Langs courseLang, Langs nativeLang, string dictCode, bool updateOnly = true, bool tryNullEntries = false) {
     if (!DictLib.crsLangs.Contains(courseLang)) return;
     //if (courseLang != Langs.ru_ru) return;
-    string fn = Machines.basicPath + @"rew\Web4\RwDicts\Sources\LingeaOld\lingea_" + nativeLang.ToString() + "_" + courseLang.ToString() + ".xml";
+    string fn = Machines.rootPath + @"RwDicts\Sources\LingeaOld\lingea_" + nativeLang.ToString() + "_" + courseLang.ToString() + ".xml";
 
     _idToEntry = null; _wordToId = null;
     //doposud nactena entry dej do dictionary
@@ -400,7 +400,7 @@ public static class LingeaDictionary {
     public Langs crsLang;
     public string FileName() { return fileName(nativeLang, crsLang); }
     public static string fileName(Langs nat, Langs crs) {
-      return Machines.basicPath + @"rew\Web4\RwDicts\Sources\LingeaOld\lingea_" + nat.ToString() + "_" + crs.ToString() + ".xml";
+      return Machines.rootPath + @"RwDicts\Sources\LingeaOld\lingea_" + nat.ToString() + "_" + crs.ToString() + ".xml";
     }
   }
 
@@ -1159,7 +1159,7 @@ public static class LingeaDictionary {
 
 
     var entries = getOldLingeaEntries(@"d:\LMCom\rew\Web4\RwDicts\Sources\LingeaOld.back\");
-    var allUsedWords = DictLib.crsLangs.ToDictionary(l => l, l => File.ReadAllLines(Machines.basicPath + string.Format(@"rew\Web4\RwDicts\UsedWords\FlatCourseWords_{0}.txt", l)).ToDictionary(w => w, w => true));
+    var allUsedWords = DictLib.crsLangs.ToDictionary(l => l, l => File.ReadAllLines(Machines.rootPath + string.Format(@"RwDicts\UsedWords\FlatCourseWords_{0}.txt", l)).ToDictionary(w => w, w => true));
     Func<string, string> lettersOnly = w => new String(w.ToLower().Where(ch => char.IsLetter(ch)).ToArray());
 
     using (StreamWriter wr = new StreamWriter(@"d:\temp\log.txt")) {
@@ -1203,29 +1203,29 @@ public static class LingeaDictionary {
           //cn.wordToEntryId = useToId.SelectMany(kv => kv.Value.Split('#').Distinct().Select(w => w.ToLower()).Where(w => allUsedWords[cn.crsLang].ContainsKey(w)).Select(v => new { kv.Key, Val = v })).ToDictionary(kv => kv.Val, kv => kv.Key);
         });
     }
-    saveOldLingeaEntries(entries, Machines.basicPath + @"rew\Web4\RwDicts\Sources\LingeaOld\temp1\");
+    saveOldLingeaEntries(entries, Machines.rootPath + @"RwDicts\Sources\LingeaOld\temp1\");
   }
 
   //LingeaOld\temp1 => LingeaOld\design\entriesInfo.xml
   public static void OldToNew2() {
     dictEntries = null;
-    getDictEntries(Machines.basicPath + @"rew\Web4\RwDicts\Sources\LingeaOld\temp1\");
-    XmlUtils.ObjectToFile(Machines.basicPath + @"rew\Web4\RwDicts\Sources\LingeaOld\design\entriesInfo.xml", dictEntries);
+    getDictEntries(Machines.rootPath + @"RwDicts\Sources\LingeaOld\temp1\");
+    XmlUtils.ObjectToFile(Machines.rootPath + @"RwDicts\Sources\LingeaOld\design\entriesInfo.xml", dictEntries);
     dictEntries = null;
   }
 
   //LingeaOld\temp1 + LingeaOld\design\entriesInfo.xml => LingeaOld
   public static void OldToNew3() {
     using (var imp = new Impersonator("pavel", "LANGMaster", "zvahov88_")) {
-      var files = repairLingea(Machines.basicPath + @"rew\Web4\RwDicts\Sources\LingeaOld\temp1\", imp);
-      foreach (var fn in Directory.EnumerateFiles(Machines.basicPath + @"rew\Web4\RwDicts\Sources\LingeaOld", "*.xml")) File.Delete(fn);
-      foreach (var f in files) XmlUtils.ObjectToFile(string.Format(Machines.basicPath + @"rew\Web4\RwDicts\Sources\LingeaOld\{1}_{0}.xml", f.crsLang, f.natLang), f);
+      var files = repairLingea(Machines.rootPath + @"RwDicts\Sources\LingeaOld\temp1\", imp);
+      foreach (var fn in Directory.EnumerateFiles(Machines.rootPath + @"RwDicts\Sources\LingeaOld", "*.xml")) File.Delete(fn);
+      foreach (var f in files) XmlUtils.ObjectToFile(string.Format(Machines.rootPath + @"RwDicts\Sources\LingeaOld\{1}_{0}.xml", f.crsLang, f.natLang), f);
     }
   }
 
   public static Dictionary<Langs, Dictionary<Langs, LingeaDictionary.LingeaDictFile>> getOldLingeaEntries(string dir = null) { //CrsLang => NativeLang => Entries
     var oldLingeaEntries = new Dictionary<Langs, Dictionary<Langs, LingeaDictionary.LingeaDictFile>>();
-    if (dir == null) dir = Machines.basicPath + @"rew\Web4\RwDicts\Sources\LingeaOld\";
+    if (dir == null) dir = Machines.rootPath + @"RwDicts\Sources\LingeaOld\";
     foreach (var crsLang in CommonLib.allLangs) { // crsLangs) {
       Dictionary<Langs, LingeaDictionary.LingeaDictFile> crs = null;
       foreach (var natLng in CommonLib.allLangs) { //nativeLangs) {
@@ -1248,7 +1248,7 @@ public static class LingeaDictionary {
   }
 
   public static void saveOldLingeaEntries(IEnumerable<LingeaDictionary.LingeaDictFile> entries, string dir = null) {
-    if (dir == null) dir = Machines.basicPath + @"rew\Web4\RwDicts\Sources\LingeaOld\";
+    if (dir == null) dir = Machines.rootPath + @"RwDicts\Sources\LingeaOld\";
     Parallel.ForEach(entries, dict => {
       //var dictFn = dir + "lingea_" + dict.nativeLang.ToString() + "_" + dict.crsLang.ToString() + ".xml";
       var dictFn = dir + dict.nativeLang.ToString() + "_" + dict.crsLang.ToString() + ".xml";

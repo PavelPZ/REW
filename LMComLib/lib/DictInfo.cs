@@ -9,7 +9,7 @@ using System.ComponentModel;
 namespace LMComLib {
   public class DictInfo {
     static DictInfo() {
-      Instance = XmlUtils.FileToObject<DictInfo>(Machines.basicPath + @"rew\Web4\RwDicts\DictInfos.xml");
+      Instance = XmlUtils.FileToObject<DictInfo>(Machines.rootPath + @"RwDicts\DictInfos.xml");
       //var debug = Instance.Dicts.GroupBy(d => d.Code).Where(g => g.Count() > 1).ToArray();
       Instance.Dicts = Instance.Dicts.SelectMany(d => new Dict[] { d, new Dict() {
         Code = d.Code,
@@ -24,7 +24,7 @@ namespace LMComLib {
         wordsFrom = d.wordsTo,
         wordsTo = d.wordsFrom
       }}).ToArray();
-      InstanceNew = XmlUtils.FileToObject<DictInfo>(Machines.basicPath + @"rew\Web4\RwDicts\dictInfoNew.xml");
+      InstanceNew = XmlUtils.FileToObject<DictInfo>(Machines.rootPath + @"RwDicts\dictInfoNew.xml");
     }
     public static DictInfo Instance;
     public static DictInfo InstanceNew;

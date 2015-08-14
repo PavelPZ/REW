@@ -1,0 +1,193 @@
+!schoolCourseMeta
+###
+<div data-bind="with: Pager.ActPage" class="app-school rtl">
+  {{for #data tmpl=~T('TMaster')/}}
+</div>
+###
+
+!schoolCoursePretest
+###
+<div data-bind="with: Pager.ActPage" class="app-school rtl">
+  <div class="rtl">{{for #data tmpl=~T('TTopBarNew')/}}</div>
+  <div class="container">
+    {{if !~Cookie()}}
+    {{for #data tmpl=~T('TLoginFirst')/}}
+    {{else}}
+    {{for #data tmpl=~T('TBreadcrumb')/}}
+    <div id="exercise" class="{{:~CourseMeta.gui.exerciseCls()}}" >
+      {{:~CourseMeta.gui.exerciseHtml()}}
+    </div>
+    {{/if}}
+  </div>
+</div>
+###
+
+TCourseMeta_Folder
+###
+{{for ~makeTuples(~CourseMeta.actNode.Items)}}
+<div class="row">
+  <div class="col-md-6 lm-col-first">
+    {{for left tmpl=~T('TCourseMeta_Btn')/}}
+  </div>
+  {{if right}}
+  <div class="col-md-6 lm-col">
+    {{for right tmpl=~T('TCourseMeta_Btn')/}}
+  </div>
+  {{/if}}
+</div>
+{{/for}}
+###
+
+TCourseMeta_Btn
+###
+<div class="well crsbtn">
+  <div class="cbtn cbtn-info" data-node-url="{{:url}}">
+    <div class="cbtn-color c1"></div>
+    <div class="cbtn-color c2"></div>
+    <div class="cbtn-color c3"></div>
+    <div class="cbtn-content {{:contentCss()}}" data-bind="click: function () { CourseMeta.btnClick('{{:url}}'); }">
+      <div class="cbtn-wrap-center">
+        <div class="cbtn-center">
+          <div class="cbtn-title">{{:title}}</div>
+          <span class="label label-{{:labelCls()}}">{{:statusText()}}</span>
+          {{if notRunnableMsg()}}<span class="cbtn-instr">{{:notRunnableMsg()}}</span>{{/if}}
+        </div>
+      </div>
+      <div class="cbtn-left fa fa-{{:btnIconId()}}"></div>
+      <div data-bind="visible:!CourseMeta.finishedAndLocked()" class="cbtn-right" data-toggle="menu" data-target="#{{:uniqId}}" onclick="return anim.toggleMenu(event);"><i class="fa fa-chevron-down"></i></div>
+    </div>
+  </div>
+  {{for #data tmpl=~T('TMetaBtnStatus')/}}
+</div>
+<ul id="{{:uniqId}}" data-role="menu" class="dropdown-menu">
+  {{for availableActions() tmpl=~T('TMetaMenu')/}}
+</ul>
+
+###
+TMetaBtnStatus
+###
+{{if !notRunnableMsg()}}
+{{if showProgress() && getScoreInit()>=0}}
+<div class="cprogress">
+  <div class="cprogress-bar" style="width: {{:getScoreValue}}%;">
+    <div class="cprogress-text">{{:~CSLocalize('b6d267c00ab246f5934b08ac91b6d938', 'Score')}} {{:getScoreValue}}%</div>
+  </div>
+</div>
+{{/if}}
+{{if beg && end}}
+<span class="cinfo">
+  {{:~CSLocalize('bc2c338d1b1c4eaebaa8000bd08dcaa6', 'Date')}}:
+  {{:~Utils.formatDay(beg)}}{{if end>beg}} - {{:~Utils.formatDay(end)}}{{/if}}
+</span>
+{{/if}}
+{{if elapsed}}
+<span class="cinfo">{{:~CSLocalize('a3be38a8651b4506b363008a6de904d7', 'Elapsed time')}}: {{:~Utils.formatTimeSpan(elapsed)}}</span>
+{{/if}}
+{{/if}}
+
+###
+TMetaMenu
+###
+<li><a href="#" data-bind="click: function () { CourseMeta.onNodeAction('{{:node.url}}', {{:type}});}"><span class="fa fa-{{:info().icon}}"></span>&nbsp;&nbsp;{{:info().title()}}</a></li>
+
+###
+TMaster
+###
+<div class="rtl">{{for #data tmpl=~T('TTopBarNew')/}}</div>
+<div class="container">
+  {{if ~Cookie()}}
+  {{if hasBreadcrumb()}}
+  {{for #data tmpl=~T('TBreadcrumb')/}}
+  {{/if}}
+  <div>
+    <h3 class="{{:prevNextVisible ? 'pull-left' : ''}}">
+      {{if hasBreadcrumb()}}
+      <span class="visible-small-inline btn btn-link btn-large fa fa-ellipsis-h" data-toggle="collapse" data-target="#collapse-breadcrumb"></span>
+      {{/if}}
+      <span class="fa fa-{{:iconId()}}"></span>&nbsp;&nbsp;{{:title()}}
+    </h3>
+    {{if prevNextVisible}}
+    <ul class="pager pull-right">
+      {{if !ignorePrevNext}}
+      <li data-bind="css: { disabled: !hasPrev() }">
+        <a href="#" data-bind="click: prevClick">&larr; {{:~CSLocalize('ab6df62e5ecf41c6877b20a1a2d83591', 'Previous')}}</a>
+      </li>
+      {{/if}}
+      <li>
+        <a href="#" data-bind="text: idxFrom(), click: grammContentClick"></a>
+      </li>
+      {{if !ignorePrevNext}}
+      <li data-bind="css: { disabled: !hasNext() }">
+        <a href="#" data-bind="click: nextClick">{{:~CSLocalize('ea5d6770e47346beaebda00862e5eab8', 'Next')}} &rarr;</a>
+      </li>
+      {{/if}}
+    </ul>
+    {{/if}}
+  </div>
+  <div class="clearfix"></div>
+  {{for #data tmpl=~T('TSmallBreadcrumb')/}}
+
+  {{if perexTmpl}}
+  {{for #data tmpl=~T(perexTmpl)/}}
+  {{/if}}
+  {{if bodyTmpl}}
+  {{for #data tmpl=~T(bodyTmpl)/}}
+  {{else}}
+  {{for viewModel tmpl=~T('TTwoColumn')/}}
+  {{/if}}
+  {{else}}
+  {{for #data tmpl=~T('TLoginFirst')/}}
+  {{/if}}
+</div>
+
+###
+TBreadcrumb
+###
+<div class="hidden-small lm-breadcrumb-cont">
+  <div class="lm-breadcrumb rtl">
+    {{for breadcrumbs()}}
+    {{if #getIndex() < #parent.data.length-1}}
+    <div style="display:inline-block"><a href="#" data-bind="click: function () { CourseMeta.gotoData('{{:url}}'); }"><span class="fa fa-{{:iconId()}}"></span>&nbsp;&nbsp;{{:title}}</a><span class="delim">/</span></div>
+    {{else}}
+    <div style="display:inline-block"><span class="active"><i class="fa fa-{{:iconId()}}"></i>&nbsp;&nbsp;{{:title}}</span></div>
+    {{/if}}
+    {{/for}}
+  </div>
+</div>
+
+###
+TSmallBreadcrumb
+###
+<div id="collapse-breadcrumb" data-role="collapsed" class="list-group lm-collapse">
+  {{for #data tmpl=~T('TCollapseClose')/}}
+  {{for ~reverse(breadcrumbs())}}
+  {{if #getIndex() > 0 && #parent.data.length > 1}}
+  <a href="#" data-bind="click: function () { CourseMeta.gotoData('{{:url}}'); }" class="list-group-item"><span class="fa fa-{{:iconId()}}"></span>&nbsp;&nbsp;{{:title}}</a>
+  {{/if}}
+  {{/for}}
+</div>
+
+###
+TBannerFrame
+###
+<%--
+<div class="banner-frame">
+  <iframe src="{{:bannerUrl}}" scrolling="no"></iframe>
+</div>
+--%>
+###
+
+TLoginFirst
+###
+<h3><a href="#">{{:~CSLocalize('97ebf616cc5844548f95bb4ac8109df9', 'Login first')}}</a></h3>
+###
+
+TCollapseClose
+###
+<div class="lm-close btn btn-default fa fa-times" data-bind="test:'close', click: anim.collapseExpandedSlow"></div>
+###
+TCollapseCloseStd
+###
+<div class="close fa fa-times" data-bind="test:'close', click: anim.collapseExpandedSlow"></div>
+
+

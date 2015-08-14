@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+</head>
+<body>
+  <script type="text/javascript" src="LZWData.js"></script>
+  <script type="text/javascript" src="../../JS/LZWCompressor.js"></script>
+  <script type="text/javascript" src="../../JS/External/ClosureLib.js"></script>
+  <script type="text/javascript">
+    function compressUtf8() { //je pomalejsi, odstraneno
+      var res = LZWCompressor.CompressUtf8(data);
+      var base64 = gBase64.LMencodeString(res);
+      res = gBase64.LMdecodeString(base64);
+      var dataRes = LZWCompressor.DecompressUtf8(res);
+      if (data != dataRes)
+        dataRes = null;
+    }
+    function compressBin() {
+      var res = LZWCompressor.CompressBin(data);
+      //var res = LZVCompressor.CompressBin(data2);
+      var base64 = gBase64.LMencodeString(res);
+      res = gBase64.LMdecodeString(base64);
+      var dataRes = LZWCompressor.DecompressBin(res);
+      if (data != dataRes)
+        dataRes = null;
+    }
+    function compress() {
+      compressBin();
+      //compressUtf8();
+    }
+    var data = {
+      num: 0,
+      txt: "xxx",
+      subObj: {
+        num2: 1,
+        txt2: "yyy"
+      },
+      subObj2: {
+        num: 0,
+        txt: "xxx",
+        subObj: null,
+        subObj2: null
+      }
+    };
+  </script>
+  <div onclick="compress()">Compress</div>
+</body>
+</html>

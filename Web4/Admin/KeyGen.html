@@ -1,0 +1,52 @@
+﻿!schoolKeyGen
+###
+  <div data-bind="with: Pager.ActPage" class="app-admin rtl">
+  {{for #data tmpl=~T('TTopBarNew')/}}
+  <div class="container">
+    {{if ~Cookie()}}
+    <h3>{{:title()}}</h3>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        1. {{:~CSLocalize('d73c8d989df647dc94b12b47157d20e1', 'Select the Course and License')}}
+      </div>
+      {{for products tmpl=~T('TTwoColumn')/}}
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        2. {{:~CSLocalize('d49d1aa07f2e4b14bae478fa5cc4aa30', 'Enter the number of keys')}}
+      </div>
+      <input class="form-control" type="text" placeholder={{:~CSLocalize('4eee9427a0304738902cc189f2e35615', 'Enter the number of keys')}} data-bind="value: num, valueUpdate: 'afterkeydown', hasfocus: num.hasfocus, enable: selProd()" />
+      <span class="help-block" data-bind="visibility: num.message, text: num.message"></span>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        3.
+        <div class="btn btn-primary" data-bind="click: generate, enable: selProd()">{{:~CSLocalize('1ecf7038aeb447cc92251fcd9cb7dd85', 'Generate License keys')}}</div>
+      </div>
+      <div class="alert alert-success" data-bind="visible: genOK">
+        {{:~CSLocalize('5b6576daeff4413eb74e41e5170ad5c1', 'Generated License keys have been sent to you by email.')}}
+      </div>
+    </div>
+    {{for #data tmpl=~T('TOkCancel')/}}
+    {{else}}
+    {{for #data tmpl=~T('TLoginFirst')/}}
+    {{/if}}
+  </div>
+</div>
+
+###
+TProdCard
+###
+  <%-- #data je D:\LMCom\rew\Web4\Admin\GenAdmin.ts, Product. V #data["my"] je D:\LMCom\rew\Web4\Schools\GenSchools.ts, root --%>
+  <div class="panel panel-info">
+    <div class="radio">
+      <label>
+        <input type="radio" name="prods" value="{{:Id}}" data-bind="checked: selProd" />
+        <span class="flag-small flag-small-{{:~productLineTxtLower(ProductId)}}"></span>
+        <b>{{:title}}</b><br />
+        {{:~CSLocalize('baf9e0fd8101472b9cd0435aa18b72a3', 'Keys generated:')}} {{:LastCounter}},
+        {{:~CSLocalize('bb6fa8ecaf7c4e48b530fa94d86a0eaf', 'Keys used:')}} {{:UsedKeys}}
+      </label>
+    </div>
+  </div>
+

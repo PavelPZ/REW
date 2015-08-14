@@ -1,0 +1,47 @@
+.smartText {
+  position: relative;
+  background-color: white;
+}
+.smartText > textarea,
+.smartText > .passive {
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 0px;
+  border-radius: 0px;
+  overflow: auto;
+  margin: 0px;
+}
+.smartText > .passive {
+  display: block;
+  color: red;
+  xvisibility: hidden;
+  xbackground-color: white;
+  background: transparent;
+}
+.smartText > textarea {
+  xvisibility: hidden;
+  background: transparent;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  resize: none;
+  width: 100%;
+  word-wrap: break-word;
+  word-break: normal;
+  white-space: pre-wrap;
+  /*
+  word-wrap: normal;
+  word-break:keep-all;
+  white-space: nowrap;
+  font-family: Arial;
+*/
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 1em;
+  letter-spacing: normal;
+  font-variant: normal;
+}

@@ -1,0 +1,117 @@
+!schoolMy
+###
+<div data-bind="with: Pager.ActPage, delegatedHandler: ['click'], test:'my'" class="app-school rtl">
+  {{for #data tmpl=~T('TTopBarNew')/}}
+  <div class="container">
+    {{if ~Cookie()}}
+    <div class="my-header">
+      <div class="btn btn-success pull-right" data-bind="test:'lic-more'" data-toggle="collapse" data-target="#collapse-lickey">{{:~CSLocalize('502ee6a5e71e451f99d0a1998ae0eb37', 'License key')}}&nbsp;&nbsp;<span class="fa fa-chevron-down"></span></div>
+      <h3><span class="fa fa-home"></span>&nbsp;{{:title()}}</h3>
+    </div>
+    <div id="collapse-lickey" data-role="collapsed" data-bind="test:'lic-box'" class="xcollapse lm-collapse-low">
+      <div class="panel panel-default" style="margin-top: 0px;">
+        {{for #data tmpl=~T('TCollapseClose')/}}
+        <div class="panel-heading">{{:~CSLocalize('2ab9856443ee4b048fd64f8724f435ba', 'Add license key')}}</div>
+        <div class="panel-body input-group">
+          <input class="form-control" type="text" placeholder="{{:~CSLocalize('95215a1b210744289381d4deb0f209a3', 'enter License key')}}" data-bind="test:'lic-text', value: licKey, valueUpdate: 'afterkeydown', hasfocus: licKey.hasfocus" />
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" data-bind="test:'lic-ok', click: licKeyOK">{{:~CSLocalize('947f8200ac904d818fee3f35917ee1b5', 'OK')}}</button>
+          </span>
+        </div>
+        <span class="help-block" data-bind="visibility: licKey.message, text: licKey.message"></span>
+      </div>
+    </div>
+    {{if licKeyMsg()}}
+    <div class="alert alert-info" style="margin: 15px 0;">{{:licKeyMsg()}}</div>
+    {{/if}}
+    {{for companies}}
+    <div class="panel panel-{{if data.PublisherOwnerUserId==~Cookie().id}}danger{{else}}default{{/if}}" data-bind="with: companies[{{:#index}}], test:'comp-{{:#index}}'">
+      <div class="panel-heading">
+        <b data-bind="test:'title'">{{:title}}</b>
+        {{if !data.PublisherOwnerUserId}}
+        <span class="dep-header" data-bind="visible: !!treeViewModel">
+          , {{:~CSLocalize('aec5cceee034447299bb47652988ed85', 'company department')}}:
+          <span class="dep-name" data-bind="text: TreeView.path(department())"></span>
+          <span class="btn btn-info btn-link" data-toggle="collapse" data-target="#collapse-department{{:#getIndex()}}">({{:~CSLocalize('59816661c3134968905910c431d3057e', 'change')}})</span>
+        </span>
+        {{/if}}
+      </div>
+      <div class="panel-body">
+        <div id="collapse-department{{:#index}}" data-bind="test:'dep-box'" data-role="collapsed" class="xcollapse lm-collapse-low">
+          <div class="panel panel-default dep-panel">
+            <div class="panel-heading">
+              {{:~CSLocalize('b59c11fb07664db6a42eccc058a7d7b4', 'Select your department')}}
+              {{for #data tmpl=~T('TCollapseClose')/}}
+            </div>
+            <div class="panel-body input-group">
+              <ul class="lmtree fa-ul" data-bind="template: { name: !!treeViewModel ? 'treeview' : 'Dummy', foreach: [!!treeViewModel ? treeViewModel.root : null] } "></ul>
+            </div>
+          </div>
+        </div>
+        <div class="list-group">
+          {{for courses tmpl=~T('schoolMyCourseLink')/}}
+          {{if !data.isAuthoredCourse}}
+          {{for items tmpl=~T('schoolAdminItemLink')/}}
+          {{/if}}
+        </div>
+      </div>
+    </div>
+    {{/for}}
+    {{if systemAdmin}}
+    <div class="panel panel-default">
+      <div class="panel-heading">{{:~CSLocalize('f2e725a2b4a8426683753d7a837261ca', 'Companies')}}</div>
+      <div class="list-group">
+        <a class="list-group-item" href="#" data-bind="click: systemAdmin, test:'sysadmin'">
+          {{:~CSLocalize('77327cfe60ac42f6accab159cf0ae3a5', 'Companies and their Master administrators')}}
+          <span class="fa {{:~icon_chevron_right()}}"></span>
+        </a>
+      </div>
+    </div>
+    {{/if}}
+    {{if ~cfg.designId=='skrivanek'}}
+    {{for #data tmpl=~T('skrivanek_home_footer')/}}
+    {{/if}}
+    {{else}}
+    {{for #data tmpl=~T('TLoginFirst')/}}
+    {{/if}}
+  </div>
+</div>
+
+###
+schoolMyCourseLink
+###
+<!-- ko with: courses[{{:#index}}] -->
+<a class="list-group-item lm-call-course" href="#" data-bind="click: gotoUrl, test:'{{:prodId}}'">
+  {{if isTest}}
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="test-archive-btn btn btn-info pull-right" data-bind="visible: data.Archives.length>0, click:gotoArchive, clickBubble: false"><b>{{:~CSLocalize('f0cf4b7269c548a4bcba8947deaefffe', 'Test Results')}}</b> ({{:~CSLocalize('524c2241bfcd43a7b5b5172bcc2d8450', 'tests')}}: {{:data.Archives.length}})</div>
+      <div class="h4 test-archive-title" data-bind="css:{'test-disabled':data && data.LicCount==0, 'text-danger': data.isAuthoredCourse}">
+        <span class="{{:~midFlagCls(line,true)}}"></span>{{:title}}
+        {{if !data.isAuthoredCourse}}
+        <small>({{:~CSLocalize('c59a5b7764e64f2892f3a46928f20960', 'available licences')}}: {{:data.LicCount}})</small>
+        {{/if}}
+        <span class="fa {{:~icon_chevron_right()}}"></span>
+      </div>
+    </div>
+  </div>
+  {{else}}
+  <div class="h4" data-bind="css:{'text-danger': data.isAuthoredCourse}">
+    <span class="{{:~midFlagCls(line,true)}}"></span>{{:title}}
+    {{if !data.isAuthoredCourse}}
+    <small>({{:~CSLocalize('921ea69c2a574ad48762372a6c294c19', 'license valid to')}} {{:~intToDateLong(expired)}})</small>
+    {{/if}}
+    <span class="fa {{:~icon_chevron_right()}}"></span>
+  </div>
+  {{/if}}
+</a>
+<!-- /ko -->
+###
+schoolAdminItemLink
+###
+<!-- ko with: items[{{:#index}}] -->
+<a class="list-group-item" href="#" data-bind="click: gotoItem, test:'{{:id}}'">
+  {{:title}}
+  <span class="fa {{:~icon_chevron_right()}}"></span>
+</a>
+<!-- /ko -->

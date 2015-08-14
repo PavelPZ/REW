@@ -50,7 +50,7 @@ namespace Handlers {
         //kontrola session
         if (user.actSes == sessionId) return true; //stejna session
         if (user.oldSess != null && user.oldSess.Contains(sessionId)) return false; //expired session
-        //dej puvodni act session do oldSess a aktualizuj act session
+                                                                                    //dej puvodni act session do oldSess a aktualizuj act session
         if (user.oldSess == null) user.oldSess = new HashSet<long>();
         user.oldSess.Add(user.actSes); //jina session - dej act session do oldSess
         user.actSes = sessionId; //nastav actSes
@@ -97,7 +97,8 @@ namespace Handlers {
             req = XmlUtils.StringToObject(data, input);
           else
             req = JsonConvert.DeserializeObject(data, input);
-        } catch (Exception exp) {
+        }
+        catch (Exception exp) {
           Logger.Log("Deserialize error");
           throw new Exception("Deserialize error", exp);
         }
@@ -108,16 +109,19 @@ namespace Handlers {
           //check session
           var err = new RpcResponse(998, null);
           txt = isXml ? XmlUtils.ObjectToString(err) : JsonConvert.SerializeObject(err);
-        } else {
+        }
+        else {
           //response
           RpcResponse resp = action(req);
           txt = isXml ? XmlUtils.ObjectToString(resp.result) : JsonConvert.SerializeObject(resp);
           Logger.Log("OUTPUT: type={0}, data={1}\r\n#>", input.FullName, txt.Length > 2000 ? txt.Substring(0, 2000) : txt);
         }
         //}
-      } catch (System.Threading.ThreadAbortException th) {
+      }
+      catch (System.Threading.ThreadAbortException th) {
         throw th;
-      } catch (Exception exp) {
+      }
+      catch (Exception exp) {
         if (isXml) throw;
         Logger.Error(exp);
         var err = new RpcResponse(999, string.Format("ERROR: Type={0}\r\nExp={1}\r\n#>", input.FullName, LowUtils.ExceptionToString(exp, true)));
@@ -127,7 +131,8 @@ namespace Handlers {
       if (!string.IsNullOrEmpty(jsonpCallback)) {
         txt = jsonpCallback + "(" + txt + ")";
         context.Response.ContentType = "application/x-javascript";
-      } else
+      }
+      else
         context.Response.ContentType = "text/plain";
       return txt;
     }
@@ -185,7 +190,8 @@ namespace Handlers {
         }
         if (type == null) return true;  //CD Cargo Hack
         return types.ContainsKey(type.ToLower());
-      } Dictionary<string, bool> types;
+      }
+      Dictionary<string, bool> types;
 
       public override string ProcessRequest(HttpContext context) {
         var isDebug = Logger.isDebug(context);
@@ -301,7 +307,8 @@ namespace Handlers {
       if (lic == null) {
         if (File.Exists(path)) {
           lic = XmlUtils.FileToObject<schools.licence>(path);
-        } else {
+        }
+        else {
           lic = new schools.licence() {
             Url = licReq.appUrl,
             Created = now,
@@ -378,6 +385,7 @@ namespace Handlers {
     public bool IsReusable { get { return true; } }
 
     public static void MakeResponse(HttpContext context, string fn, Action<string> makeGZip = null) {
+      fn = dataPath(fn);
       var request = context.Request; var resp = context.Response;
       resp.Cache.SetCacheability(HttpCacheability.Private);
       resp.Cache.SetExpires(DateTime.UtcNow.AddDays(-1));
@@ -398,6 +406,7 @@ namespace Handlers {
           resp.End();
         }
       }
+      //Machines.rootDir
       //...Yes
       resp.Cache.SetLastModified(modified);
       resp.ContentEncoding = Encoding.UTF8;
@@ -420,6 +429,27 @@ namespace Handlers {
     }
     static Regex localizedFileMask = new Regex(@"\w+\.\w{2}_\w{2}\.js$"); //maska pro lokalizovane JS soubory, napr. xxx.cs-cz.js
 
+    static string dataPath(string fn) {
+      var rp = Machines.rootPath;
+      if (!fn.StartsWith(rp)) return fn;
+      var rel = fn.Substring(rp.Length);
+      var dir = rel.Split('\\')[0];
+      switch (dir) {
+        case "lm":
+        case "data":
+        case "media":
+        case "publ":
+        case "grafia":
+        case "skrivanek":
+        case "edusoft":
+        case "rwbooks":
+        case "rwdicts":
+        case "rwtts":
+          return fn;
+        default: return fn;
+      }
+    }
+
     static Dictionary<string, string> contentTypes = new Dictionary<string, string> {
       {".json", "text/json"},
       {".rjson", "text/rjson"},
@@ -431,6 +461,12 @@ namespace Handlers {
       {".otf", "application/x-font-opentype"},
       {".woff", "application/font-woff"},
       {".eot", "application/vnd.ms-fontobject"},
+
+      {".mp4", "video/mp4"},
+      {".webm", "video/webm"},
+      {".gif", "image/gif"},
+      {".png", "image/png"},
+      {".bmp", "image/bmp"},
     };
   }
 }

@@ -506,6 +506,7 @@ namespace CourseMeta {
           object lockObj; lock (locks) if (!locks.TryGetValue(productModule.url, out lockObj)) locks.Add(productModule.url, lockObj = new object());
           lock (lockObj) {
             bool noDict = (productModule.type & runtimeType.noDict) != 0;
+            var exs = productModule.scan().OfType<ex>().ToArray();
             buildModule resMod = new buildModule {
               url = productModule.url,
               pages = productModule.scan().OfType<ex>().Select(e => allPages[e.url]).ToArray(),
@@ -636,28 +637,38 @@ namespace CourseMeta {
             //type = runtimeType.products,
             //items = new data[0]
             Items = Enumerable.Empty<data>().
-              Concat(OldLangCourses.generateStandard()).
-              Concat(LangCourses.generateExamplesProduct()).
-              Concat(LangCourses.generateGrafiaProducts()).
-              Concat(OldLangCourses.generateA1_C2()).
-              //Concat(LangCourses.generateTestMeProduct()).
-              Concat(LangCourses.generateJJN()).
-              Concat(LangCourses.generateSkrivanekProduct()).
-              Concat(LangCourses.generateEdusoftProduct()).
+              //Concat(OldLangCourses.generateStandard()).
+              //Concat(LangCourses.generateExamplesProduct()).
+              //Concat(LangCourses.generateGrafiaProducts()).
+              //Concat(OldLangCourses.generateA1_C2()).
+              ////Concat(LangCourses.generateTestMeProduct()).
+              //Concat(LangCourses.generateJJN()).
+              //Concat(LangCourses.generateSkrivanekProduct()).
+              //Concat(LangCourses.generateEdusoftProduct()).
+              Concat(LangCourses.generateBlendedProduct()).
               ToArray()
           };
           //aktualizace local sitemaps
           byte[] jsonProdTree, rjsonProdTree; products ps;
           WebDataBatch.getJSSitemap(prods.Items.Cast<product>(), out jsonProdTree, out rjsonProdTree, out ps);
           var prodTreeStr = Encoding.UTF8.GetString(rjsonProdTree);
-          var fn = Machines.basicPath + @"rew\Web4\siteroot.all.js"; if (File.Exists(fn)) File.SetAttributes(fn, FileAttributes.Archive); File.WriteAllText(fn, prodTreeStr, Encoding.UTF8);
+          var fn = Machines.rootPath + @"siteroot.all.js"; if (File.Exists(fn)) File.SetAttributes(fn, FileAttributes.Archive); File.WriteAllText(fn, prodTreeStr, Encoding.UTF8);
         } catch (Exception exp) {
           log.ErrorExp("CourseMeta.Lib.init, prods = new products", exp);
           return;
         }
         //pridej rucne nadefinvoane produkty z d:\LMCom\rew\Web4\prod\XmlSource\
-        var addInProds = Directory.EnumerateFiles(Machines.dataPath + @"xmlsource", "*.xml").Select(fn => data.readObject<data>(fn)).ToArray();
-        foreach (var addIn in addInProds) addIn.url += "/";
+        string[] addInProductUrls = new string[] {
+          "/lm/blended/english/Dialogs.product",
+          "/lm/blended/german/Dialogs.product",
+          "/lm/blended/french/Dialogs.product",
+          "/lm/blended/english/blended.product",
+          "/lm/blended/german/blended.product",
+          "/lm/blended/french/blended.product",
+        };
+        //var addInProds = Directory.EnumerateFiles(Machines.dataPath + @"xmlsource", "*.xml").Select(fn => data.readObject<data>(fn)).ToArray();
+        var addInProds = addInProductUrls.Select(pr => Machines.rootDir + pr.Replace('/', '\\')).Select(fn => data.readObject<data>(fn)).ToArray();
+        foreach (var addIn in addInProds) if (!addIn.url.EndsWith("/")) addIn.url += "/";
         prods.Items = prods.Items.Concat(addInProds).ToArray();
         //pridej instrukce
         //foreach (var prod in prods.Items) prod.Items = prod.Items.Concat(XExtension.Create<data>(
@@ -714,6 +725,9 @@ namespace CourseMeta {
         XmlUtils.ObjectToFile(oldProjFn, oldPrj);
       }
 
+      //zbyle XML z oldea
+      
+
       var lmPubl = sitemap.readFromFilesystem(Machines.rootPath + "lm\\meta.xml");
       lmPubl.Items = new data[] { 
         oldPrj,
@@ -722,7 +736,9 @@ namespace CourseMeta {
         sitemap.fromFileSystem("/lm/docExamples/", log), 
         sitemap.fromFileSystem("/lm/pjExamples/", log), 
         sitemap.fromFileSystem("/lm/etestme/", log), 
-        sitemap.fromFileSystem("/lm/author/", log), 
+        sitemap.fromFileSystem("/lm/author/", log),
+        sitemap.fromFileSystem("/lm/blended/", log),
+        sitemap.fromFileSystem("/lm/ea/", log),
       };
 
       //nove kurzy a return
@@ -928,7 +944,7 @@ namespace CourseMeta {
           }
         }
         //rusky slovnik
-        lock (typeof(Lib)) if (russianDict == null) russianDict = File.ReadLines(Machines.basicPath + @"rew\Web4\App_Data\russianDict.txt").Select(l => l.Split('=')).ToDictionary(l => @"/lm/oldea/" + l[0].Replace('\\', '/'), l => l[1].Insert(l[1].LastIndexOf('\\'), "\\app_localresources"));
+        lock (typeof(Lib)) if (russianDict == null) russianDict = File.ReadLines(Machines.rootPath + @"App_Data\russianDict.txt").Select(l => l.Split('=')).ToDictionary(l => @"/lm/oldea/" + l[0].Replace('\\', '/'), l => l[1].Insert(l[1].LastIndexOf('\\'), "\\app_localresources"));
         string rd;
         if (russianDict.TryGetValue(ex.url, out rd))
           sents = sents.Concat(Machines.getTradosContext(false).Sentences.Where(s => s.Page.FileName.Contains(rd) && s.SrcLang == (short)Langs.cs_cz && s.TransLang == (short)Langs.en_gb)).ToArray();

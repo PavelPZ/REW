@@ -1,0 +1,795 @@
+@import "LMMixins.less";
+
+.lm-collapse-low {
+  display: none;
+  margin: 0;
+  position: relative !important;
+  /*&.in {
+    margin-bottom: 20px;
+  }*/
+  /*.active {
+    z-index: 2; // Place active items above their siblings for proper border styling
+    color: @list-group-active-color;
+    background-color: @list-group-active-bg;
+    border-color: @list-group-active-border;
+  }*/
+  .lm-close {
+    position: absolute;
+    top: 3px;
+    right: 4px;
+    z-index: 1000;
+  }
+}
+
+.lm-collapse {
+  .lm-collapse-low;
+
+  .list-group-item:first-child, .panel {
+    .border-top-radius(0);
+    border-top: none;
+  }
+}
+
+blockquote {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.panel .panel-body, .alert, .well, blockquote {
+  div:first-child.oli-par {
+    margin-top: 0px;
+  }
+
+  div:last-child.oli-par {
+    margin-bottom: 0px;
+  }
+}
+
+.app-school {
+
+  .navbar-btn {
+    *margin-top: 6px;
+  }
+
+  .lm-phone-ex-menu {
+    li {
+      height: 50px;
+    }
+
+    a {
+      font-size: 20px;
+    }
+
+    b {
+      font-size: 24px;
+    }
+  }
+
+  .sch-title {
+    .btn {
+      margin-top: -6px;
+      padding-top: 9px;
+      height: 35px;
+    }
+  }
+
+  .lm-green-btn {
+    position: relative;
+    padding-top: 14px;
+    padding-left: 10px;
+    padding-right: 45px;
+    *padding-bottom: 12px;
+    text-align: left;
+    min-width: 200px;
+    height: 50px;
+    *height: auto;
+    font-size: 16px;
+    font-weight: bold;
+
+    span {
+      vertical-align: middle;
+    }
+  }
+  /*.lm-logo-black {
+    float: left;
+  }*/
+  /*[class*='col-'] {
+    position: static;
+  }*/
+  /*.open.dropdown-menu {
+    display: block; 
+  }*/
+  .dropdown-menu {
+    position: absolute;
+    top: 0;
+    opacity: 0;
+  }
+
+  .crsitem .alert {
+    padding: 5px;
+  }
+
+  .lm-crs-head { //text v course buttonech
+    font-size: 14px;
+  }
+
+  .progress {
+    .text {
+      position: absolute;
+      z-index: 2;
+      color: white;
+      padding-left: 5px;
+    }
+
+    .bar {
+      text-align: left;
+    }
+
+    height: 20px;
+    margin-bottom: 3px;
+    .reset-filter();
+    background-image: none;
+    background-color: @brand-danger;
+  }
+
+  .well {
+    //padding: 8px;
+    background-color: lighten(@well-bg,1);
+
+    .alert {
+      margin-bottom: 0px;
+    }
+  }
+  /*.navbar {
+    .container {
+      padding-left: 0;
+    }
+  }*/
+}
+
+//Pro cviceni: dorazeni zelene sipky az na okraj a left radius nula (non desktop)
+.lm-ex {
+  .navbar {
+    .nomedia() { //definice makra, pouziteho jak pro "@media-not-desktop" media tak pro MSIE8 .no-media
+      padding-left: 0;
+
+      .lm-green-btn {
+        .border-left-radius(0);
+      }
+    }
+
+    @media @media-not-desktop {
+      .nomedia();
+    }
+  }
+}
+
+.no-media .lm-ex .navbar {
+  .lm-ex.navbar.nomedia();
+}
+
+.logged {
+  .lm-ex {
+
+    h3 {
+      margin-top: 5px;
+    }
+  }
+}
+
+// Instrukce ve cviceni
+
+.instr {
+  padding-right: 10px;
+
+  &.hidden-small, &.hidden-vsnet, &.instr-display-ex {
+    color: @alert-success-text;
+    background-color: @alert-success-bg;
+    border: 1px solid @alert-success-border;
+    border-radius: @alert-border-radius;
+    padding-left: 15px;
+  }
+
+  &.instr-display-ex {
+    position: relative;
+    padding-left: 30px;
+
+    .display-ex-green-arrow {
+      position: absolute;
+      right: 4px;
+      top: 3px;
+    }
+
+    .instr-display-score {
+      font-size: 14px;
+      padding:8px 0;
+      span {
+        font-weight: bold;
+      }
+    }
+  }
+
+
+  &.hidden-vsnet {
+    position: relative;
+
+    .green {
+      position: absolute;
+      top: 1px;
+      right: 2px;
+    }
+  }
+
+  h1 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .btn-link {
+    text-align: left;
+    text-decoration: none;
+    white-space: normal;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  ol {
+    margin: 0 0 10px 25px;
+  }
+}
+
+.lm-breadcrumb-cont {
+  background-color: @breadcrumb-bg;
+  border-radius: @border-radius-base;
+  overflow: hidden;
+  position: relative;
+  height: 30px;
+}
+
+.lm-breadcrumb {
+  padding: 8px 15px;
+  margin: 0px;
+  white-space: nowrap;
+  position: absolute;
+  right: 0px;
+
+  > .active {
+    color: @breadcrumb-active-color;
+  }
+
+  .delim {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+ul {
+  &.breadcrumb {
+    margin: 0px;
+    height: 30px;
+    overflow: hidden;
+  }
+}
+
+.ie7 {
+  .breadcrumb {
+    > li {
+      .inline(); //ie7
+      *zoom: ~'expression( this.runtimeStyle.zoom="1", this.appendChild( document.createElement("i")).className="ie-after" )'; //http://stackoverflow.com/questions/8206228/after-pseudoclass-on-ie7
+    }
+  }
+
+  .ie-after {
+    *zoom: ~"expression(this.runtimeStyle['zoom'] = '1', this.innerHTML = '&nbsp;&nbsp;|')";
+  }
+
+  img {
+    *max-width: none;
+  }
+
+  .flag-mid-bg {
+    padding-left: 10px;
+  }
+}
+
+.cls-audio-unvisible {
+  width: 200px;
+  height: 40px;
+  left: 0px;
+  position: absolute;
+  top: -50px;
+}
+
+.cls-audio {
+}
+
+.cls-video {
+  //prepsano napr. v d:\LMCom\rew\Web4\JsLib\skins\grafia\css.less
+}
+
+#sldivtest, #sldivtest object {
+  width: 100%;
+  height: auto;
+}
+
+#sldiv_video object {
+  width: 100%;
+  height: 100%;
+}
+
+.slcpv, .slcpv object {
+  width: 1px;
+  height: 1px;
+
+  &.show, &.show object {
+    width: 200px;
+    height: 50px;
+  }
+}
+
+.slcpvex.show {
+  margin-top: -80px;
+  margin-left: 5px;
+}
+
+.slcpvdict.show {
+  margin-top: -30px;
+}
+
+.cpv {
+  position: relative;
+
+  .cpv-text {
+    margin-top: 5px;
+    font-size: @font-size-small;
+    margin-right: -20px;
+  }
+
+  .panel-body {
+    min-height: 60px;
+  }
+
+  .panel-heading {
+    font-weight: bold;
+  }
+
+  .panel-body, .panel {
+    background-color: transparent;
+  }
+}
+
+.cpv-dict {
+  margin-bottom: 10px;
+}
+
+.cpv-item {
+  margin-right: 30px;
+  width: 150px;
+  vertical-align: top;
+  .inline();
+
+  .btn {
+    display: block;
+
+    .fa-2x {
+      color: blue;
+      vertical-align: middle;
+    }
+
+    .fa-spinner {
+      color: white;
+      vertical-align: middle;
+    }
+
+    &.disabled {
+      background-color: lightgray;
+    }
+  }
+
+  &.cpv-active {
+    .btn {
+      .button-variant(@btn-success-color, @btn-success-bg, @btn-success-border);
+    }
+  }
+
+  &.cpv-playing {
+    .btn {
+      .button-variant(@btn-success-color, @btn-success-bg, @btn-success-border);
+    }
+  }
+
+  &.cpv-record {
+    .fa-2x {
+      color: red;
+    }
+  }
+}
+
+
+.cpv-dict {
+  .cpv-item {
+    width: 80px;
+
+    .cpv-text {
+      display: none;
+    }
+  }
+}
+
+.gramm {
+  .gram-link {
+    margin-bottom: 10px;
+    white-space: normal;
+  }
+}
+
+.hide-cpv {
+  .sound-listen-talk, .sdPronuncMark, .sdPronuncMarkOn {
+    display: none;
+  }
+}
+
+.lm-dict .sound-listen-talk, .lm-dict .sound-repro {
+  display: none;
+}
+
+.lm-dict .panel-body {
+  padding: 5px 10px;
+}
+
+.navbar {
+  h4 {
+    color: white;
+    margin-top: 13px;
+    margin-left: 20px;
+    float: left;
+  }
+
+  .btn-default.visible-small, .btn-success.visible-small {
+    margin-top: 3px;
+    margin-left: 5px;
+    font-size: 18px;
+  }
+
+  .btn-lg {
+    margin-top: 2px;
+    margin-bottom: 0;
+  }
+}
+
+.ex-evaluated {
+  position: relative;
+  padding: 8px;
+  margin-bottom: 0px;
+
+  span {
+    white-space: normal;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .btn {
+    position: absolute;
+    right: 0px;
+    top: 1px;
+  }
+}
+
+.small-repeat-btn {
+  padding-left: 3px;
+
+  > span {
+    position: relative;
+    top: -3px;
+
+    span {
+      font-size: 11px;
+    }
+  }
+}
+
+.banner-frame {
+  padding-bottom: 10px;
+
+  iframe {
+    display: block;
+    margin: 0 auto;
+    width: 468px;
+    height: 60px;
+    border: 0;
+  }
+}
+
+.splash-loading {
+  &.center {
+    padding: 100px;
+  }
+
+  .fa {
+    font-size: 45px;
+  }
+}
+
+.splash-licence-error {
+  padding-top: 100px;
+}
+
+.lmtree {
+
+  .fa-border {
+    border-width: 1px;
+    border-color: lighten(@brand-danger, 10%);
+  }
+
+  .fa-lock {
+    color: @brand-warning;
+  }
+
+  .hlp-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+
+  .panel-heading {
+    position: relative;
+  }
+
+  .tools {
+    cursor: pointer;
+
+    > .fa {
+      color: @brand-danger;
+      padding-left: 2px;
+
+      &:hover {
+        color: darken(@brand-danger, 10%);
+      }
+    }
+
+    > .pad-left {
+      padding-left: 12px;
+    }
+    /*&.help {
+      font-size: @font-size-small * 0.8;
+    }*/
+    .right {
+      padding-right: 1px;
+      border-right: solid 2px lighten(@brand-danger, 15%);
+    }
+
+    .bottom {
+      padding-bottom: 0px;
+      border-bottom: solid 2px lighten(@brand-danger, 15%);
+
+      &.fa-paste {
+        padding-bottom: 1px;
+      }
+    }
+
+    .top {
+      padding-top: 0px;
+      border-top: solid 2px lighten(@brand-danger, 15%);
+    }
+  }
+
+
+  .expand {
+    cursor: pointer;
+  }
+
+  .cut > .expand, .cut > .title {
+    color: lighten(@brand-primary, 10%);
+  }
+
+  .copy > .expand, .copy > .title {
+    color: darken(@brand-primary, 10%);
+  }
+}
+
+.dep-panel {
+  margin: 0 0 0 40px;
+  margin-bottom: 16px;
+}
+
+.dep-header {
+  color: @headings-small-color;
+
+  .dep-name {
+    font-weight: bold;
+  }
+
+  .btn {
+    padding-left: 5px;
+    padding-top: 4px;
+  }
+}
+
+.lm-call-course {
+  /*> * {
+    line-height: @line-height-base;
+    vertical-align: middle;
+  }*/
+  //position: relative;
+  h4 {
+    margin-top: 0;
+  }
+
+  .test-disabled {
+    .opacity (0.4);
+    cursor: text;
+  }
+
+  .test-archive- {
+    &btn, &title {
+      line-height: @line-height-base * 1.5;
+      vertical-align: middle;
+      display: inline-block;
+    }
+  }
+}
+
+.list-editor {
+  td {
+    width: 30%;
+    cursor: pointer;
+
+    &.descr {
+      color: @gray-light;
+      font-style: italic;
+      cursor: text;
+    }
+
+    &.del-column {
+      width: 20px;
+      text-align: center;
+    }
+
+    .fa {
+      color: @brand-danger;
+    }
+  }
+
+  .col-xs-3 {
+    padding-right: 0px;
+  }
+
+  .col-xs-1 {
+    padding-left: 5px;
+  }
+}
+
+.calc-grid-col(@index, @cols) {
+  width: percentage((@index / @cols));
+  float: left;
+}
+
+.lm-stat {
+  #pivotGrid_pgArea0 {
+    padding: 3px;
+  }
+
+  .grid-header {
+    min-width: 150px;
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    .row-btns {
+      position: absolute;
+      left: 0px;
+      bottom: 0px;
+    }
+
+    .coll-btns {
+      position: absolute;
+      right: 0px;
+      top: 0px;
+    }
+  }
+
+  .content {
+    padding: 20px;
+  }
+
+  .export-col {
+    .calc-grid-col(1,5);
+    padding: 10px;
+  }
+
+  .export-icon {
+    border: 2px solid @gray-lighter;
+    border-radius: 5px;
+    cursor: pointer;
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position: center;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .export-title {
+  }
+
+  .export-excel {
+    background-image: url('img/statexcel.jpg');
+  }
+
+  .export-mht {
+    background-image: url('img/statmht.jpg');
+  }
+
+  .export-pdf {
+    background-image: url('img/statpdf.jpg');
+  }
+
+  .export-png {
+    background-image: url('img/statpng.jpg');
+  }
+
+  .export-rtf {
+    background-image: url('img/statrtf.jpg');
+  }
+
+  #collapse-stat {
+    padding: 10px;
+  }
+
+  .stat-item {
+    padding-top: 10px;
+    cursor: pointer;
+
+    h4 {
+      margin-top: 10px;
+      text-decoration: underline;
+    }
+  }
+
+  .nav-title {
+    color: white;
+    margin-bottom: 0;
+    margin-top: 12px;
+    margin-left: 15px;
+    font-size: 18px;
+    width: 480px;
+    white-space: nowrap;
+    overflow: hidden;
+
+    @media @media-not-desktop {
+      width: 260px;
+    }
+  }
+}
+
+.vi-vn.lm-stat .nav-title {
+  width: 370px;
+
+  @media @media-not-desktop {
+    width: 160px;
+  }
+}
+
+.stat-iframe {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  border: none;
+  margin: 0;
+  padding: 0;
+  //overflow:hidden;
+}
+
+.stat-body {
+  overflow: hidden;
+}
+
+.my-header {
+  > * {
+    line-height: @line-height-base;
+    vertical-align: middle;
+  }
+}

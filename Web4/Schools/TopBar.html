@@ -1,0 +1,95 @@
+TTopBarNew
+###
+<div class="navbar navbar-{{:~CourseMeta.navBar()}}" data-bind="test:'top'">
+  <div class="container">
+    <%-- ******************* LEVA CAST ************* --%>
+    <%-- logo --%>
+    {{if tb.logoBig()}}
+    <a href="#" class="navbar-brand lm-logo-black" onmousedown="lmConsole.sendStart(this)" onmouseup="lmConsole.sendEnd(this)"></a>
+    {{else tb.logoSmall()}}
+    <a href="#" class="navbar-brand lm-logo-black lm-logo-black-small"></a>
+    {{/if}}
+
+    <%-- back to course --%>
+    {{if tb.backToCourse()}}
+    <div class="btn btn-large btn-info lm-green-btn" data-bind="test:'back-crs', click: tb.backToCourseClick">
+      <span class="fa-lg fa fa-arrow-circle-o-left fa-2x"></span>
+      <span>{{:~CSLocalize('d50f5552764d4912a9f327506cf714c3', 'Back')}}</span>
+    </div>
+    {{/if}}
+
+    <%-- title --%>
+    {{if tb.isTitle()}}
+    <h4 data-bind="text: tb.title"></h4>
+    {{/if}}
+
+    <%-- zelena sipka --%>
+    {{if tb.greenArrow()}}
+    <div class="btn btn-large lm-green-btn pull-left" data-bind="test:'green', click: CourseMeta.doGreenClick, disable: CourseMeta.greenDisabled, css: 'btn-' + CourseMeta.greenCss()">
+      <span data-bind="text: CourseMeta.greenTitle()"></span>
+      <span class="fa" data-bind="css: 'fa-' + CourseMeta.greenIcon()"></span>
+    </div>
+    {{/if}}
+
+    <%-- suplements ikony --%>
+    {{if tb.hasSupl()}}
+    {{for #data tmpl=~T('TSuplements')/}}
+    {{/if}}
+
+    <%-- ******************* PRAVA CAST ************* --%>
+    <%-- login --%>
+    {{if tb.needsLogin()}}
+    <a class="pull-right btn btn-default navbar-btn" href="{{:tb.loginUrl()}}" data-bind="test:'login'">{{:~CSLocalize('7b8522365b1f4aaba4493174a478e987', 'Login')}}</a>
+    {{/if}}
+
+    <%-- More tlacitko pro phone --%>
+    {{if tb.phoneMore()}}
+    <button class="visible-small pull-right btn btn-default navbar-btn fa fa-bars" data-bind="test:'ph-more', " data-toggle="collapse" data-target="{{:tb.phoneMore()}}"></button>
+    {{/if}}
+
+    <%-- menu pro tablet --%>
+    <div class="hidden-small">
+      {{if tb.logoutAndProfile()}}
+      <%-- logout --%>
+      <div class="btn btn-default pull-right navbar-btn ctx-help" data-bind="test:'profile', click: Login.newProfileUrl"><i class="fa fa-user"></i>&nbsp;{{:~userName()}}</div>
+      <div class="btn btn-default pull-right navbar-btn ctx-help" data-bind="test:'logout', click: LMStatus.Logout">{{:~CSLocalize('4eccfc355fbc4b91b236d1678516ddad', 'Logout')}}</div>
+      {{/if}}
+    </div>
+  </div>
+</div>
+<%-- Expandable dropdown pro phone --%>
+<div class="container visible-small rtl">
+  <div id="collapse-logout" data-role="collapsed" class="list-group lm-collapse">
+    {{for #data tmpl=~T('TCollapseClose')/}}
+    <a class="list-group-item" href="#" data-bind="test:'ph-logout', click: LMStatus.Logout" target="_blank">{{:~CSLocalize('97c7e0eefa844f78a33f7280232afc4b', 'Logout')}}</a>
+    <a href="#" class="list-group-item" data-bind="test:'ph-profile', click: Login.newProfileUrl"><i class="fa fa-user"></i>&nbsp;{{:~userName()}}</a>
+  </div>
+</div>
+###
+
+TSuplements
+###
+<button class="btn btn-default navbar-btn pull-left" data-bind="test:'ctx-grammar', css: tb.suplCtxtGrammar() ? 'visible-small' : 'hide'" data-toggle="collapse" data-target="#collapse-context-gr"><b>G</b></button>
+<button class="btn btn-default navbar-btn pull-left" data-bind="test:'grammar', click: tb.grammarClick, css: tb.suplGrammarIcon() && tb.suplGrammarLink() ? 'visible-small' : 'hide'"><b>G</b></button>
+{{if tb.suplGrammarLink()}}
+<button class="pull-right btn btn-default navbar-btn hidden-small" data-bind="test:'grammar', click: tb.grammarClick"><i class="fa fa-external-link"></i>&nbsp;{{:~CSLocalize('840c9e55cdcd47709fb67061d5a1ead9', 'Grammar')}}</button>
+{{/if}}
+{{if tb.suplVocabulary()}}
+<button class="visible-small btn btn-default navbar-btn pull-left" data-bind="test:'ph-vocab', click: tb.vocabularyClick"><b>Voc</b></button>
+<button class="hidden-small pull-right btn btn-default navbar-btn " data-bind="test:'vocab', click: tb.vocabularyClick"><i class="fa fa-external-link"></i>&nbsp;Vocabulary</button>
+{{/if}}
+{{if tb.suplDict()}}
+<button class="visible-small btn btn-default navbar-btn pull-left" data-bind="test:'ph-dict', click: tb.dictClick"><i class="fa fa-search"></i></button>
+<button class="hidden-small pull-right btn btn-default navbar-btn " data-bind="test:'dict', click: tb.dictClick"><i class="fa fa-external-link"></i>&nbsp;{{:~CSLocalize('a07fc4c277c24ae189fd69dea416660a', 'Dictionary')}}</button>
+{{/if}}
+{{if tb.suplBreadcrumb()}}
+<button class="visible-small btn btn-default navbar-btn pull-left" data-bind="test:'ph-bread', " data-toggle="collapse" data-target="#collapse-breadcrumb"><i class="fa fa-ellipsis-h "></i></button>
+{{/if}}
+{{if tb.suplEval()}}
+<button data-bind="test:'reset', css: tb.exerciseEvaluated() ? 'visible-small' : 'hide', visible:!CourseMeta.finishedAndLocked(), click: tb.resetClick" class="btn btn-default navbar-btn pull-left small-repeat-btn">
+  <span class="label label-success"><i class="fa fa-check"></i>&nbsp;<span data-bind="text:tb.score"></span></span>&nbsp;&nbsp;<i class="fa fa-refresh"></i>
+</button>
+{{/if}}
+{{if tb.suplInstr()}}
+<div data-bind="test:'eval', css: tb.exerciseEvaluated() ? 'hide' : 'visible-small'" class="ctx-help btn btn-default navbar-btn pull-left" data-toggle="collapse" data-target="#collapse-instr"><i class="fa fa-info-circle "></i></div>
+{{/if}}

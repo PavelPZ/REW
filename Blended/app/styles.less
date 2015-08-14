@@ -1,0 +1,235 @@
+﻿@import "../bs3/less/mixins/alerts.less";
+@import "../bs3/less/mixins/gradients.less";
+@import "../bs3/less/variables.less";
+
+@import (inline) "flag-mid.css";
+@import (inline) "flag-small.css";
+
+.alert.advertise {
+  //.alert-variant(@panel-primary-heading-bg; @panel-primary-border; @panel-primary-text);
+  //#gradient.vertical(@panel-primary-heading-bg; white; 100%; 10%);
+  //#gradient > .vertical-three-colors(#777; #333; 25%; #000);
+  //#gradient > .vertical(#333; #000);
+  //#gradient.striped(#333; 45deg);
+  //#gradient > .radial(#333; #000);
+  //#gradient > .directional(#333; #000; 45deg);
+  #gradient > .horizontal-three-colors(darken(@panel-primary-heading-bg,40); @panel-primary-heading-bg; 15%; darken(@panel-primary-heading-bg,30));
+  border: 0;
+
+  h1 {
+    margin: 0;
+  }
+
+  a, a:hover {
+    text-decoration: underline;
+  }
+
+  .left-part {
+    //font-size: 16px;
+
+    h1 {
+      font-size: 30px;
+      margin-bottom:10px;
+    }
+  }
+
+  * {
+    color: white;
+  }
+
+  .fa {
+    color: @state-info-bg;
+  }
+}
+
+.top-bar {
+  padding: 10px 0;
+}
+
+.v-center {
+  display: table !important;
+  height: 50px;
+
+  .content {
+    display: table-cell;
+    vertical-align: middle;
+
+    &.lm-logo {
+      padding-right: 20px;
+      border-right: 1px solid lightgray;
+
+      > a {
+        display: block;
+        background: url(img/lm-logo.png) no-repeat;
+        width: 192px;
+        height: 41px;
+      }
+    }
+
+    &.slogan {
+      padding-top: 5px;
+      color: lightgray;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    &.contact {
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
+}
+
+.top-bar-hr {
+  margin-top: 0;
+  border-top-width: 2px;
+}
+
+.container-fluid {
+  .container > h2, .container > h3 {
+    text-align: center;
+  }
+
+  &.white {
+  }
+
+  &.gray {
+    background-color: @gray-lighter;
+  }
+
+  &.black {
+    background-color: black;
+  }
+}
+
+body.iframe-body-class {
+  overflow: hidden;
+}
+
+.modal-back {
+  padding: 15px 15px;
+
+  .fa {
+    color: white;
+    font-size: 60px;
+  }
+}
+
+.grid-button {
+  display: inline-block;
+  width: 250px;
+  padding: 10px;
+  height: 90px;
+  vertical-align: middle;
+
+  .btn {
+    white-space: normal;
+    height: 50px !important;
+    position: relative;
+    padding-right: 40px;
+    padding-left: 40px;
+    text-align: left;
+
+    .fa {
+      position: absolute;
+      font-size: 20px;
+      top: 15px;
+    }
+
+    .icon-right {
+      right: 13px;
+    }
+
+    .icon-left {
+      left: 10px;
+    }
+  }
+}
+
+.lm-tabs {
+  a:focus {
+    outline: none;
+  }
+
+  li.active * {
+    background-color: @panel-primary-heading-bg !important;
+    color: @panel-primary-text !important;
+  }
+}
+
+.lm-tupple {
+  font-size: 18px;
+
+  .alert {
+    padding-right: 40px;
+    position: relative;
+
+    &.lm-demosound {
+      padding-left: 70px;
+    }
+
+    i {
+      position: absolute;
+      right: 13px;
+      top: 16px;
+      font-size: 20px;
+    }
+
+    .flag-mid {
+      position: absolute;
+      left: 12px;
+      top: 10px;
+    }
+
+    .badge {
+      margin-bottom: 2px;
+      font-size: 20px;
+    }
+  }
+}
+
+.embed-responsive {
+
+  &.embed-responsive-schema {
+    padding-bottom: 110%;
+  }
+}
+
+.badge.badge-l {
+  font-size: 12px;
+}
+
+.badge.badge-xl {
+  font-size: 20px;
+}
+
+.panel-heading {
+  font-weight: bold;
+}
+
+.vyzva57-table {
+  .fa-check-circle {
+    font-size: 32px;
+    //color:@brand-success;
+  }
+
+  td.first {
+    text-align: center;
+  }
+}
+
+.demo-lessons {
+  .run {
+    color: @brand-success;
+    vertical-align: middle;
+
+    span {
+      font-size: 30px;
+      display: inline-block;
+    }
+
+    > span {
+      padding-right: 10px;
+    }
+  }
+}

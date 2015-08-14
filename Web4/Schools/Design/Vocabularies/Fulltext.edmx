@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="vocabulariesModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="vocabulariesModelStoreContainer">
+    <EntitySet Name="Dict" EntityType="vocabulariesModel.Store.Dict" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="Dict">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="en_gb" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="de_de" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="fr_fr" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="it_it" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ru_ru" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="sp_sp" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="cs_cz" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="FactId" Type="int" Nullable="false" />
+    <Property Name="LessId" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="vocabulariesModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="vocabulariesEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Dict" EntityType="vocabulariesModel.Dict" />
+          <EntitySet Name="KeySet" EntityType="vocabulariesModel.Key" />
+          <AssociationSet Name="KeyDict" Association="vocabulariesModel.KeyDict">
+            <End Role="Key" EntitySet="KeySet" />
+            <End Role="Dict" EntitySet="Dict" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Dict">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="en_gb" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="de_de" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="fr_fr" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="it_it" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ru_ru" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="sp_sp" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="cs_cz" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="Int32" Name="FactId" Nullable="false" />
+          <Property Name="LessId" Nullable="true" Type="String" />
+          <NavigationProperty Name="Key" Relationship="vocabulariesModel.KeyDict" FromRole="Dict" ToRole="Key" />
+          <Property Type="String" Name="KeyId" Nullable="true" MaxLength="32" />
+        </EntityType>
+        <EntityType Name="Key">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="String" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" MaxLength="32" />
+          <NavigationProperty Name="Dict" Relationship="vocabulariesModel.KeyDict" FromRole="Key" ToRole="Dict" />
+        </EntityType>
+        <Association Name="KeyDict">
+          <End Type="vocabulariesModel.Key" Role="Key" Multiplicity="0..1" />
+          <End Type="vocabulariesModel.Dict" Role="Dict" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Key">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Dict">
+              <PropertyRef Name="KeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="vocabulariesModelStoreContainer" CdmEntityContainer="vocabulariesEntities">
+    <EntitySetMapping Name="Dict">
+      <EntityTypeMapping TypeName="IsTypeOf(vocabulariesModel.Dict)">
+        <MappingFragment StoreEntitySet="Dict">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="en_gb" ColumnName="en_gb" />
+          <ScalarProperty Name="de_de" ColumnName="de_de" />
+          <ScalarProperty Name="fr_fr" ColumnName="fr_fr" />
+          <ScalarProperty Name="it_it" ColumnName="it_it" />
+          <ScalarProperty Name="ru_ru" ColumnName="ru_ru" />
+          <ScalarProperty Name="sp_sp" ColumnName="sp_sp" />
+          <ScalarProperty Name="cs_cz" ColumnName="cs_cz" />
+          <ScalarProperty Name="FactId" ColumnName="FactId" />
+          <ScalarProperty Name="LessId" ColumnName="LessId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Default" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

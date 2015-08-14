@@ -354,7 +354,7 @@ namespace Packager {
     }
 
     static void DownloadProduct(Config cfg) {
-      File.WriteAllText(Machines.basicPath + @"rew\Downloads\Common\IIS\indexTemplate-download.htm", HomePage(cfg));
+      File.WriteAllText(Machines.rootPath + @"rew\Downloads\Common\IIS\indexTemplate-download.htm", HomePage(cfg));
       var prodPathPrefix = issDestPath + "products\\" + cfg.prod.url.Replace('/', '-');
       // TODO Consts.saveISSFile(uniqFiles(productFiles(cfg).Concat(productSwFiles(cfg))), prodPathPrefix + "_files.iss");
     }
@@ -450,6 +450,7 @@ namespace Packager {
         yield return Consts.jsSchoolEnd;
         yield return Consts.jsCourse;
         yield return Consts.jsAuthorWeb;
+        yield return Consts.angularJS;
       }
 
     }
@@ -495,7 +496,8 @@ namespace Packager {
       jsMinify(debugMinIsBig, jsCourse, err,
         Consts.jsSchoolEnd,
         Consts.jsCourse,
-        Consts.jsAuthorWeb
+        Consts.jsAuthorWeb,
+        Consts.angularJS
        );
       //jsMinify(debugMinIsBig, jsLame, err,
       //  Consts.jsLame);
@@ -528,7 +530,9 @@ namespace Packager {
       else {
         var compressor = new JavaScriptCompressor() { ErrorReporter = new JSErrorReporter(dest, err) };
         try {
-          var comp = compressor.Compress(sb.ToString());
+          //ERROR in _course.js, odyavorkovana komprese
+          //var comp = compressor.Compress(sb.ToString());
+          var comp = sb.ToString();
           writeFile(destMin, comp);
         } catch (Exception exp) {
           throw new Exception(err.ToString(), exp);
@@ -817,15 +821,16 @@ namespace Packager {
       //    break;
       //}
       //yield return new Consts.file("ScormExNet35.ashx");
-      yield return new Consts.file(@"Schools\statistics.aspx");
-      yield return new Consts.file(@"Schools\statistics.aspx.cs");
-      yield return new Consts.file(@"statistics\default.ascx");
-      yield return new Consts.file(@"statistics\default.ascx.cs");
-      yield return new Consts.file(@"statistics\ground.master");
-      yield return new Consts.file(@"statistics\ground.master.cs");
-      yield return new Consts.file(@"statistics\toc.ascx");
-      yield return new Consts.file(@"statistics\toc.ascx.cs");
-      yield return new Consts.file(@"statistics\Statistics.js");
+      //************* bez starych statistik
+      //yield return new Consts.file(@"Schools\statistics.aspx");
+      //yield return new Consts.file(@"Schools\statistics.aspx.cs");
+      //yield return new Consts.file(@"statistics\default.ascx");
+      //yield return new Consts.file(@"statistics\default.ascx.cs");
+      //yield return new Consts.file(@"statistics\ground.master");
+      //yield return new Consts.file(@"statistics\ground.master.cs");
+      //yield return new Consts.file(@"statistics\toc.ascx");
+      //yield return new Consts.file(@"statistics\toc.ascx.cs");
+      //yield return new Consts.file(@"statistics\Statistics.js");
       yield return new Consts.file(@"JsLib\JS\Sound\wavWorker.js");
 
       //yield return new Consts.file(@"statistics\Statistics.js");

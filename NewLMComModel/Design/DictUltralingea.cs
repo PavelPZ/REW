@@ -121,7 +121,7 @@ namespace Ultralingua {
           },
           lng => new List<string>(),
           (lng, word, row, res) => res.AddRange(row.Select(r => doNormalize(r)).Where(r => !string.IsNullOrEmpty(r))),
-          (lng, res) => File.WriteAllLines(string.Format(Machines.basicPath + @"rew\Web4\RwDicts\Sources\Ultralingua.back\design\WordsStems_{0}.txt", lng), res.Distinct().OrderBy(w => w)),
+          (lng, res) => File.WriteAllLines(string.Format(Machines.rootPath + @"RwDicts\Sources\Ultralingua.back\design\WordsStems_{0}.txt", lng), res.Distinct().OrderBy(w => w)),
           imp
         );
       }
@@ -132,14 +132,14 @@ namespace Ultralingua {
       using (var imp = new Impersonator("pavel", "LANGMaster", "zvahov88_"))
         DictLib.RunStemming<List<string>>(
           Dict.allLangs,
-          lng => File.ReadAllLines(string.Format(Machines.basicPath + @"rew\Web4\RwDicts\Sources\LingeaOld\design\wordList_{0}.txt", lng)).Concat(
-            File.ReadAllLines(string.Format(Machines.basicPath + @"rew\Web4\RwDicts\Sources\Wiktionary.back\{0}.txt", lng)).Select(l => l.Split(' ')[0]).Take(50000)).
+          lng => File.ReadAllLines(string.Format(Machines.rootPath + @"RwDicts\Sources\LingeaOld\design\wordList_{0}.txt", lng)).Concat(
+            File.ReadAllLines(string.Format(Machines.rootPath + @"RwDicts\Sources\Wiktionary.back\{0}.txt", lng)).Select(l => l.Split(' ')[0]).Take(50000)).
             Where(w => !string.IsNullOrEmpty(w)).
             Select(w => w.ToLower()).
             Distinct().ToArray(),
           lng => new List<string>(),
           (lng, word, row, res) => res.AddRange(row.Select(r => doNormalize(r)).Where(r => !string.IsNullOrEmpty(r))),
-          (lng, res) => File.WriteAllLines(string.Format(Machines.basicPath + @"rew\Web4\RwDicts\Sources\Ultralingua.back\design\WordsStems_{0}.txt", lng), res.Distinct().OrderBy(w => w)),
+          (lng, res) => File.WriteAllLines(string.Format(Machines.rootPath + @"RwDicts\Sources\Ultralingua.back\design\WordsStems_{0}.txt", lng), res.Distinct().OrderBy(w => w)),
           imp
         );
     }
@@ -166,7 +166,7 @@ namespace Ultralingua {
       };
       Func<XElement, XElement> getBody = el => { var res = el.Element("div"); return res != null && res.DescendantsAttr("class", "headword").Any() ? res : null; };
 
-      var entries = Directory.EnumerateFiles(Machines.basicPath + @"rew\Web4\RwDicts\Sources\Ultralingua.back", string.Format("{1}_{0}_*.xml", dict.From, dict.To)).
+      var entries = Directory.EnumerateFiles(Machines.rootPath + @"RwDicts\Sources\Ultralingua.back", string.Format("{1}_{0}_*.xml", dict.From, dict.To)).
         Select(fn => XElement.Load(fn)).
         SelectMany(root => root.Element("body").Elements().Where(e => e.HasElements)).
         Where(en => !en.Elements().Any(p => p.Name.LocalName == "p")). //Guests get 10 free searches. etc....
@@ -226,7 +226,7 @@ namespace Ultralingua {
       dictRes.notFoundCount = dictRes.notFound.Length;
       dictRes.Entries = availableEntries.Values.ToArray();
       dictRes.entriesCount = dictRes.Entries.Length;
-      XmlUtils.ObjectToFile(string.Format(Machines.basicPath + @"rew\Web4\RwDicts\Sources\Ultralingua.back\dict_{1}_{0}.xml", dict.From, dict.To), dictRes);
+      XmlUtils.ObjectToFile(string.Format(Machines.rootPath + @"RwDicts\Sources\Ultralingua.back\dict_{1}_{0}.xml", dict.From, dict.To), dictRes);
       return dictRes;
     }
 
@@ -238,7 +238,7 @@ namespace Ultralingua {
     public static void WordForms_() {
       var res = new HashSet<char>();
       foreach (var from in Dict.allLangs) {
-        var wordList = File.ReadAllLines(string.Format(Machines.basicPath + @"rew\Web4\RwDicts\Sources\Ultralingua.back\design\WordsStems_{0}.txt", from));
+        var wordList = File.ReadAllLines(string.Format(Machines.rootPath + @"RwDicts\Sources\Ultralingua.back\design\WordsStems_{0}.txt", from));
         foreach (var ch in wordList.SelectMany(c => c)) res.Add(ch);
         foreach (var fn in Directory.EnumerateFiles(@"d:\LMCom\rew\Web4\RwDicts\Sources\Ultralingua.back", string.Format("dict_*_{0}.xml", from), SearchOption.TopDirectoryOnly)) {
           Complexes dict = XmlUtils.FileToObject<Complexes>(fn);

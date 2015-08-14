@@ -1,0 +1,18 @@
+﻿<script type="text/template" id="dlg-edit-inline">
+  <div id="dlg-edit-inline" tabindex="-1" class="modal modal-dialog lm-modal">
+    <div class="modal-content container-fluid">
+      <div class="row">
+        <div class="col-xs-6">
+          <div data-bind="template: { name: propEditor().scriptId, data: propEditor }"></div>
+        </div>
+        <div class="col-xs-6">
+          <div data-bind="template: { name: valueEditor() ? valueEditor().scriptId : '', data: valueEditor() }"></div>
+        </div>
+      </div>
+      <hr />
+      <div class="button-footer">
+        <a href="#">Del element (Del)</a>
+      </div>
+    </div>
+  </div>
+</script>

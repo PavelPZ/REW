@@ -1,0 +1,22 @@
+﻿<product title="Most simple course" line="English" type="product" url="prod/lm/most_simple">
+  <items>
+    <multiTask title="Most simple course" type="taskCourse" url="prod/lm/most_simple">
+      <items>
+        <ptr>
+          <urls>
+            <string>data/lm/oldea/data/english2/l01/b</string>
+          </urls>
+        </ptr>
+        <lesson title="Less 1" type="lesson" url="prod/lm/most_simple/less">
+          <lesson title="Less 1.1" type="lesson" url="prod/lm/most_simple/less/less">
+            <ptr>
+              <urls>
+                <string>data/lm/oldea/data/english2/l01/c</string>
+              </urls>
+            </ptr>
+          </lesson>
+        </lesson>
+      </items>
+    </multiTask>
+  </items>
+</product>

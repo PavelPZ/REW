@@ -1,0 +1,4 @@
+.rtl-able .rtl .btn-group > .btn,
+.rtl-able .rtl .btn-group-vertical > .btn {
+  float: right;
+}

@@ -1,0 +1,28 @@
+﻿<div class="alert advertise">
+  <div class="container">
+    <i class="flag-mid {{'flag-mid-' + node.url}}"></i><span class="h1">&nbsp;&nbsp;{{node.title}}</span>
+  </div>
+</div>
+<div class="container">
+  <div class="row lm-tupple" ng-repeat="tupple in tupples">
+    <div class="col-sm-6">
+      <a ui-sref="demosound.lang.level.list({lang: $parent.node.url, level:tupple.left.url})">
+        <div class="alert alert-warning">
+          Úroveň dle SERR: <span class="badge">{{tupple.left.title}}</span>
+          <i class="fa fa-arrow-right"></i>
+        </div>
+      </a>
+    </div>
+    <div class="col-sm-6">
+      <a ui-sref="demosound.lang.level.list({lang: $parent.node.url, level:tupple.right.url})" ng-if="tupple.hasRight">
+        <div class="alert alert-warning">
+          Úroveň dle SERR: <span class="badge">{{tupple.right.title}}</span>
+          <i class="fa fa-arrow-right"></i>
+        </div>
+      </a>
+    </div>
+  </div>
+  <!--<div ng-repeat="level in node.data">
+    <a ui-sref="demosound.lang.level.list({lang: $parent.node.url, level:level.url})">{{level.title}}</a><br />
+  </div>-->
+</div>

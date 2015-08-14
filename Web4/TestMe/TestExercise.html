@@ -1,0 +1,85 @@
+!testEx
+###
+<div data-bind="with: Pager.ActPage" class="app-school testme">
+
+  <div class="navbar navbar-{{:~CourseMeta.navBar()}}">
+    <div class="container">
+      <a href="#" class="navbar-brand lm-logo-black lm-logo-black-small"></a>
+      <div class="btn btn-large btn-success lm-green-btn pull-left" data-bind="test:'green', click: doGreenClick, css:{disabled:testDisabled}">
+        <span>{{:greenTitle}}</span>
+        <span class="fa fa-{{:greenIcon}} play"></span>
+      </div>
+      <button class="btn btn-large btn-default pull-left btn-skip" data-bind="test:'skip', click: doSkipClick, visible:!isHome && !isPretest && !actModule.done">
+        <span class="hidden-small">{{:~CSLocalize('98cb0f8f7f5748699695ed1044cc7774', 'Skip')}}</span>
+        <span class="fa fa-forward"></span>
+      </button>
+      <button class="btn btn-large btn-default pull-left btn-skip" data-bind="test:'finish', click: doFinishClick, visible:!isHome && !isPretest && !actModule.done">
+        <span class="hidden-small">{{:~CSLocalize('687d6f9678a94a90a286823673265b60', 'Finish')}}</span>
+        <span class="fa fa-fast-forward"></span>
+      </button>
+      {{if !isHome && !isPretest}}
+      <button data-bind="test:'eval', css: tb.exerciseEvaluated() ? 'hide' : 'visible-small'" class=" btn btn-default navbar-btn pull-left" data-toggle="collapse" data-target="#collapse-instr"><i class="fa fa-info-circle "></i></button>
+      {{/if}}
+    </div>
+  </div>
+
+  {{if !~Cookie()}}{{for #data tmpl=~T('TLoginFirst')/}}{{else}}
+  <div class="container" data-bind="css:{'not-low-time':notLowTime}">
+    <div class="skills">{{for skills tmpl=~T('TestSkillItem')/}}</div>
+    {{if !isHome && !isPretest}}
+    {{for #data tmpl=~T('TInstructionsSmall')/}}
+    <div class="ex-items">
+      {{for actModule.Items tmpl=~T('TestExItem')/}}
+    </div>
+    {{for #data tmpl=~T('TestProgress')/}}
+    {{for #data tmpl=~T('TInstructions')/}}
+    {{/if}}
+
+  </div>
+  <div class="container content-place">
+    {{if isHome}}
+    {{for #data tmpl=~T('testHome')/}}
+    {{else}}
+    <div id="exercise" class="new-ea">
+      {{:~CourseMeta.gui.exerciseHtml()}}
+    </div>
+    <hr />
+    <div class="btn btn-success" data-bind="test:'green', click: doGreenClick">
+      <span>{{:greenTitle}}</span>
+      <span class="fa fa-{{:greenIcon}} play"></span>
+    </div>
+    {{/if}}
+  </div>
+  {{/if}}
+</div>
+
+###
+TestSkillItem
+###
+{{if #index!=0}}
+<span class="fa fa-long-arrow-right fa-lg "></span>
+{{/if}}
+<div class="skill-item {{>active}}"><span>{{:title}}</span></div>
+
+###
+TestSkillSmall
+###
+{{if skillSmallStatus!=0}}
+<span class="fa fa-long-arrow-right fa-lg "></span>
+{{/if}}
+<span class="skill-item active"><span>{{:testMe.notify.skillText}}</span></span>
+{{if skillSmallStatus!=2}}
+<span class="fa fa-long-arrow-right fa-lg "></span>
+{{/if}}
+
+###
+TestExItem
+###<span class="btn btn-default ex-item" data-bind="css: {done:actModule.Items[{{:#index}}].done, 'is-active': actIdx=={{:#index}}}, click:function() { doExClick({{:#index}});}">{{:#index+1}}</span>###
+
+TestProgress
+###
+<div class="progress">
+  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" data-bind="style: {width:testMe.notify.progressBar() + '%'}">
+  </div>
+  <div class="text" data-bind="text:testMe.notify.progressText"></div>
+</div>

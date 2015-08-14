@@ -1,0 +1,26 @@
+﻿TInput
+###
+  <div class="control-group" data-bind="css: { 'has-error': {{:name}}.hasError}">
+    <label class="control-label" for="inputEmail">{{:title}}</label>
+    <div class="controls">
+      <input class="form-control" type="{{:textType}}" placeholder="{{:title}}" id="input{{:title}}" data-bind="test:'{{:name}}', value: {{:name}}, valueUpdate: 'afterkeydown', hasfocus: {{:name}}.hasfocus" />
+      <span class="help-block" data-bind="visibility: {{:name}}.message, text: {{:name}}.message"></span>
+    </div>
+  </div>
+
+###
+TInputBtn
+###
+  <div class="control-group" data-bind="css: { 'has-error': {{:name}}.hasError}">
+    <label class="control-label" for="inputEmail">{{:title}}</label>
+    <div class="controls">
+      <div class="form-control input-group">
+        <input class="form-control" type="{{:textType}}" placeholder="{{:title}}" id="input{{:title}}" data-bind="test:'{{:name}}', value: {{:name}}, valueUpdate: 'afterkeydown', hasfocus: {{:name}}.hasfocus" />
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button" data-bind="test:'btn-{{:name}}', click: {{:name}}.validOk">{{:btnTitle}}</button>
+        </span>
+      </div>
+      <span class="help-block" data-bind="visibility: {{:name}}.message, text: {{:name}}.message"></span>
+    </div>
+  </div>
+

@@ -1,0 +1,58 @@
+﻿TSchoolCpv
+###
+<!-- ko with: cpv -->
+<div id="{{:cpv.id}}" data-role="collapsed" class="cpv lm-collapse">
+  <div class="panel panel-default">
+    <div class="lm-close btn btn-default icon-remove-sign" data-bind="click: hide"></div>
+    <div class="panel-heading" data-bind="text: title"></div>
+    {{for #data tmpl=~T('TSchoolCpvBody')/}}
+  </div>
+</div>
+<div id="sldiv{{:cpv.id}}" class="slcpv" data-bind="css: { 'show': !needInstall() && !alowMicrophone() && slvisible() }"></div>
+<!-- /ko -->
+###
+
+TSchoolCpvDict
+###
+<!-- ko with: cpv -->
+<div id="{{:cpv.id}}" data-role="collapsed" class="cpv lm-collapse cpv-dict">
+  <div class="lm-close btn btn-default icon-remove-sign" data-bind="click: hide"></div>
+  {{for #data tmpl=~T('TSchoolCpvBody')/}}
+</div>
+<div id="sldiv{{:cpv.id}}" class="slcpv" data-bind="css: { 'show': !needInstall() && !alowMicrophone() && slvisible() }"></div>
+<!-- /ko -->
+###
+
+TSchoolCpvBody
+###
+<a href="{{:cpv.installSlUrl()}}" data-bind="css: { show: needInstall(), hide: !needInstall() }">Install Silverlight</a>
+<div class="cpv-content" data-bind="visible: !needInstall() && alowMicrophone()">
+  <!-- ko with: play -->
+  <div class="cpv-item cpv-play" data-bind="css: { 'cpv-active': active() }">
+    <div class="btn btn-large btn-default" data-bind="css: { disabled: disabled() }, click: click">
+      <div class="icon-spinner icon-spin" data-bind="css: { invisible: !playing() }"></div>
+      <span data-bind="css: iconClass()" class="icon-2x"></span>
+    </div>
+    <div class="cpv-text" data-bind="text: text()"></div>
+  </div>
+  <!-- /ko -->
+  <!-- ko with: record -->
+  <div class="cpv-item cpv-record" data-bind="css: { 'cpv-active': active() }">
+    <div class="btn btn-large btn-default" data-bind="css: { disabled: disabled() }, click: click">
+      <div class="icon-spinner icon-spin" data-bind="css: { invisible: !playing() }"></div>
+      <span data-bind="css: iconClass()" class="icon-2x"></span>
+    </div>
+    <div class="cpv-text" data-bind="text: text()"></div>
+  </div>
+  <!-- /ko -->
+  <!-- ko with: replay -->
+  <div class="cpv-item cpv-replay" data-bind="css: { 'cpv-active': active() }">
+    <div class="btn btn-large btn-default" data-bind="css: { disabled: disabled() }, click: click">
+      <div class="icon-spinner icon-spin" data-bind="css: { invisible: !playing() }"></div>
+      <span data-bind="css: iconClass()" class="icon-2x"></span>
+    </div>
+    <div class="cpv-text" data-bind="text: text()"></div>
+  </div>
+  <!-- /ko -->
+</div>
+###

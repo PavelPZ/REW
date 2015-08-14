@@ -25,9 +25,12 @@ namespace LMComLib {
       if (font == null)
         lock (typeof(PdfGenerator))
           if (font == null) {
-            font = BaseFont.CreateFont(string.Format(ConfigurationManager.AppSettings["PDF.Font"], Machines.basicPath), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            fontBold = BaseFont.CreateFont(string.Format(ConfigurationManager.AppSettings["PDF.FontBold"], Machines.basicPath), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            Cert(string.Format(ConfigurationManager.AppSettings["PDF.Cert"], Machines.basicPath), string.Format(ConfigurationManager.AppSettings["PDF.Cert.Password"], Machines.basicPath), out akp, out chain);
+            var path = string.Format(ConfigurationManager.AppSettings["PDF.Font"], Machines.rootPath);
+            font = BaseFont.CreateFont(path, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            path = string.Format(ConfigurationManager.AppSettings["PDF.FontBold"], Machines.rootPath);
+            fontBold = BaseFont.CreateFont(path, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            path = string.Format(ConfigurationManager.AppSettings["PDF.Cert"], Machines.rootPath);
+            Cert(path, ConfigurationManager.AppSettings["PDF.Cert.Password"], out akp, out chain);
           }
       PdfReader rdr = new PdfReader(new RandomAccessFileOrArray(template), null);
       MemoryStream res = new MemoryStream();
@@ -88,3 +91,4 @@ namespace LMComLib {
 
   }
 }
+

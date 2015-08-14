@@ -1,0 +1,110 @@
+﻿TBowser
+###
+<div id="bowser">
+  <ol>
+    <li>
+      <input type="button" id="loggerStart" value="Start log" onclick="Logger.startLog(event);" />
+      or
+      <input type="button" id="continueLearning" value="Continue learning" onclick="Logger.refreshPage(event);" />
+    </li>
+    <li>
+      <input type="button" id="loggerSend" value="Send log" onclick="Logger.sendLog(event);" />
+      or
+      <input type="button" id="loggerRead" value="Read log" onclick="Logger.readLog(event);" />
+      or
+      <input type="button" id="refreshPage" value="Continue logging" onclick="Logger.refreshPage(event);" />
+      or
+      <input type="button" id="loggerCancel" value="Cancel log" onclick="Logger.cancelLog(event);" />
+    </li>
+  </ol>
+</div>
+<div id="copyright">Code: 3DEA99769C464982B1D619617A4D6F67</div>
+###
+lmAlertTemplate
+###
+<div id="modal-alert" class="modal fade" role="dialog" data-bind="click: $.noop, clickBubble:false" data-backdrop="static" data-show="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header" data-bind="visible: !!caption()">
+        <span data-bind="html:caption"></span>
+      </div>
+      <div class="modal-body">
+        <span data-bind="html:text"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bind="click: click">OK</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="visible: isCancelVisible">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+###
+lm-alert-template
+###
+<div id="modal-alert" class="modal fade" role="dialog" data-bind="click: $.noop, clickBubble:false" data-backdrop="static" data-show="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header" data-bind="visible: !!caption()">
+        <span data-bind="html:caption"></span>
+      </div>
+      <div class="modal-body">
+        <span data-bind="html:text"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bind="click: click">OK</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="visible: isCancelVisible">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+###
+lmconsole-dialog
+###
+<div id="modal-lmconsole-dialog" class="modal fade" role="dialog" data-backdrop="static" data-show="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>Fill in the form to describe your problem and then click Send button in the bottom right corner.</h4>
+        <p>Please provide us with as many details as possible</p>
+      </div>
+      <div class="modal-body form">
+        <div class="form-group">
+          <label for="repl-email">Contact email:<br /><small class="weight-strong">Please fill in if you are not logged in or if your contact email differs from your login email</small></label>
+          <input id="repl-email" type="text" class="form-control" placeholder="email">
+        </div>
+        <div class="form-group">
+          <label for="problem">What problem occurred?<br /><small class="weight-strong">What happened? Has any error message appeared? Has the application frozen? …</small></label>
+          <textarea id="problem" class="form-control" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="action">What step/action evoked the problem?<br /><small class="weight-strong">What did you exactly do (where you clicked etc) just before the problem occurred?</small></label>
+          <textarea id="action" class="form-control" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="other">Other comments:<br /><small class="weight-strong">Anything that could be related to the problem.</small></label>
+          <textarea id="other" class="form-control" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bind="click: lmconsoleClick">Send</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+###
+doc-dialog
+###
+<div id="modal-doc-dialog" class="modal fade" role="dialog" data-backdrop="static" data-show="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <textarea rows="20" style="width:100%" id="modal-doc-text"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

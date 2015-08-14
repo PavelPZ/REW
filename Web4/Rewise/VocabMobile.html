@@ -1,0 +1,33 @@
+﻿!Vocab
+###
+  <div data-bind="with:ActPage(), delegatedHandler: ['click']">
+    {{jqm_collapsible_set}}
+      {{for Books}}
+        {{if Multi}}
+          {{for #data tmpl=~tmpl("Vocab_Multi") /}}
+        {{else}}
+          {{for #data tmpl=~tmpl("Vocab_Single") /}}
+        {{/if}}
+      {{/for}}
+    {{/jqm_collapsible_set}}
+  </div>
+
+###
+Vocab_Single
+###
+  {{jqm_collapsible Url=("book," + Data.bkId) Collapsed="true" Title=Data.Book.Title}}
+  {{/jqm_collapsible}}
+
+###
+Vocab_Multi
+###
+  {{jqm_collapsible Collapsed="true" Title=Data.Title Collapsed=Collapsed DataId=DataId}}
+    {{jqm_listview}}
+      {{for Books}}
+        {{jqm_list_item Url=("book," + Data.bkId)}}
+          {{:Data.Book.Title}}
+        {{/jqm_list_item}}
+      {{/for}}
+    {{/jqm_listview}}
+  {{/jqm_collapsible}}
+

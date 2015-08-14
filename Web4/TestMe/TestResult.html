@@ -1,0 +1,259 @@
+﻿!testResults
+###
+<div data-bind="with: Pager.ActPage" class="app-school testme">
+  <div class="navbar navbar-{{:~CourseMeta.navBar()}}">
+    <div class="container">
+      <a href="#" class="navbar-brand lm-logo-black"></a>
+      <button class="visible-small btn btn-default navbar-btn pull-left" data-bind="test:'ph-bread', " data-toggle="collapse" data-target="#collapse-breadcrumb"><i class="fa fa-ellipsis-h "></i></button>
+      <h3 class="navbar-text hidden-xs title">{{:barTitle}}</h3>
+    </div>
+  </div>
+  <div class="container">
+    {{for #data tmpl=~T('TBreadcrumb')/}}
+    <div class="container visible-small">
+      {{for #data tmpl=~T('TSmallBreadcrumb')/}}
+    </div>
+    <br />
+    {{for ~makeTuples(tests) }}
+    <div class="row">
+      <div class="col-md-6">
+        {{for left tmpl=~T('TTestCard')/}}
+      </div>
+      {{if right}}
+      <div class="col-md-6">
+        {{for right tmpl=~T('TTestCard')/}}
+      </div>
+      {{/if}}
+    </div>
+    {{/for}}
+  </div>
+</div>
+
+###
+TTestCard
+###
+<div class="btn btn-default btn-block card" data-bind="click: function() { gotoTest({{:idx}}); }">
+  {{if waitForHuman()}}
+  <p class="text-warning">{{:~CSLocalize('adc2a0e182f24c24ae2cd5076e89764a', '...waiting for evaluation')}}</p>
+  {{else}}
+  <div class="test-progress cprogress">
+    <div class="cprogress-bar" style="width: {{:score}}%;">
+      <div class="cprogress-text">
+        {{:subTitleShort()}}, {{:score}}%
+      </div>
+    </div>
+  </div>
+  {{/if}}
+  <div class="info"><b>{{:~CSLocalize('5b14d9f8cacb489f94f50305aad3ec76', 'Date')}}:</b> {{:dateTxt()}}, <b>{{:~CSLocalize('3a7ca744774f433185d2a19ffac18426', 'Elapsed')}}:</b> {{:elapsedTxt()}}</div>
+  <div class="info"><b>{{:~CSLocalize('c48686aa38404cffa86c79fabd78f49f', 'Interruptions')}}:</b> {{:interruptsTxt()}}, <b>IPs:</b> {{:ipsTxt()}}</div>
+</div>
+
+###
+!testResult
+###
+<div data-bind="with: Pager.ActPage" class="app-school testme">
+  <div class="navbar navbar-{{:~CourseMeta.navBar()}}">
+    <div class="container">
+      <a href="#" class="btn btn-large btn-info lm-green-btn pull-left">
+        <span class="fa-lg fa fa-arrow-circle-o-left fa-2x"></span>&nbsp;&nbsp;<span>{{:~CSLocalize('32a11f1214ed4d42935957ace60c1b1e', 'Back to home')}}</span>
+      </a>
+      <!--<a href="#" class="navbar-brand lm-logo-black"></a>-->
+      <button class="visible-small btn btn-default navbar-btn pull-left" data-bind="test:'ph-bread', " data-toggle="collapse" data-target="#collapse-breadcrumb"><i class="fa fa-ellipsis-h "></i></button>
+      <h3 class="navbar-text hidden-xs title">{{:data.subTitleLong()}}</h3>
+    </div>
+  </div>
+  <div class="container">
+    <form>
+      {{for #data tmpl=~T('TBreadcrumb')/}}
+      <div class="container visible-small">
+        {{for #data tmpl=~T('TSmallBreadcrumb')/}}
+      </div>
+      {{!--if ~cfg.designId=='skrivanek'}}
+      <div class="ffr-content-title">
+        <h2 class="content-inner">Připomínky a návrhy na vylepšení</h2>
+        <div class="alert alert-info">
+          Prosím, napište krátké zhodnocení kvality testu. Uveďte,
+          zda se při vyplňování testu vyskytly nejasnosti nebo problémy a kterých částí testů nebo otázek se týkaly.<br />
+          Děkujeme Vám.
+        </div>
+        <textarea id="suggestion" name="suggestion" class="form-control" rows="10"></textarea>
+        <br />
+        <div class="btn btn-info btn-lg" data-bind="click:uploadSuggestions">Poslat připomínky</div>
+        <br />
+        <hr />
+      </div>
+      {{/if--}}
+      <div class="ffr-content-title">
+        <h2 class="content-inner">{{:~CSLocalize('84008549bc8f40d095a425441069b5c5', 'Test Report')}}</h2>
+      </div>
+      <div class="ffr-right-title">
+        <div class="h2 btn btn-success" data-bind="click:downloadCert, css: {disabled: data.waitForHuman()}"><b class="fa fa-file-pdf-o"></b>&nbsp;&nbsp;{{:~CSLocalize('f2fa15b86360402cb0279c5909866d45', 'Dowload test certificate')}}</div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="panel panel-primary">
+        <table class="table">
+          <tr class="info">
+            <td>
+              <h4>{{:~CSLocalize('0293cab382904145b6a4ae244d370618', 'Summary')}}</h4>
+            </td>
+            <td colspan="3">
+              {{if data.waitForHuman()}}
+              <div class="alert alert-warning">{{:~CSLocalize('caeebb7a1b774d21a6064bb2a1d40688', '...waiting for evaluation')}}</div>
+              {{else}}
+              <div class="test-progress cprogress">
+                <div class="cprogress-bar" style="width: {{:data.score}}%;">
+                  <div class="cprogress-text">
+                    {{:~CSLocalize('10debe0d1ca64c2fadd0ad6e8512874b', 'Score')}} {{:data.score}}%
+                  </div>
+                </div>
+              </div>
+              {{/if}}
+            </td>
+          </tr>
+          <tr>
+            <td>{{:~CSLocalize('0b0c1fb7c1694303aa7988cefac3b9f9', 'Date of Examination')}}:</td>
+            <td>{{:data.dateTxt()}}</td>
+            <td>{{:~CSLocalize('270ea9abeb364273b588aaf44c0d5c90', 'Elapsed time')}}:</td>
+            <td>{{:data.elapsedTxt()}}</td>
+          </tr>
+          <tr>
+            <td>{{:~CSLocalize('f6dae62016da4c2594d3d2768178fccd', 'Test ID')}}:</td>
+            <td>{{:data.domain}}|{{:data.id}}</td>
+            <td>{{:~CSLocalize('0379cf779a514e9fb0dd36fdbffcc917', 'Company')}}:</td>
+            <td>{{:data.company}}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="panel panel-primary skill-table">
+        <div class="panel-heading">
+          <h4>{{:~CSLocalize('466d5efcaa0f4943bad0914cbeb70a57', 'Skills')}}</h4>
+        </div>
+        <table class="table">
+          {{for data.skills}}
+          <tr class="info">
+            <td>
+              <h4>{{:skillText()}}</h4>
+            </td>
+            <td colspan="3">
+              {{if waitForHuman()}}
+              <div class="alert alert-warning">{{:~CSLocalize('522e862cf75c48bf8d85265db4f2c2b0', '...waiting for evaluation')}}</div>
+              {{else}}
+              <div class="test-progress cprogress">
+                <div class="cprogress-bar" style="width: {{:score()}}%;">
+                  <div class="cprogress-text">
+                    <b>{{:~CSLocalize('608ca1ff2a904e60be1f6d90bfc270b0', 'Score')}} {{:score()}}%</b> ({{:~CSLocalize('dc91db17d6f34b019595b6e826845828', 'weight')}}: {{:scoreWeight}}%)
+                  </div>
+                </div>
+              </div>
+              {{/if}}
+            </td>
+          </tr>
+          <tr>
+            <td>{{:~CSLocalize('017b10f8b3434129abbd439fcee34bb7', 'Date of Examination')}}:</td>
+            <td>{{:dateTxt()}}</td>
+            <td>{{:~CSLocalize('8936275039604f4f83f0a45e93aa3382', 'Elapsed time')}}:</td>
+            <td>{{:elapsedTxt()}}</td>
+          </tr>
+          {{/for}}
+        </table>
+      </div>
+      <div class="panel panel-info">
+        <table class="table">
+          {{if !data.hasIntIpData()}}
+          <tr class="info">
+            <td colspan="4"><span class="h4">{{:~CSLocalize('e6df4035ca5a448792f6f5b65638d93a', 'Log')}}</span><br />{{:~CSLocalize('f5664d06c5cc4c73a0f0dfd5b59f1078', 'No interruptions, IP address')}}: {{:data.ip}}</td>
+          </tr>
+          {{else}}
+          <tr class="info">
+            <td colspan="4" class="interrupt">
+              <span class="h5">{{:~CSLocalize('961478d5192f4607b31ec922fc8d06af', 'Interruptions')}}:</span>
+              <span class="label label-danger">{{:data.interruptsTxt()}}</span>,
+              <span class="h5">{{:~CSLocalize('fb3c9580c28041d2a132e8835a85890a', 'IP addresses')}}:</span>
+              <span class="label" data-bind="css: data.adjustIpData().length==1 ? 'label-default' : 'label-danger'">
+                {{for data.adjustIpData()}}{{:#data}}, {{/for}}
+              </span>
+            </td>
+          </tr>
+          <!--<tr class="active">
+            <td colspan="4"><div class="center"><b>Interruption details</b></div></td>
+          </tr>-->
+          <tr class="active">
+            <td>{{:~CSLocalize('081c33944f3341b9a507b0bbb7ffa025', 'Interruption details')}}: Started</td>
+            <td>{{:~CSLocalize('a7a5400c8af942a39b2dc0f8bb5816b8', 'Finished')}}</td>
+            <td>{{:~CSLocalize('ed50c6f5b2ce427a8ffc9f6293016528', 'Elapsed')}}</td>
+            <td>{{:~CSLocalize('27f59d5049ea421b9ad1d9516d2d667e', 'IP address')}}</td>
+          </tr>
+          {{for data.adjustIntIpData()}}
+          <tr>
+            <td>{{:#data[0]}}</td>
+            <td>{{:#data[1]}}</td>
+            <td>{{:#data[2]}}</td>
+            <td>{{:#data[3]}}</td>
+          </tr>
+          {{/for}}
+          {{/if}}
+        </table>
+      </div>
+      <div class="panel panel-default">
+        <table class="table">
+          <tr class="info">
+            <td colspan="4">
+              <h4>{{:~CSLocalize('a53742d3c7f247ebaa8f43bc3d51be7a', 'Interpretation of result')}}</h4>
+            </td>
+          </tr>
+          <tr class="active">
+            <td>
+              {{:~CSLocalize('8b5b6d7dc039442abc7bdd30d3152fd9', 'Score in %')}}
+            </td>
+            <td>
+              {{:~CSLocalize('cdaa444cb068483a8970cbf922ba1e05', 'Accomplishment of the tested level in accordance with the criteria of CEFR')}}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{:~CSLocalize('fdb1911921cb4f5da8b2b82062914f95', '91% and more')}}
+            </td>
+            <td>
+              {{:~CSLocalize('db5865d5276341168b83303e8ad87810', 'passed exceptionally well, could pass a test one level up')}}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              83 - 90%
+            </td>
+            <td>
+              {{:~CSLocalize('96f9946938b44fe0b7e38055667b7cef', 'passed well')}}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              75 - 82%
+            </td>
+            <td>
+              {{:~CSLocalize('d051eaba8fa24481a2853df50033694d', 'passed')}}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              60 - 74%
+            </td>
+            <td>
+              {{:~CSLocalize('075b8834e15f4141b1755d34862f94bc', 'failed, could pass a test one level down')}}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{:~CSLocalize('8b258d47f0014f7790607eea8db99db5', '59% and less')}}
+            </td>
+            <td>
+              {{:~CSLocalize('c9bd2b2f11194aaaad0311742db2bbb7', 'failed')}}
+            </td>
+          </tr>
+        </table>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+

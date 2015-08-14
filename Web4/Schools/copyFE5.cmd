@@ -1,0 +1,1 @@
+robocopy.exe d:\LMCom\rew\Web4\Schools\ \\192.168.0.14\q\rew\alpha\rew\Web4\Schools\ *.* /mir

@@ -1,0 +1,9 @@
+﻿!SelectLang
+###
+  <div data-bind="with:ActPage(), delegatedHandler: ['click']">
+    {{listview}}
+    {{for locs}}
+      {{list_item Url=("select," + lang)}}{{:title}}{{/list_item}}
+    {{/for}}
+    {{/listview}}
+  </div>

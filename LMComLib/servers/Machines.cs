@@ -49,8 +49,8 @@ namespace LMComLib {
     public static string appRoot = HostingEnvironment.MapPath("~/") ?? "";
 
     //k ~/xxx vrati http://...
-    public static string fullHttpUrl (string absolutePath, HttpContext ctx=null) {
-      if (ctx==null) ctx = HttpContext.Current; if (ctx==null) throw new Exception("HttpContext.Current==null");
+    public static string fullHttpUrl(string absolutePath, HttpContext ctx = null) {
+      if (ctx == null) ctx = HttpContext.Current; if (ctx == null) throw new Exception("HttpContext.Current==null");
       return ctx.Request.Url.GetLeftPart(UriPartial.Authority) + VirtualPathUtility.ToAbsolute(absolutePath);
     }
 
@@ -58,7 +58,6 @@ namespace LMComLib {
     public static string basicPath {
       get {
         if (_basicPath != null) return _basicPath;
-        string def = null;
         if (isFE5()) _basicPath = ConfigurationManager.AppSettings["BasicPath.FE5"] ?? ConfigurationManager.AppSettings["BasicPath"];
         else if (isPZComp()) _basicPath = ConfigurationManager.AppSettings["BasicPath.pz"] ?? ConfigurationManager.AppSettings["BasicPath"];
         else _basicPath = ConfigurationManager.AppSettings["BasicPath"];
@@ -66,7 +65,8 @@ namespace LMComLib {
           try {
             var ar = appRoot.ToLower();
             if (ar.IndexOf(@"rew\web4\") >= 0) _basicPath = appRoot.ToLower().Replace(@"rew\web4\", null);
-          } catch { }
+          }
+          catch { }
         }
         if (_basicPath == null) _basicPath = @"d:\lmcom\";
         //var def = (ConfigurationManager.AppSettings["BasicPath"] ?? @"q:\lmcom\");
@@ -76,23 +76,39 @@ namespace LMComLib {
         //throw new Exception(def);
         return _basicPath;
       }
-    } public static string _basicPath;
+    }
+    public static string _basicPath;
     public static string tempDir = ConfigurationManager.AppSettings["TempPath"] ?? @"c:\temp\";
 
     public static string rwDataSourcePath {
       get {
         return _rwDataSourcePath ?? (ConfigurationManager.AppSettings["DataSourcePath" + (isPZComp() ? ".pz" : null)] ?? basicPath);
       }
-    } public static string _rwDataSourcePath;
+    }
+    public static string _rwDataSourcePath;
 
     //public static string rootDir { get { return Machines.basicPath + @"rew\web4\data"; } }
-    public static string rootDir { get { return _rootDir ?? Machines.basicPath + @"rew\web4"; } } public static string _rootDir;
+    public static string rootDir {
+      get {
+        if (_rootDir != null) return _rootDir;
+        if (HttpContext.Current != null) {
+          _rootDir = HttpContext.Current.Server.MapPath("~/");
+          _rootDir = _rootDir.Substring(0, _rootDir.Length - 1);
+        }
+        else
+          _rootDir = Machines.basicPath + @"rew\web4";
+        return _rootDir;
+        //return _rootDir ?? (_rootDir = (HttpContext.Current == null ? Machines.basicPath + @"rew\web4" : HttpContext.Current.Server.MapPath("~/")));
+      }
+    }
+    public static string _rootDir;
     public static string rootPath { get { return rootDir + "\\"; } }
     //public static string publDir { get { return rootPath + "data"; } }
     //public static string publDir { get { return rootDir; } }
     //public static string publPath { get { return publDir + "\\"; } }
-    public static string dataDir { get { return _dataDir ?? rootPath + "data"; } } public static string _dataDir;
-    public static string dataPath { get { return dataDir + "\\"; } } 
+    public static string dataDir { get { return _dataDir ?? rootPath + "data"; } }
+    public static string _dataDir;
+    public static string dataPath { get { return dataDir + "\\"; } }
     public static string oldEaLinePath { get { return rootPath + @"lm\oldea\"; } }
 
     public static string statisticDir {
@@ -101,7 +117,8 @@ namespace LMComLib {
         if (isPZComp()) return ConfigurationManager.AppSettings["LMComData.pz"] ?? (ConfigurationManager.AppSettings["LMComData"] ?? @"q:\lmcom\");
         else return ConfigurationManager.AppSettings["LMComData"] ?? @"q:\disk_q\lmcom\LMCom\App_Data\";
       }
-    } public static string _statisticDir;
+    }
+    public static string _statisticDir;
 
 
     /*public static bool isEaLMComBuild {
@@ -168,7 +185,7 @@ namespace LMComLib {
         webs.SelectMany(w => apps(w)).Select(a => a.Properties["AppRoot"].Value.ToString()).Aggregate((r,i) => r + "###" + i )
       , 1).Raise();
 
-      
+
       DirectoryEntry app = webs.SelectMany(w => apps(w)).
         Where(a => a.Properties["AppRoot"].Value.ToString() == System.Web.Hosting.HostingEnvironment.ApplicationID).First();
       try {
@@ -274,7 +291,8 @@ namespace LMComLib {
 
     public static string TradosConnectionString() {
       return _tradosConnectionString ?? ConfigurationManager.ConnectionStrings["TradosData"].ConnectionString;
-    } public static string _tradosConnectionString;
+    }
+    public static string _tradosConnectionString;
 
     public static string RewiseConnectionString() {
       string connName = data ? "Rewise" : "RewiseTest";
@@ -374,7 +392,7 @@ namespace LMComLib {
     }
     public static bool isPZComp() {
       //return false;
-      bool res = machine == pz_comp || machine == jz_comp || machine == "zvahov";
+      bool res = machine == pz_comp || machine == "pz-w8" || machine == jz_comp || machine == "zvahov";
       return res && ConfigurationManager.AppSettings["ignoreIsPZComp"] != "true";
     }
 

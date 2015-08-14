@@ -1,0 +1,44 @@
+﻿c_gapfill
+###
+<!-- ko with: getItem('{{:id}}') -->
+<div class="oli-edit {{:~classes(#data)}} oli-cancel-stop-sound" data-bind="css:st" id="{{:id}}" {{:srcPosition()}}>
+  <input class="user-input form-control gap-fill-ctrl" type="text" placeholder="{{>hint}}" data-bind="value: user, valueUpdate: 'afterkeydown', clickBubble: false, click: $.noop" />
+  <div class="teacher" data-bind="html: teacher"></div>
+  <div class="user-res" data-bind="html: user"></div>
+</div>
+<!-- /ko -->
+###
+
+c_offering
+###
+<!-- ko with: getItem('{{:id}}') -->
+<div class="{{:~classes(#data)}} {{if passive}}passive{{/if}}" id="{{:id}}" {{:srcPosition()}}>
+  {{for wordItems}}
+  <!-- ko with: wordItems[{{:#index}}] -->
+  <span data-bind="css: st"><i class="fa fa-check"></i>{{:title()}}</span>
+  <!-- /ko -->
+  {{/for}}
+</div>
+<div class="dropdown-menu oli-drag-popup  oli-cancel-stop-sound {{if passive}}passive{{/if}}" data-role="menu" id="menu{{:id}}">
+  {{for wordItems}}
+  <!-- ko with: wordItems[{{:#index}}] -->
+  <button class="btn btn-primary" data-bind="css: st, click: click"><i class="fa fa-check"></i>&nbsp;<span>{{:title()}}</span></button>
+  <!-- /ko -->
+  {{/for}}
+</div>
+<!-- /ko -->
+###
+
+c_dropdown
+###
+<!-- ko with: getItem('{{:id}}') -->
+<div class="oli-edit {{:~classes(#data)}} oli-cancel-stop-sound" data-bind="css: st" id="{{:id}}" {{:srcPosition()}}>
+  <div class="user-input oli-drag-btn" data-bind="click: click" data-toggle="menu" data-target="#menu{{:source.id}}">
+    <div class="pull-right"><i class="fa fa-chevron-down"></i></div><div data-bind="html: userText, click: click"></div>
+  </div>
+  <div class="teacher" data-bind="html: teacher"></div>
+  <div class="user-res" data-bind="html: userText"></div>
+</div>
+<!-- /ko -->
+###
+

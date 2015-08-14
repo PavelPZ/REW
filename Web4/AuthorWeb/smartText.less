@@ -1,0 +1,240 @@
+﻿@import "../bs3/less/variables.less";
+@import "../bs3/less/mixins/background-variant.less";
+@import "../bs3/less/mixins/buttons.less";
+@import "../bs3/less/mixins/opacity.less";
+@import "../bs3/less/mixins/border-radius.less";
+
+.sm-edit-content {
+
+    background-color: @gray-lighter;
+    padding-left: 10px;
+
+  .dlg-button-variant(@background) {
+    background-color: @background;
+    border-color: darken(@background, 15%);
+
+    &:hover,
+    &:focus {
+      background-color: darken(@background, 15%);
+      border-color: darken(@background, 20%);
+    }
+
+    color: @text-color;
+    font-weight: bold;
+  }
+
+  .sm-block {
+    > .sm-block-body {
+      margin-left: 35px;
+    }
+
+    .sm-block-header, .sm-block-footer {
+      .bg-variant(@brand-primary);
+      color: #fff;
+
+      .sm-block-name {
+        font-weight: bold;
+        color: yellow;
+      }
+    }
+
+    .sm-block-header .sm-block-name {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .sm-block-footer {
+      width: 20px;
+    }
+  }
+
+  @bg-darken: 5%;
+  @bg-span: darken(@state-success-bg, @bg-darken);
+  @bg-error: darken(@state-danger-bg, @bg-darken);
+  @bg-inline: darken(@state-warning-bg, @bg-darken);
+  @bg-style: lighten(@state-info-bg,5%);
+  @bg-block: darken(@state-info-bg, @bg-darken);
+  @bg-prop-name: darken(@state-warning-bg,25%);
+  @bg-prop-value: darken(@state-info-bg, 5%);
+
+  .sm-text {
+    position: relative;
+    background-color: white;
+    overflow: hidden;
+
+    textarea, .sm-view {
+      padding: 0;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+      box-sizing: border-box;
+      border: 0px;
+      border-radius: 0px;
+      overflow: hidden;
+      margin: 0px;
+      resize: none;
+    }
+
+    textarea, pre, pre > span {
+      word-wrap: break-word;
+      word-break: break-all;
+      white-space: pre-wrap;
+      text-decoration: none;
+      font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+      font-variant: normal;
+      font-size: 14px;
+      font-style: normal;
+      line-height: 1.4em;
+      letter-spacing: normal;
+      text-transform: none;
+      text-align: left;
+      direction: ltr;
+      font-size-adjust: none;
+      word-spacing: 0;
+    }
+
+    > .sm-view {
+      display: block;
+      color: transparent;
+      background: transparent;
+
+      .span {
+        background-color: @bg-span;
+      }
+
+      .error {
+        background-color: @bg-error;
+      }
+
+      .inline {
+        background-color: @bg-inline;
+      }
+
+      .style {
+        background-color: @bg-style;
+      }
+
+      .block {
+        background-color: @bg-block;
+      }
+
+      .prop-name {
+        background-color: @bg-prop-name;
+      }
+
+      .prop-value {
+        background-color: @bg-prop-value;
+      }
+    }
+
+    > textarea {
+      background: transparent;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      resize: none;
+      width: 100%;
+
+      &:focus, &:hover {
+        border: none;
+        border-color: transparent;
+        outline: none;
+      }
+    }
+  }
+
+  .in.modal-backdrop {
+    background-color: @body-bg;
+    .opacity(0);
+  }
+
+  .modal-dialog {
+    margin: 0;
+    position: absolute;
+    right: auto;
+    bottom: auto;
+    top: auto;
+    left: auto;
+
+    .modal-header, .modal-footer {
+      padding: 5px;
+      padding-left: 10px;
+      background-color: @panel-default-heading-bg;
+    }
+
+    .sm-btn-span {
+      .dlg-button-variant(@bg-span);
+    }
+
+    .sm-btn-inline {
+      .dlg-button-variant(@bg-inline);
+    }
+
+    .sm-btn-style {
+      .dlg-button-variant(@bg-style);
+    }
+
+    .sm-btn-block {
+      font-weight: bold;
+      //.dlg-button-variant(@bg-block);
+    }
+  }
+
+  .lm-modal {
+    width: 500px;
+
+    .modal-content {
+      background-color: @panel-default-heading-bg;
+      padding: 5px;
+    }
+
+    .dlg-title {
+      font-weight: bold;
+      color: @brand-danger;
+      margin: 5px;
+    }
+
+    .descr {
+      margin: 5px;
+      font-size: @font-size-small;
+      color: @gray-light;
+    }
+
+    .button-footer {
+      text-align: right;
+    }
+
+    .modal-content {
+      border-radius: 0;
+    }
+
+    hr {
+      margin: 5px 0;
+      border-color: @brand-info;
+    }
+    //grid padding
+    [class*="col-"] {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .row {
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .container-fluid {
+      margin: 0;
+      padding: 0;
+    }
+    //select focus
+    select {
+      background-color: @gray-lighter;
+    }
+
+    select:focus {
+      background-color: white;
+    }
+  }
+}

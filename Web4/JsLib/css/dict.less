@@ -1,0 +1,253 @@
+﻿@import "LMMixins.less";
+
+.lm-dict {
+  position: absolute;
+  z-index: 999;
+  width: 500px;
+
+  .close {
+    color:@gray-lighter; 
+    .opacity(.8);
+    &:focus, &:hover {
+      color:@gray-lighter;
+      .opacity(1);
+    }
+  }
+
+
+  /*.x-sound-repro {
+    //background: transparent url( '../EA/img/sdMark.gif') 5px center no-repeat; 
+    padding-left: 20px;
+    line-height: 20px;
+    cursor: pointer;
+
+    &:hover {
+      background-image: url( '../EA/img/sdMarkOn.gif');
+    }
+  }
+
+  .x-sound-listen-talk {
+    background: transparent url( '../EA/img/microphone.png' ) left center no-repeat;
+    padding-left: 20px;
+    line-height: 20px;
+    cursor: pointer;
+
+    &:hover {
+      background-image: url( '../EA/img/microphoneon.png');
+    }
+  }*/
+  .sound-listen-talk-new, .sound-repro-new {
+    font-size: 24px;
+    padding-left: 10px;
+    line-height: 20px;
+    cursor: pointer;
+  }
+
+  /*dict*/
+  .head, .sense, .grps {
+    display: block;
+  }
+
+  .entr {
+    font-weight: bold;
+    font-size: 14pt;
+    color: #A02000;
+    margin-right: 5px;
+  }
+
+  .vari {
+    font-weight: bold;
+    font-size: 13pt;
+    color: #A02000;
+    margin-right: 5px;
+  }
+
+  .form {
+    font-size: 12pt;
+    color: #666666;
+    margin-right: 5px;
+  }
+
+  .morf {
+    font-style: italic;
+    font-size: 12pt;
+    color: #007000;
+    margin-right: 5px;
+  }
+
+  .styl {
+    font-size: 12pt;
+    color: #003070;
+    margin-right: 5px;
+    font-variant: small-caps;
+  }
+
+  .rems, .prag, .hyph, .cntx {
+    font-style: italic;
+    font-size: 12pt;
+    color: #666666;
+    margin-right: 5px;
+  }
+
+  .labl {
+    font-weight: bold;
+    font-size: 13pt;
+    color: #A02000;
+    margin-right: 5px;
+  }
+
+  .phrs {
+    font-weight: bold;
+    font-size: 12pt;
+    color: #A02000;
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+
+  .trans {
+    font-size: 12pt;
+    color: #00000;
+    margin-right: 5px;
+  }
+
+  .desc1 {
+    font-size: 12pt;
+    color: #A02000;
+    margin-right: 5px;
+    display: block;
+  }
+
+  .desc2 {
+    font-size: 12pt;
+    color: #666666;
+    margin-right: 5px;
+    display: block;
+  }
+
+  .samp2 {
+    display: block;
+    margin-left: 10px;
+  }
+
+  .src {
+    font-style: italic;
+    font-size: 12pt;
+    color: #606060;
+    margin-right: 5px;
+  }
+
+  .trg {
+    font-size: 12pt;
+    color: #000000;
+    margin-right: 5px;
+  }
+
+  .link1, .link2 {
+    font-style: italic;
+    font-size: 12pt;
+    color: #A02000;
+    margin-left: 5px;
+  }
+
+  .note1, .note2 {
+    font-size: 12pt;
+    color: #606060;
+    margin-left: 5px;
+  }
+
+  .in_b {
+    font-weight: bold;
+  }
+
+  .in_d {
+    font-weight: normal;
+    color: #004080;
+  }
+
+  .in_e {
+    font-weight: bold;
+    font-size: 17px;
+    color: #CC0000;
+  }
+
+  .in_g, .in_r {
+    font-size: 11pt;
+    color: #003070;
+  }
+
+  .in_h, .in_m {
+    font-style: italic;
+    font-size: 12pt;
+    color: #007000;
+  }
+
+  .in_n {
+    font-style: italic;
+  }
+
+  .in_i {
+    font-style: italic;
+  }
+
+  .in_o {
+    font-style: italic;
+    color: #004080;
+  }
+
+  .in_p {
+    font-weight: normal;
+    font-size: 12pt;
+    color: #909090;
+  }
+
+  .in_q {
+  }
+
+  .in_v {
+    font-size: 11pt;
+    color: #606060;
+    margin-left: 5px;
+  }
+
+  .in_x {
+    color: red;
+  }
+
+  .in_w {
+    color: blue;
+    font-style: italic;
+    font-weight: normal;
+  }
+
+  .in_y {
+    font-weight: normal;
+    color: #004080;
+  }
+
+  .in_mm {
+    font-style: italic;
+    color: #008000;
+  }
+
+  .in_ff, .in_ll {
+    font-size: 13px;
+    color: #bcbcbc;
+  }
+
+  .in_cc, .in_oo {
+    font-size: 13px;
+  }
+
+  .in_pp {
+    font-size: 14px;
+    color: #BF6000;
+  }
+
+  .in_ee {
+    vertical-align: super;
+  }
+
+  .in_ii {
+    vertical-align: sub;
+  }
+}

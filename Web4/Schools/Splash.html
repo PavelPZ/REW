@@ -1,0 +1,52 @@
+﻿splashRoot
+###
+{{for ~ActPage()}}
+<div data-bind="with: Pager.ActPage" class="rtl">
+  <div class="navbar navbar-{{:~CourseMeta.navBar()}}">
+    <div class="container">
+      <a href="#" class="navbar-brand lm-logo-black"></a>
+    </div>
+  </div>
+  <div class="container">
+    {{for #data tmpl=~T(bodyTmpl)/}}
+  </div>
+</div>
+{{/for}}
+###
+licenceError
+###
+{{!-- POUZIVA se pro zobrazeni chyby v JSCrambler ochrane, viz boot.ts,  export function Error(): void { Pager.loadPage(new splash.licenceError());  } --}}
+<div class="container text-center splash-licence-error">
+  <div class="panel panel-danger text-left">
+    <div class="panel-heading">
+      <h2 class="panel-title">Licence error: <b>{{:text}}</b></h2>
+    </div>
+    <div class="panel-body">
+      {{if isUserMonthExpired}}
+      <h4>Licence usage:</h4>
+      <blockquote>
+        {{for data.Months}}
+        <b>{{:~intToDate(Date)}}</b>:
+        <blockquote>
+          {{for Users}}<i class="fa fa-user"></i>&nbsp;{{:~licenceRespUser(#data)}}{{/for}}
+        </blockquote>
+        {{/for}}
+      </blockquote>
+      <h4>Licence buy:</h4>
+      <blockquote>
+        {{for data.Buys}}
+        {{:~licenceRespBuy(#data)}}<br />
+        {{/for}}
+      </blockquote>
+      {{/if}}
+    </div>
+    <div class="panel-footer">
+      <p>
+        Please, contact your administrator or email to <a href="support@langmaster.com">support@langmaster.com</a>.
+      </p>
+      <p>
+        In case of corepondence submit your ID: <b>{{:data.Id}}</b>
+      </p>
+    </div>
+  </div>
+</div>

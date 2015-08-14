@@ -1,0 +1,126 @@
+﻿<root>
+
+  <div id="content" class="ea">
+    <script type="text/javascript">
+      var urlBasicPath = 'http://' + window.location.hostname + '/eduauthornew' + '/';
+      var urlAuthority = 'http://' + window.location.hostname;
+      var flashPlayerUrl = null;
+
+    </script>
+    <script type="text/xml" id="pageInfo">
+
+      <body  instr-title="{{Ahtmltitle}}" old-ea-is-passive="true" is-old-ea="true" instrs-str="sound_playback" />
+    </script>
+
+
+
+    <div id="alwaysVisiblePanel" style="width: 100%; background-color: White; position: relative; z-index: 10000;">
+    </div>
+    <div class="lesson-content" id="lessonContentPanel">
+      <div id="allwaysVisibleContent">
+
+      </div>
+      <div class="layHolder layTypeCell layFlowCenter">
+        <table class="layItem">
+          <tr>
+            <td class="layCell layValignMiddle layAlignLeft layPaddingTrue">
+              <img  align="" class="" alt="" src="english1/img/coursebook/lesson01/page11/l01_11_ps.bmp" />
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="layHolder layTypeRow layFlowCenter">
+        <table class="layItem" >
+          <tbody>
+            <tr>
+              <td class="layCell layValignMiddle layAlignLeft layPaddingTrue">
+                <table class="dialog">
+                  <colgroup>
+                    <col style="width:0em"/>
+                    <col/>
+                  </colgroup>
+
+                  <_media-replica actor="A" iconId="A">
+                    <_media-sent id="l19" old-hidden-text="false" old-ignore-sound="false">Good morning, Kevin.</_media-sent>
+                  </_media-replica>
+
+                  <_media-replica actor="B" iconId="B">
+                    <_media-sent id="l20" old-hidden-text="false" old-ignore-sound="false">Good morning.</_media-sent>
+                  </_media-replica>
+
+                  <_media-replica actor="A" iconId="A">
+                    <_media-sent id="l21" old-hidden-text="false" old-ignore-sound="false">How are you?</_media-sent>
+                  </_media-replica>
+
+                  <_media-replica actor="B" iconId="B">
+                    <_media-sent id="l22" old-hidden-text="false" old-ignore-sound="false">Fine, thanks.</_media-sent>
+                    <_media-sent id="l23" old-hidden-text="false" old-ignore-sound="false">And you?</_media-sent>
+                  </_media-replica>
+
+                  <_media-replica actor="A" iconId="A">
+                    <_media-sent id="l24" old-hidden-text="false" old-ignore-sound="false">I'm fine.</_media-sent>
+                  </_media-replica>
+
+                </table>
+
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div class="break">
+    </div>
+    <script type="text/javascript">
+      var oldEAInitialization = function (completed) {
+      EA.startAjax();
+      Sys.Application.add_init(function () {
+      $create(S4N.SoundPlayer, { 'id': 'soundPlayer', 'forceVersion': S4N.SoundDriver.HTML5 }, { 'onSentFocus': typeof snd_sentenceFocus == 'undefined' ? null : snd_sentenceFocus, 'onMarkFocus': typeof snd_markFocus == 'undefined' ? null : snd_markFocus }, {}, null)
+      });
+      Sys.Application.add_init(function () {
+      $create(S4N.Config, { 'courseId': S4N.CourseIds.no, 'productId': S4N.CourseIds.no, 'lmsType': S4N.LMSType.LMCom, 'site': 'cz', 'regLimitedFree': false, 'basicPath': 'lm/oldea/data/english1/l01/a/hueex0_l01_a11' }, null, {}, null)
+      });
+      Sys.Application.add_init(function () {
+      $create(S4N.Page, { 'id': 'page', 'spaceId': 'english1', 'globalId': 'l01/a/hueex0_l01_a11.htm', 'title': 'Practising Speaking' }, null, {}, null)
+      });
+      Sys.Application.add_init(function () {
+      $create(S4N.EvalGroup, { 'id': 'root', 'example': 'true' }, null, {}, null)
+      });
+      Sys.Application.add_init(function () {
+      $create(S4N.SoundFile, { 'id': 'sf0', 'url': 'lm/oldea/english1wma/lesson01/hueex0_l01_a09.mp3', 'spaceId': 'English1Wma', 'globalId': 'Lesson01/hueex0_l01_a09.wma' }, null, { 'player': 'soundPlayer' }, null)
+      });
+      Sys.Application.add_init(function () {
+      $create(S4N.SoundGroup, { 'id': 'sg0', 'intervals': ['l25'] }, null, { 'player': 'soundPlayer' }, null)
+      });
+      Sys.Application.add_init(function () {
+      $create(S4N.SoundInterval, { 'id': 'l25', 'beg': 5429, 'end': 20741 }, null, { 'file': 'sf0' }, null)
+      });
+      Sys.Application.add_init(function () {
+      $create(S4N.SoundSent, { 'beg': 5429, 'end': 6407 }, null, { 'interval': 'l25' }, $get('l19'))
+      });
+      Sys.Application.add_init(function () {
+      $create(S4N.SoundSent, { 'beg': 6961, 'end': 8044 }, null, { 'interval': 'l25' }, $get('l20'))
+      });
+      Sys.Application.add_init(function () {
+      $create(S4N.SoundSent, { 'beg': 8795, 'end': 10047 }, null, { 'interval': 'l25' }, $get('l21'))
+      });
+      Sys.Application.add_init(function () {
+      $create(S4N.SoundSent, { 'beg': 11199, 'end': 12543 }, null, { 'interval': 'l25' }, $get('l22'))
+      });
+      Sys.Application.add_init(function () {
+      $create(S4N.SoundSent, { 'beg': 12543, 'end': 13416 }, null, { 'interval': 'l25' }, $get('l23'))
+      });
+      Sys.Application.add_init(function () {
+      $create(S4N.SoundSent, { 'beg': 14222, 'end': 20741 }, null, { 'interval': 'l25' }, $get('l24'))
+      });
+
+      EA.endAjax(completed);
+      }
+    </script>
+
+  </div>
+
+
+</root>

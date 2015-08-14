@@ -1,0 +1,25 @@
+.rtl-able .rtl {
+  direction: rtl;
+  font-family: @rtl-font-family-base;
+
+  .pull-right {
+    float: left !important;  
+  }
+
+  .pull-left {
+    float: right !important;
+  }
+  // Blockquotes
+  blockquote {
+    border-right: 5px solid @blockquote-border-color;
+    border-left: 0;
+    // Float left with text-align: left
+    &.pull-left {
+      p,
+      small,
+      .small {
+        text-align: left;
+      }
+    }
+  }
+}

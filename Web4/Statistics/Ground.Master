@@ -1,0 +1,22 @@
+﻿<%@ Master Language="C#" CodeBehind="Ground.master.cs" Inherits="Statistics.Ground" %>
+<%--<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Ground.master.cs" Inherits="Statistics.Ground" %>--%>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+  <meta http-equiv='X-UA-Compatible' content='IE=Edge' />
+  <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+  <meta name='viewport' content='width=device-width' />
+  <title>LANGMaster</title>
+  <asp:PlaceHolder ID="headContent" runat="server"/>
+  <asp:ContentPlaceHolder ID="head" runat="server">
+  </asp:ContentPlaceHolder>
+</head>
+<body class="lm-stat">
+  <form id="form1" runat="server">
+    <asp:ContentPlaceHolder ID="Content" runat="server">
+    </asp:ContentPlaceHolder>
+  </form>
+</body>
+</html>

@@ -1,0 +1,8 @@
+﻿<product title="English Courses" url="/lm/english_0_10/" line="English" type="product" defaultDictType="L">
+  <data title="English">
+    <data title="A1">
+      <ex title="??? Fiona and Her English Class" url="/lm/oldea/english1/l01/a/hueex0_l01_a01"/>
+      <ex title="??? In a Café" url="/lm/oldea/english1/l01/a/hueex0_l01_a02"/>
+    </data>
+  </data>
+</product>

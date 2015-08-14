@@ -1,0 +1,37 @@
+﻿{
+    "items":
+    [
+        {
+            "items":
+            [
+                { "title": "Упражнение 1", "type": 1024, "url": "lm/russian4/lesson1/module1/ex0" },
+                [
+                    3,
+                    "Упражнение 2",
+                    1024,
+                    "lm/russian4/lesson1/module1/ex1",
+                    "Упражнение 3",
+                    1024,
+                    "lm/russian4/lesson1/module1/ex2",
+                    "Упражнение 4",
+                    1024,
+                    "lm/russian4/lesson1/module1/ex3",
+                    "Упражнение 5",
+                    1024,
+                    "lm/russian4/lesson1/module1/ex4",
+                    "Упражнение 6",
+                    1024,
+                    "lm/russian4/lesson1/module1/ex5"
+                ]
+            ],
+            "title": "Глава А",
+            "type": 8192,
+            "url": "lm/russian4/lesson1/module1"
+        },
+        [ 2, [ { "type": 1024, "url": "data/instr/std/ex" } ], "Instructions", 401408, "data/instr/std" ]
+    ],
+    "line": 7,
+    "title": "Глава А",
+    "type": 4,
+    "url": "data/pz-w8virtual/mod"
+}

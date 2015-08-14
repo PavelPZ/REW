@@ -1,0 +1,39 @@
+﻿c_checkbox
+###
+<!-- ko with: getItem('{{:id}}') -->
+<span class="oli-checkitem oli-cancel-stop-sound" data-bind="click: click, css: { normal: !done(), evaluated: done, 'with-text': textType!=2}" {{:srcPosition()}}>
+  {{if textType!=2}}
+  <span class="nowrap with-text-part">
+    <span data-bind="click: yesClick, clickBubble: false, css: yesEval">
+      <span class="fa fa-border fa-check" data-bind="css: { selected: yes, noselected: !yes() }" />
+      <span class="text">{{:trueText}}</span>
+    </span>
+    <span data-bind="click: noClick, clickBubble: false, css: noEval">
+      <span class="fa fa-border fa-check" data-bind="css: { selected: no, noselected: !no() }" />
+      <span class="text">{{:falseText}}</span>
+    </span>
+  </span>
+  {{else}}
+  <span class="no-text-part" data-bind="click: click, clickBubble: false">
+    <span class="left-normal" data-bind="css: {checked : yes, nochecked:no }">
+      <i class="fa fa-2x fa-fw fa-border fa-question"></i>
+    </span>
+    <span class="left-eval">
+      <span class="no-strike-part fa fa-2x fa-border" data-bind="css: {show : !yesNoEval('strike'), green: yesNoEval('black'), checked:yesEval()!='no', nochecked:noEval()!='no', red: yesNoEval('red') }" />
+      <span class="strike-part fa fa-2x fa-border" data-bind="css: {show : yesNoEval('strike'), checked:yesEval()=='strike', nochecked:noEval()=='strike' }" />
+    </span>
+  </span>
+  {{/if}}
+</span>
+<!-- /ko -->
+###
+
+c_checkitem
+###
+<div class="oli-checkitemctrl {{:textTypeAsStr}}">
+  {{include tmpl=~T('c_checkbox')/}}
+  <div class="content">
+    {{for Items  tmpl=~T('c_gen')/}}
+  </div>
+</div>
+<div class="clearfix"></div>

@@ -1,0 +1,82 @@
+!schoolHumanEval
+###
+<div data-bind="with: Pager.ActPage" class="app-admin rtl">
+  {{for #data tmpl=~T('TTopBarNew')/}}
+  <div class="container">
+    {{if !~Cookie()}}
+    {{for #data tmpl=~T('TLoginFirst')/}}
+    {{else}}
+    <h3>{{:title()}}</h3>
+    {{if !items || items.length==0}}
+    <div class="alert alert-warning">
+      <h4>{{:~CSLocalize('b5f75d59260c4e2cbec83400b4a1928e', 'There are no tests waiting for evaluation')}}</h4>
+    </div>
+    {{else}}
+    <table class="table oli-cell-middle oli-cell-left">
+      <thead>
+        <tr>
+          <td>{{:~CSLocalize('93e09975ce6742a8bf251e7e587480e2', 'Assigned')}}:</td>
+          <td>{{:~CSLocalize('966ed7c8115f4a719c66fc107263f245', 'Title of the test')}}:</td>
+        </tr>
+      </thead>
+      <tbody>
+        {{for items}}
+        <tr data-bind="with:items[{{:#index}}]">
+          <td>{{:assigned}}</td>
+          <td><a href="#" data-bind="click:click">{{:title}}</a></td>
+        </tr>
+        {{/for}}
+      </tbody>
+    </table>
+    {{/if}}
+    <p>
+      <hr />
+      <div class="btn btn-default" data-bind="click:close">{{:~CSLocalize('fee13c58d3394e168e24bbd75bd07068', 'Finish')}}</div>
+    </p>
+    {{/if}}
+  </div>
+</div>
+###
+
+!schoolHumanEvalEx
+###
+<div data-bind="with: Pager.ActPage" class="app-admin app-school rtl">
+  <div class="navbar navbar-{{:~CourseMeta.navBar()}}">
+    <div class="container">
+      <a href="#" class="navbar-brand lm-logo-black lm-logo-black-small"></a>
+      <btn class="btn btn-large btn-success lm-green-btn pull-left" data-bind="test:'green', click: nextClick, css: {disabled: items.length==0}">
+        <span class="oli-margin-right" data-bind="text:greenTitle">{{:~CSLocalize('a6fd34e95c934fd5b92a179cda788bab', 'Next')}}</span>
+        <span class="fa fa-play play"></span>
+      </btn>
+    </div>
+  </div>
+  {{!--for #data tmpl=~T('TTopBarNew')/--}}
+  <div class="container testme">
+    {{if !~Cookie()}}
+    {{for #data tmpl=~T('TLoginFirst')/}}
+    {{else}}
+    <h3>{{:productTitle}}</h3>
+    {{if items.length==0}}
+    <div class="alert alert-warning">
+      <h4>{{:~CSLocalize('2cc6d3c4a9fa459c89a998f83aa99289', 'There are no tests waiting for evaluation')}}</h4>
+    </div>
+    {{else}}
+    <div class="ex-items">
+      {{for items tmpl=~T('humanTestItem')/}}
+    </div>
+    <hr />
+    <div id="exercise" class="new-ea">
+      {{:~CourseMeta.gui.exerciseHtml()}}
+    </div>
+    {{/if}}
+    <p>
+      <hr />
+      <div class="btn btn-default" data-bind="click:nextClick, text:greenTitle"></div>
+    </p>
+    {{/if}}
+  </div>
+</div>
+###
+
+humanTestItem
+###<span class="btn btn-default ex-item" data-bind="css: {done:items[{{:#index}}].done, 'is-active': actIdx=={{:#index}}}, click:function() { doExClick({{:#index}});}">{{:#index+1}}</span>###

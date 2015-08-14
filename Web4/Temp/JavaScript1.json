@@ -1,0 +1,714 @@
+﻿{
+  "data": [
+    {
+      "@title": "Blended Learning: English Dialogs",
+      "@url": "english",
+      "data": [
+        {
+          "@title": "Level A1",
+          "@url": "a1",
+          "@type": "mod",
+          "ex": [
+            {
+              "@title": "Fiona and Her English Class",
+              "@url": "/lm/ea/english1wma/lesson01/hueex0_l01_a01_play"
+            },
+            {
+              "@title": "In a Café",
+              "@url": "/lm/ea/english1wma/lesson01/hueex0_l01_a02_play"
+            },
+            {
+              "@title": "Nicole and Fiona",
+              "@url": "/lm/ea/english1wma/lesson01/hueex0_l01_a03_play"
+            },
+            {
+              "@title": "Practising Speaking",
+              "@url": "/lm/ea/english1wma/lesson01/hueex0_l01_a09_play"
+            },
+            {
+              "@title": "Practising Speaking",
+              "@url": "/lm/ea/english1wma/lesson01/hueex0_l01_c01_play"
+            },
+            {
+              "@title": "At the Party ",
+              "@url": "/lm/ea/english1wma/lesson02/hueex0_l02_a03_play"
+            },
+            {
+              "@title": "Food and Drinks 2",
+              "@url": "/lm/ea/english1wma/lesson02/hueex0_l02_a04_play"
+            },
+            {
+              "@title": "What Time Is It? 3",
+              "@url": "/lm/ea/english1wma/lesson02/hueex0_l02_b04_play"
+            },
+            {
+              "@title": "Ellen Is Greeting a Visitor to the Company",
+              "@url": "/lm/ea/english1wma/lesson03/hueex0_l03_d01_play"
+            },
+            {
+              "@title": "What Time Is It? 2",
+              "@url": "/lm/ea/english1wma/lesson04/hueex0_l04_b01_play"
+            },
+            {
+              "@title": "Phrases about the Weather",
+              "@url": "/lm/ea/english1wma/lesson05/hueex0_l05_b03_play"
+            },
+            {
+              "@title": "Talking about Weather",
+              "@url": "/lm/ea/english1wma/lesson05/hueex0_l05_b04_play"
+            },
+            {
+              "@title": "A Dinner Invitation",
+              "@url": "/lm/ea/english1wma/lesson05/hueex0_l05_c02_play"
+            },
+            {
+              "@title": "Ellen and Jack Meet in the Office",
+              "@url": "/lm/ea/english1wma/lesson05/hueex0_l05_c05_play"
+            },
+            {
+              "@title": "A Telephone Dialogue",
+              "@url": "/lm/ea/english1wma/lesson06/hueex0_l06_b08_play"
+            },
+            {
+              "@title": "Where Do You Live, Fiona?",
+              "@url": "/lm/ea/english1wma/lesson07/hueex0_l07_a07_play"
+            },
+            {
+              "@title": "What Would You Like To Do?",
+              "@url": "/lm/ea/english1wma/lesson08/hueex0_l08_c02_play"
+            },
+            {
+              "@title": "A Long Dialogue",
+              "@url": "/lm/ea/english1wma/lesson09/hueex0_l09_b03_play"
+            },
+            {
+              "@title": "How Did They Get to Class?",
+              "@url": "/lm/ea/english1wma/lesson09/hueex0_l09_b06_play"
+            }
+          ]
+        },
+        {
+          "@title": "Level A2",
+          "@url": "a2",
+          "@type": "mod",
+          "ex": [
+            {
+              "@title": "On a Diet",
+              "@url": "/lm/ea/english1wma/lesson10/hueex0_l10_b01_play"
+            },
+            {
+              "@title": "What Do You Do?",
+              "@url": "/lm/ea/english1wma/lesson11/hueex0_l11_a03_play"
+            },
+            {
+              "@title": "About Fiona",
+              "@url": "/lm/ea/english1wma/lesson11/hueex0_l11_a04_play"
+            },
+            {
+              "@title": "On the Phone",
+              "@url": "/lm/ea/english1wma/lesson11/hueex0_l11_c03_play"
+            },
+            {
+              "@title": "A Holiday in Greece",
+              "@url": "/lm/ea/english1wma/lesson12/hueex0_l12_a03_play"
+            },
+            {
+              "@title": "On the Phone",
+              "@url": "/lm/ea/english1wma/lesson12/hueex0_l12_c04_play"
+            },
+            {
+              "@title": "Goodbye",
+              "@url": "/lm/ea/english1wma/lesson12/hueex0_l12_c06_play"
+            },
+            {
+              "@title": "Saying Hello 1",
+              "@url": "/lm/ea/english2wma/lesson01/hueex1_l01_a01a_play"
+            },
+            {
+              "@title": "Saying Hello 2",
+              "@url": "/lm/ea/english2wma/lesson01/hueex1_l01_a02_play"
+            },
+            {
+              "@title": "Greeting New People",
+              "@url": "/lm/ea/english2wma/lesson01/hueex1_l01_a03_play"
+            },
+            {
+              "@title": "Greeting People You Know",
+              "@url": "/lm/ea/english2wma/lesson01/hueex1_l01_a04_play"
+            },
+            {
+              "@title": "At the Reception 1",
+              "@url": "/lm/ea/english2wma/lesson01/hueex1_l01_c01_play"
+            },
+            {
+              "@title": "Saying Sorry",
+              "@url": "/lm/ea/english2wma/lesson01/hueex1_l01_e01_play"
+            },
+            {
+              "@title": "Arranging a Meeting ",
+              "@url": "/lm/ea/english2wma/lesson01/hueex1_l01_e02_play"
+            },
+            {
+              "@title": "A New Student",
+              "@url": "/lm/ea/english2wma/lesson02/hueex1_l02_a03_play"
+            },
+            {
+              "@title": "Asking for Help",
+              "@url": "/lm/ea/english2wma/lesson03/hueex1_l03_b02_play"
+            }
+          ]
+        },
+        {
+          "@title": "Level B1",
+          "@url": "b1",
+          "@type": "mod",
+          "ex": [
+            {
+              "@title": "At the Reception",
+              "@url": "/lm/ea/english2wma/lesson03/hueex1_l03_e02_play"
+            },
+            {
+              "@title": "An Interview with Jerry Roberts 1 ",
+              "@url": "/lm/ea/english2wma/lesson04/hueex1_l04_b04_play"
+            },
+            {
+              "@title": "Practising Speaking",
+              "@url": "/lm/ea/english2wma/lesson05/hueex1_l05_b06_play"
+            },
+            {
+              "@title": "Intonation Practice",
+              "@url": "/lm/ea/english2wma/lesson07/hueex1_l07_a01_play"
+            },
+            {
+              "@title": "A Business Trip",
+              "@url": "/lm/ea/english2wma/lesson07/hueex1_l07_c03_play"
+            },
+            {
+              "@title": "Margaret and Irene",
+              "@url": "/lm/ea/english2wma/lesson08/hueex1_l08_b03_play"
+            },
+            {
+              "@title": "Plans for the Weekend",
+              "@url": "/lm/ea/english2wma/lesson09/hueex1_l09_c05_play"
+            },
+            {
+              "@title": "Let’s Go Out to Eat! 2",
+              "@url": "/lm/ea/english2wma/lesson10/hueex1_l10_a06_play"
+            },
+            {
+              "@title": "Arranging to Meet 1",
+              "@url": "/lm/ea/english2wma/lesson10/hueex1_l10_c08_play"
+            },
+            {
+              "@title": "Bed & Breakfast",
+              "@url": "/lm/ea/english2wma/lesson11/hueex1_l11_b01_play"
+            },
+            {
+              "@title": "A Misunderstanding",
+              "@url": "/lm/ea/english3wma/lesson01/hueex2_l01_b07_play"
+            },
+            {
+              "@title": "Questions about Each Other 2",
+              "@url": "/lm/ea/english3wma/lesson01/hueex2_l01_c01_play"
+            },
+            {
+              "@title": "Sentence Stress",
+              "@url": "/lm/ea/english3wma/lesson03/hueex2_l03_b08_play"
+            },
+            {
+              "@title": "My Office",
+              "@url": "/lm/ea/english3wma/lesson04/hueex2_l04_a07_play"
+            },
+            {
+              "@title": "Message for Mary",
+              "@url": "/lm/ea/english3wma/lesson04/hueex2_l04_d03_play"
+            },
+            {
+              "@title": "The Orient Express",
+              "@url": "/lm/ea/english3wma/lesson05/hueex2_l05_a06_play"
+            },
+            {
+              "@title": "Sounding Interested or Surprised",
+              "@url": "/lm/ea/english3wma/lesson07/hueex2_l07_a06_play"
+            },
+            {
+              "@title": "An Injured Finger",
+              "@url": "/lm/ea/english3wma/lesson07/hueex2_l07_c07_play"
+            }
+          ]
+        },
+        {
+          "@title": "Level B2",
+          "@url": "b2",
+          "@type": "mod",
+          "ex": [
+            {
+              "@title": "An Interview 2",
+              "@url": "/lm/ea/english3wma/lesson10/hueex2_l10_b06_play"
+            },
+            {
+              "@title": "That Little Word ‘If’",
+              "@url": "/lm/ea/english3wma/lesson11/hueex2_l11_a06_play"
+            },
+            {
+              "@title": "Checking Arrangements 2",
+              "@url": "/lm/ea/english3wma/lesson12/hueex2_l12_b03_play"
+            },
+            {
+              "@title": "A Telephone Dialogue 1",
+              "@url": "/lm/ea/english4wma/lesson02/hueex3_l02_d02_play"
+            },
+            {
+              "@title": "Paying Compliments 2",
+              "@url": "/lm/ea/english4wma/lesson02/hueex3_l02_e01_play"
+            },
+            {
+              "@title": "Prepositions and the Telephone",
+              "@url": "/lm/ea/english4wma/lesson04/hueex3_l04_b04_play"
+            },
+            {
+              "@title": "Speaking about Plans",
+              "@url": "/lm/ea/english4wma/lesson05/hueex3_l05_a04_play"
+            },
+            {
+              "@title": "Are You Doing Anything This Weekend?",
+              "@url": "/lm/ea/english4wma/lesson06/hueex3_l06_b01_play"
+            },
+            {
+              "@title": "Conversation Practising",
+              "@url": "/lm/ea/english4wma/lesson07/hueex3_l07_a05_play"
+            },
+            {
+              "@title": "A Declined Invitation",
+              "@url": "/lm/ea/english4wma/lesson07/hueex3_l07_d01_play"
+            },
+            {
+              "@title": "The Bad Line 1",
+              "@url": "/lm/ea/english4wma/lesson08/hueex3_l08_d03_play"
+            },
+            {
+              "@title": "Describing a Product 2",
+              "@url": "/lm/ea/english4wma/lesson11/hueex3_l11_d02_play"
+            },
+            {
+              "@title": "Speaking Practice",
+              "@url": "/lm/ea/english4wma/lesson12/hueex3_l12_d06_play"
+            },
+            {
+              "@title": "At the Doctor’s 2",
+              "@url": "/lm/ea/english5wma/lesson03/hueex4_l03_c06_play"
+            },
+            {
+              "@title": "Make It Short 2",
+              "@url": "/lm/ea/english5wma/lesson04/hueex4_l04_d01c_play"
+            },
+            {
+              "@title": "At the Reception",
+              "@url": "/lm/ea/english5wma/lesson07/hueex4_l07_c02_play"
+            },
+            {
+              "@title": "Telephoning",
+              "@url": "/lm/ea/english5wma/lesson34/hueex4_l34_j01_play"
+            },
+            {
+              "@title": "Taking Messages 2",
+              "@url": "/lm/ea/english5wma/lesson34/hueex4_l34_j03_play"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@title": "Blended Learning: German Dialogs",
+      "@url": "german",
+      "data": [
+        {
+          "@title": "Level A1",
+          "@url": "a1",
+          "@type": "mod",
+          "data": [
+            {
+              "@title": "Kleines Diktat",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson01/t1a_ab_l1_a3b_play"
+            },
+            {
+              "@title": "Akzente markieren",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson01/t1a_ab_l1_c2b_play"
+            },
+            {
+              "@title": "Fragen",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson01/t1a_ab_l1_f3_play"
+            },
+            {
+              "@title": "Sprechübung 1",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson01/t1a_ab_l1_h2a_play"
+            },
+            {
+              "@title": "Sprechübung 2",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson01/t1a_ab_l1_h2b_play"
+            },
+            {
+              "@title": "Deutsche Zahlen",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson02/t1a_ab_l2_a3_play"
+            },
+            {
+              "@title": "Wie bitte?",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson02/t1a_ab_l2_b4_play"
+            },
+            {
+              "@title": "Bestellungen im Lokal",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson02/t1a_ab_l2_f3_play"
+            },
+            {
+              "@title": "Dialoge üben",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson03/t1a_ab_l3_b6a_play"
+            },
+            {
+              "@title": "Dialoge mitsprechen",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson03/t1a_ab_l3_d6b_play"
+            },
+            {
+              "@title": "Begrüßungsdialoge am Flughafen",
+              "@url": "/lm/ea/german1wma/kursbuch/lesson01/t1a_kb_l1_a1_play"
+            },
+            {
+              "@title": "Sich vorstellen",
+              "@url": "/lm/ea/german1wma/kursbuch/lesson01/t1a_kb_l1_b1_play"
+            },
+            {
+              "@title": "Herkunft mitteilen und erfragen",
+              "@url": "/lm/ea/german1wma/kursbuch/lesson01/t1a_kb_l1_c2_play"
+            },
+            {
+              "@title": "Namensnennung - sprechen",
+              "@url": "/lm/ea/german1wma/kursbuch/lesson01/t1a_kb_l1_e1a_play"
+            },
+            {
+              "@title": "Zu Besuch bei Vera – Dialoge üben",
+              "@url": "/lm/ea/german1wma/kursbuch/lesson02/t1a_kb_l2_c1_play"
+            },
+            {
+              "@title": "Das ist Vera, aus Brasilien 3",
+              "@url": "/lm/ea/german1wma/kursbuch/lesson02/t1a_kb_l2_f3a_play"
+            },
+            {
+              "@title": "Behördendialog",
+              "@url": "/lm/ea/german1wma/kursbuch/lesson02/t1a_kb_l2_g1a_play"
+            }
+          ]
+        },
+        {
+          "@title": "Level A2",
+          "@url": "a2",
+          "@type": "mod",
+          "data": [
+            {
+              "@title": "Dialoge üben",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson04/t1a_ab_l4_c7b_play"
+            },
+            {
+              "@title": "Kurze Dialoge üben",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson04/t1a_ab_l4_d5_play"
+            },
+            {
+              "@title": "Satzakzent markieren 2",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson04/t1a_ab_l4_e1a_play"
+            },
+            {
+              "@title": "In einem Lebensmittelgeschäft",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson04/t1a_ab_l4_e3a_play"
+            },
+            {
+              "@title": "Ganz allein im Lebensmittelgeschäft",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson04/t1a_ab_l4_e3ba_play"
+            },
+            {
+              "@title": "Sprechübung",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson05/t1a_ab_l5_c5_play"
+            },
+            {
+              "@title": "Sprechübung ",
+              "@url": "/lm/ea/german1wma/kursbuch/lesson03/t1a_kb_l3_a2a_play"
+            },
+            {
+              "@title": "Papa, kaufst du uns … ? Dialoge üben",
+              "@url": "/lm/ea/german1wma/kursbuch/lesson04/t1a_kb_l4_a2_play"
+            },
+            {
+              "@title": "Satzmelodie markieren 2",
+              "@url": "/lm/ea/german1wma/kursbuch/lesson04/t1a_kb_l4_e2_play"
+            },
+            {
+              "@title": "Dialoge üben",
+              "@url": "/lm/ea/german1wma/kursbuch/lesson04/t1a_kb_l4_f2a_play"
+            },
+            {
+              "@title": "Ratschläge geben",
+              "@url": "/lm/ea/german1wma/kursbuch/lesson04/t1a_kb_l4_g1_play"
+            },
+            {
+              "@title": "Dialoge üben",
+              "@url": "/lm/ea/german1wma/kursbuch/lesson05/t1a_kb_l5_b3a_play"
+            },
+            {
+              "@title": "Praxis Dr. Stefanidis 1",
+              "@url": "/lm/ea/german1wma/kursbuch/lesson05/t1a_kb_l5_e5b_play"
+            },
+            {
+              "@title": "Test 7",
+              "@url": "/lm/ea/german1wma/kursbuch/lesson05/t1a_kb_l5_t7_play"
+            },
+            {
+              "@title": "Dialog",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson07/t1b_ab_l7_c7_play"
+            },
+            {
+              "@title": "Satzakzent markieren",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson08/t1b_ab_l8_c2b_play"
+            },
+            {
+              "@title": "Warum, warum, warum …",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson08/t1b_ab_l8_c3a_play"
+            }
+          ]
+        },
+        {
+          "@title": "Level B1",
+          "@url": "b1",
+          "@type": "mod",
+          "data": [
+            {
+              "@title": "Lückendialog ergänzen",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson10/t1b_ab_l10_a7a_play"
+            },
+            {
+              "@title": "Komparativformen üben",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson10/t1b_ab_l10_b7_play"
+            },
+            {
+              "@title": "Sprechübung ",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson11/t1b_ab_l11_c10a_play"
+            },
+            {
+              "@title": "Dialoge sprechen",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson11/t1b_ab_l11_c6_play"
+            },
+            {
+              "@title": "Kinder fragen gerne “Warum …?” – Dialoge üben",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson08/t1b_ab_l8_c4_play"
+            },
+            {
+              "@title": "Antworten zwischen “Ja” und “Nein” – Dialoge üben",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson08/t1b_ab_l8_d1_play"
+            },
+            {
+              "@title": "Gedichte",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson09/t1b_ab_l9_f6_play"
+            },
+            {
+              "@title": "Sprechübung ",
+              "@url": "/lm/ea/german1wma/arbeitsbuch/lesson09/t1b_ab_l9_g6a_play"
+            },
+            {
+              "@title": "“Wann“ oder “wenn“? – Lückentext",
+              "@url": "/lm/ea/german1wma/kursbuch/lesson10/t1b_kb_l10_d2_play"
+            },
+            {
+              "@title": "Dialoge in der Umgangssprache",
+              "@url": "/lm/ea/german1wma/kursbuch/lesson08/t1b_kb_l8_d1b_play"
+            },
+            {
+              "@title": "Sprechübung",
+              "@url": "/lm/ea/german2wma/arbeitsbuch/lesson01/t2a_ab_l1_b3a_play"
+            },
+            {
+              "@title": "„e“ –Laute 6",
+              "@url": "/lm/ea/german2wma/arbeitsbuch/lesson01/t2a_ab_l1_c5_play"
+            },
+            {
+              "@title": "Sprechübung",
+              "@url": "/lm/ea/german2wma/arbeitsbuch/lesson01/t2a_ab_l1_d10_play"
+            },
+            {
+              "@title": "Adjektiv-Nomen 3",
+              "@url": "/lm/ea/german2wma/arbeitsbuch/lesson01/t2a_ab_l1_e2_play"
+            },
+            {
+              "@title": "Sprechübung: Beim Psychologen",
+              "@url": "/lm/ea/german2wma/arbeitsbuch/lesson02/t2a_ab_l2_c9_play"
+            },
+            {
+              "@title": "Indirekte Fragen 4",
+              "@url": "/lm/ea/german2wma/arbeitsbuch/lesson03/t2a_ab_l3_b5a_play"
+            }
+          ]
+        },
+        {
+          "@title": "Level B2",
+          "@url": "b2",
+          "@type": "mod",
+          "data": [
+            {
+              "@title": "Sprechübung",
+              "@url": "/lm/ea/german2wma/arbeitsbuch/lesson03/t2a_ab_l3_b7_play"
+            },
+            {
+              "@title": "Wer ist wer?",
+              "@url": "/lm/ea/german2wma/arbeitsbuch/lesson04/t2a_ab_l4_d6_play"
+            },
+            {
+              "@title": "In einer Arztpraxis",
+              "@url": "/lm/ea/german2wma/arbeitsbuch/lesson05/t2a_ab_l5_d6_play"
+            },
+            {
+              "@title": "Dialog 1",
+              "@url": "/lm/ea/german2wma/kursbuch/lesson03/t2a_kb_l3_b4a_play"
+            },
+            {
+              "@title": "Echofragen 1",
+              "@url": "/lm/ea/german2wma/kursbuch/lesson03/t2a_kb_l3_c1a_play"
+            },
+            {
+              "@title": "Bindung und Neueinsatz",
+              "@url": "/lm/ea/german2wma/arbeitsbuch/lesson10/t2b_ab_l10_d3a_play"
+            },
+            {
+              "@title": "Sprechübung",
+              "@url": "/lm/ea/german2wma/arbeitsbuch/lesson10/t2b_ab_l10_e5_play"
+            },
+            {
+              "@title": "Sprechübung",
+              "@url": "/lm/ea/german2wma/arbeitsbuch/lesson11/t2b_ab_l11_a6_play"
+            },
+            {
+              "@title": "Umgangssprache 2",
+              "@url": "/lm/ea/german2wma/arbeitsbuch/lesson11/t2b_ab_l11_d2_play"
+            },
+            {
+              "@title": "Sprechübung",
+              "@url": "/lm/ea/german2wma/arbeitsbuch/lesson07/t2b_ab_l7_d4_play"
+            },
+            {
+              "@title": "Sprechübung: Bekannte im Stress",
+              "@url": "/lm/ea/german2wma/arbeitsbuch/lesson08/t2b_ab_l8_c5_play"
+            },
+            {
+              "@title": "Sprechübung",
+              "@url": "/lm/ea/german2wma/arbeitsbuch/lesson09/t2b_ab_l9_b4_play"
+            },
+            {
+              "@title": "Wörter mit „irgend-“ 3",
+              "@url": "/lm/ea/german2wma/arbeitsbuch/lesson09/t2b_ab_l9_c3_play"
+            },
+            {
+              "@title": "Lesen ist Familiensache",
+              "@url": "/lm/ea/german2wma/kursbuch/lesson11/t2b_kb_l11_b5_play"
+            },
+            {
+              "@title": "Telefongespräch: „also“ und „nämlich“",
+              "@url": "/lm/ea/german2wma/kursbuch/lesson08/t2b_kb_l8_f1_play"
+            },
+            {
+              "@title": "Anwendungsübung: „also“ und „nämlich“",
+              "@url": "/lm/ea/german2wma/kursbuch/lesson08/t2b_kb_l8_f3_play"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@title": "Blended Learning: French Dialogs",
+      "@url": "french",
+      "data": [
+        {
+          "@title": "Level A1",
+          "@url": "a1",
+          "@type": "mod",
+          "data": [
+            {
+              "@title": "La conjugaison",
+              "@url": "/lm/ea/french1wma/lesson03/hufex1_l03_a07_play"
+            },
+            {
+              "@title": "L’anniversaire de Victor",
+              "@url": "/lm/ea/french1wma/lesson03/hufex1_l03_b01_play"
+            },
+            {
+              "@title": "Le plan de la ville de Paris",
+              "@url": "/lm/ea/french1wma/lesson04/hufex1_l04_a05_play"
+            },
+            {
+              "@title": "Comment faire des achats",
+              "@url": "/lm/ea/french1wma/lesson05/hufex1_l05_b02_play"
+            }
+          ]
+        },
+        {
+          "@title": "Level A2",
+          "@url": "a2",
+          "@type": "mod",
+          "data": [
+            {
+              "@title": "Matthieu et Cécile",
+              "@url": "/lm/ea/french1wma/lesson06/hufex1_l06_b01_play"
+            },
+            {
+              "@title": "Julie va en Guadeloupe",
+              "@url": "/lm/ea/french1wma/lesson07/hufex1_l07_c01_play"
+            },
+            {
+              "@title": "Catherine en Provence",
+              "@url": "/lm/ea/french1wma/lesson08/hufex1_l08_a02_play"
+            },
+            {
+              "@title": "Pronoms toniques (suite et fin)",
+              "@url": "/lm/ea/french1wma/lesson09/hufex1_l09_b06_play"
+            }
+          ]
+        },
+        {
+          "@title": "Level B1",
+          "@url": "b1",
+          "@type": "mod",
+          "data": [
+            {
+              "@title": "Une lettre de Strasbourg",
+              "@url": "/lm/ea/french1wma/lesson10/hufex1_l10_b02_play"
+            },
+            {
+              "@title": "Benoît et Petra",
+              "@url": "/lm/ea/french1wma/lesson10/hufex1_l10_c03_play"
+            },
+            {
+              "@title": "Edith et Sophie",
+              "@url": "/lm/ea/french2wma/lesson02/hufex2_l02_b03_play"
+            },
+            {
+              "@title": "Dialogue",
+              "@url": "/lm/ea/french2wma/lesson06/hufex2_l06_b02_play"
+            }
+          ]
+        },
+        {
+          "@title": "Level B2",
+          "@url": "b2",
+          "@type": "mod",
+          "data": [
+            {
+              "@title": "Interview",
+              "@url": "/lm/ea/french2wma/lesson08/hufex2_l08_b02_play"
+            },
+            {
+              "@title": "Conjuguez les verbes",
+              "@url": "/lm/ea/french3wma/lesson05/hufex3_l05_c05_play"
+            },
+            {
+              "@title": "Sur le vif! 1",
+              "@url": "/lm/ea/french3wma/lesson06/hufex3_l06_a07_play"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

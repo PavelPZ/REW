@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc-tags-meta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <doc-type name="_evalBtn" is-ign="true" descendants-and-self="_evalBtn" my-props="_evalBtn.btnId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="_evalGroup" is-ign="true" descendants-and-self="_evalGroup" my-props="_evalGroup.isAnd _evalGroup.isExchangeable _evalGroup.evalControlIds _evalGroup.maxScore tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="_evalPage" is-ign="true" descendants-and-self="_evalPage" my-props="_evalPage.radioGroups _evalPage.maxScore _evalPage.radioGroupsObj tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="_mediaReplica" is-ign="true" descendants-and-self="_mediaReplica" my-props="_mediaReplica.iconId _mediaReplica.dlgLeft _mediaReplica.actor tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="_mediaSent" is-ign="true" descendants-and-self="_mediaSent" my-props="_mediaSent.idx tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="_sndFile" is-ign="true" descendants-and-self="_sndFile cutDialog cutText" my-props="_sndFile.tempReplicas urlTag.mediaUrl tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="_sndFileGroup" is-ign="true" descendants-and-self="_sndFileGroup" my-props="urlTag.mediaUrl tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="_sndGroup" is-ign="true" descendants-and-self="_sndGroup" my-props="_sndGroup.intervals _sndGroup.sf _sndGroup.isPassive tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="_sndInterval" is-ign="true" descendants-and-self="_sndInterval" my-props="tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="_sndPage" is-ign="true" descendants-and-self="_sndPage" my-props="tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="_sndSent" is-ign="true" descendants-and-self="_sndSent" my-props="_sndSent.idx _sndSent.begPos _sndSent.endPos _sndSent.text _sndSent.actor tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="body" descendants-and-self="body" my-props="body.instrBody body.instrs body.order body.instrTitle body.seeAlsoLinks body.title body.bodyStyle tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="checkBox" descendants-and-self="checkBox" my-props="checkLow.correctValue checkLow.textType checkLow.initValue checkLow.readOnly checkLow.skipEvaluation evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="checkItem" descendants-and-self="checkItem" my-props="checkLow.correctValue checkLow.textType checkLow.initValue checkLow.readOnly checkLow.skipEvaluation evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="checkLow" descendants-and-self="checkLow checkBox checkItem" my-props="checkLow.correctValue checkLow.textType checkLow.initValue checkLow.readOnly checkLow.skipEvaluation evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="cutDialog" descendants-and-self="cutDialog" my-props="_sndFile.tempReplicas urlTag.mediaUrl tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="cutText" descendants-and-self="cutText" my-props="_sndFile.tempReplicas urlTag.mediaUrl tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="docDescr" is-ign="true" descendants-and-self="docDescr" my-props="tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="docEnum" is-ign="true" descendants-and-self="docEnum" my-props="docEnum.xref docEnum.enums docNamed.name docNamed.summary docNamed.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="docEnumItem" is-ign="true" descendants-and-self="docEnumItem" my-props="docEnumItem.xref docNamed.name docNamed.summary docNamed.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="docExample" is-ign="true" descendants-and-self="docExample" my-props="docExample.todo docExample.codeListing docExample.codePostListing docExample.header docExample.descr docExample.evalBtn tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="docNamed" is-ign="true" descendants-and-self="docNamed docType docEnum docEnumItem docProp" my-props="docNamed.name docNamed.summary docNamed.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="docProp" is-ign="true" descendants-and-self="docProp" my-props="docProp.ownerType docProp.dataType docProp.xref docProp.isHtml docNamed.name docNamed.summary docNamed.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="docTagsMeta" is-ign="true" descendants-and-self="docTagsMeta" my-props="docTagsMeta.types docTagsMeta.props docTagsMeta.enums tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="docType" is-ign="true" descendants-and-self="docType" my-props="docType.isHtml docType.isIgn docType.descendantsAndSelf docType.myProps docType.xref docNamed.name docNamed.summary docNamed.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="dragTarget" descendants-and-self="dragTarget" my-props="edit.correctValue edit.widthGroup edit.width edit.offeringId edit.caseSensitive evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="dropDown" descendants-and-self="dropDown" my-props="edit.correctValue edit.widthGroup edit.width edit.offeringId edit.caseSensitive evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="edit" is-ign="true" descendants-and-self="edit gapFill dropDown dragTarget" my-props="edit.correctValue edit.widthGroup edit.width edit.offeringId edit.caseSensitive evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="error" is-ign="true" descendants-and-self="error" my-props="error.msg tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="evalButton" summary="tlacitko pro vyhodnoceni jedne skupiny vyhodnotitelnych elementu." descendants-and-self="evalButton" my-props="evalButton.scoreAsRatio evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem"><![CDATA[
+??
+]]></doc-type>
+  <doc-type name="evalControl" is-ign="true" descendants-and-self="evalControl evalButton checkLow checkBox checkItem radioButton wordSelection wordMultiSelection wordOrdering sentenceOrdering edit gapFill dropDown pairing humanEval writing recording extension dragTarget" my-props="evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="extension" is-ign="true" descendants-and-self="extension" my-props="extension.data extension.cdata evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="gapFill" descendants-and-self="gapFill" my-props="gapFill.hint gapFill.initValue gapFill.readOnly gapFill.skipEvaluation edit.correctValue edit.widthGroup edit.width edit.offeringId edit.caseSensitive evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="headerProp" is-ign="true" descendants-and-self="headerProp" my-props="tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="htmlTag" is-ign="true" descendants-and-self="htmlTag" my-props="htmlTag.tagName tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="humanEval" is-ign="true" descendants-and-self="humanEval writing recording" my-props="evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="img" is-ign="true" descendants-and-self="img" my-props="img.src tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="include" is-ign="true" descendants-and-self="include includeText includeDialog" my-props="include.cutUrl tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="includeDialog" descendants-and-self="includeDialog" my-props="include.cutUrl tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="includeText" descendants-and-self="includeText" my-props="include.cutUrl tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="inlineTag" descendants-and-self="inlineTag" my-props="inlineTag.inlineType macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="list" descendants-and-self="list" my-props="list.delim list.isStriped list.icon list.color tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="listGroup" descendants-and-self="listGroup" my-props="listGroup.isStriped tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="macro" is-ign="true" descendants-and-self="smartPairing smartOffering smartElement smartElementLow macroArticle macroVocabulary macroVideo macroTrueFalse macroSingleChoices macroListWordOrdering macroPairing macroTable macroList macroIconList macro list listGroup twoColumn panel macroTemplate inlineTag" my-props="tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="macroArticle" descendants-and-self="macroArticle" my-props="macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="macroIconList" descendants-and-self="macroIconList" my-props="macroIconList.delim macroIconList.isStriped macroIconList.icon macroIconList.color macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="macroList" descendants-and-self="macroList" my-props="macroList.inlineType macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="macroListWordOrdering" descendants-and-self="macroListWordOrdering" my-props="macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="macroPairing" descendants-and-self="macroPairing" my-props="macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="macroSingleChoices" descendants-and-self="macroSingleChoices" my-props="macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="macroTable" descendants-and-self="macroTable" my-props="macroTable.inlineType macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="macroTemplate" is-ign="true" descendants-and-self="smartPairing smartOffering smartElement smartElementLow macroArticle macroVocabulary macroVideo macroTrueFalse macroSingleChoices macroListWordOrdering macroPairing macroTable macroList macroIconList macroTemplate inlineTag" my-props="macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="macroTrueFalse" descendants-and-self="macroTrueFalse" my-props="macroTrueFalse.textId macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="macroVideo" descendants-and-self="macroVideo" my-props="macroVideo.cutUrl macroVideo.mediaUrl macroVideo.displayStyle macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="macroVocabulary" descendants-and-self="macroVocabulary" my-props="macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="mediaBigMark" descendants-and-self="mediaBigMark" my-props="mediaTag.cutUrl mediaTag.subset mediaTag.shareMediaId urlTag.mediaUrl tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="mediaPlayer" descendants-and-self="mediaPlayer" my-props="mediaTag.cutUrl mediaTag.subset mediaTag.shareMediaId urlTag.mediaUrl tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="mediaTag" is-ign="true" descendants-and-self="mediaText mediaTag mediaBigMark mediaPlayer mediaVideo ttsSound" my-props="mediaTag.cutUrl mediaTag.subset mediaTag.shareMediaId urlTag.mediaUrl tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="mediaText" descendants-and-self="mediaText" my-props="mediaText.continueMediaId mediaText.passive mediaText.hidden mediaTag.cutUrl mediaTag.subset mediaTag.shareMediaId urlTag.mediaUrl tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="mediaVideo" descendants-and-self="mediaVideo" my-props="mediaTag.cutUrl mediaTag.subset mediaTag.shareMediaId urlTag.mediaUrl tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="node" is-ign="true" descendants-and-self="node" my-props="tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="offering" descendants-and-self="offering" my-props="offering.words offering.mode offering.hidden tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="pairing" descendants-and-self="pairing" my-props="pairing.leftRandom pairing.leftWidth evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="pairingItem" descendants-and-self="pairingItem" my-props="pairingItem.right tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="panel" descendants-and-self="panel" my-props="tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="phrase" descendants-and-self="phrase" my-props="phrase.begPos phrase.endPos phrase.idx phrase.text phrase.actor tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="phraseReplace" descendants-and-self="phraseReplace" my-props="phraseReplace.phraseIdx phraseReplace.replicaPhraseIdx tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="radioButton" descendants-and-self="radioButton" my-props="radioButton.correctValue radioButton.initValue radioButton.readOnly radioButton.skipEvaluation evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="recording" descendants-and-self="recording" my-props="recording.limitRecommend recording.limitMin recording.limitMax recording.recordInDialog recording.dialogHeaderId recording.dialogSize recording.singleAttempt evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="replica" descendants-and-self="replica" my-props="replica.actorId replica.actorName replica.numberOfPhrases tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="script" is-ign="true" descendants-and-self="script" my-props="script.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="sentenceOrdering" descendants-and-self="sentenceOrdering" my-props="evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="sentenceOrderingItem" descendants-and-self="sentenceOrderingItem" my-props="tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="singleChoice" descendants-and-self="singleChoice" my-props="singleChoice.readOnly singleChoice.skipEvaluation singleChoice.scoreWeight singleChoice.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="smartElement" descendants-and-self="smartElement" my-props="smartElement.inlineType macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="smartElementLow" descendants-and-self="smartPairing smartOffering smartElement smartElementLow" my-props="macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="smartOffering" descendants-and-self="smartOffering" my-props="smartOffering.words smartOffering.mode macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="smartPairing" descendants-and-self="smartPairing" my-props="smartPairing.random smartPairing.leftWidth macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="smartTag" is-ign="true" descendants-and-self="smartTag" my-props="smartTag.correct smartTag.smartText tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="tag" summary=" tag descr" is-ign="true" descendants-and-self="smartPairing smartOffering smartElement smartElementLow macroArticle macroVocabulary macroVideo macroTrueFalse macroSingleChoices macroListWordOrdering macroPairing macroTable macroList macroIconList tag smartTag node text error headerProp evalControl body evalButton checkLow checkBox checkItem offering radioButton singleChoice wordSelection wordMultiSelection wordOrdering sentenceOrdering sentenceOrderingItem edit gapFill dropDown pairing pairingItem humanEval writing recording macro list listGroup twoColumn panel _evalPage _evalBtn _evalGroup _sndPage _sndFileGroup _sndGroup _sndInterval _sndSent mediaText _mediaReplica _mediaSent include includeText includeDialog phraseReplace _sndFile cutDialog cutText phrase replica urlTag mediaTag mediaBigMark mediaPlayer mediaVideo ttsSound macroTemplate inlineTag htmlTag script img extension docExample dragTarget docNamed docType docEnum docEnumItem docProp docDescr docTagsMeta" my-props="tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="text" is-ign="true" descendants-and-self="text" my-props="text.title tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="ttsSound" is-ign="true" descendants-and-self="ttsSound" my-props="ttsSound.text mediaTag.cutUrl mediaTag.subset mediaTag.shareMediaId urlTag.mediaUrl tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="twoColumn" descendants-and-self="twoColumn" my-props="tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="urlTag" descendants-and-self="_sndFileGroup mediaText _sndFile cutDialog cutText urlTag mediaTag mediaBigMark mediaPlayer mediaVideo ttsSound" my-props="urlTag.mediaUrl tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="wordMultiSelection" descendants-and-self="wordMultiSelection" my-props="wordMultiSelection.words evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="wordOrdering" descendants-and-self="wordOrdering" my-props="wordOrdering.correctOrder evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="wordSelection" descendants-and-self="wordSelection" my-props="wordSelection.words evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="writing" descendants-and-self="writing" my-props="writing.limitRecommend writing.limitMin writing.limitMax writing.numberOfRows evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-prop name="actor" owner-type="_sndSent" data-type="@sys:String" />
+  <doc-prop name="actor" owner-type="_mediaReplica" data-type="@sys:String" />
+  <doc-prop name="actor" owner-type="phrase" data-type="@sys:String" />
+  <doc-prop name="actorId" owner-type="replica" data-type="@enum:IconIds" />
+  <doc-prop name="actorName" owner-type="replica" data-type="@sys:String" />
+  <doc-prop name="begPos" owner-type="_sndSent" data-type="@sys:Number" />
+  <doc-prop name="begPos" owner-type="phrase" data-type="@sys:Number" />
+  <doc-prop name="bodyStyle" owner-type="body" data-type="@sys:String" />
+  <doc-prop name="btnId" owner-type="_evalBtn" data-type="@sys:String" />
+  <doc-prop name="caseSensitive" owner-type="edit" data-type="@sys:Boolean" />
+  <doc-prop name="cdata" owner-type="macroTemplate" data-type="@sys:String" />
+  <doc-prop name="cdata" owner-type="script" data-type="@sys:String" />
+  <doc-prop name="cdata" owner-type="extension" data-type="@sys:String" />
+  <doc-prop name="cdata" owner-type="docNamed" data-type="@sys:String" />
+  <doc-prop name="codeListing" owner-type="docExample" data-type="@sys:String" />
+  <doc-prop name="codePostListing" owner-type="docExample" data-type="@sys:String" />
+  <doc-prop name="color" owner-type="macroIconList" data-type="@enum:colors" />
+  <doc-prop name="color" owner-type="list" data-type="@enum:colors" />
+  <doc-prop name="continueMediaId" owner-type="mediaText" data-type="@sys:String" />
+  <doc-prop name="correct" owner-type="smartTag" data-type="@sys:Boolean" />
+  <doc-prop name="correctOrder" owner-type="wordOrdering" data-type="@sys:String" />
+  <doc-prop name="correctValue" owner-type="checkLow" data-type="@sys:Boolean" />
+  <doc-prop name="correctValue" owner-type="radioButton" data-type="@sys:Boolean" />
+  <doc-prop name="correctValue" owner-type="edit" data-type="@sys:String" />
+  <doc-prop name="cutUrl" owner-type="macroVideo" data-type="@sys:String" />
+  <doc-prop name="cutUrl" summary="pointer na XML file s sndDialog nebo sndText (extenze se ignoruje)." owner-type="include" data-type="@sys:String" />
+  <doc-prop name="cutUrl" owner-type="mediaTag" data-type="@sys:String" />
+  <doc-prop name="data" owner-type="extension" data-type="@sys:String" />
+  <doc-prop name="dataType" owner-type="docProp" data-type="@sys:String" />
+  <doc-prop name="delim" owner-type="macroIconList" data-type="@sys:String" />
+  <doc-prop name="delim" owner-type="list" data-type="@sys:String" />
+  <doc-prop name="descendantsAndSelf" owner-type="docType" data-type="@arraysys:String" />
+  <doc-prop name="descr" owner-type="docExample" data-type="@of:docDescr" />
+  <doc-prop name="dialogHeaderId" owner-type="recording" data-type="@sys:String" />
+  <doc-prop name="dialogSize" owner-type="recording" data-type="@enum:modalSize" />
+  <doc-prop name="displayStyle" owner-type="macroVideo" data-type="@sys:String" />
+  <doc-prop name="dlgLeft" owner-type="_mediaReplica" data-type="@sys:Boolean" />
+  <doc-prop name="endPos" owner-type="_sndSent" data-type="@sys:Number" />
+  <doc-prop name="endPos" owner-type="phrase" data-type="@sys:Number" />
+  <doc-prop name="enums" owner-type="docEnum" data-type="@sys:List`1" />
+  <doc-prop name="enums" owner-type="docTagsMeta" data-type="@sys:List`1" />
+  <doc-prop name="evalBtn" owner-type="docExample" data-type="@of:evalButton" />
+  <doc-prop name="evalButtonId" owner-type="evalControl" data-type="@sys:String" />
+  <doc-prop name="evalButtonId" owner-type="singleChoice" data-type="@sys:String" />
+  <doc-prop name="evalControlIds" owner-type="_evalGroup" data-type="@arraysys:String" />
+  <doc-prop name="evalGroup" summary="and-[id] nebo [id]-exchangeable nebo and-[id]-exchangeable." owner-type="evalControl" data-type="@sys:String"><![CDATA[
+Pro radioButton pouze [id]??
+]]></doc-prop>
+  <doc-prop name="header" owner-type="docExample" data-type="@of:headerProp" />
+  <doc-prop name="hidden" summary=" pro offering s drop-down : offering se nezobrazi." owner-type="offering" data-type="@sys:Boolean" />
+  <doc-prop name="hidden" owner-type="mediaText" data-type="@sys:Boolean" />
+  <doc-prop name="hint" owner-type="gapFill" data-type="@sys:String" />
+  <doc-prop name="icon" owner-type="macroIconList" data-type="@enum:listIcon" />
+  <doc-prop name="icon" owner-type="list" data-type="@enum:listIcon" />
+  <doc-prop name="iconId" owner-type="_mediaReplica" data-type="@enum:IconIds" />
+  <doc-prop name="id" summary="jednoznacna identifikace elementu" owner-type="tag" data-type="@sys:String"><![CDATA[
+??
+]]></doc-prop>
+  <doc-prop name="idx" owner-type="_sndSent" data-type="@sys:Number" />
+  <doc-prop name="idx" owner-type="_mediaSent" data-type="@sys:Number" />
+  <doc-prop name="idx" owner-type="phrase" data-type="@sys:Number" />
+  <doc-prop name="initValue" owner-type="checkLow" data-type="@enum:threeStateBool" />
+  <doc-prop name="initValue" owner-type="radioButton" data-type="@sys:Boolean" />
+  <doc-prop name="initValue" owner-type="gapFill" data-type="@sys:String" />
+  <doc-prop name="inlineType" owner-type="smartElement" data-type="@enum:smartElementTypes" />
+  <doc-prop name="inlineType" owner-type="macroTable" data-type="@enum:inlineControlTypes" />
+  <doc-prop name="inlineType" owner-type="macroList" data-type="@enum:inlineControlTypes" />
+  <doc-prop name="inlineType" owner-type="inlineTag" data-type="@enum:inlineElementTypes" />
+  <doc-prop name="instrBody" owner-type="body" data-type="@sys:String" />
+  <doc-prop name="instrs" owner-type="body" data-type="@arraysys:String" />
+  <doc-prop name="instrTitle" owner-type="body" data-type="@sys:String" />
+  <doc-prop name="intervals" owner-type="_sndGroup" data-type="@sys:List`1" />
+  <doc-prop name="isAnd" owner-type="_evalGroup" data-type="@sys:Boolean" />
+  <doc-prop name="isExchangeable" owner-type="_evalGroup" data-type="@sys:Boolean" />
+  <doc-prop name="isHtml" owner-type="docType" data-type="@sys:Boolean" />
+  <doc-prop name="isHtml" owner-type="docProp" data-type="@sys:Boolean" />
+  <doc-prop name="isIgn" owner-type="docType" data-type="@sys:Boolean" />
+  <doc-prop name="isPassive" owner-type="_sndGroup" data-type="@sys:Boolean" />
+  <doc-prop name="isStriped" owner-type="macroIconList" data-type="@sys:Boolean" />
+  <doc-prop name="isStriped" owner-type="list" data-type="@sys:Boolean" />
+  <doc-prop name="isStriped" owner-type="listGroup" data-type="@sys:Boolean" />
+  <doc-prop name="leftRandom" owner-type="pairing" data-type="@sys:Boolean" />
+  <doc-prop name="leftWidth" owner-type="smartPairing" data-type="@enum:pairingLeftWidth" />
+  <doc-prop name="leftWidth" owner-type="pairing" data-type="@enum:pairingLeftWidth" />
+  <doc-prop name="limitMax" owner-type="writing" data-type="@sys:Number" />
+  <doc-prop name="limitMax" owner-type="recording" data-type="@sys:Number" />
+  <doc-prop name="limitMin" owner-type="writing" data-type="@sys:Number" />
+  <doc-prop name="limitMin" owner-type="recording" data-type="@sys:Number" />
+  <doc-prop name="limitRecommend" owner-type="writing" data-type="@sys:Number" />
+  <doc-prop name="limitRecommend" owner-type="recording" data-type="@sys:Number" />
+  <doc-prop name="maxScore" owner-type="_evalPage" data-type="@sys:Number" />
+  <doc-prop name="maxScore" owner-type="_evalGroup" data-type="@sys:Number" />
+  <doc-prop name="mediaUrl" owner-type="macroVideo" data-type="@sys:String" />
+  <doc-prop name="mediaUrl" owner-type="urlTag" data-type="@sys:String" />
+  <doc-prop name="mode" owner-type="smartOffering" data-type="@enum:smartOfferingMode" />
+  <doc-prop name="mode" summary=" pro &quot;drop-down&quot; tagy: drop-down-discard&quot; =&gt; kazdy prvek nabidky muze byt vybrana pouze jednim drop-down elementem. drop-down-mode=&quot;keep&quot; =&gt; jeden prvek nabidky muze pouzit vice drop-down elementu" owner-type="offering" data-type="@enum:offeringDropDownMode" />
+  <doc-prop name="msg" owner-type="error" data-type="@sys:String" />
+  <doc-prop name="myProps" owner-type="docType" data-type="@arraysys:String" />
+  <doc-prop name="name" owner-type="macroTemplate" data-type="@sys:String" />
+  <doc-prop name="name" owner-type="docNamed" data-type="@sys:String" />
+  <doc-prop name="numberOfPhrases" summary=" uvedena konstrukce slouží k vytvoření dialogu z plain textu. Podporován je POUZE souvislý text (bez přeskakování zvukových vět). Takže zápis je ten, že pro každou repliku se určí POČET vět repliky (určovat začátek a konec je zbytečně složité). Další replika začíná první větou po poslední větě předchozí repliky. jestli preci jenom ale nebude nejlepsi &quot;take-phrases&quot; (puvodne &quot;sent-take&quot;)." owner-type="replica" data-type="@sys:Number" />
+  <doc-prop name="numberOfRows" owner-type="writing" data-type="@sys:Number" />
+  <doc-prop name="offeringId" summary=" Pri nastaveni offeringId se zaroven na stejnou hodnotu nastavi i smartWidth (pokud smartWidth jiz neni nastavena na neco jineho)" owner-type="edit" data-type="@sys:String" />
+  <doc-prop name="order" owner-type="body" data-type="@sys:Number" />
+  <doc-prop name="ownerType" owner-type="docProp" data-type="@sys:String" />
+  <doc-prop name="passive" owner-type="mediaText" data-type="@sys:Boolean" />
+  <doc-prop name="phraseIdx" owner-type="phraseReplace" data-type="@sys:Number" />
+  <doc-prop name="props" owner-type="docTagsMeta" data-type="@sys:List`1" />
+  <doc-prop name="radioGroups" owner-type="_evalPage" data-type="@sys:String" />
+  <doc-prop name="radioGroupsObj" owner-type="_evalPage" data-type="@sys:Dictionary`2" />
+  <doc-prop name="random" owner-type="smartPairing" data-type="@sys:Boolean" />
+  <doc-prop name="readOnly" owner-type="checkLow" data-type="@sys:Boolean" />
+  <doc-prop name="readOnly" owner-type="radioButton" data-type="@sys:Boolean" />
+  <doc-prop name="readOnly" owner-type="singleChoice" data-type="@sys:Boolean" />
+  <doc-prop name="readOnly" owner-type="gapFill" data-type="@sys:Boolean" />
+  <doc-prop name="recordInDialog" owner-type="recording" data-type="@sys:Boolean" />
+  <doc-prop name="replicaPhraseIdx" owner-type="phraseReplace" data-type="@sys:String" />
+  <doc-prop name="right" owner-type="pairingItem" data-type="@sys:String" />
+  <doc-prop name="scoreAsRatio" owner-type="evalButton" data-type="@sys:Boolean" />
+  <doc-prop name="scoreWeight" owner-type="evalControl" data-type="@sys:Number" />
+  <doc-prop name="scoreWeight" owner-type="singleChoice" data-type="@sys:Number" />
+  <doc-prop name="seeAlsoLinks" owner-type="body" data-type="@sys:String" />
+  <doc-prop name="sf" owner-type="_sndGroup" data-type="@of:_sndFile" />
+  <doc-prop name="shareMediaId" owner-type="mediaTag" data-type="@sys:String" />
+  <doc-prop name="singleAttempt" owner-type="recording" data-type="@sys:Boolean" />
+  <doc-prop name="skipEvaluation" owner-type="checkLow" data-type="@sys:Boolean" />
+  <doc-prop name="skipEvaluation" owner-type="radioButton" data-type="@sys:Boolean" />
+  <doc-prop name="skipEvaluation" owner-type="singleChoice" data-type="@sys:Boolean" />
+  <doc-prop name="skipEvaluation" owner-type="gapFill" data-type="@sys:Boolean" />
+  <doc-prop name="smartText" owner-type="smartTag" data-type="@sys:String" />
+  <doc-prop name="src" owner-type="img" data-type="@sys:String" />
+  <doc-prop name="styleSheet" summary="CSS pro descendant elementy tohoto elementu, napr. gap-fill { case-sensitive:true; }" owner-type="tag" data-type="@sys:String" />
+  <doc-prop name="subset" owner-type="mediaTag" data-type="@sys:String" />
+  <doc-prop name="summary" owner-type="docNamed" data-type="@sys:String" />
+  <doc-prop name="tagName" owner-type="htmlTag" data-type="@sys:String" />
+  <doc-prop name="temporaryMacroItem" owner-type="tag" data-type="@sys:Boolean" />
+  <doc-prop name="tempReplicas" owner-type="_sndFile" data-type="@sys:List`1" />
+  <doc-prop name="text" owner-type="_sndSent" data-type="@sys:String" />
+  <doc-prop name="text" owner-type="phrase" data-type="@sys:String" />
+  <doc-prop name="text" owner-type="ttsSound" data-type="@sys:String" />
+  <doc-prop name="textId" owner-type="macroTrueFalse" data-type="@enum:CheckItemTexts" />
+  <doc-prop name="textType" owner-type="checkLow" data-type="@enum:CheckItemTexts" />
+  <doc-prop name="title" owner-type="text" data-type="@sys:String" />
+  <doc-prop name="title" owner-type="body" data-type="@sys:String" />
+  <doc-prop name="todo" owner-type="docExample" data-type="@sys:Boolean" />
+  <doc-prop name="types" owner-type="docTagsMeta" data-type="@sys:List`1" />
+  <doc-prop name="width" owner-type="edit" data-type="@sys:Number" />
+  <doc-prop name="widthGroup" owner-type="edit" data-type="@sys:String" />
+  <doc-prop name="words" owner-type="smartOffering" data-type="@sys:String" />
+  <doc-prop name="words" summary=" seznam prvku nabidky, oddeleny &quot;|&quot;" owner-type="offering" data-type="@sys:String" />
+  <doc-prop name="words" owner-type="wordSelection" data-type="@sys:String" />
+  <doc-prop name="words" owner-type="wordMultiSelection" data-type="@sys:String" />
+  <doc-prop name="xref" owner-type="docType" data-type="@sys:String" />
+  <doc-prop name="xref" owner-type="docEnum" data-type="@sys:String" />
+  <doc-prop name="xref" owner-type="docEnumItem" data-type="@sys:String" />
+  <doc-prop name="xref" owner-type="docProp" data-type="@sys:String" />
+  <doc-enum name="pairingLeftWidth">
+    <doc-enum-item name="normal" />
+    <doc-enum-item name="small" />
+    <doc-enum-item name="xsmall" />
+    <doc-enum-item name="large" />
+  </doc-enum>
+  <doc-enum name="smartOfferingMode">
+    <doc-enum-item name="gapFill" />
+    <doc-enum-item name="dropDownDiscard" />
+    <doc-enum-item name="dropDownKeep" />
+    <doc-enum-item name="gapFillPassive" />
+  </doc-enum>
+  <doc-enum name="smartElementTypes">
+    <doc-enum-item name="no" />
+    <doc-enum-item name="gapFill" />
+    <doc-enum-item name="dropDown" />
+    <doc-enum-item name="offering" />
+    <doc-enum-item name="img" />
+    <doc-enum-item name="wordSelection" />
+  </doc-enum>
+  <doc-enum name="CheckItemTexts">
+    <doc-enum-item name="yesNo" />
+    <doc-enum-item name="trueFalse" />
+    <doc-enum-item name="no" />
+  </doc-enum>
+  <doc-enum name="inlineControlTypes">
+    <doc-enum-item name="no" />
+    <doc-enum-item name="GapFill" />
+    <doc-enum-item name="GapFill_Correction" />
+    <doc-enum-item name="WordSelection" />
+    <doc-enum-item name="DragTarget" />
+    <doc-enum-item name="img" />
+    <doc-enum-item name="TtsSound" />
+  </doc-enum>
+  <doc-enum name="listIcon">
+    <doc-enum-item name="number" />
+    <doc-enum-item name="letter" />
+    <doc-enum-item name="upperLetter" />
+    <doc-enum-item name="angleDoubleRight" />
+    <doc-enum-item name="angleRight" />
+    <doc-enum-item name="arrowCircleORight" />
+    <doc-enum-item name="arrowCircleRight" />
+    <doc-enum-item name="arrowRight" />
+    <doc-enum-item name="caretRight" />
+    <doc-enum-item name="caretSquareORight" />
+    <doc-enum-item name="chevronCircleRight" />
+    <doc-enum-item name="chevronRight" />
+    <doc-enum-item name="handORight" />
+    <doc-enum-item name="longArrowRight" />
+    <doc-enum-item name="play" />
+    <doc-enum-item name="playCircle" />
+    <doc-enum-item name="playCircleO" />
+    <doc-enum-item name="circleONotch" />
+    <doc-enum-item name="cog" />
+    <doc-enum-item name="refresh" />
+    <doc-enum-item name="spinner" />
+    <doc-enum-item name="squareO" />
+    <doc-enum-item name="bullseye" />
+    <doc-enum-item name="asterisk" />
+    <doc-enum-item name="circle" />
+    <doc-enum-item name="circleO" />
+    <doc-enum-item name="circleThin" />
+    <doc-enum-item name="dotCircleO" />
+  </doc-enum>
+  <doc-enum name="colors">
+    <doc-enum-item name="black" />
+    <doc-enum-item name="white" />
+    <doc-enum-item name="primary" />
+    <doc-enum-item name="success" />
+    <doc-enum-item name="info" />
+    <doc-enum-item name="warning" />
+    <doc-enum-item name="danger" />
+  </doc-enum>
+  <doc-enum name="threeStateBool">
+    <doc-enum-item name="no" />
+    <doc-enum-item name="true" />
+    <doc-enum-item name="false" />
+  </doc-enum>
+  <doc-enum name="offeringDropDownMode">
+    <doc-enum-item name="dropDownDiscard" />
+    <doc-enum-item name="dropDownKeep" />
+    <doc-enum-item name="gapFillIgnore" summary=" pokud jsou ve cviceni gap-fill's bez offering-id, tak se nepridaji do offeringu." />
+  </doc-enum>
+  <doc-enum name="modalSize">
+    <doc-enum-item name="normal" />
+    <doc-enum-item name="small" />
+    <doc-enum-item name="large" />
+  </doc-enum>
+  <doc-enum name="IconIds" summary=" descr">
+    <doc-enum-item name="no" />
+    <doc-enum-item name="a" />
+    <doc-enum-item name="b" />
+    <doc-enum-item name="c" />
+    <doc-enum-item name="d" />
+    <doc-enum-item name="e" />
+    <doc-enum-item name="f" />
+  </doc-enum>
+  <doc-enum name="inlineElementTypes">
+    <doc-enum-item name="no" />
+    <doc-enum-item name="gapFill" />
+    <doc-enum-item name="gapFillCorrection" />
+    <doc-enum-item name="wordSelection" />
+    <doc-enum-item name="dropDown" />
+    <doc-enum-item name="img" />
+    <doc-enum-item name="ttsSound" />
+  </doc-enum>
+</doc-tags-meta>

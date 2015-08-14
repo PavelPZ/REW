@@ -219,9 +219,9 @@ public static class DictForCourse {
   //spolecny option pro course -> dict link
   public class dictOptions {
     public dictOptions() {
-      string dirFn = Machines.basicPath + @"rew\Web4\RwDicts\LingeaSound\dir.txt";
+      string dirFn = Machines.rootPath + @"RwDicts\LingeaSound\dir.txt";
       if (!File.Exists(dirFn)) {
-        var temp = Directory.EnumerateFiles(Machines.basicPath + @"rew\Web4\RwDicts\LingeaSound", "*.info", SearchOption.AllDirectories).
+        var temp = Directory.EnumerateFiles(Machines.rootPath + @"RwDicts\LingeaSound", "*.info", SearchOption.AllDirectories).
           Select(fn => fn.Split('\\').Reverse().Take(2).Concat(File.ReadAllText(fn).Split('=')).ToArray()).
           Select(parts => new { id = parts[1] + "/" + parts[0].Replace(".info", null), crsLang = LowUtils.EnumParse<Langs>(parts[2]), word = parts[3] }).ToArray();
         sounds = temp.GroupBy(s => s.crsLang).ToDictionary(g => g.Key, g => g.GroupBy(cg => cg.word.ToLower()).ToDictionary(cg => cg.Key, cg => cg.First().id));
@@ -268,7 +268,7 @@ public static class DictForCourse {
   public class dictCrsData {
     public dictCrsData(Langs crsLang, dictOptions options) {
       this.options = options; this.crsLang = crsLang;
-      var formsFn = string.Format(Machines.basicPath + @"rew\Web4\RwDicts\Forms\{0}forms_{1}.xml", options.lingeaOnly ? "ling_" : null, crsLang);
+      var formsFn = string.Format(Machines.rootPath + @"RwDicts\Forms\{0}forms_{1}.xml", options.lingeaOnly ? "ling_" : null, crsLang);
       try {
         forms = LookupLib.fromStrings(File.ReadAllLines(formsFn));
       } catch {
@@ -298,7 +298,7 @@ public static class DictForCourse {
       foreach (DictEntryType type in crsData.options.lingeaOnly ? XExtension.Create(DictEntryType.lingeaOld) : crsData.options.dictTypes) {
         switch (type) {
           case DictEntryType.lingeaOld:
-            string fn = Machines.basicPath + string.Format(@"rew\Web4\RwDicts\Sources\LingeaOld\{1}_{0}.xml", crsData.crsLang, natLang);
+            string fn = Machines.rootPath + string.Format(@"RwDicts\Sources\LingeaOld\{1}_{0}.xml", crsData.crsLang, natLang);
             if (!File.Exists(fn)) continue;
             var dict = XmlUtils.FileToObject<DictObj>(fn);
             //provazani hesla se zvukem
@@ -473,7 +473,7 @@ public static class DictForCourse {
       //new ParallelOptions { MaxDegreeOfParallelism = 1 },
       lng => DictForCourses(lng,
         CommonLib.bigLocalizations, //.Where(l => l == Langs.bg_bg),
-        XmlUtils.FileToObject<DictCrsWords>(string.Format(Machines.basicPath + @"rew\Web4\RwDicts\UsedWords\CourseWords_{0}.xml", lng)),
+        XmlUtils.FileToObject<DictCrsWords>(string.Format(Machines.rootPath + @"RwDicts\UsedWords\CourseWords_{0}.xml", lng)),
         options)
     );
   }

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Page class="cls1 cls2" SubType="Dragging_MarkUsed" id="root">
+  <Pairing>
+    <PairingItem SubType="Row_Percent">
+      <Cell Offset="0" Width="49">Left</Cell>
+      <Cell Offset="51" Width="49">Right</Cell>
+    </PairingItem>
+    <PairingItem SubType="Row_Percent">
+      <Cell Offset="0" Width="49">Left 2</Cell>
+      <Cell Offset="51" Width="49">Right 2</Cell>
+    </PairingItem>
+  </Pairing>
+  <Row class="c-gapfill-lineheight">
+    <Cell Offset="0" Width="6">Toto je <GapFill id="gp1" InitValue="[gap fill Init]"><CorrectValues><string>OK1</string><string>OK2</string></CorrectValues></GapFill>GapFill.<GapFill id="gp2" PlaceHolder="Type text"><CorrectValues><string>OK3</string><string>OK4</string></CorrectValues></GapFill></Cell>
+    <Cell Offset="0" Width="6">Toto je <GapFill id="gp1" InitValue="[gap fill Init]"><CorrectValues><string>OK1</string><string>OK2</string></CorrectValues></GapFill>GapFill.<GapFill id="gp2" PlaceHolder="Type text"><CorrectValues><string>OK3</string><string>OK4</string></CorrectValues></GapFill></Cell>
+  </Row>
+  <table>
+    <tr>
+      <td>cell 1</td>
+      <td>Toto je <GapFill id="gp1" InitValue="[gap fill Init]"><CorrectValues><string>OK1</string><string>OK2</string></CorrectValues></GapFill>GapFill.<GapFill id="gp2" PlaceHolder="Type text"><CorrectValues><string>OK3</string><string>OK4</string></CorrectValues></GapFill></td>
+    </tr>
+  </table>
+  <info title="Titulek stranky" instrTitle="Instr" instrs="Instr1 Instr2" />
+</Page>

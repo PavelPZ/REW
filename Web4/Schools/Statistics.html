@@ -1,0 +1,56 @@
+statRoot
+###
+<div class="app-school gramm rtl">
+  {{for #data tmpl=~T('statTopBar')/}}
+</div>
+###
+statTopBar
+###
+<div class="navbar navbar-{{:~CourseMeta.navBar()}}">
+  <div class="container">
+    <a href="#" target="_top" class="navbar-brand lm-logo-black lm-logo-black-small pull-left" data-bind="click: backToCourseClick"></a>
+    <div class="btn btn-large btn-info lm-green-btn pull-left" data-bind="click: backToCourseClick">
+      {{:~CSLocalize('ece88a7b1d46448d85e8864852ffe77d', 'Course')}}
+      <span class="fa fa-reply"></span>
+    </div>
+    <div class="nav-title pull-left" data-bind="text: !emptyStat() ? actGroup.title + ': ' + actStat.title : ''"></div>
+    <button class="pull-right btn btn-default btn-lg navbar-btn" data-toggle="collapse" data-target="#collapse-stat">{{:~CSLocalize('f9e4b42614fc4f47b2c378e2da896c0b', 'Statistics')}}</button>
+    <button class="pull-right btn btn-default btn-lg navbar-btn" data-bind="visible: !emptyStat()" data-toggle="collapse" data-target="#collapse-export">{{:~CSLocalize('ef9d93c9d2a548c398e5ff6b6a54024b', 'Exports')}}</button>
+  </div>
+</div>
+<div class="container rtl">
+  <div id="collapse-export" data-role="collapsed" class="lm-collapse panel panel-default">
+    {{for #data tmpl=~T('TCollapseClose')/}}
+    <br />
+    <div class="panel-body">
+      {{for exports}}
+      <div class="export-col" data-bind="click: function() { clickBtn('Print{{:name}}Btn'); }">
+        <div class="export-icon export-{{:name.toLowerCase()}}">
+          {{:title}}
+        </div>
+      </div>
+      {{/for}}
+    </div>
+  </div>
+  <div id="collapse-stat" data-role="collapsed" class="lm-collapse panel panel-default" data-bind="style: {display: emptyStat() ? 'block' : 'none'}">
+    {{for #data tmpl=~T('TCollapseClose')/}}
+    <div class="row">
+      {{for groups}}
+      <div class="col-xs-4 text-{{:color}}">
+        <h3 class="">{{:title}}</h3>
+        {{for infos}}
+        <div class="stat-item" data-bind="click: function() {location.href='statistics.aspx?view={{:name}}'}">
+          <i class="fa fa-bar-chart-o fa-2x pull-left fa-border"></i>
+          <h4 class="media-heading">{{:title}}</h4>
+        </div>
+        <div class="clearfix"></div>
+        {{/for}}
+      </div>
+      {{/for}}
+    </div>
+  </div>
+</div>
+###
+TCollapseClose
+###
+<div class="lm-close btn btn-default fa fa-times" data-bind="click: anim.collapseExpandedSlow"></div>

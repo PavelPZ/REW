@@ -1,0 +1,20 @@
+﻿Install-Package Microsoft.AspNet.Web.Optimization:  
+  http://nuget.org/packages/Microsoft.AspNet.Web.Optimization/1.0.0
+  q:\LMCom\rew\Web4\Bin\Antlr3.Runtime.dll
+  q:\LMCom\rew\Web4\Bin\Microsoft.Web.Infrastructure.dll
+  q:\LMCom\rew\Web4\Bin\System.Web.Optimization.dll
+  q:\LMCom\rew\Web4\Bin\WebGrease.dll
+
+Install-Package EntityFramework -Version 5.0.0
+
+//obsolete?
+Install-Package jQuery
+Install-Package knockoutjs
+Install-Package BundleTransformer.Less
+Install-Package BundleTransformer.Typescript
+Install-Package jQuery.UI.Combined
+Install-Package jQuery.UI.Themes.lightness
+Install-Package TypeScriptBundleTransform
+Install-Package jquery.mobile
+Install-Package Saltarelle.Runtime 
+Install-Package Sammy.js

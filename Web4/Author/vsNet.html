@@ -1,0 +1,27 @@
+﻿!vsNetEx
+###
+<div data-bind="with: Pager.ActPage" class="app-school content-place">
+  <div class="container">
+    <div>{{for #data tmpl=~T('TSchoolCpv')/}}</div>
+    <div class="instr hidden-vsnet" data-bind="css: exerciseEvaluated() ? 'hide' : ''">
+      <a class="btn btn-link btn-block btn-default" data-toggle="collapse" data-target="#collapse-instr2">
+        <span class="fa fa-info-circle fa-lg"></span>&nbsp;&nbsp;
+        <span data-bind="text: ex.page.instrTitle"></span>
+      </a>
+      <div id="collapse-instr2" class="lm-collapse" data-role="collapsed" data-bind="html: instrBody"></div>
+      <a class="btn btn-success green" data-bind="click: evaluateClick"><span class="fa fa-play"></span></a>
+    </div>
+    <div class="alert alert-success ex-evaluated" data-bind="css: exerciseEvaluated() ? '' : 'hide'">
+      <i class="fa fa-check-circle fa-lg"></i>&nbsp;&nbsp;<span>{{:~CSLocalize('5c55a75e584e457d89734dad6256617d', 'Task completed')}}&nbsp;</span><div class="inline" data-bind="text: score() ? ': ' + score() : ''"></div>
+      <button data-bind="click: resetClick" class="btn btn-default"><i class="fa fa-repeat"></i>&nbsp;{{:~CSLocalize('cbde47480d4942968a885559075e39ea', 'Reset')}}</button>
+    </div>
+  </div>
+  <div class="container">
+    <h3><span class="fa fa-{{:iconId()}}"></span>&nbsp;{{:title()}}</h3>
+    <div id="exercise" class="{{:~CourseMeta.gui.exerciseCls()}}" >
+      {{:~CourseMeta.gui.exerciseHtml()}}
+    </div>
+    <div data-bind="template: seeAlsoTemplate"></div>
+  </div>
+</div>
+###

@@ -1,0 +1,12 @@
+﻿TTwoColumn
+###
+<div class="row">
+  <div class="col-md-{{:#data[0].width}} lm-col-first">
+    {{for #data[0].data tmpl=~T(#data[0].tmpl)/}}
+  </div>
+  {{if #data[1] && #data[1].data}}
+  <div class="col-md-{{:#data[1].width}} lm-col">
+    {{for #data[1].data tmpl=~T(#data[1].tmpl)/}}
+  </div>
+  {{/if}}
+</div>

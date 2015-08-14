@@ -1,0 +1,11 @@
+﻿!SelectLang
+###
+  <div data-bind="with:ActPage(), delegatedHandler: ['click']">
+    {{jqm_listview InSet="true" Filter="true"}}
+    {{for locs}}
+      {{jqm_list_item Url=("select," + lang)}}{{:title}}{{/jqm_list_item}}
+    {{/for}}
+    {{/jqm_listview}}
+  </div>
+
+

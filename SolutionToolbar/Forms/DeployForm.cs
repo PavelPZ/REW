@@ -200,7 +200,8 @@ namespace Author {
       WebClient wc = new WebClient();
       wc.Encoding = Encoding.UTF8;
       var json = Newtonsoft.Json.JsonConvert.SerializeObject(data);
-      var res = wc.UploadData(webAppUrl + "/Service.ashx?type=" + data.GetType().FullName, Encoding.UTF8.GetBytes(json));
+      var uploadUrl = webAppUrl + "/Service.ashx?type=" + data.GetType().FullName;
+      var res = wc.UploadData(uploadUrl, Encoding.UTF8.GetBytes(json));
       RpcResponse resp = Newtonsoft.Json.JsonConvert.DeserializeObject<RpcResponse>(Encoding.UTF8.GetString(res));
       if (resp.error != 0) throw new Exception(resp.errorText);
       return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(Newtonsoft.Json.JsonConvert.SerializeObject(resp.result));

@@ -1,0 +1,15 @@
+﻿TOkCancel
+###
+  <div class="{{:~numConverter(button,'lm-ok-cancel2', 'lm-ok2', 'lm-cancel2')}}">
+    <div class="lmbtn-ok2">
+      <div class="btn btn-large btn-success" data-bind="test:'ok-btn', click: function() { if (!$data.ok) return; ok(); }">
+        <span class="fa fa-check"></span>&nbsp;&nbsp;{{:~CSLocalize('b47affafabfb4971a311b80cdc1c1dc7', 'OK')}}
+      </div>
+    </div>
+    <div class="lmbtn-cancel2">
+      <div class="btn btn-default btn-large" data-bind="test:'cancel-btn', click: function() { if (!$data.cancel) LMStatus.gotoReturnUrl(); else cancel(); }">
+        <span class="fa fa-times"></span>&nbsp;&nbsp;{{:~CSLocalize('75ec6299556c4e2497dde2a7ec5626b2', 'Cancel')}}
+      </div>
+    </div>
+  </div>
+

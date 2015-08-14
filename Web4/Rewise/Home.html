@@ -1,0 +1,100 @@
+﻿!Home
+###
+  <div data-bind="with: Pager.ActPage(), delegatedHandler: ['click']">
+    <h1>Hallo Rewise</h1>
+  </div>
+
+<%-- 
+!Home
+###
+  <div data-bind="with:Pager.ActPage(), delegatedHandler: ['click']">
+  {{if ToLearnsEmpty}}
+    {{for #data tmpl="#Home_Empty" /}}
+  {{else}}
+    {{accordion Bind="expLine"}}
+      {{for ToLearns}}
+        {{acc_item Id=Data.Line}}
+          {{acc_header}}
+            {{:Title}}
+          {{/acc_header}}
+          {{acc_content}}
+            {{if Data.VocabularyEmpty}}
+              {{for #data tmpl=~tmpl("Home_LangToLearnEmpty") /}}
+            {{else}}
+              {{for #data tmpl=~tmpl("Home_LangToLearnFull") /}}
+            {{/if}}
+          {{/acc_content}}
+        {{/acc_item}}
+      {{/for}}
+    {{/accordion}}
+  {{/if}}
+  {{for #data tmpl="#Home_EndPart" /}}
+  </div>
+
+###
+Home_Empty
+###
+  {{listview}}
+    {{list_item Url="addRewise"}}
+    <h3>Language to Learn</h3>
+    <p>Select language to learn</p>
+    {{/list_item}}
+  {{/listview}}
+
+###
+Home_LangToLearnEmpty
+###
+  {{listview}}
+  {{list_item}}
+    <h3>My Vocabulary</h3>
+    {{listview}}
+      {{list_item Url=("gotoVocab," + Data.Line)}}Words from Books{{/list_item}}
+      {{list_item Url=("gotoOwnVocab," + Data.Line)}}My own words{{/list_item}}
+    {{/listview}}
+  {{/list_item}}
+  {{list_item Url=("removeRewise," + Data.Line)}}
+    Remove
+  {{/list_item}}
+  {{/listview}}
+
+###
+Home_LangToLearnFull
+###
+  {{listview}}
+  {{list_item Url=("runRewise,"+Data.Line)}}
+    <h3>Run RE-WISE</h3>
+  {{/list_item}}
+  {{list_item}}
+    <h3>My Vocabulary</h3>
+    {{listview}}
+      {{list_item Url=("gotoVocab," + Data.Line)}}Words from Books{{/list_item}}
+      {{list_item Url=("gotoOwnVocab," + Data.Line)}}My own words{{/list_item}}
+      {{list_item Url=("toLearn,"+Data.Line}}Prepared to learn{{/list_item}}
+      {{list_item Url=("search," + Data.Line)}}Search My Vocabulary{{/list_item}}
+    {{/listview}}
+  {{/list_item}}
+  {{list_item Url=("removeRewise,"+Data.Line)}}
+    Remove
+  {{/list_item}}
+  {{/listview}}
+
+###
+Home_EndPart
+###
+  <p>&nbsp;</p>
+  {{listview}}
+    {{if !ToLearnsEmpty}}
+    {{list_item Url="addRewise"}}
+      Add Language to learn
+    {{/list_item}}
+    {{/if}}
+    {{list_item Url="changeLoc"}}
+      Change Czech as a native language
+    {{/list_item}}
+    {{list_item Url="logout"}}
+      Logout
+    {{/list_item}}
+  {{/listview}}
+
+--%>
+

@@ -1,0 +1,172 @@
+﻿/*
+http://chrisplaneta.com/freebies/negativegrid-fluid-css-grid-by-chris-planeta/
+http://stackoverflow.com/questions/2779554/css-auto-height-on-containing-div-100-height-on-background-div-inside-contain
+http://www.positioniseverything.net/articles/onetruelayout/equalheight
+http://css-tricks.com/fluid-width-equal-height-columns/
+
+*/
+/*.lmgrid {
+    overflow: hidden;
+    clear: both;
+    .lmgrid-col();
+}
+
+.col-height () {
+    [class*="col-"] {
+        float: left;
+        margin-right: -100%;
+        padding-bottom: 30000px;
+        margin-bottom: -30000px;
+    }
+}
+
+.lmgrid-height {
+    overflow: hidden;
+    clear: both;
+    .lmgrid-colh();
+}*/
+.grid-1 {
+  overflow: hidden;
+  clear: both;
+}
+.grid-1 .col-1 {
+  width: 60%;
+}
+.grid-1 .col-2 {
+  margin-left: 60%;
+  width: 40%;
+}
+.grid-1 [class*="col-"] {
+  float: left;
+  margin-right: -100%;
+  padding-bottom: 30000px;
+  margin-bottom: -30000px;
+}
+.grid-2 {
+  overflow: hidden;
+  clear: both;
+}
+.grid-2 .col-1 {
+  width: 80%;
+}
+.grid-2 .col-2 {
+  margin-left: 80%;
+  width: 20%;
+}
+.grid-2 [class*="col-"] {
+  float: left;
+  margin-right: -100%;
+  padding-bottom: 30000px;
+  margin-bottom: -30000px;
+}
+.grid-3 {
+  overflow: hidden;
+  clear: both;
+}
+.grid-3 .col-1 {
+  width: 25%;
+}
+.grid-3 .col-12 {
+  width: 60%;
+}
+.grid-3 .col-2 {
+  margin-left: 25%;
+  width: 35%;
+}
+.grid-3 .col-23 {
+  margin-left: 25%;
+  width: 75%;
+}
+.grid-3 .col-3 {
+  margin-left: 60%;
+  width: 40%;
+}
+.grid-3 [class*="col-"] {
+  float: left;
+  margin-right: -100%;
+  padding-bottom: 30000px;
+  margin-bottom: -30000px;
+}
+.grid-4 {
+  overflow: hidden;
+  clear: both;
+}
+.grid-4 .col-1 {
+  width: 25%;
+}
+.grid-4 .col-12 {
+  width: 50%;
+}
+.grid-4 .col-123 {
+  width: 75%;
+}
+.grid-4 .col-2 {
+  margin-left: 25%;
+  width: 25%;
+}
+.grid-4 .col-23 {
+  margin-left: 25%;
+  width: 50%;
+}
+.grid-4 .col-234 {
+  margin-left: 25%;
+  width: 75%;
+}
+.grid-4 .col-3 {
+  margin-left: 50%;
+  width: 25%;
+}
+.grid-4 .col-34 {
+  margin-left: 50%;
+  width: 50%;
+}
+.grid-4 .col-4 {
+  margin-left: 75%;
+  width: 25%;
+}
+.grid-4 [class*="col-"] {
+  float: left;
+  margin-right: -100%;
+  padding-bottom: 30000px;
+  margin-bottom: -30000px;
+}
+.grid-3-height {
+  overflow: hidden;
+  clear: both;
+}
+.grid-3-height .col-3 {
+  width: 100%;
+}
+.grid-3-height .col-2 {
+  width: 66.67%;
+}
+.grid-3-height .col-1 {
+  width: 33.33%;
+}
+.grid-3-height .colp-3 {
+  width: 100%;
+  padding: 0, 0%;
+}
+.grid-3-height .colp-2 {
+  width: 66.7%;
+  padding: 0, 0%;
+}
+.grid-3-height .colp-1 {
+  width: 33.3%;
+  padding: 0, 0%;
+}
+.grid-3-height .push-2 {
+  margin-left: 66.67%;
+}
+.grid-3-height .push-1 {
+  margin-left: 33.33%;
+}
+.grid-3-height .push-0 {
+  margin-left: 0%;
+}
+.grid-3-height [class*="col-"] {
+  float: left;
+  margin-right: -100%;
+  padding-bottom: 30000px;
+  margin-bottom: -30000px;
+}

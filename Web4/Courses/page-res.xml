@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" class="cls1 cls2" SubType="Dragging_MarkUsed" Id="root" TechInstructionPtrs="Instr1 Instr2">
+  <Items>
+    <Pairing>
+      <Items>
+        <PairingItem SubType="Row_Percent">
+          <Items>
+            <Cell Offset="0" Width="49">
+              <Items>
+                <Text>
+                  <Items />
+                  <Title>Left</Title>
+                </Text>
+              </Items>
+            </Cell>
+            <Cell Offset="51" Width="49">
+              <Items>
+                <Text>
+                  <Items />
+                  <Title>Right</Title>
+                </Text>
+              </Items>
+            </Cell>
+          </Items>
+        </PairingItem>
+        <PairingItem SubType="Row_Percent">
+          <Items>
+            <Cell Offset="0" Width="49">
+              <Items>
+                <Text>
+                  <Items />
+                  <Title>Left 2</Title>
+                </Text>
+              </Items>
+            </Cell>
+            <Cell Offset="51" Width="49">
+              <Items>
+                <Text>
+                  <Items />
+                  <Title>Right 2</Title>
+                </Text>
+              </Items>
+            </Cell>
+          </Items>
+        </PairingItem>
+      </Items>
+    </Pairing>
+    <Row class="c-gapfill-lineheight">
+      <Items>
+        <Cell Offset="0" Width="6">
+          <Items>
+            <Text>
+              <Items />
+              <Title>Toto je </Title>
+            </Text>
+            <GapFill Id="gp1" InitValue="[gap fill Init]">
+              <Items />
+              <CorrectValues>
+                <string>OK1</string>
+                <string>OK2</string>
+              </CorrectValues>
+            </GapFill>
+            <Text>
+              <Items />
+              <Title>GapFill.</Title>
+            </Text>
+            <GapFill Id="gp2" PlaceHolder="Type text">
+              <Items />
+              <CorrectValues>
+                <string>OK3</string>
+                <string>OK4</string>
+              </CorrectValues>
+            </GapFill>
+          </Items>
+        </Cell>
+        <Cell Offset="0" Width="6">
+          <Items>
+            <Text>
+              <Items />
+              <Title>Toto je </Title>
+            </Text>
+            <GapFill Id="gp1" InitValue="[gap fill Init]">
+              <Items />
+              <CorrectValues>
+                <string>OK1</string>
+                <string>OK2</string>
+              </CorrectValues>
+            </GapFill>
+            <Text>
+              <Items />
+              <Title>GapFill.</Title>
+            </Text>
+            <GapFill Id="gp2" PlaceHolder="Type text">
+              <Items />
+              <CorrectValues>
+                <string>OK3</string>
+                <string>OK4</string>
+              </CorrectValues>
+            </GapFill>
+          </Items>
+        </Cell>
+      </Items>
+    </Row>
+    <table>
+      <Items>
+        <tr>
+          <Items>
+            <td>
+              <Items>
+                <Text>
+                  <Items />
+                  <Title>cell 1</Title>
+                </Text>
+              </Items>
+            </td>
+            <td>
+              <Items>
+                <Text>
+                  <Items />
+                  <Title>Toto je </Title>
+                </Text>
+                <GapFill Id="gp1" InitValue="[gap fill Init]">
+                  <Items />
+                  <CorrectValues>
+                    <string>OK1</string>
+                    <string>OK2</string>
+                  </CorrectValues>
+                </GapFill>
+                <Text>
+                  <Items />
+                  <Title>GapFill.</Title>
+                </Text>
+                <GapFill Id="gp2" PlaceHolder="Type text">
+                  <Items />
+                  <CorrectValues>
+                    <string>OK3</string>
+                    <string>OK4</string>
+                  </CorrectValues>
+                </GapFill>
+              </Items>
+            </td>
+          </Items>
+        </tr>
+      </Items>
+    </table>
+  </Items>
+  <Title>Titulek stranky</Title>
+  <Instruction>Instr</Instruction>
+</Page>

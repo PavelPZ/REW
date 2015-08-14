@@ -1,0 +1,43 @@
+﻿c_gen
+###{{include tmpl=~cT(#data)/}}###
+
+c_genitems
+###{{for Items}}{{include tmpl=~cT(#data)/}}{{/for}}###
+
+c_genitemsex
+###{{for Items}}<!-- ko with: Items[{{:#index}}] -->{{include tmpl=~T("c_gen")/}}<!-- /ko -->{{/for}}###
+
+c_tag
+###{{:~c_tagstart(#data)}}{{include tmpl=~T("c_genitems")/}}{{:~c_tagend(#data)}}###
+
+c_body
+###
+<div class="{{:~classes(#data)}}" data-bind="with: CourseMeta.actExPageControl">
+  {{include tmpl=~T("c_genitems")/}}
+</div>
+###
+
+c_textnew
+###{{:~c_unescape(#data)}}###
+
+c_evalbutton
+###
+<!-- ko with: getItem('{{:id}}') -->
+<div class="btn btn-success oli-cancel-stop-sound {{:~classes(#data)}}" data-bind="click:click, css:st" {{:srcPosition()}}>
+  <b class="example-txt">Evaluate</b>
+  <div class="fa"></div>
+  <div class="score" data-bind="text:scoreText"></div>
+</div>
+<!-- /ko -->
+###
+
+c_smartelement
+###
+{{include tmpl=~T("c_genitems")/}}
+
+###
+c_extension
+###<!-- ko with: getItem('{{:id}}').myExtension -->{{for myExtension}}{{include tmpl=~T(getTemplateId())/}}{{/for}}<!-- /ko -->###
+
+dummyextension
+###<!--dummy-->###

@@ -1,0 +1,19 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:element nillable="true" name="root">
+    <xsd:complexType>
+      <xsd:sequence minOccurs="0">
+        <xsd:element minOccurs="0" maxOccurs="unbounded" nillable="true" name="rider" form="unqualified">
+          <xsd:complexType>
+            <xsd:sequence minOccurs="0">
+              <xsd:element minOccurs="0" nillable="true" type="xsd:string" name="Column1" form="unqualified"/>
+              <xsd:element minOccurs="0" nillable="true" type="xsd:integer" name="Column_1st_session" form="unqualified"/>
+              <xsd:element minOccurs="0" nillable="true" type="xsd:date" name="Column_2nd_session" form="unqualified"/>
+              <xsd:element minOccurs="0" nillable="true" type="xsd:boolean" name="Column_3rd_session" form="unqualified"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

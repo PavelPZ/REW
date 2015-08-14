@@ -1,0 +1,29 @@
+﻿!login
+###
+<div data-bind="test:'login', with: Pager.ActPage, delegatedHandler: ['click']" class="app-login rtl">
+  {{for #data tmpl=~T('TTopBarLogin')/}}
+  <div class="container form-horizontal">
+    <fieldset>
+      <br />
+      <legend>{{:~CSLocalize('305188cfd4314deeadfde6eb5c5f44f9', 'Log in in one of the following ways:')}}</legend>
+      {{for viewModel}}
+      <div class="login-icon login-{{:name}} lm-clickable" data-bind="test:'{{:name}}'" data-click="call_provider" data-delegate-index="{{:id}}"></div>
+      {{/for}}
+      <div class="clearfix"></div>
+      <%--<br />
+      {{for #data tmpl=~T('TOkCancel')/}}--%>
+    </fieldset>
+
+  </div>
+</div>
+
+###
+TTopBarLogin
+###
+<div class="navbar navbar-{{:~CourseMeta.navBar()}} lm-header">
+  <div class="container">
+    <ul class="nav pull-right"></ul>
+    <a href="#" class="lm-logo-black" onmousedown="lmConsole.sendStart(this)" onmouseup="lmConsole.sendEnd(this)"></a>
+  </div>
+</div>
+

@@ -111,6 +111,25 @@ namespace CourseMeta {
       }
     }
 
+    public static IEnumerable<data> generateBlendedProduct() {
+      Dictionary<CourseIds, string[]> ids = new Dictionary<CourseIds, string[]>() {
+        { CourseIds.English,  new string[] { "lessons/lesson_a1_1", "tests/checkpointtesta1_1", "pretesta1", "pretesta2", "pretestb1", "pretestb2" } },
+      };
+      data node;
+      foreach (var langProds in ids) {
+        var rootUrl = "/lm/blended/" + langProds.Key.ToString() + "/";
+        foreach (var id in langProds.Value) {
+          var url = rootUrl + id;
+          var prodId = url.Replace('/', '_');
+          url += "/";
+          node = Lib.publishers.find(url);
+          yield return prodDef.genCourse(Lib.publishers, "lm", "prods" + prodId, langProds.Key, id != "lessons/lesson_a1_1", dictTypes.no, new Langs[] { Langs.cs_cz, Langs.en_gb }, node.title,
+            new ptr(true, url) { takeChilds = childMode.selfChild }
+          );
+        }
+      }
+    }
+
     public static IEnumerable<data> generateEdusoftProduct() {
       string[] ids = new string[] { "demo/t01", "demo/t02", "demo/t03", "demo/t04", "demo/t05", "demo/t06", "demo/t07", "demo/t08", "demo/t09", "demo/t10", };
       CourseIds[] langs = new CourseIds[] { CourseIds.English };
@@ -118,11 +137,12 @@ namespace CourseMeta {
       foreach (var id in ids) {
         var rootUrl = "/edusoft/english/" + id + "/";
         node = Lib.publishers.find(rootUrl);
-        yield return prodDef.genCourse(Lib.publishers, "edusoft", "prods/etestme-demo/english/" + id, CourseIds.English , true, dictTypes.no, new Langs[] { Langs.vi_vn, Langs.en_gb }, node.title,
+        yield return prodDef.genCourse(Lib.publishers, "edusoft", "prods/etestme-demo/english/" + id, CourseIds.English, true, dictTypes.no, new Langs[] { Langs.vi_vn, Langs.en_gb }, node.title,
           new ptr(true, "/edusoft/english/" + id + "/") { takeChilds = childMode.selfChild }
         );
       }
     }
+
 
     static Dictionary<CourseIds, string> transStandard = new Dictionary<CourseIds, string> { { CourseIds.English, "standard" }, { CourseIds.German, "standard" }, { CourseIds.Russian, "стандартный" }, { CourseIds.Spanish, "estándar" }, { CourseIds.Italian, "standard" }, { CourseIds.French, "standard" }, };
     static Dictionary<CourseIds, string> transComplete = new Dictionary<CourseIds, string> { { CourseIds.English, "complete" }, { CourseIds.German, "komplett" }, { CourseIds.Russian, "полный" }, { CourseIds.Spanish, "completo" }, { CourseIds.Italian, "completo" }, { CourseIds.French, "complet" }, };
@@ -169,7 +189,8 @@ namespace CourseMeta {
         _test_Demo_maps[idx] = root;
       }
       return _test_Demo_maps[idx];
-    } static XElement[] _test_Demo_maps = new XElement[] { null, null };
+    }
+    static XElement[] _test_Demo_maps = new XElement[] { null, null };
 
     static void skrivanek_demo_fakexml() {
       var root = CourseMeta.LangCourses.test_Demo_map(true);
@@ -279,16 +300,18 @@ namespace CourseMeta {
       IEnumerable<courseParts> getParts(CourseIds crsId) {
         int startIdx = 0;
         for (var levIdx = 0; levIdx < partsTake.Length; levIdx++) {
-          if (partsTake[levIdx] < 0) yield return new courseParts { //pouze jedna cast na level
-            startIdx = startIdx,
-            lev1 = new levelDescr { levIdx = levIdx }.toLevel(crsId, 0, string.Format("{0} ({1})", levNames[levIdx], partsSERR[levIdx * 2])),
-            lev2 = null
-          };
-          else yield return new courseParts { //dve casti na level
-            startIdx = startIdx++,
-            lev1 = new levelDescr { levIdx = levIdx, take = partsTake[levIdx] }.toLevel(crsId, 0, string.Format("{0} {1} ({2})", levNames[levIdx], string.Format(partMask, 1), partsSERR[levIdx * 2])),
-            lev2 = new levelDescr { levIdx = levIdx, skip = partsTake[levIdx] }.toLevel(crsId, 1, string.Format("{0} {1} ({2})", levNames[levIdx], string.Format(partMask, 2), partsSERR[levIdx * 2 + 1]))
-          };
+          if (partsTake[levIdx] < 0)
+            yield return new courseParts { //pouze jedna cast na level
+              startIdx = startIdx,
+              lev1 = new levelDescr { levIdx = levIdx }.toLevel(crsId, 0, string.Format("{0} ({1})", levNames[levIdx], partsSERR[levIdx * 2])),
+              lev2 = null
+            };
+          else
+            yield return new courseParts { //dve casti na level
+              startIdx = startIdx++,
+              lev1 = new levelDescr { levIdx = levIdx, take = partsTake[levIdx] }.toLevel(crsId, 0, string.Format("{0} {1} ({2})", levNames[levIdx], string.Format(partMask, 1), partsSERR[levIdx * 2])),
+              lev2 = new levelDescr { levIdx = levIdx, skip = partsTake[levIdx] }.toLevel(crsId, 1, string.Format("{0} {1} ({2})", levNames[levIdx], string.Format(partMask, 2), partsSERR[levIdx * 2 + 1]))
+            };
           startIdx++;
         }
       }
@@ -296,41 +319,41 @@ namespace CourseMeta {
 
     static Dictionary<Langs, langStrings> levelTitle = new Dictionary<Langs, langStrings>() {
       {Langs.en_gb, new langStrings {
-        levNames = new string[] {"Beginners", "False Beginners", "Pre-intermediate", "Intermediate", "Upper Intermediate"}, 
-        partMask = "part {0}", 
+        levNames = new string[] {"Beginners", "False Beginners", "Pre-intermediate", "Intermediate", "Upper Intermediate"},
+        partMask = "part {0}",
         withTest = " with Tests",
         partsTake = new int[] {8,8,8,8,9},
         partsSERR = new string[] {"A1","A1","A1-A2","A1-A2","A2","A2-B1","A2-B1","B1","B1-B2","B1-B2"},
       }},
       {Langs.de_de, new langStrings {
-        levNames = new string[] {"Anfänger", "Mittelfortgeschrittene", "Fortgeschrittene"}, 
-        partMask = "Teil {0}", 
+        levNames = new string[] {"Anfänger", "Mittelfortgeschrittene", "Fortgeschrittene"},
+        partMask = "Teil {0}",
         withTest = "",
         partsTake = new int[] {6,6,-1},
         partsSERR = new string[] {"A1","A1-A2","A2","A2-B1","B1-B2"},
       }},
       {Langs.sp_sp, new langStrings {
-        levNames = new string[] {"Inicial", "Intermedio", "Avanzado"}, 
-        partMask = "parte {0}", 
+        levNames = new string[] {"Inicial", "Intermedio", "Avanzado"},
+        partMask = "parte {0}",
         withTest = "",
         partsTake = new int[] {9,7,4},
         partsSERR = new string[] {"A1","A1-A2","A2","A2-B1","B1","B1-B2"},
       }},
       {Langs.fr_fr, new langStrings {
-        levNames = new string[] {"Débutants", "Débutants avancés", "Avancés"}, 
-        partMask = "partie {0}", 
+        levNames = new string[] {"Débutants", "Débutants avancés", "Avancés"},
+        partMask = "partie {0}",
         withTest = "",
         partsTake = new int[] {7,6,4},
         partsSERR = new string[] {"A1","A1-A2","A2","A2-B1","B1","B1-B2"},
       }},
-      {Langs.it_it, new langStrings {levNames = new string[] {"Principiante", "Intermedio", "Avanzato"}, 
-        partMask = "parte {0}", 
+      {Langs.it_it, new langStrings {levNames = new string[] {"Principiante", "Intermedio", "Avanzato"},
+        partMask = "parte {0}",
         withTest = "",
         partsTake = new int[] {5,5,5},
         partsSERR = new string[] {"A1","A1-A2","A2","A2-B1","B1","B1-B2"},
       }},
       {Langs.ru_ru, new langStrings {
-        levNames = new string[] {"Начинающие", "Начальный средний", "Средний уровень", "Продвинутый уровень"}, 
+        levNames = new string[] {"Начинающие", "Начальный средний", "Средний уровень", "Продвинутый уровень"},
         partMask = "XXXXX", //rustina nema casti 
         withTest = "",
         partsTake = new int[] {-1,-1,-1},
@@ -421,7 +444,7 @@ namespace CourseMeta {
         new levelDescr{levIdx = 2, take = 1},
         new levelDescr{levIdx = 2, skip = 1, take = 1},
         new levelDescr{levIdx = 2, skip = 2, take = 1},
-        new levelDescr{levIdx = 2, skip = 3},  
+        new levelDescr{levIdx = 2, skip = 3},
       }},
     new crsDescr {course = CourseIds.Russian, titleMask = "Курсы русского {0}, часть {1}", levels = new levelDescr[] {
         new levelDescr{levIdx = 0, take = 2},
@@ -460,7 +483,7 @@ namespace CourseMeta {
         new levelDescr{levIdx = 2, skip = 2, take = 2},
         new levelDescr{levIdx = 2, skip = 4, take = 3},
         new levelDescr{levIdx = 2, skip = 7},
-        
+
       }},
      new crsDescr {course = CourseIds.Spanish, titleMask = "Curso de español {0}, parte {1}", levels = new levelDescr[] {
         new levelDescr{levIdx = 0, take = 4},
@@ -475,7 +498,7 @@ namespace CourseMeta {
         new levelDescr{levIdx = 2, skip = 2, take = 2},
         new levelDescr{levIdx = 2, skip = 4, take = 2},
         new levelDescr{levIdx = 2, skip = 6},
-        
+
       }},
     new crsDescr {course = CourseIds.French, titleMask = "Cours de français {0}, partie {1}", levels = new levelDescr[] {
         new levelDescr{levIdx = 0, take = 3},
@@ -490,7 +513,7 @@ namespace CourseMeta {
         new levelDescr{levIdx = 2, skip = 2, take = 2},
         new levelDescr{levIdx = 2, skip = 4, take = 2},
         new levelDescr{levIdx = 2, skip = 6},
-        
+
       }},
     };
 

@@ -1,0 +1,99 @@
+﻿TEmailConfirmation
+###
+  <p>
+    {{:~CSLocalize('e83a008e8fe04ce79dce7f66e1232102', 'congratulations, you have created your account.')}}
+  </p>
+  <p>
+    {{:~CSLocalize('acb86672a2bd49ec97b7529de8f1078f', 'To activate your account, you must click the following')}}
+    <a href="{{:url}}">{{:url}}</a>
+    {{:~CSLocalize('3c1f1e384c1a4203af4e348abd752801', 'or by entering this address to your Internet browser.')}}
+  </p>
+  <p style="margin: 0 0 1em 0;">
+    {{:~CSLocalize('2e541679fe4f4c0fa2ffeb5eb56c98fe', 'Login details for your account:')}}
+  </p>
+  <p style="margin: 0 0 1em 0;">
+    {{:~CSLocalize('e77a59b8a83d42479e3d003b6ad9c26c', 'Name:')}} <b>{{:name}}</b><br />
+    {{:~CSLocalize('9e4fddf55c1140f79c503db9c2d32592', 'Password:')}} <b>{{:password}}</b><br />
+    <br />
+    {{:~CSLocalize('abd50e8f397944f79e173393c65f1670', 'Please, keep your login details safe.')}}
+  </p>
+###
+
+TEmailForgotPassword
+###
+  <p style="margin: 0 0 1em 0;">
+    {{:~CSLocalize('4294d283e79b4429a889df8278a773b0', 'we are sending you your forgotten password:')}}
+  </p>
+  <p style="margin: 0 0 1em 0;">
+    {{:~CSLocalize('7301b1be9c174e698530560b6aab11b6', 'Name:')}} <b>{{:name}}</b>
+    <br />
+    {{:~CSLocalize('e285068dc2f44fe99fb402993f47caee', 'Password:')}} <b>$PASSWORD$</b>
+    <br />
+  </p>
+  <p>
+    {{:~CSLocalize('5f37fed9581d4998b9116d548e0b8cf2', 'Please, keep your login details safe.')}}
+  </p>
+###
+
+TEmail
+###
+  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="cs" lang="cs">
+  <head>
+    <title>{{:Subject}}
+    </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Language" content="cs" />
+    <meta name="Author" content="LANGMaster.com, s.r.o." />
+    <meta name="Copyright" content="© LANGMaster.com, s.r.o." />
+  </head>
+  <body style="background: white; color: black; font-family: Tahoma, Arial, sans-serif; font-size: 13px; margin: 0; padding: 0; text-align: center;">
+    <div style="background: white; color: black; font-family: Tahoma, Arial, sans-serif; font-size: 13px; margin: 0; padding: 0; text-align: center;">
+      <a name="top" id="A1"></a>
+      <table style="text-align: left; width: 600px; margin: 0 auto; border: 0; background: none; font-size: 100%; border-collapse: separate;"
+        cellspacing="0">
+        <tr>
+          <td style="margin: 0; border: 0; padding: 10px 20px; background: #E6F7FD; font-size: 11px; border-left: 6px solid #DEDEDE; border-right: 6px solid #DEDEDE; border-top: 6px solid #DEDEDE">
+            <h1>{{:skin.domain}}: {{:Subject}}</h1>
+          </td>
+        </tr>
+        <tr>
+          <td style="margin: 0; border: 0; padding: 0; background: none; border-left: 6px solid #DEDEDE; border-right: 6px solid #DEDEDE;">
+            <table style="margin: 0; border: 0; padding: 0; background: none; width: 100%; text-align: left; font-size: 100%; border-collapse: separate;"
+              cellspacing="0">
+              <tr>
+                <td style="padding: 20px; border: 0;">
+                  <h1 style="margin: 5px 0 10px 0; padding: 0 0 6px 0; font-weight: normal; font-family: 'Franklin Gothic Medium', Tahoma, Arial, Helvetica, sans-serif; font-size: 192.3%; line-height: 1.0; color: black;">{{:title}}
+                  </h1>
+                  <p style="margin: 0 0 1em 0;">
+                    {{:~CSLocalize('6acada0ea49b462a9d1806a4f8dc576e', 'Hello')}}
+                  </p>
+                  {{for #data tmpl=~T(emailId)/}}
+                  <p>
+                    {{:skin.wishSuccess()}}
+                  </p>
+                  <p style="margin: 0 0 1em 0;">
+                    {{:~CSLocalize('492b8ffcb4bd40a6ab9d2deb0556c900', 'Best regards')}}<br />
+                    {{:skin.LMTeam()}}
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="margin: 0; border: 0; padding: 10px 20px; background: #E6F7FD; font-size: 11px; border-left: 6px solid #DEDEDE; border-right: 6px solid #DEDEDE; border-bottom: 6px solid #DEDEDE">
+            <p style="margin: 0 0 1em 0;">
+              {{:skin.contact()}}
+            </p>
+            <p style="margin: 0 0 1em 0;">
+              {{:skin.rights()}}
+            </p>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+  </html>
+

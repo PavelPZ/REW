@@ -1,0 +1,13 @@
+﻿<product title="English Courses" url="/lm/english_0_10/" line="English" type="product" defaultdicttype="L">
+  <data title="English Courses" url="/lm/english_0_10/crs/" type="multiTask">
+    <taskCourse title="Beginners part 1 (A1)" url="/lm/oldea/english1_0/" type="taskCourse">
+      <data title="Greetings, Meeting people, Days of the week" url="/lm/oldea/english1/l01/">
+        <mod title="Chapter A" url="/lm/oldea/english1/l01/a/" type="mod">
+          <ex title="Fiona and Her English Class" url="/lm/oldea/english1/l01/a/hueex0_l01_a01" type="ex" isOldEa="true" isOldEaPassive="true" />
+          <ex title="In a Café" url="/lm/oldea/english1/l01/a/hueex0_l01_a02" type="ex" isOldEa="true" isOldEaPassive="true" />
+          <ex title="Nicole and Fiona" url="/lm/oldea/english1/l01/a/hueex0_l01_a03" type="ex" isOldEa="true" />
+        </mod>
+      </data>
+    </taskCourse>
+  </data>
+</product>

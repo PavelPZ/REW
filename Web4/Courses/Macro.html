@@ -1,0 +1,37 @@
+﻿c_listgroup
+###
+<ul class="list-group {{~boolConverter(isStriped,'oli-striped-list'}} {{:~classes(#data)}}" >
+  {{for Items}}
+  <li class="list-group-item">
+    {{for #data tmpl=~T('c_gen')/}}
+  </li>
+  {{/for}}
+</ul>
+###
+
+c_panel
+###
+  <div class="panel panel-default {{:~classes(#data)}}" >
+    {{if header}}
+    <div class="panel-heading">
+      {{for header tmpl=~T('c_gen')/}}
+    </div>
+    {{/if}}
+    <div class="panel-body">
+      {{for Items  tmpl=~T('c_gen')/}}
+    </div>
+  </div>
+###
+
+c_twocolumn
+###
+<div class="row {{:~classes(#data)}}" >
+{{for Items}}
+  <div class="col-md-6">
+    {{for #data tmpl=~T('c_gen')/}}
+  </div>
+  {{if ~tuppleDelimiter()}}
+  <div class="clearfix"></div>
+  {{/if}}
+{{/for}}
+</div>

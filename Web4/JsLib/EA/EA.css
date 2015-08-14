@@ -1,0 +1,1894 @@
+﻿/* Basic */
+html
+{
+  padding: 0;
+  margin: 0;
+}
+
+.ea * {
+  -webkit-box-sizing: content-box;
+     -moz-box-sizing: content-box;
+          box-sizing: content-box;
+}
+
+.ea
+{
+  font: 12px Tahoma, Arial, sans-serif;
+  background: white;
+  color: #1B2936;
+  line-height: 1.667;
+  padding: 0;
+  margin: 0;
+}
+
+.ea .emResult {
+    height:44px;
+  }
+.ea .dtItem.evaCorrect {
+    line-height: 44px;
+  }
+
+
+/*Prevent IE8 from misplacing imgs
+See https://github.com/h5bp/html5-boilerplate/issues/984#issuecomment-3985989*/
+.ie8 .ea img {
+  max-width: none !important;
+}
+.ie7 .ea img {
+  max-width: none !important;
+}
+
+.ea h1, .ea h2, .ea h3, .ea h4, .ea h5, .ea h6, .ea .h1, .ea .h2, .ea .h3, .ea .h4, .ea .h5, .ea .h6, caption
+{
+  line-height: 1.667;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-family: "Franklin Gothic Medium" , Tahoma, Arial, sans-serif;
+}
+.ea h3, .ea h4, .ea h5, .ea h6, .ea .h3, .ea .h4, .ea .h5, .ea .h6, caption
+{
+  font-family: Tahoma, Arial, sans-serif;
+  font-weight: normal;
+}
+.ea h1, .ea .h1
+{
+  font-size: 183.3%;
+  margin: 1.2em 0 0.4em;
+  line-height: 1;
+}
+.ea h2, .ea .h2
+{
+  margin: 1em 0 0.2em;
+  font-size: 166%;
+  line-height: 1.1667;
+}
+.ea h3, .ea .h3, caption
+{
+  font-size: 133%;
+  margin: 1em 0 0em;
+}
+.ea h4, .ea .h4
+{
+  font-size: 116%;
+  margin-bottom: 0;
+}
+.ea h5, .ea h6, .ea .h5, .ea .h6
+{
+  font-size: 109%;
+}
+.ea p, .ea li, .ea table
+{
+  margin-top: 0;
+}
+
+.ea .table > thead > tr > th,
+.ea .table > tbody > tr > th,
+.ea .table > tfoot > tr > th,
+.ea .table > thead > tr > td,
+.ea .table > tbody > tr > td,
+.ea .table > tfoot > tr > td {
+  padding: 0.3em;
+  line-height: 20px;
+  border: none;
+  vertical-align:middle;
+}
+.ea .table > thead > tr > th {
+  border: none;
+}
+
+.ea ul, .ea ol
+{
+  padding: 0;
+  margin: 0 0 1.667em 0;
+}
+.ea p
+{
+  margin-bottom: 1.667em;
+}
+.hcContent p
+{
+  margin-bottom: 0.5em;
+}
+p.no-margin
+{
+  margin: 0;
+}
+p.inline
+{
+  display: inline;
+}
+.ea ol
+{
+  padding-left: 35px;
+}
+.ea ul
+{
+  margin-left: 3px;
+  list-style: none;
+}
+.ea ul li
+{
+  margin: 0.2em 0 0.2em 0;
+  padding: 0 0 0 17px;
+  background: url('img/bullet-default.png') no-repeat 0em 0.5em;
+}
+.ea ol li
+{
+  padding: 0;
+  background: none;
+}
+
+ol.decimal
+{
+  list-style: decimal;
+}
+ol.lower-alpha
+{
+  list-style: lower-alpha;
+}
+ol.upper-alpha
+{
+  list-style: upper-alpha;
+}
+ol.lower-roman
+{
+  list-style: lower-roman;
+}
+ol.upper-roman
+{
+  list-style: upper-roman;
+}
+
+.ea blockquote
+{
+  margin: 0 0 1em 10px;
+  border-left: 8px solid #EBE9DC;
+  background: #F4F3EC;
+  padding: 1em 1em 1px 1.5em;
+  font-style: italic;
+}
+
+.ea hr
+{
+  display: block;
+  width: 100%;
+  height: 1px;
+  font-size: 1px;
+  overflow: hidden;
+  border: 0;
+  color: #E9E8E5;
+  background: #E9E8E5;
+  margin: 10px 0;
+  clear: both;
+}
+
+.ea a
+{
+  color: #FF8A00;
+}
+.ea a:visited
+{
+  color: #93550C;
+}
+.ea a:hover
+{
+  color: #BE7117;
+}
+
+/* Misc */
+.no-border
+{
+  border: none !important;
+}
+.no-marg
+{
+  margin: 0 !important;
+}
+
+.l
+{
+  display: inline;
+  float: left;
+}
+.r
+{
+  display: inline;
+  float: right;
+}
+.cl
+{
+  clear: left;
+}
+.cr
+{
+  clear: right;
+}
+.out
+{
+  position: absolute;
+  left: -2000px;
+  top: -2000px;
+}
+.br
+{
+  clear: both;
+}
+.break
+{
+  height: 1px;
+  font-size: 1px;
+  clear: both;
+  overflow: hidden;
+  visibility: hidden;
+}
+.small
+{
+  font-size: 92%;
+}
+.hidden
+{
+  display: none;
+}
+
+.center
+{
+  text-align: center;
+}
+.left
+{
+  text-align: left !important;
+}
+.right
+{
+  text-align: right;
+}
+
+
+.ea table
+{
+  font-size: 1.0em;
+}
+/*table td, table th
+{
+  vertical-align: top;
+}*/
+
+/* Half columns */
+.col-h-l, .col-h-r
+{
+  width: 49%;
+}
+.col-h-l
+{
+  float: left;
+  display: inline;
+}
+.col-h-r
+{
+  float: right;
+  display: inline;
+}
+
+/* Images */
+.ea img
+{
+  border-width: 0;
+  margin: 0;
+  padding: 0;
+}
+img.ilu
+{
+  border: solid 1px #BDA225;
+}
+
+a img
+{
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+img.left, img.right
+{
+  margin: 0 15px 15px 15px;
+}
+img.left
+{
+  margin-left: 0;
+  float: left;
+  clear: left;
+}
+img.right
+{
+  margin-right: 0;
+  float: right;
+  clear: right;
+}
+img.plain
+{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: inline;
+}
+
+/* common.css */
+
+.chinesse body
+{
+  font-family: Arial, sans-serif;
+  font-size: 90%;
+}
+
+h1.underline
+{
+  border-bottom: solid 3px #BABEC2;
+}
+h2.underline
+{
+  border-bottom: solid 1px #BABEC2;
+}
+
+/* technicke instrukce */
+h2.technicalInstructions
+{
+}
+
+small
+{
+  font-size: 92%;
+}
+
+.ea hr
+{
+  height: 1px;
+  clear: both;
+  border: 0;
+  background: #BABEC2;
+  color: #BABEC2;
+  margin: 15px 0;
+}
+
+/* rizeni zobrazeni prvku */
+.clear
+{
+  clear: both;
+  visibility: hidden;
+  margin: 0;
+  padding: 0;
+}
+.displayNone
+{
+  display: none;
+}
+.displayInline
+{
+  display: inline;
+}
+.displayBlock
+{
+  display: block;
+}
+.visible
+{
+  visibility: visible;
+}
+.visibleHidden
+{
+  visibility: hidden;
+}
+.hideBody
+{
+  display: none;
+}
+
+/* =========== vizualni tridy ============ */
+.example
+{
+  color: #025f88;
+}
+/* nazev sekce s prikladem */
+.example .exampleLabel
+{
+  display: block;
+  float: left;
+  width: 6em;
+}
+/* vlastni text prikladu */
+.example ul
+{
+  display: block;
+  margin: 0;
+  padding: 0;
+  margin-left: 7em;
+}
+.example ul li
+{
+  display: block;
+  margin: 0;
+  padding: 0;
+  color: #717173;
+  font-size: 1.0em;
+  list-style-type: none;
+  list-style-image: none;
+}
+
+.chinesePinyin
+{
+  color: #CA9F08;
+  margin: 0 !important;
+}
+
+.smalltext
+{
+  font-size: 0.80em;
+  color: #555555;
+}
+.gold
+{
+  color: #D8A500;
+}
+
+.newLine
+{
+  margin-top: 0.5em; /* stejne horni odsazeni jako p */
+}
+
+/* ======================= LAYOUT ============================== */
+#contentHolder
+{
+  padding: 10px;
+}
+
+/* ==================== skryty text ====================== */
+/* polozka ke schovani */
+.htItem
+{
+  border: 1px dotted #E9E1BC;
+  margin: -1px;
+  padding-left:1px; 
+  padding-right:1px;
+}
+.htItem span
+{
+}
+.htItem.htHidden
+{
+  border-style: solid;
+}
+.htItem.htHidden span
+{
+  visibility: hidden;
+}
+
+
+/* obtekana znacka */
+.markTypeFloat
+{
+  float: left;
+}
+
+
+.green
+{
+  color: green;
+}
+.blue
+{
+  color: blue;
+}
+.heading
+{
+  font-size: 116%;
+}
+
+.big {
+  font-size: 250%;
+  margin: 1em 0 0.5em 0;
+  padding: 0;
+  font-family: "Franklin Gothic Medium";
+}
+
+acronym {
+  border-color: #CD5F00;
+  border-bottom-width: 2px;
+  border-bottom-style: dotted;
+}
+
+.logoImg 
+{
+  width: 159px; 
+  height: 36px;
+}
+
+.logoImgFake {background-image:url('img/logo-lm.png')}
+
+.subsite-com_pl       a.logo-panel {display:block; width:159px; height:36px; background: url(img/logo-com_pl.png) no-repeat 0px 0px;}
+.subsite-com          a.logo-panel {display:block; width:159px; height:36px; background: url(img/logo-lm.png) no-repeat 0px 0px;}
+.subsite-com_rumarket a.logo-panel {display:block; width:180px !important; height:36px; background: url(img/logo-com_rumarket.png) no-repeat 0px 0px;}
+.subsite-com_tr       a.logo-panel {display:block; width:159px; height:36px; background: url(img/logo-com_tr.png) no-repeat 0px 0px;}
+.subsite-com_lt       a.logo-panel {display:block; width:159px; height:36px; background: url(img/logo-com_lt.png) no-repeat 0px 0px;}
+.subsite-com_sk       a.logo-panel {display:block; width:159px; height:36px; background: url(img/logo-com_sk.png) no-repeat 0px 0px;}
+
+/*#source Q:\LMNet2\WebApps\EduAuthorNew\framework\controls\css\crossWord.css */
+.cwHolder
+{
+  border-collapse: collapse;
+}
+/* hlavicky radku a sloupcu */
+.cwHolder th
+{  
+  padding: 0.1em 0.3em;
+  color: #987E40;
+}
+.cwHolder th,
+.cwHolder td {
+	width: 2em;
+	height: 2em;
+	overflow: hidden;
+}
+/* vnitrni bunky */
+.cwHolder tbody td
+{
+  padding: 1px;
+  border: solid 1px #BFBFAB;
+  text-align: center;
+  font-weight: bold;
+}
+.cwHolder tbody td.cwEmpty
+{
+  border-width: 0;
+}
+/* ohraniceni bunek */
+.cwHolder tbody td.cwBorderTop
+{
+  border-top-width: 3px;
+  margin-top: -1px;
+}
+.cwHolder tbody td.cwBorderRight
+{
+  border-right-width: 3px;
+  margin-right: -1px;
+}
+.cwHolder tbody td.cwBorderBottom
+{
+  border-bottom-width: 3px;
+  margin-bottom: -1px;
+}
+.cwHolder tbody td.cwBorderLeft
+{
+  border-left-width: 3px;
+  margin-left: -1px;
+}
+
+
+
+/* input boxy */
+.cwHolder .fiText
+{
+  width: 2.0em;
+  border: none;
+  background: none;
+  text-align: center;
+  font-size: 1.0em;
+  font-weight: bold;
+}
+
+/* tajenka */
+.cwHolder .cwSolution
+{
+  background: #E0E0D6;
+}
+
+/*#source Q:\LMNet2\WebApps\EduAuthorNew\framework\controls\css\DictConnector.css */
+#ct_content 
+{
+  width:500px;
+  position:absolute;
+  background-color:White;
+  border:1px solid black;
+  z-index: 10002;
+  text-align:left;
+} 
+
+#ct_header 
+{
+  background-color:Blue;
+  padding:5px;
+}
+
+#ct_title
+{
+  color:White;
+  float:left;
+  font-weight:bold;
+  font-size:110%;
+}
+
+#ct_body 
+{
+  padding:5px;
+  overflow:auto;
+}
+
+#ct_close
+{
+  color:White;
+  cursor:pointer;
+  font-weight:bold;
+  float:right;
+}
+
+.ct_clear
+{
+  clear:both;
+}
+
+/*dict*/
+.entry {
+	font-family: Arial, Helvetica, sans-serif;
+}
+.head,.sense,.grps {
+	display:block;
+}
+.entr {
+	font-weight:bold;
+	font-size:14pt;
+	color:#A02000;
+	margin-right:5px;
+}
+.vari {
+	font-weight:bold;
+	font-size:13pt;
+	color:#A02000;
+	margin-right:5px;
+}
+.form {
+	font-size:12pt;
+	color:#666666;
+	margin-right:5px;
+}
+.morf {
+	font-style:italic;
+	font-size:12pt;
+	color:#007000;
+	margin-right:5px;
+}
+.styl {
+	font-size:12pt;
+	color:#003070;
+	margin-right:5px;
+	font-variant:small-caps;
+}
+.rems,.prag, .hyph, .cntx  {
+	font-style:italic;
+	font-size:12pt;
+	color:#666666;
+	margin-right:5px;
+}
+
+.labl {
+	font-weight:bold;
+	font-size:13pt;
+	color:#A02000;
+	margin-right:5px;
+}
+.phrs {
+	font-weight:bold;
+	font-size:12pt;
+	color:#A02000;
+	margin-right:5px;
+	margin-left:5px;
+}
+.trans {
+	font-size:12pt;
+	color:#000000;
+	margin-right:5px;
+}
+.desc1 {
+	font-size:12pt;
+	color:#A02000;
+	margin-right:5px;
+	display:block;
+}
+.desc2 {
+	font-size:12pt;
+	color:#666666;
+	margin-right:5px;
+	display:block;
+}
+.samp2 {
+	display:block;
+	margin-left:10px;
+}
+.src {
+	font-style:italic;
+	font-size:12pt;
+	color:#606060;
+	margin-right:5px;
+}
+.trg {
+	font-size:12pt;
+	color:#000000;
+	margin-right:5px;
+}
+.link1, .link2 {
+	font-style:italic;
+	font-size:12pt;
+	color:#A02000;
+	margin-left:5px;
+}
+.note1, .note2 {
+	font-size:12pt;
+	color:#606060;
+	margin-left:5px;
+}
+.in_b {
+	font-weight:bold;
+}
+.in_e {
+	font-weight:bold;
+	font-size:17px;
+	color:#CC0000;
+}
+.in_g, .in_r {
+	font-size:11pt;
+	color:#003070;
+
+}
+.in_h, .in_m {
+	font-style:italic;
+	font-size:12pt;
+	color:#007000;
+}
+.in_n {
+	font-style:italic;
+}
+.in_i {
+	font-style:italic;
+}
+.in_o {
+	font-style:italic;
+	color:#004080;
+}
+.in_p {
+	font-weight:normal;
+	font-size:12pt;
+	color:#909090;
+}
+.in_q {
+}
+.in_v {
+	font-size:11pt;
+	color:#606060;
+	margin-left:5px;
+}
+.in_x {
+	color:red;
+}
+.in_d {
+	font-weight:normal;
+	color:#004080;
+}
+.in_w {
+	color:blue;
+	font-style:italic;
+	font-weight:normal;
+}
+.in_y {
+	font-weight:normal;
+	color:#004080;
+}
+.in_mm {
+	font-style:italic;
+	color:#008000;
+}
+.in_ff,.in_ll  {
+	font-size:13px;
+	color:#bcbcbc;
+}
+
+.in_cc,.in_oo {
+	font-size:13px;
+}
+.in_pp {
+	font-size:14px;
+	color:#BF6000;
+}
+.in_ee {
+	vertical-align:super;
+}
+.in_ii {
+	vertical-align:sub;
+}
+
+.sound-repro {
+  background: transparent url('data:image/gif;base64,R0lGODlhFAAUAOZaACsrK5D/AP//AAAAAP/fAAcHB2FhYcXFxXp6ev/ZYhcXFxITDnV1dRISCzY2Nl5eXmxsbBEQCisrAIl+Yfn5+fv7+4ODg8TExNbX1xwcHT4+Pv/+AEBAQwABAAoKCCkpKTo6OigoKE5OUAYHBxEREQoKBvn8AGdnZ4aGhv/iHywsLJKTkyopAD8/P0ZGSDc4PUlFROfczd3EghIPAPLUAjc3NhQUFGxsa5eXl3Z0czw8PSIhAAgJDKSjoiElANGxOMmdWv39/VNTV2RhYP/UOVhZW09LOhgYGOPj4xUVFSwrAC4uMH9/f0VDQUZGRg4ODtvb2+jRtcnJyRMTDBUXDSUlJS4hEExMT0E+PN++lf///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAFoALAAAAAAUABQAAAeqgFqCg4SCUDYVhYqFUiEkN4uRFy09Cg+RigdYMQkLRZiEB01RCQJUQpEGqhQYMFlEGwJTV5EIDAgrQ0ApAr0NLpEoTBYvVjQmvQIRHJFOIBoZHT5KLBI7HjqRDh8qSQPf4CM1kVUKRzwzBOrqJUuRTwUFIkY/BAD3+PeF8QVIOBMy8uWLFEQLhBz4AgwEdSKhQn2gtDh8GFHivQAPAVRMuBCUQHwbP2rUEggAOw==') /*img/sdmark.gif*/ left center no-repeat;
+  *background: transparent url( 'img/sdmark.gif' ) left center no-repeat; /* For IE 6 and 7 */
+  padding-left: 20px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.sound-listen-talk 
+{
+ background : transparent url( 'img/microphone.png' ) left center no-repeat;
+ padding-left: 20px;
+ font-size:20px;
+ cursor:pointer;
+}
+/*#source Q:\LMNet2\WebApps\EduAuthorNew\framework\controls\css\drag.css */
+/* drag source */
+.dsHolder {
+  margin: 0.3em;
+  padding: 0.5em;
+  border: solid 1px #BCBCBC;
+  color: #1B2936;
+  text-align: center;
+  line-height: 2.6em;
+}
+
+
+
+/* obecny prvek k pretahovani */
+.dsItem,
+.ordHolder .dsItem {
+  margin: 0.1em;
+  padding: 1px 0.6em 3px 1em;
+  background: #E1F3FD;
+  border: 1px solid #1E5883 !important;
+  /* border-color: #1E5883 #C2C2C2 #C2C2C2 #1E5883; */
+  text-align: center;
+  cursor: move;
+}
+	.dsItem.dsPassive {
+	  border: solid 1px #1E5883;
+	  background: none;
+	  cursor: default;
+	}
+	.dsItem.dsUsed {
+	  border: solid 1px #BCBCBC;
+	  background: none;
+	  cursor: default;
+	}
+	
+	/*.dsItem span, k cemu je? Vadi pri praci se vyhledanim slovicka pod kurzorem*/
+	.dsItem nobr {
+	  margin-right: 1em;
+	}
+	.gfHolder .dsItem li div {
+		text-align: center !important;
+	}
+/* pretahovany element */
+.dsDragged {
+  margin: 0;
+  padding: 1px 0.5em 3px 0.5em;
+  background: #AADFFD;
+  border: 1px solid #1E5883;
+  cursor: move;
+  z-index:10004;
+}
+/* styl pro zdroj pretahovaneho prvku pri tazeni */
+.dsItem.dsStartDrag {
+  position: relative;
+  top: 1px;
+  left: 1px;
+  background-image: none;
+  border-width: 1px;
+  border-color: #5888AB;
+}
+/* pretahovany element, ktery lze upustit */
+.dsDraggedCanDrop {
+  margin: 0;
+  padding: 1px 0.5em 3px 0.5em;
+  color: white;
+  background: #1E5883;
+  border: solid 1px #AADFFD;
+  cursor: move;
+}
+
+/* drag target */
+.dtItem,
+.ordHolder .dtItem {
+  background: none !important;
+  border: solid 1px #BCBCBC !important;
+  color: #BCBCBC;
+  text-align: center;
+}
+	.gfHolder .dtItem li div {
+		text-align: center !important;
+	}
+
+.dtDropped {
+
+  background: #E1F3FD !important;
+  border: solid 1px #1E5883 !important;
+  text-align: center;
+}
+	.gfHolder .dtDropped li div {
+		text-align: center !important;
+	}
+
+
+
+/*#source Q:\LMNet2\WebApps\EduAuthorNew\framework\controls\css\eva.css */
+.evaCorrectValue {
+	color: #FF6022 !important;
+	font-weight: bold !important;
+}
+.evaUserValue {
+	color: #555555 !important;
+}
+.evaIncorrect .evaUserValue .evaStrike {
+	background: transparent url('img/evastrike.gif') repeat-x center left !important;
+}
+
+.evaCorrect .evaCorrectValue {
+	display: none;
+}
+
+.evaEmpty .evaUserValue {
+	display: none;
+}
+
+.evaCorrect .evaInput, 
+.evaIncorrect .evaInput, 
+.evaEmpty .evaInput {
+	display: none;
+}
+
+
+
+/*#source Q:\LMNet2\WebApps\EduAuthorNew\framework\controls\css\evalMark.css */
+.emHolder {
+	display: block;
+	position: relative;
+	
+	background: transparent url('') no-repeat center center;
+}
+
+/* tlacitko pro vyhodnoceni */
+.emEvaluate {
+	width: 51px;
+	height: 48px;
+	overflow: hidden;
+	
+	background-image: url('img/emevaluate.gif');
+	
+	cursor: pointer;
+}
+	.emEvaluate span {
+		display: none;
+	}
+
+/* odteceny vlevo 
+
+Je nahrazena tridou markTypeFloat (v common.css), ktera ma sirsi vyuziti. 
+Tato je zachovana jen kvuli zpetne kompatibilite. 
+Lze ji odstranit pokud se jeji vyskyty nahradi tridou markTypeFloat
+*/
+.emTypeFloat {
+	float: left;
+}
+
+
+/* vysledek hodnoceni */
+.emResult {
+	width: 51px;
+	height: 48px;
+	
+	background-image: url('img/emresult.gif'); 
+}
+.emResult.emAgain {
+	background-image: url('img/emresultagain.gif'); 
+	cursor: pointer;
+}
+	.emResult .emResultValue {
+		position: absolute;
+		bottom: 18px;
+		left: 0;
+		
+		display: block;
+		width: 51px;
+		
+		color: #776E65;
+		
+		text-align: center;
+		font-weight: bold;
+		font-size: 10px;
+	}
+	.emResult .emResultGraph {
+		display: block;
+		width: 35px;
+		height: 6px;
+		overflow: hidden;
+		
+		position: absolute;
+		bottom: 15px;
+		left: 8px;
+		
+		
+	}
+		.emResult .emResultGraph span {
+			display: block;
+			width: 0;
+			height: 6px;
+			overflow: hidden;
+			
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			
+			background: green url('img/emresultgraphgraph.gif') 0 0 no-repeat;
+		}
+	.emResult.emAgain .emResultGraph {
+		bottom: 15px;
+		left: 6px;
+	}
+	
+
+/*#source Q:\LMNet2\WebApps\EduAuthorNew\framework\controls\css\gapFill.css */
+.gfHolder {
+  position: relative;
+  line-height: 1.3em;
+}
+	.gfHolder ul {
+		display: block;
+		margin: 0;
+		padding: 0;
+		width: 10em;
+	  background: white url('img/fitext.gif') left top no-repeat;
+	  border: 1px solid #ACA899;
+	  border-color: #ACA899 #FDF9EA #FDF9EA #ACA899;
+	}
+		.gfHolder ul li {
+			display: block;
+			margin: 0;
+			padding: 0;
+			list-style-type: none;
+			background: none;
+		}
+		.gfHolder ul li div {
+		  margin: 0;
+		  padding: 1px 3px;
+		}
+	
+	.gfHolder .gfInput {
+	  width: 100%;
+	}
+	.gfHolder .gfInput .fiText {
+	  height: 1.3em;
+	  width: 97%;
+	  margin: 0;
+	  padding: 0;
+	  background: none;
+	  border: none;
+	  color: #555555;
+	  line-height: 1.4em;
+	  font-size: 1.0em;
+	  font-family: 'Verdana' , 'Arial' , 'Lucida' , 'sans-serif';
+	}
+	.gfHolder .gfHolder .evaUserValue {
+	  position: relative;
+	}
+	.gfHolder .evaIncorrect .evaUserValue li div, 
+	.gfHolder .evaIncorrect .evaCorrectValue li div {
+	  padding-top: 0;
+	  padding-bottom: 0;
+	  height: 0.8em;
+	  line-height: 1.2em;
+	}
+
+/* navic pro inline */
+/* pro Safari */
+.gfInline {
+  display: inline-table;
+}
+.gfInline {
+   display: -moz-inline-box;
+  display: inline-table;
+  display: inline-block;
+  position: relative;
+  top: 0;
+  margin-right: 0.3em;
+  vertical-align: middle;
+}
+
+/* onfocus */
+.gfHilite ul {
+  background: #E1F3FD;
+}
+
+/* pevna vyska */
+.gfFixedHeight ul {
+  height: 3em;
+  line-height: 2.7em;
+}
+	.gfFixedHeight ul li div {
+	  vertical-align: middle;
+	}
+	.gfFixedHeight ul li .gfInput .fiText {
+		margin-top: 0.8em;
+	}
+	.gfFixedHeight .evaIncorrect {
+		line-height: inherit;
+		
+	}
+
+/*#source Q:\LMNet2\WebApps\EduAuthorNew\framework\controls\css\hiddenText.css */
+/* polozka ke schovani (htItem) je presunuta do common.css */
+/* znacka pro prepnuti viditelnost textu */
+.htMark {
+	display: inline;
+	margin-right: 0.3em;
+	padding: 3px 0 3px 24px;
+	background: transparent url('img/htmark.gif') left center no-repeat;
+	
+	cursor: pointer;
+}
+.htMarkOn {
+	display: inline;
+	margin-right: 0.3em;
+	padding: 3px 0 3px 24px;
+	background: transparent url('img/htmarkon.gif') left center no-repeat;
+	
+	cursor: pointer;
+}
+
+/* velka znacka */
+.htMarkBig {
+	display: block;
+	width: 48px;
+	height: 28px;
+	
+	background: transparent url('img/htmarkbig.gif') left top no-repeat;
+	
+	cursor: pointer;
+}
+
+
+
+
+/*#source Q:\LMNet2\WebApps\EduAuthorNew\framework\controls\css\hideControl.css */
+.hcHolder
+{
+  border: solid 2px #B3921D;
+  margin: 0.3em 0;
+  text-align: left;
+}
+
+.hcHolder .hcHeader
+{
+	min-height: 1.2em;
+  margin: 0;
+  padding: 0.3em 0.3em;
+  background: #E6D6B0;
+  font-family: 'Verdana' , 'Arial' , 'Lucida' , 'sans-serif';
+  font-size: 1.0em;
+  font-weight: bold;
+  
+}
+.hcHolder .hcHeader .hcMark
+{
+  display: block;
+  width: 15px;
+  height: 1.3em;
+  min-height: 15px;
+  overflow: hidden;
+  float: right;
+  background-color: transparent;
+  background-position: left center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+/* otevreny prvek */
+.hcStateOpen
+{
+}
+.hcStateOpen .hcMark
+{
+  background-image: url( 'img/hcitemclose.gif' );
+}
+.hcStateOpen .hcContent
+{
+  display: block;
+  padding: 0.3em 0.3em;
+}
+
+/* zavreny prvek */
+.hcStateClosed
+{
+}
+.hcStateClosed .hcMark
+{
+  background-image: url( 'img/hcitemopen.gif' );
+}
+.hcStateClosed .hcContent
+{
+  display: none;
+}
+
+
+/* --------------- memory box ----------------- */
+.mbBox {
+	font-family: Tahoma, Arial, sans-serif;
+	font-size: 1.0em;
+}
+
+/*#source Q:\LMNet2\WebApps\EduAuthorNew\framework\controls\css\ordering.css */
+.ordHolder {
+  padding: 0.3px;
+}
+.ordTypeSentence .dsItem, .ordTypeSentence .dtItem {
+  height: 2.6em;
+  line-height: 2.6em;
+}
+.ordTypeSentence .evaIncorrect {
+  line-height: 1.3em;
+}
+
+.ordInsertBetween {
+  margin: -1px;
+  padding: 1px 0.3em;
+  border: solid 1px #BFBFAB;
+  color: #BFBFAB;
+  background: transparent !important;
+}
+
+/* ====== pairing ====== */
+
+/* sloupce */
+.ordPairingHolder {
+  border-bottom: 1px solid #FFFFEB;
+  border-collapse: collapse;
+}
+.ordPairingSourceCol {
+  text-align: center;
+}
+.ordPairingLineCol {
+}
+.ordPairingTargetCol {
+  padding: 0.3em 0;
+}
+
+
+/* zdroj (vlevo) */
+.ordPairingHolder th {
+  padding: 0.3em 0;
+  border-bottom: 1px dashed #BCBCBC;
+  vertical-align: middle;
+}
+/* spojnice */
+.ordPairingHolder .ordPairingLine {
+	vertical-align: middle;
+}
+	.ordPairingHolder .ordPairingLine span {
+	  display: block;
+	  width: 64px;
+	  height: 20px;
+	}
+/* cil (vpravo) */
+.ordPairingHolder .ordPairingTarget {
+  padding: 0.3em 0;
+  vertical-align: middle;
+}
+
+
+/* zarovnani vnitrnich prvku */
+.ordPairingHolder th div, .ordPairingHolder th span, .ordPairingHolder th nobr, .ordPairingHolder th .ilu {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* cary */
+.ordPairingHolder .ordPairingStateAvailable .ordPairingLine span {
+  background: transparent url( 'img/ordpairingavailable.gif' ) left center no-repeat;
+}
+.ordPairingHolder .ordPairingStateLine .ordPairingLine span {
+  background: transparent url( 'img/ordpairingline.gif' ) center center no-repeat;
+}
+
+
+/*#source Q:\LMNet2\WebApps\EduAuthorNew\framework\controls\css\passiveBox.css */
+.box {
+  width: auto;
+  margin: 0;
+  padding: 0.7em 0.7em 0.7em 70px;
+  background-color: white;
+  background-repeat: no-repeat;
+  background-position: 20px 10px;
+  border: solid 2px #F2DBC0;
+  text-align: left !important;
+}
+.box h4 {
+  margin: 0 0 1em 0;
+  padding: 0;
+  color: #099500;
+  font-size: 1.0em;
+  font-weight: bold;
+  font-family: 'Verdana' , 'Arial' , 'Lucida' , 'sans-serif';
+}
+
+.box .boxBody {
+  font-size: 0.9em;
+}
+.box .boxBody p {
+  margin-left: 0;
+}
+.box .boxBody .example {
+  font-weight: bold;
+}
+/* ikonky u boxu */
+.bxLookingAtLanguage {background-image: url( 'img/bxlookingatlanguage.gif' );}
+.bxAttention {background-image: url( 'img/bxattention.gif' );}
+.bxGramatica {background-image: url( 'img/bxgramatica.gif' );}
+.bxLearningTip {background-image: url( 'img/bxlearningtip.gif' );}
+.bxNote { background-image: url( 'img/bxnote.gif' );}
+.bxPerComunicare {background-image: url( 'img/bxpercomunicare.gif' );}
+
+.grammarRightBullet {
+}
+	.grammarRightBullet h3 {
+	  color: #004A80;
+	}
+	.grammarRightBullet p {
+	  position: relative;
+	  float: left;
+	  clear: left;
+	  height: 26px;
+	  margin: 0.3em 1em;
+	  padding: 0;
+	  background: transparent url( 'img/grammarrightbullet-c.gif' ) repeat-x center left;
+	  line-height: 26px;
+	  font-size: 12px;
+	}
+	/* obsah */
+	.grammarRightBullet .grbContent {
+	  padding: 0 1px;
+	  line-height: 26px;
+	}
+		.grammarRightBullet .grbContent a, .grammarRightBullet .grbContent a:visited {
+		  color: white;
+		}
+	/* okraje */
+	.grammarRightBullet .grbLeft, .grammarRightBullet .grbRight {
+	  display: block;
+	  width: 6px;
+	  height: 100%;
+	  position: absolute;
+	  top: 0;
+	  background: transparent url() no-repeat center left;
+	}
+	.grammarRightBullet .grbRight {
+	  right: -6px;
+	  background-image: url( 'img/grammarrightbullet-r.gif' );
+	}
+	.grammarRightBullet .grbLeft {
+	  left: -6px;
+	  background-image: url( 'img/grammarrightbullet-l.gif' );
+	}
+
+
+/*#source Q:\LMNet2\WebApps\EduAuthorNew\framework\controls\css\passiveLayout.css */
+.layHolder {
+	width: 100%;
+	
+	clear: both;
+	
+	margin-left: 0;
+	margin-right: 0;
+}
+	.layHolder .layItem {
+		width: 100%;
+	}
+		.layHolder .layItem .layCell {
+			padding: 1em;
+		}
+			/* zuzeni obsahu bunky layoutu */
+			.layHolder.layStretched .layItem .layCell .box {
+				width: 8em;
+			}
+		
+	
+/* poloha layoutu vuci obsahu (layFlow) */
+	
+	/* flow: full je automaticky */
+	
+	/* flow: right */
+	.layHolder.layFlowRight {
+		width: auto;
+		
+	}
+		.layHolder.layFlowRight .layItem {
+			width: auto;
+			float: right;
+			clear: both;
+		}
+	
+	/* flow: left */
+	.layHolder.layFlowLeft {
+		width: auto;
+		
+	}
+		.layHolder.layFlowLeft .layItem {
+			width: auto;
+			float: left;
+			clear: both;
+		}
+	
+	/* flow: center */
+	.layHolder.layFlowCenter {
+		text-align: center;
+	}
+		.layHolder.layFlowCenter .layItem {
+			width: auto;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+/* zarovnani obsahu bunek layoutu */
+	/* vertikalni (layValign) */
+	.layHolder .layItem .layCell.layValignTop {vertical-align: top;}
+	.layHolder .layItem .layCell.layValignMiddle {vertical-align: middle;}
+	.layHolder .layItem .layCell.layValignBottom {vertical-align: bottom;}
+	
+	/* horizontalni (layAlign) */
+	.layHolder .layItem .layCell.layAlignLeft {text-align: left;}
+	.layHolder .layItem .layCell.layAlignCenter {text-align: center;}
+	.layHolder .layItem .layCell.layAlignRight {text-align: right;}
+	
+	/* zarovnani vnorenych prvku */
+	.layHolder .layItem .layCell.layAlignLeft > * {
+		margin-right: auto;
+		margin-left: 0;
+	}
+	.layHolder .layItem .layCell.layAlignCenter > * {
+		margin-right: auto;
+		margin-left: auto;
+	}
+	.layHolder .layItem .layCell.layAlignRight > * {
+		margin-right: 0;
+		margin-left: auto;
+	}
+	
+	
+	
+/* padding bunek (layPAdding) */
+	/* s vyplni - automaticky */
+	/* bez vyplne */
+	.layHolder .layItem .layCell.layPaddingFalse {
+		padding: 0;
+	}
+
+/* odstraneni formatovani pro tabulky uvnitr layoutu */
+.ea .layHolder .table {
+	border: none;
+	text-align: left;
+}
+		
+/*#source Q:\LMNet2\WebApps\EduAuthorNew\framework\controls\css\passiveTable.css */
+
+.ea .table {
+  margin: 1em 0;
+  border-collapse: collapse;
+  background: #F2FAFF;
+  background-color: #F2FAFF;
+  background-color: rgba(242, 250, 255, 1);
+  text-align: center;
+  }
+.ea .table td, .ea .table th {
+	  padding: 0.3em;
+	}
+	
+	/* oramovani tabulky */
+.ea table.tbBorder {
+	  border: solid 1px #CBEAFC !important;
+	}
+	
+	/* oramovani bunek */
+	.ea .table.tbGridNo td, .ea .table.tbGridNo th {
+	  border: none;
+	}
+	.ea .table.tbGridThin td, .ea .table.tbGridThin th {
+	  border: solid 1px #CBEAFC;
+	}
+	.ea .table.tbGridThick {
+	  border: solid 2px #CBEAFC !important;
+	}
+	.ea .table.tbGridThick td, .ea .table.tbGridThick th {
+	  border: solid 2px #CBEAFC;
+	}
+	
+	.ea .table td table td, .table th table td, .table td table th, .table th table th {
+	  border: none !important;
+	}
+	
+	
+	/* umisteni tabulky */
+	.ea .table.tbFlowFull {
+	  width: 100%;
+	}
+	.ea .table.tbFlowLeft {
+	  float: left;
+	  margin-right: 1em;
+	}
+	.ea .table.tbFlowRight {
+	  float: right;
+	  margin-left: 1em;
+	}
+	.ea .table.tbFlowCenter {
+	  margin-left: auto;
+	  margin-right: auto;
+	}
+	
+	.ea .table tr.tbRowHeader {
+	  background: #D1ECFC;
+	}
+	.ea .table th {
+	  background: #D1ECFC;
+	  font-weight: bold;
+	}
+
+
+/* svisle a vodorovne zarovnani obsahu */
+.ea .tbValignTop td, .ea .tbValignTop th {
+  vertical-align: top;
+}
+.ea .tbValignMiddle td, .ea .tbValignMiddle th {
+  vertical-align: middle;
+}
+.ea .tbValignBottom td, .ea .tbValignBottom th {
+  vertical-align: bottom;
+}
+
+.ea .tbAlignLeft td, .ea .tbAlignLeft th {
+  text-align: left;
+}
+.ea .tbAlignCenter td, .ea .tbAlignCenter th {
+  text-align: center;
+}
+.ea .tbAlignRight td, .ea .tbAlignRight th {
+  text-align: right;
+}
+
+/* pro bunky ma vetsi prioritu nez pro celou tabulku 
+td.tbValignTop, th.tbValignTop {
+  vertical-align: top !important;
+}*/
+.ea td.tbValignMiddle, .ea th.tbValignMiddle {
+  vertical-align: middle !important;
+}
+.ea td.tbValignBottom, .ea th.tbValignBottom {
+  vertical-align: bottom !important;
+}
+
+.ea td.tbAlignLeft, .ea th.tbAlignLeft {
+  text-align: left !important;
+}
+.ea td.tbAlignCenter, .ea th.tbAlignCenter {
+  text-align: center !important;
+}
+.ea td.tbAlignRight, .ea th.tbAlignRight {
+  text-align: right !important;}
+
+
+/* padding */
+.tbPaddingBoth td, .tbPaddingBoth th {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+.tbPaddingLeft td, .tbPaddingLeft th {
+  padding-left: 1em;
+  padding-right: none;
+}
+.tbPaddingRight td, .tbPaddingRight th {
+  padding-right: none;
+  padding-right: 1em;
+}
+
+/* pro bunky ma vetsi prioritu nez pro celou tabulku */
+td.tbPaddingBoth, th.tbPaddingBoth {
+  padding-left: 1em !important;
+  padding-right: 1em !important;
+}
+td.tbPaddingLeft, th.tbPaddingLeft {
+  padding-left: 1em !important;
+  padding-right: none !important;
+}
+td.tbPaddingRight, th.tbPaddingRight {
+  padding-left: none !important;
+  padding-right: 1em !important;
+}
+
+
+.table .small, .table.small {
+  font-size: 0.80em;
+}
+.table .hilite {
+  background-color: #E1F3FD;
+}
+
+.table .tbRowHeader. td {
+  text-align: center !important;
+}
+
+/*#source Q:\LMNet2\WebApps\EduAuthorNew\framework\controls\css\selections.css */
+
+/* inline */
+.selCheckBox {
+  /*padding-left: 24px;*/
+  background: transparent url(  'img/selcheckboxunchecked.gif' ) no-repeat center center;
+  font-size: 18px;
+  vertical-align: middle;
+  
+  cursor: default;
+}
+.selRadioButton {
+  /*padding-left: 20px;*/
+  background: transparent url(  'img/selradiounchecked.gif' ) no-repeat center center;
+  font-size: 20px;
+  line-height: 33px;
+  vertical-align: middle;
+  cursor: default;
+}
+
+
+
+.selCheckBox.selCBUndefined {background-image: url(  'img/selcheckboxundefined.gif' );}
+.selCheckBox.selCBChecked {background-image: url(  'img/selcheckboxchecked.gif' );}
+.selCheckBox.selCBUnchecked {background-image: url(  'img/selcheckboxunchecked.gif' );}
+.selCheckBox.selCBEvaChecked {background-image: url(  'img/selcheckboxevacheckedincorr.gif' );}
+.selCheckBox.selCBEvaUnchecked {background-image: url(  'img/selcheckboxevauncheckedinco.gif' );}
+.selCheckBox.selCBUndEvaUnchecked {background-image: url(  'img/selcheckboxundevauncheckedincorrect.gif' );}
+.selCheckBox.selCBUndEvaChecked {background-image: url(  'img/selcheckboxundevacheckedincorrect.gif' );}
+
+
+
+
+.selRadioButton.selRBChecked {background-image: url(  'img/selradiochecked.gif' );}
+.selRadioButton.selRBUnchecked {background-image: url(  'img/selradiounchecked.gif' );}
+.selRadioButton.selRBEvaChecked {background-image: url(  'img/selradioevacheckedincorrect.gif' );}
+.selRadioButton.selRBEvaUnchecked {background-image: url(  'img/selradioevauncheckedincorre.gif' );}
+
+
+
+
+/* block */
+.selHolder {
+}
+	.selHolder .selRow {
+	  clear: both;
+	}
+	.selHolder .selCheckBox	{
+	  display: block;
+	  width: 24px;
+	  height: 18px;
+	  min-height: 18px;
+	  float: left;
+	  overflow: hidden;
+	  padding: 0;
+	  margin-right: -3px;
+	  background-position: top left;
+	  font-size: auto;
+	}
+	.selHolder .selRadioButton {
+	  display: block;
+	  width: 20px;
+	  height: 20px;
+	  min-height: 20px;
+	  float: left;
+	  overflow: hidden;
+	  padding: 0;
+	  margin-right: -3px;
+	  background-position: top left;
+	  font-size: auto;
+	}
+	
+	.selHolder .selText {
+	  display: block;
+	  margin-left: 28px;
+	}
+
+/* select words */
+.selWordUnchecked,
+.selWordChecked,
+.selWordEvaUnchecked,
+.selWordEvaChecked {
+	padding: 0 1px;
+	margin: -3px;
+}
+.selWordUnchecked {
+  border: solid 1px #1E5883;
+  background: #F2F2F2 url('img/selwordunchecked.gif') left top repeat-x;
+}
+.selWordChecked {
+  border: solid 1px #1E5883;
+  background: #9AD025 url('img/selwordchecked.gif') left top repeat-x;
+}
+.selWordEvaUnchecked {
+  border: solid 1px #6B1300;
+  background: #FA5D1F url('img/selwordevaunchecked.gif') left top repeat-x;
+}
+.selWordEvaChecked {
+  border: solid 1px #1E5883;
+  background: #9BD125 url('img/selwordevachecked.gif') left top repeat-x;
+}
+
+
+
+
+
+/*#source Q:\LMNet2\WebApps\EduAuthorNew\framework\controls\css\sound.css */
+.sdMark {
+  display: inline;
+  margin-right: 0.3em;
+  padding: 3px 2px 3px 12px;
+  background: transparent url( 'img/sdmark.gif' ) left center no-repeat;
+  cursor: pointer;
+}
+.sdMarkOn {
+  display: inline;
+  margin-right: 0.3em;
+  padding: 3px 2px 3px 12px;
+  background: transparent url( 'img/sdmarkon.gif' ) left center no-repeat;
+  cursor: pointer;
+}
+.sdPronuncMark {
+  display: inline;
+  margin-right: 0.3em;
+  padding: 3px 0 3px 15px;
+  background: transparent url( 'img/microphone.png' ) left center no-repeat;
+  cursor: pointer;
+  text-decoration:none;
+}
+.sdPronuncMarkOn {
+  display: inline;
+  margin-right: 0.3em;
+  padding: 3px 0 3px 15px;
+  background: transparent url( 'img/microphoneon.png' ) left center no-repeat;
+  cursor: pointer;
+  text-decoration:none;
+}
+
+.sdMarkBig {
+  display: block;
+  width: 46px;
+  height: 46px;
+  background: transparent url( 'img/sdmarkbig.gif' ) left top no-repeat;
+  cursor: pointer;
+}
+.sdMarkBigOn {
+  display: block;
+  width: 46px;
+  height: 46px;
+  background: transparent url( 'img/sdmarkbigon.gif' ) left top no-repeat;
+  cursor: pointer;
+}
+
+.sdSentencePlaying {
+  background-color: #FFFF99;
+}
+
+
+/* herec */
+.actor {
+  display: block;
+  width: 14px;
+  height: 24px;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center left;
+  
+  line-height: 1.4em;
+}
+.actor.actorText {
+	width: auto;
+}
+.actor.actorA {background-image: url( 'img/actora.gif' );}
+.actor.actorB {background-image: url( 'img/actorb.gif' );}
+.actor.actorC {background-image: url( 'img/actorc.gif' );}
+.actor.actorD {background-image: url( 'img/actord.gif' );}
+.actor.actorE {background-image: url( 'img/actore.gif' );}
+.actor.actorF {background-image: url( 'img/actorf.gif' );}
+.actor.actorG {background-image: url( 'img/actorg.gif' );}
+.actor.actorH {background-image: url( 'img/actorh.gif' );}
+.actor.actorI {background-image: url( 'img/actori.gif' );}
+.actor.actorJ {background-image: url( 'img/actorj.gif' );}
+
+
+/* tabulka s dialogem */
+.dialog 
+{
+}
+.dialog th,
+.dialog td {
+  /*vertical-align: top;*/
+  padding-bottom: 1em;
+}
+.dialog th {
+  padding-top: 0.5em;
+  text-align: right;
+}
+	.dialog th .actor {
+	  margin-left: auto;
+	  padding-right: 20px;
+	}
+
+/*#source Q:\LMNet2\WebApps\EduAuthorNew\framework\controls\commonparts\Schools.css */
+#shool_back_link {
+  display: none;
+}
+.schools #breadcrumb_div,
+.schools .chapter-nav {
+  display: none !important;
+}
+.schools .grammar-link {
+  display: block !important;
+}
+.schools .grammar-link #paids,
+.schools .grammar-link #grammar-lic-info {
+  display: none !important;
+}
+.schools .grammar-link #shool_back_link {
+  display: block !important;
+  margin: 0;
+  padding: 0;
+  margin-top: 5px;
+  width: 200px;
+}
+.schools .grammar-link #shool_back_link a {
+  background-image: none;
+}
+.schools .grammar-link #schools_my_learning {
+  padding: 0;
+}
+.schools #TestHomeEnd span,
+.schools #TestHomeEnd b {
+  display: none;
+}
+
+.repl-i {
+  font-style: italic;
+}
+
+.repl-b {
+  font-weight:bold;
+}
+
+.repl-small {
+  font-size:0.92em;
+}
+
+.repl-big {
+  font-size:1.2em;
+}
+
+.repl-align-middle {
+  vertical-align:middle;
+}
+
+.repl-align-bottom {
+  vertical-align:bottom;
+}
+

@@ -1,0 +1,77 @@
+!schoolGramm
+###
+<div data-bind="with: Pager.ActPage" class="app-school gramm">
+  {{for #data tmpl=~T('TMaster')/}}
+</div>
+###
+
+TGramm_Folder
+###
+{{for ~makeTuples(~CourseMeta.actNode.Items)}}
+<div class="row">
+  <div class="col-md-6 lm-col-first">
+    {{for left tmpl=~T('TGramLink')/}}
+  </div>
+  {{if right}}
+  <div class="col-md-6 lm-col">
+    {{for right tmpl=~T('TGramLink')/}}
+  </div>
+  {{/if}}
+</div>
+{{/for}}
+###
+
+TGramLink
+###
+<div class="btn btn-large btn-info btn-block gram-link" onclick="return gotoHref(event, '{{:url}}')">{{:title}}</div>
+###
+
+!schoolGrammPage
+###
+<div data-bind="with: Pager.ActPage" class="app-school gramm">
+  {{for #data tmpl=~T('TMaster')/}}
+</div>
+###
+
+TSchoolGrammBody
+###
+<div id="exercise" class="content-place {{:~CourseMeta.gui.exerciseCls()}}">
+  {{:~CourseMeta.gui.exerciseHtml()}}
+</div>
+###
+
+!schoolgrammcontent
+###
+<div data-bind="with: Pager.ActPage" class="app-school gramm">
+  {{for #data tmpl=~T('TMaster')/}}
+</div>
+###
+
+TSchoolGrammContentBody
+###
+<div class="content-place">
+  {{for ~CourseMeta.actGrammar tmpl=~T('TSchoolGrammContentItem')/}}
+</div>
+###
+
+TSchoolGrammContentItem
+###
+{{if Items}}
+<b>{{:title}}</b>
+<blockquote>
+  {{for Items tmpl=~T('TSchoolGrammContentItem')/}}
+</blockquote>
+{{else}}
+<div>
+  <a href="{{:url}}">{{:idx+1}}. {{:title}}</a>
+</div>
+{{/if}}
+###
+
+!schoolDictInfo
+###
+<div data-bind="with: Pager.ActPage" class="app-school gramm">
+  {{for #data tmpl=~T('TMaster')/}}
+</div>
+###
+

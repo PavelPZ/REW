@@ -76,6 +76,7 @@ namespace CourseMeta {
     multiQuestionnaire = 0x8000000, //dotaznik multitestu
     testDemo = 0x10000000, //demo test
     //runtimePage = 0x400000,
+    productNew = 0x20000000, //novy produkt pomoci AngularJS
   }
 
   [XmlInclude(typeof(data)), XmlInclude(typeof(products)), XmlInclude(typeof(publisher)), XmlInclude(typeof(project)), XmlInclude(typeof(sitemap)), XmlInclude(typeof(ex)),

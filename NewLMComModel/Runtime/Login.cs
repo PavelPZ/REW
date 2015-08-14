@@ -154,7 +154,7 @@ namespace NewData {
       var db = Lib.CreateContext();
       User usr;
       if (par.ticket != null) {
-        var ticketDir = Machines.basicPath + @"rew\Web4\App_Data\tickets";
+        var ticketDir = Machines.rootPath + @"App_Data\tickets";
         var ticketFn = ticketDir + "\\" + par.ticket;
         if (!File.Exists(ticketFn)) return null;
         try {

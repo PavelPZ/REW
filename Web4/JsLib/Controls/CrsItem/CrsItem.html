@@ -1,0 +1,16 @@
+﻿TCrsItem
+###
+<div class="well crsbtn">
+  <div class="cbtn cbtn-{{:color}}" {{:progressInfo()}} >
+    <div class="cbtn-left" data-click="{{:actionName()}}" data-delegate-index="{{:id()}}">
+      <div class="cbtn-title"><span class="fa fa-{{:iconId}}"></span>&nbsp;&nbsp;{{:title()}}</div>
+      <span class="label label-warning">{{:statusText()}}</span>
+      {{if notRunnableMsg}}<span class="cbtn-instr">{{:notRunnableMsg}}</span>{{/if}}
+    </div>
+    <div class="cmore" data-toggle="menu" data-target="#{{:menuId}}"><i class="fa fa-chevron-down"></i></div>
+  </div>
+  {{for #data tmpl=~T(tmplRight)/}}
+</div>
+<ul id="{{:menuId}}" data-role="menu" class="dropdown-menu">
+  {{for #data.menu tmpl=~T('TMenuItem')/}}
+</ul>

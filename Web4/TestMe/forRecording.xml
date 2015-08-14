@@ -1,0 +1,9 @@
+﻿<html xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.langmaster.com/new/author/coursemodelschema.xsd">
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <media-player id="mp-1" media-url="/testme/forPlaying.mp3" />
+    <recording id="audio-1" limit-recommend="1" limit-max="10"/>
+  </body>
+</html>

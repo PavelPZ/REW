@@ -1,0 +1,103 @@
+@import "LMMixins.less";
+
+.help-block {
+  color: @state-danger-text;
+}
+
+.app-login {
+  .lm-login-success {
+    margin-top: 50px;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .col-small-span-6 {
+    padding-left: 0;
+  }
+
+  .container {
+    max-width: 600px;
+  }
+
+  .ie7x {
+    .container {
+      min-width: 600px;
+    }
+  }
+
+  .control-group {
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 20px;
+
+    @media @media-not-mobile-portrait {
+      margin-left: 40px;
+      margin-right: 40px;
+    }
+
+    @media @media-mobile-portrait {
+      margin-bottom: 0;
+    }
+  }
+
+  .breadcrumb {
+    margin-top: 20px;
+
+    > li:last-child:after {
+      content: "";
+    }
+  }
+
+  .login-icon {
+    .inline();
+    background-image: url(img/login-providers.png);
+    background-repeat: no-repeat;
+    width: 154px;
+    height: 54px;
+    border-radius: 4px;
+    border: 3px solid;
+    border-color: lighten(@brand-primary, 40%);
+    margin-top: 20px;
+    margin-right: 20px;
+
+    &:hover {
+      border-color: lighten(@brand-primary, 25%);
+    }
+
+    &.lm-click {
+      border-color: @brand-primary;
+    }
+
+    @media (max-width:400px) {
+      margin-top: 0px;
+      margin-left: 80px;
+      margin-right: 50px;
+    }
+  }
+
+  .login-facebook {
+    background-position: 0 0;
+  }
+
+  .login-google {
+    background-position: 0 -100px;
+  }
+
+  .login-langmaster {
+    background-position: 0 -200px;
+  }
+
+  .login-microsoft {
+    background-position: 0 -300px;
+  }
+
+  .login-langmasternoemail {
+    background-position: 0 -400px;
+  }
+
+  .login-yandex {
+    background-position: 0 -500px;
+  }
+}

@@ -1,0 +1,15 @@
+﻿gap-fill > .drag-target, #a.b {
+  color:#123456;
+}
+/*gap-fill, drag-target {
+  data-class: eval-able;
+}
+drag-source {
+  words: drag-target;
+}
+single-choice {
+  choices:'@self > *';
+  correct: 11;
+}
+  */
+

@@ -1,0 +1,124 @@
+﻿testHome
+###
+<div class="page-header">
+  <h1 data-bind="text: testTitle"></h1>
+</div>
+
+<div data-bind="visible:!isDemoTest()">
+  <h2>{{:~CSLocalize('23d79430363445b08a70cedb06abb148', 'How to go through the test ...')}}</h2>
+  <blockquote>
+    <p><i class="fa fa-chevron-right"></i> {{:~CSLocalize('910d5502d7df4f9ba7ba5d39977ef5c3', 'To go through the test click repeatedly on the green button in the upper left corner.')}}</p>
+    <div class="alert alert-danger" role="alert">
+      <h4>{{:~CSLocalize('3158bb0a6d654cf6ac77ac9459b385e1', 'Notice:')}}</h4>
+      <ul class="fa-ul">
+        <li>
+          <i class="fa-li fa fa-exclamation"></i>
+          {{:~CSLocalize('af838e91d7c9453089fcfa9a0a644b9e', 'Do not use internet browser controls when doing the test (Back, Forward, Refresh page etc.).')}}
+        </li>
+        <li>
+          <i class="fa-li fa fa-exclamation"></i>
+          {{:~CSLocalize('2a7e9a2d571740b3a4a1f07cbf576d25', 'Do not interrupt the test. Each interruption will be reported (including its length).')}}
+        </li>
+      </ul>
+    </div>
+  </blockquote>
+  <br />
+  <hr />
+  <h2>{{:~CSLocalize('5a3ee876ed354b80a85cdf7687bf2bb4', 'Before you start ...')}}</h2>
+  {{:~CSLocalize('56220af5cf374f799014c6809cb73cf5', '... to test your language skills we recommend you to make a short preparation for the test.')}}
+  <blockquote>
+    <h4><i class="fa fa-chevron-right"></i> {{:~CSLocalize('95afc86c11e949659cac14e4fea41ff6', 'Check your computer')}}</h4>
+    <div class="alert alert-danger" role="alert">
+      {{:~CSLocalize('bda4fdcd2d89435ba385fae853acf507', 'Do not start the test in case of any problem with playing/recording sound.')}}
+    </div>
+    <div data-bind="visible:needsPlaying">
+      <p>
+        {{:~CSLocalize('7f861695b98c46c5802a4be0a9c849bf', 'Check the sound playing (it is necessary to connect and set your headphones or loudspeakers correctly):')}}<br />
+        <olireplace id="mp-2"></olireplace>
+        {{:~CSLocalize('a347d2f7093b4d168fb9494f75a9ec8b', 'Can you hear the sound? Is the volume ok?')}}
+      </p>
+    </div>
+    <div data-bind="visible:needsRecording">
+      <p>
+        {{:~CSLocalize('41d34d70c24447d9a0414eb2efeb2cb3', 'Check the sound playing (it is necessary to connect and set your headphones or loudspeakers correctly):')}}<br />
+        {{:~CSLocalize('388b4cdc1eb047e4819c8c2dcd2cd3dc', 'Can you hear the sound? Is the volume ok?')}}
+        <olireplace id="mp-1"></olireplace>
+
+        {{:~CSLocalize('9b48e4652edb4ba7b07ddda922fd53a3', 'Check the sound recording (it is necessary to have a functional microphone). ')}}<br />
+        {{:~CSLocalize('c2d0b61903ff4918b57535d66f745565', 'Record your voice. Can you hear the recording? Is the volume ok?')}}
+        <olireplace id="audio-1"></olireplace>
+      </p>
+    </div>
+    <br />
+    <div data-bind="visible:hasDemotest">
+      <h4><i class="fa fa-chevron-right"></i> {{:~CSLocalize('de9653293fef416eb5bf8197b882603c', 'Run a Demo Test')}}</h4>
+      <p>{{:~CSLocalize('cdadfe6ffd3d4ea2b1c640a2eeeebbcc', 'You can try out all the activities occurring in the real test.')}}</p>
+      <p>{{:~CSLocalize('4b20254a262c4a96944474836e7b4a7d', 'After completing demo test click Back to Home and run the real test.')}}</p>
+      <p>
+        <a href="#" data-bind="click: demoTestClick" class="btn btn-default">{{:~CSLocalize('7a4830eea0124e47a42e9083887fd87c', 'Run')}}&nbsp;&nbsp;&nbsp;<i class="fa fa-play text-success"></i></a>
+      </p>
+    </div>
+  </blockquote>
+</div>
+<br />
+<hr />
+<h2>{{:~CSLocalize('8a2d137bcbfa4350a0c7e4beac0bc301', 'How it works')}}</h2>
+<blockquote>
+  <h4><i class="fa fa-chevron-right"></i> {{:~CSLocalize('f09443047b2f4744bdc5da04daf5f0e7', 'How to go through the test ...')}}</h4>
+  <ul class="fa-ul">
+    <li>
+      <i class="fa-li fa fa-angle-right"></i>
+      {{:~CSLocalize('851b493cda294b0eb868f913ab67280d', 'Each test consists of several sections (e.g. Grammar and Vocabulary, Listening, Writing etc.).')}}
+
+    </li>
+    <li>
+      <i class="fa-li fa fa-angle-right"></i>
+      {{:~CSLocalize('6563f4c75a57434b9272a35a9478b9d6', 'There is a time limit for each section (e.g. 20 minutes). When the time limit expires, you will be automatically redirected to the next section.')}}
+
+    </li>
+    <li>
+      <i class="fa-li fa fa-angle-right"></i>
+      {{:~CSLocalize('62304537efbe4c7fab65ccb2264eada0', 'After completing a section (or when its time limit expires), you will not be allowed to go back to this section.')}}
+
+    </li>
+  </ul>
+
+  <h4><i class="fa fa-chevron-right"></i> {{:~CSLocalize('980101f7fa89477c83c3758175d7cbb5', 'How to complete one section of the test ...')}}</h4>
+  <ul class="fa-ul">
+    <li>
+      <i class="fa-li fa fa-angle-right"></i>
+      {{:~CSLocalize('c8906e4721e44ab69fd2f3de3c6f428b', 'Each section of the test consists of several tasks.')}}
+
+    </li>
+    <li>
+      <i class="fa-li fa fa-angle-right"></i>
+      {{:~CSLocalize('905f064fafac4ac7a1304753ea885942', 'To move forward through the individual tasks, use the green Continue button. ')}}
+
+    </li>
+    <li>
+      <i class="fa-li fa fa-angle-right"></i>
+      {{:~CSLocalize('86bcaa80735546138719501a77d1afb4', 'For each task read the detailed instructions first. ')}}
+
+    </li>
+    <li>
+      <i class="fa-li fa fa-angle-right"></i>
+      {{:~CSLocalize('d6f2c79d89b64a0791824770f2f7497a', 'If you do not know the answer to some question, use the Skip button. It will be possible to return to it and solve it later.')}}
+
+    </li>
+    <li>
+      <i class="fa-li fa fa-angle-right"></i>
+      {{:~CSLocalize('dd8d09b5086f4fa1ac0855b498208fb5', 'When you complete all the tasks in the given section, use the Finish button to continue with the next section. After that you will not be allowed to check/correct your answers from the previous section.')}}
+
+    </li>
+  </ul>
+</blockquote>
+###
+
+testForRecording
+###
+["html",["head",["title"],["style","\r\n/*\r\ngap-fill, drop-down {\r\n  width: 0;}\r\ngap-fill, drop-down {\r\n  width: 0;}\r\n*/\r\n"]],["body",{"id":"_0","url":"/lm/examples/temp/forrecording"},["media-player",{"id":"mp-1","media-url":"/testme/forPlaying.mp3","_sent-group-id":"seq_0"}],["recording",{"id":"audio-1","limit-recommend":1,"limit-max":10}],["_snd-page",["_snd-file-group",{"media-url":"/testme/forPlaying.mp3"},["_snd-group",{"id":"seq_0"},["_snd-interval",["_snd-sent",{"idx":0,"beg-pos":0,"end-pos":-1}]]]]],["_eval-page",{"max-score":100},["_eval-btn",["_eval-group",{"eval-control-ids":"audio-1"}]]]]]
+
+###
+testForPlaying
+###
+["html",["head",["title"],["style","\r\n/*\r\ngap-fill, drop-down {\r\n  width: 0;}\r\ngap-fill, drop-down {\r\n  width: 0;}\r\n*/\r\n"]],["body",{"id":"_0","url":"/lm/examples/temp/forplaying"},["media-player",{"id":"mp-2","media-url":"/testme/forPlaying.mp3","_sent-group-id":"seq_0"}],["_snd-page",["_snd-file-group",{"media-url":"/testme/forPlaying.mp3"},["_snd-group",{"id":"seq_0"},["_snd-interval",["_snd-sent",{"idx":0,"beg-pos":0,"end-pos":-1}]]]]],["_eval-page",{"max-score":0}]]]
