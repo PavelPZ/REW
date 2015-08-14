@@ -1,4 +1,12 @@
 ﻿module Course {
+
+  export enum chinhTaskType {
+    listen,
+    read,
+    finish,
+  }
+
+
   export class chinhSpeaking implements IExtension {
 
     $modal: JQuery;
@@ -10,17 +18,15 @@
 
     constructor(public control: extensionImpl) {
       extension = this;
-      this.tasks = [
-        new ch_listenAndTalkTask('part1-question1', 'p1-q1', 'p1-a1'),
-        new ch_listenAndTalkTask('part1-question2', 'p1-q2', 'p1-a2'),
-        new ch_listenAndTalkTask('part1-question3', 'p1-q3', 'p1-a3'),
-        new ch_readAndTalkTask('part2-question', 'p2-q1', 'p2-a1'),
-        new ch_readAndTalkTask('part3-question1', 'p3-q1', 'p3-a1'),
-        new ch_listenAndTalkTask('part3-question2', 'p3-q2', 'p3-a2'),
-        new ch_listenAndTalkTask('part3-question3', 'p3-q3', 'p3-a3'),
-        new ch_listenAndTalkTask('part3-question4', 'p3-q4', 'p3-a4'),
-        new ch_finish()
-      ];
+      var tasks: Ich_tasks = control.cdata ? JSON.parse(control.cdata) : {};
+      this.tasks = _.map(tasks.tasks, t => {
+        switch (t.type) {
+          case chinhTaskType.finish: return new ch_finish(t);
+          case chinhTaskType.listen: return new ch_listenAndTalkTask(t);
+          case chinhTaskType.read: return new ch_readAndTalkTask(t);
+          default: throw 'not implemented';
+        }
+      });
     }
     getTemplateId(): string { return 'chinhspeaking'; }
     initProc: (phase: initPhase, getTypeOnly: boolean, completed: () => void) => initPhaseType = (phase, getTypeOnly, completed) => {
@@ -61,15 +67,30 @@
     actTask(): ch_task { return extension.tasks[extension.actTaskIdx]; }
 
     instructionOK() { extension.actTask().instructionOK(); }
+    //instrRemaining = ko.observable('');
 
   }
 
   export var extension: chinhSpeaking;
 
-  export class ch_task {
+  export interface Ich_tasks {
+    tasks: Array<Ich_task>;
+  }
+
+  export interface Ich_task {
+    type: chinhTaskType
+  }
+
+  export class ch_task implements Ich_task {
+
+    type: chinhTaskType
 
     $instr: JQuery;
     rec: audioCaptureImpl;
+
+    constructor(json: Ich_task) {
+      if (json) for (var p in json) this[p] = json[p];
+    }
 
     start() { }
     end() { }
@@ -94,16 +115,27 @@
   }
 
   export class ch_finish extends ch_task {
-    constructor() { super(); }
     start() {
       extension.done(true);
       extension.runNext();
     }
   }
 
-  export class ch_readAndTalkTask extends ch_task {
+  export interface Ich_readAndTalkTask extends Ich_task {
+    taskDivId: string;
+    questId: string;
+    recordId: string;
+  }
+
+
+  export class ch_readAndTalkTask extends ch_task implements Ich_readAndTalkTask {
+
+    taskDivId: string;
+    questId: string;
+    recordId: string;
+
     $taskDiv: JQuery;
-    constructor(public taskDivId: string, public questId: string, public recordId: string) { super(); }
+
     start() {
       (this.$taskDiv = $('#' + this.taskDivId)).show();
       this.rec = <audioCaptureImpl>(extension.control._myPage.getItem(this.recordId));
@@ -127,10 +159,20 @@
     }
   }
 
-  export class ch_listenAndTalkTask extends ch_task {
+  export interface Ich_listenAndTalkTask extends Ich_task {
+    taskDivId: string;
+    questId: string;
+    recordId: string;
+  }
+
+  export class ch_listenAndTalkTask extends ch_task implements Ich_listenAndTalkTask {
+
+    taskDivId: string;
+    questId: string;
+    recordId: string;
+
     $instr: JQuery;
     $taskDiv: JQuery;
-    constructor(public taskDivId: string, public questId: string, public recordId: string) { super(); }
     start() {
       (this.$instr = $('#instruction1')).show();
     }

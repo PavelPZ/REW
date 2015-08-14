@@ -22,42 +22,46 @@ var schoolAdmin;
         __extends(CompAdmins, _super);
         function CompAdmins(urlParts) {
             _super.call(this, schoolAdmin.compAdminsTypeName, urlParts);
-            // COMP ADMIN
-            this.comp_Admin = ko.observableArray(); //of CompanyAdmins
         }
         // UPDATE
         CompAdmins.prototype.update = function (completed) {
             var _this = this;
             Pager.ajaxPost(Pager.pathType.restServices, Admin.CmdGetUsers_Type, Admin.CmdGetUsers_Create(false, false, [this.CompanyId]), function (res) {
-                _this.comp_Admin(_.map(_.pairs(_.groupBy(res.CompUsers, "CompanyId")), function (nv) { return new CompanyAdmins(nv[0], nv[1]); }));
+                _this.comp_Admin = _.map(_.pairs(_.groupBy(res.CompUsers, "CompanyId")), function (nv) { return new CompanyAdmins(_this, nv[0], nv[1]); });
+                setTimeout(function () { return _this.refreshHtml(); }, 1);
                 completed();
             });
         };
         // OK x CANCEL
         CompAdmins.prototype.ok = function () {
-            Pager.ajaxPost(Pager.pathType.restServices, Admin.CmdSetUsers_Type, Admin.CmdSetUsers_Create(null, null, null, _.map(_.flatten(_.map(this.comp_Admin(), function (it) { return it.Items(); }), true), function (it) { return it.data; })), function () { return Login.adjustMyData(true, function () { return LMStatus.gotoReturnUrl(); }); });
+            Pager.ajaxPost(Pager.pathType.restServices, Admin.CmdSetUsers_Type, Admin.CmdSetUsers_Create(null, null, null, _.map(_.flatten(_.map(this.comp_Admin, function (it) { return it.Items; }), true), function (it) { return it.data; })), function () { return Login.adjustMyData(true, function () { return LMStatus.gotoReturnUrl(); }); });
         };
         CompAdmins.prototype.cancel = function () { LMStatus.gotoReturnUrl(); };
+        CompAdmins.prototype.refreshHtml = function () {
+            Pager.renderTemplateEx('schoolCompAdminsItemsPlace', 'schoolCompAdminsItems', this);
+        };
         return CompAdmins;
     })(schoolAdmin.CompModel);
     schoolAdmin.CompAdmins = CompAdmins;
     // COMP ADMIN
     var CompanyAdmins = (function () {
-        function CompanyAdmins(Id, items) {
+        function CompanyAdmins(owner, Id, items) {
             var _this = this;
+            this.owner = owner;
             this.Id = Id;
-            //Title: string;
-            this.Items = ko.observableArray(); //of CompanyAdminItem
             var self = this;
             //this.Title = _.find(Login.myData.Companies, (comp: Login.MyCompany) => comp.Id == Id).Title;
-            this.Items(_.map(items, function (it) { return new CompanyAdminItem(it); }));
-            this.compAdmin_del = function (act) { if (act.data.UserId == 0)
-                self.Items.remove(act);
+            this.Items = _.map(items, function (it) { return new CompanyAdminItem(it); });
+            //this.compAdmin_del = (act: CompanyAdminItem) => { if (act.data.UserId == 0) self.Items.remove(act); else act.Deleted(!act.Deleted()); }
+            this.compAdmin_del = function (act) { if (act.data.UserId == 0) {
+                self.Items = _.without(self.Items, act);
+                self.owner.refreshHtml();
+            }
             else
                 act.Deleted(!act.Deleted()); };
             this.newEMail = validate.create(validate.types.email, function (prop) {
                 prop.required = true;
-                prop.customValidation = function (email) { return _.any(_this.Items(), function (it) { return it.data.EMail == email; }) ? CSLocalize('bd38a1ebc3f041779ffd7a5bcf34dfe8', 'User with this email already added') : null; };
+                prop.customValidation = function (email) { return _.any(_this.Items, function (it) { return it.data.EMail == email; }) ? CSLocalize('bd38a1ebc3f041779ffd7a5bcf34dfe8', 'User with this email already added') : null; };
             });
             this.newEMail_Add = function () {
                 if (!validate.isPropsValid([_this.newEMail]))
@@ -70,6 +74,7 @@ var schoolAdmin;
                     Role: { Role: 0, HumanEvalatorInfos: null }
                 });
                 _this.Items.push(nu);
+                self.owner.refreshHtml();
                 _this.newEMail(null);
             };
         }

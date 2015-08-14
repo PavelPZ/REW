@@ -1,0 +1,50 @@
+﻿<div class="alert advertise">
+  <div class="container">
+    <h1>{{pageTitle}}</h1>
+  </div>
+</div>
+<div class="container">
+  <div class="col-sm-4">
+    <h2>Obraťte se na nás</h2>
+    <ul>
+      <li>emailem: <a href="mailto:info@langmaster.cz"><b>info@langmaster.cz</b></a></li>
+      <li>telefonicky: 244 460 807</li>
+    </ul>
+    <h2>Provozovatel:</h2>
+    LANGMaster.com, s.r.o.<br />
+    Branická 659/107<br />
+    147 00 Praha 4<br />
+    DIČ: CZ 27338606<br />
+    IČ: 27338606<br />
+    zapsaná v obchodním rejstříku vedeném <br />
+    Městským soudem v Praze oddíl C, vložka 173235<br />
+    Bankovní spojení: Komerční banka<br />
+    Číslo účtu: 43 -575730207/0100
+  </div>
+  <div class="col-sm-8">
+    <div class="embed-responsive embed-responsive-4by3">
+      <div id="mapa" class="embed-responsive-item" xstyle="width:600px; height:400px;"></div>
+    </div>
+    
+    <script type="text/javascript">
+      $(function () {
+        setTimeout(function () {
+          var stred = SMap.Coords.fromWGS84(14.4196374, 50.0344544);
+          var mapa = new SMap(JAK.gel("mapa"), stred, 16);
+          mapa.addDefaultLayer(SMap.DEF_BASE).enable();
+          mapa.addDefaultControls();
+
+          var layer = new SMap.Layer.HUD();
+          mapa.addLayer(layer);
+          layer.enable();
+
+          var crosshair = JAK.mel("div");
+          var img = JAK.mel("img", {}, { left: "-16px", top: "-16px", position: "absolute" });
+          img.src = SMap.CONFIG.img + "/crosshair.gif";
+          crosshair.appendChild(img);
+          layer.addItem(crosshair, { left: "50%", top: "50%" });
+        }, 1000);
+      });
+    </script>
+  </div>
+</div>

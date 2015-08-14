@@ -11,7 +11,6 @@ var schoolAdmin;
         function Products(urlParts) {
             var _this = this;
             _super.call(this, schoolAdmin.productsTypeName, urlParts);
-            this.products = ko.observableArray(); // of Product
             this.selectMode = ko.observable(0); //0..unknown, 1..test, 2..kurz
             var self = this;
             this.product = validate.create(validate.types.required);
@@ -33,16 +32,19 @@ var schoolAdmin;
                 _this.products.push(nu);
                 _this.product(undefined);
                 _this.days(0);
+                _this.refreshHtml();
             };
-            this.del = function (act) { if (act.data.Id == 0)
-                self.products.remove(act);
+            this.del = function (act) { if (act.data.Id == 0) {
+                self.products = _.without(self.products, act);
+                _this.refreshHtml();
+            }
             else
                 act.Deleted(true); };
             this.undel = function (act) { act.Deleted(false); };
-            //this.edit = (act: Product) => { act.product.set(act.data.ProductId); act.days.set(act.data.Days); act.edited(true); };
-            //this.editCancel = (act: Product) => { act.edited(false); };
-            //this.editOk = (act: Product) => { if (!validate.isPropsValid([act.product, act.days])) return; act.data.ProductId = act.product.get(); act.data.Days = act.days.get(); act.edited(false); };
         }
+        Products.prototype.refreshHtml = function () {
+            Pager.renderTemplateEx('schoolProductsProductPlace', 'schoolProductsProduct', this);
+        };
         // UPDATE
         Products.prototype.update = function (completed) {
             var _this = this;
@@ -52,13 +54,14 @@ var schoolAdmin;
                     if (CourseMeta.lib.findProduct(pr.ProductId) != null)
                         admProds.push(new Product(pr, _this));
                 });
-                _this.products(admProds);
+                _this.products = admProds;
+                setTimeout(function () { return _this.refreshHtml(); }, 1);
                 //this.products(_.map(res, (act: Admin.Product) => new Product(act, this)));
                 completed();
             });
         };
         Products.prototype.ok = function () {
-            var prods = _.map(this.products(), function (p) { return p.data; });
+            var prods = _.map(this.products, function (p) { return p.data; });
             Pager.ajaxPost(Pager.pathType.restServices, Admin.CmdSetProducts_Type, Admin.CmdSetProducts_Create(this.CompanyId, prods), function () { return LMStatus.gotoReturnUrl(); });
         };
         Products.prototype.cancel = function () { LMStatus.gotoReturnUrl(); };
@@ -77,6 +80,7 @@ var schoolAdmin;
     var Product = (function () {
         function Product(data, owner) {
             this.data = data;
+            this.owner = owner;
             this.Deleted = ko.observable(false);
             this.Deleted.subscribe(function (val) { return data.Deleted = val; });
             var prod = CourseMeta.lib.findProduct(data.ProductId);
@@ -92,7 +96,7 @@ var schoolAdmin;
     function daysProp(product, owner) {
         return validate.create(validate.types.rangeMin, function (prop) {
             prop.min = 0;
-            prop.customValidation = function (days) { return validateProduct(product, days, owner.products()); };
+            prop.customValidation = function (days) { return validateProduct(product, days, owner.products); };
         });
     }
     function validateProduct(product, days, allProds) {

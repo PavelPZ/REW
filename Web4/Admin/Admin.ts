@@ -65,7 +65,7 @@ module schoolAdmin {
       LMStatus.Cookie.Company = c ? { Courses: c.Courses, DepSelected: c.DepSelected, Id: c.Id, RoleEx: c.RoleEx, Title: c.Title } : null;
       LMStatus.setCookie(LMStatus.Cookie);
       //this.url = new CompIdUrl(type, CompanyId);
-    } 
+    }
 
     CompanyId: number;
     tb: TopBarModel;
@@ -82,24 +82,39 @@ module schoolAdmin {
       // ROLE ADMIN
       this.admin_EMail = validate.create(validate.types.email,(prop) => {
         prop.required = true;
-        prop.customValidation = (email: string) => { return _.any(this.role_Admin(),(it: UserItem) => it.data.EMail == email) ? CSLocalize('bb4c401401ad413fbbf55c4906fb87ed', 'User with this email already added') : null; };
+        prop.customValidation = (email: string) => { return _.any(this.role_Admin,(it: UserItem) => it.data.EMail == email) ? CSLocalize('bb4c401401ad413fbbf55c4906fb87ed', 'User with this email already added') : null; };
       });
-      this.admin_add = () => { if (!validate.isPropsValid([this.admin_EMail])) return; var nu: UserItem = new UserItem({ EMail: this.admin_EMail.get(), LMComId: 0, Deleted: false }); this.role_Admin.push(nu); this.admin_EMail(null); };
-      this.admin_del = (act: UserItem) => { if (act.data.LMComId == 0) self.role_Admin.remove(act); else act.Deleted(!act.Deleted()); }
+      this.admin_add = () => {
+        if (!validate.isPropsValid([this.admin_EMail])) return;
+        var nu: UserItem = new UserItem(this, { EMail: this.admin_EMail.get(), LMComId: 0, Deleted: false });
+        this.role_Admin.push(nu);
+        this.admin_EMail(null);
+        this.refreshRoleAdminHtml();
+      };
+      this.admin_del = (act: UserItem) => {
+        if (act.data.LMComId == 0) { self.role_Admin = _.without(self.role_Admin, act); this.refreshRoleAdminHtml(); } else act.Deleted(!act.Deleted());
+      }
 
       // ROLE COMPS
       this.comps_Name = validate.create(validate.types.minlength,(prop) => {
         prop.min = 3;
-        prop.customValidation = (name: string) => { return _.any(this.role_Comps(),(it: CompanyItem) => it.data.Title.toLowerCase() == name.toLowerCase()) ? CSLocalize('98b0616339a54314a3b865f7d76b99d8', 'Company with this title already added') : null; };
+        prop.customValidation = (name: string) => { return _.any(this.role_Comps,(it: CompanyItem) => it.data.Title.toLowerCase() == name.toLowerCase()) ? CSLocalize('98b0616339a54314a3b865f7d76b99d8', 'Company with this title already added') : null; };
       });
-      //this.comps_PublisherId = validate.create(validate.types.rangelength, (prop) => {
-      //  prop.min = 0; prop.max = 24;
-      //  prop.customValidation = (name: string) => { return _.isEmpty(name) || _.any(this.role_Comps(), (it: CompanyItem) => it.data.PublisherId && it.data.PublisherId.toLowerCase() == name.toLowerCase()) ? CSLocalize('248d58dd36784f258b4f49391dfac024', 'Publisher ID with this title already added') : null; };
-      //});
 
       this.comps_EMail = validate.create(validate.types.email,(prop) => { prop.required = true; });
-      this.company_add = () => { if (!validate.isPropsValid([this.comps_EMail, this.comps_Name/*, this.comps_PublisherId*/])) return; var nu: CompanyItem = new CompanyItem({ EMail: this.comps_EMail.get(), Title: this.comps_Name.get(), UserId: 0, Id: 0, Deleted: false, /*PublisherId: (<string>(this.comps_PublisherId.get())).toLowerCase()*/ }, this); this.role_Comps.push(nu); this.comps_EMail(null); this.comps_Name(null); /*this.comps_PublisherId(null);*/ };
-      this.company_del = (act: CompanyItem) => { if (act.data.Id == 0) self.role_Comps.remove(act); else act.Deleted(true); }
+      this.company_add = () => {
+        if (!validate.isPropsValid([this.comps_EMail, this.comps_Name])) return;
+        var nu: CompanyItem = new CompanyItem({
+          EMail: this.comps_EMail.get(), Title:
+          this.comps_Name.get(), UserId: 0, Id: 0, Deleted: false,
+        }, this);
+        this.role_Comps.push(nu);
+        this.comps_EMail(null); this.comps_Name(null);
+        this.refreshCompHtml();
+      };
+      this.company_del = (act: CompanyItem) => {
+        if (act.data.Id == 0) { self.role_Comps = _.without(self.role_Comps, act); this.refreshCompHtml(); } else act.Deleted(true);
+      }
       this.company_undel = (act: CompanyItem) => { act.edited(false); act.Deleted(false); }
       this.company_edit = (act: CompanyItem) => { act.email(act.data.EMail); act.name(act.data.Title); /*act.publisherId(act.data.PublisherId);*/ act.edited(true); };
       this.company_editCancel = (act: CompanyItem) => { act.edited(false); };
@@ -109,6 +124,13 @@ module schoolAdmin {
     tb: TopBarModel;
     title() { return CSLocalize('b2b7224389dd4118816f50890aececa4', 'Administrator Console'); }
 
+    refreshRoleAdminHtml() {
+      Pager.renderTemplateEx('schoolAdminRolePlace', 'schoolAdminRole', this);
+    }
+    refreshCompHtml() {
+      Pager.renderTemplateEx('schoolAdminCompPlace', 'schoolAdminCompPlace', this);
+    }
+
     // UPDATE
     update(completed: () => void): void {
       Pager.ajaxPost(
@@ -116,10 +138,14 @@ module schoolAdmin {
         Admin.CmdGetUsers_Type,
         AdminDataCmd_from_MyData(Login.myData),
         (res: Admin.CmdGetUsersResult) => {
-          this.role_Admin(_.map(res.Users,(act: Admin.UserItem) => new UserItem(act)));
+          this.role_Admin = _.map(res.Users,(act: Admin.UserItem) => new UserItem(this, act));
           this.oldComps = JSON.parse(JSON.stringify(res.Comps)); //kopie
-          this.role_Comps(_.map(res.Comps,(act: Admin.Comp) => new CompanyItem(act, this)));
+          this.role_Comps = _.map(res.Comps,(act: Admin.Comp) => new CompanyItem(act, this));
           this.comp_Admin(_.map(_.pairs(_.groupBy(res.CompUsers, "CompanyId")),(nv: any[]) => new CompanyAdmins(nv[0], nv[1])));
+          setTimeout(() => {
+            this.refreshRoleAdminHtml();
+            this.refreshCompHtml();
+          }, 1);
           completed();
         });
     }
@@ -130,9 +156,9 @@ module schoolAdmin {
         Pager.pathType.restServices,
         Admin.CmdSetUsers_Type,
         Admin.CmdSetUsers_Create(
-          _.map(this.role_Admin(),(it: UserItem) => it.data),
+          _.map(this.role_Admin,(it: UserItem) => it.data),
           this.oldComps,
-          _.map(this.role_Comps(),(it: CompanyItem) => it.data),
+          _.map(this.role_Comps,(it: CompanyItem) => it.data),
           _.map(_.flatten(_.map(this.comp_Admin(),(it: CompanyAdmins) => it.Items()), true),(it: CompanyAdminItem) => it.data)
           ),
         () => {
@@ -144,14 +170,14 @@ module schoolAdmin {
 
     // ROLE ADMIN
     admin_EMail: validate.ValidObservable<string>;
-    role_Admin = ko.observableArray(); // of UserItem
+    role_Admin: Array<UserItem>;
     admin_del;
     admin_add;
     //admin_NewModel: validate.InputModel;
 
     // ROLE COMPS
     oldComps: Admin.Comp[];
-    role_Comps = ko.observableArray(); //of CompanyItem
+    role_Comps: Array<CompanyItem>;
     comps_Name: validate.ValidObservable<string>;
     comps_EMail: validate.ValidObservable<string>;
     //comps_PublisherId: validate.ValidObservable;
@@ -163,7 +189,7 @@ module schoolAdmin {
 
   // ROLE ADMIN
   class UserItem {
-    constructor(public data: Admin.UserItem) { this.Deleted.subscribe(val => data.Deleted = val); }
+    constructor(public owner: AdminModel, public data: Admin.UserItem) { this.Deleted.subscribe(val => data.Deleted = val); }
     Deleted = ko.observable<boolean>(false);
   }
 
@@ -173,19 +199,10 @@ module schoolAdmin {
       this.Deleted.subscribe(val => data.Deleted = val);
       this.email = validate.create(validate.types.email,(prop) => { prop.required = true; prop(data.EMail); });
       this.name = validate.create(validate.types.minlength,(prop) => { prop.min = 3; prop(data.Title); });
-      //this.publisherId = validate.create(validate.types.rangelength, (prop) => { prop.min = 0; prop.max = 24; prop(data.PublisherId); });
-
-      //this.publisherId = validate.create(validate.types.rangelength, (prop) => {
-      //  prop.min = 0; prop.max = 24;
-      //  prop.customValidation = (name: string) => { return _.isEmpty(name) || _.any(this.owner.role_Comps(), (it: CompanyItem) => it.data.PublisherId && it.data.PublisherId.toLowerCase() == name.toLowerCase()) ? CSLocalize('4fcfb15370a746578b50052ebaa35f74', 'Publisher ID with this title already added') : null; };
-      //});
-
-
     }
     Deleted = ko.observable<boolean>(false);
     email: validate.ValidObservable<string>;
     name: validate.ValidObservable<string>;
-    //publisherId: validate.ValidObservable;
     edited = ko.observable<boolean>(false);
   }
 

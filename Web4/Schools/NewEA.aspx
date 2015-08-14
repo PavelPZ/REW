@@ -19,7 +19,8 @@
     //dataBatchUrl = Request["dataBatchUrl"] ?? "/lm/lm_data_new/", 
     designId = "",
 
-    dataBatchUrl = "/lm/lm_data_new/",
+    //dataBatchUrl = "/lm/lm_data_new/",
+    dataBatchUrl = "/lm/lm_data/",
     //forceServiceUrl = LMComLib.Machines.isFE5() ? "http://test.langmaster.com/alpha/service.ashx" : "http://localhost/rew/service.ashx",
     //forceServiceUrl = "http://services.langmaster.com/services/service.ashx",
 
@@ -38,6 +39,7 @@
     //persistType = schools.persistTypes.persistNewEA,
 
     persistType = LMNetLib.LowUtils.EnumParse<schools.persistTypes>(Request["persistType"] ?? "persistNewEA"),
+    displayMode = LMNetLib.LowUtils.EnumParse<schools.displayModes>(Request["displayMode"] ?? "normal"),
     //persistType = schools.persistTypes.persistScormEx,
     //rootProductId = "lm/prods/most_simple",
     rootProductId = Request["rootProductId"], //"data/pz-w8virtual/mod"

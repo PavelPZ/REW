@@ -309,7 +309,7 @@ var metaJS;
                 "name": "extension",
                 "summary": null,
                 "descr": null,
-                "flag": 391,
+                "flag": 135,
                 "_newName": null
             },
             "writing": {
@@ -2188,9 +2188,9 @@ var metaJS;
                 "clsEnumName": null,
                 "constrains": 0,
                 "regexConstrains": null,
-                "name": "use-phrases",
-                "summary": null,
-                "descr": null,
+                "name": "number-of-phrases",
+                "summary": "",
+                "descr": "uvedena konstrukce slou?? k vytvo?en? dialogu z plain textu. Podporov?n je POUZE souvisl? text (bez p?eskakov?n? zvukov?ch v?t). \n            Tak?e z?pis je ten, ?e pro ka?dou repliku se ur?? PO?ET v?t repliky (ur?ovat za??tek a konec je zbyte?n? slo?it?). \n            Dal?? replika za??n? prvn? v?tou po posledn? v?t? p?edchoz? repliky. \n            jestli preci jenom ale nebude nejlepsi \"take-phrases\" (puvodne \"sent-take\").",
                 "flag": 0,
                 "_newName": "sent-take"
             },

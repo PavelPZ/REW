@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ScormExNet35</RootNamespace>
     <AssemblyName>ScormExNet35</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -92,6 +92,20 @@
     <None Include="NewLMComModel.dbml.layout">
       <DependentUpon>NewLMComModel.dbml</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LMComExternal\LMComExternal.csproj">
+      <Project>{a0024fc2-c528-45f8-9391-4b45889e53d9}</Project>
+      <Name>LMComExternal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LMComLib\LMComLib.csproj">
+      <Project>{c4201447-b3c3-4f3a-9e5f-4ff9b5f48570}</Project>
+      <Name>LMComLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NewLMComModel\NewLMComModel.csproj">
+      <Project>{81713f8f-6d25-4e48-ae82-ac1bd2565442}</Project>
+      <Name>NewLMComModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

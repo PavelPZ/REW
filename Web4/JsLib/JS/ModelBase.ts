@@ -30,8 +30,6 @@ module Pager {
     getHash(): string { return [this.appId, this.type].concat(this.urlParts).join('@'); } //my hash
   }
 
-  export var ignorePage: Page = new Page(null, null, null);
-
   export function registerAppLocator(appId: string, type: string, pageCreator: (urlParts: string[], completed: (pg: Page) => void) => void): void {
     if (!regApps[appId]) regApps[appId] = {};
     regApps[appId][type] = pageCreator;
@@ -59,6 +57,7 @@ module Pager {
       completed(Pager.ignorePage); return;
     }
     if (hash && hash.charAt(0) == '#') hash = hash.substring(1);
+    if (blended.isAngularHash(hash)) { completed(angularPage); return; }
     if (!hash || hash.length < 3) { completed(null); return; }
     //hash = hash.toLowerCase();
     var parts = hash.split("@"); if (parts.length < 2) { completed(null); return; }
@@ -69,6 +68,8 @@ module Pager {
 
   export var ActPage: Page;
   export var htmlOwner: Page;
+  export var ignorePage: Page = new Page(null, null, null);
+  export var angularPage: Page = new Page(null, null, null);
 
   $.views.helpers({
     ActPage: () => Pager.ActPage,
@@ -97,6 +98,7 @@ module Pager {
       if (oldPg != null) oldPg.leave();
       rootVM.pageChanged(oldPg, ActPage);
     }
+    if (page == angularPage) { renderTemplate('Dummy'); return;}
     reloadPage();
   }
 

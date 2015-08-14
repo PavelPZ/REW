@@ -64,7 +64,6 @@ var Pager;
         return Page;
     })();
     Pager.Page = Page;
-    Pager.ignorePage = new Page(null, null, null);
     function registerAppLocator(appId, type, pageCreator) {
         if (!regApps[appId])
             regApps[appId] = {};
@@ -99,6 +98,10 @@ var Pager;
         }
         if (hash && hash.charAt(0) == '#')
             hash = hash.substring(1);
+        if (blended.isAngularHash(hash)) {
+            completed(Pager.angularPage);
+            return;
+        }
         if (!hash || hash.length < 3) {
             completed(null);
             return;
@@ -123,6 +126,8 @@ var Pager;
     }
     Pager.ActPage;
     Pager.htmlOwner;
+    Pager.ignorePage = new Page(null, null, null);
+    Pager.angularPage = new Page(null, null, null);
     $.views.helpers({
         ActPage: function () { return Pager.ActPage; },
     });
@@ -147,6 +152,10 @@ var Pager;
             if (oldPg != null)
                 oldPg.leave();
             Pager.rootVM.pageChanged(oldPg, Pager.ActPage);
+        }
+        if (page == Pager.angularPage) {
+            renderTemplate('Dummy');
+            return;
         }
         reloadPage();
     }

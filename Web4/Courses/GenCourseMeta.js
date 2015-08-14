@@ -31,6 +31,7 @@ var CourseMeta;
         runtimeType[runtimeType["multiTest"] = 67108864] = "multiTest";
         runtimeType[runtimeType["multiQuestionnaire"] = 134217728] = "multiQuestionnaire";
         runtimeType[runtimeType["testDemo"] = 268435456] = "testDemo";
+        runtimeType[runtimeType["productNew"] = 536870912] = "productNew";
     })(CourseMeta.runtimeType || (CourseMeta.runtimeType = {}));
     var runtimeType = CourseMeta.runtimeType;
     (function (childMode) {

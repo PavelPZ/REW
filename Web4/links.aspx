@@ -7,6 +7,14 @@
     <title></title>
 </head>
 <body>
+  
+  <a href="http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz&persistType=persistMemory#test@testexmodel@1@/lm/prods_lm_blended_english_pretesta1/@">preview test</a><br />
+
+  <a href="http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz&persistType=persistMemory&displayMode=previewEx#school@schoolexmodel@1@/lm/prods_lm_blended_english_lessons_lesson_a1_1/@@/lm/blended/english/lessons/lesson_a1_1/listening">preview passive exercise</a><br />
+  <a href="http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz&persistType=persistMemory&displayMode=previewEx#school@schoolexmodel@1@/lm/prods_lm_blended_english_lessons_lesson_a1_1/@@/lm/blended/english/lessons/lesson_a1_1/sentenceordering">preview active exercise</a><br /><br />
+  
+  <a href="http://localhost:49362/">blended</a><br />
+  <a href="http://test.langmaster.cz/blended">blended FE5</a><br /><br />
   <a href="http://test.langmaster.com/alpha/Schools/Design/lmConsole.aspx">LM Console</a><br />
   <a href="api/jsproxies">proxies</a><br />
   <a runat="server" href="~/Schools/GenProxy.aspx">proxy Test</a><br /><br />

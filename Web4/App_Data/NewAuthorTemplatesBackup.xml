@@ -1,0 +1,655 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Module title="Kapitel 1">
+  <Ex id="PassiveDialog" title="PassiveDialog" instr="instr3" tech_instr="xxx" >
+    TODO PassiveDialog Template
+  </Ex>
+  <Ex id="Video" title="Video" instr="instr3" tech_instr="xxx" >
+    TODO Video Template
+  </Ex>
+  <Ex id="IconList" title="IconList" instr="instr3" tech_instr="xxx" >
+    <UL Icon="arrow-right" Color="primary">
+      <li>Text 1</li>
+      <li>
+        Text 2
+        <UL Icon="number" Color="warning" >
+          <li>Text 3</li>
+          <li>Text 4</li>
+        </UL>
+      </li>
+      <li>
+        Text 2
+        <UL Icon="letter" Color="danger" Delim=")">
+          <li>Text 3</li>
+          <li>Text 4</li>
+        </UL>
+      </li>
+      <li>
+        Text 2
+        <UL Icon="upper-letter" Color="info" Delim=":">
+          <li>Text 3</li>
+          <li>Text 4</li>
+        </UL>
+      </li>
+    </UL>
+    <hr/>
+    <UL Icon="circle-arrow-right" Color="success" IsStriped="true">
+      <li>Text 3</li>
+      <li>Text 4</li>
+      <li>Text 3</li>
+      <li>Text 4</li>
+    </UL>
+    <h4>Instructions:</h4>
+    <ul>
+      <li>
+        Icon:
+        <ul>
+          <li>
+            any of <a href="http://fortawesome.github.io/Font-Awesome/icons/">Font Awesome Icons</a>, without icon- prefix
+          </li>
+          <li>
+            number | letter | upper-letter
+          </li>
+        </ul>
+      </li>
+      <li>
+        Color: primary | warning | danger | success | info
+      </li>
+      <li>
+        Delim: any string, default is '.'
+      </li>
+      <li>
+        IsStriped: true | false
+      </li>
+    </ul>
+  </Ex>
+  <Ex id="MacroIconList" title="MacroIconList" instr="instr3" tech_instr="xxx" >
+    <MacroIconList Width="400-800" Icon="circle-arrow-right" Color="success" IsStriped="true">
+      <![CDATA[
+      1. Welche Produkte stellt die Bekleidungsfirma her?
+      2. Wird nur das Standardangebot hergestellt?
+      3. Welche Abteilungen und Gebäude befinden sich in Roudnice?
+      4. Warum sendet der Kunde dem Lieferanten eine Anfrage
+    ]]>
+    </MacroIconList>
+  </Ex>
+  <Ex id="MacroSingleChoices" title="Macro SingleChoices" instr="instr3" tech_instr="xxx" seealso="../../lesson1/module1/ex2" >
+    <MacroSingleChoices Width="400-800">
+      <![CDATA[
+1. Asdfasd~~fasdfasd
+a) Asdfa~~sdfasdf
+b) #Asdfa~sdfasdf
+
+Asdfasd~fasdfasd
+#Kjhlkjh
+ůlkjlůk
+    ]]>
+    </MacroSingleChoices>
+  </Ex>
+  <Ex id="MacroPairing" title="Macro Pairing" instr="instr4" tech_instr="xxx" seealso="" template="MacroPairing" todo="false">
+    <MacroPairing>
+      <![CDATA[
+1. Left ~~part 1   \ a) Right part 1
+2. Left ~part 2 \ b) Right part 2
+    ]]>
+    </MacroPairing>
+  </Ex>
+  <Ex id="MacroTable_GapFill" title="Macro Table_GapFill" instr="instr5" tech_instr="xxx" seealso="" template="MacroTable_GapFill" todo="false">
+    <MacroTable Width="600-800" InlineType="GapFill">
+      <![CDATA[
+# grid1 | grid2 | grid3
+Cell1 \ {gp1|gp2}
+{gp3|gp4} \ Cell2
+    ]]>
+    </MacroTable>
+  </Ex>
+  <Ex id="MacroTable_WordSelection" title="Macro Table_WordSelection" instr="instr6" tech_instr="xxx" template="MacroTable_WordSelection" todo="false">
+    <MacroTable Width="600-800" InlineType="WordSelection">
+      <![CDATA[
+Cell1 \ {s1|s2|#s3|s4}
+{s5|s6|#s7} \ Cell2
+    ]]>
+    </MacroTable>
+  </Ex>
+  <Ex id="MacroTable_Dragging" title="Macro Table_Dragging" instr="instr7" tech_instr="xxx" seealso="" template="MacroTable_Dragging" todo="false">
+    <MacroTable Width="600-800" InlineType="DragTarget">
+      <![CDATA[
+Cell1 \ {dragg1}
+{dragg2} \ Cell2
+    ]]>
+    </MacroTable>
+  </Ex>
+  <Ex id="MacroTable" title="Macro Table" instr="instr8" tech_instr="xxx" template="MacroTable" todo="false">
+    <MacroTable Width="600-800" InlineType="no">
+      <![CDATA[
+#b \ #cmy Cell2~~Cell21 \ #cmy Cell2~ Cell22
+#cmy Cell3 \ #lm Cell4 \ #rm Cell4
+    ]]>
+    </MacroTable>
+  </Ex>
+  <Ex id="MacroTable_Correction" title="Macro Table_Correction" instr="instr5" tech_instr="xxx" seealso="" template="MacroTable_Correction" todo="false">
+    <MacroTable Width="600-800" InlineType="GapFill_Correction">
+      <![CDATA[
+# grid1 | grid2 | grid3
+Cell1 \ {wrong|ok}
+{wrong2|ok2|ok3} \ Cell2
+]]>
+    </MacroTable>
+  </Ex>
+  <Ex id="MacroList_Correction" title="Macro List_Correction" instr="instr5" tech_instr="xxx" template="MacroList_Correction" todo="false">
+    <MacroList Width="600-800" InlineType="GapFill_Correction">
+      <![CDATA[
+# 1) grid1 b) grid2 c) grid3
+1. Text {wrong|ok}
+2. {wrong2|ok2} Text
+    ]]>
+    </MacroList>
+  </Ex>
+  <Ex id="MacroList_GapFill" title="Macro List_GapFill" instr="instr5" tech_instr="xxx" template="MacroList_GapFill" todo="false">
+    <MacroList Width="600-800" InlineType="GapFill">
+      <![CDATA[
+# 1) grid1 b) grid2 c) grid3
+1) Text {gp1|gp2}
+2) {gp3|gp4} Text
+    ]]>
+    </MacroList>
+  </Ex>
+  <Ex id="MacroList_WordSelection" title="Macro List_WordSelection" instr="instr6" tech_instr="xxx" template="MacroList_WordSelection" todo="false">
+    <MacroList Width="600-800" InlineType="WordSelection">
+      <![CDATA[
+a. Text {s1|s2|#s3|s4}
+b. {s5|s6|#s7} Text
+    ]]>
+    </MacroList>
+  </Ex>
+  <Ex id="MacroList_Dragging" title="Macro List_Dragging" instr="instr7" tech_instr="xxx" template="MacroList_Dragging" todo="false">
+    <MacroList Width="600-800" InlineType="DragTarget">
+      <![CDATA[
+Text {dragg1}
+{dragg2} Text
+    ]]>
+    </MacroList>
+  </Ex>
+  <Ex id="MacroTrueFalse" title="Macro TrueFalse" instr="instr7" tech_instr="xxx" template="MacroTrueFalse" todo="false">
+    <MacroTrueFalse Width="600-800" TextId="TrueFalse">
+      <![CDATA[
+1. #asdfsdfa a sdfasdf         
+2. Asdf asd fa sf asd fasd f
+    ]]>
+    </MacroTrueFalse>
+  </Ex>
+  <Ex id="MacroYesNo" title="Macro Yes No" instr="instr7" tech_instr="xxx" template="MacroYesNo" todo="false">
+    <MacroTrueFalse Width="600-800" TextId="YesNo">
+      <![CDATA[
+#asdfsdfa a sdfasdf
+Asdf asd fa sf asd fasd f
+    ]]>
+    </MacroTrueFalse>
+  </Ex>
+  <Ex id="MacroListWordOrdering" title="Macro List Word Ordering" instr="instr7" tech_instr="xxx" template="MacroListWordOrdering" todo="false">
+    <MacroListWordOrdering Width="600-800">
+      <![CDATA[
+a) word1  12) word3 c) word2
+Word1 word2 word3.
+word1 | word3 | word2
+Word1 word2 word3.
+    ]]>
+    </MacroListWordOrdering>
+  </Ex>
+  <Ex id="Vocabulary" title="Table with TTS" instr="instr7" tech_instr="xxx" seealso="" template="Vocabulary" todo="false">
+    <MacroTable Width="600-800" InlineType="TtsSound">
+      <![CDATA[
+Cell1 \ {ttsWord}
+{ttsWord} \ Cell2
+    ]]>
+    </MacroTable>
+  </Ex>
+  <Ex id="Article" title="Article" instr="instr7" tech_instr="xxx" seealso="" template="Article" todo="false">
+    <h5>
+      <b>Nadpis, bold a kurzíva</b>
+    </h5>
+    <b>
+      <h3>
+        <b>Der Maschinenbau</b>
+      </h3>
+    </b>
+    <p>
+      Der Maschinenbau gehört - neben der <i>Elektrotechnik</i> und dem Bauwesen - zu den klassischen Ingenieurdisziplinen. Der Maschinenbau basiert auf Physik und Chemie, der Mechanik, Thermodynamik und der Informatik.
+    </p>
+    <p>
+      Eine <b>Maschine</b> ist definiert als Gerät zur Übertragung von Kräften, das nutzbare Arbeit leisten kann oder eine Energieform in eine andere umwandeln kann.
+    </p>
+    <hr />
+    <h5>
+      <b>Seznam a obrázek vedle sebe</b>
+    </h5>
+    <div class="row c-par-18">
+      <div class="col-md-3">
+        <ul>
+          <li>Getriebe</li>
+          <li>Wälzlager</li>
+          <li>Gleitlager</li>
+          <li>Zahnräder</li>
+          <li>Reibräder</li>
+          <li>Riemen</li>
+          <li>Ketten</li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <img src="img/Pic1.png" />
+      </div>
+    </div>
+    <hr />
+    <h5>
+      <b>Víceúrovňový seznam</b>
+    </h5>
+    <ul>
+      <li>Manueller Antrieb</li>
+      <ul>
+        <li>mit der Hand</li>
+        <li>mit den Füßen</li>
+      </ul>
+      <li>mit Hilfe von Tieren</li>
+      <li>Mechanischer Antrieb</li>
+    </ul>
+    <hr />
+    <h5>
+      <b>tabulka</b>
+    </h5>
+    <p>
+      Altersgruppen in Deutschland (Änderung im Vergleich 1950/2000):
+    </p>
+    <br />
+    <MacroTable InlineType="no">
+      <![CDATA[
+#cmy <i>Jahr</i>\#cmy <i>6 - 14</i>\#cmy <i>60 - 65</i>	\#cmy <i>und älter</i>
+#cm 1950\#cm	9 430 000\#cm	3 370 000\#cm	6 750 000
+#cm 2000\#cm	7 120 000\#cm	5 720 000\#cm	13 700 000
+    ]]>
+    </MacroTable>
+    <hr />
+    <h5>
+      <b>Seznam s písmeny a závorkami</b>
+    </h5>
+    <p>
+      <i>Formen der der sogenannten Terraindienste:</i>
+    </p>
+    <ul class="list-unstyled">
+      <li>A) Häusliche Pflege.</li>
+      <li>B) Ambulante Pflege.</li>
+    </ul>
+    <hr />
+    <h5>
+      <b>Doprava zarovnané odstavce</b>
+    </h5>
+    <div class="col-md-9">
+      <dl class="dl-horizontal">
+        <dt>Bemerkung:</dt>
+        <dd>
+          Die beiden Formen der Pflege (ambulant oder stationär) können als <b>Tages</b>- oder<b>Nachtpflege</b> erfolgen. So entlastet zum Beispiel die stationäre Tagespflege die
+          pflegenden Angehörigen beim Ausüben ihres Berufes. In die Nachtpflege werden
+          diejenigen Bedürftigen genommen, die entweder in der Nacht medizinisch
+          versorgt werden müssen oder die nachts unruhig sind.
+        </dd>
+      </dl>
+    </div>
+    <hr />
+    <h5>
+      <b>Panel, varianta 1</b>
+    </h5>
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <p>Sehr geehrte Damen und Herren,</p>
+          <p>können Sie uns bitte vom 28.7. bis 5.8.20.. ein Doppelzimmer für Nichtraucher reservieren?</p>
+          <p>Für Ihre baldige Antwort danke ich Ihnen im Voraus.</p>
+          <p>Rolf Schneider</p>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <h5>
+      <b>Panel, varianta 2</b>
+    </h5>
+    <div class="col-md-8">
+      <div class="alert  alert-success">
+        <p>Sehr geehrte Damen und Herren,</p>
+        <p>können Sie uns bitte vom 28.7. bis 5.8.20.. ein Doppelzimmer für Nichtraucher reservieren?</p>
+        <p>Für Ihre baldige Antwort danke ich Ihnen im Voraus.</p>
+        <p>Rolf Schneider</p>
+      </div>
+    </div>
+  </Ex>
+  <Ex id="Typography" title="Typography" instr="instr7" tech_instr="xxx" seealso="" template="Typography" todo="false">
+    <h1>H1 Headlines</h1>
+    <h2>H1 Headlines</h2>
+    <h3>H1 Headlines</h3>
+    <h4>H1 Headlines</h4>
+    <h5>H1 Headlines</h5>
+    <h6>H1 Headlines</h6>
+    <hr />
+    <h2>Small, bold, italic</h2>
+    <p>
+      <b>bold</b>
+      <i>italic</i>
+    </p>
+    <hr />
+    <h2>Aligned</h2>
+    <p class="text-left">Left aligned text.</p>
+    <p class="text-center">Center aligned text.</p>
+    <p class="text-right">Right aligned text.</p>
+    <hr />
+    <h2>Emphasis classes</h2>
+    <p class="text-muted">Fusce dapibus, tellus ac cursus commodo, tortor mauris nibh.</p>
+    <p class="text-primary">Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+    <p class="text-warning">Etiam porta sem malesuada magna mollis euismod.</p>
+    <p class="text-danger">Donec ullamcorper nulla non metus auctor fringilla.</p>
+    <p class="text-success">Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+    <p class="text-info">Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+    <hr />
+    <h2>Blockquotes</h2>
+    <blockquote>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+    </blockquote>
+    <hr />
+    <blockquote>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+    </blockquote>
+    <hr />
+    <blockquote class="pull-right clearfix">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+    </blockquote>
+    <hr />
+    <h2>Lists</h2>
+    <ul>
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Consectetur adipiscing elit</li>
+      <li>Integer molestie lorem at massa</li>
+      <li>Facilisis in pretium nisl aliquet</li>
+      <li>
+        Nulla volutpat aliquam velit
+        <ul>
+          <li>Phasellus iaculis neque</li>
+          <li>Purus sodales ultricies</li>
+          <li>Vestibulum laoreet porttitor sem</li>
+          <li>Ac tristique libero volutpat at</li>
+        </ul>
+      </li>
+      <li>Faucibus porta lacus fringilla vel</li>
+      <li>Aenean sit amet erat nunc</li>
+      <li>Eget porttitor lorem</li>
+    </ul>
+    <hr />
+    <ol>
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Consectetur adipiscing elit</li>
+      <li>Integer molestie lorem at massa</li>
+      <li>Facilisis in pretium nisl aliquet</li>
+      <li>Nulla volutpat aliquam velit</li>
+      <li>Faucibus porta lacus fringilla vel</li>
+      <li>Aenean sit amet erat nunc</li>
+      <li>Eget porttitor lorem</li>
+    </ol>
+    <hr />
+    <ul class="list-unstyled">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Consectetur adipiscing elit</li>
+      <li>Integer molestie lorem at massa</li>
+      <li>Facilisis in pretium nisl aliquet</li>
+      <li>
+        Nulla volutpat aliquam velit
+        <ul>
+          <li>Phasellus iaculis neque</li>
+          <li>Purus sodales ultricies</li>
+          <li>Vestibulum laoreet porttitor sem</li>
+          <li>Ac tristique libero volutpat at</li>
+        </ul>
+      </li>
+      <li>Faucibus porta lacus fringilla vel</li>
+      <li>Aenean sit amet erat nunc</li>
+      <li>Eget porttitor lorem</li>
+    </ul>
+    <hr />
+    <ul class="list-inline">
+      <li>Lorem ipsum</li>
+      <li>Phasellus iaculis</li>
+      <li>Nulla volutpat</li>
+    </ul>
+    <hr />
+    <dl>
+      <dt>Description lists</dt>
+      <dd>A description list is perfect for defining terms.</dd>
+      <dt>Euismod</dt>
+      <dd>Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.</dd>
+      <dd>Donec id elit non mi porta gravida at eget metus.</dd>
+      <dt>Malesuada porta</dt>
+      <dd>Etiam porta sem malesuada magna mollis euismod.</dd>
+    </dl>
+    <hr />
+    <dl class="dl-horizontal">
+      <dt>Description lists</dt>
+      <dd>A description list is perfect for defining terms.</dd>
+      <dt>Euismod</dt>
+      <dd>Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.</dd>
+      <dd>Donec id elit non mi porta gravida at eget metus.</dd>
+      <dt>Malesuada porta</dt>
+      <dd>Etiam porta sem malesuada magna mollis euismod.</dd>
+      <dt>Felis euismod semper eget lacinia</dt>
+      <dd>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</dd>
+    </dl>
+    <hr />
+  </Ex>
+  <Ex id="Table" title="Table" instr="instr7" tech_instr="xxx" seealso="" template="Table" todo="false">
+    <h2>Table</h2>
+    <table class="table" Width="400-500">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Username</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>@fat</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Larry</td>
+          <td>the Bird</td>
+          <td>@twitter</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Striped</h2>
+    <table class="table table-striped" Width="500-600">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Username</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>@fat</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Larry</td>
+          <td>the Bird</td>
+          <td>@twitter</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Bordered</h2>
+    <table class="table table-bordered" Width="600-700">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Username</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="2">1</td>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+        </tr>
+        <tr>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@TwBootstrap</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>@fat</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td colspan="2">Larry the Bird</td>
+          <td>@twitter</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Hover</h2>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Username</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>@fat</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td colspan="2">Larry the Bird</td>
+          <td>@twitter</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Condensed</h2>
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Username</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>@fat</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td colspan="2">Larry the Bird</td>
+          <td>@twitter</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Background</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Column heading</th>
+          <th>Column heading</th>
+          <th>Column heading</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="success">
+          <td>1</td>
+          <td>Column content</td>
+          <td>Column content</td>
+          <td>Column content</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Column content</td>
+          <td>Column content</td>
+          <td>Column content</td>
+        </tr>
+        <tr class="danger">
+          <td>3</td>
+          <td>Column content</td>
+          <td>Column content</td>
+          <td>Column content</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Column content</td>
+          <td>Column content</td>
+          <td>Column content</td>
+        </tr>
+        <tr class="warning">
+          <td>5</td>
+          <td>Column content</td>
+          <td>Column content</td>
+          <td>Column content</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Column content</td>
+          <td>Column content</td>
+          <td>Column content</td>
+        </tr>
+        <tr class="active">
+          <td>7</td>
+          <td>Column content</td>
+          <td>Column content</td>
+          <td>Column content</td>
+        </tr>
+      </tbody>
+    </table>
+  </Ex>
+</Module>

@@ -506,6 +506,7 @@ namespace CourseMeta {
           object lockObj; lock (locks) if (!locks.TryGetValue(productModule.url, out lockObj)) locks.Add(productModule.url, lockObj = new object());
           lock (lockObj) {
             bool noDict = (productModule.type & runtimeType.noDict) != 0;
+            var exs = productModule.scan().OfType<ex>().ToArray();
             buildModule resMod = new buildModule {
               url = productModule.url,
               pages = productModule.scan().OfType<ex>().Select(e => allPages[e.url]).ToArray(),
@@ -636,14 +637,15 @@ namespace CourseMeta {
             //type = runtimeType.products,
             //items = new data[0]
             Items = Enumerable.Empty<data>().
-              Concat(OldLangCourses.generateStandard()).
-              Concat(LangCourses.generateExamplesProduct()).
-              Concat(LangCourses.generateGrafiaProducts()).
-              Concat(OldLangCourses.generateA1_C2()).
-              //Concat(LangCourses.generateTestMeProduct()).
-              Concat(LangCourses.generateJJN()).
-              Concat(LangCourses.generateSkrivanekProduct()).
-              Concat(LangCourses.generateEdusoftProduct()).
+              //Concat(OldLangCourses.generateStandard()).
+              //Concat(LangCourses.generateExamplesProduct()).
+              //Concat(LangCourses.generateGrafiaProducts()).
+              //Concat(OldLangCourses.generateA1_C2()).
+              ////Concat(LangCourses.generateTestMeProduct()).
+              //Concat(LangCourses.generateJJN()).
+              //Concat(LangCourses.generateSkrivanekProduct()).
+              //Concat(LangCourses.generateEdusoftProduct()).
+              Concat(LangCourses.generateBlendedProduct()).
               ToArray()
           };
           //aktualizace local sitemaps
@@ -656,8 +658,17 @@ namespace CourseMeta {
           return;
         }
         //pridej rucne nadefinvoane produkty z d:\LMCom\rew\Web4\prod\XmlSource\
-        var addInProds = Directory.EnumerateFiles(Machines.dataPath + @"xmlsource", "*.xml").Select(fn => data.readObject<data>(fn)).ToArray();
-        foreach (var addIn in addInProds) addIn.url += "/";
+        string[] addInProductUrls = new string[] {
+          "/lm/blended/english/Dialogs.product",
+          "/lm/blended/german/Dialogs.product",
+          "/lm/blended/french/Dialogs.product",
+          "/lm/blended/english/blended.product",
+          "/lm/blended/german/blended.product",
+          "/lm/blended/french/blended.product",
+        };
+        //var addInProds = Directory.EnumerateFiles(Machines.dataPath + @"xmlsource", "*.xml").Select(fn => data.readObject<data>(fn)).ToArray();
+        var addInProds = addInProductUrls.Select(pr => Machines.rootDir + pr.Replace('/', '\\')).Select(fn => data.readObject<data>(fn)).ToArray();
+        foreach (var addIn in addInProds) if (!addIn.url.EndsWith("/")) addIn.url += "/";
         prods.Items = prods.Items.Concat(addInProds).ToArray();
         //pridej instrukce
         //foreach (var prod in prods.Items) prod.Items = prod.Items.Concat(XExtension.Create<data>(
@@ -714,6 +725,9 @@ namespace CourseMeta {
         XmlUtils.ObjectToFile(oldProjFn, oldPrj);
       }
 
+      //zbyle XML z oldea
+      
+
       var lmPubl = sitemap.readFromFilesystem(Machines.rootPath + "lm\\meta.xml");
       lmPubl.Items = new data[] { 
         oldPrj,
@@ -722,7 +736,9 @@ namespace CourseMeta {
         sitemap.fromFileSystem("/lm/docExamples/", log), 
         sitemap.fromFileSystem("/lm/pjExamples/", log), 
         sitemap.fromFileSystem("/lm/etestme/", log), 
-        sitemap.fromFileSystem("/lm/author/", log), 
+        sitemap.fromFileSystem("/lm/author/", log),
+        sitemap.fromFileSystem("/lm/blended/", log),
+        sitemap.fromFileSystem("/lm/ea/", log),
       };
 
       //nove kurzy a return

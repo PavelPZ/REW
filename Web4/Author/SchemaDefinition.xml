@@ -14,13 +14,13 @@
             @summary jednoznacna identifikace elementu
             @descr ??
         </member>
-        <member name="F:CourseModel.tag.styleSheet">
-            @summary CSS pro descendant elementy tohoto elementu, napr. gap-fill { case-sensitive:true; }
-            @descr 
-        </member>
         <member name="P:CourseModel.tag.class">
             @summary seznam CSS classes
             @descr ??
+        </member>
+        <member name="F:CourseModel.tag.styleSheet">
+            @summary CSS pro descendant elementy tohoto elementu, napr. gap-fill { case-sensitive:true; }
+            @descr 
         </member>
         <member name="T:CourseModel.IconIds">
             <summary>

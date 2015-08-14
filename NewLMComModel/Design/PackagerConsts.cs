@@ -450,7 +450,7 @@ namespace Packager {
       "schools/genscorm.js",
       "schools/cpv.js",
       "schools/gramm.js",
-      "schools/statistics.js",
+      //"schools/statistics.js",
     };
 
 
@@ -493,22 +493,26 @@ namespace Packager {
       "courses/GenCourseMeta.js",
     };
 
+    public static string[] angularJS = new string[] {
+      "blendedapi/app.js"
+    };
+
     public static string[] jsAuthorWeb = new string[] {
-      "authorweb/externals/commonMark/dist/commonmark.js",
-      "authorweb/js/jquery-textrange.js",
-      "authorweb/js/metaJSGen.js",
-      "authorweb/js/metaJS.js",
-      "authorweb/js/marksLow.js",
-      "authorweb/js/metaMarks.js",
-      "authorweb/js/encodeLib.js",
-      "authorweb/js/docObjects.js",
-      "authorweb/js/marks.js",
-      "authorweb/js/marksInline.js",
-      "authorweb/js/docText.js",
-      "authorweb/js/docBlock.js",
-      "authorweb/dialogs/dialogs.js",
-      "authorweb/js/compiler.js",
-      "authorweb/js/compRenderTag.js",
+      //"authorweb/externals/commonMark/dist/commonmark.js",
+      //"authorweb/js/jquery-textrange.js",
+      //"authorweb/js/metaJSGen.js",
+      //"authorweb/js/metaJS.js",
+      //"authorweb/js/marksLow.js",
+      //"authorweb/js/metaMarks.js",
+      //"authorweb/js/encodeLib.js",
+      //"authorweb/js/docObjects.js",
+      //"authorweb/js/marks.js",
+      //"authorweb/js/marksInline.js",
+      //"authorweb/js/docText.js",
+      //"authorweb/js/docBlock.js",
+      //"authorweb/dialogs/dialogs.js",
+      //"authorweb/js/compiler.js",
+      //"authorweb/js/compRenderTag.js",
     };
 
   }

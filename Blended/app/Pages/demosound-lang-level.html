@@ -1,0 +1,14 @@
+﻿<div class="alert advertise">
+  <div class="container">
+    <h1><small><a ui-sref="demosound.lang.list({lang: node.parent.url})">{{node.parent.title}}</a> / </small> {{node.title}}</h1>
+  </div>
+</div>
+<div class="container">
+  <div ng-repeat="ex in node.data" class="grid-button">
+    <a class="btn btn-warning btn-block" ui-sref="runex({configid: node.parent.url, file:ex.escapedUrl})">
+      <i class="fa fa-file-o icon-left"></i>
+      {{ex.title}}
+      <i class="fa fa-arrow-right icon-right"></i>
+    </a>
+  </div>
+</div>

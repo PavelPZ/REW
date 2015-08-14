@@ -18,8 +18,9 @@
 #>
  <!--[if lt IE 9]>
   <script type='text/javascript' src='../jslib/scripts/jquery<#=min#>.js'></script>
+  </style>
   <![endif]-->
-  <!--[if (gte IE 9)]><!-->
+  <!--[if (gt IE 8)|!(IE)]><!-->
   <script type='text/javascript' src='../jslib/scripts/jquery2<#=min#>.js'></script>
   <!--<![endif]-->
   <script type='text/javascript' src='../jslib/scripts/underscore<#=min#>.js'></script>
@@ -37,7 +38,7 @@
   if (cfg.version == versions.minified) {
 #>
   <script type='text/javascript'>var isOk = true;</script>
-  <!--[if lt IE 7]><script type='text/javascript'>isOk = false; alert('Internet Explorer 7 or better is required!');</script><![endif]-->
+  <!--[if lt IE 8]><script type='text/javascript'>isOk = false; alert('Internet Explorer 8 or better is required!');</script><![endif]-->
   <script type='text/javascript'>
   function jsUrl(stUrl, dynUrl, dynVer) {
     if (!document.cookie || !_.any(document.cookie.toLowerCase().split(';'), function (c) { return c.trim() == 'dynamicjs=true'; })) return stUrl;

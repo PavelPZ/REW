@@ -7,6 +7,7 @@ var schools;
             this.suplCtxtGrammar = ko.observable(false); //meni cviceni: phone - dynamicka podminka na kontextovou gramatiku
             this.suplGrammarIcon = ko.observable(true); //meni cviceni: phone - dynamicka podminka na nekontextovou gramatiku
             this.exerciseEvaluated = ko.observable(false); //cviceni je vyhodnocenu
+            this.exercisePassive = ko.observable(true); //cviceni je pasivni
             this.score = ko.observable(null); //score vyhodnoceneho cviceni
             var self = this;
             this.grammarClick = function () { return CourseMeta.gui.gotoData(CourseMeta.actGrammar); };
@@ -50,7 +51,7 @@ var schools;
         TopBarModel.prototype.suplGrammarLink = function () { return !this.needsLogin() && this.is(schools.tCourseMeta, schools.tEx) && CourseMeta.actGrammar != null; }; //pro ne-phone: staticka podminka na nekontextovou gramatika
         TopBarModel.prototype.suplDict = function () { return !this.needsLogin() && this.is(schools.tEx, schools.tGrammPage) && DictConnector.actDictData != null; /*cfg.dictType!=schools.dictTypes.no;*/ }; //pomocna stranka s vysvetlenim slovniku
         TopBarModel.prototype.suplEval = function () { return !this.needsLogin() && this.is(schools.tEx); }; //informace o vyhodnocenem cviceni
-        TopBarModel.prototype.resetClick = function () { CourseMeta.actEx.reset(); }; //??(<schoolEx.Model>(Pager.ActPage)).reset(); }
+        TopBarModel.prototype.resetClick = function () { CourseMeta.actEx.reset(); return false; }; //??(<schoolEx.Model>(Pager.ActPage)).reset(); }
         TopBarModel.prototype.dictClick = function () { LMStatus.setReturnUrlAndGoto(schools.createDictIntroUrl()); };
         TopBarModel.prototype.suplInstr = function () { return !this.needsLogin() && this.is(schools.tEx); };
         TopBarModel.prototype.suplVocabulary = function () {

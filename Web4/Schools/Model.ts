@@ -30,6 +30,16 @@ module schools {
       //if (Trados.isRtl) $('body').addClass("rtl-able");
       compl();
     };
+    //query string as lowercase
+    var params = LowUtils.parseQuery(location.search); if (!params) params = {}
+    var pn: string;
+    for (pn in params) {
+      var lp = pn.toLowerCase(); if (pn == lp) continue;
+      params[lp] = params[pn]; delete params[pn];
+    }
+    //prevezmi parametry z query stringu
+    var qr = params['persistType'.toLowerCase()]; if (qr) cfg.persistType = persistTypes[qr];
+    qr = params['displayMode'.toLowerCase()]; if (qr) cfg.displayMode = displayModes[qr];
 
     var initHash = hash => { Pager.initHash = () => _.isEmpty(cfg.hash) ? hash : cfg.hash; };
     switch (cfg.target) {
@@ -119,8 +129,9 @@ module schools {
             CourseMeta.persist = persistMemory.persistCourse;
             Pager.initHash = () => cfg.hash ? cfg.hash : Gui2.skin.instance.getSkinHome(Login.getHash(Login.pageLogin));
             Trados.adjustLoc(() => {
+              CourseMeta.lib.adjustAllProductList(completed);
               //initHash(getHash(tCourseMeta, scormCompanyId, cfg.rootProductId, null));
-              LMStatus.adjustLoggin(() => CourseMeta.lib.adjustAllProductList(completed));
+              //LMStatus.adjustLoggin(() => CourseMeta.lib.adjustAllProductList(completed));
             });
             break;
           default:
@@ -186,6 +197,8 @@ module schools {
     }
 
     hasBreadcrumb() { return false; }
+    normalDisplay() { return true; }
+    previewExDisplay() { return false; }
 
     update(completed: () => void): void {
       SndLow.Stop(); SndLow.needInstallFalse();

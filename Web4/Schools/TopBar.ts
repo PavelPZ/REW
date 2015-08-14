@@ -40,12 +40,13 @@
     suplCtxtGrammar = ko.observable<boolean>(false); //meni cviceni: phone - dynamicka podminka na kontextovou gramatiku
     suplGrammarIcon = ko.observable<boolean>(true); //meni cviceni: phone - dynamicka podminka na nekontextovou gramatiku
     exerciseEvaluated = ko.observable<boolean>(false); //cviceni je vyhodnocenu
+    exercisePassive = ko.observable<boolean>(true); //cviceni je pasivni
     score = ko.observable<string>(null); //score vyhodnoceneho cviceni
     //suplGrammarLink(): boolean { return !this.needsLogin() && this.is(tCourseMeta, tCourse, tLess, tMod, tEx) && schools.data.crsStatic2.grammar != null; } //pro ne-phone: staticka podminka na nekontextovou gramatika
     suplGrammarLink(): boolean { return !this.needsLogin() && this.is(tCourseMeta, /*tCourse, tLess, tMod,*/ tEx) && CourseMeta.actGrammar != null; } //pro ne-phone: staticka podminka na nekontextovou gramatika
     suplDict(): boolean { return !this.needsLogin() && this.is(tEx, tGrammPage) && DictConnector.actDictData != null; /*cfg.dictType!=schools.dictTypes.no;*/ } //pomocna stranka s vysvetlenim slovniku
     suplEval(): boolean { return !this.needsLogin() && this.is(tEx); } //informace o vyhodnocenem cviceni
-    resetClick(): void { CourseMeta.actEx.reset(); } //??(<schoolEx.Model>(Pager.ActPage)).reset(); }
+    resetClick(): boolean { CourseMeta.actEx.reset(); return false; } //??(<schoolEx.Model>(Pager.ActPage)).reset(); }
     dictClick(): void { LMStatus.setReturnUrlAndGoto(schools.createDictIntroUrl()); }
     grammarClick: () => void;
     suplInstr(): boolean { return !this.needsLogin() && this.is(tEx); }

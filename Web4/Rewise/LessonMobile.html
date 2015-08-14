@@ -1,0 +1,15 @@
+﻿!Lesson
+###
+  <div data-bind="with:ActPage(), delegatedHandler: ['click']">
+    {{for ~ActPage().Facts}}
+      <div class="ui-grid-a">
+        <div class="ui-block-a" style="width:70%" >
+          <b>{{:Question}}</b> {{:Answer}}
+        </div>
+        <div class="ui-block-b" style="width: auto">
+          <a href="#" data-role="button" data-icon="arrow-r" data-click="fact" data-delegate-index="{{:Data.DbId}}" data-iconpos="right">...</a>
+        </div>
+      </div>
+    {{/for}}
+  </div>
+

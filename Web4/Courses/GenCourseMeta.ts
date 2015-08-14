@@ -30,6 +30,7 @@ export enum runtimeType {
   multiTest = 67108864,
   multiQuestionnaire = 134217728,
   testDemo = 268435456,
+  productNew = 536870912,
 }
 
 export enum childMode {

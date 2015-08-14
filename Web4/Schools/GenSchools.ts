@@ -44,6 +44,11 @@ export enum scormDriver {
   edoceo = 2,
 }
 
+export enum displayModes {
+  normal = 0,
+  previewEx = 1,
+}
+
 export interface seeAlsoLink {
   url: string;
   title: string;
@@ -86,6 +91,8 @@ export interface config {
   basicPath: string;
   baseTagUrl: string;
   forceDriver: LMComLib.SoundPlayerType;
+  displayMode: displayModes;
+  alowedParentDomain: string;
   licenceConfig: licenceConfig;
   vocabulary: boolean;
 }

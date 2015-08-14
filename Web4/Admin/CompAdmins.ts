@@ -13,18 +13,19 @@
 
 module schoolAdmin {
   export class CompAdmins extends CompModel {
-    constructor(urlParts:string[]) {
+    constructor(urlParts: string[]) {
       super(compAdminsTypeName, urlParts);
     }
 
     // UPDATE
-    update(completed: () => void ): void {
+    update(completed: () => void): void {
       Pager.ajaxPost(
         Pager.pathType.restServices,
         Admin.CmdGetUsers_Type,
         Admin.CmdGetUsers_Create(false, false, [this.CompanyId]),
         (res: Admin.CmdGetUsersResult) => {
-          this.comp_Admin(_.map(_.pairs(_.groupBy(res.CompUsers, "CompanyId")), (nv: any[]) => new CompanyAdmins(nv[0], nv[1])));
+          this.comp_Admin = _.map(_.pairs(_.groupBy(res.CompUsers, "CompanyId")),(nv: any[]) => new CompanyAdmins(this, nv[0], nv[1]));
+          setTimeout(() => this.refreshHtml(),1);
           completed();
         });
     }
@@ -34,27 +35,32 @@ module schoolAdmin {
       Pager.ajaxPost(
         Pager.pathType.restServices,
         Admin.CmdSetUsers_Type,
-        Admin.CmdSetUsers_Create(null, null, null, _.map(_.flatten(_.map(this.comp_Admin(), (it: CompanyAdmins) => it.Items()), true), (it: CompanyAdminItem) => it.data)),
-        () => Login.adjustMyData(true, () => LMStatus.gotoReturnUrl())
-      );
+        Admin.CmdSetUsers_Create(null, null, null, _.map(_.flatten(_.map(this.comp_Admin,(it: CompanyAdmins) => it.Items), true),(it: CompanyAdminItem) => it.data)),
+        () => Login.adjustMyData(true,() => LMStatus.gotoReturnUrl())
+        );
     }
     cancel() { LMStatus.gotoReturnUrl(); }
 
     // COMP ADMIN
-    comp_Admin = ko.observableArray(); //of CompanyAdmins
+    comp_Admin: Array<CompanyAdmins>; //of CompanyAdmins
+
+    refreshHtml() {
+      Pager.renderTemplateEx('schoolCompAdminsItemsPlace', 'schoolCompAdminsItems', this);
+    }
 
   }
 
   // COMP ADMIN
   class CompanyAdmins {
-    constructor(public Id: number, items: Admin.CompUserItem[]) {
+    constructor(public owner: CompAdmins, public Id: number, items: Admin.CompUserItem[]) {
       var self = this;
       //this.Title = _.find(Login.myData.Companies, (comp: Login.MyCompany) => comp.Id == Id).Title;
-      this.Items(_.map(items, (it: Admin.CompUserItem) => new CompanyAdminItem(it)));
-      this.compAdmin_del = (act: CompanyAdminItem) => { if (act.data.UserId == 0) self.Items.remove(act); else act.Deleted(!act.Deleted()); }
-      this.newEMail = validate.create(validate.types.email, (prop) => {
+      this.Items = _.map(items,(it: Admin.CompUserItem) => new CompanyAdminItem(it));
+      //this.compAdmin_del = (act: CompanyAdminItem) => { if (act.data.UserId == 0) self.Items.remove(act); else act.Deleted(!act.Deleted()); }
+      this.compAdmin_del = (act: CompanyAdminItem) => { if (act.data.UserId == 0) { self.Items = _.without(self.Items, act); self.owner.refreshHtml(); } else act.Deleted(!act.Deleted()); }
+      this.newEMail = validate.create(validate.types.email,(prop) => {
         prop.required = true;
-        prop.customValidation = (email: string) => { return _.any(this.Items(), (it: CompanyAdminItem) => it.data.EMail == email) ? CSLocalize('bd38a1ebc3f041779ffd7a5bcf34dfe8', 'User with this email already added') : null; };
+        prop.customValidation = (email: string) => { return _.any(this.Items,(it: CompanyAdminItem) => it.data.EMail == email) ? CSLocalize('bd38a1ebc3f041779ffd7a5bcf34dfe8', 'User with this email already added') : null; };
       });
       this.newEMail_Add = () => {
         if (!validate.isPropsValid([this.newEMail])) return; var nu: CompanyAdminItem = new CompanyAdminItem({
@@ -62,12 +68,12 @@ module schoolAdmin {
           Deleted: false,
           EMail: self.newEMail(),
           CompanyId: Id,
-          Role: { Role: 0, HumanEvalatorInfos:null }
-        }); this.Items.push(nu); this.newEMail(null);
+          Role: { Role: 0, HumanEvalatorInfos: null }
+        }); this.Items.push(nu); self.owner.refreshHtml(); this.newEMail(null);
       };
     }
     //Title: string;
-    Items = ko.observableArray(); //of CompanyAdminItem
+    Items: Array<CompanyAdminItem>; //of CompanyAdminItem
     compAdmin_del;
     newEMail: validate.ValidObservable<any>;
     newEMail_Add;
@@ -86,7 +92,7 @@ module schoolAdmin {
       ];
     }
     Deleted = ko.observable<boolean>(false);
-    options;
+    options: Array<CompanyAdminOption>;
   }
   class CompanyAdminOption {
     constructor(public data: Admin.CompUserItem, role: LMComLib.CompRole) {
@@ -98,6 +104,6 @@ module schoolAdmin {
     title: string;
   }
 
-  Pager.registerAppLocator(appId, compAdminsTypeName, (urlParts, completed) => completed(new CompAdmins(urlParts)));
+  Pager.registerAppLocator(appId, compAdminsTypeName,(urlParts, completed) => completed(new CompAdmins(urlParts)));
 }
 

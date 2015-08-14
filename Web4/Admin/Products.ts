@@ -15,19 +15,22 @@ module schoolAdmin {
         var days = CourseMeta.lib.isTest(CourseMeta.lib.findProduct(prodId)) ? 0 : this.days();
         var nu: Product = new Product({ Id: 0, LastCounter: 0, Days: days, ProductId: prodId, Deleted: false, UsedKeys: 0 }, this);
         this.products.push(nu); this.product(undefined); this.days(0);
+        this.refreshHtml();
       };
-      this.del = (act: Product) => { if (act.data.Id == 0) self.products.remove(act); else act.Deleted(true); }
-      this.undel = (act: Product) => { /*act.edited(false);*/ act.Deleted(false); }
-      //this.edit = (act: Product) => { act.product.set(act.data.ProductId); act.days.set(act.data.Days); act.edited(true); };
-      //this.editCancel = (act: Product) => { act.edited(false); };
-      //this.editOk = (act: Product) => { if (!validate.isPropsValid([act.product, act.days])) return; act.data.ProductId = act.product.get(); act.data.Days = act.days.get(); act.edited(false); };
+      this.del = (act: Product) => { if (act.data.Id == 0) { self.products = _.without(self.products, act); this.refreshHtml(); } else act.Deleted(true);}
+      this.undel = (act: Product) => { act.Deleted(false); }
     }
 
-    products = ko.observableArray<Product>(); // of Product
+    products: Array<Product>; //ko.observableArray<Product>(); // of Product
     product: validate.ValidObservable<any>;
     selectMode = ko.observable(0); //0..unknown, 1..test, 2..kurz
     days: validate.ValidObservable<any>;
     add; del; undel; //edit; editCancel; editOk;
+
+    refreshHtml() {
+      Pager.renderTemplateEx('schoolProductsProductPlace', 'schoolProductsProduct', this);
+    }
+
 
     // UPDATE
     update(completed: () => void): void {
@@ -40,14 +43,15 @@ module schoolAdmin {
           _.each<Admin.Product>(res, pr => {
             if (CourseMeta.lib.findProduct(pr.ProductId) != null) admProds.push(new Product(pr, this));
           });
-          this.products(admProds);
+          this.products = admProds;
+          setTimeout(() => this.refreshHtml(), 1);
           //this.products(_.map(res, (act: Admin.Product) => new Product(act, this)));
           completed();
         });
     }
 
     ok() {
-      var prods = _.map(this.products(), (p: Product) => p.data);
+      var prods = _.map(this.products,(p: Product) => p.data);
       Pager.ajaxPost(
         Pager.pathType.restServices,
         Admin.CmdSetProducts_Type,
@@ -61,18 +65,18 @@ module schoolAdmin {
     allProducts(): Array<CourseMeta.data> {
       var comp = _.find(Login.myData.Companies, c => c.Id == this.CompanyId);
       var res: Array<CourseMeta.data> = comp.companyProducts && comp.companyProducts.length > 0 ? comp.companyProducts.slice() : [];
-      if (comp.PublisherOwnerUserId==0) res.pushArray(CourseMeta.allProductList);
+      if (comp.PublisherOwnerUserId == 0) res.pushArray(CourseMeta.allProductList);
       return res;
     }
   }
 
   export class Product {
-    constructor(public data: Admin.Product, owner: Products) {
+    constructor(public data: Admin.Product, public owner: Products) {
       this.Deleted.subscribe(val => data.Deleted = val);
       var prod = CourseMeta.lib.findProduct(data.ProductId);
       //this.product = validate.create(validate.types.required); this.product(data.ProductId);
       this.days = CourseMeta.lib.keyTitle(prod, data.Days);
-      this.title = prod.title; 
+      this.title = prod.title;
       this.lineTxt = CourseMeta.lib.productLineTxt(data.ProductId).toLowerCase(); 
       //this.EditVisible(!CourseMeta.isType(CourseMeta.lib.findProduct(data.ProductId), CourseMeta.runtimeType.test));
     }
@@ -87,9 +91,9 @@ module schoolAdmin {
   }
 
   function daysProp(product: validate.ValidObservable<any>, owner: Products): validate.ValidObservable<any> {
-    return validate.create(validate.types.rangeMin, (prop) => {
+    return validate.create(validate.types.rangeMin,(prop) => {
       prop.min = 0;
-      prop.customValidation = days => validateProduct(product, days, owner.products());
+      prop.customValidation = days => validateProduct(product, days, owner.products);
     })
   }
   function validateProduct(product: validate.ValidObservable<any>, days: string, allProds: Product[]): string {
@@ -101,7 +105,7 @@ module schoolAdmin {
     return error ? ' ' : null;
   }
 
-  Pager.registerAppLocator(appId, productsTypeName, (urlParts, completed) => completed(new Products(urlParts)));
+  Pager.registerAppLocator(appId, productsTypeName,(urlParts, completed) => completed(new Products(urlParts)));
   //Pager.registerAppLocator(productsTypeName, (url: CompIdUrl, completed: (pg: Pager.Page) => void ) => completed(new Products(url.CompanyId)));
 }
 

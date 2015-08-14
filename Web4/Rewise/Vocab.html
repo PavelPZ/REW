@@ -1,0 +1,36 @@
+﻿!Vocab
+###
+  <div data-bind="with:ActPage(), delegatedHandler: ['click']">
+    {{accordion Bind="expLine"}}
+      {{for Books}}
+        {{if Multi}}
+          {{for #data tmpl=~tmpl("Vocab_Multi") /}}
+        {{else}}
+          {{for #data tmpl=~tmpl("Vocab_Single") /}}
+        {{/if}}
+      {{/for}}
+    {{/accordion}}
+  </div>
+
+###
+Vocab_Single
+###
+   <h3>{{:Data.Book.Title}}</h3>
+
+###
+Vocab_Multi
+###
+  {{acc_item Id=DataId}}
+    {{acc_header}}
+      {{:Data.Title}}
+    {{/acc_header}}
+    {{acc_content}}
+      {{listview}}
+        {{for Books}}
+          {{list_item Url=("book," + Data.bkId)}}
+            {{:Data.Book.Title}}
+          {{/list_item}}
+        {{/for}}
+      {{/listview}}
+    {{/acc_content}}
+  {{/acc_item}}

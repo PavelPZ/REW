@@ -33,6 +33,25 @@ var schools;
             //if (Trados.isRtl) $('body').addClass("rtl-able");
             compl();
         };
+        //query string as lowercase
+        var params = LowUtils.parseQuery(location.search);
+        if (!params)
+            params = {};
+        var pn;
+        for (pn in params) {
+            var lp = pn.toLowerCase();
+            if (pn == lp)
+                continue;
+            params[lp] = params[pn];
+            delete params[pn];
+        }
+        //prevezmi parametry z query stringu
+        var qr = params['persistType'.toLowerCase()];
+        if (qr)
+            cfg.persistType = schools.persistTypes[qr];
+        qr = params['displayMode'.toLowerCase()];
+        if (qr)
+            cfg.displayMode = schools.displayModes[qr];
         var initHash = function (hash) { Pager.initHash = function () { return _.isEmpty(cfg.hash) ? hash : cfg.hash; }; };
         switch (cfg.target) {
             case LMComLib.Targets.author:
@@ -120,8 +139,9 @@ var schools;
                         CourseMeta.persist = persistMemory.persistCourse;
                         Pager.initHash = function () { return cfg.hash ? cfg.hash : Gui2.skin.instance.getSkinHome(Login.getHash(Login.pageLogin)); };
                         Trados.adjustLoc(function () {
+                            CourseMeta.lib.adjustAllProductList(completed);
                             //initHash(getHash(tCourseMeta, scormCompanyId, cfg.rootProductId, null));
-                            LMStatus.adjustLoggin(function () { return CourseMeta.lib.adjustAllProductList(completed); });
+                            //LMStatus.adjustLoggin(() => CourseMeta.lib.adjustAllProductList(completed));
                         });
                         break;
                     default:
@@ -186,6 +206,8 @@ var schools;
             this.tb = new schools.TopBarModel(this);
         }
         Model.prototype.hasBreadcrumb = function () { return false; };
+        Model.prototype.normalDisplay = function () { return true; };
+        Model.prototype.previewExDisplay = function () { return false; };
         Model.prototype.update = function (completed) {
             SndLow.Stop();
             SndLow.needInstallFalse();

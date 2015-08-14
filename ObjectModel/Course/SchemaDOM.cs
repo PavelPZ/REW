@@ -375,7 +375,24 @@ namespace CourseModel {
   public partial class jsonMLMeta {
     public jsonMLMeta(Type root, bool isCammelCase) {
       this.root = root; this.isCammelCase = isCammelCase;
-      types = root.Assembly.GetTypes().Where(t => root.IsAssignableFrom(t)).Select(t => new jsClassMeta(t, this)).ToDictionary(t => t.tagName);
+      try {
+        types = root.Assembly.GetTypes().Where(t => root.IsAssignableFrom(t)).Select(t => new jsClassMeta(t, this)).ToDictionary(t => t.tagName);
+      } catch (ReflectionTypeLoadException ex) {
+        StringBuilder sb = new StringBuilder();
+        foreach (Exception exSub in ex.LoaderExceptions) {
+          sb.AppendLine(exSub.Message);
+          FileNotFoundException exFileNotFound = exSub as FileNotFoundException;
+          if (exFileNotFound != null) {
+            if (!string.IsNullOrEmpty(exFileNotFound.FusionLog)) {
+              sb.AppendLine("Fusion Log:");
+              sb.AppendLine(exFileNotFound.FusionLog);
+            }
+          }
+          sb.AppendLine();
+        }
+        string errorMessage = sb.ToString();
+        throw new Exception(errorMessage);
+      }
       rootTagName = root.Name;
       foreach (var tp in types.Values)
         try {

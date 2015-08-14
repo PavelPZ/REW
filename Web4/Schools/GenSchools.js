@@ -45,4 +45,9 @@ var schools;
         scormDriver[scormDriver["edoceo"] = 2] = "edoceo";
     })(schools.scormDriver || (schools.scormDriver = {}));
     var scormDriver = schools.scormDriver;
+    (function (displayModes) {
+        displayModes[displayModes["normal"] = 0] = "normal";
+        displayModes[displayModes["previewEx"] = 1] = "previewEx";
+    })(schools.displayModes || (schools.displayModes = {}));
+    var displayModes = schools.displayModes;
 })(schools || (schools = {}));

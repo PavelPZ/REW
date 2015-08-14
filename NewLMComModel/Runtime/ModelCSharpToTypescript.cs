@@ -341,6 +341,7 @@ namespace schools {
       yield return typeof(versions);
       yield return typeof(DictEntryType);
       yield return typeof(scormDriver);
+      yield return typeof(displayModes);
 
       //yield return typeof(taskStatus);
       //yield return typeof(taskTypes);

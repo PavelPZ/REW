@@ -137,12 +137,16 @@ module schoolMy {
         //isPublIndiv: crs==null,
         expired: crs.Expired <= 0 ? new Date() : Utils.intToDate(crs.Expired),
         line: pr.line, title: pr.title, prodId: pr.url, isTest: CourseMeta.lib.isTest(pr),
+        isAngularJS: CourseMeta.lib.isAngularJS(pr),
         data: crs,
         myCompany: comp,
         gotoUrl: (dt: courseLink) => {
           if (dt.isTest && dt.data.LicCount == 0) return;
           if (comp.data.PublisherOwnerUserId == 0 && /*!dt.data.isAuthoredCourse &&*/ dt.myCompany.data.DepTree && dt.myCompany.data.DepTree.Departments && !dt.myCompany.department()) { alert(CSLocalize('a85c8a527bb44bda9a7ee0721707d2ef', 'Choose company department (by clicking on [Change] link above)')); return; }
-          var hash = dt.isTest ? testMe.createUrlPersist(testMe.tEx, comp.data.Id, pr.url, persistence) : new CourseMeta.dataImpl().hrefCompl(comp.data.Id, pr.url, persistence);
+          if (dt.isAngularJS) {
+            blended.rootState.go('ajs.vyzvaproduct', { producturl: encodeURIComponent(pr.url) }); return;
+          }
+          var hash = dt.isAngularJS ? '/ajs/vyzvaproduct/' + encodeURIComponent(pr.url) : (dt.isTest ? testMe.createUrlPersist(testMe.tEx, comp.data.Id, pr.url, persistence) : new CourseMeta.dataImpl().hrefCompl(comp.data.Id, pr.url, persistence));
           if (dt.isTest) testMe.alowTestCreate_Url = pr.url;
           window.location.hash = hash;
         },
@@ -181,6 +185,7 @@ module schoolMy {
     prodId: string;
     expired: Date;
     isTest: boolean;
+    isAngularJS: boolean; //nova verze
     line: LMComLib.LineIds;
     gotoUrl: (data: courseLink) => void;
     gotoArchive: (data: courseLink) => void;

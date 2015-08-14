@@ -2711,6 +2711,7 @@ input {
 /********************** MEDIA ***********************/
 .oli-sent {
   cursor: pointer;
+  padding: 3px 0;
 }
 .oli-sent > .actor {
   font-size: 140%;
@@ -4817,12 +4818,29 @@ blockquote div:last-child.oli-par {
   padding-right: 10px;
 }
 .instr.hidden-small,
-.instr.hidden-vsnet {
+.instr.hidden-vsnet,
+.instr.instr-display-ex {
   color: #3c763d;
   background-color: #dff0d8;
   border: 1px solid #d6e9c6;
   border-radius: 4px;
   padding-left: 15px;
+}
+.instr.instr-display-ex {
+  position: relative;
+  padding-left: 30px;
+}
+.instr.instr-display-ex .display-ex-green-arrow {
+  position: absolute;
+  right: 4px;
+  top: 3px;
+}
+.instr.instr-display-ex .instr-display-score {
+  font-size: 14px;
+  padding: 8px 0;
+}
+.instr.instr-display-ex .instr-display-score span {
+  font-weight: bold;
 }
 .instr.hidden-vsnet {
   position: relative;

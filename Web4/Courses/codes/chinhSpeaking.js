@@ -6,6 +6,12 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Course;
 (function (Course) {
+    (function (chinhTaskType) {
+        chinhTaskType[chinhTaskType["listen"] = 0] = "listen";
+        chinhTaskType[chinhTaskType["read"] = 1] = "read";
+        chinhTaskType[chinhTaskType["finish"] = 2] = "finish";
+    })(Course.chinhTaskType || (Course.chinhTaskType = {}));
+    var chinhTaskType = Course.chinhTaskType;
     var chinhSpeaking = (function () {
         function chinhSpeaking(control) {
             var _this = this;
@@ -28,17 +34,15 @@ var Course;
                 return Course.initPhaseType.no;
             };
             Course.extension = this;
-            this.tasks = [
-                new ch_listenAndTalkTask('part1-question1', 'p1-q1', 'p1-a1'),
-                new ch_listenAndTalkTask('part1-question2', 'p1-q2', 'p1-a2'),
-                new ch_listenAndTalkTask('part1-question3', 'p1-q3', 'p1-a3'),
-                new ch_readAndTalkTask('part2-question', 'p2-q1', 'p2-a1'),
-                new ch_readAndTalkTask('part3-question1', 'p3-q1', 'p3-a1'),
-                new ch_listenAndTalkTask('part3-question2', 'p3-q2', 'p3-a2'),
-                new ch_listenAndTalkTask('part3-question3', 'p3-q3', 'p3-a3'),
-                new ch_listenAndTalkTask('part3-question4', 'p3-q4', 'p3-a4'),
-                new ch_finish()
-            ];
+            var tasks = control.cdata ? JSON.parse(control.cdata) : {};
+            this.tasks = _.map(tasks.tasks, function (t) {
+                switch (t.type) {
+                    case chinhTaskType.finish: return new ch_finish(t);
+                    case chinhTaskType.listen: return new ch_listenAndTalkTask(t);
+                    case chinhTaskType.read: return new ch_readAndTalkTask(t);
+                    default: throw 'not implemented';
+                }
+            });
         }
         chinhSpeaking.prototype.getTemplateId = function () { return 'chinhspeaking'; };
         chinhSpeaking.prototype.run = function () {
@@ -64,7 +68,10 @@ var Course;
     Course.chinhSpeaking = chinhSpeaking;
     Course.extension;
     var ch_task = (function () {
-        function ch_task() {
+        function ch_task(json) {
+            if (json)
+                for (var p in json)
+                    this[p] = json[p];
         }
         ch_task.prototype.start = function () { };
         ch_task.prototype.end = function () { };
@@ -94,7 +101,7 @@ var Course;
     var ch_finish = (function (_super) {
         __extends(ch_finish, _super);
         function ch_finish() {
-            _super.call(this);
+            _super.apply(this, arguments);
         }
         ch_finish.prototype.start = function () {
             Course.extension.done(true);
@@ -105,11 +112,8 @@ var Course;
     Course.ch_finish = ch_finish;
     var ch_readAndTalkTask = (function (_super) {
         __extends(ch_readAndTalkTask, _super);
-        function ch_readAndTalkTask(taskDivId, questId, recordId) {
-            _super.call(this);
-            this.taskDivId = taskDivId;
-            this.questId = questId;
-            this.recordId = recordId;
+        function ch_readAndTalkTask() {
+            _super.apply(this, arguments);
         }
         ch_readAndTalkTask.prototype.start = function () {
             var _this = this;
@@ -139,11 +143,8 @@ var Course;
     Course.ch_readAndTalkTask = ch_readAndTalkTask;
     var ch_listenAndTalkTask = (function (_super) {
         __extends(ch_listenAndTalkTask, _super);
-        function ch_listenAndTalkTask(taskDivId, questId, recordId) {
-            _super.call(this);
-            this.taskDivId = taskDivId;
-            this.questId = questId;
-            this.recordId = recordId;
+        function ch_listenAndTalkTask() {
+            _super.apply(this, arguments);
         }
         ch_listenAndTalkTask.prototype.start = function () {
             (this.$instr = $('#instruction1')).show();

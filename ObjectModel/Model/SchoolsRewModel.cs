@@ -222,6 +222,11 @@ namespace schools
     edoceo,
   }
 
+  public enum displayModes {
+    normal,
+    previewEx,
+  }
+
   public class config {
     public config() { EADataPath = "eaimgmp3/"; }
     public string dataBatchUrl; //pro web: CourseMeta.WebBatch.url. Identifikace buildu dat, aby se vedelo, ktery seznam produktu ladovat (napr. laduje se d:\LMCom\rew\Web4\prod\lm_debug.json)
@@ -269,6 +274,10 @@ namespace schools
 
     public LMComLib.SoundPlayerType forceDriver; 
 
+    public displayModes displayMode;
+
+    public string alowedParentDomain; //je-li window.parent.url domena rovna alowedParentDomain, tak se provede fake login.
+
     public licenceConfig licenceConfig; //config licence
 
     public bool vocabulary; //kurz s rewise apod. slovnickem. Nejedna se o Dictionary (= slovnik)
@@ -313,6 +322,8 @@ namespace schools
       cfg.baseTagUrl = baseTagUrl;
       cfg.logins = logins==null ? null : logins.ToArray();
       cfg.forceDriver = forceDriver;
+      cfg.displayMode = displayMode;
+      cfg.alowedParentDomain = alowedParentDomain;
       if (cfg.licenceConfig == null && licenceConfig != null) cfg.licenceConfig = licenceConfig.copy();
       return cfg;
     }

@@ -36,6 +36,9 @@ namespace CubesDeployment {
 
     static void Main(string[] args) {
 
+      //CourseMeta.Lib.init(new LoggerMemory(true), @"d:\lmcom\", false);
+      //return;
+
       Machines._basicPath = @"d:\lmcom\";
       var ignExts = new HashSet<string> { ".webm", ".mp4", ".mp3" };
       if (args != null && args.Length == 1 && (args[0].StartsWith("-8") || args[0].StartsWith("-9"))) {

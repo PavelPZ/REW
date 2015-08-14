@@ -1,8 +1,11 @@
 !schoolEx
 ###
 <div data-bind="with: Pager.ActPage" class="app-school">
+  {{if normalDisplay()}}
   <div class="rtl">{{for #data tmpl=~T('TTopBarNew')/}}</div>
+  {{/if}}
   {{if ~Cookie()}}
+  {{if normalDisplay()}}
   <div class="container">
     <div>{{for #data tmpl=~T('TSchoolCpv')/}}</div>
     <%-- breadcrumb --%>
@@ -29,10 +32,14 @@
     </div>
   </div>
   {{/if}}
+  {{/if}}
   <div class="container content-place">
+    {{if previewExDisplay()}}
+    {{for #data tmpl=~T('TInstructionsPreviewEx')/}}
+    {{/if}}
     {{if ~Cookie()}}
     <h3 class="hidden-small"><span class="fa fa-{{:iconId()}}"></span>&nbsp;{{:title()}}</h3>
-    <div id="exercise" class="{{:~CourseMeta.gui.exerciseCls()}}" >
+    <div id="exercise" class="{{:~CourseMeta.gui.exerciseCls()}}">
       {{:~CourseMeta.gui.exerciseHtml()}}
     </div>
     <div data-bind="template: seeAlsoTemplate"></div>
@@ -83,5 +90,21 @@ TInstructions
     <span class="fa fa-info-circle fa-lg"></span>&nbsp;&nbsp;
     <span data-bind="text: instrTitle"></span>
   </a>
+  <div id="collapse-instr2" class="lm-collapse" data-role="collapsed" data-bind="html: instrBody"></div>
+</div>
+
+###
+TInstructionsPreviewEx
+###
+<div class="instr instr-display-ex">
+  <a class="btn btn-link btn-block btn-default header" data-toggle="collapse" data-target="#collapse-instr2" data-bind="css: { hidden: tb.exerciseEvaluated()}">
+    <span class="fa fa-info-circle fa-lg"></span>&nbsp;&nbsp;
+    <span data-bind="text: instrTitle"></span>
+  </a>
+  <div class="instr-display-score" data-bind="css: { hidden: !tb.exerciseEvaluated()}">
+    Score: <b data-bind="text:tb.score()"></b>
+  </div>
+  <button class="btn btn-sm btn-success display-ex-green-arrow hidden" data-bind="css: { hidden: tb.exerciseEvaluated() || tb.exercisePassive() }, click:CourseMeta.doGreenClick">Evaluate</button>
+  <button class="btn btn-sm btn-success display-ex-green-arrow hidden" data-bind="css: { hidden: !tb.exerciseEvaluated() || tb.exercisePassive() }, click: tb.resetClick">Reset</button>
   <div id="collapse-instr2" class="lm-collapse" data-role="collapsed" data-bind="html: instrBody"></div>
 </div>

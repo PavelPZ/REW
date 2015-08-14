@@ -12,7 +12,7 @@ module CourseMeta {
   export var greenArrowDict: { [url: string]: boolean };
   export var foundGreenEx: exImpl; //aktualni zelene cviceni
 
-  export function doGreenClick() { CourseMeta.lib.keepGreen = greenCss() == 'success'; greenClick(); } //pres klik na sipku se drzi zelena barva sipky
+  export function doGreenClick() { CourseMeta.lib.keepGreen = greenCss() == 'success'; greenClick(); return false; } //pres klik na sipku se drzi zelena barva sipky
 
   export function btnClick(url: string) { //klik na button
     var nd: courseNode = _.isEmpty(url) ? actCourseRoot : <courseNode>(actProduct.getNode(url));
@@ -62,6 +62,8 @@ module CourseMeta {
       return this.br = res;
     } br: schools.ILink[];
     hasBreadcrumb() { return actNode != actGrammar && this.breadcrumbs().length > 1; }
+    normalDisplay() { return cfg.displayMode == schools.displayModes.normal; }
+    previewExDisplay() { return cfg.displayMode == schools.displayModes.previewEx; }
     doUpdate(completed: () => void): void {
       lib.onChangeUrl(this.productUrl, this.persistence, this.url, ex =>
         lib.doRefresh(completed));
@@ -132,6 +134,7 @@ module CourseMeta {
 
   //vypocet odvozenych udaju
   export function refreshExerciseBar(dt: exImpl): void {
+    actExModel.tb.exercisePassive(actEx.page.isPassivePage());
     if (dt.done) {
       actExModel.tb.exerciseEvaluated(true);
       actExModel.tb.score(actEx.page.isPassivePage() ? null : Math.round(100 * dt.s / dt.ms).toString() + "%");

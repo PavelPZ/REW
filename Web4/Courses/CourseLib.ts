@@ -334,6 +334,10 @@ module CourseMeta {
       return prod && CourseMeta.isType(prod, CourseMeta.runtimeType.test);
     }
 
+    export function isAngularJS(prod: CourseMeta.data): boolean {
+      return prod && CourseMeta.isType(prod, CourseMeta.runtimeType.productNew);
+    }
+
     export function keyTitle(prod: CourseMeta.data, Days: number): string {
       return prod.title + ' / ' + (CourseMeta.lib.isTest(prod) ? 'test' : 'days: ' + Days.toString());
     }

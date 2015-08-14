@@ -9,53 +9,8 @@
     <div class="panel panel-default">
       <div class="panel-heading">{{:~CSLocalize('210fe1ad34de4568b34a12c0a4b171be', 'Courses and Licenses')}}</div>
       <%-- LIST --%>
-      <table class="table table-condensed table-hover">
-        <tbody data-bind="foreach: products">
-          <%-- EDIT 
-          <tr data-bind="visible: edited()" class="success">
-            <td>
-              <select class="form-control" data-bind="options: $parent.allProducts(), optionsCaption: '{{:~CSLocalize('1bfaa314d0ea4d9fb0af537173f8532f', 'Select a product...')}}', value: product, optionsText: 'title', optionsValue: 'url'"></select>
-              <span class="help-block" data-bind="visibility: product.message, text: product.message"></span>
-            </td>
-            <td>
-              <input class="form-control" type="text" placeholder="{{:~CSLocalize('51be7671f95b41ee8a6d95adf10949c0', 'Enter the number of days')}}" data-bind="value: days, valueUpdate: 'afterkeydown', hasfocus: days.hasfocus" />
-              <span class="help-block" data-bind="visibility: days.message, text: days.message"></span>
-            </td>
-            <td class="ad-btn-last">
-              <div class="btn-group">
-                <button class="btn btn-default" data-bind="click: $parent.editCancel">
-                  <span class="fa fa-times"></span>&nbsp;{{:~CSLocalize('aded595d9c524e6d961871ba3c2e21ef', 'Cancel')}}
-                </button>
-                <button class="btn btn-default" data-bind="click: $parent.editOk">
-                  <span class="fa fa-check"></span>&nbsp;{{:~CSLocalize('ee3560f386f74847ac61f62ed03c9383', 'OK')}}
-                </button>
-              </div>
-            </td>
-          </tr>
-          --%>
-          <%-- PREVIEW --%>
-          <tr data-bind="css: { danger: Deleted(), success: !Deleted() }" class="danger">
-            <td colspan="2">
-              <span class="flag-small" data-bind="css : 'flag-small-' + lineTxt"></span>
-              <b><span data-bind="text: title"></span> / <span data-bind="text: days"></span></b><br />
-              {{:~CSLocalize('d2e908b32c3143258d944adae1737869', 'Keys generated:')}}
-              <span data-bind="text: data.LastCounter"></span>
-            </td>
-            <td style="text-align: right;">
-              <button class="btn btn-default" data-bind="click: $parent.undel, visible: Deleted">
-                <span class="fa fa-plus"></span>&nbsp;{{:~CSLocalize('f0292779b21f48ddb86b49fce5df779e', 'Undelete')}}
-              </button>
-              <div class="btn-group" data-bind="visible: !Deleted() && data.LastCounter == 0">
-                <!--<button class="btn btn-default" data-bind="click: $parent.edit, visible: EditVisible">
-                  <span class="fa fa-pencil"></span>&nbsp;{{:~CSLocalize('695655489df54167abc3d6bd89060203', 'Edit')}}
-                </button>-->
-                <button class="btn btn-default" data-bind="click: $parent.del">
-                  <span class="fa fa-times"></span>&nbsp;{{:~CSLocalize('08e9a57e29224453bf3bb094f2bb3723', 'Delete')}}
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
+      <table class="table table-condensed table-hover" >
+        <tbody id="schoolProductsProductPlace"></tbody>
       </table>
       <%-- NEW --%>
       <table class="table table-condensed">
@@ -87,4 +42,27 @@
     {{/if}}
   </div>
 </div>
+###
 
+schoolProductsProduct
+###
+{{for products}}
+<tr data-bind="with: products[{{:#index}}], css: { danger: products[{{:#index}}].Deleted(), success: !products[{{:#index}}].Deleted() }" class="danger">
+  <td colspan="2">
+    <span class="flag-small" data-bind="css : 'flag-small-' + lineTxt"></span>
+    <b><span data-bind="text: title"></span> / <span data-bind="text: days"></span></b><br />
+    {{:~CSLocalize('d2e908b32c3143258d944adae1737869', 'Keys generated:')}}
+    <span data-bind="text: data.LastCounter"></span>
+  </td>
+  <td style="text-align: right;">
+    <button class="btn btn-default" data-bind="click: owner.undel, visible: Deleted">
+      <span class="fa fa-plus"></span>&nbsp;{{:~CSLocalize('f0292779b21f48ddb86b49fce5df779e', 'Undelete')}}
+    </button>
+    <div class="btn-group" data-bind="visible: !Deleted() && data.LastCounter == 0">
+      <button class="btn btn-default" data-bind="click: owner.del">
+        <span class="fa fa-times"></span>&nbsp;{{:~CSLocalize('08e9a57e29224453bf3bb094f2bb3723', 'Delete')}}
+      </button>
+    </div>
+  </td>
+</tr>
+{{/for}}

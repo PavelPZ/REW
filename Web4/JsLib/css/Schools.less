@@ -31,9 +31,10 @@
 }
 
 blockquote {
-  padding-top: 8px; 
+  padding-top: 8px;
   padding-bottom: 8px;
 }
+
 .panel .panel-body, .alert, .well, blockquote {
   div:first-child.oli-par {
     margin-top: 0px;
@@ -181,13 +182,33 @@ blockquote {
 .instr {
   padding-right: 10px;
 
-  &.hidden-small, &.hidden-vsnet {
+  &.hidden-small, &.hidden-vsnet, &.instr-display-ex {
     color: @alert-success-text;
     background-color: @alert-success-bg;
     border: 1px solid @alert-success-border;
     border-radius: @alert-border-radius;
     padding-left: 15px;
   }
+
+  &.instr-display-ex {
+    position: relative;
+    padding-left: 30px;
+
+    .display-ex-green-arrow {
+      position: absolute;
+      right: 4px;
+      top: 3px;
+    }
+
+    .instr-display-score {
+      font-size: 14px;
+      padding:8px 0;
+      span {
+        font-weight: bold;
+      }
+    }
+  }
+
 
   &.hidden-vsnet {
     position: relative;

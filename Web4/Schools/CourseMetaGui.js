@@ -17,7 +17,7 @@ var CourseMeta;
     CourseMeta.greenClick;
     CourseMeta.greenArrowDict;
     CourseMeta.foundGreenEx; //aktualni zelene cviceni
-    function doGreenClick() { CourseMeta.lib.keepGreen = CourseMeta.greenCss() == 'success'; CourseMeta.greenClick(); }
+    function doGreenClick() { CourseMeta.lib.keepGreen = CourseMeta.greenCss() == 'success'; CourseMeta.greenClick(); return false; }
     CourseMeta.doGreenClick = doGreenClick; //pres klik na sipku se drzi zelena barva sipky
     function btnClick(url) {
         var nd = _.isEmpty(url) ? CourseMeta.actCourseRoot : (CourseMeta.actProduct.getNode(url));
@@ -85,6 +85,8 @@ var CourseMeta;
             return this.br = res;
         };
         MetaModel.prototype.hasBreadcrumb = function () { return CourseMeta.actNode != CourseMeta.actGrammar && this.breadcrumbs().length > 1; };
+        MetaModel.prototype.normalDisplay = function () { return cfg.displayMode == schools.displayModes.normal; };
+        MetaModel.prototype.previewExDisplay = function () { return cfg.displayMode == schools.displayModes.previewEx; };
         MetaModel.prototype.doUpdate = function (completed) {
             CourseMeta.lib.onChangeUrl(this.productUrl, this.persistence, this.url, function (ex) {
                 return CourseMeta.lib.doRefresh(completed);
@@ -170,6 +172,7 @@ var CourseMeta;
     CourseMeta.saveAndReload = saveAndReload;
     //vypocet odvozenych udaju
     function refreshExerciseBar(dt) {
+        CourseMeta.actExModel.tb.exercisePassive(CourseMeta.actEx.page.isPassivePage());
         if (dt.done) {
             CourseMeta.actExModel.tb.exerciseEvaluated(true);
             CourseMeta.actExModel.tb.score(CourseMeta.actEx.page.isPassivePage() ? null : Math.round(100 * dt.s / dt.ms).toString() + "%");
