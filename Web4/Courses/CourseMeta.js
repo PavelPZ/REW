@@ -50,7 +50,7 @@ var CourseMeta;
             return schools.getHash(tp, companyId, productUrl, persistence, this.url);
         };
         dataImpl.prototype.href = function () {
-            return this.hrefCompl(CourseMeta.actCompanyId, CourseMeta.actProduct.url, CourseMeta.actProductPersistence);
+            return this.hrefCompl(CourseMeta.actCompanyId, encodeUrlHash(CourseMeta.actProduct.url), CourseMeta.actProductPersistence);
         };
         dataImpl.prototype.iconId = function () {
             if (this == CourseMeta.actCourseRoot)

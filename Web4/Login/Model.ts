@@ -15,7 +15,7 @@ module Login {
   export var cfg: Config;
 
   export function getHash(type: string): string {
-    return [appId, type].join(hashDelim);
+    return oldPrefix + [appId, type].join(hashDelim);
   }
 
   //export class RootModel extends Pager.RootModelEx {

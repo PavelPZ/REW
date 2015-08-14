@@ -28,7 +28,7 @@ var CourseMeta;
     CourseMeta.btnClick = btnClick;
     function gotoData(url) {
         //skok na hash nebo sitemap url, kvuli breadcrumb v testMe result apod.
-        Pager.navigateToHash(_.isEmpty(url) ? '' : (url.split(hashDelim).length > 1 ? url : CourseMeta.actProduct.getNode(url).href()));
+        Pager.navigateToHash(_.isEmpty(url) ? '' : (Utils.startsWith(url, '/old/') ? encodeUrlHash(url) : CourseMeta.actProduct.getNode(url).href()));
         return false;
     }
     CourseMeta.gotoData = gotoData;

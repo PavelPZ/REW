@@ -18,6 +18,10 @@
     addController(name: string, controller: Function) { this.app.controller(name, controller); }
   }
 
+  export function _isAngularHash(hash: string): boolean { //hack
+    if (hash && Utils.startsWith(hash, '/ajs/')) { return true; }
+    return false;
+  }
   export function isAngularHash(hash: string): boolean { //hack
     if (hash && Utils.startsWith(hash, '/ajs/')) { $('#angularjs-root').show(); return true; }
     $('#angularjs-root').hide();
@@ -33,15 +37,20 @@
   root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', ($stateProvider: angular.ui.IStateProvider, $urlRouterProvider: angular.route.IRouteProvider, $location) => {
     $stateProvider
       .state({
+        name: 'old',
+        url: '/old',
+        template: "<!--old-->",
+      })
+      .state({
         name: 'ajs',
         url: '/ajs',
         abstract:true,
-        controller: () => { alert('ajs'); },
+        controller: () => { },
         template: "<div data-ui-view></div>",
       })
       .state({
         name: 'ajs.vyzvaproduct',
-        controller: () => { alert('ajs.vyzvaproduct');},
+        controller: () => { },
         url: "/vyzvaproduct/:producturl",
         templateUrl: "../blendedapi/views/vyzvaproduct.html"
       })

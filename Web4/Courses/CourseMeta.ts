@@ -42,7 +42,7 @@ module CourseMeta {
       return schools.getHash(tp, companyId, productUrl, persistence, this.url);
     }
     href(): string {
-      return this.hrefCompl(CourseMeta.actCompanyId, CourseMeta.actProduct.url, CourseMeta.actProductPersistence);
+      return this.hrefCompl(CourseMeta.actCompanyId, encodeUrlHash(CourseMeta.actProduct.url), CourseMeta.actProductPersistence);
     }
 
     iconId(): string {

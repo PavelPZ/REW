@@ -9,8 +9,11 @@ module grafia { export var appId = "grafia"; }
 module skrivanek { export var appId = "skrivanek"; }
 
 var hashDelim = '/';
-function encodeUrlHash(url: string): string { return url ? encodeURIComponent(url) : ''; }
-function decodeUrlHash(url: string): string { return url ? decodeURIComponent(url) : null; }
+var oldPrefix = '/old/';
+var encMask = new RegExp('/', 'g');
+var decMask = new RegExp('@', 'g');
+function encodeUrlHash(url: string): string { return url ? url.replace(encMask, '@') : ''; }
+function decodeUrlHash(url: string): string { return url ? url.replace(decMask,'/') : null; }
 
 module Pager {
 
@@ -64,7 +67,12 @@ module Pager {
     if (blended.isAngularHash(hash)) { completed(angularPage); return; }
     if (!hash || hash.length < 3) { completed(null); return; }
     //hash = hash.toLowerCase();
-    var parts = hash.split(hashDelim); if (parts.length < 2) { completed(null); return; }
+    var parts = hash.split(hashDelim);
+    if (parts[0] == 'old' || parts[1] == 'old') {
+      var removeNum = parts[0] == 'old' ? 1 : 2;
+      parts.splice(0, removeNum);
+    }
+    if (parts.length < 2) { completed(null); return; }
     var app = regApps[parts[0].toLowerCase()]; if (!app) { completed(null); return; }
     var proc = app[parts[1].toLowerCase()]; if (!proc) { completed(null); return; }
     proc(parts.length <= 2 ? null : parts.slice(2), completed);

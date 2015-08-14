@@ -167,7 +167,7 @@ var doc;
         __extends(propModel, _super);
         function propModel(urlParts) {
             _super.call(this, true, propType, urlParts);
-            this.backUrl = doc.appId + hashDelim + urlParts[1].replace(/~/g, hashDelim);
+            this.backUrl = oldPrefix + doc.appId + hashDelim + urlParts[1].replace(/~/g, hashDelim);
         }
         propModel.prototype.createModel = function (completed) {
             this.actDocNamedImpl = this.actImpl = doc.actMeta.propDir[this.memberId];
@@ -346,7 +346,7 @@ var doc;
     function getHash(type, url1, url2) {
         if (url1 === void 0) { url1 = null; }
         if (url2 === void 0) { url2 = null; }
-        return [doc.appId, type, url1, url2].join(hashDelim);
+        return oldPrefix + [doc.appId, type, url1, url2].join(hashDelim);
     }
     function Start() {
         CourseMeta.persist = persistMemory.persistCourse;

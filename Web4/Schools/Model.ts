@@ -16,7 +16,7 @@ module schools {
   export var memoryPersistId = 'memory';
 
   export function getHash(type: string, companyId: number, productUrl: string, persistence: string, url: string): string {
-    return [appId, type, companyId.toString(), encodeUrlHash(productUrl), persistence, encodeUrlHash(url)].join(hashDelim);
+    return oldPrefix + [appId, type, companyId.toString(), encodeUrlHash(productUrl), persistence, encodeUrlHash(url)].join(hashDelim);
   }
 
   export function InitModel(compl: () => void): void {

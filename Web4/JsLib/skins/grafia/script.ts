@@ -2,7 +2,7 @@
   export var home = "grafia_homeModel".toLowerCase();
   export class skin extends Gui2.skin {
     bodyClass(): string { return $(document).width() <= 960 ? 'screen-width-small' : ''; }
-    getHome(): string { return [appId, home].join(hashDelim); }
+    getHome(): string { return oldPrefix + [appId, home].join(hashDelim); }
   }
 
   export class homeModel extends Pager.Page {

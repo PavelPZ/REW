@@ -244,7 +244,7 @@
 
   //***** navigace
   function getHash(modelType: string, nodeId: number = -1, mainTab: mainTabItem = 0, type: string = null, prop: string = null, valueIdx: number = 0): string {
-    return [appId, modelType, nodeId.toString(), mainTab.toString(), type, prop, valueIdx ? valueIdx.toString() : '0', LowUtils.getQueryParams('url')].join(hashDelim);
+    return oldPrefix + [appId, modelType, nodeId.toString(), mainTab.toString(), type, prop, valueIdx ? valueIdx.toString() : '0', LowUtils.getQueryParams('url')].join(hashDelim);
   }
 
   export function Start() {

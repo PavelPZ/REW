@@ -39,7 +39,7 @@ module schoolAdmin {
   export function returnFalse(): boolean { return false; }
   export function returnTrue(): boolean { return true; }
 
-  export function getHash(type: string, companyId: number) { return [appId, type, companyId.toString()].join(hashDelim); }
+  export function getHash(type: string, companyId: number) { return oldPrefix + [appId, type, companyId.toString()].join(hashDelim); }
 
   export var adminTypeName = "schoolAdminModel".toLowerCase(); //System administrator, dovoluje pridat dalsi system administrators a dalsi firmy
   export var keyGenTypeName = "schoolKeyGenModel".toLowerCase();

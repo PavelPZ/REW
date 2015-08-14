@@ -642,7 +642,7 @@ var testMe;
     })(CourseMeta.modImpl);
     testMe.testSkillImpl = testSkillImpl;
     function createUrlPersist(type, companyId, productUrl, persistence) {
-        return [testMe.appId, type, companyId.toString(), encodeUrlHash(productUrl), persistence].join(hashDelim);
+        return oldPrefix + [testMe.appId, type, companyId.toString(), encodeUrlHash(productUrl), persistence].join(hashDelim);
     }
     testMe.createUrlPersist = createUrlPersist;
     function createUrlCompl(type, companyId, productUrl) {

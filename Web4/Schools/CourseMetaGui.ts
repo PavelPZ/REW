@@ -22,7 +22,7 @@ module CourseMeta {
 
   export function gotoData(url: string) {
     //skok na hash nebo sitemap url, kvuli breadcrumb v testMe result apod.
-    Pager.navigateToHash(_.isEmpty(url) ? '' : (url.split(hashDelim).length > 1 ? /*hash*/url : /*sitemap Url*/actProduct.getNode(url).href()));
+    Pager.navigateToHash(_.isEmpty(url) ? '' : (Utils.startsWith(url, '/old/') ? /*hash*/encodeUrlHash(url) : /*sitemap Url*/actProduct.getNode(url).href()));
     return false;
   }
 
@@ -51,7 +51,7 @@ module CourseMeta {
   export class MetaModel extends schools.Model {
     title() { return actNode.title; }
     iconId(): string { return actNode.iconId(); }
-    breadcrumbs(): schools.ILink[] {
+    breadcrumbs(): schools.ILink[]{
       if (this.br) return this.br;
       var res: Array<schools.ILink> = [];
       var self: dataImpl = actNode;

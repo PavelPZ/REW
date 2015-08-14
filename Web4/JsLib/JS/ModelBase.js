@@ -35,8 +35,11 @@ var skrivanek;
     skrivanek.appId = "skrivanek";
 })(skrivanek || (skrivanek = {}));
 var hashDelim = '/';
-function encodeUrlHash(url) { return url ? encodeURIComponent(url) : ''; }
-function decodeUrlHash(url) { return url ? decodeURIComponent(url) : null; }
+var oldPrefix = '/old/';
+var encMask = new RegExp('/', 'g');
+var decMask = new RegExp('@', 'g');
+function encodeUrlHash(url) { return url ? url.replace(encMask, '@') : ''; }
+function decodeUrlHash(url) { return url ? url.replace(decMask, '/') : null; }
 var Pager;
 (function (Pager) {
     (function (ButtonType) {
@@ -111,6 +114,10 @@ var Pager;
         }
         //hash = hash.toLowerCase();
         var parts = hash.split(hashDelim);
+        if (parts[0] == 'old' || parts[1] == 'old') {
+            var removeNum = parts[0] == 'old' ? 1 : 2;
+            parts.splice(0, removeNum);
+        }
         if (parts.length < 2) {
             completed(null);
             return;

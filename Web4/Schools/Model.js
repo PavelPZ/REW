@@ -20,7 +20,7 @@ var schools;
     schools.tTest = "schoolTestModel".toLowerCase();
     schools.memoryPersistId = 'memory';
     function getHash(type, companyId, productUrl, persistence, url) {
-        return [schools.appId, type, companyId.toString(), encodeUrlHash(productUrl), persistence, encodeUrlHash(url)].join(hashDelim);
+        return oldPrefix + [schools.appId, type, companyId.toString(), encodeUrlHash(productUrl), persistence, encodeUrlHash(url)].join(hashDelim);
     }
     schools.getHash = getHash;
     function InitModel(compl) {

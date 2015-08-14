@@ -278,7 +278,7 @@ var xref;
         if (type === void 0) { type = null; }
         if (prop === void 0) { prop = null; }
         if (valueIdx === void 0) { valueIdx = 0; }
-        return [xref.appId, modelType, nodeId.toString(), mainTab.toString(), type, prop, valueIdx ? valueIdx.toString() : '0', LowUtils.getQueryParams('url')].join(hashDelim);
+        return oldPrefix + [xref.appId, modelType, nodeId.toString(), mainTab.toString(), type, prop, valueIdx ? valueIdx.toString() : '0', LowUtils.getQueryParams('url')].join(hashDelim);
     }
     function Start() {
         CourseMeta.persist = persistMemory.persistCourse;

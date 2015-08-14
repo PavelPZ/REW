@@ -15,6 +15,13 @@ var blended;
         return Module;
     })();
     blended.Module = Module;
+    function _isAngularHash(hash) {
+        if (hash && Utils.startsWith(hash, '/ajs/')) {
+            return true;
+        }
+        return false;
+    }
+    blended._isAngularHash = _isAngularHash;
     function isAngularHash(hash) {
         if (hash && Utils.startsWith(hash, '/ajs/')) {
             $('#angularjs-root').show();
@@ -29,15 +36,20 @@ var blended;
     blended.root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $location) {
             $stateProvider
                 .state({
+                name: 'old',
+                url: '/old',
+                template: "<!--old-->",
+            })
+                .state({
                 name: 'ajs',
                 url: '/ajs',
                 abstract: true,
-                controller: function () { alert('ajs'); },
+                controller: function () { },
                 template: "<div data-ui-view></div>",
             })
                 .state({
                 name: 'ajs.vyzvaproduct',
-                controller: function () { alert('ajs.vyzvaproduct'); },
+                controller: function () { },
                 url: "/vyzvaproduct/:producturl",
                 templateUrl: "../blendedapi/views/vyzvaproduct.html"
             });

@@ -599,7 +599,7 @@
   }
 
   export function createUrlPersist(type: string, companyId: number, productUrl: string, persistence: string): string {
-    return [appId, type, companyId.toString(), encodeUrlHash(productUrl), persistence].join(hashDelim);
+    return oldPrefix + [appId, type, companyId.toString(), encodeUrlHash(productUrl), persistence].join(hashDelim);
   }
   export function createUrlCompl(type: string, companyId: number, productUrl: string): string {
     return createUrlPersist(type, companyId, encodeUrlHash(productUrl), CourseMeta.actProductPersistence);
