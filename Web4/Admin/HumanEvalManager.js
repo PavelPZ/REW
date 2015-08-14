@@ -34,7 +34,7 @@ var schoolAdmin;
             });
         };
         HumanEvalManagerLangs.prototype.click = function (idx) {
-            location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalManagerTypeName, this.CompanyId) + '@' + this.langs[idx].lang.toString();
+            location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalManagerTypeName, this.CompanyId) + hashDelim + this.langs[idx].lang.toString();
         };
         HumanEvalManagerLangs.prototype.close = function () {
             location.hash = schools.createHomeUrlStd();

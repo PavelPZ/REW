@@ -22,7 +22,7 @@ module CourseMeta {
 
   export function gotoData(url: string) {
     //skok na hash nebo sitemap url, kvuli breadcrumb v testMe result apod.
-    Pager.navigateToHash(_.isEmpty(url) ? '' : (url.split('@').length > 1 ? /*hash*/url : /*sitemap Url*/actProduct.getNode(url).href()));
+    Pager.navigateToHash(_.isEmpty(url) ? '' : (url.split(hashDelim).length > 1 ? /*hash*/url : /*sitemap Url*/actProduct.getNode(url).href()));
     return false;
   }
 

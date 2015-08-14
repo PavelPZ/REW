@@ -34,6 +34,9 @@ var skrivanek;
 (function (skrivanek) {
     skrivanek.appId = "skrivanek";
 })(skrivanek || (skrivanek = {}));
+var hashDelim = '/';
+function encodeUrlHash(url) { return url ? encodeURIComponent(url) : ''; }
+function decodeUrlHash(url) { return url ? decodeURIComponent(url) : null; }
 var Pager;
 (function (Pager) {
     (function (ButtonType) {
@@ -107,7 +110,7 @@ var Pager;
             return;
         }
         //hash = hash.toLowerCase();
-        var parts = hash.split("@");
+        var parts = hash.split(hashDelim);
         if (parts.length < 2) {
             completed(null);
             return;

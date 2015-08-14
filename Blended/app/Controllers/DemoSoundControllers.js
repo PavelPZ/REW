@@ -110,4 +110,3 @@ var test;
         return res;
     }
 })(test || (test = {}));
-//# sourceMappingURL=DemoSoundControllers.js.map

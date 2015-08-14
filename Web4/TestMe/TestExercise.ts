@@ -599,14 +599,14 @@
   }
 
   export function createUrlPersist(type: string, companyId: number, productUrl: string, persistence: string): string {
-    return [appId, type, companyId.toString(), productUrl, persistence].join('@');
+    return [appId, type, companyId.toString(), encodeUrlHash(productUrl), persistence].join(hashDelim);
   }
   export function createUrlCompl(type: string, companyId: number, productUrl: string): string {
-    return createUrlPersist(type, companyId, productUrl, CourseMeta.actProductPersistence);
+    return createUrlPersist(type, companyId, encodeUrlHash(productUrl), CourseMeta.actProductPersistence);
   }
   export function createUrl(type: string = null, companyId: number = 0, productUrl: string = null): string {
-    return createUrlCompl(type ? type : tEx, companyId ? companyId : CourseMeta.actCompanyId, productUrl ? productUrl : CourseMeta.actProduct.url);
-    //return [appId, type ? type : tEx, companyId ? companyId : CourseMeta.actCompanyId, productUrl ? productUrl : CourseMeta.actProduct.url].join('@');
+    return createUrlCompl(type ? type : tEx, companyId ? companyId : CourseMeta.actCompanyId, encodeURIComponent(productUrl ? productUrl : CourseMeta.actProduct.url));
+    //return [appId, type ? type : tEx, companyId ? companyId : CourseMeta.actCompanyId, productUrl ? productUrl : CourseMeta.actProduct.url].join(hashDelim);
   }
 
   Pager.registerAppLocator(appId, tEx,(urlParts, completed) => completed(new Model(urlParts)));

@@ -15,4 +15,3 @@ var test;
     })(test.PageController);
     test.EmbedResponsiveControler = EmbedResponsiveControler;
 })(test || (test = {}));
-//# sourceMappingURL=EmbedController.js.map

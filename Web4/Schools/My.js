@@ -171,6 +171,10 @@ var schoolMy;
                     //if (dt.isAngularJS) {
                     //  blended.rootState.go('ajs.vyzvaproduct', { producturl: encodeURIComponent(pr.url) }); return;
                     //}
+                    if (dt.isAngularJS) {
+                        window.location.hash = '/ajs/vyzvaproduct/xxx';
+                        return;
+                    }
                     var hash = dt.isTest ? testMe.createUrlPersist(testMe.tEx, comp.data.Id, pr.url, persistence) : new CourseMeta.dataImpl().hrefCompl(comp.data.Id, pr.url, persistence);
                     if (dt.isTest)
                         testMe.alowTestCreate_Url = pr.url;

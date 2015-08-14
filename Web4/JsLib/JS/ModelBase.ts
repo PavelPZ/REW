@@ -8,6 +8,10 @@ module vsNet { export var appId = "vsNet".toLowerCase(); }
 module grafia { export var appId = "grafia"; }
 module skrivanek { export var appId = "skrivanek"; }
 
+var hashDelim = '/';
+function encodeUrlHash(url: string): string { return url ? encodeURIComponent(url) : ''; }
+function decodeUrlHash(url: string): string { return url ? decodeURIComponent(url) : null; }
+
 module Pager {
 
   export enum ButtonType {
@@ -60,7 +64,7 @@ module Pager {
     if (blended.isAngularHash(hash)) { completed(angularPage); return; }
     if (!hash || hash.length < 3) { completed(null); return; }
     //hash = hash.toLowerCase();
-    var parts = hash.split("@"); if (parts.length < 2) { completed(null); return; }
+    var parts = hash.split(hashDelim); if (parts.length < 2) { completed(null); return; }
     var app = regApps[parts[0].toLowerCase()]; if (!app) { completed(null); return; }
     var proc = app[parts[1].toLowerCase()]; if (!proc) { completed(null); return; }
     proc(parts.length <= 2 ? null : parts.slice(2), completed);

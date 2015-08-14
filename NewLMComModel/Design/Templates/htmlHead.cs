@@ -57,26 +57,43 @@ namespace NewData.Design.Templates
             
             #line default
             #line hidden
-            this.Write(".js\'></script>\r\n  </style>\r\n  <![endif]-->\r\n  <!--[if (gt IE 8)|!(IE)]><!-->\r\n  <" +
-                    "script type=\'text/javascript\' src=\'../jslib/scripts/jquery2");
+            this.Write(@".js'></script>
+  <script src=""https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.1.10/es5-shim.js"" type=""text/javascript"" ></script>
+  <script src=""https://code.jquery.com/jquery-1.11.3.min.js"" type=""text/javascript"" ></script>
+  <script src=""../jslib/scripts/angular-ie8.js"" type=""text/javascript""></script>
+  <style>
+    .ng-hide, .alert.advertise {
+      display: none !important;
+     }
+  </style>
+  <![endif]-->
+  <!--[if (gt IE 8)|!(IE)]><!-->
+  <script type='text/javascript' src='../jslib/scripts/jquery2");
             
-            #line 24 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 31 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(min));
             
             #line default
             #line hidden
-            this.Write(".js\'></script>\r\n  <!--<![endif]-->\r\n  <script type=\'text/javascript\' src=\'../jsli" +
-                    "b/scripts/underscore");
+            this.Write(".js\'></script>\r\n  <script src=\"../jslib/scripts/angular.js\" type=\"text/javascript" +
+                    "\"></script>\r\n  <!--<![endif]-->\r\n  <script type=\'text/javascript\' src=\'../jslib/" +
+                    "scripts/underscore");
             
-            #line 26 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 34 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(min));
             
             #line default
             #line hidden
-            this.Write(".js\'></script>\r\n  <script type=\'text/javascript\' src=\'../jslib/js/lmconsoleinit.j" +
-                    "s\'></script>\r\n\r\n  <link href=\"../font-awesome/lm/externals");
+            this.Write(@".js'></script>
+  <script type='text/javascript' src='../jslib/js/lmconsoleinit.js'></script>
+
+  <script src=""https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-route.js"" type=""text/javascript""></script>
+  <script src=""https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-resource.js"" type=""text/javascript""></script>
+  <script src=""https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"" type=""text/javascript""></script>
+
+  <link href=""../font-awesome/lm/externals");
             
-            #line 29 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 41 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(themeId));
             
             #line default
@@ -84,14 +101,14 @@ namespace NewData.Design.Templates
             this.Write(".css\" rel=\"stylesheet\"/>\r\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"../jslib" +
                     "/ea/ea.css\" />\r\n  <link href=\"../jslib/css/lm");
             
-            #line 31 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 43 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(themeId));
             
             #line default
             #line hidden
             this.Write(".css\" rel=\"stylesheet\"/>\r\n\r\n");
             
-            #line 33 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 45 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
 
   WriteLine(RewApp.writeCfg(cfg));
   WriteLine(MainPage.writeCss(RewApp.publisherSkinCss(cfg)));
@@ -100,7 +117,7 @@ namespace NewData.Design.Templates
             #line default
             #line hidden
             
-            #line 37 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 49 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
 
   if (cfg.version == versions.minified) {
 
@@ -116,7 +133,7 @@ namespace NewData.Design.Templates
   }
 ");
             
-            #line 47 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 59 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
 
     if (cfg.licenceConfig.domain != null) WriteLine(string.Format("  if (window.location.host.toLowerCase().indexOf('{0}') < 0) {{ alert('Wrong domain: {0}'); isOk = false; }}", cfg.licenceConfig.domain.ToLower()));
     if (cfg.licenceConfig.intExpiration > 0) WriteLine("  if (new Date().getTime() > {0}) {{ alert('Trial version expired at {1}'); isOk = false; }}", cfg.licenceConfig.intExpiration, cfg.licenceConfig.expiration.ToString("yyyy-MM-dd"));

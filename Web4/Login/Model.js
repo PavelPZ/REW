@@ -8,7 +8,7 @@ var Login;
 (function (Login) {
     Login.cfg;
     function getHash(type) {
-        return [Login.appId, type].join('@');
+        return [Login.appId, type].join(hashDelim);
     }
     Login.getHash = getHash;
     Login.myData; //info o mojich firmach, produktech a rolich

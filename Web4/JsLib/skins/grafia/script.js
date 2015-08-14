@@ -13,7 +13,7 @@ var grafia;
             _super.apply(this, arguments);
         }
         skin.prototype.bodyClass = function () { return $(document).width() <= 960 ? 'screen-width-small' : ''; };
-        skin.prototype.getHome = function () { return [grafia.appId, grafia.home].join('@'); };
+        skin.prototype.getHome = function () { return [grafia.appId, grafia.home].join(hashDelim); };
         return skin;
     })(Gui2.skin);
     grafia.skin = skin;

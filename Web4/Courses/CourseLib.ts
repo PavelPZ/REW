@@ -230,6 +230,7 @@ module CourseMeta {
     export function onChangeUrl(prodUrl: string, persistence: string, nodeUrl: string, completed: (loadedEx: exImpl) => void) {
       foundGreenEx = null;
       if (_.isEmpty(prodUrl)) { completed(null); return; }
+      prodUrl = decodeURIComponent(prodUrl);
       adjustProduct(prodUrl, persistence,() => {
         if (actNode && actNode.url == nodeUrl) { completed(isType(actNode, runtimeType.ex) ? <exImpl>actNode : null); return; } //zadna zmena aktualniho node
         var oldEx = actEx; var oldMod = actModule; var oldNode = actNode; var oldGrammarEx = actGrammarEx; var oldGrammarModule = actGrammarModule;
@@ -679,6 +680,7 @@ module CourseMeta {
 
 
   function loadLocalizedProductAndInstrs(url: string, completed: (prod: productImpl) => void) {
+    url = decodeURIComponent(url);
     var href = urlStripLast(url);
     href = '..' + (href[0] == '/' ? '' : '/') + href;
     loadFiles([href + jsExt, href + '.' + Trados.actLangStr + jsExt, href + '_instrs.js'], ress => {

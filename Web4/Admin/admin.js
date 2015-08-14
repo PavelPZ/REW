@@ -47,7 +47,7 @@ var schoolAdmin;
     schoolAdmin.returnFalse = returnFalse;
     function returnTrue() { return true; }
     schoolAdmin.returnTrue = returnTrue;
-    function getHash(type, companyId) { return [schoolAdmin.appId, type, companyId.toString()].join('@'); }
+    function getHash(type, companyId) { return [schoolAdmin.appId, type, companyId.toString()].join(hashDelim); }
     schoolAdmin.getHash = getHash;
     schoolAdmin.adminTypeName = "schoolAdminModel".toLowerCase(); //System administrator, dovoluje pridat dalsi system administrators a dalsi firmy
     schoolAdmin.keyGenTypeName = "schoolKeyGenModel".toLowerCase();

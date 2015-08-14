@@ -292,6 +292,7 @@ var CourseMeta;
                 completed(null);
                 return;
             }
+            prodUrl = decodeURIComponent(prodUrl);
             adjustProduct(prodUrl, persistence, function () {
                 if (CourseMeta.actNode && CourseMeta.actNode.url == nodeUrl) {
                     completed(isType(CourseMeta.actNode, CourseMeta.runtimeType.ex) ? CourseMeta.actNode : null);
@@ -885,6 +886,7 @@ var CourseMeta;
         return url.charAt(url.length - 1) == '/' ? url.substr(0, url.length - 1) : url;
     }
     function loadLocalizedProductAndInstrs(url, completed) {
+        url = decodeURIComponent(url);
         var href = urlStripLast(url);
         href = '..' + (href[0] == '/' ? '' : '/') + href;
         loadFiles([href + jsExt, href + '.' + Trados.actLangStr + jsExt, href + '_instrs.js'], function (ress) {

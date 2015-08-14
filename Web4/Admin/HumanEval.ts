@@ -38,7 +38,7 @@ module schoolAdmin {
     title: string;
     assigned: string;
     click() {
-      location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalExTypeName, this.owner.CompanyId) + '@' + this.owner.data.companyUserId.toString() + '@' + this.data.courseUserId.toString() + '@' + this.data.productId;
+      location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalExTypeName, this.owner.CompanyId) + hashDelim + this.owner.data.companyUserId.toString() + hashDelim + this.data.courseUserId.toString() + hashDelim + this.data.productId;
     }
   }
 

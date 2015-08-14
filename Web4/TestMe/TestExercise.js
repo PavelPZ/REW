@@ -642,19 +642,19 @@ var testMe;
     })(CourseMeta.modImpl);
     testMe.testSkillImpl = testSkillImpl;
     function createUrlPersist(type, companyId, productUrl, persistence) {
-        return [testMe.appId, type, companyId.toString(), productUrl, persistence].join('@');
+        return [testMe.appId, type, companyId.toString(), encodeUrlHash(productUrl), persistence].join(hashDelim);
     }
     testMe.createUrlPersist = createUrlPersist;
     function createUrlCompl(type, companyId, productUrl) {
-        return createUrlPersist(type, companyId, productUrl, CourseMeta.actProductPersistence);
+        return createUrlPersist(type, companyId, encodeUrlHash(productUrl), CourseMeta.actProductPersistence);
     }
     testMe.createUrlCompl = createUrlCompl;
     function createUrl(type, companyId, productUrl) {
         if (type === void 0) { type = null; }
         if (companyId === void 0) { companyId = 0; }
         if (productUrl === void 0) { productUrl = null; }
-        return createUrlCompl(type ? type : testMe.tEx, companyId ? companyId : CourseMeta.actCompanyId, productUrl ? productUrl : CourseMeta.actProduct.url);
-        //return [appId, type ? type : tEx, companyId ? companyId : CourseMeta.actCompanyId, productUrl ? productUrl : CourseMeta.actProduct.url].join('@');
+        return createUrlCompl(type ? type : testMe.tEx, companyId ? companyId : CourseMeta.actCompanyId, encodeURIComponent(productUrl ? productUrl : CourseMeta.actProduct.url));
+        //return [appId, type ? type : tEx, companyId ? companyId : CourseMeta.actCompanyId, productUrl ? productUrl : CourseMeta.actProduct.url].join(hashDelim);
     }
     testMe.createUrl = createUrl;
     Pager.registerAppLocator(testMe.appId, testMe.tEx, function (urlParts, completed) { return completed(new Model(urlParts)); });
