@@ -249,15 +249,8 @@
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.js" />
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.structure.css" />
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.theme.css" />
-    <Content Include="BlendedApiTest\config.js" />
-    <Content Include="BlendedApiTest\index.html" />
-    <Content Include="BlendedAPI\views\dummy.html" />
-    <Content Include="BlendedAPI\views\view2.html" />
-    <Content Include="BlendedAPI\views\view1.html" />
     <Content Include="JsLib\css\flag-mid.css" />
     <Content Include="JsLib\css\flag-small.css" />
-    <Content Include="JsLib\Scripts\angular.js" />
-    <Content Include="JsLib\Scripts\angular-ie8.js" />
     <Content Include="links.aspx" />
     <Content Include="packs\repositories.config" />
     <Content Include="Licenses\v8.valgrind.license" />
@@ -1337,7 +1330,6 @@
     <TypeScriptCompile Include="Author\doc.ts" />
     <TypeScriptCompile Include="Author\GenerateReflection.ts" />
     <TypeScriptCompile Include="Author\vsNet.ts" />
-    <TypeScriptCompile Include="BlendedAPI\app.ts" />
     <TypeScriptCompile Include="BS3\js\bootstrap.d.ts" />
     <TypeScriptCompile Include="Courses\codes\chinhSpeaking.ts" />
     <TypeScriptCompile Include="Courses\codes\docReference.ts" />
@@ -1413,14 +1405,6 @@
     <Content Include="Temp\mediumJS\rangy-core.js" />
     <TypeScriptCompile Include="Courses\Ordering.ts" />
     <None Include="JsLib\JSD\HtmlAudio\waa.d - Copy.ts_" />
-    <TypeScriptCompile Include="JsLib\JSD\angularjs\angular-animate.d.ts" />
-    <TypeScriptCompile Include="JsLib\JSD\angularjs\angular-cookies.d.ts" />
-    <TypeScriptCompile Include="JsLib\JSD\angularjs\angular-mocks.d.ts" />
-    <TypeScriptCompile Include="JsLib\JSD\angularjs\angular-resource.d.ts" />
-    <TypeScriptCompile Include="JsLib\JSD\angularjs\angular-route.d.ts" />
-    <TypeScriptCompile Include="JsLib\JSD\angularjs\angular-sanitize.d.ts" />
-    <TypeScriptCompile Include="JsLib\JSD\angularjs\angular-ui-router.d.ts" />
-    <TypeScriptCompile Include="JsLib\JSD\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\HtmlAudio\waa.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\jquery-ui.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\lib-lm.d.ts" />
@@ -2676,10 +2660,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BlendedApiTest\app\" />
-    <Folder Include="BlendedAPI\Controllers\" />
-    <Folder Include="BlendedAPI\Styles\img\" />
-    <Folder Include="Blended\" />
     <Folder Include="BS3\css\" />
     <Folder Include="ClientBin\" />
     <Folder Include="JsLib\css\img\Reports\" />

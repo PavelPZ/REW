@@ -168,11 +168,10 @@ var schoolMy;
                         alert(CSLocalize('a85c8a527bb44bda9a7ee0721707d2ef', 'Choose company department (by clicking on [Change] link above)'));
                         return;
                     }
-                    if (dt.isAngularJS) {
-                        blended.rootState.go('ajs.vyzvaproduct', { producturl: encodeURIComponent(pr.url) });
-                        return;
-                    }
-                    var hash = dt.isAngularJS ? '/ajs/vyzvaproduct/' + encodeURIComponent(pr.url) : (dt.isTest ? testMe.createUrlPersist(testMe.tEx, comp.data.Id, pr.url, persistence) : new CourseMeta.dataImpl().hrefCompl(comp.data.Id, pr.url, persistence));
+                    //if (dt.isAngularJS) {
+                    //  blended.rootState.go('ajs.vyzvaproduct', { producturl: encodeURIComponent(pr.url) }); return;
+                    //}
+                    var hash = dt.isTest ? testMe.createUrlPersist(testMe.tEx, comp.data.Id, pr.url, persistence) : new CourseMeta.dataImpl().hrefCompl(comp.data.Id, pr.url, persistence);
                     if (dt.isTest)
                         testMe.alowTestCreate_Url = pr.url;
                     window.location.hash = hash;
