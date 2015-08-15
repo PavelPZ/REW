@@ -27,3 +27,4 @@ var test;
         frm.height($(window).height() - frm.offset().top - 10);
     }
 })(test || (test = {}));
+//# sourceMappingURL=iframeDirective.js.map
