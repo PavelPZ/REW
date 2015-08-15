@@ -13,5 +13,7 @@
     tb;
   }
   Gui2.skin.instance = new skin();
-  Pager.registerAppLocator(appId, home, (urlParts, completed) => completed(new homeModel()));
+  //Pager.registerAppLocator(appId, home, (urlParts, completed) => completed(new homeModel()));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, home, appId, home, 0, urlParts => new homeModel()));
+
 }

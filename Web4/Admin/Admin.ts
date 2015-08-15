@@ -277,7 +277,10 @@ module schoolAdmin {
   }
 
   //Pager.registerAppLocator(adminTypeName, (url: Url, completed: (pg: Pager.Page) => void) => completed(new AdminModel()));
-  Pager.registerAppLocator(appId, adminTypeName,(urlParts, completed) => completed(new AdminModel()));
+  //Pager.registerAppLocator(appId, adminTypeName, (urlParts, completed) => completed(new AdminModel()));
+
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, adminTypeName, appId, adminTypeName, 0, urlParts => new AdminModel()));
+
 
   //registrace Url.fromString funkce
   //Pager.registerApp(appId, Url.fromString);

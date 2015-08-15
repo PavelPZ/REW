@@ -75,9 +75,9 @@ namespace NewData.Design.Templates
             
             #line default
             #line hidden
-            this.Write(".js\'></script>\r\n  <script src=\"../jslib/scripts/angular.js\" type=\"text/javascript" +
-                    "\"></script>\r\n  <!--<![endif]-->\r\n  <script type=\'text/javascript\' src=\'../jslib/" +
-                    "scripts/underscore");
+            this.Write(".js\'></script>\r\n  <script src=\"https://ajax.googleapis.com/ajax/libs/angularjs/1." +
+                    "4.2/angular.js\" type=\"text/javascript\"></script>\r\n  <!--<![endif]-->\r\n  <script " +
+                    "type=\'text/javascript\' src=\'../jslib/scripts/underscore");
             
             #line 34 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(min));

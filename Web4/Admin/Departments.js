@@ -286,5 +286,6 @@ var schoolAdmin;
         return scoreDr;
     })();
     schoolAdmin.scoreDr = scoreDr;
-    Pager.registerAppLocator(schoolAdmin.appId, schoolAdmin.editDepartmentTypeName, function (urlParts, completed) { return completed(new Departments(urlParts)); });
+    //Pager.registerAppLocator(appId, editDepartmentTypeName, (urlParts, completed) => completed(new Departments(urlParts)));
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.editDepartmentTypeName, schoolAdmin.appId, schoolAdmin.editDepartmentTypeName, 1, function (urlParts) { return new Departments(urlParts); }); });
 })(schoolAdmin || (schoolAdmin = {}));

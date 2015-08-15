@@ -92,7 +92,7 @@ if (cfg.noCpv) Write("class='hide-cpv'");
   <div id='lm-alert-place' class='rtl'></div>
   <div id='lm-console-place' class='rtl'></div>
   <div id='lm-docdlg-place' class='rtl'></div>
-  <div ng-app=""appRoot""><div id='angularjs-root' data-ui-view></div></div>
+  <div ng-app=""appRoot""><div data-ui-view></div></div>
   <div id='root'></div>
   <script id='dummy' type='text/x-jsrender' data-for='Dummy'>
     {{for ~ActPage()}}{{/for}}

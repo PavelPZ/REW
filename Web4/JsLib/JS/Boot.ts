@@ -58,12 +58,12 @@ module boot {
   export function minInit() {
     $('body').addClass(Trados.actLangCode);
     var cls: string;
-    if (!_.isEmpty(cls = Gui2.skin.instance.bodyClass())) $('body').addClass(cls); 
+    if (!_.isEmpty(cls = Gui2.skin.instance.bodyClass())) $('body').addClass(cls);
     $('body').addClass("design-" + (cfg.designId ? cfg.designId : ''));
     if (Trados.isRtl) $('body').addClass("rtl-able");
   }
 
-  $(() => {
+  var doOldApplicationStart = () => {
     if (cfg.startProcName == 'no') {
       minInit();
       return;
@@ -73,6 +73,10 @@ module boot {
     var fnc = parts.pop(); var ctx = window;
     for (var i = 0; i < parts.length; i++) ctx = ctx[parts[i]];
     ctx[fnc]();
-  });
+  }
+
+  export function OldApplicationStart() { if (doOldApplicationStart) doOldApplicationStart(); doOldApplicationStart = null; }
+
+  $(OldApplicationStart);
 
 } 

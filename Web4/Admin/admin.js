@@ -271,5 +271,6 @@ var schoolAdmin;
     }
     schoolAdmin.AdminDataCmd_from_MyData = AdminDataCmd_from_MyData;
     //Pager.registerAppLocator(adminTypeName, (url: Url, completed: (pg: Pager.Page) => void) => completed(new AdminModel()));
-    Pager.registerAppLocator(schoolAdmin.appId, schoolAdmin.adminTypeName, function (urlParts, completed) { return completed(new AdminModel()); });
+    //Pager.registerAppLocator(appId, adminTypeName, (urlParts, completed) => completed(new AdminModel()));
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.adminTypeName, schoolAdmin.appId, schoolAdmin.adminTypeName, 0, function (urlParts) { return new AdminModel(); }); });
 })(schoolAdmin || (schoolAdmin = {}));

@@ -109,5 +109,6 @@ var schoolAdmin;
         product.message(error ? error : '');
         return error ? ' ' : null;
     }
-    Pager.registerAppLocator(schoolAdmin.appId, schoolAdmin.productsTypeName, function (urlParts, completed) { return completed(new Products(urlParts)); });
+    //Pager.registerAppLocator(appId, productsTypeName,(urlParts, completed) => completed(new Products(urlParts)));
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.productsTypeName, schoolAdmin.appId, schoolAdmin.productsTypeName, 1, function (urlParts) { return new Products(urlParts); }); });
 })(schoolAdmin || (schoolAdmin = {}));

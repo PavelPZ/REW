@@ -13,7 +13,7 @@ var oldPrefix = '/old/';
 var encMask = new RegExp('/', 'g');
 var decMask = new RegExp('@', 'g');
 function encodeUrlHash(url: string): string { return url ? url.replace(encMask, '@') : ''; }
-function decodeUrlHash(url: string): string { return url ? url.replace(decMask,'/') : null; }
+function decodeUrlHash(url: string): string { return url ? url.replace(decMask, '/') : null; }
 
 module Pager {
 
@@ -43,6 +43,7 @@ module Pager {
   } var regApps: { [appId: string]: { [type: string]: (urlParts: string[], completed: (pg: Page) => void) => void; } } = {};
 
   export function locatePageFromHash(hash: string, completed: (pg: Page) => void): void {
+    alert('locatePageFromHash cannot be called');
     locatePageFromHashLow(hash, pg => {
       if (pg) { completed(pg); return; }
       if (!hash || hash.length < 2) locatePageFromHashLow(initHash(), completed);
@@ -51,6 +52,7 @@ module Pager {
   }
 
   function locatePageFromHashLow(hash: string, completed: (pg: Page) => void): void {
+    alert('locatePageFromHash cannot be called');
     if (hash != null && hash.indexOf("access_token=") >= 0) { //navrat z externiho loginu
       OAuth.checkForToken((obj: OAuth.profile) => {
         Pager.ajaxGet( //dle externiho ID zjisti LM Id (a ev. zaloz usera)
@@ -64,7 +66,7 @@ module Pager {
       completed(Pager.ignorePage); return;
     }
     if (hash && hash.charAt(0) == '#') hash = hash.substring(1);
-    if (blended.isAngularHash(hash)) { completed(angularPage); return; }
+    //if (blended.isAngularHash(hash)) { completed(angularPage); return; }
     if (!hash || hash.length < 3) { completed(null); return; }
     //hash = hash.toLowerCase();
     var parts = hash.split(hashDelim);
@@ -85,12 +87,22 @@ module Pager {
 
   $.views.helpers({
     ActPage: () => Pager.ActPage,
+    Pager: Pager,
     //HomeUrl: () => initHash, //initUrl.toString(),
   });
 
   //export function HomeUrl(): string { return "#"; }
 
-  export function navigateToHash(hash: string) { location.hash = '#' + hash; }
+  export function gotoHomeUrl() {
+    navigateToHash(LMStatus.isLogged() ? Pager.initHash() : Login.loginUrl());
+  }
+
+  export function navigateToHash(hash: string) {
+    if (!hash) hash = '';
+    if (hash.length > 0 && hash.charAt(0) != '#') hash = '#' + hash;
+    Logger.trace('Pager', 'navigateToHash: ' + hash);
+    location.hash = hash;
+  }
 
   export function closePanels() { anim.collapseExpanded(); }
 
@@ -110,7 +122,7 @@ module Pager {
       if (oldPg != null) oldPg.leave();
       rootVM.pageChanged(oldPg, ActPage);
     }
-    if (page == angularPage) { renderTemplate('Dummy'); return;}
+    if (page == angularPage) { renderTemplate('Dummy'); return; }
     reloadPage();
   }
 

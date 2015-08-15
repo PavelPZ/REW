@@ -20,5 +20,6 @@ var schoolAdmin;
         return UserResults;
     })(schoolAdmin.CompModel);
     schoolAdmin.UserResults = UserResults;
-    Pager.registerAppLocator(schoolAdmin.appId, schoolAdmin.schoolUserResultsTypeName, function (urlParts, completed) { return completed(new UserResults(urlParts)); });
+    //Pager.registerAppLocator(appId, schoolUserResultsTypeName,(urlParts, completed) => completed(new UserResults(urlParts)));
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.schoolUserResultsTypeName, schoolAdmin.appId, schoolAdmin.schoolUserResultsTypeName, 1, function (urlParts) { return new UserResults(urlParts); }); });
 })(schoolAdmin || (schoolAdmin = {}));

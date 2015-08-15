@@ -21,12 +21,14 @@ var ViewBase;
     var modelIdToScriptId;
     ViewBase.init = function () {
         Logger.traceMsg('ViewBase.initBootStrapApp');
-        $(window).hashchange(function () { return Pager.loadPageHash(location.hash); });
+        if (!location.hash || location.hash.length < 3)
+            location.hash = '/old/school/schoolmymodel/-1///';
+        //$(window).hashchange(() => Pager.loadPageHash(location.hash));
         //Pager.locatePageFromHash(location.hash, (page: Pager.Page) => {
         //  if (page == null || page == Pager.ignorePage) return;
         //  Pager.loadPage(page);
         //});
         //});
-        $(window).hashchange();
+        //$(window).hashchange();
     };
 })(ViewBase || (ViewBase = {}));

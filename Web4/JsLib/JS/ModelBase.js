@@ -78,6 +78,7 @@ var Pager;
     Pager.registerAppLocator = registerAppLocator;
     var regApps = {};
     function locatePageFromHash(hash, completed) {
+        alert('locatePageFromHash cannot be called');
         locatePageFromHashLow(hash, function (pg) {
             if (pg) {
                 completed(pg);
@@ -93,6 +94,7 @@ var Pager;
     }
     Pager.locatePageFromHash = locatePageFromHash;
     function locatePageFromHashLow(hash, completed) {
+        alert('locatePageFromHash cannot be called');
         if (hash != null && hash.indexOf("access_token=") >= 0) {
             OAuth.checkForToken(function (obj) {
                 Pager.ajaxGet(Pager.pathType.restServices, Login.CmdAdjustUser_Type, Login.CmdAdjustUser_Create(obj.providerid, obj.id, obj.email, obj.firstName, obj.lastName), function (res) {
@@ -104,10 +106,7 @@ var Pager;
         }
         if (hash && hash.charAt(0) == '#')
             hash = hash.substring(1);
-        if (blended.isAngularHash(hash)) {
-            completed(Pager.angularPage);
-            return;
-        }
+        //if (blended.isAngularHash(hash)) { completed(angularPage); return; }
         if (!hash || hash.length < 3) {
             completed(null);
             return;
@@ -140,9 +139,21 @@ var Pager;
     Pager.angularPage = new Page(null, null, null);
     $.views.helpers({
         ActPage: function () { return Pager.ActPage; },
+        Pager: Pager,
     });
     //export function HomeUrl(): string { return "#"; }
-    function navigateToHash(hash) { location.hash = '#' + hash; }
+    function gotoHomeUrl() {
+        navigateToHash(LMStatus.isLogged() ? Pager.initHash() : Login.loginUrl());
+    }
+    Pager.gotoHomeUrl = gotoHomeUrl;
+    function navigateToHash(hash) {
+        if (!hash)
+            hash = '';
+        if (hash.length > 0 && hash.charAt(0) != '#')
+            hash = '#' + hash;
+        Logger.trace('Pager', 'navigateToHash: ' + hash);
+        location.hash = hash;
+    }
     Pager.navigateToHash = navigateToHash;
     function closePanels() { anim.collapseExpanded(); }
     Pager.closePanels = closePanels;

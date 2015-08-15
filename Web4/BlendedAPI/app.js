@@ -4,47 +4,60 @@ var blended;
         function Module(name, modules) {
             var self = this;
             this.app = angular.module(name, modules);
-            this.app.run(function ($rootScope) {
-                self.$scope = $rootScope;
-                //$rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => { 
-                //  debugger;
-                //})
-            });
         }
-        Module.prototype.addController = function (name, controller) { this.app.controller(name, controller); };
         return Module;
     })();
     blended.Module = Module;
-    function _isAngularHash(hash) {
-        if (hash && Utils.startsWith(hash, '/ajs/')) {
-            return true;
-        }
-        return false;
-    }
-    blended._isAngularHash = _isAngularHash;
-    function isAngularHash(hash) {
-        if (hash && Utils.startsWith(hash, '/ajs/')) {
-            $('#angularjs-root').show();
-            return true;
-        }
-        $('#angularjs-root').hide();
-        return false;
-    }
-    blended.isAngularHash = isAngularHash;
+    //export function isAngularHash(hash: string): boolean { //hack
+    //  if (hash && Utils.startsWith(hash, '/ajs/')) { return true; }
+    //  return false;
+    //}
+    //export function _isAngularHash(hash: string): boolean { //hack
+    //  if (hash && Utils.startsWith(hash, '/ajs/')) { $('#angularjs-root').show(); return true; }
+    //  $('#angularjs-root').hide();
+    //  return false;
+    //}
     blended.root = new Module('appRoot', ['ngResource', 'ui.router']);
-    blended.rootState;
-    blended.root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $location) {
+    blended.root.app.run(function () { return boot.OldApplicationStart(); }); //volani StartProc pro inicializaci stare aplikace
+    var OldController = (function () {
+        function OldController($scope, $state) {
+            //prevezmi paramnetry
+            var urlParts = [];
+            for (var p = 0; p < 6; p++) {
+                var parName = 'p' + p.toString();
+                urlParts.push($state.params[parName]);
+            }
+            //procedura pro vytvoreni stareho modelu
+            var createProc = $state.current.data['createModel'];
+            //vytvor page model a naladuj stranku
+            $scope.$on('$viewContentLoaded', function () {
+                Pager.loadPage(createProc(urlParts));
+            });
+        }
+        ;
+        OldController.$inject = ['$scope', '$state'];
+        return OldController;
+    })();
+    blended.OldController = OldController;
+    blended.root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', function ($stateProvider, $urlRouterProvider, $location, $urlMatcherFactoryProvider) {
+            $urlMatcherFactoryProvider.caseInsensitive(true); //http://stackoverflow.com/questions/25994308/how-to-config-angular-ui-router-to-not-use-strict-url-matching-mode
+            $urlRouterProvider.otherwise('/old/school/schoolmymodel');
+            //stavy pro starou verzi
+            var params = {
+                $stateProvider: $stateProvider,
+                $urlRouterProvider: $urlRouterProvider,
+                $urlMatcherFactoryProvider: $urlMatcherFactoryProvider,
+                $location: $location,
+            };
+            _.each(blended.oldLocators, function (createLoc) { return createLoc(params); }); //vytvoreni states na zaklade registrovanych page models (pomoci registerOldLocator)
+            _.each(blended.debugAllRoutes, function (r) { return Logger.trace("Pager", 'Define:' + r); });
+            //stavy pro novou verzi
             $stateProvider
-                .state({
-                name: 'old',
-                url: '/old',
-                template: "<!--old-->",
-            })
                 .state({
                 name: 'ajs',
                 url: '/ajs',
                 abstract: true,
-                controller: function () { },
+                controller: function () { alert('view'); },
                 template: "<div data-ui-view></div>",
             })
                 .state({
@@ -54,21 +67,21 @@ var blended;
                 templateUrl: "../blendedapi/views/vyzvaproduct.html"
             });
         }]);
-    blended.root.app.factory('exportService', ['$http', function (http) { return new exportService(http); }]);
-    var exportService = (function () {
-        function exportService($http) {
-            this.$http = $http;
-        }
-        exportService.prototype.getData = function (url, cache) { return this.$http.get(url, { cache: cache ? true : false }); };
-        return exportService;
-    })();
-    blended.exportService = exportService;
-    var RootController = (function () {
-        function RootController($scope, $state) {
-            blended.rootState = $state;
-        }
-        RootController.$inject = ['$scope', '$state'];
-        return RootController;
-    })();
-    blended.RootController = RootController;
+    //dokumentace pro dostupne services
+    function servicesDocumentation() {
+        //https://docs.angularjs.org/api/ng/function/angular.injector
+        //http://stackoverflow.com/questions/17497006/use-http-inside-custom-provider-in-app-config-angular-js
+        //https://docs.angularjs.org/api/ng/service/$sce
+        var initInjector = angular.injector(['ng']);
+        var $http = initInjector.get('$http');
+        var $q = initInjector.get('$q');
+        var srv = initInjector.get('$filter');
+        srv = initInjector.get('$timeout');
+        srv = initInjector.get('$log');
+        srv = initInjector.get('$rootScope');
+        //srv = initInjector.get('$location'); nefunguje
+        srv = initInjector.get('$parse');
+        //srv = initInjector.get('$rootElement'); nefunguje
+    }
+    blended.servicesDocumentation = servicesDocumentation;
 })(blended || (blended = {}));

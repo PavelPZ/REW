@@ -392,9 +392,15 @@ module schoolAdmin {
     }
   }
 
-  Pager.registerAppLocator(appId, humanEvalManagerLangsTypeName,(urlParts, completed) => completed(new HumanEvalManagerLangs(urlParts)));
-  Pager.registerAppLocator(appId, humanEvalManagerTypeName,(urlParts, completed) => completed(new HumanEvalManager(urlParts)));
-  Pager.registerAppLocator(appId, humanEvalManagerEvsTypeName,(urlParts, completed) => completed(new HumanEvalManagerEvs(urlParts)));
-  Pager.registerAppLocator(appId, humanEvalManagerExTypeName,(urlParts, completed) => completed(new HumanEvalManagerEx(urlParts)));
+  //Pager.registerAppLocator(appId, humanEvalManagerLangsTypeName,(urlParts, completed) => completed(new HumanEvalManagerLangs(urlParts)));
+  //Pager.registerAppLocator(appId, humanEvalManagerTypeName,(urlParts, completed) => completed(new HumanEvalManager(urlParts)));
+  //Pager.registerAppLocator(appId, humanEvalManagerEvsTypeName,(urlParts, completed) => completed(new HumanEvalManagerEvs(urlParts)));
+  //Pager.registerAppLocator(appId, humanEvalManagerExTypeName,(urlParts, completed) => completed(new HumanEvalManagerEx(urlParts)));
+
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, humanEvalManagerLangsTypeName, appId, humanEvalManagerLangsTypeName, 1, urlParts => new HumanEvalManagerLangs(urlParts)));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, humanEvalManagerTypeName, appId, humanEvalManagerTypeName, 2, urlParts => new HumanEvalManager(urlParts)));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, humanEvalManagerEvsTypeName, appId, humanEvalManagerEvsTypeName, 1, urlParts => new HumanEvalManagerEvs(urlParts)));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, humanEvalManagerExTypeName, appId, humanEvalManagerExTypeName, 1, urlParts => new HumanEvalManagerEx(urlParts)));
+
 }
 

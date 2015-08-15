@@ -1,3 +1,4 @@
+//##GOTO
 function gotoHref(event, url) {
     if (_.isEmpty(url))
         url = $(event.currentTarget).attr('href');

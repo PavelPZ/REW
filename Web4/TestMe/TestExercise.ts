@@ -609,6 +609,9 @@
     //return [appId, type ? type : tEx, companyId ? companyId : CourseMeta.actCompanyId, productUrl ? productUrl : CourseMeta.actProduct.url].join(hashDelim);
   }
 
-  Pager.registerAppLocator(appId, tEx,(urlParts, completed) => completed(new Model(urlParts)));
+  //Pager.registerAppLocator(appId, tEx, (urlParts, completed) => completed(new Model(urlParts)));
+
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, tEx, appId, tEx, 4, urlParts => new Model(urlParts)));
+
 }
 

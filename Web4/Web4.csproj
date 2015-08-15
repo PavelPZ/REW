@@ -1334,6 +1334,7 @@
     <TypeScriptCompile Include="Author\doc.ts" />
     <TypeScriptCompile Include="Author\GenerateReflection.ts" />
     <TypeScriptCompile Include="Author\vsNet.ts" />
+    <TypeScriptCompile Include="BlendedAPI\appBoot.ts" />
     <TypeScriptCompile Include="BlendedAPI\app.ts" />
     <TypeScriptCompile Include="BS3\js\bootstrap.d.ts" />
     <TypeScriptCompile Include="Courses\codes\chinhSpeaking.ts" />

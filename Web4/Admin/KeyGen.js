@@ -100,5 +100,6 @@ var schoolAdmin;
         return KeyGenModel;
     })(schoolAdmin.CompModel);
     schoolAdmin.KeyGenModel = KeyGenModel;
-    Pager.registerAppLocator(schoolAdmin.appId, schoolAdmin.keyGenTypeName, function (urlParts, completed) { return completed(new KeyGenModel(urlParts)); });
+    //Pager.registerAppLocator(appId, keyGenTypeName, (urlParts, completed) => completed(new KeyGenModel(urlParts)));
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.keyGenTypeName, schoolAdmin.appId, schoolAdmin.keyGenTypeName, 1, function (urlParts) { return new KeyGenModel(urlParts); }); });
 })(schoolAdmin || (schoolAdmin = {}));

@@ -241,6 +241,7 @@ namespace Packager {
       "jslib/js/Ajax.js",
       "jslib/js/Validate.js",
       "JsLib/Controls/TreeView/TreeView.js",
+      "blendedapi/appBoot.js"
     };
 
     public static string[] htmlJsLib = new string[] {

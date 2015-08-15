@@ -209,6 +209,8 @@ var Login;
     //Init Url
     //export var initUrl = () => new Url(pageLogin);
     //export var initHash = getHash(pageLogin);
+    function loginUrl() { return getHash(Login.pageLogin); }
+    Login.loginUrl = loginUrl;
     if ($.views)
         $.views.helpers({
             loginUrl: function (par) { return "#" + getHash(_.isEmpty(par) ? Login.pageLogin : par); },
@@ -217,17 +219,27 @@ var Login;
         LMStatus.setReturnUrlAndGoto(getHash(Login.pageProfile));
     }
     Login.newProfileUrl = newProfileUrl;
-    Login.pageDict = {};
-    Login.pageDict[Login.pageLogin] = function (urlParts, completed) { return completed(new Login.LoginModel(Login.pageLogin)); };
-    Login.pageDict[Login.pageLmLogin] = function (urlParts, completed) { return completed(new Login.LMLoginModel(Login.pageLmLogin, true)); };
-    Login.pageDict[Login.pageLmLoginNoEMail] = function (urlParts, completed) { return completed(new Login.LMLoginModel(Login.pageLmLoginNoEMail, false)); };
-    Login.pageDict[Login.pageRegister] = function (urlParts, completed) { return completed(new Login.RegisterModel(Login.pageRegister, true)); };
-    Login.pageDict[Login.pageRegisterNoEMail] = function (urlParts, completed) { return completed(new Login.RegisterModel(Login.pageRegisterNoEMail, false)); };
-    Login.pageDict[Login.pageConfirmRegistration] = function (urlParts, completed) { return completed(new Login.ConfirmRegistrationModel(Login.pageConfirmRegistration)); };
-    Login.pageDict[Login.pageChangePassword] = function (urlParts, completed) { return completed(new Login.ChangePassworModel(Login.pageChangePassword)); };
-    Login.pageDict[Login.pageForgotPassword] = function (urlParts, completed) { return completed(new Login.ForgotPasswordModel(Login.pageForgotPassword)); };
-    Login.pageDict[Login.pageProfile] = function (urlParts, completed) { return completed(new Login.ProfileModel(Login.pageProfile)); };
+    //export var pageDict: { [type: string]: (urlParts: string[], completed: (pg: Pager.Page) => void) => void } = {};
+    //pageDict[pageLogin] = (urlParts, completed) => completed(new LoginModel(pageLogin));
+    //pageDict[pageLmLogin] = (urlParts, completed) => completed(new LMLoginModel(pageLmLogin, true));
+    //pageDict[pageLmLoginNoEMail] = (urlParts, completed) => completed(new LMLoginModel(pageLmLoginNoEMail, false));
+    //pageDict[pageRegister] = (urlParts, completed) => completed(new RegisterModel(pageRegister, true));
+    //pageDict[pageRegisterNoEMail] = (urlParts, completed) => completed(new RegisterModel(pageRegisterNoEMail, false));
+    //pageDict[pageConfirmRegistration] = (urlParts, completed) => completed(new ConfirmRegistrationModel(pageConfirmRegistration));
+    //pageDict[pageChangePassword] = (urlParts, completed) => completed(new ChangePassworModel(pageChangePassword));
+    //pageDict[pageForgotPassword] = (urlParts, completed) => completed(new ForgotPasswordModel(pageForgotPassword));
+    //pageDict[pageProfile] = (urlParts, completed) => completed(new ProfileModel(pageProfile));
     //Registrace lokatoru
-    for (var p in Login.pageDict)
-        Pager.registerAppLocator(Login.appId, p, Login.pageDict[p]);
+    //for (var p in pageDict)
+    //  Pager.registerAppLocator(appId, p, pageDict[p]);
+    Login.stateLoginPage = Login.pageLogin;
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.stateLoginPage, Login.appId, Login.pageLogin, 0, function (urlParts) { return new Login.LoginModel(Login.pageLogin); }, false); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageLmLogin, Login.appId, Login.pageLmLogin, 0, function (urlParts) { return new Login.LMLoginModel(Login.pageLmLogin, true); }, false); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageLmLoginNoEMail, Login.appId, Login.pageLmLoginNoEMail, 0, function (urlParts) { return new Login.LMLoginModel(Login.pageLmLoginNoEMail, false); }, false); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageRegister, Login.appId, Login.pageRegister, 0, function (urlParts) { return new Login.RegisterModel(Login.pageRegister, true); }, false); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageRegisterNoEMail, Login.appId, Login.pageRegisterNoEMail, 0, function (urlParts) { return new Login.RegisterModel(Login.pageRegisterNoEMail, false); }, false); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageConfirmRegistration, Login.appId, Login.pageConfirmRegistration, 0, function (urlParts) { return new Login.ConfirmRegistrationModel(Login.pageConfirmRegistration); }, false); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageChangePassword, Login.appId, Login.pageChangePassword, 0, function (urlParts) { return new Login.ChangePassworModel(Login.pageChangePassword); }, false); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageForgotPassword, Login.appId, Login.pageForgotPassword, 0, function (urlParts) { return new Login.ForgotPasswordModel(Login.pageForgotPassword); }, false); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageProfile, Login.appId, Login.pageProfile, 0, function (urlParts) { return new Login.ProfileModel(Login.pageProfile); }, false); });
 })(Login || (Login = {}));

@@ -26,9 +26,14 @@ var CourseMeta;
         Pager.navigateToHash(nd.href());
     }
     CourseMeta.btnClick = btnClick;
+    //##GOTO
     function gotoData(url) {
+        if (_.isEmpty(url)) {
+            Pager.gotoHomeUrl();
+            return;
+        }
         //skok na hash nebo sitemap url, kvuli breadcrumb v testMe result apod.
-        Pager.navigateToHash(_.isEmpty(url) ? '' : (Utils.startsWith(url, '/old/') ? encodeUrlHash(url) : CourseMeta.actProduct.getNode(url).href()));
+        Pager.navigateToHash(Utils.startsWith(url, '/old/') ? encodeUrlHash(url) : CourseMeta.actProduct.getNode(url).href());
         return false;
     }
     CourseMeta.gotoData = gotoData;
@@ -41,9 +46,10 @@ var CourseMeta;
                 window.alert('alert');
         }
         gui.alert = alert;
+        //##GOTO
         function gotoData(node) {
             if (!node)
-                node = CourseMeta.actCourseRoot;
+                Pager.gotoHomeUrl();
             Pager.navigateToHash(node.href());
         }
         gui.gotoData = gotoData;
@@ -244,6 +250,8 @@ var CourseMeta;
     CourseMeta.allActions[nodeAction.reset] = { icon: 'refresh', title: function () { return CSLocalize('27f1cba5240643fc9d0993cb6b5931b7', 'Reset'); } };
     CourseMeta.allActions[nodeAction.runTestAgain] = { icon: 'refresh', title: function () { return CSLocalize('9f77df2b307e48ad91291b0907fcbf4a', 'Run a new test'); } };
     CourseMeta.allActions[nodeAction.cancelTestSkip] = { icon: 'plus-circle', title: function () { return CSLocalize('f48f9615e3374fd2b6e1c377d1b8b0d3', 'Cancel and skip the test'); } };
-    Pager.registerAppLocator(schools.appId, schools.tCourseMeta, function (urlParts, completed) { return completed(new Model(urlParts)); });
-    Pager.registerAppLocator(schools.appId, schools.tCoursePretest, function (urlParts, completed) { return completed(new ModelPretest(urlParts)); });
+    //Pager.registerAppLocator(schools.appId, schools.tCourseMeta, (urlParts, completed) => { completed(new Model(urlParts)); });
+    //Pager.registerAppLocator(schools.appId, schools.tCoursePretest, (urlParts, completed) => completed(new ModelPretest(urlParts)));
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schools.tCourseMeta, schools.appId, schools.tCourseMeta, 4, function (urlParts) { return new Model(urlParts); }); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schools.tCoursePretest, schools.appId, schools.tCoursePretest, 4, function (urlParts) { return new ModelPretest(urlParts); }); });
 })(CourseMeta || (CourseMeta = {}));

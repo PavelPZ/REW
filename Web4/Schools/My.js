@@ -60,7 +60,7 @@ var schoolMy;
         }
         Model.prototype.doUpdate = function (completed) {
             var _this = this;
-            this.systemAdmin = Login.isSystemAdmin() ? function () { return LMStatus.setReturnUrlAndGoto("schoolAdmin@schoolAdminModel"); } : null;
+            this.systemAdmin = Login.isSystemAdmin() ? function () { return LMStatus.setReturnUrlAndGoto(oldPrefix + "schoolAdmin" + hashDelim + "schoolAdminModel"); } : null;
             //var hasCompany = /*this.systemAdmin != null || Login.companyExists();
             if (Login.companyExists()) {
                 this.companies = _.map(Login.myData.Companies, function (c) {
@@ -86,43 +86,43 @@ var schoolMy;
                         comp.items.push(it = {
                             id: 'manage_admin',
                             title: CSLocalize('7dbd71d1e623446e884febbd07c72f9f', 'Manage administrators and their roles'),
-                            gotoItem: function () { return location.hash = schoolAdmin.getHash(schoolAdmin.compAdminsTypeName, c.Id); }
+                            gotoItem: function () { return Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.compAdminsTypeName, c.Id)); }
                         });
                     if ((c.RoleEx.Role & LMComLib.CompRole.Products) != 0)
                         comp.items.push(it = {
                             id: 'manage_products',
                             title: CSLocalize('fd0acec43f7d487ba635b4a55343b23a', 'Manage products'),
-                            gotoItem: function () { return location.hash = schoolAdmin.getHash(schoolAdmin.productsTypeName, c.Id); }
+                            gotoItem: function () { return Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.productsTypeName, c.Id)); }
                         });
                     if ((c.RoleEx.Role & LMComLib.CompRole.Keys) != 0)
                         comp.items.push(it = {
                             id: 'gen_keys',
                             title: CSLocalize('643da9a0b02b4e209e26e20ca620f54c', 'Generate license keys'),
-                            gotoItem: function () { return location.hash = schoolAdmin.getHash(schoolAdmin.keyGenTypeName, c.Id); }
+                            gotoItem: function () { return Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.keyGenTypeName, c.Id)); }
                         });
                     if ((c.RoleEx.Role & LMComLib.CompRole.Department) != 0)
                         comp.items.push(it = {
                             id: 'edit_criteria',
                             title: CSLocalize('9231de5764184fd7a75389aa2ecfdad5', 'Edit Department structure and criteria for tracking study results'),
-                            gotoItem: function () { return location.hash = schoolAdmin.getHash(schoolAdmin.editDepartmentTypeName, c.Id); }
+                            gotoItem: function () { return Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.editDepartmentTypeName, c.Id)); }
                         });
                     if ((c.RoleEx.Role & LMComLib.CompRole.Results) != 0)
                         comp.items.push(it = {
                             id: 'view_students_results',
                             title: CSLocalize('2fb8a691d86e4f4181dba3f48708a363', 'View Student results'),
-                            gotoItem: function () { return location.hash = schoolAdmin.getHash(schoolAdmin.schoolUserResultsTypeName, c.Id); }
+                            gotoItem: function () { return Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.schoolUserResultsTypeName, c.Id)); }
                         });
                     if ((c.RoleEx.Role & LMComLib.CompRole.HumanEvalator) != 0)
                         comp.items.push(it = {
                             id: 'human_eval',
                             title: CSLocalize('f8fce20059f24b5e82b52bd41fef4bd4', 'Evaluate Speaking and Writing skills'),
-                            gotoItem: function () { return location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalTypeName, c.Id); }
+                            gotoItem: function () { return Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.humanEvalTypeName, c.Id)); }
                         });
                     if ((c.RoleEx.Role & LMComLib.CompRole.HumanEvalManager) != 0)
                         comp.items.push(it = {
                             id: 'human_eval_manager',
                             title: CSLocalize('e72a70b3d05244759ea5469440921ff2', 'Assign Tests to Evaluators'),
-                            gotoItem: function () { return location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalManagerLangsTypeName, c.Id); }
+                            gotoItem: function () { return Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.humanEvalManagerLangsTypeName, c.Id)); }
                         });
                     //if ((c.RoleEx.Role & LMComLib.CompRole.HumanEvalManager) != 0) comp.items.push(it = {
                     //  id: 'human_eval_manager',
@@ -133,7 +133,7 @@ var schoolMy;
                         comp.items.push(it = {
                             id: 'human_evaluators',
                             title: CSLocalize('bce009c57f4b418c9ff42e30c7998479', 'Configure Evaluators'),
-                            gotoItem: function () { return location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalManagerEvsTypeName, c.Id); }
+                            gotoItem: function () { return Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.humanEvalManagerEvsTypeName, c.Id)); }
                         });
                     comp.courses = [];
                     //kurzy, k nimz mam licenci
@@ -194,5 +194,7 @@ var schoolMy;
         return Model;
     })(schools.Model);
     schoolMy.Model = Model;
-    Pager.registerAppLocator(schools.appId, schools.tMy, function (urlParts, completed) { return completed(new schoolMy.Model()); });
+    //Pager.registerAppLocator(schools.appId, schools.tMy, (urlParts, completed) => completed(new schoolMy.Model()));
+    schoolMy.myStateName = 'schoolMy_Model'.toLowerCase();
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolMy.myStateName, schools.appId, schools.tMy, 0, function (urlParts) { return new schoolMy.Model(); }); });
 })(schoolMy || (schoolMy = {}));

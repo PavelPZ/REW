@@ -64,7 +64,7 @@ var boot;
             $('body').addClass("rtl-able");
     }
     boot.minInit = minInit;
-    $(function () {
+    var doOldApplicationStart = function () {
         if (cfg.startProcName == 'no') {
             minInit();
             return;
@@ -77,5 +77,9 @@ var boot;
         for (var i = 0; i < parts.length; i++)
             ctx = ctx[parts[i]];
         ctx[fnc]();
-    });
+    };
+    function OldApplicationStart() { if (doOldApplicationStart)
+        doOldApplicationStart(); doOldApplicationStart = null; }
+    boot.OldApplicationStart = OldApplicationStart;
+    $(OldApplicationStart);
 })(boot || (boot = {}));

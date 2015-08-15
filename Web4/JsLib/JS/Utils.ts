@@ -146,8 +146,9 @@ module LMStatus {
   export function setReturnUrlAndGoto(newHash: string = null): void {
     setReturnUrl();
     if (newHash == null) return;
-    if (newHash.charAt(0) != "#") newHash = "#" + newHash;
-    location.hash = newHash;
+    Pager.navigateToHash(newHash);
+    //if (newHash.charAt(0) != "#") newHash = "#" + newHash;
+    //location.hash = newHash;
   }
   export function setReturnUrl(newHash: string= null): void {
     Cook.write(LMComLib.CookieIds.returnUrl, newHash ? newHash : location.hash);
@@ -239,7 +240,7 @@ module LMStatus {
   export function LogoutLow() {
     //binec, setCookie nastavi pouze browser cookie a ponecha LMStatus.Cookie
     LMStatus.setCookie(null); LMStatus.Cookie = null;
-    Pager.loadPageHash(null);
+    Pager.gotoHomeUrl();
   }
 
   export function Logout(obj, ev: JQueryEventObject) {

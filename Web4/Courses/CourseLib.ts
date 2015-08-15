@@ -1,3 +1,4 @@
+//##GOTO
 function gotoHref(event: Event, url: string) {
   if (_.isEmpty(url)) url = $(event.currentTarget).attr('href');
   url = Utils.combineUrl(CourseMeta.actNode.url, url);

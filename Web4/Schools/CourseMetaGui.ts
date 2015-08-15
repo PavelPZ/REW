@@ -20,9 +20,12 @@ module CourseMeta {
     Pager.navigateToHash(nd.href())
   }
 
+
+  //##GOTO
   export function gotoData(url: string) {
+    if (_.isEmpty(url)) { Pager.gotoHomeUrl(); return; }
     //skok na hash nebo sitemap url, kvuli breadcrumb v testMe result apod.
-    Pager.navigateToHash(_.isEmpty(url) ? '' : (Utils.startsWith(url, '/old/') ? /*hash*/encodeUrlHash(url) : /*sitemap Url*/actProduct.getNode(url).href()));
+    Pager.navigateToHash(Utils.startsWith(url, '/old/') ? /*hash*/encodeUrlHash(url) : /*sitemap Url*/actProduct.getNode(url).href());
     return false;
   }
 
@@ -31,8 +34,9 @@ module CourseMeta {
       if (isConfirm) return confirm(CSLocalize('d348b1d49cc9424a8c1c3a840ad9d4dd', 'Your answers are not all correct. Do you really want to evaluate the exercise?'));
       else window.alert('alert');
     }
+  //##GOTO
     export function gotoData(node: dataImpl) { //skok na jiny node
-      if (!node) node = actCourseRoot;
+      if (!node) Pager.gotoHomeUrl();
       Pager.navigateToHash(node.href());
     }
     export function onReload() { //reload stranky na te same URL adrese
@@ -195,8 +199,11 @@ module CourseMeta {
   allActions[nodeAction.runTestAgain] = { icon: 'refresh', title: () => CSLocalize('9f77df2b307e48ad91291b0907fcbf4a', 'Run a new test') };
   allActions[nodeAction.cancelTestSkip] = { icon: 'plus-circle', title: () => CSLocalize('f48f9615e3374fd2b6e1c377d1b8b0d3', 'Cancel and skip the test') };
 
-  Pager.registerAppLocator(schools.appId, schools.tCourseMeta, (urlParts, completed) => completed(new Model(urlParts)));
-  Pager.registerAppLocator(schools.appId, schools.tCoursePretest, (urlParts, completed) => completed(new ModelPretest(urlParts)));
+  //Pager.registerAppLocator(schools.appId, schools.tCourseMeta, (urlParts, completed) => { completed(new Model(urlParts)); });
+  //Pager.registerAppLocator(schools.appId, schools.tCoursePretest, (urlParts, completed) => completed(new ModelPretest(urlParts)));
+
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, schools.tCourseMeta, schools.appId, schools.tCourseMeta, 4, urlParts => new Model(urlParts)));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, schools.tCoursePretest, schools.appId, schools.tCoursePretest, 4, urlParts => new ModelPretest(urlParts)));
 
   //Pager.registerAppLocator(
   //  schools.tCourseMeta,

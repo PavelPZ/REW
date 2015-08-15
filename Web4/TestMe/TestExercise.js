@@ -657,5 +657,6 @@ var testMe;
         //return [appId, type ? type : tEx, companyId ? companyId : CourseMeta.actCompanyId, productUrl ? productUrl : CourseMeta.actProduct.url].join(hashDelim);
     }
     testMe.createUrl = createUrl;
-    Pager.registerAppLocator(testMe.appId, testMe.tEx, function (urlParts, completed) { return completed(new Model(urlParts)); });
+    //Pager.registerAppLocator(appId, tEx, (urlParts, completed) => completed(new Model(urlParts)));
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, testMe.tEx, testMe.appId, testMe.tEx, 4, function (urlParts) { return new Model(urlParts); }); });
 })(testMe || (testMe = {}));

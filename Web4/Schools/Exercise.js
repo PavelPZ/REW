@@ -60,7 +60,8 @@ var CourseMeta;
         return ModelEx;
     })(CourseMeta.MetaModel);
     CourseMeta.ModelEx = ModelEx;
-    Pager.registerAppLocator(schools.appId, schools.tEx, function (urlParts, completed) { return completed(new ModelEx(urlParts)); });
+    //Pager.registerAppLocator(schools.appId, schools.tEx, (urlParts, completed) => completed(new ModelEx(urlParts)));
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schools.tEx, schools.appId, schools.tEx, 4, function (urlParts) { return new ModelEx(urlParts); }); });
 })(CourseMeta || (CourseMeta = {}));
 //xx/#DEBUG
 var Logger;

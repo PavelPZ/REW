@@ -27,5 +27,6 @@ var grafia;
     })(Pager.Page);
     grafia.homeModel = homeModel;
     Gui2.skin.instance = new skin();
-    Pager.registerAppLocator(grafia.appId, grafia.home, function (urlParts, completed) { return completed(new homeModel()); });
+    //Pager.registerAppLocator(appId, home, (urlParts, completed) => completed(new homeModel()));
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, grafia.home, grafia.appId, grafia.home, 0, function (urlParts) { return new homeModel(); }); });
 })(grafia || (grafia = {}));

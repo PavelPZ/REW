@@ -140,7 +140,10 @@ module schoolAdmin {
     done = ko.observable(false);
   }
 
-  Pager.registerAppLocator(appId, humanEvalTypeName,(urlParts, completed) => completed(new HumanEval(urlParts)));
-  Pager.registerAppLocator(appId, humanEvalExTypeName,(urlParts, completed) => completed(new HumanEvalEx(urlParts)));
+  //Pager.registerAppLocator(appId, humanEvalTypeName,(urlParts, completed) => completed(new HumanEval(urlParts)));
+  //Pager.registerAppLocator(appId, humanEvalExTypeName,(urlParts, completed) => completed(new HumanEvalEx(urlParts)));
+
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, humanEvalTypeName, appId, humanEvalTypeName, 1, urlParts => new HumanEval(urlParts)));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, humanEvalExTypeName, appId, humanEvalExTypeName, 1, urlParts => new HumanEvalEx(urlParts)));
 }
 

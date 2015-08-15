@@ -2,50 +2,76 @@
 
   export class Module {
     app: ng.IModule;
-    $scope: IRootScope;
 
     constructor(name: string, modules: Array<string>) {
       var self = this;
       this.app = angular.module(name, modules);
-      this.app.run(($rootScope: IRootScope) => {
-        self.$scope = $rootScope;
-        //$rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => { 
-        //  debugger;
-        //})
-      });
     }
-
-    addController(name: string, controller: Function) { this.app.controller(name, controller); }
   }
 
-  export function _isAngularHash(hash: string): boolean { //hack
-    if (hash && Utils.startsWith(hash, '/ajs/')) { return true; }
-    return false;
-  }
-  export function isAngularHash(hash: string): boolean { //hack
-    if (hash && Utils.startsWith(hash, '/ajs/')) { $('#angularjs-root').show(); return true; }
-    $('#angularjs-root').hide();
-    return false;
-  }
-
-  export interface IRootScope extends ng.IScope {
-  }
+  //export function isAngularHash(hash: string): boolean { //hack
+  //  if (hash && Utils.startsWith(hash, '/ajs/')) { return true; }
+  //  return false;
+  //}
+  //export function _isAngularHash(hash: string): boolean { //hack
+  //  if (hash && Utils.startsWith(hash, '/ajs/')) { $('#angularjs-root').show(); return true; }
+  //  $('#angularjs-root').hide();
+  //  return false;
+  //}
 
   export var root = new Module('appRoot', ['ngResource', 'ui.router']);
-  export var rootState: angular.ui.IStateService;
 
-  root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', ($stateProvider: angular.ui.IStateProvider, $urlRouterProvider: angular.route.IRouteProvider, $location) => {
+  root.app.run(() => boot.OldApplicationStart()); //volani StartProc pro inicializaci stare aplikace
+
+  export class OldController { //naladuje stranku dle zaregistrovane /old/... route
+
+    static $inject = ['$scope', '$state'];
+
+    constructor($scope: ng.IScope, $state: angular.ui.IStateService) {
+      //prevezmi paramnetry
+      var urlParts: Array<string> = [];
+      for (var p = 0; p < 6; p++) {
+        var parName = 'p' + p.toString();
+        urlParts.push($state.params[parName]);
+      }
+      //procedura pro vytvoreni stareho modelu
+      var createProc = $state.current.data['createModel'];
+      //vytvor page model a naladuj stranku
+      $scope.$on('$viewContentLoaded', function () {
+        Pager.loadPage(createProc(urlParts));
+      });
+    };
+
+  }
+
+  root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', (
+    $stateProvider: angular.ui.IStateProvider,
+    $urlRouterProvider: angular.route.IRouteProvider,
+    $location: ng.ILocationProvider,
+    $urlMatcherFactoryProvider: angular.ui.IUrlMatcherFactory
+    ) => {
+
+    $urlMatcherFactoryProvider.caseInsensitive(true); //http://stackoverflow.com/questions/25994308/how-to-config-angular-ui-router-to-not-use-strict-url-matching-mode
+    $urlRouterProvider.otherwise('/old/school/schoolmymodel');
+
+    //stavy pro starou verzi
+    var params: createStatePars = {
+      $stateProvider: $stateProvider,
+      $urlRouterProvider: $urlRouterProvider,
+      $urlMatcherFactoryProvider: $urlMatcherFactoryProvider,
+      $location: $location,
+    };
+    _.each(oldLocators, createLoc => createLoc(params)); //vytvoreni states na zaklade registrovanych page models (pomoci registerOldLocator)
+
+    _.each(debugAllRoutes, r => Logger.trace("Pager", 'Define:' + r));
+
+    //stavy pro novou verzi
     $stateProvider
-      .state({
-        name: 'old',
-        url: '/old',
-        template: "<!--old-->",
-      })
       .state({
         name: 'ajs',
         url: '/ajs',
-        abstract:true,
-        controller: () => { },
+        abstract: true,
+        controller: () => { alert('view'); },
         template: "<div data-ui-view></div>",
       })
       .state({
@@ -57,21 +83,24 @@
     ;
   }]);
 
-  root.app.factory('exportService', ['$http', (http: ng.IHttpService) => new exportService(http)]);
 
-  export class exportService {
-    public getData<T>(url: string, cache?: boolean): ng.IPromise<T> { return this.$http.get(url, { cache: cache ? true : false }); }
-    constructor(public $http: ng.IHttpService) { }
+  //dokumentace pro dostupne services
+  export function servicesDocumentation() {
+    //https://docs.angularjs.org/api/ng/function/angular.injector
+    //http://stackoverflow.com/questions/17497006/use-http-inside-custom-provider-in-app-config-angular-js
+    //https://docs.angularjs.org/api/ng/service/$sce
+    var initInjector = angular.injector(['ng']);
+    var $http = initInjector.get<ng.IHttpService>('$http');
+    var $q = initInjector.get<ng.IQService>('$q');
+    var srv = initInjector.get('$filter');
+    srv = initInjector.get('$timeout');
+    srv = initInjector.get('$log');
+    srv = initInjector.get('$rootScope');
+    //srv = initInjector.get('$location'); nefunguje
+    srv = initInjector.get('$parse');
+    //srv = initInjector.get('$rootElement'); nefunguje
   }
-
-  export class RootController {
-
-    static $inject = ['$scope', '$state'];
-
-    constructor($scope: ng.IScope, $state: angular.ui.IStateService) {
-      rootState = $state;
-    }
-  }
+  
 
 
 }

@@ -5769,7 +5769,7 @@ function Browser(window, document, $log, $sniffer) {
 
     lastBrowserUrl = self.url();
     //LM
-    if (lastBrowserUrl.indexOf('/ajs/') < 0) return;
+    //if (lastBrowserUrl.indexOf('/ajs/') < 0) return;
     lastHistoryState = cachedState;
     forEach(urlChangeListeners, function(listener) {
       listener(self.url(), cachedState);

@@ -14,7 +14,7 @@ module schoolAdmin {
     }
   }
 
-  Pager.registerAppLocator(appId, schoolUserResultsTypeName,(urlParts, completed) => completed(new UserResults(urlParts)));
-  //Pager.registerAppLocator(schoolUserResultsTypeName, (url: CompIdUrl, completed: (pg: Pager.Page) => void) => completed(new UserResults(url.CompanyId)));
+  //Pager.registerAppLocator(appId, schoolUserResultsTypeName,(urlParts, completed) => completed(new UserResults(urlParts)));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, schoolUserResultsTypeName, appId, schoolUserResultsTypeName, 1, urlParts => new UserResults(urlParts)));
 }
 
