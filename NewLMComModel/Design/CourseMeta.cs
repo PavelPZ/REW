@@ -637,14 +637,14 @@ namespace CourseMeta {
             //type = runtimeType.products,
             //items = new data[0]
             Items = Enumerable.Empty<data>().
-              //Concat(OldLangCourses.generateStandard()).
-              //Concat(LangCourses.generateExamplesProduct()).
-              //Concat(LangCourses.generateGrafiaProducts()).
-              //Concat(OldLangCourses.generateA1_C2()).
-              ////Concat(LangCourses.generateTestMeProduct()).
-              //Concat(LangCourses.generateJJN()).
-              //Concat(LangCourses.generateSkrivanekProduct()).
-              //Concat(LangCourses.generateEdusoftProduct()).
+              Concat(OldLangCourses.generateStandard()).
+              Concat(LangCourses.generateExamplesProduct()).
+              Concat(LangCourses.generateGrafiaProducts()).
+              Concat(OldLangCourses.generateA1_C2()).
+              Concat(LangCourses.generateTestMeProduct()).
+              Concat(LangCourses.generateJJN()).
+              Concat(LangCourses.generateSkrivanekProduct()).
+              Concat(LangCourses.generateEdusoftProduct()).
               Concat(LangCourses.generateBlendedProduct()).
               ToArray()
           };

@@ -1,15 +1,366 @@
 <?xml version="1.0"?>
 <products xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" url="/prods/" type="products">
-  <product title="Blended Learning: A1 - Lesson 1" url="/lm/prods_lm_blended_english_lessons_lesson_a1_1/" line="English" type="product" defaultDictType="no" defaultLocs="cs_cz en_gb" />
-  <product title="Blended Learning: Checkpoint test A1 - 1" order="1" url="/lm/prods_lm_blended_english_tests_checkpointtesta1_1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb" />
-  <product title="Blended Learning: Pretest A1" order="2" url="/lm/prods_lm_blended_english_pretesta1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb" />
-  <product title="Blended Learning: Pretest A2" order="3" url="/lm/prods_lm_blended_english_pretesta2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb" />
-  <product title="Blended Learning: Pretest B1" order="4" url="/lm/prods_lm_blended_english_pretestb1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb" />
-  <product title="Blended Learning: Pretest B2" order="5" url="/lm/prods_lm_blended_english_pretestb2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb" />
-  <product title="Blended Learning: English Dialogs" order="6" url="/lm/blended/english/dialogs.product/" line="English" type="product" />
-  <product title="Blended Learning: German Dialogs" order="7" url="/lm/blended/german/dialogs.product/" line="German" type="product" />
-  <product title="Blended Learning: French Dialogs" order="8" url="/lm/blended/french/dialogs.product/" line="French" type="product" />
-  <product title="Vyzva 57 MŠMT: Angličtina" order="9" url="/lm/blended/english/blended.product/" line="English" type="product productNew" />
-  <product title="Vyzva 57 MŠMT: Němčina" order="10" url="/lm/blended/german/blended.product/" line="German" type="product productNew" />
-  <product title="Vyzva 57 MŠMT: Francouzština" order="11" url="/lm/blended/french/blended.product/" line="French" type="product productNew" />
+  <product title="Corso di Italiano" order="60" url="/lm/italian_0_6/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano, Principiante" order="61" url="/lm/italian_0_2/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano, Principiante, parte 1" order="62" url="/lm/italian_0_1/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano, Principiante, parte 2" order="63" url="/lm/italian_1_1/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano, Intermedio" order="64" url="/lm/italian_2_2/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano, Intermedio, parte 1" order="65" url="/lm/italian_2_1/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano, Intermedio, parte 2" order="66" url="/lm/italian_3_1/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano, Avanzato" order="67" url="/lm/italian_4_2/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano, Avanzato, parte 1" order="68" url="/lm/italian_4_1/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano, Avanzato, parte 2" order="69" url="/lm/italian_5_1/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano A1, parte 1" order="137" url="/lm/italian_a1_1/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano A1, parte 2" order="138" url="/lm/italian_a1_2/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano A1, parte 3" order="139" url="/lm/italian_a1_3/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano A1, parte 4" order="140" url="/lm/italian_a1_4/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano A2, parte 1" order="141" url="/lm/italian_a2_1/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano A2, parte 2" order="142" url="/lm/italian_a2_2/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano A2, parte 3" order="143" url="/lm/italian_a2_3/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano A2, parte 4" order="144" url="/lm/italian_a2_4/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano B1, parte 1" order="145" url="/lm/italian_b1_1/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano B1, parte 2" order="146" url="/lm/italian_b1_2/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano B1, parte 3" order="147" url="/lm/italian_b1_3/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Corso di Italiano B1, parte 4" order="148" url="/lm/italian_b1_4/" line="Italian" type="product" defaultDictType="L" />
+  <product title="Cours de français" order="50" url="/lm/french_0_6/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français, Débutants" order="51" url="/lm/french_0_2/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français, Débutants, partie 1" order="52" url="/lm/french_0_1/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français, Débutants, partie 2" order="53" url="/lm/french_1_1/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français, Débutants avancés" order="54" url="/lm/french_2_2/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français, Débutants avancés, partie 1" order="55" url="/lm/french_2_1/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français, Débutants avancés, partie 2" order="56" url="/lm/french_3_1/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français, Avancés" order="57" url="/lm/french_4_2/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français, Avancés, partie 1" order="58" url="/lm/french_4_1/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français, Avancés, partie 2" order="59" url="/lm/french_5_1/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français A1, partie 1" order="161" url="/lm/french_a1_1/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français A1, partie 2" order="162" url="/lm/french_a1_2/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français A1, partie 3" order="163" url="/lm/french_a1_3/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français A1, partie 4" order="164" url="/lm/french_a1_4/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français A2, partie 1" order="165" url="/lm/french_a2_1/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français A2, partie 2" order="166" url="/lm/french_a2_2/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français A2, partie 3" order="167" url="/lm/french_a2_3/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français A2, partie 4" order="168" url="/lm/french_a2_4/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français B1, partie 1" order="169" url="/lm/french_b1_1/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français B1, partie 2" order="170" url="/lm/french_b1_2/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français B1, partie 3" order="171" url="/lm/french_b1_3/" line="French" type="product" defaultDictType="L" />
+  <product title="Cours de français B1, partie 4" order="172" url="/lm/french_b1_4/" line="French" type="product" defaultDictType="L" />
+  <product title="Курсы русского" order="70" url="/lm/russian_0_3/" line="Russian" type="product" defaultDictType="L" />
+  <product title="Курсы русского, Начинающие" order="71" url="/lm/russian_0_1/" line="Russian" type="product" defaultDictType="L" />
+  <product title="Курсы русского, Начальный средний" order="72" url="/lm/russian_1_1/" line="Russian" type="product" defaultDictType="L" />
+  <product title="Курсы русского, Средний уровень" order="73" url="/lm/russian_2_1/" line="Russian" type="product" defaultDictType="L" />
+  <product title="Курсы русского A1, часть 1" order="121" url="/lm/russian_a1_1/" line="Russian" type="product" defaultDictType="L" />
+  <product title="Курсы русского A1, часть 2" order="122" url="/lm/russian_a1_2/" line="Russian" type="product" defaultDictType="L" />
+  <product title="Курсы русского A1, часть 3" order="123" url="/lm/russian_a1_3/" line="Russian" type="product" defaultDictType="L" />
+  <product title="Курсы русского A1, часть 4" order="124" url="/lm/russian_a1_4/" line="Russian" type="product" defaultDictType="L" />
+  <product title="Курсы русского A2, часть 1" order="125" url="/lm/russian_a2_1/" line="Russian" type="product" defaultDictType="L" />
+  <product title="Курсы русского A2, часть 2" order="126" url="/lm/russian_a2_2/" line="Russian" type="product" defaultDictType="L" />
+  <product title="Курсы русского A2, часть 3" order="127" url="/lm/russian_a2_3/" line="Russian" type="product" defaultDictType="L" />
+  <product title="Курсы русского A2, часть 4" order="128" url="/lm/russian_a2_4/" line="Russian" type="product" defaultDictType="L" />
+  <product title="Курсы русского B1, часть 1" order="129" url="/lm/russian_b1_1/" line="Russian" type="product" defaultDictType="L" />
+  <product title="Курсы русского B1, часть 2" order="130" url="/lm/russian_b1_2/" line="Russian" type="product" defaultDictType="L" />
+  <product title="Курсы русского B1, часть 3" order="131" url="/lm/russian_b1_3/" line="Russian" type="product" defaultDictType="L" />
+  <product title="Курсы русского B1, часть 4" order="132" url="/lm/russian_b1_4/" line="Russian" type="product" defaultDictType="L" />
+  <product title="Курсы русского B2, часть 1" order="133" url="/lm/russian_b2_1/" line="Russian" type="product" defaultDictType="L" />
+  <product title="Курсы русского B2, часть 2" order="134" url="/lm/russian_b2_2/" line="Russian" type="product" defaultDictType="L" />
+  <product title="Курсы русского B2, часть 3" order="135" url="/lm/russian_b2_3/" line="Russian" type="product" defaultDictType="L" />
+  <product title="Курсы русского B2, часть 4" order="136" url="/lm/russian_b2_4/" line="Russian" type="product" defaultDictType="L" />
+  <product title="English Courses" url="/lm/english_0_10/" line="English" type="product" defaultDictType="L" />
+  <product title="English Courses, Beginners" order="1" url="/lm/english_0_2/" line="English" type="product" defaultDictType="L" />
+  <product title="English Courses, Beginners, part 1" order="2" url="/lm/english_0_1/" line="English" type="product" defaultDictType="L" />
+  <product title="English Courses, Beginners, part 2" order="3" url="/lm/english_1_1/" line="English" type="product" defaultDictType="L" />
+  <product title="English Courses, False Beginners" order="4" url="/lm/english_2_2/" line="English" type="product" defaultDictType="L" />
+  <product title="English Courses, False Beginners, part 1" order="5" url="/lm/english_2_1/" line="English" type="product" defaultDictType="L" />
+  <product title="English Courses, False Beginners, part 2" order="6" url="/lm/english_3_1/" line="English" type="product" defaultDictType="L" />
+  <product title="English Courses, Pre-intermediate" order="7" url="/lm/english_4_2/" line="English" type="product" defaultDictType="L" />
+  <product title="English Courses, Pre-intermediate, part 1" order="8" url="/lm/english_4_1/" line="English" type="product" defaultDictType="L" />
+  <product title="English Courses, Pre-intermediate, part 2" order="9" url="/lm/english_5_1/" line="English" type="product" defaultDictType="L" />
+  <product title="English Courses, Intermediate" order="10" url="/lm/english_6_2/" line="English" type="product" defaultDictType="L" />
+  <product title="English Courses, Intermediate, part 1" order="11" url="/lm/english_6_1/" line="English" type="product" defaultDictType="L" />
+  <product title="English Courses, Intermediate, part 2" order="12" url="/lm/english_7_1/" line="English" type="product" defaultDictType="L" />
+  <product title="English Courses, Upper Intermediate" order="13" url="/lm/english_8_2/" line="English" type="product" defaultDictType="L" />
+  <product title="English Courses, Upper Intermediate, part 1" order="14" url="/lm/english_8_1/" line="English" type="product" defaultDictType="L" />
+  <product title="English Courses, Upper Intermediate, part 2" order="15" url="/lm/english_9_1/" line="English" type="product" defaultDictType="L" />
+  <product title="LANGMaster English" order="16" url="/lm/englishe_0_10/" line="English" type="product" defaultDictType="L" />
+  <product title="LANGMaster English, Beginners" order="17" url="/lm/englishe_0_2/" line="English" type="product" defaultDictType="L" />
+  <product title="LANGMaster English, Beginners, part 1" order="18" url="/lm/englishe_0_1/" line="English" type="product" defaultDictType="L" />
+  <product title="LANGMaster English, Beginners, part 2" order="19" url="/lm/englishe_1_1/" line="English" type="product" defaultDictType="L" />
+  <product title="LANGMaster English, False Beginners" order="20" url="/lm/englishe_2_2/" line="English" type="product" defaultDictType="L" />
+  <product title="LANGMaster English, False Beginners, part 1" order="21" url="/lm/englishe_2_1/" line="English" type="product" defaultDictType="L" />
+  <product title="LANGMaster English, False Beginners, part 2" order="22" url="/lm/englishe_3_1/" line="English" type="product" defaultDictType="L" />
+  <product title="LANGMaster English, Pre-intermediate" order="23" url="/lm/englishe_4_2/" line="English" type="product" defaultDictType="L" />
+  <product title="LANGMaster English, Pre-intermediate, part 1" order="24" url="/lm/englishe_4_1/" line="English" type="product" defaultDictType="L" />
+  <product title="LANGMaster English, Pre-intermediate, part 2" order="25" url="/lm/englishe_5_1/" line="English" type="product" defaultDictType="L" />
+  <product title="LANGMaster English, Intermediate" order="26" url="/lm/englishe_6_2/" line="English" type="product" defaultDictType="L" />
+  <product title="LANGMaster English, Intermediate, part 1" order="27" url="/lm/englishe_6_1/" line="English" type="product" defaultDictType="L" />
+  <product title="LANGMaster English, Intermediate, part 2" order="28" url="/lm/englishe_7_1/" line="English" type="product" defaultDictType="L" />
+  <product title="LANGMaster English, Upper Intermediate" order="29" url="/lm/englishe_8_2/" line="English" type="product" defaultDictType="L" />
+  <product title="LANGMaster English, Upper Intermediate, part 1" order="30" url="/lm/englishe_8_1/" line="English" type="product" defaultDictType="L" />
+  <product title="LANGMaster English, Upper Intermediate, part 2" order="31" url="/lm/englishe_9_1/" line="English" type="product" defaultDictType="L" />
+  <product title="English course A1, part 1" order="85" url="/lm/english_a1_czu1/" line="English" type="product" defaultDictType="L" />
+  <product title="English course A1, part 2" order="86" url="/lm/english_a1_czu2/" line="English" type="product" defaultDictType="L" />
+  <product title="English course A1, part 3" order="87" url="/lm/english_a1_czu3/" line="English" type="product" defaultDictType="L" />
+  <product title="English course A1, part 4" order="88" url="/lm/english_a1_czu4/" line="English" type="product" defaultDictType="L" />
+  <product title="English course A1, part 1" order="89" url="/lm/english_a1_1/" line="English" type="product" defaultDictType="L" />
+  <product title="English course A1, part 2" order="90" url="/lm/english_a1_2/" line="English" type="product" defaultDictType="L" />
+  <product title="English course A1, part 3" order="91" url="/lm/english_a1_3/" line="English" type="product" defaultDictType="L" />
+  <product title="English course A1, part 4" order="92" url="/lm/english_a1_4/" line="English" type="product" defaultDictType="L" />
+  <product title="English course A2, part 1" order="93" url="/lm/english_a2_1/" line="English" type="product" defaultDictType="L" />
+  <product title="English course A2, part 2" order="94" url="/lm/english_a2_2/" line="English" type="product" defaultDictType="L" />
+  <product title="English course A2, part 3" order="95" url="/lm/english_a2_3/" line="English" type="product" defaultDictType="L" />
+  <product title="English course A2, part 4" order="96" url="/lm/english_a2_4/" line="English" type="product" defaultDictType="L" />
+  <product title="English course B1, part 1" order="97" url="/lm/english_b1_1/" line="English" type="product" defaultDictType="L" />
+  <product title="English course B1, part 2" order="98" url="/lm/english_b1_2/" line="English" type="product" defaultDictType="L" />
+  <product title="English course B1, part 3" order="99" url="/lm/english_b1_3/" line="English" type="product" defaultDictType="L" />
+  <product title="English course B1, part 4" order="100" url="/lm/english_b1_4/" line="English" type="product" defaultDictType="L" />
+  <product title="English course B2, part 1" order="101" url="/lm/english_b2_1/" line="English" type="product" defaultDictType="L" />
+  <product title="English course B2, part 2" order="102" url="/lm/english_b2_2/" line="English" type="product" defaultDictType="L" />
+  <product title="English course B2, part 3" order="103" url="/lm/english_b2_3/" line="English" type="product" defaultDictType="L" />
+  <product title="English course B2, part 4" order="104" url="/lm/english_b2_4/" line="English" type="product" defaultDictType="L" />
+  <product title="Deutschkurs" order="32" url="/lm/german_0_5/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs, Anfänger" order="33" url="/lm/german_0_2/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs, Anfänger, Teil 1" order="34" url="/lm/german_0_1/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs, Anfänger, Teil 2" order="35" url="/lm/german_1_1/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs, Mittelfortgeschrittene" order="36" url="/lm/german_2_2/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs, Mittelfortgeschrittene, Teil 1" order="37" url="/lm/german_2_1/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs, Mittelfortgeschrittene, Teil 2" order="38" url="/lm/german_3_1/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs, Fortgeschrittene" order="39" url="/lm/german_4_1/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs A1, Teil 1" order="105" url="/lm/german_a1_1/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs A1, Teil 2" order="106" url="/lm/german_a1_2/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs A1, Teil 3" order="107" url="/lm/german_a1_3/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs A1, Teil 4" order="108" url="/lm/german_a1_4/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs A2, Teil 1" order="109" url="/lm/german_a2_1/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs A2, Teil 2" order="110" url="/lm/german_a2_2/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs A2, Teil 3" order="111" url="/lm/german_a2_3/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs A2, Teil 4" order="112" url="/lm/german_a2_4/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs B1, Teil 1" order="113" url="/lm/german_b1_1/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs B1, Teil 2" order="114" url="/lm/german_b1_2/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs B1, Teil 3" order="115" url="/lm/german_b1_3/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs B1, Teil 4" order="116" url="/lm/german_b1_4/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs B2, Teil 1" order="117" url="/lm/german_b2_1/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs B2, Teil 2" order="118" url="/lm/german_b2_2/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs B2, Teil 3" order="119" url="/lm/german_b2_3/" line="German" type="product" defaultDictType="L" />
+  <product title="Deutschkurs B2, Teil 4" order="120" url="/lm/german_b2_4/" line="German" type="product" defaultDictType="L" />
+  <product title="Curso de español" order="40" url="/lm/spanish_0_6/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español, Inicial" order="41" url="/lm/spanish_0_2/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español, Inicial, parte 1" order="42" url="/lm/spanish_0_1/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español, Inicial, parte 2" order="43" url="/lm/spanish_1_1/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español, Intermedio" order="44" url="/lm/spanish_2_2/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español, Intermedio, parte 1" order="45" url="/lm/spanish_2_1/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español, Intermedio, parte 2" order="46" url="/lm/spanish_3_1/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español, Avanzado" order="47" url="/lm/spanish_4_2/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español, Avanzado, parte 1" order="48" url="/lm/spanish_4_1/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español, Avanzado, parte 2" order="49" url="/lm/spanish_5_1/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español A1, parte 1" order="149" url="/lm/spanish_a1_1/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español A1, parte 2" order="150" url="/lm/spanish_a1_2/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español A1, parte 3" order="151" url="/lm/spanish_a1_3/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español A1, parte 4" order="152" url="/lm/spanish_a1_4/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español A2, parte 1" order="153" url="/lm/spanish_a2_1/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español A2, parte 2" order="154" url="/lm/spanish_a2_2/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español A2, parte 3" order="155" url="/lm/spanish_a2_3/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español A2, parte 4" order="156" url="/lm/spanish_a2_4/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español B1, parte 1" order="157" url="/lm/spanish_b1_1/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español B1, parte 2" order="158" url="/lm/spanish_b1_2/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español B1, parte 3" order="159" url="/lm/spanish_b1_3/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="Curso de español B1, parte 4" order="160" url="/lm/spanish_b1_4/" line="Spanish" type="product" defaultDictType="L" />
+  <product title="eTestMe English A1 (complete)" order="179" url="/lm/prods/etestme-comp/english/a1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English A1 (standard)" order="180" url="/lm/prods/etestme-std/english/a1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English A2 (complete)" order="183" url="/lm/prods/etestme-comp/english/a2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English A2 (standard)" order="184" url="/lm/prods/etestme-std/english/a2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English B1 (complete)" order="187" url="/lm/prods/etestme-comp/english/b1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English B1 (standard)" order="188" url="/lm/prods/etestme-std/english/b1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English B2 (complete)" order="191" url="/lm/prods/etestme-comp/english/b2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English B2 (standard)" order="192" url="/lm/prods/etestme-std/english/b2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English C1 (complete)" order="195" url="/lm/prods/etestme-comp/english/c1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English C1 (standard)" order="196" url="/lm/prods/etestme-std/english/c1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English C2 (complete)" order="199" url="/lm/prods/etestme-comp/english/c2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English C2 (standard)" order="200" url="/lm/prods/etestme-std/english/c2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestme English A1-C2 (complete)" order="203" url="/lm/prods/etestme-comp/english/all/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestme English A1-C2 (standard)" order="204" url="/lm/prods/etestme-std/english/all/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English A1 (demo for standard)" order="182" url="/lm/prods/etestme-std-demo/english/a1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English A2 (demo for standard)" order="186" url="/lm/prods/etestme-std-demo/english/a2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English B1 (demo for standard)" order="190" url="/lm/prods/etestme-std-demo/english/b1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English B2 (demo for standard)" order="194" url="/lm/prods/etestme-std-demo/english/b2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English C1 (demo for standard)" order="198" url="/lm/prods/etestme-std-demo/english/c1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English C2 (demo for standard)" order="202" url="/lm/prods/etestme-std-demo/english/c2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English A1 (demo for complete)" order="181" url="/lm/prods/etestme-comp-demo/english/a1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English A2 (demo for complete)" order="185" url="/lm/prods/etestme-comp-demo/english/a2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English B1 (demo for complete)" order="189" url="/lm/prods/etestme-comp-demo/english/b1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English B2 (demo for complete)" order="193" url="/lm/prods/etestme-comp-demo/english/b2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English C1 (demo for complete)" order="197" url="/lm/prods/etestme-comp-demo/english/c1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTestMe English C2 (demo for complete)" order="201" url="/lm/prods/etestme-comp-demo/english/c2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English A1 (complete)" order="205" url="/skrivanek/prods/etestme-comp/english/a1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English A1 (standard)" order="206" url="/skrivanek/prods/etestme-std/english/a1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English A2 (complete)" order="209" url="/skrivanek/prods/etestme-comp/english/a2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English A2 (standard)" order="210" url="/skrivanek/prods/etestme-std/english/a2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English B1 (complete)" order="213" url="/skrivanek/prods/etestme-comp/english/b1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English B1 (standard)" order="214" url="/skrivanek/prods/etestme-std/english/b1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English B2 (complete)" order="217" url="/skrivanek/prods/etestme-comp/english/b2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English B2 (standard)" order="218" url="/skrivanek/prods/etestme-std/english/b2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English C1 (complete)" order="221" url="/skrivanek/prods/etestme-comp/english/c1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English C1 (standard)" order="222" url="/skrivanek/prods/etestme-std/english/c1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English C2 (complete)" order="225" url="/skrivanek/prods/etestme-comp/english/c2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English C2 (standard)" order="226" url="/skrivanek/prods/etestme-std/english/c2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch A1 (komplett)" order="231" url="/skrivanek/prods/etestme-comp/german/a1/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch A1 (standard)" order="232" url="/skrivanek/prods/etestme-std/german/a1/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch A2 (komplett)" order="235" url="/skrivanek/prods/etestme-comp/german/a2/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch A2 (standard)" order="236" url="/skrivanek/prods/etestme-std/german/a2/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch B1 (komplett)" order="239" url="/skrivanek/prods/etestme-comp/german/b1/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch B1 (standard)" order="240" url="/skrivanek/prods/etestme-std/german/b1/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch B2 (komplett)" order="243" url="/skrivanek/prods/etestme-comp/german/b2/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch B2 (standard)" order="244" url="/skrivanek/prods/etestme-std/german/b2/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch C1 (komplett)" order="247" url="/skrivanek/prods/etestme-comp/german/c1/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch C1 (standard)" order="248" url="/skrivanek/prods/etestme-std/german/c1/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch C2 (komplett)" order="251" url="/skrivanek/prods/etestme-comp/german/c2/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch C2 (standard)" order="252" url="/skrivanek/prods/etestme-std/german/c2/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français A1 (complet)" order="257" url="/skrivanek/prods/etestme-comp/french/a1/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français A1 (standard)" order="258" url="/skrivanek/prods/etestme-std/french/a1/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français A2 (complet)" order="261" url="/skrivanek/prods/etestme-comp/french/a2/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français A2 (standard)" order="262" url="/skrivanek/prods/etestme-std/french/a2/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français B1 (complet)" order="265" url="/skrivanek/prods/etestme-comp/french/b1/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français B1 (standard)" order="266" url="/skrivanek/prods/etestme-std/french/b1/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français B2 (complet)" order="269" url="/skrivanek/prods/etestme-comp/french/b2/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français B2 (standard)" order="270" url="/skrivanek/prods/etestme-std/french/b2/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français C1 (complet)" order="273" url="/skrivanek/prods/etestme-comp/french/c1/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français C1 (standard)" order="274" url="/skrivanek/prods/etestme-std/french/c1/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français C2 (complet)" order="277" url="/skrivanek/prods/etestme-comp/french/c2/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français C2 (standard)" order="278" url="/skrivanek/prods/etestme-std/french/c2/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano A1 (completo)" order="283" url="/skrivanek/prods/etestme-comp/italian/a1/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano A1 (standard)" order="284" url="/skrivanek/prods/etestme-std/italian/a1/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano A2 (completo)" order="287" url="/skrivanek/prods/etestme-comp/italian/a2/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano A2 (standard)" order="288" url="/skrivanek/prods/etestme-std/italian/a2/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano B1 (completo)" order="291" url="/skrivanek/prods/etestme-comp/italian/b1/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano B1 (standard)" order="292" url="/skrivanek/prods/etestme-std/italian/b1/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano B2 (completo)" order="295" url="/skrivanek/prods/etestme-comp/italian/b2/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano B2 (standard)" order="296" url="/skrivanek/prods/etestme-std/italian/b2/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano C1 (completo)" order="299" url="/skrivanek/prods/etestme-comp/italian/c1/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano C1 (standard)" order="300" url="/skrivanek/prods/etestme-std/italian/c1/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano C2 (completo)" order="303" url="/skrivanek/prods/etestme-comp/italian/c2/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano C2 (standard)" order="304" url="/skrivanek/prods/etestme-std/italian/c2/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку A1 (полный)" order="309" url="/skrivanek/prods/etestme-comp/russian/a1/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку A1 (стандартный)" order="310" url="/skrivanek/prods/etestme-std/russian/a1/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку A2 (полный)" order="313" url="/skrivanek/prods/etestme-comp/russian/a2/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку A2 (стандартный)" order="314" url="/skrivanek/prods/etestme-std/russian/a2/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку B1 (полный)" order="317" url="/skrivanek/prods/etestme-comp/russian/b1/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку B1 (стандартный)" order="318" url="/skrivanek/prods/etestme-std/russian/b1/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку B2 (полный)" order="321" url="/skrivanek/prods/etestme-comp/russian/b2/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку B2 (стандартный)" order="322" url="/skrivanek/prods/etestme-std/russian/b2/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку C1 (полный)" order="325" url="/skrivanek/prods/etestme-comp/russian/c1/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку C1 (стандартный)" order="326" url="/skrivanek/prods/etestme-std/russian/c1/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку C2 (полный)" order="329" url="/skrivanek/prods/etestme-comp/russian/c2/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку C2 (стандартный)" order="330" url="/skrivanek/prods/etestme-std/russian/c2/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español A1 (completo)" order="335" url="/skrivanek/prods/etestme-comp/spanish/a1/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español A1 (estándar)" order="336" url="/skrivanek/prods/etestme-std/spanish/a1/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español A2 (completo)" order="339" url="/skrivanek/prods/etestme-comp/spanish/a2/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español A2 (estándar)" order="340" url="/skrivanek/prods/etestme-std/spanish/a2/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español B1 (completo)" order="343" url="/skrivanek/prods/etestme-comp/spanish/b1/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español B1 (estándar)" order="344" url="/skrivanek/prods/etestme-std/spanish/b1/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español B2 (completo)" order="347" url="/skrivanek/prods/etestme-comp/spanish/b2/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español B2 (estándar)" order="348" url="/skrivanek/prods/etestme-std/spanish/b2/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español C1 (completo)" order="351" url="/skrivanek/prods/etestme-comp/spanish/c1/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español C1 (estándar)" order="352" url="/skrivanek/prods/etestme-std/spanish/c1/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español C2 (completo)" order="355" url="/skrivanek/prods/etestme-comp/spanish/c2/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español C2 (estándar)" order="356" url="/skrivanek/prods/etestme-std/spanish/c2/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English A1 (demo for complete)" order="207" url="/skrivanek/prods/etestme-comp-demo/english/a1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English A1 (demo for standard)" order="208" url="/skrivanek/prods/etestme-std-demo/english/a1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English A2 (demo for complete)" order="211" url="/skrivanek/prods/etestme-comp-demo/english/a2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English A2 (demo for standard)" order="212" url="/skrivanek/prods/etestme-std-demo/english/a2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English B1 (demo for complete)" order="215" url="/skrivanek/prods/etestme-comp-demo/english/b1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English B1 (demo for standard)" order="216" url="/skrivanek/prods/etestme-std-demo/english/b1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English B2 (demo for complete)" order="219" url="/skrivanek/prods/etestme-comp-demo/english/b2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English B2 (demo for standard)" order="220" url="/skrivanek/prods/etestme-std-demo/english/b2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English C1 (demo for complete)" order="223" url="/skrivanek/prods/etestme-comp-demo/english/c1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English C1 (demo for standard)" order="224" url="/skrivanek/prods/etestme-std-demo/english/c1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English C2 (demo for complete)" order="227" url="/skrivanek/prods/etestme-comp-demo/english/c2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English C2 (demo for standard)" order="228" url="/skrivanek/prods/etestme-std-demo/english/c2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch A1 (demo for complete)" order="233" url="/skrivanek/prods/etestme-comp-demo/german/a1/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch A1 (demo for standard)" order="234" url="/skrivanek/prods/etestme-std-demo/german/a1/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch A2 (demo for complete)" order="237" url="/skrivanek/prods/etestme-comp-demo/german/a2/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch A2 (demo for standard)" order="238" url="/skrivanek/prods/etestme-std-demo/german/a2/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch B1 (demo for complete)" order="241" url="/skrivanek/prods/etestme-comp-demo/german/b1/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch B1 (demo for standard)" order="242" url="/skrivanek/prods/etestme-std-demo/german/b1/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch B2 (demo for complete)" order="245" url="/skrivanek/prods/etestme-comp-demo/german/b2/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch B2 (demo for standard)" order="246" url="/skrivanek/prods/etestme-std-demo/german/b2/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch C1 (demo for complete)" order="249" url="/skrivanek/prods/etestme-comp-demo/german/c1/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch C1 (demo for standard)" order="250" url="/skrivanek/prods/etestme-std-demo/german/c1/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch C2 (demo for complete)" order="253" url="/skrivanek/prods/etestme-comp-demo/german/c2/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch C2 (demo for standard)" order="254" url="/skrivanek/prods/etestme-std-demo/german/c2/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français A1 (demo for complete)" order="259" url="/skrivanek/prods/etestme-comp-demo/french/a1/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français A1 (demo for standard)" order="260" url="/skrivanek/prods/etestme-std-demo/french/a1/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français A2 (demo for complete)" order="263" url="/skrivanek/prods/etestme-comp-demo/french/a2/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français A2 (demo for standard)" order="264" url="/skrivanek/prods/etestme-std-demo/french/a2/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français B1 (demo for complete)" order="267" url="/skrivanek/prods/etestme-comp-demo/french/b1/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français B1 (demo for standard)" order="268" url="/skrivanek/prods/etestme-std-demo/french/b1/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français B2 (demo for complete)" order="271" url="/skrivanek/prods/etestme-comp-demo/french/b2/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français B2 (demo for standard)" order="272" url="/skrivanek/prods/etestme-std-demo/french/b2/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français C1 (demo for complete)" order="275" url="/skrivanek/prods/etestme-comp-demo/french/c1/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français C1 (demo for standard)" order="276" url="/skrivanek/prods/etestme-std-demo/french/c1/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français C2 (demo for complete)" order="279" url="/skrivanek/prods/etestme-comp-demo/french/c2/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français C2 (demo for standard)" order="280" url="/skrivanek/prods/etestme-std-demo/french/c2/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano A1 (demo for complete)" order="285" url="/skrivanek/prods/etestme-comp-demo/italian/a1/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano A1 (demo for standard)" order="286" url="/skrivanek/prods/etestme-std-demo/italian/a1/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano A2 (demo for complete)" order="289" url="/skrivanek/prods/etestme-comp-demo/italian/a2/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano A2 (demo for standard)" order="290" url="/skrivanek/prods/etestme-std-demo/italian/a2/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano B1 (demo for complete)" order="293" url="/skrivanek/prods/etestme-comp-demo/italian/b1/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano B1 (demo for standard)" order="294" url="/skrivanek/prods/etestme-std-demo/italian/b1/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano B2 (demo for complete)" order="297" url="/skrivanek/prods/etestme-comp-demo/italian/b2/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano B2 (demo for standard)" order="298" url="/skrivanek/prods/etestme-std-demo/italian/b2/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano C1 (demo for complete)" order="301" url="/skrivanek/prods/etestme-comp-demo/italian/c1/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano C1 (demo for standard)" order="302" url="/skrivanek/prods/etestme-std-demo/italian/c1/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano C2 (demo for complete)" order="305" url="/skrivanek/prods/etestme-comp-demo/italian/c2/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano C2 (demo for standard)" order="306" url="/skrivanek/prods/etestme-std-demo/italian/c2/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку A1 (demo for complete)" order="311" url="/skrivanek/prods/etestme-comp-demo/russian/a1/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку A1 (demo for standard)" order="312" url="/skrivanek/prods/etestme-std-demo/russian/a1/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку A2 (demo for complete)" order="315" url="/skrivanek/prods/etestme-comp-demo/russian/a2/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку A2 (demo for standard)" order="316" url="/skrivanek/prods/etestme-std-demo/russian/a2/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку B1 (demo for complete)" order="319" url="/skrivanek/prods/etestme-comp-demo/russian/b1/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку B1 (demo for standard)" order="320" url="/skrivanek/prods/etestme-std-demo/russian/b1/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку B2 (demo for complete)" order="323" url="/skrivanek/prods/etestme-comp-demo/russian/b2/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку B2 (demo for standard)" order="324" url="/skrivanek/prods/etestme-std-demo/russian/b2/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку C1 (demo for complete)" order="327" url="/skrivanek/prods/etestme-comp-demo/russian/c1/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку C1 (demo for standard)" order="328" url="/skrivanek/prods/etestme-std-demo/russian/c1/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку C2 (demo for complete)" order="331" url="/skrivanek/prods/etestme-comp-demo/russian/c2/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку C2 (demo for standard)" order="332" url="/skrivanek/prods/etestme-std-demo/russian/c2/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español A1 (demo for complete)" order="337" url="/skrivanek/prods/etestme-comp-demo/spanish/a1/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español A1 (demo for standard)" order="338" url="/skrivanek/prods/etestme-std-demo/spanish/a1/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español A2 (demo for complete)" order="341" url="/skrivanek/prods/etestme-comp-demo/spanish/a2/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español A2 (demo for standard)" order="342" url="/skrivanek/prods/etestme-std-demo/spanish/a2/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español B1 (demo for complete)" order="345" url="/skrivanek/prods/etestme-comp-demo/spanish/b1/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español B1 (demo for standard)" order="346" url="/skrivanek/prods/etestme-std-demo/spanish/b1/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español B2 (demo for complete)" order="349" url="/skrivanek/prods/etestme-comp-demo/spanish/b2/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español B2 (demo for standard)" order="350" url="/skrivanek/prods/etestme-std-demo/spanish/b2/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español C1 (demo for complete)" order="353" url="/skrivanek/prods/etestme-comp-demo/spanish/c1/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español C1 (demo for standard)" order="354" url="/skrivanek/prods/etestme-std-demo/spanish/c1/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español C2 (demo for complete)" order="357" url="/skrivanek/prods/etestme-comp-demo/spanish/c2/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español C2 (demo for standard)" order="358" url="/skrivanek/prods/etestme-std-demo/spanish/c2/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English A1-C2 (standard)" order="230" url="/skrivanek/prods/etestme-std/english/all/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest English A1-C2 (complete)" order="229" url="/skrivanek/prods/etestme-comp/english/all/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français A1-C2 (standard)" order="282" url="/skrivanek/prods/etestme-std/french/all/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Français A1-C2 (complet)" order="281" url="/skrivanek/prods/etestme-comp/french/all/" line="French" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano A1-C2 (standard)" order="308" url="/skrivanek/prods/etestme-std/italian/all/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Italiano A1-C2 (completo)" order="307" url="/skrivanek/prods/etestme-comp/italian/all/" line="Italian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку A1-C2 (стандартный)" order="334" url="/skrivanek/prods/etestme-std/russian/all/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest по русскому языку A1-C2 (полный)" order="333" url="/skrivanek/prods/etestme-comp/russian/all/" line="Russian" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español A1-C2 (estándar)" order="360" url="/skrivanek/prods/etestme-std/spanish/all/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Español A1-C2 (completo)" order="359" url="/skrivanek/prods/etestme-comp/spanish/all/" line="Spanish" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch A1-C2 (standard)" order="256" url="/skrivanek/prods/etestme-std/german/all/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="eTest Deutsch A1-C2 (komplett)" order="255" url="/skrivanek/prods/etestme-comp/german/all/" line="German" type="product test" defaultDictType="no" defaultLocs="cs_cz" />
+  <product title="MOE Test" order="361" url="/edusoft/prods/etestme-demo/english/demo/t01/" line="English" type="product test" defaultDictType="no" defaultLocs="vi_vn en_gb" />
+  <product title="MOE Test 2" order="362" url="/edusoft/prods/etestme-demo/english/demo/t02/" line="English" type="product test" defaultDictType="no" defaultLocs="vi_vn en_gb" />
+  <product title="DHSP HCM Test" order="363" url="/edusoft/prods/etestme-demo/english/demo/t03/" line="English" type="product test" defaultDictType="no" defaultLocs="vi_vn en_gb" />
+  <product title="DHSP HCM Test 2" order="364" url="/edusoft/prods/etestme-demo/english/demo/t04/" line="English" type="product test" defaultDictType="no" defaultLocs="vi_vn en_gb" />
+  <product title="T05" order="365" url="/edusoft/prods/etestme-demo/english/demo/t05/" line="English" type="product test" defaultDictType="no" defaultLocs="vi_vn en_gb" />
+  <product title="FAKE 6" order="366" url="/edusoft/prods/etestme-demo/english/demo/t06/" line="English" type="product test" defaultDictType="no" defaultLocs="vi_vn en_gb" />
+  <product title="FAKE 7" order="367" url="/edusoft/prods/etestme-demo/english/demo/t07/" line="English" type="product test" defaultDictType="no" defaultLocs="vi_vn en_gb" />
+  <product title="FAKE 8" order="368" url="/edusoft/prods/etestme-demo/english/demo/t08/" line="English" type="product test" defaultDictType="no" defaultLocs="vi_vn en_gb" />
+  <product title="FAKE 9" order="369" url="/edusoft/prods/etestme-demo/english/demo/t09/" line="English" type="product test" defaultDictType="no" defaultLocs="vi_vn en_gb" />
+  <product title="FAKE 10" order="370" url="/edusoft/prods/etestme-demo/english/demo/t10/" line="English" type="product test" defaultDictType="no" defaultLocs="vi_vn en_gb" />
+  <product title="Blended Learning: English Dialogs" order="377" url="/lm/blended/english/dialogs.product/" line="English" type="product" />
+  <product title="Blended Learning: German Dialogs" order="378" url="/lm/blended/german/dialogs.product/" line="German" type="product" />
+  <product title="Blended Learning: French Dialogs" order="379" url="/lm/blended/french/dialogs.product/" line="French" type="product" />
+  <product title="Blended Learning: A1 - Lesson 1" order="371" url="/lm/prods_lm_blended_english_lessons_lesson_a1_1/" line="English" type="product" defaultDictType="no" defaultLocs="cs_cz en_gb" />
+  <product title="Blended Learning: Pretest A1" order="373" url="/lm/prods_lm_blended_english_pretesta1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb" />
+  <product title="Blended Learning: Pretest A2" order="374" url="/lm/prods_lm_blended_english_pretesta2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb" />
+  <product title="Blended Learning: Pretest B1" order="375" url="/lm/prods_lm_blended_english_pretestb1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb" />
+  <product title="Blended Learning: Pretest B2" order="376" url="/lm/prods_lm_blended_english_pretestb2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb" />
+  <product title="Blended Learning: Checkpoint test A1 - 1" order="372" url="/lm/prods_lm_blended_english_tests_checkpointtesta1_1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb" />
 </products>

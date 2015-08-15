@@ -1,5 +1,7 @@
 var test;
 (function (test) {
+    function encodeUrl(url) { return url.replace(/\//g, '@'); }
+    test.encodeUrl = encodeUrl;
     var Module = (function () {
         function Module(name, modules) {
             var self = this;
