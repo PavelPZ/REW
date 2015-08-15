@@ -8,10 +8,10 @@ var blended;
             var pars = '';
             for (var i = 0; i < numOfPars; i++)
                 pars += '/:p' + i.toString();
-            var url = '/old/' + appId + '/' + type + pars;
+            var url = '/' + appId + '/' + type + pars;
             blended.debugAllRoutes.push(url); //evidence vsech validnich state urls
             params.$stateProvider.state({
-                name: name,
+                name: 'pg.old.' + name,
                 url: url,
                 template: "<!--old-->",
                 controller: blended.OldController,
@@ -30,7 +30,7 @@ var blended;
                 var deferred = $q.defer();
                 if (!LMStatus.isLogged()) {
                     deferred.reject();
-                    setTimeout(function () { return window.location.hash = $state.href(Login.stateLoginPage); }, 1);
+                    setTimeout(function () { return window.location.hash = Login.loginUrl(); }, 1);
                 }
                 else {
                     deferred.resolve();

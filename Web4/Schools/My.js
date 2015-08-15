@@ -162,17 +162,16 @@ var schoolMy;
                 data: crs,
                 myCompany: comp,
                 gotoUrl: function (dt) {
+                    //nove AngularJS produkty
+                    if (dt.isAngularJS) {
+                        window.location.hash = '/ajs/vyzvaproduct/xxx';
+                        return;
+                    }
+                    //stare produkty
                     if (dt.isTest && dt.data.LicCount == 0)
                         return;
                     if (comp.data.PublisherOwnerUserId == 0 && dt.myCompany.data.DepTree && dt.myCompany.data.DepTree.Departments && !dt.myCompany.department()) {
                         alert(CSLocalize('a85c8a527bb44bda9a7ee0721707d2ef', 'Choose company department (by clicking on [Change] link above)'));
-                        return;
-                    }
-                    //if (dt.isAngularJS) {
-                    //  blended.rootState.go('ajs.vyzvaproduct', { producturl: encodeURIComponent(pr.url) }); return;
-                    //}
-                    if (dt.isAngularJS) {
-                        window.location.hash = '/ajs/vyzvaproduct/xxx';
                         return;
                     }
                     var hash = dt.isTest ? testMe.createUrlPersist(testMe.tEx, comp.data.Id, pr.url, persistence) : new CourseMeta.dataImpl().hrefCompl(comp.data.Id, pr.url, persistence);

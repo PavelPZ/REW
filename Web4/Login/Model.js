@@ -232,8 +232,7 @@ var Login;
     //Registrace lokatoru
     //for (var p in pageDict)
     //  Pager.registerAppLocator(appId, p, pageDict[p]);
-    Login.stateLoginPage = Login.pageLogin;
-    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.stateLoginPage, Login.appId, Login.pageLogin, 0, function (urlParts) { return new Login.LoginModel(Login.pageLogin); }, false); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageLogin, Login.appId, Login.pageLogin, 0, function (urlParts) { return new Login.LoginModel(Login.pageLogin); }, false); });
     blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageLmLogin, Login.appId, Login.pageLmLogin, 0, function (urlParts) { return new Login.LMLoginModel(Login.pageLmLogin, true); }, false); });
     blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageLmLoginNoEMail, Login.appId, Login.pageLmLoginNoEMail, 0, function (urlParts) { return new Login.LMLoginModel(Login.pageLmLoginNoEMail, false); }, false); });
     blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageRegister, Login.appId, Login.pageRegister, 0, function (urlParts) { return new Login.RegisterModel(Login.pageRegister, true); }, false); });

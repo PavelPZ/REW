@@ -9,7 +9,7 @@ module grafia { export var appId = "grafia"; }
 module skrivanek { export var appId = "skrivanek"; }
 
 var hashDelim = '/';
-var oldPrefix = '/old/';
+var oldPrefix = '/pg/old/';
 var encMask = new RegExp('/', 'g');
 var decMask = new RegExp('@', 'g');
 function encodeUrlHash(url: string): string { return url ? url.replace(encMask, '@') : ''; }

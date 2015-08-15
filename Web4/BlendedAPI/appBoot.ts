@@ -13,10 +13,10 @@
     for (var np = 0; np < numOfPars.length; np++) { //pro kazdy pocet parametru vytvor state
       var pars = '';
       for (var i = 0; i < numOfPars; i++) pars += '/:p' + i.toString();
-      var url = '/old/' + appId + '/' + type + pars;
+      var url = '/' + appId + '/' + type + pars;
       debugAllRoutes.push(url); //evidence vsech validnich state urls
       params.$stateProvider.state({
-        name: name,
+        name: 'pg.old.' + name,
         url: url,
         template: "<!--old-->",
         controller: OldController,
@@ -35,7 +35,7 @@
       var deferred = $q.defer();
       if (!LMStatus.isLogged()) {
         deferred.reject();
-        setTimeout(() => window.location.hash = $state.href(Login.stateLoginPage), 1);
+        setTimeout(() => window.location.hash = Login.loginUrl(), 1);
       } else {
         deferred.resolve();
       }

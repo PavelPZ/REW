@@ -8,17 +8,13 @@ var blended;
         return Module;
     })();
     blended.Module = Module;
-    //export function isAngularHash(hash: string): boolean { //hack
-    //  if (hash && Utils.startsWith(hash, '/ajs/')) { return true; }
-    //  return false;
-    //}
-    //export function _isAngularHash(hash: string): boolean { //hack
-    //  if (hash && Utils.startsWith(hash, '/ajs/')) { $('#angularjs-root').show(); return true; }
-    //  $('#angularjs-root').hide();
-    //  return false;
-    //}
-    blended.root = new Module('appRoot', ['ngResource', 'ui.router']);
-    blended.root.app.run(function () { return boot.OldApplicationStart(); }); //volani StartProc pro inicializaci stare aplikace
+    function checkOldApplicationStart() {
+        return angular.injector(['ng']).invoke(['$q', function ($q) {
+                var deferred = $q.defer();
+                boot.bootStart(function () { return deferred.resolve(); });
+                return deferred.promise;
+            }]);
+    }
     var OldController = (function () {
         function OldController($scope, $state) {
             //prevezmi paramnetry
@@ -39,9 +35,29 @@ var blended;
         return OldController;
     })();
     blended.OldController = OldController;
+    blended.root = new Module('appRoot', ['ngResource', 'ui.router']);
+    //root.app.run(() => boot.OldApplicationStart()); //volani StartProc pro inicializaci stare aplikace
+    blended.root = new Module('appRoot', ['ngResource', 'ui.router']);
     blended.root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', function ($stateProvider, $urlRouterProvider, $location, $urlMatcherFactoryProvider) {
             $urlMatcherFactoryProvider.caseInsensitive(true); //http://stackoverflow.com/questions/25994308/how-to-config-angular-ui-router-to-not-use-strict-url-matching-mode
-            $urlRouterProvider.otherwise('/old/school/schoolmymodel');
+            $urlRouterProvider.otherwise('/pg/old/school/schoolmymodel');
+            //$urlRouterProvider.otherwise(Pager.initHash());
+            $stateProvider
+                .state({
+                name: 'pg',
+                url: '/pg',
+                abstract: true,
+                template: "<div data-ui-view></div>",
+                resolve: {
+                    checkOldApplicationStart: checkOldApplicationStart //
+                }
+            })
+                .state({
+                name: 'pg.old',
+                url: '/old',
+                abstract: true,
+                template: "<div data-ui-view></div>",
+            });
             //stavy pro starou verzi
             var params = {
                 $stateProvider: $stateProvider,

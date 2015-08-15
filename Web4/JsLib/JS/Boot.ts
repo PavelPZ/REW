@@ -6,9 +6,13 @@ module boot {
   export function Dummy(): void {
   }
   export function Start(): void {
+    bootStart($.noop);
+  }
+
+  export function bootStart(compl: () => void) {
     Logger.traceMsg('boot.Start');
     if (cfg.target == LMComLib.Targets.no) return;
-    var completed = () => { ViewBase.init(); $('#splash').hide(); };
+    var completed = () => { ViewBase.init(); $('#splash').hide(); compl(); };
     if (cfg.target != LMComLib.Targets.web)
       schools.InitModel(completed);
     else {
@@ -16,7 +20,6 @@ module boot {
         { logins: cfg.logins ? cfg.logins : [LMComLib.OtherType.LANGMaster, LMComLib.OtherType.Facebook, LMComLib.OtherType.Google, LMComLib.OtherType.Microsoft] },
         () => schools.InitModel(completed)
         );
-    }
   }
 
   function rewJSUrl() {
@@ -77,6 +80,6 @@ module boot {
 
   export function OldApplicationStart() { if (doOldApplicationStart) doOldApplicationStart(); doOldApplicationStart = null; }
 
-  $(OldApplicationStart);
+  //$(OldApplicationStart);
 
 } 

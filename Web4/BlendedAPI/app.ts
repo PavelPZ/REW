@@ -9,19 +9,14 @@
     }
   }
 
-  //export function isAngularHash(hash: string): boolean { //hack
-  //  if (hash && Utils.startsWith(hash, '/ajs/')) { return true; }
-  //  return false;
-  //}
-  //export function _isAngularHash(hash: string): boolean { //hack
-  //  if (hash && Utils.startsWith(hash, '/ajs/')) { $('#angularjs-root').show(); return true; }
-  //  $('#angularjs-root').hide();
-  //  return false;
-  //}
+  function checkOldApplicationStart() {
+    return angular.injector(['ng']).invoke(['$q', ($q: ng.IQService) => {
+      var deferred = $q.defer();
+      boot.bootStart(() => deferred.resolve());
+      return deferred.promise;
+    }]);
+  }
 
-  export var root = new Module('appRoot', ['ngResource', 'ui.router']);
-
-  root.app.run(() => boot.OldApplicationStart()); //volani StartProc pro inicializaci stare aplikace
 
   export class OldController { //naladuje stranku dle zaregistrovane /old/... route
 
@@ -44,15 +39,37 @@
 
   }
 
+  export var root = new Module('appRoot', ['ngResource', 'ui.router']);
+
+  //root.app.run(() => boot.OldApplicationStart()); //volani StartProc pro inicializaci stare aplikace
+  root = new Module('appRoot', ['ngResource', 'ui.router']);
   root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', (
     $stateProvider: angular.ui.IStateProvider,
     $urlRouterProvider: angular.route.IRouteProvider,
     $location: ng.ILocationProvider,
     $urlMatcherFactoryProvider: angular.ui.IUrlMatcherFactory
     ) => {
-
     $urlMatcherFactoryProvider.caseInsensitive(true); //http://stackoverflow.com/questions/25994308/how-to-config-angular-ui-router-to-not-use-strict-url-matching-mode
-    $urlRouterProvider.otherwise('/old/school/schoolmymodel');
+    $urlRouterProvider.otherwise('/pg/old/school/schoolmymodel');
+    //$urlRouterProvider.otherwise(Pager.initHash());
+
+    $stateProvider
+      .state({
+        name: 'pg',
+        url: '/pg',
+        abstract: true,
+        template: "<div data-ui-view></div>",
+        resolve: {
+          checkOldApplicationStart: checkOldApplicationStart//
+        }
+      })
+      .state({
+        name: 'pg.old',
+        url: '/old',
+        abstract: true,
+        template: "<div data-ui-view></div>",
+      })
+    ;
 
     //stavy pro starou verzi
     var params: createStatePars = {
@@ -83,7 +100,6 @@
     ;
   }]);
 
-
   //dokumentace pro dostupne services
   export function servicesDocumentation() {
     //https://docs.angularjs.org/api/ng/function/angular.injector
@@ -100,7 +116,7 @@
     srv = initInjector.get('$parse');
     //srv = initInjector.get('$rootElement'); nefunguje
   }
-  
+
 
 
 }

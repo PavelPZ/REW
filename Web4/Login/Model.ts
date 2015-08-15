@@ -245,8 +245,7 @@ module Login {
   //for (var p in pageDict)
   //  Pager.registerAppLocator(appId, p, pageDict[p]);
 
-  export var stateLoginPage = pageLogin;
-  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, stateLoginPage, appId, pageLogin, 0, (urlParts) => new LoginModel(pageLogin), false));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, pageLogin, appId, pageLogin, 0, (urlParts) => new LoginModel(pageLogin), false));
   blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, pageLmLogin, appId, pageLmLogin, 0, (urlParts) => new LMLoginModel(pageLmLogin, true), false));
   blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, pageLmLoginNoEMail, appId, pageLmLoginNoEMail, 0, (urlParts) => new LMLoginModel(pageLmLoginNoEMail, false), false));
   blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, pageRegister, appId, pageRegister, 0, (urlParts) => new RegisterModel(pageRegister, true), false));
