@@ -450,6 +450,7 @@ namespace Packager {
         yield return Consts.jsSchoolEnd;
         yield return Consts.jsCourse;
         yield return Consts.jsAuthorWeb;
+        yield return Consts.angularJS;
       }
 
     }
@@ -495,7 +496,8 @@ namespace Packager {
       jsMinify(debugMinIsBig, jsCourse, err,
         Consts.jsSchoolEnd,
         Consts.jsCourse,
-        Consts.jsAuthorWeb
+        Consts.jsAuthorWeb,
+        Consts.angularJS
       );
       //jsMinify(debugMinIsBig, jsLame, err,
       //  Consts.jsLame);
