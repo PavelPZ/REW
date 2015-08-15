@@ -2,6 +2,8 @@
 
 module test {
 
+  export function encodeUrl(url: string): string { return url.replace(/\//g, '@');  }
+
   export interface IConfig { //config v app/config.js
     runExMask: { [lang: string]: string; };
   }

@@ -75,12 +75,8 @@
   export class DSLangLevelFileController extends PageController {
     constructor($scope: IDSLevelFileScope, $state: angular.ui.IStateService) {
       super($scope, $state);
-      var file = decodeURIComponent($scope.params.file);
-      var configid = decodeURIComponent($scope.params.configid);
-      //$scope.node = _.find($scope.$parent.node.data, l => l.url == file);
-      //test.root.$scope.pageTitle = $scope.node.parent.parent.title + ' / ' + $scope.node.parent.title + ' / ' + $scope.node.title;
-      //$scope.authorUrl = config.runExMask[$scope.node.parent.parent.url] + $scope.node.url;
-      $scope.authorUrl = config.runExMask[configid] + file;
+      var file = $scope.params.file.replace(/\//g,'@');
+      $scope.authorUrl = config.runExMask[$scope.params.configid] + file;
       test.root.$scope.bodyScrollHidden = true;
     }
   }
@@ -110,7 +106,7 @@
     for (var p in node) {
       if (p[0] == '@') { node[p.substring(1)] = node[p]; delete node[p]; }
     }
-    if (node.url) node.escapedUrl = encodeURIComponent(node.url);
+    if (node.url) node.escapedUrl = node.url.replace(/\//g,'@');
     if (node.data) _.each(node.data, d => {
       d.parent = node;
       renameAttrs(d);
