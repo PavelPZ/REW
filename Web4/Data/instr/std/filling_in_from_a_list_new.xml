@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.langmaster.com/new/author/coursemodelschema.xsd">
+  <head>
+    <title></title>
+    <style />
+  </head>
+  <body xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <h1 class="techInstr  ">{{th114|FILLING IN FROM A MENU}}</h1>
+  <p>{{tp21|Your task is to fill in the empty boxes within the text. You are given a list of items with different properties as described below:}}</p>
+  <ol>
+    <li>{{tli45|after filling in to the text, the item in the menu is deactivated}}</li>
+    <li>{{tli46|after filling in, the item in the list is not deactivated and can be used again}}</li>
+  </ol>
+  <p>{{tp22|Proceed as follows:}}</p>
+  <ol>
+    <li>{{tli47|Click on the empty gap - a menu with items appears}}</li>
+    <li>{{tli48|Click a selected item. It will be filled in to the gap.}}</li>
+  </ol>
+  <p>{{tp23|To change the filled in item, fill in another one into its place.}}</p>
+</body>
+</html>

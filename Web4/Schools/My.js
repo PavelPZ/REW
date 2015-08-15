@@ -164,9 +164,9 @@ var schoolMy;
                 gotoUrl: function (dt) {
                     //nove AngularJS produkty
                     if (dt.isAngularJS) {
-                        window.location.hash = '/ajs/vyzvaproduct/xxx';
+                        Pager.navigateToHash(blended.root.href(blended.ajs_vyzvaproduct, { producturl: pr.url }));
                         return;
-                    }
+                    } //window.location.hash = '/pg/ajs/vyzvaproduct/xxx'; return; }
                     //stare produkty
                     if (dt.isTest && dt.data.LicCount == 0)
                         return;

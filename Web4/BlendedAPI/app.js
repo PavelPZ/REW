@@ -5,19 +5,19 @@ var blended;
             var self = this;
             this.app = angular.module(name, modules);
         }
+        Module.prototype.href = function (stateName, params, options) {
+            return this.$actState.href(stateName, params);
+        };
+        Module.prototype.go = function (stateName, params, options) {
+            return this.$actState.href(stateName, params);
+        };
         return Module;
     })();
     blended.Module = Module;
-    function checkOldApplicationStart() {
-        return angular.injector(['ng']).invoke(['$q', function ($q) {
-                var deferred = $q.defer();
-                boot.bootStart(function () { return deferred.resolve(); });
-                return deferred.promise;
-            }]);
-    }
     var OldController = (function () {
         function OldController($scope, $state) {
-            //prevezmi paramnetry
+            blended.root.$actState = $state;
+            //prevezmi parametry
             var urlParts = [];
             for (var p = 0; p < 6; p++) {
                 var parName = 'p' + p.toString();
@@ -36,12 +36,16 @@ var blended;
     })();
     blended.OldController = OldController;
     blended.root = new Module('appRoot', ['ngResource', 'ui.router']);
-    //root.app.run(() => boot.OldApplicationStart()); //volani StartProc pro inicializaci stare aplikace
-    blended.root = new Module('appRoot', ['ngResource', 'ui.router']);
     blended.root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', function ($stateProvider, $urlRouterProvider, $location, $urlMatcherFactoryProvider) {
             $urlMatcherFactoryProvider.caseInsensitive(true); //http://stackoverflow.com/questions/25994308/how-to-config-angular-ui-router-to-not-use-strict-url-matching-mode
             $urlRouterProvider.otherwise('/pg/old/school/schoolmymodel');
-            //$urlRouterProvider.otherwise(Pager.initHash());
+            function checkOldApplicationStart() {
+                return angular.injector(['ng']).invoke(['$q', function ($q) {
+                        var deferred = $q.defer();
+                        boot.bootStart(function () { return deferred.resolve(); });
+                        return deferred.promise;
+                    }]);
+            }
             $stateProvider
                 .state({
                 name: 'pg',
@@ -49,7 +53,7 @@ var blended;
                 abstract: true,
                 template: "<div data-ui-view></div>",
                 resolve: {
-                    checkOldApplicationStart: checkOldApplicationStart //
+                    checkOldApplicationStart: checkOldApplicationStart //ceka se na dokonceni inicalizace nasi technologie
                 }
             })
                 .state({
@@ -70,19 +74,20 @@ var blended;
             //stavy pro novou verzi
             $stateProvider
                 .state({
-                name: 'ajs',
+                name: 'pg.ajs',
                 url: '/ajs',
                 abstract: true,
-                controller: function () { alert('view'); },
+                controller: function () { Pager.clearHtml(); },
                 template: "<div data-ui-view></div>",
             })
                 .state({
-                name: 'ajs.vyzvaproduct',
+                name: blended.ajs_vyzvaproduct,
                 controller: function () { },
                 url: "/vyzvaproduct/:producturl",
                 templateUrl: "../blendedapi/views/vyzvaproduct.html"
             });
         }]);
+    blended.ajs_vyzvaproduct = 'pg.ajs.vyzvaproduct';
     //dokumentace pro dostupne services
     function servicesDocumentation() {
         //https://docs.angularjs.org/api/ng/function/angular.injector

@@ -20,6 +20,7 @@ module boot {
         { logins: cfg.logins ? cfg.logins : [LMComLib.OtherType.LANGMaster, LMComLib.OtherType.Facebook, LMComLib.OtherType.Google, LMComLib.OtherType.Microsoft] },
         () => schools.InitModel(completed)
         );
+    }
   }
 
   function rewJSUrl() {
@@ -82,4 +83,4 @@ module boot {
 
   //$(OldApplicationStart);
 
-} 
+}

@@ -1,0 +1,78 @@
+﻿<product title="Test product" line="English">
+  <items>
+    <mod title="Test product" type="mod" url="/lm/prods/test_product/1/">
+      <items>
+        <data title="Sounds" url="/lm/prods/test_product/2/">
+          <items>
+            <data title="Old EA" url="/lm/prods/test_product/3/">
+              <items>
+                <ptr takeChilds="self">
+                  <urls>
+                    <string>/lm/oldea/english1/l01/b/hueex0_l01_b03</string>
+                    <string>/lm/oldea/english1/l01/a/hueex0_l01_a01</string>
+                    <string>/lm/oldea/german2/les3/chapc/t2a_kb_l3_c1b</string>
+                    <string>/lm/oldea/english4/l07/a/hueex3_l07_a04</string>
+                    <string>/lm/oldea/english1/l01/a/hueex0_l01_a05</string>
+                    <string>/lm/oldea/english1/l01/a/hueex0_l01_a04</string>
+                    <string>/lm/oldea/german2/les4/chapd/t2a_ab_l4_d6</string>
+                    <string>/lm/oldea/german1/les4/chape/t1a_ab_l4_e3b</string>
+                  </urls>
+                </ptr>
+              </items>
+            </data>
+            <data title="New" url="/lm/prods/test_product/3/">
+              <items>
+                <ptr takeChilds="self">
+                  <urls>
+                    <string>/lm/examples/Sound_Extra/BigMark_napojenana_OzvucenyText</string>
+                    <string>/lm/examples/Controls_Sound/Dialog-aktivni_z_media_obalky_cely</string>
+                    <string>/lm/examples/Controls_Sound/Text-aktivni_z_media_obalky_napreskacku</string>
+                    <string>/lm/examples/Controls_Sound/Dialog-aktivni_z_media_obalky_nahrada_fraze_gapfillem</string>
+                    <string>/lm/examples/Controls_Sound/Text-aktivni_z_media_obalky_nahrada_fraze_textem</string>
+                    <string>/lm/examples/Sound_Extra/MediaPlayer_dialog</string>
+                    <string>/lm/examples/Controls_video/Video pomoci makra</string>
+                    <string>/lm/examples/Controls_video/Video s dialogem pomoci makra</string>
+                  </urls>
+                </ptr>
+              </items>
+            </data>
+          </items>
+        </data>
+        <data title="Other" url="/lm/prods/test_product/2/">
+          <items>
+            <data title="Old EA" url="/lm/prods/test_product/3/">
+              <items>
+                <ptr takeChilds="self">
+                  <urls>
+                    <string>/lm/oldea/english5/l34/j/hueex4_l34_j05</string>
+                    <string>????</string>
+                    <string>????</string>
+                  </urls>
+                </ptr>
+              </items>
+            </data>
+            <data title="New" url="/lm/prods/test_product/3/">
+              <items>
+                <ptr takeChilds="self">
+                  <urls>
+                    <string>/lm/examples/Controls_NoEval/Obrazek-relativni_cesta</string>
+                    <string>/lm/examples/Controls_Macro/SingleChoice</string>
+                    <string>/lm/examples/Controls_Macro/WordSelectionList</string>
+                    <string>/lm/examples/Controls_Macro/TrueFalse</string>
+                    <string>/lm/examples/Controls_Macro/Pairing</string>
+                    <string>/lm/examples/Controls_Macro/GapFillTable</string>
+                    <string>/lm/examples/Controls_Macro/CorrectionList</string>
+                    <string>/lm/examples/Controls_Macro/DraggingList.xml </string>
+                    <string>/lm/examples/Controls_NoEval/TwoColumnsPanel</string>
+                    <string>/lm/examples/Controls_special/TableSlovni_zasoba</string>
+                    <string>/lm/examples/Controls_Sound/Dialog-pasivni_z_media_obalky_nahrada_fraze_gapfillem</string>
+                  </urls>
+                </ptr>
+              </items>
+            </data>
+          </items>
+        </data>
+      </items>
+    </mod>
+  </items>
+</product>

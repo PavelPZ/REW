@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <h1 class="techInstr  ">{{th391|SPEAKING}}</h1>
+    <p>{{tp391|Your task is to speak to the microphone and record one or more recordings. We recommend to proceed as follows:}}</p>
+    <ol>
+      <li>
+        {{tli391|First, read the questions and think what you will speak about. We recommend to take notes on a piece of paper. If you read your notes aloud, you'll be more confident later when speaking to the microphone.}}
+      </li>
+      <li>
+        {{tli392|As soon as you are prepared, click the Record button. Speak fluently to the microphone. Try to speak loud enough and keep the same distance between your mouth and the microphone, so that your recording is in the highest possible quality. If you make a mistake, do not stop the recording but go on further without an interruption. You can correct your mistake in the next sentence.}}
+      </li>
+      <li>
+        {{tli393|You have only one attempt to each recording.}}
+      </li>
+    </ol>
+  </body>
+</html>

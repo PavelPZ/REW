@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.langmaster.com/new/author/coursemodelschema.xsd">
+  <head>
+    <title></title>
+    <style />
+  </head>
+  <body xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <h1 class="techInstr  ">{{th411|WORD SEQUENCING}}</h1>
+  <p>{{tp411|Your task is to put the words into correct order. Proceed as follows:}}</p>
+  <ol>
+    <li>{{tli411|Click on the word you wish to move.}}</li>
+    <li>{{tli412|The word will be moved to the list of ordered words.}}</li>
+    <li>{{tli413|To move any word back to the unsorted list, just click on it.}}</li>
+  </ol>
+</body>
+</html>

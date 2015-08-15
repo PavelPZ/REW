@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<products xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" url="/prods/" type="products">
+  <product title="Blended Learning: A1 - Lesson 1" url="/lm/prods_lm_blended_english_lessons_lesson_a1_1/" line="English" type="product" defaultDictType="no" defaultLocs="cs_cz en_gb" />
+  <product title="Blended Learning: Checkpoint test A1 - 1" order="1" url="/lm/prods_lm_blended_english_tests_checkpointtesta1_1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb" />
+  <product title="Blended Learning: Pretest A1" order="2" url="/lm/prods_lm_blended_english_pretesta1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb" />
+  <product title="Blended Learning: Pretest A2" order="3" url="/lm/prods_lm_blended_english_pretesta2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb" />
+  <product title="Blended Learning: Pretest B1" order="4" url="/lm/prods_lm_blended_english_pretestb1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb" />
+  <product title="Blended Learning: Pretest B2" order="5" url="/lm/prods_lm_blended_english_pretestb2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb" />
+  <product title="Blended Learning: English Dialogs" order="6" url="/lm/blended/english/dialogs.product/" line="English" type="product" />
+  <product title="Blended Learning: German Dialogs" order="7" url="/lm/blended/german/dialogs.product/" line="German" type="product" />
+  <product title="Blended Learning: French Dialogs" order="8" url="/lm/blended/french/dialogs.product/" line="French" type="product" />
+  <product title="Vyzva 57 MŠMT: Angličtina" order="9" url="/lm/blended/english/blended.product/" line="English" type="product productNew" />
+  <product title="Vyzva 57 MŠMT: Němčina" order="10" url="/lm/blended/german/blended.product/" line="German" type="product productNew" />
+  <product title="Vyzva 57 MŠMT: Francouzština" order="11" url="/lm/blended/french/blended.product/" line="French" type="product productNew" />
+</products>

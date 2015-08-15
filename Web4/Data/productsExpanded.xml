@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<products xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="products">
+  <product title="Blended Learning: A1 - Lesson 1" url="/lm/prods_lm_blended_english_lessons_lesson_a1_1/" line="English" type="product" defaultDictType="no" defaultLocs="cs_cz en_gb">
+    <mod title="Blended Learning: A1 - Lesson 1" url="/lm/blended/english/lessons/lesson_a1_1/" type="mod">
+      <ex title="Listening" url="/lm/blended/english/lessons/lesson_a1_1/listening" type="ex" instrs="/data/instr/std/sound_playback" />
+      <ex title="Vocabulary" url="/lm/blended/english/lessons/lesson_a1_1/vocabulary" type="ex" ms="1400" instrs="/data/instr/std/sound_playback /data/instr/new/speaking" />
+      <ex title="Listen and Talk" url="/lm/blended/english/lessons/lesson_a1_1/listenandtalk" type="ex" ms="1000" instrs="/data/instr/std/sound_playback /data/instr/new/speaking" />
+      <ex title="Read and Speak" url="/lm/blended/english/lessons/lesson_a1_1/readandspeak" type="ex" ms="1000" instrs="/data/instr/new/speaking" />
+      <ex title="Playing a role in a dialogue" url="/lm/blended/english/lessons/lesson_a1_1/roleplaying" type="ex" ms="500" instrs="/data/instr/std/sound_playback /data/instr/new/speaking" />
+      <ex title="Sentence Ordering" url="/lm/blended/english/lessons/lesson_a1_1/sentenceordering" type="ex" ms="100" instrs="/data/instr/std/sound_playback /data/instr/std/sentence_sequencing" />
+      <ex title="Gapfill with Drop down Menu" url="/lm/blended/english/lessons/lesson_a1_1/gapfilldropdown" type="ex" ms="400" instrs="/data/instr/std/filling_in_from_a_list_new" />
+      <ex title="Text Selection" url="/lm/blended/english/lessons/lesson_a1_1/textselection" type="ex" ms="400" instrs="/data/instr/std/sound_playback /data/instr/std/syllable_selection_one_correct_out_of_several" />
+      <ex title="Word Ordering" url="/lm/blended/english/lessons/lesson_a1_1/wordordering" type="ex" ms="400" instrs="/data/instr/std/sound_playback /data/instr/std/word_sequencing" />
+      <ex title="Gapfill" url="/lm/blended/english/lessons/lesson_a1_1/gapfill" type="ex" ms="400" instrs="/data/instr/std/sound_playback /data/instr/std/filling_in" />
+    </mod>
+    <mod title="Instructions" url="/lm/prods_lm_blended_english_lessons_lesson_a1_1_instrs/" type="mod instrs noDict">
+      <ex url="/data/instr/std/sound_playback" type="ex" />
+      <ex url="/data/instr/new/speaking" type="ex" />
+      <ex url="/data/instr/std/sentence_sequencing" type="ex" />
+      <ex url="/data/instr/std/filling_in_from_a_list_new" type="ex" />
+      <ex url="/data/instr/std/syllable_selection_one_correct_out_of_several" type="ex" />
+      <ex url="/data/instr/std/word_sequencing" type="ex" />
+      <ex url="/data/instr/std/filling_in" type="ex" />
+    </mod>
+  </product>
+  <product title="Blended Learning: Checkpoint test A1 - 1" url="/lm/prods_lm_blended_english_tests_checkpointtesta1_1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb">
+    <test title="Blended Learning: Checkpoint test A1 - 1" url="/lm/blended/english/tests/checkpointtesta1_1/" type="test" level="A1" needs="recording" isDemoTest="false">
+      <taskTestSkill title="Speaking" url="/lm/blended/english/tests/checkpointtesta1_1/speaking/" type="taskTestSkill dynamicModuleData mod noDict" skill="Speaking" minutes="15">
+        <testTaskGroup title="title 1" url="/lm/blended/english/tests/checkpointtesta1_1/speaking/speaking/" type="testTaskGroup" take="4">
+          <ex title="Listen and Talk" url="/lm/blended/english/tests/checkpointtesta1_1/speaking/speaking/listenandtalk" type="ex" ms="900" instrs="/data/instr/std/sound_playback /data/instr/new/speaking" />
+          <ex title="Read and Speak" url="/lm/blended/english/tests/checkpointtesta1_1/speaking/speaking/readandspeak" type="ex" ms="1200" instrs="/data/instr/new/speaking" />
+          <ex title="Playing a role in a dialogue" url="/lm/blended/english/tests/checkpointtesta1_1/speaking/speaking/roleplaying" type="ex" ms="700" instrs="/data/instr/std/sound_playback /data/instr/new/speaking" />
+          <ex title="Speaking" url="/lm/blended/english/tests/checkpointtesta1_1/speaking/speaking/speaking" type="ex" ms="100" instrs="/data/instr/new/speaking" />
+        </testTaskGroup>
+      </taskTestSkill>
+      <taskTestSkill title="Listening" url="/lm/blended/english/tests/checkpointtesta1_1/listening/" type="taskTestSkill dynamicModuleData mod noDict" skill="Listening" minutes="15">
+        <testTaskGroup title="title 1" url="/lm/blended/english/tests/checkpointtesta1_1/listening/listening/" type="testTaskGroup" take="5">
+          <ex title="Sentence Ordering" url="/lm/blended/english/tests/checkpointtesta1_1/listening/listening/sentenceordering" type="ex" ms="100" instrs="/data/instr/std/sound_playback /data/instr/std/sentence_sequencing" />
+          <ex title="Gapfill with Drop down Menu" url="/lm/blended/english/tests/checkpointtesta1_1/listening/listening/gapfilldropdown" type="ex" ms="400" instrs="/data/instr/std/filling_in_from_a_list_new" />
+          <ex title="Text Selection" url="/lm/blended/english/tests/checkpointtesta1_1/listening/listening/textselection" type="ex" ms="300" instrs="/data/instr/std/sound_playback /data/instr/std/syllable_selection_one_correct_out_of_several" />
+          <ex title="Word Ordering" url="/lm/blended/english/tests/checkpointtesta1_1/listening/listening/wordordering" type="ex" ms="400" instrs="/data/instr/std/sound_playback /data/instr/std/word_sequencing" />
+          <ex title="Gapfill" url="/lm/blended/english/tests/checkpointtesta1_1/listening/listening/gapfill" type="ex" ms="400" instrs="/data/instr/std/sound_playback /data/instr/std/filling_in" />
+        </testTaskGroup>
+      </taskTestSkill>
+    </test>
+    <mod title="Instructions" url="/lm/prods_lm_blended_english_tests_checkpointtesta1_1_instrs/" type="mod instrs noDict">
+      <ex url="/data/instr/std/sound_playback" type="ex" />
+      <ex url="/data/instr/new/speaking" type="ex" />
+      <ex url="/data/instr/std/sentence_sequencing" type="ex" />
+      <ex url="/data/instr/std/filling_in_from_a_list_new" type="ex" />
+      <ex url="/data/instr/std/syllable_selection_one_correct_out_of_several" type="ex" />
+      <ex url="/data/instr/std/word_sequencing" type="ex" />
+      <ex url="/data/instr/std/filling_in" type="ex" />
+    </mod>
+  </product>
+  <product title="Blended Learning: Pretest A1" url="/lm/prods_lm_blended_english_pretesta1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb">
+    <test title="Blended Learning: Pretest A1" url="/lm/blended/english/pretesta1/" type="test" level="A1" needs="recording" isDemoTest="false">
+      <taskTestSkill title="UseLanguage" url="/lm/blended/english/pretesta1/uselanguage/" type="taskTestSkill dynamicModuleData mod noDict" skill="UseLanguage" minutes="15">
+        <testTaskGroup title="A1 questions" url="/lm/blended/english/pretesta1/uselanguage/uselanguage/" type="testTaskGroup" take="10">
+          <ex title="GapFill" url="/lm/blended/english/pretesta1/uselanguage/uselanguage/grammar1" type="ex" ms="100" instrs="/data/instr/std/filling_in" />
+          <ex title="Single Choice" url="/lm/blended/english/pretesta1/uselanguage/uselanguage/grammar2" type="ex" ms="100" instrs="/data/instr/std/single_choice" />
+          <ex title="GapFill" url="/lm/blended/english/pretesta1/uselanguage/uselanguage/grammar3" type="ex" ms="100" instrs="/data/instr/std/filling_in" />
+          <ex title="Single Choice" url="/lm/blended/english/pretesta1/uselanguage/uselanguage/grammar4" type="ex" ms="100" instrs="/data/instr/std/single_choice" />
+          <ex title="GapFill" url="/lm/blended/english/pretesta1/uselanguage/uselanguage/vocabulary1" type="ex" ms="100" instrs="/data/instr/std/filling_in" />
+          <ex title="Single Choice" url="/lm/blended/english/pretesta1/uselanguage/uselanguage/vocabulary2" type="ex" ms="100" instrs="/data/instr/std/single_choice" />
+          <ex title="Word Selection" url="/lm/blended/english/pretesta1/uselanguage/uselanguage/vocabulary3" type="ex" ms="100" instrs="/data/instr/std/single_choice" />
+          <ex title="Word Selection" url="/lm/blended/english/pretesta1/uselanguage/uselanguage/vocabulary4" type="ex" ms="100" instrs="/data/instr/std/single_choice" />
+          <ex title="Listening with Single Choice" url="/lm/blended/english/pretesta1/uselanguage/uselanguage/listening1" type="ex" ms="100" instrs="/data/instr/new/listeningsinglechoice" />
+          <ex title="Listening with Single Choice" url="/lm/blended/english/pretesta1/uselanguage/uselanguage/listening2" type="ex" ms="100" instrs="/data/instr/new/listeningsinglechoice" />
+        </testTaskGroup>
+      </taskTestSkill>
+    </test>
+    <mod title="Instructions" url="/lm/prods_lm_blended_english_pretesta1_instrs/" type="mod instrs noDict">
+      <ex url="/data/instr/std/filling_in" type="ex" />
+      <ex url="/data/instr/std/single_choice" type="ex" />
+      <ex url="/data/instr/new/listeningsinglechoice" type="ex" />
+    </mod>
+  </product>
+  <product title="Blended Learning: Pretest A2" url="/lm/prods_lm_blended_english_pretesta2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb">
+    <test title="Blended Learning: Pretest A2" url="/lm/blended/english/pretesta2/" type="test" level="A2" needs="recording" isDemoTest="false">
+      <taskTestSkill title="UseLanguage" url="/lm/blended/english/pretesta2/uselanguage/" type="taskTestSkill dynamicModuleData mod noDict" skill="UseLanguage" minutes="15">
+        <testTaskGroup title="A2 questions" url="/lm/blended/english/pretesta2/uselanguage/uselanguage/" type="testTaskGroup" take="10">
+          <ex title="Correction" url="/lm/blended/english/pretesta2/uselanguage/uselanguage/grammar1" type="ex" ms="100" instrs="/data/instr/std/correction" />
+          <ex title="Correction" url="/lm/blended/english/pretesta2/uselanguage/uselanguage/grammar2" type="ex" ms="100" instrs="/data/instr/std/correction" />
+          <ex title="Correction" url="/lm/blended/english/pretesta2/uselanguage/uselanguage/grammar3" type="ex" ms="100" instrs="/data/instr/std/correction" />
+          <ex title="Word Selection" url="/lm/blended/english/pretesta2/uselanguage/uselanguage/grammar4" type="ex" ms="100" instrs="/data/instr/std/single_choice" />
+          <ex title="Single Choice" url="/lm/blended/english/pretesta2/uselanguage/uselanguage/vocabulary1" type="ex" ms="100" instrs="/data/instr/std/single_choice" />
+          <ex title="Single Choice" url="/lm/blended/english/pretesta2/uselanguage/uselanguage/vocabulary2" type="ex" ms="100" instrs="/data/instr/std/single_choice" />
+          <ex title="Single Choice" url="/lm/blended/english/pretesta2/uselanguage/uselanguage/vocabulary3" type="ex" ms="100" instrs="/data/instr/std/single_choice" />
+          <ex title="Single Choice" url="/lm/blended/english/pretesta2/uselanguage/uselanguage/vocabulary4" type="ex" ms="100" instrs="/data/instr/std/single_choice" />
+          <ex title="Listening with True False" url="/lm/blended/english/pretesta2/uselanguage/uselanguage/listening1" type="ex" ms="200" instrs="/data/instr/new/listeningtruefalse" />
+          <ex title="Listening with True False" url="/lm/blended/english/pretesta2/uselanguage/uselanguage/listening2" type="ex" ms="400" instrs="/data/instr/new/listeningtruefalse" />
+        </testTaskGroup>
+      </taskTestSkill>
+    </test>
+    <mod title="Instructions" url="/lm/prods_lm_blended_english_pretesta2_instrs/" type="mod instrs noDict">
+      <ex url="/data/instr/std/correction" type="ex" />
+      <ex url="/data/instr/std/single_choice" type="ex" />
+      <ex url="/data/instr/new/listeningtruefalse" type="ex" />
+    </mod>
+  </product>
+  <product title="Blended Learning: Pretest B1" url="/lm/prods_lm_blended_english_pretestb1/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb">
+    <test title="Blended Learning: Pretest B1" url="/lm/blended/english/pretestb1/" type="test" level="B1" needs="recording" isDemoTest="false">
+      <taskTestSkill title="UseLanguage" url="/lm/blended/english/pretestb1/uselanguage/" type="taskTestSkill dynamicModuleData mod noDict" skill="UseLanguage" minutes="15">
+        <testTaskGroup title="B1 questions" url="/lm/blended/english/pretestb1/uselanguage/uselanguage/" type="testTaskGroup" take="9">
+          <ex title="Listening with True False" url="/lm/blended/english/pretestb1/uselanguage/uselanguage/listening" type="ex" ms="800" instrs="/data/instr/new/listeningtruefalse" />
+          <ex title="Correction" url="/lm/blended/english/pretestb1/uselanguage/uselanguage/grammar1" type="ex" ms="100" instrs="/data/instr/std/correction" />
+          <ex title="Correction" url="/lm/blended/english/pretestb1/uselanguage/uselanguage/grammar2" type="ex" ms="100" instrs="/data/instr/std/correction" />
+          <ex title="GapFill" url="/lm/blended/english/pretestb1/uselanguage/uselanguage/grammar3" type="ex" ms="100" instrs="/data/instr/std/filling_in" />
+          <ex title="Word Selection" url="/lm/blended/english/pretestb1/uselanguage/uselanguage/grammar4" type="ex" ms="100" instrs="/data/instr/std/single_choice" />
+          <ex title="Correction" url="/lm/blended/english/pretestb1/uselanguage/uselanguage/vocabulary1" type="ex" ms="100" instrs="/data/instr/std/correction" />
+          <ex title="GapFill" url="/lm/blended/english/pretestb1/uselanguage/uselanguage/vocabulary2" type="ex" ms="100" instrs="/data/instr/std/filling_in" />
+          <ex title="Word Selection" url="/lm/blended/english/pretestb1/uselanguage/uselanguage/vocabulary3" type="ex" ms="100" instrs="/data/instr/std/single_choice" />
+          <ex title="GapFill" url="/lm/blended/english/pretestb1/uselanguage/uselanguage/vocabulary4" type="ex" ms="100" instrs="/data/instr/std/filling_in" />
+        </testTaskGroup>
+      </taskTestSkill>
+    </test>
+    <mod title="Instructions" url="/lm/prods_lm_blended_english_pretestb1_instrs/" type="mod instrs noDict">
+      <ex url="/data/instr/new/listeningtruefalse" type="ex" />
+      <ex url="/data/instr/std/correction" type="ex" />
+      <ex url="/data/instr/std/filling_in" type="ex" />
+      <ex url="/data/instr/std/single_choice" type="ex" />
+    </mod>
+  </product>
+  <product title="Blended Learning: Pretest B2" url="/lm/prods_lm_blended_english_pretestb2/" line="English" type="product test" defaultDictType="no" defaultLocs="cs_cz en_gb">
+    <test title="Blended Learning: Pretest B2" url="/lm/blended/english/pretestb2/" type="test" level="B2" needs="recording" isDemoTest="false">
+      <taskTestSkill title="UseLanguage" url="/lm/blended/english/pretestb2/uselanguage/" type="taskTestSkill dynamicModuleData mod noDict" skill="UseLanguage" minutes="15">
+        <testTaskGroup title="B2 Questions" url="/lm/blended/english/pretestb2/uselanguage/uselanguage/" type="testTaskGroup" take="9">
+          <ex title="Correction" url="/lm/blended/english/pretestb2/uselanguage/uselanguage/grammar1" type="ex" ms="100" instrs="/data/instr/std/correction" />
+          <ex title="Single Choice" url="/lm/blended/english/pretestb2/uselanguage/uselanguage/grammar2" type="ex" ms="100" instrs="/data/instr/std/single_choice" />
+          <ex title="GapFill" url="/lm/blended/english/pretestb2/uselanguage/uselanguage/vocabulary4" type="ex" ms="100" instrs="/data/instr/std/filling_in" />
+          <ex title="Correction" url="/lm/blended/english/pretestb2/uselanguage/uselanguage/grammar3" type="ex" ms="100" instrs="/data/instr/std/correction" />
+          <ex title="Single Choice" url="/lm/blended/english/pretestb2/uselanguage/uselanguage/grammar4" type="ex" ms="100" instrs="/data/instr/std/single_choice" />
+          <ex title="GapFill" url="/lm/blended/english/pretestb2/uselanguage/uselanguage/vocabulary1" type="ex" ms="100" instrs="/data/instr/std/filling_in" />
+          <ex title="Single Choice" url="/lm/blended/english/pretestb2/uselanguage/uselanguage/vocabulary2" type="ex" ms="100" instrs="/data/instr/std/single_choice" />
+          <ex title="GapFill" url="/lm/blended/english/pretestb2/uselanguage/uselanguage/vocabulary3" type="ex" ms="100" instrs="/data/instr/std/filling_in" />
+          <ex title="Listening with True False" url="/lm/blended/english/pretestb2/uselanguage/uselanguage/listening" type="ex" ms="500" instrs="/data/instr/new/listeningtruefalse" />
+        </testTaskGroup>
+      </taskTestSkill>
+    </test>
+    <mod title="Instructions" url="/lm/prods_lm_blended_english_pretestb2_instrs/" type="mod instrs noDict">
+      <ex url="/data/instr/std/correction" type="ex" />
+      <ex url="/data/instr/std/single_choice" type="ex" />
+      <ex url="/data/instr/std/filling_in" type="ex" />
+      <ex url="/data/instr/new/listeningtruefalse" type="ex" />
+    </mod>
+  </product>
+  <product title="Blended Learning: English Dialogs" url="/lm/blended/english/dialogs.product/" line="English" type="product">
+    <taskCourse title="Blended Learning: English Dialogs" url="/lm/blended/english/dialog/tasts/" type="taskCourse">
+      <data title="Level A1" url="a1" type="mod">
+        <ex title="Fiona and Her English Class" url="/lm/ea/english1wma/lesson01/hueex0_l01_a01_play" type="ex" />
+        <ex title="In a Café" url="/lm/ea/english1wma/lesson01/hueex0_l01_a02_play" type="ex" />
+        <ex title="Nicole and Fiona" url="/lm/ea/english1wma/lesson01/hueex0_l01_a03_play" type="ex" />
+        <ex title="Practising Speaking" url="/lm/ea/english1wma/lesson01/hueex0_l01_a09_play" type="ex" />
+        <ex title="Practising Speaking" url="/lm/ea/english1wma/lesson01/hueex0_l01_c01_play" type="ex" />
+        <ex title="At the Party " url="/lm/ea/english1wma/lesson02/hueex0_l02_a03_play" type="ex" />
+        <ex title="Food and Drinks 2" url="/lm/ea/english1wma/lesson02/hueex0_l02_a04_play" type="ex" />
+        <ex title="What Time Is It? 3" url="/lm/ea/english1wma/lesson02/hueex0_l02_b04_play" type="ex" />
+        <ex title="Ellen Is Greeting a Visitor to the Company" url="/lm/ea/english1wma/lesson03/hueex0_l03_d01_play" type="ex" />
+        <ex title="What Time Is It? 2" url="/lm/ea/english1wma/lesson04/hueex0_l04_b01_play" type="ex" />
+        <ex title="Phrases about the Weather" url="/lm/ea/english1wma/lesson05/hueex0_l05_b03_play" type="ex" />
+        <ex title="Talking about Weather" url="/lm/ea/english1wma/lesson05/hueex0_l05_b04_play" type="ex" />
+        <ex title="A Dinner Invitation" url="/lm/ea/english1wma/lesson05/hueex0_l05_c02_play" type="ex" />
+        <ex title="Ellen and Jack Meet in the Office" url="/lm/ea/english1wma/lesson05/hueex0_l05_c05_play" type="ex" />
+        <ex title="A Telephone Dialogue" url="/lm/ea/english1wma/lesson06/hueex0_l06_b08_play" type="ex" />
+        <ex title="Where Do You Live, Fiona?" url="/lm/ea/english1wma/lesson07/hueex0_l07_a07_play" type="ex" />
+        <ex title="What Would You Like To Do?" url="/lm/ea/english1wma/lesson08/hueex0_l08_c02_play" type="ex" />
+        <ex title="A Long Dialogue" url="/lm/ea/english1wma/lesson09/hueex0_l09_b03_play" type="ex" />
+        <ex title="How Did They Get to Class?" url="/lm/ea/english1wma/lesson09/hueex0_l09_b06_play" type="ex" />
+      </data>
+      <data title="Level A2" url="a2" type="mod">
+        <ex title="On a Diet" url="/lm/ea/english1wma/lesson10/hueex0_l10_b01_play" type="ex" />
+        <ex title="What Do You Do?" url="/lm/ea/english1wma/lesson11/hueex0_l11_a03_play" type="ex" />
+        <ex title="About Fiona" url="/lm/ea/english1wma/lesson11/hueex0_l11_a04_play" type="ex" />
+        <ex title="On the Phone" url="/lm/ea/english1wma/lesson11/hueex0_l11_c03_play" type="ex" />
+        <ex title="A Holiday in Greece" url="/lm/ea/english1wma/lesson12/hueex0_l12_a03_play" type="ex" />
+        <ex title="On the Phone" url="/lm/ea/english1wma/lesson12/hueex0_l12_c04_play" type="ex" />
+        <ex title="Goodbye" url="/lm/ea/english1wma/lesson12/hueex0_l12_c06_play" type="ex" />
+        <ex title="Saying Hello 1" url="/lm/ea/english2wma/lesson01/hueex1_l01_a01a_play" type="ex" />
+        <ex title="Saying Hello 2" url="/lm/ea/english2wma/lesson01/hueex1_l01_a02_play" type="ex" />
+        <ex title="Greeting New People" url="/lm/ea/english2wma/lesson01/hueex1_l01_a03_play" type="ex" />
+        <ex title="Greeting People You Know" url="/lm/ea/english2wma/lesson01/hueex1_l01_a04_play" type="ex" />
+        <ex title="At the Reception 1" url="/lm/ea/english2wma/lesson01/hueex1_l01_c01_play" type="ex" />
+        <ex title="Saying Sorry" url="/lm/ea/english2wma/lesson01/hueex1_l01_e01_play" type="ex" />
+        <ex title="Arranging a Meeting " url="/lm/ea/english2wma/lesson01/hueex1_l01_e02_play" type="ex" />
+        <ex title="A New Student" url="/lm/ea/english2wma/lesson02/hueex1_l02_a03_play" type="ex" />
+        <ex title="Asking for Help" url="/lm/ea/english2wma/lesson03/hueex1_l03_b02_play" type="ex" />
+      </data>
+      <data title="Level B1" url="b1" type="mod">
+        <ex title="At the Reception" url="/lm/ea/english2wma/lesson03/hueex1_l03_e02_play" type="ex" />
+        <ex title="An Interview with Jerry Roberts 1 " url="/lm/ea/english2wma/lesson04/hueex1_l04_b04_play" type="ex" />
+        <ex title="Practising Speaking" url="/lm/ea/english2wma/lesson05/hueex1_l05_b06_play" type="ex" />
+        <ex title="Intonation Practice" url="/lm/ea/english2wma/lesson07/hueex1_l07_a01_play" type="ex" />
+        <ex title="A Business Trip" url="/lm/ea/english2wma/lesson07/hueex1_l07_c03_play" type="ex" />
+        <ex title="Margaret and Irene" url="/lm/ea/english2wma/lesson08/hueex1_l08_b03_play" type="ex" />
+        <ex title="Plans for the Weekend" url="/lm/ea/english2wma/lesson09/hueex1_l09_c05_play" type="ex" />
+        <ex title="Let’s Go Out to Eat! 2" url="/lm/ea/english2wma/lesson10/hueex1_l10_a06_play" type="ex" />
+        <ex title="Arranging to Meet 1" url="/lm/ea/english2wma/lesson10/hueex1_l10_c08_play" type="ex" />
+        <ex title="Bed &amp; Breakfast" url="/lm/ea/english2wma/lesson11/hueex1_l11_b01_play" type="ex" />
+        <ex title="A Misunderstanding" url="/lm/ea/english3wma/lesson01/hueex2_l01_b07_play" type="ex" />
+        <ex title="Questions about Each Other 2" url="/lm/ea/english3wma/lesson01/hueex2_l01_c01_play" type="ex" />
+        <ex title="Sentence Stress" url="/lm/ea/english3wma/lesson03/hueex2_l03_b08_play" type="ex" />
+        <ex title="My Office" url="/lm/ea/english3wma/lesson04/hueex2_l04_a07_play" type="ex" />
+        <ex title="Message for Mary" url="/lm/ea/english3wma/lesson04/hueex2_l04_d03_play" type="ex" />
+        <ex title="The Orient Express" url="/lm/ea/english3wma/lesson05/hueex2_l05_a06_play" type="ex" />
+        <ex title="Sounding Interested or Surprised" url="/lm/ea/english3wma/lesson07/hueex2_l07_a06_play" type="ex" />
+        <ex title="An Injured Finger" url="/lm/ea/english3wma/lesson07/hueex2_l07_c07_play" type="ex" />
+      </data>
+      <data title="Level B2" url="b2" type="mod">
+        <ex title="An Interview 2" url="/lm/ea/english3wma/lesson10/hueex2_l10_b06_play" type="ex" />
+        <ex title="That Little Word ‘If’" url="/lm/ea/english3wma/lesson11/hueex2_l11_a06_play" type="ex" />
+        <ex title="Checking Arrangements 2" url="/lm/ea/english3wma/lesson12/hueex2_l12_b03_play" type="ex" />
+        <ex title="A Telephone Dialogue 1" url="/lm/ea/english4wma/lesson02/hueex3_l02_d02_play" type="ex" />
+        <ex title="Paying Compliments 2" url="/lm/ea/english4wma/lesson02/hueex3_l02_e01_play" type="ex" />
+        <ex title="Prepositions and the Telephone" url="/lm/ea/english4wma/lesson04/hueex3_l04_b04_play" type="ex" />
+        <ex title="Speaking about Plans" url="/lm/ea/english4wma/lesson05/hueex3_l05_a04_play" type="ex" />
+        <ex title="Are You Doing Anything This Weekend?" url="/lm/ea/english4wma/lesson06/hueex3_l06_b01_play" type="ex" />
+        <ex title="Conversation Practising" url="/lm/ea/english4wma/lesson07/hueex3_l07_a05_play" type="ex" />
+        <ex title="A Declined Invitation" url="/lm/ea/english4wma/lesson07/hueex3_l07_d01_play" type="ex" />
+        <ex title="The Bad Line 1" url="/lm/ea/english4wma/lesson08/hueex3_l08_d03_play" type="ex" />
+        <ex title="Describing a Product 2" url="/lm/ea/english4wma/lesson11/hueex3_l11_d02_play" type="ex" />
+        <ex title="Speaking Practice" url="/lm/ea/english4wma/lesson12/hueex3_l12_d06_play" type="ex" />
+        <ex title="At the Doctor’s 2" url="/lm/ea/english5wma/lesson03/hueex4_l03_c06_play" type="ex" />
+        <ex title="Make It Short 2" url="/lm/ea/english5wma/lesson04/hueex4_l04_d01c_play" type="ex" />
+        <ex title="At the Reception" url="/lm/ea/english5wma/lesson07/hueex4_l07_c02_play" type="ex" />
+        <ex title="Telephoning" url="/lm/ea/english5wma/lesson34/hueex4_l34_j01_play" type="ex" />
+        <ex title="Taking Messages 2" url="/lm/ea/english5wma/lesson34/hueex4_l34_j03_play" type="ex" />
+      </data>
+    </taskCourse>
+    <mod title="Instructions" url="/lm/blended/english/dialogs.product_instrs/" type="mod instrs noDict" />
+  </product>
+  <product title="Blended Learning: German Dialogs" url="/lm/blended/german/dialogs.product/" line="German" type="product">
+    <taskCourse title="Blended Learning: German Dialogs" url="/lm/blended/german/dialog/tasts/" type="taskCourse">
+      <data title="Level A1" url="a1" type="mod">
+        <ex title="Kleines Diktat" url="/lm/ea/german1wma/arbeitsbuch/lesson01/t1a_ab_l1_a3b_play" type="ex" />
+        <ex title="Akzente markieren" url="/lm/ea/german1wma/arbeitsbuch/lesson01/t1a_ab_l1_c2b_play" type="ex" />
+        <ex title="Sprechübung 1" url="/lm/ea/german1wma/arbeitsbuch/lesson01/t1a_ab_l1_h2a_play" type="ex" />
+        <ex title="Sprechübung 2" url="/lm/ea/german1wma/arbeitsbuch/lesson01/t1a_ab_l1_h2b_play" type="ex" />
+        <ex title="Deutsche Zahlen" url="/lm/ea/german1wma/arbeitsbuch/lesson02/t1a_ab_l2_a3_play" type="ex" />
+        <ex title="Wie bitte?" url="/lm/ea/german1wma/arbeitsbuch/lesson02/t1a_ab_l2_b4_play" type="ex" />
+        <ex title="Bestellungen im Lokal" url="/lm/ea/german1wma/arbeitsbuch/lesson02/t1a_ab_l2_f3_play" type="ex" />
+        <ex title="Dialoge üben" url="/lm/ea/german1wma/arbeitsbuch/lesson03/t1a_ab_l3_b6a_play" type="ex" />
+        <ex title="Dialoge mitsprechen" url="/lm/ea/german1wma/arbeitsbuch/lesson03/t1a_ab_l3_d6b_play" type="ex" />
+        <ex title="Begrüßungsdialoge am Flughafen" url="/lm/ea/german1wma/kursbuch/lesson01/t1a_kb_l1_a1_play" type="ex" />
+        <ex title="Sich vorstellen" url="/lm/ea/german1wma/kursbuch/lesson01/t1a_kb_l1_b1_play" type="ex" />
+        <ex title="Herkunft mitteilen und erfragen" url="/lm/ea/german1wma/kursbuch/lesson01/t1a_kb_l1_c2_play" type="ex" />
+        <ex title="Namensnennung - sprechen" url="/lm/ea/german1wma/kursbuch/lesson01/t1a_kb_l1_e1a_play" type="ex" />
+        <ex title="Zu Besuch bei Vera – Dialoge üben" url="/lm/ea/german1wma/kursbuch/lesson02/t1a_kb_l2_c1_play" type="ex" />
+        <ex title="Das ist Vera, aus Brasilien 3" url="/lm/ea/german1wma/kursbuch/lesson02/t1a_kb_l2_f3a_play" type="ex" />
+      </data>
+      <data title="Level A2" url="a2" type="mod">
+        <ex title="Dialoge üben" url="/lm/ea/german1wma/arbeitsbuch/lesson04/t1a_ab_l4_c7b_play" type="ex" />
+        <ex title="Kurze Dialoge üben" url="/lm/ea/german1wma/arbeitsbuch/lesson04/t1a_ab_l4_d5_play" type="ex" />
+        <ex title="Satzakzent markieren 2" url="/lm/ea/german1wma/arbeitsbuch/lesson04/t1a_ab_l4_e1a_play" type="ex" />
+        <ex title="Sprechübung" url="/lm/ea/german1wma/arbeitsbuch/lesson05/t1a_ab_l5_c5_play" type="ex" />
+        <ex title="Sprechübung " url="/lm/ea/german1wma/kursbuch/lesson03/t1a_kb_l3_a2a_play" type="ex" />
+        <ex title="Papa, kaufst du uns … ? Dialoge üben" url="/lm/ea/german1wma/kursbuch/lesson04/t1a_kb_l4_a2_play" type="ex" />
+        <ex title="Satzmelodie markieren 2" url="/lm/ea/german1wma/kursbuch/lesson04/t1a_kb_l4_e2_play" type="ex" />
+        <ex title="Dialoge üben" url="/lm/ea/german1wma/kursbuch/lesson04/t1a_kb_l4_f2a_play" type="ex" />
+        <ex title="Ratschläge geben" url="/lm/ea/german1wma/kursbuch/lesson04/t1a_kb_l4_g1_play" type="ex" />
+        <ex title="Dialoge üben" url="/lm/ea/german1wma/kursbuch/lesson05/t1a_kb_l5_b3a_play" type="ex" />
+        <ex title="Praxis Dr. Stefanidis 1" url="/lm/ea/german1wma/kursbuch/lesson05/t1a_kb_l5_e5b_play" type="ex" />
+        <ex title="Test 7" url="/lm/ea/german1wma/kursbuch/lesson05/t1a_kb_l5_t7_play" type="ex" />
+        <ex title="Satzakzent markieren" url="/lm/ea/german1wma/arbeitsbuch/lesson08/t1b_ab_l8_c2b_play" type="ex" />
+        <ex title="Warum, warum, warum …" url="/lm/ea/german1wma/arbeitsbuch/lesson08/t1b_ab_l8_c3a_play" type="ex" />
+      </data>
+      <data title="Level B1" url="b1" type="mod">
+        <ex title="Lückendialog ergänzen" url="/lm/ea/german1wma/arbeitsbuch/lesson10/t1b_ab_l10_a7a_play" type="ex" />
+        <ex title="Sprechübung " url="/lm/ea/german1wma/arbeitsbuch/lesson11/t1b_ab_l11_c10a_play" type="ex" />
+        <ex title="Dialoge sprechen" url="/lm/ea/german1wma/arbeitsbuch/lesson11/t1b_ab_l11_c6_play" type="ex" />
+        <ex title="Antworten zwischen “Ja” und “Nein” – Dialoge üben" url="/lm/ea/german1wma/arbeitsbuch/lesson08/t1b_ab_l8_d1_play" type="ex" />
+        <ex title="Gedichte" url="/lm/ea/german1wma/arbeitsbuch/lesson09/t1b_ab_l9_f6_play" type="ex" />
+        <ex title="Sprechübung " url="/lm/ea/german1wma/arbeitsbuch/lesson09/t1b_ab_l9_g6a_play" type="ex" />
+        <ex title="“Wann“ oder “wenn“? – Lückentext" url="/lm/ea/german1wma/kursbuch/lesson10/t1b_kb_l10_d2_play" type="ex" />
+        <ex title="Dialoge in der Umgangssprache" url="/lm/ea/german1wma/kursbuch/lesson08/t1b_kb_l8_d1b_play" type="ex" />
+        <ex title="Sprechübung" url="/lm/ea/german2wma/arbeitsbuch/lesson01/t2a_ab_l1_b3a_play" type="ex" />
+        <ex title="„e“ –Laute 6" url="/lm/ea/german2wma/arbeitsbuch/lesson01/t2a_ab_l1_c5_play" type="ex" />
+        <ex title="Adjektiv-Nomen 3" url="/lm/ea/german2wma/arbeitsbuch/lesson01/t2a_ab_l1_e2_play" type="ex" />
+        <ex title="Indirekte Fragen 4" url="/lm/ea/german2wma/arbeitsbuch/lesson03/t2a_ab_l3_b5a_play" type="ex" />
+      </data>
+      <data title="Level B2" url="b2" type="mod">
+        <ex title="Wer ist wer?" url="/lm/ea/german2wma/arbeitsbuch/lesson04/t2a_ab_l4_d6_play" type="ex" />
+        <ex title="Dialog 1" url="/lm/ea/german2wma/kursbuch/lesson03/t2a_kb_l3_b4a_play" type="ex" />
+        <ex title="Echofragen 1" url="/lm/ea/german2wma/kursbuch/lesson03/t2a_kb_l3_c1a_play" type="ex" />
+        <ex title="Bindung und Neueinsatz" url="/lm/ea/german2wma/arbeitsbuch/lesson10/t2b_ab_l10_d3a_play" type="ex" />
+        <ex title="Umgangssprache 2" url="/lm/ea/german2wma/arbeitsbuch/lesson11/t2b_ab_l11_d2_play" type="ex" />
+        <ex title="Wörter mit „irgend-“ 3" url="/lm/ea/german2wma/arbeitsbuch/lesson09/t2b_ab_l9_c3_play" type="ex" />
+        <ex title="Lesen ist Familiensache" url="/lm/ea/german2wma/kursbuch/lesson11/t2b_kb_l11_b5_play" type="ex" />
+        <ex title="Telefongespräch: „also“ und „nämlich“" url="/lm/ea/german2wma/kursbuch/lesson08/t2b_kb_l8_f1_play" type="ex" />
+        <ex title="Anwendungsübung: „also“ und „nämlich“" url="/lm/ea/german2wma/kursbuch/lesson08/t2b_kb_l8_f3_play" type="ex" />
+      </data>
+    </taskCourse>
+    <mod title="Instructions" url="/lm/blended/german/dialogs.product_instrs/" type="mod instrs noDict" />
+  </product>
+  <product title="Blended Learning: French Dialogs" url="/lm/blended/french/dialogs.product/" line="French" type="product">
+    <taskCourse title="Blended Learning: French Dialogs" url="/lm/blended/french/dialog/tasts/" type="taskCourse">
+      <data title="Level A1" url="a1" type="mod">
+        <ex title="Répondeur de Corinne" url="/lm/ea/french/a1/hufex1_l04_a03_newdlg_play" type="ex" />
+        <ex title="Message" url="/lm/ea/french/a1/hufex1_l04_a01_newdlg_play" type="ex" />
+        <ex title="Le verbe «avoir»" url="/lm/ea/french/a1/hufex1_l03_b06_newdlg_play" type="ex" />
+        <ex title="Qui êtes-vous?" url="/lm/ea/french/a1/hufex1_l02_a01_d_newdlg_play" type="ex" />
+        <ex title="Qui êtes-vous?" url="/lm/ea/french/a1/hufex1_l02_a01_c_newdlg_play" type="ex" />
+        <ex title="Qui êtes-vous?" url="/lm/ea/french/a1/hufex1_l02_a01_b_newdlg_play" type="ex" />
+        <ex title="Qui êtes-vous?" url="/lm/ea/french/a1/hufex1_l02_a01_a_newdlg_play" type="ex" />
+        <ex title="Présentation" url="/lm/ea/french/a1/hufex1_l01_b04_newdlg_play" type="ex" />
+        <ex title="Cartes de visite" url="/lm/ea/french/a1/hufex1_l01_b03_newdlg_play" type="ex" />
+        <ex title="Comment faire des achats" url="/lm/ea/french/a1/hufex1_l05_b02_play" type="ex" />
+        <ex title="Le plan de la ville de Paris" url="/lm/ea/french/a1/hufex1_l04_a05_play" type="ex" />
+        <ex title="L’anniversaire de Victor" url="/lm/ea/french/a1/hufex1_l03_b01_play" type="ex" />
+        <ex title="La conjugaison" url="/lm/ea/french/a1/hufex1_l03_a07_play" type="ex" />
+      </data>
+      <data title="Level A2" url="a2" type="mod">
+        <ex title="Invitation" url="/lm/ea/french/a2/hufex1_l22_a04_newdlg_play" type="ex" />
+        <ex title="Interview avec Madame Bigoudi" url="/lm/ea/french/a2/hufex1_l21_a03_newdlg_play" type="ex" />
+        <ex title="Inviter et réserver" url="/lm/ea/french/a2/hufex1_l09_b01_newdlg_play" type="ex" />
+        <ex title="Au restaurant «A la bonne fourchette»" url="/lm/ea/french/a2/hufex1_l09_a01_newdlg_play" type="ex" />
+        <ex title="Divertissement" url="/lm/ea/french/a2/hufex1_l07_c07_newdlg_play" type="ex" />
+        <ex title="Les vacances pour un monsieur" url="/lm/ea/french/a2/hufex1_l07_a02_newdlg_play" type="ex" />
+        <ex title="N’ayez pas peur de la dictée!" url="/lm/ea/french/a2/hufex1_l05_c08_newdlg_play" type="ex" />
+        <ex title="Les nombres" url="/lm/ea/french/a2/hufex1_l05_b03_newdlg_play" type="ex" />
+        <ex title="Vous désirez?" url="/lm/ea/french/a2/hufex1_l05_a02_newdlg_play" type="ex" />
+        <ex title="Pronoms toniques (suite et fin)" url="/lm/ea/french/a2/hufex1_l09_b06_play" type="ex" />
+        <ex title="Catherine en Provence" url="/lm/ea/french/a2/hufex1_l08_a02_play" type="ex" />
+        <ex title="Julie va en Guadeloupe" url="/lm/ea/french/a2/hufex1_l07_c01_play" type="ex" />
+        <ex title="Matthieu et Cécile" url="/lm/ea/french/a2/hufex1_l06_b01_play" type="ex" />
+      </data>
+      <data title="Level B1" url="b1" type="mod">
+        <ex title="-" url="/lm/ea/french/b1/hufex2_l08_d04_newdlg_play" type="ex" />
+        <ex title="Reprocher et se justifier" url="/lm/ea/french/b1/hufex2_l06_a02_d_newdlg_play" type="ex" />
+        <ex title="Reprocher et se justifier" url="/lm/ea/french/b1/hufex2_l06_a02_c_newdlg_play" type="ex" />
+        <ex title="Reprocher et se justifier" url="/lm/ea/french/b1/hufex2_l06_a02_b_newdlg_play" type="ex" />
+        <ex title="Reprocher et se justifier" url="/lm/ea/french/b1/hufex2_l06_a02_a_newdlg_play" type="ex" />
+        <ex title="Jean Charron" url="/lm/ea/french/b1/hufex2_l05_b01_newdlg_play" type="ex" />
+        <ex title="La lecture" url="/lm/ea/french/b1/hufex2_l03_a01_newdlg_play" type="ex" />
+        <ex title="L’homme de sa vie" url="/lm/ea/french/b1/hufex2_l02_d01_newdlg_play" type="ex" />
+        <ex title="Qu’est-ce que tu deviens?" url="/lm/ea/french/b1/hufex2_l01_b01_newdlg_play" type="ex" />
+        <ex title="Dialogue" url="/lm/ea/french/b1/hufex2_l06_b02_play" type="ex" />
+        <ex title="Edith et Sophie" url="/lm/ea/french/b1/hufex2_l02_b03_play" type="ex" />
+        <ex title="Benoît et Petra" url="/lm/ea/french/b1/hufex1_l10_c03_play" type="ex" />
+        <ex title="Une lettre de Strasbourg" url="/lm/ea/french/b1/hufex1_l10_b02_play" type="ex" />
+      </data>
+      <data title="Level B2" url="b2" type="mod">
+        <ex title="Les dialogues" url="/lm/ea/french/b2/hufex3_l06_b01_e_newdlg_play" type="ex" />
+        <ex title="Les dialogues" url="/lm/ea/french/b2/hufex3_l06_b01_d_newdlg_play" type="ex" />
+        <ex title="Les dialogues" url="/lm/ea/french/b2/hufex3_l06_b01_c_newdlg_play" type="ex" />
+        <ex title="Les dialogues" url="/lm/ea/french/b2/hufex3_l06_b01_b_newdlg_play" type="ex" />
+        <ex title="Les dialogues" url="/lm/ea/french/b2/hufex3_l06_b01_a_newdlg_play" type="ex" />
+        <ex title="Avoir du temps pour...." url="/lm/ea/french/b2/hufex3_l05_a01_newdlg_play" type="ex" />
+        <ex title="Et au travail?" url="/lm/ea/french/b2/hufex3_l04_b02_newdlg_play" type="ex" />
+        <ex title="Bien vivre" url="/lm/ea/french/b2/hufex3_l01_c01_newdlg_play" type="ex" />
+        <ex title="Retrouvailles chez le médicin" url="/lm/ea/french/b2/hufex2_l21_a01_newdlg_play" type="ex" />
+        <ex title="Notre travail" url="/lm/ea/french/b2/hufex2_l10_a06_newdlg_play" type="ex" />
+        <ex title="Sur le vif! 1" url="/lm/ea/french/b2/hufex3_l06_a07_play" type="ex" />
+        <ex title="Conjuguez les verbes" url="/lm/ea/french/b2/hufex3_l05_c05_play" type="ex" />
+        <ex title="Interview" url="/lm/ea/french/b2/hufex2_l08_b02_play" type="ex" />
+      </data>
+    </taskCourse>
+    <mod title="Instructions" url="/lm/blended/french/dialogs.product_instrs/" type="mod instrs noDict" />
+  </product>
+  <product title="Vyzva 57 MŠMT: Angličtina" url="/lm/blended/english/blended.product/" line="English" type="product productNew" />
+  <product title="Vyzva 57 MŠMT: Němčina" url="/lm/blended/german/blended.product/" line="German" type="product productNew" />
+  <product title="Vyzva 57 MŠMT: Francouzština" url="/lm/blended/french/blended.product/" line="French" type="product productNew" />
+</products>

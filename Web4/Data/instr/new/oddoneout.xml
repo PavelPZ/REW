@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <h1 class="techInstr  ">{{th301|ODD ONE OUT}}</h1>
+    <p>{{tp301|Your task is to mark the word that does not belong to the group. Proceed as follows:}}</p>
+    <ol>
+      <li>{{tli301|Left click the selected word.}}</li>
+      <li>{{tli302|If you wish to change your selection, click another word.}}</li>
+    </ol>
+  </body>
+</html>

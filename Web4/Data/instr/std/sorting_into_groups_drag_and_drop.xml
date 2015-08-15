@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.langmaster.com/new/author/coursemodelschema.xsd">
+  <head>
+    <title></title>
+    <style />
+  </head>
+  <body xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <h1 class="techInstr  ">{{th111|SORTING INTO GROUPS (DRAG AND DROP)}}</h1>
+  <p>{{tp15|Your task is to sort the items from the list into several groups. Proceed as follows:}}</p>
+  <ol>
+    <li>{{tli34|Click an item in the list. It will be highlighted.}}</li>
+    <li>{{tli35|Hold your left mouse button down and drag the item to an empty space in the correct group.}}</li>
+    <li>{{tli36|Release the left mouse button.}}</li>
+    <li>{{tli37|The item will be moved into the chosen group and will be deactivated in the list.}}</li>
+  </ol>
+  <p>{{tp16|To recall the item from the group back to list, click on it.}}</p>
+</body>
+</html>

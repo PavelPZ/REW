@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.langmaster.com/new/author/coursemodelschema.xsd">
+  <head>
+    <title></title>
+    <style />
+  </head>
+  <body xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <h1 class="techInstr  ">{{th112|FILLING IN}}</h1>
+  <p>{{tp17|Your task is to fill in the empty boxes within the text. Proceed as follows:}}</p>
+  <ol>
+    <li>{{tli38|Click on the empty space - a blinking cursor appears.}}</li>
+    <li>{{tli39|Type in the text using your keyboard.}}</li>
+  </ol>
+</body>
+</html>

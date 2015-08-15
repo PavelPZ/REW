@@ -1,0 +1,12 @@
+/lm/blended/english/blended.product/
+/lm/blended/english/dialogs.product/
+/lm/blended/french/blended.product/
+/lm/blended/french/dialogs.product/
+/lm/blended/german/blended.product/
+/lm/blended/german/dialogs.product/
+/lm/prods_lm_blended_english_lessons_lesson_a1_1/
+/lm/prods_lm_blended_english_pretesta1/
+/lm/prods_lm_blended_english_pretesta2/
+/lm/prods_lm_blended_english_pretestb1/
+/lm/prods_lm_blended_english_pretestb2/
+/lm/prods_lm_blended_english_tests_checkpointtesta1_1/

@@ -1,0 +1,1 @@
+<product xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" title="Test product" order="255" url="/data/xmlsource/testproduct/" line="English" type="product" />

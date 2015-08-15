@@ -1,0 +1,9 @@
+﻿<product title="All Examples" line="English"  defaultDictType="L">
+  <mod title="All Examples" type="mod" url="/lm/prods/doc_examples/">
+    <ptr>
+      <urls>
+        <string>/lm/docexamples/</string>
+      </urls>
+    </ptr>
+  </mod>
+</product>

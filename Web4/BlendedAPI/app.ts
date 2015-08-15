@@ -2,28 +2,28 @@
 
   export class Module {
     app: ng.IModule;
+    $actState: angular.ui.IStateService;
 
     constructor(name: string, modules: Array<string>) {
       var self = this;
       this.app = angular.module(name, modules);
     }
-  }
 
-  function checkOldApplicationStart() {
-    return angular.injector(['ng']).invoke(['$q', ($q: ng.IQService) => {
-      var deferred = $q.defer();
-      boot.bootStart(() => deferred.resolve());
-      return deferred.promise;
-    }]);
+    href(stateName: string, params?: Object, options?: angular.ui.IHrefOptions): string {
+      return this.$actState.href(stateName, params)
+    }
+    go(stateName: string, params?: Object, options?: angular.ui.IHrefOptions): string {
+      return this.$actState.href(stateName, params)
+    }
   }
-
 
   export class OldController { //naladuje stranku dle zaregistrovane /old/... route
 
     static $inject = ['$scope', '$state'];
 
     constructor($scope: ng.IScope, $state: angular.ui.IStateService) {
-      //prevezmi paramnetry
+      root.$actState = $state;
+      //prevezmi parametry
       var urlParts: Array<string> = [];
       for (var p = 0; p < 6; p++) {
         var parName = 'p' + p.toString();
@@ -41,8 +41,6 @@
 
   export var root = new Module('appRoot', ['ngResource', 'ui.router']);
 
-  //root.app.run(() => boot.OldApplicationStart()); //volani StartProc pro inicializaci stare aplikace
-  root = new Module('appRoot', ['ngResource', 'ui.router']);
   root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', (
     $stateProvider: angular.ui.IStateProvider,
     $urlRouterProvider: angular.route.IRouteProvider,
@@ -51,19 +49,26 @@
     ) => {
     $urlMatcherFactoryProvider.caseInsensitive(true); //http://stackoverflow.com/questions/25994308/how-to-config-angular-ui-router-to-not-use-strict-url-matching-mode
     $urlRouterProvider.otherwise('/pg/old/school/schoolmymodel');
-    //$urlRouterProvider.otherwise(Pager.initHash());
+
+    function checkOldApplicationStart() { //boot nasi technologie
+      return angular.injector(['ng']).invoke(['$q', ($q: ng.IQService) => {
+        var deferred = $q.defer();
+        boot.bootStart(() => deferred.resolve());
+        return deferred.promise;
+      }]);
+    }
 
     $stateProvider
-      .state({
+      .state({ //state root
         name: 'pg',
         url: '/pg',
         abstract: true,
         template: "<div data-ui-view></div>",
         resolve: {
-          checkOldApplicationStart: checkOldApplicationStart//
+          checkOldApplicationStart: checkOldApplicationStart //ceka se na dokonceni inicalizace nasi technologie
         }
       })
-      .state({
+      .state({ //old state root
         name: 'pg.old',
         url: '/old',
         abstract: true,
@@ -85,20 +90,21 @@
     //stavy pro novou verzi
     $stateProvider
       .state({
-        name: 'ajs',
+        name: 'pg.ajs',
         url: '/ajs',
         abstract: true,
-        controller: () => { alert('view'); },
+        controller: () => { Pager.clearHtml(); },
         template: "<div data-ui-view></div>",
       })
       .state({
-        name: 'ajs.vyzvaproduct',
+        name: ajs_vyzvaproduct,
         controller: () => { },
         url: "/vyzvaproduct/:producturl",
         templateUrl: "../blendedapi/views/vyzvaproduct.html"
       })
     ;
   }]);
+  export var ajs_vyzvaproduct = 'pg.ajs.vyzvaproduct';
 
   //dokumentace pro dostupne services
   export function servicesDocumentation() {
