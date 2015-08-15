@@ -8,6 +8,7 @@ var test;
             if (!test.root.$scope)
                 return;
             test.root.$scope.topBarInclude = 'app/views/topbar.html';
+            test.root.$scope.bodyScrollHidden = false;
             var data = ($state.current.data);
             if (!data)
                 return;
