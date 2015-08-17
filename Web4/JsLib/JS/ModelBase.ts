@@ -34,7 +34,7 @@ module Pager {
     loaded(): void { } //naladovani HTML stranky
     leave() { } //pred opustenim stranky
     htmlClearing() { } //pred zrusenim HTML se strankou
-    getHash(): string { return [this.appId, this.type].concat(this.urlParts).join('@'); } //my hash
+    getHash(): string { return [this.appId, this.type].concat(this.urlParts).join(hashDelim); } //my hash
   }
 
   export function registerAppLocator(appId: string, type: string, pageCreator: (urlParts: string[], completed: (pg: Page) => void) => void): void {

@@ -680,7 +680,7 @@ module CourseMeta {
   }
 
 
-  function loadLocalizedProductAndInstrs(url: string, completed: (prod: productImpl) => void) {
+  export function loadLocalizedProductAndInstrs(url: string, completed: (prod: productImpl) => void) {
     url = decodeURIComponent(url);
     var href = urlStripLast(url);
     href = '..' + (href[0] == '/' ? '' : '/') + href;

@@ -251,6 +251,7 @@
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.theme.css" />
     <Content Include="BlendedAPI\views\view2.html" />
     <Content Include="BlendedAPI\views\vyzvaproduct.html" />
+    <Content Include="BlendedAPI\vyzva\Views\productHome.html" />
     <Content Include="JsLib\css\flag-mid.css" />
     <Content Include="JsLib\css\flag-small.css" />
     <Content Include="JsLib\Scripts\angular-ie8.js" />
@@ -1336,6 +1337,9 @@
     <TypeScriptCompile Include="Author\vsNet.ts" />
     <TypeScriptCompile Include="BlendedAPI\appBoot.ts" />
     <TypeScriptCompile Include="BlendedAPI\app.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\app.ts" />
+    <TypeScriptCompile Include="BlendedAPI\Scripts\Loader.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Controllers\productHome.ts" />
     <TypeScriptCompile Include="BS3\js\bootstrap.d.ts" />
     <TypeScriptCompile Include="Courses\codes\chinhSpeaking.ts" />
     <TypeScriptCompile Include="Courses\codes\docReference.ts" />
@@ -2673,7 +2677,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BlendedAPI\Controllers\" />
     <Folder Include="BlendedAPI\Styles\img\" />
     <Folder Include="BS3\css\" />
     <Folder Include="ClientBin\" />

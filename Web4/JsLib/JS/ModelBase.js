@@ -66,7 +66,7 @@ var Pager;
         Page.prototype.loaded = function () { }; //naladovani HTML stranky
         Page.prototype.leave = function () { }; //pred opustenim stranky
         Page.prototype.htmlClearing = function () { }; //pred zrusenim HTML se strankou
-        Page.prototype.getHash = function () { return [this.appId, this.type].concat(this.urlParts).join('@'); }; //my hash
+        Page.prototype.getHash = function () { return [this.appId, this.type].concat(this.urlParts).join(hashDelim); }; //my hash
         return Page;
     })();
     Pager.Page = Page;

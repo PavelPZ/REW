@@ -495,7 +495,11 @@ namespace Packager {
     };
 
     public static string[] angularJS = new string[] {
-      "blendedapi/app.js"
+      "blendedapi/app.js",
+      "blendedapi/scripts/loader.js",
+      //vyzva
+      "blendedapi/vyzva/app.js",
+      "blendedapi/vyzva/controllers/producthome.js",
     };
 
     public static string[] jsAuthorWeb = new string[] {

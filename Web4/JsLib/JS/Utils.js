@@ -159,16 +159,17 @@ var LMStatus;
         var url = Cook.read(LMComLib.CookieIds.returnUrl);
         if (_.isEmpty(url) || url == '#')
             return null;
-        if (url.charAt(0) != "#")
-            url = "#" + url;
-        return url;
+        if (url.charAt(0) == "#")
+            url = url.substr(1);
+        return oldPrefix + url;
     }
     LMStatus.getReturnUrl = getReturnUrl;
     function gotoReturnUrl() {
         var url = getReturnUrl();
         if (_.isEmpty(url))
-            url = schools.createHomeUrlStd();
-        location.hash = url;
+            Pager.gotoHomeUrl();
+        else
+            Pager.navigateToHash(url);
     }
     LMStatus.gotoReturnUrl = gotoReturnUrl;
     LMStatus.Cookie = null;

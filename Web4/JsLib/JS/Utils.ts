@@ -161,13 +161,13 @@ module LMStatus {
   }
   export function getReturnUrl(): string {
     var url = Cook.read(LMComLib.CookieIds.returnUrl); if (_.isEmpty(url) || url == '#') return null;
-    if (url.charAt(0) != "#") url = "#" + url;
-    return url;
+    if (url.charAt(0) == "#") url = url.substr(1);
+    return oldPrefix + url;
   }
   export function gotoReturnUrl(): void {
     var url = getReturnUrl();
-    if (_.isEmpty(url)) url = schools.createHomeUrlStd();
-    location.hash = url;
+    if (_.isEmpty(url)) Pager.gotoHomeUrl();
+    else Pager.navigateToHash(url);
   }
 
   export var Cookie: LMStatus.LMCookie = null;

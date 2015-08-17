@@ -12,4 +12,4 @@ d:\LMCom\rew\CubesDeployment\bin\Debug\CubesDeployment.exe -8LM_Data_New-lmtests
 d:\LMCom\rew\CubesDeployment\bin\Debug\CubesDeployment.exe -8LM_Data_New-skrivanek
 d:\LMCom\rew\CubesDeployment\bin\Debug\CubesDeployment.exe -8LM_Data_New-edusoft
 d:\LMCom\rew\CubesDeployment\bin\Debug\CubesDeployment.exe -8LM_Data_New-globals
-rem call d:\LMCom\rew\Web4\Data\copyDataToFE5.cmd
+call d:\LMCom\rew\Web4\Data\copyDataToFE5.cmd

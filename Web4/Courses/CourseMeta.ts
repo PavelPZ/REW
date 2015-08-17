@@ -21,6 +21,9 @@ module CourseMeta {
     url: string;
     name: string;
     ms: number;
+    //specializovane blended AngularJS fields (nepouzivaji se, je kvuli prekladu)
+    userData: Object;
+    userDataChanged: boolean;
     //static, plneno v finishStaticTree
     parent: dataImpl;
     exCount: number; //pocet cviceni

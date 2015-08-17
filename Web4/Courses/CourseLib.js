@@ -912,6 +912,7 @@ var CourseMeta;
             completed(prod);
         });
     }
+    CourseMeta.loadLocalizedProductAndInstrs = loadLocalizedProductAndInstrs;
     function finishInstr(url, jsonML, loc) {
         var pg = extractEx((jsonML));
         if (pg == null) {

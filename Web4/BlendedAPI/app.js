@@ -21,6 +21,9 @@ var blended;
             var urlParts = [];
             for (var p = 0; p < 6; p++) {
                 var parName = 'p' + p.toString();
+                var val = $state.params[parName];
+                if (val === undefined)
+                    break;
                 urlParts.push($state.params[parName]);
             }
             //procedura pro vytvoreni stareho modelu
@@ -38,6 +41,13 @@ var blended;
     blended.root = new Module('appRoot', ['ngResource', 'ui.router']);
     blended.root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', function ($stateProvider, $urlRouterProvider, $location, $urlMatcherFactoryProvider) {
             $urlMatcherFactoryProvider.caseInsensitive(true); //http://stackoverflow.com/questions/25994308/how-to-config-angular-ui-router-to-not-use-strict-url-matching-mode
+            //Nefunguje pak browser historie
+            //$urlMatcherFactoryProvider.type("urlType", { //http://stackoverflow.com/questions/27849260/angular-ui-sref-encode-parameter
+            //  encode: (val: string) => val ? (val[0]=='/' ? val.replace(/\//g, '@') : val) : val,
+            //  decode: (val: string) => val ? val.replace(/@/g, '/') : val,
+            //  is: item => _.isString(item) && item[0] == '/',
+            //  //equal: (v1: string, v2: string) => false,
+            //});
             $urlRouterProvider.otherwise('/pg/old/school/schoolmymodel');
             function checkOldApplicationStart() {
                 return angular.injector(['ng']).invoke(['$q', function ($q) {
@@ -70,24 +80,11 @@ var blended;
                 $location: $location,
             };
             _.each(blended.oldLocators, function (createLoc) { return createLoc(params); }); //vytvoreni states na zaklade registrovanych page models (pomoci registerOldLocator)
-            _.each(blended.debugAllRoutes, function (r) { return Logger.trace("Pager", 'Define:' + r); });
             //stavy pro novou verzi
-            $stateProvider
-                .state({
-                name: 'pg.ajs',
-                url: '/ajs',
-                abstract: true,
-                controller: function () { Pager.clearHtml(); },
-                template: "<div data-ui-view></div>",
-            })
-                .state({
-                name: blended.ajs_vyzvaproduct,
-                controller: function () { },
-                url: "/vyzvaproduct/:producturl",
-                templateUrl: "../blendedapi/views/vyzvaproduct.html"
-            });
+            vyzva.registerNew(params);
+            //log vsech validnich routes
+            _.each(blended.debugAllRoutes, function (r) { return Logger.trace("Pager", 'Define:' + r); });
         }]);
-    blended.ajs_vyzvaproduct = 'pg.ajs.vyzvaproduct';
     //dokumentace pro dostupne services
     function servicesDocumentation() {
         //https://docs.angularjs.org/api/ng/function/angular.injector

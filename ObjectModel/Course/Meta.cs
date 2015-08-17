@@ -89,9 +89,11 @@ namespace CourseMeta {
     public int order;
     //fake udaje pro prevod z OldEA formatu. V novem formatu je nahrazeno url.
     [XmlIgnore, JsonIgnore]
-    public string spaceId { get { return _spaceId; } set { _spaceId = value; setUrl(); } } string _spaceId;
+    public string spaceId { get { return _spaceId; } set { _spaceId = value; setUrl(); } }
+    string _spaceId;
     [XmlIgnore, JsonIgnore]
-    public string globalId { get { return _globalId; } set { _globalId = value; setUrl(); } } string _globalId;
+    public string globalId { get { return _globalId; } set { _globalId = value; setUrl(); } }
+    string _globalId;
     string setUrl() {
       url = (spaceId == null && globalId == null ? null : (string.IsNullOrEmpty(spaceId) || string.IsNullOrEmpty(globalId) ? spaceId + globalId : spaceId + "/" + globalId).Replace("/home.htm", null));
       if (this is ex || url.EndsWith("/")) return url;
@@ -146,7 +148,8 @@ namespace CourseMeta {
         return _style;
       }
       set { _style = value; }
-    } string _style = "?";
+    }
+    string _style = "?";
 
     public bool isType(runtimeType tp) { return (type & tp) == tp; }
     //[XmlAttribute, JsonIgnore]
@@ -194,7 +197,8 @@ namespace CourseMeta {
 
 
     public IEnumerable<data> parents(bool withSelf = true) { var p = this; while (p != null) { if (withSelf) yield return p; withSelf = true; p = p.parent; } }
-    public LineIds getLine() { if (_line == null) { var par = parents().FirstOrDefault(p => p.line != LineIds.no); _line = par == null ? LineIds.no : par.line; } return (LineIds)_line; } LineIds? _line;
+    public LineIds getLine() { if (_line == null) { var par = parents().FirstOrDefault(p => p.line != LineIds.no); _line = par == null ? LineIds.no : par.line; } return (LineIds)_line; }
+    LineIds? _line;
     public string getTradosPage() {
       if (url.StartsWith("/data/instr/")) return "/data/instr/";
       else return getLine() == LineIds.no || pathParts.Length < 2 ? null : "/" + pathParts[0] + "/" + pathParts[1] + "/" + getLine().ToString().ToLower() + "/";
@@ -269,7 +273,8 @@ namespace CourseMeta {
     public XElement readXml() { return XElement.Load(fileName()); }
     public string readString() { return File.ReadAllText(fileName(), Encoding.UTF8); }
     [JsonIgnore]
-    public string[] pathParts { get { return _pathParts ?? (_pathParts = url.Substring(1).Split('/')); } } string[] _pathParts;
+    public string[] pathParts { get { return _pathParts ?? (_pathParts = url.Substring(1).Split('/')); } }
+    string[] _pathParts;
 
     public static IEnumerable<TradosLib.tradosPage> tradosOper1Pages(IEnumerable<data> nodes, LoggerMemory log, bool isFakeRussian) {
       return nodes.SelectMany(n => n.scan()).GroupBy(dt => dt.getTradosPage()).
@@ -305,7 +310,8 @@ namespace CourseMeta {
           res.url = fn.Substring(Machines.rootDir.Length).Replace('\\', '/').Replace("/meta.xml", "/").Replace(".xml", null);
           return res;
         }
-      } catch (Exception exp) {
+      }
+      catch (Exception exp) {
         throw new Exception(fn, exp);
       }
     }
@@ -362,7 +368,8 @@ namespace CourseMeta {
         var cssFn = Path.ChangeExtension(fn, ".css");
         if (File.Exists(cssFn)) r.styleSheet = File.ReadAllText(cssFn, Encoding.UTF8);
         return r;
-      } catch (Exception e) { throw new Exception(fn, e); }
+      }
+      catch (Exception e) { throw new Exception(fn, e); }
     }
 
     public static data readExForSitemap(string fn, LoggerMemory logger) {
@@ -371,7 +378,8 @@ namespace CourseMeta {
         XElement root;
         try {
           root = XElement.Load(fn);
-        } catch (Exception exp) {
+        }
+        catch (Exception exp) {
           if (logger == null) throw exp;
           logger.ErrorLineFmt(url, "wrong XML format, {1}", fn, exp.Message);
           return null;
@@ -394,7 +402,8 @@ namespace CourseMeta {
           return new data { url = url, type = runtimeType.mediaCutFile, title = "Media cut file" };
         else
           return new data { url = url, type = runtimeType.error, title = "Error file" };
-      } catch (Exception e) {
+      }
+      catch (Exception e) {
         logger.ErrorLine(url, LowUtils.ExceptionToString(e));
         return null;
       }
@@ -679,7 +688,8 @@ namespace CourseMeta {
         data res;
         if (pattern != null) {
           res = pattern.clone(); dt.AssignTo(res); res.Items = dt.clone().Items;
-        } else {
+        }
+        else {
           res = dt.clone();
           if (modify != null) {
             foreach (var par in modify.Split(';').Select(p => p.Split('='))) {
@@ -690,7 +700,8 @@ namespace CourseMeta {
                   case "needs": t.needs = LowUtils.EnumParse<testNeeds>(par[1]); break;
                   default: throw new Exception("Canot use test par: " + par[0]);
                 }
-              } else throw new Exception("Canot use ptr.modify par: " + par[0]);
+              }
+              else throw new Exception("Canot use ptr.modify par: " + par[0]);
             }
           }
         }
@@ -815,6 +826,13 @@ namespace CourseMeta {
     }
     public static void addInstructions(data self, LoggerMemory log) {
       if (self.Items == null) return;
+      var q1 = self.scan().OfType<ex>().
+          Where(e => e.instrs != null).
+          SelectMany(e => e.instrs).ToArray();
+      var q2 = q1.Select(i => i.StartsWith("/") ? i : "/data/instr/std/" + i).
+          Distinct().
+          Select(url => new ex { url = url }).
+          ToArray();
       self.Items = self.Items.Concat(XExtension.Create(new mod {
         title = "Instructions",
         url = self.url.Substring(0, self.url.Length - 1) + "_instrs/",
@@ -1012,7 +1030,8 @@ namespace CourseMeta {
         var crsStr = root.Parent.AttributeValue("id");
         var idx = root.Parent.Elements("folder").IndexOf(el => el == root);
         res.globalId = oldGramm.pathName(crsStr, idx);
-      } else
+      }
+      else
         res.globalId = res.globalId = cnt++.ToString();
       if (deep == 1) res.type = res.type | runtimeType.mod;
       //res2.type = runtimeType.lesson;
@@ -1032,7 +1051,8 @@ namespace CourseMeta {
       res.Items = root.Elements().Select(el => fromSitemapLesson(res, el)).ToArray();
       //res.ms = res.Items.Sum(it => it.ms);
       return res;
-    } static Regex removeNum = new Regex(@"\d");
+    }
+    static Regex removeNum = new Regex(@"\d");
 
     static data fromSitemapLesson(data parent, XElement root) {
       var res = new data { spaceId = parent.spaceId };
@@ -1058,7 +1078,8 @@ namespace CourseMeta {
         res.isOldEaPassive = oldEx.AttributeValue("old-ea-is-passive") == "true";
         //res.ms = oldEx.AttributeValue("old-ea-is-passive") == "true" ? 0 : 1;
         fromSitemapLow(res, parent, root, null);
-      } else {
+      }
+      else {
         res.title = getLocOldGrammTitle(root);
         fromSitemapLow(res, parent, root, null);
         res.spaceId = "/lm/oldea/" + res.spaceId;
@@ -1229,7 +1250,8 @@ namespace CourseMeta {
         }
         return _stdStyle;
       }
-    } static string _stdStyle;
+    }
+    static string _stdStyle;
 
 
   }
