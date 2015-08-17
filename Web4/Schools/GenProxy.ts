@@ -149,4 +149,22 @@ module proxies {
 	  } 
    
   };
+  export class vyzva57services {
+    static getCourseUserId(companyid: number, userid: number, producturl: string, completed: (res: number) => void): void {
+		  invoke('vyzva57services/getcourseuserid', 'get', { companyid: companyid, userid: userid, producturl: producturl }, null, completed);
+	  } 
+    static deleteDataKeys(companyid: number, courseuserid: number, producturl: string, taskid: string, urls: Array<string>, completed: () => void): void {
+		  invoke('vyzva57services/deletedatakeys', 'post', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid }, JSON.stringify(urls), completed);
+	  } 
+    static getShortProductDatas(companyid: number, courseuserid: number, producturl: string, taskid: string, completed: (res: {  key: string;  shortData: string;  flag: CourseModel.CourseDataFlag;  }[]) => void): void {
+		  invoke('vyzva57services/getshortproductdatas', 'get', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid }, null, completed);
+	  } 
+    static getLongData(companyid: number, courseuserid: number, producturl: string, taskid: string, key: string, completed: (res: string) => void): void {
+		  invoke('vyzva57services/getlongdata', 'get', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid, key: key }, null, completed);
+	  } 
+    static saveUserData(companyid: number, courseuserid: number, producturl: string, data: {  taskid: string;  longData: string;  key: string;  shortData: string;  flag: CourseModel.CourseDataFlag;  }[], completed: () => void): void {
+		  invoke('vyzva57services/saveuserdata', 'post', { companyid: companyid, courseuserid: courseuserid, producturl: producturl }, JSON.stringify(data), completed);
+	  } 
+   
+  };
 }

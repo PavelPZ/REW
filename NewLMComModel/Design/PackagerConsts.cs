@@ -496,6 +496,7 @@ namespace Packager {
 
     public static string[] angularJS = new string[] {
       "blendedapi/app.js",
+      "blendedapi/scripts/coursemetalib.js",
       "blendedapi/scripts/loader.js",
       //vyzva
       "blendedapi/vyzva/app.js",

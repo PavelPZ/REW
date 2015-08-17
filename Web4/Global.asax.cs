@@ -12,11 +12,24 @@ namespace web4 {
 
   public class Global : System.Web.HttpApplication {
 
+    public static class WebApiConfig {
+      public static void Register(HttpConfiguration config) {
+        config.MapHttpAttributeRoutes();
+        config.Routes.MapHttpRoute(
+            name: "DefaultApi",
+            routeTemplate: "api/{controller}/{id}",
+            defaults: new { id = RouteParameter.Optional }
+        );
+      }
+    }
+
     protected void Application_Start(object sender, EventArgs e) {
       //https://gist.github.com/HenrikFrystykNielsen/2907767
       //System.Diagnostics.Debugger.Break();
       //GlobalConfiguration.Configuration.Services.Replace(typeof(IAssembliesResolver), new ProductsApp.Controllers.CustomAssemblyResolver());
-      System.Web.Http.GlobalConfiguration.Configure(config => config.MapHttpAttributeRoutes());//config.RegisterProxyRoutes();
+      //GlobalConfiguration.Configure(config => config.MapHttpAttributeRoutes());//config.RegisterProxyRoutes();
+
+      GlobalConfiguration.Configure(WebApiConfig.Register);
     }
 
     protected void Session_Start(object sender, EventArgs e) {

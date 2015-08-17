@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\LMCom\REW\NewLMComModel\Design\Model.edmx'. 
+﻿// T4 code generation is enabled for model 'D:\LMCom\REW\Web4\BlendedAPI\vyzva\Server\DataModel\schema\Model.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

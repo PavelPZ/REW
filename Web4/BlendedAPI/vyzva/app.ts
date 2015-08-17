@@ -1,9 +1,9 @@
 ﻿module vyzva {
 
-  export interface INewStates {
+  export interface ISstateNames {
     ajs_vyzvaproduct?: string;
   }
-  export var newStates: INewStates = {};
+  export var stateNames: ISstateNames = {};
 
   export function registerNew(params: blended.createStatePars) {
     params.$stateProvider
@@ -11,7 +11,7 @@
         name: 'pg.ajs',
         url: '/ajs',
         abstract: true,
-        controller: () => { Pager.clearHtml(); },
+        controller: () => { Pager.clearHtml(); }, //vyhozeni old obsahu
         template: "<div data-ui-view></div>",
       })
       .state({
@@ -20,12 +20,12 @@
         template: "<div data-ui-view></div>",
       })
       .state({
-        name: newStates.ajs_vyzvaproduct = 'pg.ajs.vyzvaproduct.home',
+        name: stateNames.ajs_vyzvaproduct = 'pg.ajs.vyzvaproduct.home',
         url: '/home',
         controller: productHomeController,
         templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/productHome.html',
         resolve: {
-          loadProduct: () => productHomeController.loadProduct('/lm/english_a2_1/')
+          loadedProduct: () => productHomeController.loadProduct('/lm/english_0_10/')
         }
       })
     ;

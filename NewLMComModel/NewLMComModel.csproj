@@ -185,9 +185,6 @@
     <Compile Include="Design\jsWebApiProxy\WebApiProxyTemplPar.cs" />
     <Compile Include="Design\jsWebApiProxy\WebApiProxy.cs" />
     <Compile Include="Design\BingGoogleTranslators.cs" />
-    <Compile Include="Design\Company.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Design\CompanyDepartment.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -195,12 +192,6 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Design\CompanyUser.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Design\CourseData.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Design\CourseUser.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Design\CourseVSNet.cs" />

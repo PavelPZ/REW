@@ -1,6 +1,6 @@
 var vyzva;
 (function (vyzva) {
-    vyzva.newStates = {};
+    vyzva.stateNames = {};
     function registerNew(params) {
         params.$stateProvider
             .state({
@@ -16,12 +16,12 @@ var vyzva;
             template: "<div data-ui-view></div>",
         })
             .state({
-            name: vyzva.newStates.ajs_vyzvaproduct = 'pg.ajs.vyzvaproduct.home',
+            name: vyzva.stateNames.ajs_vyzvaproduct = 'pg.ajs.vyzvaproduct.home',
             url: '/home',
             controller: vyzva.productHomeController,
             templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/productHome.html',
             resolve: {
-                loadProduct: function () { return vyzva.productHomeController.loadProduct('/lm/english_a2_1/'); }
+                loadedProduct: function () { return vyzva.productHomeController.loadProduct('/lm/english_0_10/'); }
             }
         });
     }

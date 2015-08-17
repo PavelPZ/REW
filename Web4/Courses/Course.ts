@@ -222,6 +222,10 @@ module Course {
     oldEaIsPassive: boolean;
     instrBody: string;
     seeAlsoStr: string;
+    //blended angular: 
+    userData: Object; //uzivatelova long data stranky (short data jsou v produkut u kazdeho node)
+    myNode: CourseMeta.data; //my node v produktu
+    myModule: blended.module; //muj slovnik a lokalizace
     //---
     title: string;
     instrs: Array<string>;

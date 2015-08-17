@@ -190,4 +190,26 @@ var proxies;
     })();
     proxies.testme = testme;
     ;
+    var vyzva57services = (function () {
+        function vyzva57services() {
+        }
+        vyzva57services.getCourseUserId = function (companyid, userid, producturl, completed) {
+            invoke('vyzva57services/getcourseuserid', 'get', { companyid: companyid, userid: userid, producturl: producturl }, null, completed);
+        };
+        vyzva57services.deleteDataKeys = function (companyid, courseuserid, producturl, taskid, urls, completed) {
+            invoke('vyzva57services/deletedatakeys', 'post', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid }, JSON.stringify(urls), completed);
+        };
+        vyzva57services.getShortProductDatas = function (companyid, courseuserid, producturl, taskid, completed) {
+            invoke('vyzva57services/getshortproductdatas', 'get', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid }, null, completed);
+        };
+        vyzva57services.getLongData = function (companyid, courseuserid, producturl, taskid, key, completed) {
+            invoke('vyzva57services/getlongdata', 'get', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid, key: key }, null, completed);
+        };
+        vyzva57services.saveUserData = function (companyid, courseuserid, producturl, data, completed) {
+            invoke('vyzva57services/saveuserdata', 'post', { companyid: companyid, courseuserid: courseuserid, producturl: producturl }, JSON.stringify(data), completed);
+        };
+        return vyzva57services;
+    })();
+    proxies.vyzva57services = vyzva57services;
+    ;
 })(proxies || (proxies = {}));
