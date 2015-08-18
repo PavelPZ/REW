@@ -45,10 +45,4 @@ namespace CourseMetaNew {
     //...nebo data zadana primo
     data: CourseMeta.data; //kazde cviceni v datech musi byt obaleno modulem
   }
-  export interface ITask {
-    id: string; //jednoznacna identifikace tasku (timestamp)
-    userData: Object; //stav objektu v uzivatelove DB
-    sitemap: SiteMap;
-    loader(): ng.IPromise<any>;
-  }
 }

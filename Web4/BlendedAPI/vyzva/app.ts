@@ -24,9 +24,9 @@
         url: '/home',
         controller: productHomeController,
         templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/productHome.html',
-        resolve: {
-          loadedProduct: () => productHomeController.loadProduct('/lm/english_0_10/')
-        }
+        //resolve: {
+        //  loadedProduct: () => productHomeController.loadProduct('/lm/english_0_10/')
+        //}
       })
     ;
   }

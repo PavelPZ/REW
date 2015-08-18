@@ -23,7 +23,7 @@ var test;
             test.defineStates($stateProvider, $urlRouterProvider);
         }]);
     test.root.app.factory('exportService', ['$http', function (http) { return new exportService(http); }]);
-    test.root.app.directive('iframedirective', test.iframeDirective);
+    test.root.app.directive('iframeDirective', test.iframeDirective);
     var exportService = (function () {
         function exportService($http) {
             this.$http = $http;

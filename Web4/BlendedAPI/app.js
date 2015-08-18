@@ -39,6 +39,7 @@ var blended;
     })();
     blended.OldController = OldController;
     blended.root = new Module('appRoot', ['ngResource', 'ui.router']);
+    blended.root.app.directive('showExercise', blended.showExerciseDirective);
     blended.root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', function ($stateProvider, $urlRouterProvider, $location, $urlMatcherFactoryProvider) {
             $urlMatcherFactoryProvider.caseInsensitive(true); //http://stackoverflow.com/questions/25994308/how-to-config-angular-ui-router-to-not-use-strict-url-matching-mode
             //Nefunguje pak browser historie

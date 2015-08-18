@@ -43,6 +43,8 @@
 
   export var root = new Module('appRoot', ['ngResource', 'ui.router']);
 
+  root.app.directive('showExercise', blended.showExerciseDirective);
+
   root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', (
     $stateProvider: angular.ui.IStateProvider,
     $urlRouterProvider: angular.route.IRouteProvider,

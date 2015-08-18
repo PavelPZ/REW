@@ -737,7 +737,7 @@ module CourseMeta {
     end: number;
     elapsed: number;
     //testSkiped: boolean;
-    result: { [exId: string]: CourseModel.Result; };
+    result: { [ctrlId: string]: CourseModel.Result; };
     //pro design mode - zobraz cviceni vyhodnocene na 100%
     designForceEval: boolean;
   }

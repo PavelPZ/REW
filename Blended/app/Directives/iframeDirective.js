@@ -2,10 +2,9 @@ var test;
 (function (test) {
     function iframeDirective() {
         return {
-            restrict: 'A',
             link: function (scope, el, attrs) {
                 scope.id = 'id-' + (frameId++).toString();
-                el.attr('src', attrs['iframedirective']);
+                el.attr('src', attrs['iframeSrc']);
                 el.css('width', '100%');
                 el.attr('width', '100%');
                 el.attr('frameBorder', '0');

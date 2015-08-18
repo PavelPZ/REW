@@ -20,9 +20,6 @@ var vyzva;
             url: '/home',
             controller: vyzva.productHomeController,
             templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/productHome.html',
-            resolve: {
-                loadedProduct: function () { return vyzva.productHomeController.loadProduct('/lm/english_0_10/'); }
-            }
         });
     }
     vyzva.registerNew = registerNew;

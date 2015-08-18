@@ -251,18 +251,6 @@
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.js" />
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.structure.css" />
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.theme.css" />
-    <Content Include="BlendedAPI\views\view2.html" />
-    <Content Include="BlendedAPI\views\vyzvaproduct.html" />
-    <Content Include="BlendedAPI\vyzva\Server\DataModel\schema\Model.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model.Context.cs</LastGenOutput>
-      <DependentUpon>Model.edmx</DependentUpon>
-    </Content>
-    <Content Include="BlendedAPI\vyzva\Server\DataModel\schema\Model.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model.cs</LastGenOutput>
-      <DependentUpon>Model.edmx</DependentUpon>
-    </Content>
     <Content Include="BlendedAPI\vyzva\Views\productHome.html" />
     <Content Include="JsLib\css\flag-mid.css" />
     <Content Include="JsLib\css\flag-small.css" />
@@ -1357,6 +1345,7 @@
     <TypeScriptCompile Include="BlendedAPI\appBoot.ts" />
     <TypeScriptCompile Include="BlendedAPI\app.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\CourseMetaLib.ts" />
+    <TypeScriptCompile Include="BlendedAPI\Scripts\ShowExercise.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\app.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Loader.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Controllers\productHome.ts" />
@@ -2424,28 +2413,6 @@
     <Compile Include="Author\Author.aspx.designer.cs">
       <DependentUpon>Author.aspx</DependentUpon>
     </Compile>
-    <Compile Include="BlendedAPI\vyzva\Server\DataModel\schema\Company.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BlendedAPI\vyzva\Server\DataModel\schema\CourseData.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BlendedAPI\vyzva\Server\DataModel\schema\CourseUser.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BlendedAPI\vyzva\Server\DataModel\schema\Model.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BlendedAPI\vyzva\Server\DataModel\schema\Model.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BlendedAPI\vyzva\Server\DataModel\schema\StudyGrup.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="BlendedAPI\vyzva\Server\DataModel\StudyGrups.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\Vyzva57Services.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\DataModel\Company.cs" />
@@ -2740,6 +2707,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BlendedAPI\Styles\img\" />
+    <Folder Include="BlendedAPI\views\" />
     <Folder Include="BS3\css\" />
     <Folder Include="ClientBin\" />
     <Folder Include="JsLib\css\img\Reports\" />
