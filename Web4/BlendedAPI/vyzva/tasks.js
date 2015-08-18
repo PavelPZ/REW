@@ -34,15 +34,6 @@ var vyzva;
         return persistNodeImpl;
     })();
     vyzva.persistNodeImpl = persistNodeImpl;
-    function applyMixins(derivedCtor, baseCtors) {
-        baseCtors.forEach(function (baseCtor) {
-            Object.getOwnPropertyNames(baseCtor.prototype).forEach(function (name) {
-                if (name !== 'constructor') {
-                    derivedCtor.prototype[name] = baseCtor.prototype[name];
-                }
-            });
-        });
-    }
     function newGuid() { return ''; }
     //***************** metadata, popisujici metakurz
     (function (levelIds) {
@@ -113,30 +104,25 @@ var vyzva;
         return task;
     })(persistNodeImpl);
     vyzva.task = task;
-    var courseTask = (function (_super) {
-        __extends(courseTask, _super);
-        function courseTask() {
+    var blendedCourseTask = (function (_super) {
+        __extends(blendedCourseTask, _super);
+        function blendedCourseTask() {
             _super.apply(this, arguments);
         }
-        courseTask.prototype.createStatus = function (ud) {
+        blendedCourseTask.prototype.createStatus = function (ud) {
             _super.prototype.createStatus.call(this, ud);
             ud.periodStart = 0; //todo Now
+            ud.pretest = { url: this.repository.pretest.url, taskId: ud.taskId };
         };
-        courseTask.prototype.createChild = function (ud, completed) {
-            if (!ud.pretest || !ud.pretest.done) {
-                if (!ud.pretest)
-                    ud = this.setUserData(function (data) { return data.pretest = { taskId: newGuid() }; });
+        blendedCourseTask.prototype.createChild = function (ud, completed) {
+            if (!ud.pretest.done) {
                 this.child = new pretestTask(this.repository.pretest, ud.pretest.taskId, completed);
             }
-            else if (!ud.entryTest || !ud.entryTest.done) {
-                if (!ud.entryTest)
-                    ud = this.setUserData(function (data) { return data.entryTest = { taskId: newGuid() }; });
+            else if (!ud.entryTest.done) {
                 this.child = new testTask(this.repository.entryTests[ud.pretest.targetLevel], ud.entryTest.taskId, completed);
             }
-            else if (!ud.lessons || !ud.lessons.done) {
-                if (!ud.lessons)
-                    ud = this.setUserData(function (data) { return data.lessons = { taskId: newGuid() }; });
-                new listTask(this.repository.lessons[ud.pretest.targetLevel], ud.lessons.taskId, completed);
+            else if (!ud.lessons.done) {
+                this.child = new listTask(this.repository.lessons[ud.pretest.targetLevel], ud.lessons.taskId, completed);
             }
             else {
                 ud.done = true;
@@ -144,101 +130,94 @@ var vyzva;
                 completed();
             }
         };
-        courseTask.prototype.moveForward = function (ud) {
-            switch (this.child.repository.taskType) {
-                case 'vyzva.pretest':
-                    var pretUser = (this.child).getUserData();
-                    if (!pretUser.done)
-                        return 'tasks.course.doGoAhead: !pretUser.done';
-                    this.setUserData(function (dt) { dt.pretest.done = true; dt.pretest.targetLevel = pretUser.targetLevel; dt.entryTest = { taskId: newGuid() }; });
-                    break;
-                case 'vyzva.entryTest':
-                    var entryTestUser = (this.child).getUserData();
-                    if (!entryTestUser.done)
-                        return 'tasks.course.doGoAhead: !entryTestUser.done';
-                    this.setUserData(function (dt) { dt.entryTest.done = true; dt.entryTest.score = entryTestUser.score; dt.lessons = { taskId: newGuid() }; });
-                    break;
-                case 'vyzva.lessons':
-                    var lessonsUser = (this.child).getUserData();
-                    if (!lessonsUser.done)
-                        return 'tasks.course.doGoAhead: !lessonsUser.done';
-                    this.setUserData(function (dt) { dt.done = true; dt.lessons.done = true; });
-                    break;
-                default:
-                    return 'tasks.course.doGoAhead: unknown taskType - ' + this.child.repository.taskType;
+        blendedCourseTask.prototype.moveForward = function (ud) {
+            var _this = this;
+            var childUserData = this.child.getUserData();
+            if (childUserData.taskId == ud.pretest.taskId) {
+                var pretUser = childUserData;
+                if (!pretUser.done)
+                    return 'tasks.course.doGoAhead: !pretUser.done';
+                this.setUserData(function (dt) { dt.pretest.done = true; dt.pretest.targetLevel = pretUser.targetLevel; dt.entryTest = { url: _this.repository.entryTests[ud.pretest.targetLevel].url, taskId: ud.taskId }; });
             }
+            else if (childUserData.taskId == ud.entryTest.taskId) {
+                var entryTestUser = childUserData;
+                if (!entryTestUser.done)
+                    return 'tasks.course.doGoAhead: !entryTestUser.done';
+                this.setUserData(function (dt) { dt.entryTest.done = true; dt.entryTest.score = entryTestUser.score; dt.lessons = { url: _this.repository.lessons[ud.pretest.targetLevel].url, taskId: ud.taskId }; });
+            }
+            else if (childUserData.taskId == ud.lessons.taskId) {
+                var lessonsUser = childUserData;
+                if (!lessonsUser.done)
+                    return 'tasks.course.doGoAhead: !lessonsUser.done';
+                this.setUserData(function (dt) { dt.done = true; dt.lessons.done = true; });
+            }
+            else
+                return 'tasks.course.doGoAhead: unknown taskId - ' + childUserData.taskId;
             return null;
         };
-        return courseTask;
+        return blendedCourseTask;
     })(task);
-    vyzva.courseTask = courseTask;
+    vyzva.blendedCourseTask = blendedCourseTask;
     var pretestTask = (function (_super) {
         __extends(pretestTask, _super);
         function pretestTask() {
             _super.apply(this, arguments);
         }
-        pretestTask.prototype.createStatus = function (data) {
-            _super.prototype.createStatus.call(this, data);
-            data.parts = [{ level: levelIds.A2, taskId: newGuid() }];
+        pretestTask.prototype.createStatus = function (ud) {
+            _super.prototype.createStatus.call(this, ud);
+            ud.urls = [];
+            ud.actLevel = levelIds.A2;
+            ud.urls.push(this.actRepo(levelIds.A2).url);
         };
         pretestTask.prototype.moveForward = function (ud) {
             var childTest = (this.child);
-            var testUser = childTest.getUserData();
-            if (!testUser.done)
-                return 'tasks.pretestTask.doGoAhead: !testUser.done';
-            var myUserData = this.setUserData(function (dt) {
-                var last = dt.parts[dt.parts.length - 1];
-                if (last.taskId != childTest.taskId)
-                    return 'tasks.pretestTask.doGoAhead: last.taskId != childTest.taskId';
-                last.done = true;
-                last.score = testUser.score;
-            });
+            var actRepo = this.actRepo(ud.actLevel);
+            var childUser = childTest.getUserData();
+            if (!childUser.done || childUser.url != actRepo.url)
+                return 'tasks.pretestTask.doGoAhead: !testUser.done || testUser.url != actRepo.url';
+            if (actRepo.level == levelIds.A1) {
+                this.finishPretest(ud, levelIds.A1);
+            }
+            else if (actRepo.level == levelIds.A2) {
+                if (childUser.score >= actRepo.minScore && childUser.score < actRepo.maxScore)
+                    this.finishPretest(ud, levelIds.A2);
+                else if (childUser.score < actRepo.minScore)
+                    this.newTestItem(ud, levelIds.A1);
+                else
+                    this.newTestItem(ud, levelIds.B1);
+            }
+            else if (actRepo.level == levelIds.B1) {
+                if (childUser.score >= actRepo.minScore && childUser.score < actRepo.maxScore)
+                    this.finishPretest(ud, levelIds.B1);
+                else if (childUser.score < actRepo.minScore)
+                    this.finishPretest(ud, levelIds.A2);
+                else
+                    this.newTestItem(ud, levelIds.B2);
+            }
+            else if (actRepo.level == levelIds.B2) {
+                if (childUser.score < actRepo.minScore)
+                    this.finishPretest(ud, levelIds.B1);
+                else
+                    this.finishPretest(ud, levelIds.B2);
+            }
             return null;
         };
-        pretestTask.prototype.createChild = function (myUserData, completed) {
-            var last = myUserData.parts[myUserData.parts.length - 1];
-            if (last.done) {
-                var actRepo = this.repository.levels[last.level];
-                if (last.level == levelIds.A1)
-                    this.finishPretest(myUserData, levelIds.A1, completed);
-                else if (last.level == levelIds.A2) {
-                    if (last.score >= actRepo.minScore && last.score < actRepo.maxScore)
-                        this.finishPretest(myUserData, levelIds.A2, completed);
-                    else if (last.score < actRepo.minScore)
-                        this.newTestItem(myUserData, levelIds.A1, completed);
-                    else
-                        this.newTestItem(myUserData, levelIds.B1, completed);
-                }
-                else if (last.level == levelIds.B1) {
-                    if (last.score >= actRepo.minScore && last.score < actRepo.maxScore)
-                        this.finishPretest(myUserData, levelIds.B1, completed);
-                    else if (last.score < actRepo.minScore)
-                        this.finishPretest(myUserData, levelIds.A2, completed);
-                    else
-                        this.newTestItem(myUserData, levelIds.B2, completed);
-                }
-                else if (last.level == levelIds.B2) {
-                    if (last.score < actRepo.minScore)
-                        this.finishPretest(myUserData, levelIds.B1, completed);
-                    else
-                        this.finishPretest(myUserData, levelIds.B2, completed);
-                }
-            }
-            else {
-                this.child = new testTask(this.repository.levels[last.level], last.taskId, completed);
-            }
+        pretestTask.prototype.createChild = function (ud, completed) {
+            var act = _.find(this.repository.levels, function (l) { return l.level == ud.actLevel; });
+            if (!act)
+                throw '!act';
+            this.child = new testTask(act, ud.taskId, completed);
         };
-        pretestTask.prototype.newTestItem = function (myUserData, lev, completed) {
-            myUserData.parts.push({ level: lev, taskId: newGuid() });
-            var last = myUserData.parts[myUserData.parts.length - 1];
-            this.child = new testTask(this.repository.levels[last.level], last.taskId, completed);
+        pretestTask.prototype.newTestItem = function (ud, lev) {
+            ud.actLevel = lev;
+            ud.urls.push(this.actRepo(lev).url);
         };
-        pretestTask.prototype.finishPretest = function (myUserData, lev, completed) {
-            myUserData.done = true;
-            myUserData.targetLevel = lev;
+        pretestTask.prototype.finishPretest = function (ud, lev) {
+            ud.done = true;
+            ud.targetLevel = lev;
             this.child = null;
-            completed();
         };
+        pretestTask.prototype.actRepo = function (lev) { return _.find(this.repository.levels, function (l) { return l.level == lev; }); };
         return pretestTask;
     })(task);
     vyzva.pretestTask = pretestTask;
@@ -250,35 +229,8 @@ var vyzva;
         listTask.prototype.createStatus = function (ud) {
             _super.prototype.createStatus.call(this, ud);
         };
-        listTask.prototype.moveForward = function (ud) { throw 'notimplemented'; };
-        listTask.prototype.createChild = function (ud) { throw 'notimplemented'; };
-        listTask.prototype.goAhead = function (ctx) {
-            var _this = this;
-            var def = ctx.$q.defer();
-            if (this.child) {
-                this.child.goAhead(ctx).then(function (childOK) {
-                    if (childOK) {
-                        def.resolve(true);
-                        return;
-                    } //posun dopredu resi child task
-                    var childTask = (_this.child);
-                    var childUser = childTask.getUserData();
-                    if (!childUser.done)
-                        def.reject('tasks.listTask.doGoAhead: !childUser.done');
-                    var myUserData = _this.setUserData(function (dt) {
-                        var last = dt.items[dt.items.length - 1];
-                        if (last.taskId != childTask.taskId)
-                            def.reject('tasks.listTask.doGoAhead: last.taskId != childTest.taskId');
-                        last.done = true;
-                        last.score = childUser.score;
-                    });
-                    //this.getNextTestItem(def, myUserData);
-                });
-            }
-            else {
-            }
-            return def.promise;
-        };
+        listTask.prototype.moveForward = function (ud) { ud.done = true; return null; };
+        listTask.prototype.createChild = function (ud, completed) { completed(); };
         return listTask;
     })(task);
     vyzva.listTask = listTask;
@@ -287,15 +239,38 @@ var vyzva;
         function testTask() {
             _super.apply(this, arguments);
         }
+        testTask.prototype.createStatus = function (ud) {
+            _super.prototype.createStatus.call(this, ud);
+        };
+        testTask.prototype.moveForward = function (ud) { ud.done = true; return null; };
+        testTask.prototype.createChild = function (ud, completed) { completed(); };
         return testTask;
     })(task);
     vyzva.testTask = testTask;
+    var moduleTask = (function (_super) {
+        __extends(moduleTask, _super);
+        function moduleTask() {
+            _super.apply(this, arguments);
+        }
+        moduleTask.prototype.createStatus = function (ud) {
+            _super.prototype.createStatus.call(this, ud);
+        };
+        moduleTask.prototype.moveForward = function (ud) { ud.done = true; return null; };
+        moduleTask.prototype.createChild = function (ud, completed) { completed(); };
+        return moduleTask;
+    })(task);
+    vyzva.moduleTask = moduleTask;
     var exTask = (function (_super) {
         __extends(exTask, _super);
-        function exTask(repository, taskId) {
-            _super.call(this, repository, taskId);
+        function exTask() {
+            _super.apply(this, arguments);
         }
+        exTask.prototype.createStatus = function (ud) {
+            _super.prototype.createStatus.call(this, ud);
+        };
+        exTask.prototype.moveForward = function (ud) { ud.done = true; return null; };
+        exTask.prototype.createChild = function (ud, completed) { completed(); };
         return exTask;
-    })(persistNodeImpl);
+    })(task);
     vyzva.exTask = exTask;
 })(vyzva || (vyzva = {}));

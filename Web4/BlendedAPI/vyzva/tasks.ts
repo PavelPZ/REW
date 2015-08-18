@@ -46,16 +46,6 @@
     }
   }
 
-  function applyMixins(derivedCtor: any, baseCtors: any[]) {
-    baseCtors.forEach(baseCtor => {
-      Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
-        if (name !== 'constructor') {
-          derivedCtor.prototype[name] = baseCtor.prototype[name];
-        }
-      });
-    });
-  }
-
   function newGuid(): string { return ''; }
 
   //***************** metadata, popisujici metakurz
@@ -113,65 +103,62 @@
   //applyMixins(task, [persistNodeImpl]);
 
   //****************** COURSE
-  export interface ICourseRepository extends IRepository {
+  export interface IBlendedCourseRepository extends IRepository {
     line: LMComLib.LineIds; //kurz (English, German, French)
-    pretest: IPretestRepository; //identifikace pretestu
-    entryTests: Array<IListRepository>; //vstupni check-testy
-    lessons: Array<IListRepository>; //levels, napr. levels[level.A1]
+    pretest: IPretestRepository; //pretest
+    entryTests: Array<IRepository>; //vstupni check-testy (entryTests[0]..A1, ..)
+    lessons: Array<IRepository>; //jednotlive tydenni tasky. Jeden tydenni task je seznam z kurziku nebo testu
   }
 
-  export interface ICourseUser extends IPersistNodeUser { //user dato pro ICourseRepository
+  export interface ICoursePretestUser extends IPersistNodeUser {
+    targetLevel?: levelIds;
+  }
+  export interface IBlendedCourseUser extends IPersistNodeUser { //user dato pro ICourseRepository
     periodStart: number; //datum zacatku prvni etapy
     //child task infos
-    pretest: { taskId: string; done?: boolean; targetLevel?: levelIds; };
-    entryTest: { taskId: string; done?: boolean; score?: number; };
-    lessons: { taskId: string; done?: boolean; };
+    pretest: ICoursePretestUser;
+    entryTest: IPersistNodeUser; 
+    lessons: IPersistNodeUser; 
   }
 
-  export class courseTask extends task {
+  export class blendedCourseTask extends task {
 
-    getUserData: () => ICourseUser;
-    setUserData: (modify: (data: ICourseUser) => void) => ICourseUser;
-    repository: ICourseRepository;
+    getUserData: () => IBlendedCourseUser;
+    setUserData: (modify: (data: IBlendedCourseUser) => void) => IBlendedCourseUser;
+    repository: IBlendedCourseRepository;
 
-    createStatus(ud: ICourseUser) {
+    createStatus(ud: IBlendedCourseUser) {
       super.createStatus(ud);
       ud.periodStart = 0; //todo Now
+      ud.pretest = { url: this.repository.pretest.url, taskId: ud.taskId }
     }
 
-    createChild(ud: ICourseUser, completed: () => void) {
-      if (!ud.pretest || !ud.pretest.done) { //pretest task neexistuje nebo neni dokoncen
-        if (!ud.pretest) ud = this.setUserData(data => data.pretest = { taskId: newGuid() });
+    createChild(ud: IBlendedCourseUser, completed: () => void) {
+      if (!ud.pretest.done) { //pretest task neexistuje nebo neni dokoncen
         this.child = new pretestTask(this.repository.pretest, ud.pretest.taskId, completed);
-      } else if (!ud.entryTest || !ud.entryTest.done) { //entryTest task neexistuje nebo neni dokoncen
-        if (!ud.entryTest) ud = this.setUserData(data => data.entryTest = { taskId: newGuid() });
+      } else if (!ud.entryTest.done) { //entryTest task neexistuje nebo neni dokoncen
         this.child = new testTask(this.repository.entryTests[ud.pretest.targetLevel], ud.entryTest.taskId, completed);
-      } else if (!ud.lessons || !ud.lessons.done) { //level task neexistuje nebo neni dokoncen
-        if (!ud.lessons) ud = this.setUserData(data => data.lessons = { taskId: newGuid() });
-        new listTask(this.repository.lessons[ud.pretest.targetLevel], ud.lessons.taskId, completed);
+      } else if (!ud.lessons.done) { //level task neexistuje nebo neni dokoncen
+        this.child = new listTask(this.repository.lessons[ud.pretest.targetLevel], ud.lessons.taskId, completed);
       } else {
         ud.done = true; this.child = null;
         completed();
       }
     }
 
-    moveForward(ud: ICourseUser): string {
-      switch (this.child.repository.taskType) {
-        case 'vyzva.pretest': //pretest ukoncen
-          var pretUser = (<pretestTask>(this.child)).getUserData(); if (!pretUser.done) return 'tasks.course.doGoAhead: !pretUser.done';
-          this.setUserData(dt => { dt.pretest.done = true; dt.pretest.targetLevel = pretUser.targetLevel; dt.entryTest = { taskId: newGuid() } });
-          break;
-        case 'vyzva.entryTest':
-          var entryTestUser = (<testTask>(this.child)).getUserData(); if (!entryTestUser.done) return 'tasks.course.doGoAhead: !entryTestUser.done';
-          this.setUserData(dt => { dt.entryTest.done = true; dt.entryTest.score = entryTestUser.score; dt.lessons = { taskId: newGuid() } });
-          break;
-        case 'vyzva.lessons':
-          var lessonsUser = (<listTask>(this.child)).getUserData(); if (!lessonsUser.done) return 'tasks.course.doGoAhead: !lessonsUser.done';
-          this.setUserData(dt => { dt.done = true; dt.lessons.done = true; });
-          break;
-        default:
-          return 'tasks.course.doGoAhead: unknown taskType - ' + this.child.repository.taskType;
-      }
+    moveForward(ud: IBlendedCourseUser): string {
+      var childUserData = this.child.getUserData();
+      if (childUserData.taskId == ud.pretest.taskId) {
+        var pretUser = <IPretestUser>childUserData; if (!pretUser.done) return 'tasks.course.doGoAhead: !pretUser.done';
+        this.setUserData(dt => { dt.pretest.done = true; dt.pretest.targetLevel = pretUser.targetLevel; dt.entryTest = { url: this.repository.entryTests[ud.pretest.targetLevel].url, taskId: ud.taskId } });
+      } else if (childUserData.taskId == ud.entryTest.taskId) {
+        var entryTestUser = <ITestUser>childUserData; if (!entryTestUser.done) return 'tasks.course.doGoAhead: !entryTestUser.done';
+        this.setUserData(dt => { dt.entryTest.done = true; dt.entryTest.score = entryTestUser.score; dt.lessons = { url: this.repository.lessons[ud.pretest.targetLevel].url, taskId: ud.taskId } });
+      } else if (childUserData.taskId == ud.lessons.taskId) {
+        var lessonsUser = childUserData; if (!lessonsUser.done) return 'tasks.course.doGoAhead: !lessonsUser.done';
+        this.setUserData(dt => { dt.done = true; dt.lessons.done = true; });
+      } else
+        return 'tasks.course.doGoAhead: unknown taskId - ' + childUserData.taskId;
       return null;
     }
 
@@ -182,7 +169,7 @@
     levels: Array<IPretestItemRepository>; //levels, napr. levels[level.A1]
   }
 
-  export interface IPretestItemRepository extends ITestRepository {
+  export interface IPretestItemRepository extends IRepository {
     //pro A2: pod toto skore ma uroven A1
     //pro B1: pod toto skore ma uroven A2
     //pro B2: pod toto skore ma uroven B1
@@ -190,10 +177,12 @@
     // pro A2: nad toto skore se spousti B1
     // pro B1: nad toto skore se spousti B2
     maxScore: number;
+    level: levelIds;
   }
 
   export interface IPretestUser extends IPersistNodeUser { //course dato pro IPretestRepository
-    parts: Array<{ level: levelIds; taskId: string; done?: boolean; score?: number; }>;
+    urls: Array<string>;
+    actLevel: levelIds;
     targetLevel: levelIds; //vysledek pretestu pro done=true
   }
 
@@ -203,122 +192,117 @@
     setUserData: (modify: (data: IPretestUser) => void) => IPretestUser;
     repository: IPretestRepository;
 
-    createStatus(data: IPretestUser) {
-      super.createStatus(data);
-      data.parts = [{ level: levelIds.A2, taskId: newGuid() }];
+    createStatus(ud: IPretestUser) {
+      super.createStatus(ud);
+      ud.urls = [];
+      ud.actLevel = levelIds.A2;
+      ud.urls.push(this.actRepo(levelIds.A2).url);
     }
 
     moveForward(ud: IPretestUser): string {
       var childTest = <testTask>(this.child);
-      var testUser = childTest.getUserData(); if (!testUser.done) return 'tasks.pretestTask.doGoAhead: !testUser.done';
-      var myUserData = this.setUserData(dt => {
-        var last = dt.parts[dt.parts.length - 1]; if (last.taskId != childTest.taskId) return 'tasks.pretestTask.doGoAhead: last.taskId != childTest.taskId';
-        last.done = true; last.score = testUser.score;
-      });
+      var actRepo = this.actRepo(ud.actLevel);
+      var childUser = childTest.getUserData(); if (!childUser.done || childUser.url != actRepo.url) return 'tasks.pretestTask.doGoAhead: !testUser.done || testUser.url != actRepo.url';
+
+      if (actRepo.level == levelIds.A1) {
+        this.finishPretest(ud, levelIds.A1);
+      } else if (actRepo.level == levelIds.A2) {
+        if (childUser.score >= actRepo.minScore && childUser.score < actRepo.maxScore) this.finishPretest(ud, levelIds.A2);
+        else if (childUser.score < actRepo.minScore) this.newTestItem(ud, levelIds.A1);
+        else this.newTestItem(ud, levelIds.B1);
+      } else if (actRepo.level == levelIds.B1) {
+        if (childUser.score >= actRepo.minScore && childUser.score < actRepo.maxScore) this.finishPretest(ud, levelIds.B1);
+        else if (childUser.score < actRepo.minScore) this.finishPretest(ud, levelIds.A2);
+        else this.newTestItem(ud, levelIds.B2);
+      } else if (actRepo.level == levelIds.B2) {
+        if (childUser.score < actRepo.minScore) this.finishPretest(ud, levelIds.B1);
+        else this.finishPretest(ud, levelIds.B2);
+      }
       return null;
     }
 
-    createChild(myUserData: IPretestUser, completed: () => void) {
-      var last = myUserData.parts[myUserData.parts.length - 1];
-      if (last.done) { //ukonceny pretest item
-        var actRepo = this.repository.levels[last.level];
-        if (last.level == levelIds.A1)
-          this.finishPretest(myUserData, levelIds.A1, completed);
-        else if (last.level == levelIds.A2) {
-          if (last.score >= actRepo.minScore && last.score < actRepo.maxScore) this.finishPretest(myUserData, levelIds.A2, completed);
-          else if (last.score < actRepo.minScore) this.newTestItem(myUserData, levelIds.A1, completed);
-          else this.newTestItem(myUserData, levelIds.B1, completed);
-        } else if (last.level == levelIds.B1) {
-          if (last.score >= actRepo.minScore && last.score < actRepo.maxScore) this.finishPretest(myUserData, levelIds.B1, completed);
-          else if (last.score < actRepo.minScore) this.finishPretest(myUserData, levelIds.A2, completed);
-          else this.newTestItem(myUserData, levelIds.B2, completed);
-        } else if (last.level == levelIds.B2) {
-          if (last.score < actRepo.minScore) this.finishPretest(myUserData, levelIds.B1, completed);
-          else this.finishPretest(myUserData, levelIds.B2, completed);
-        }
-      } else { //rozpracovany pretest item
-        this.child = new testTask(this.repository.levels[last.level], last.taskId, completed);
-      }
+    createChild(ud: IPretestUser, completed: () => void) {
+      var act: IPretestItemRepository = _.find(this.repository.levels, l => l.level == ud.actLevel);
+      if (!act) throw '!act';
+      this.child = new testTask(act, ud.taskId, completed);
     }
 
-    newTestItem(myUserData: IPretestUser, lev: levelIds, completed: () => void) {
-      myUserData.parts.push({ level: lev, taskId: newGuid() });
-      var last = myUserData.parts[myUserData.parts.length - 1];
-      this.child = new testTask(this.repository.levels[last.level], last.taskId, completed);
+    newTestItem(ud: IPretestUser, lev: levelIds) {
+      ud.actLevel = lev; 
+      ud.urls.push(this.actRepo(lev).url);
     }
-    finishPretest(myUserData: IPretestUser, lev: levelIds, completed: () => void) {
-      myUserData.done = true; myUserData.targetLevel = lev; this.child = null;
-      completed();
+    finishPretest(ud: IPretestUser, lev: levelIds) {
+      ud.done = true; ud.targetLevel = lev; this.child = null;
     }
+    actRepo(lev: levelIds): IPretestItemRepository { return _.find(this.repository.levels, l => l.level == lev); }
 
   }
 
   //****************** LEVEL LESSONS
-  export interface IListRepository extends IRepository {
-    items: Array<IRepository>; //tydny vyuky
-  }
-
   export interface IListUser extends IPersistNodeUser { //course dato pro IListRepository
     items: Array<{ taskId: string; done?: boolean; score?: number; }>;
   }
 
   export class listTask extends task { //task pro nepodmineny pruchod seznamem tasku
 
-    repository: IListRepository;
+    repository: IRepository;
     getUserData: () => IListUser;
     setUserData: (modify: (data: IListUser) => void) => IListUser;
 
-    createStatus(ud: IPretestUser) {
+    createStatus(ud: IListUser) {
       super.createStatus(ud);
     }
-
-    moveForward(ud: IListUser): string { throw 'notimplemented'; }
-    createChild(ud: IListUser) { throw 'notimplemented'; }
-
-    goAhead(ctx: IContext): ng.IPromise<boolean> {
-      var def = ctx.$q.defer();
-      if (this.child) {
-        this.child.goAhead(ctx).then(childOK => {
-          if (childOK) { def.resolve(true); return; } //posun dopredu resi child task
-          var childTask = <task>(this.child);
-          var childUser = childTask.getUserData(); if (!childUser.done) def.reject('tasks.listTask.doGoAhead: !childUser.done');
-          var myUserData = this.setUserData(dt => {
-            var last = dt.items[dt.items.length - 1]; if (last.taskId != childTask.taskId) def.reject('tasks.listTask.doGoAhead: last.taskId != childTest.taskId');
-            last.done = true; last.score = childUser.score;
-          });
-          //this.getNextTestItem(def, myUserData);
-        });
-      } else {
-        //this.getNextTestItem(def, this.setUserData($.noop));
-      }
-      return def.promise;
-    }
-
+    moveForward(ud: IListUser): string { ud.done = true; return null; }
+    createChild(ud: IListUser, completed: () => void) { completed(); }
   }
 
-  //****************** TEST
-  export interface ITestRepository extends IRepository {
-  }
-
+  //****************** linearni TEST
   export interface ITestUser extends IPersistNodeUser { //course dato pro test
   }
 
-  export class testTask extends task { //task pro pruchod lekcemi
+  export class testTask extends task { //task pro pruchod lekcemi (repository je seznam cviceni)
 
-    repository: ITestRepository;
     getUserData: () => ITestUser;
     setUserData: (modify: (data: ITestUser) => void) => ITestUser;
+
+    createStatus(ud: ITestUser) {
+      super.createStatus(ud);
+    }
+    moveForward(ud: ITestUser): string { ud.done = true; return null; }
+    createChild(ud: ITestUser, completed: () => void) { completed(); }
+
+  }
+
+  //****************** linearni KURZ
+  export interface IModuleUser extends IPersistNodeUser { //course dato pro test (repository je seznam cviceni)
+  }
+
+  export class moduleTask extends task { //task pro pruchod lekcemi
+
+    getUserData: () => IModuleUser;
+    setUserData: (modify: (data: IModuleUser) => void) => IModuleUser;
+
+    createStatus(ud: IModuleUser) {
+      super.createStatus(ud);
+    }
+    moveForward(ud: IModuleUser): string { ud.done = true; return null; }
+    createChild(ud: IModuleUser, completed: () => void) { completed(); }
+
   }
 
   //****************** EXERCISE
   export interface IExUser extends IPersistNodeUser { //course dato pro test
   }
 
-  export class exTask extends persistNodeImpl { //task pro pruchod lekcemi
-    constructor(repository: ITestRepository, taskId: string) { super(repository, taskId); }
-
+  export class exTask extends task { //task pro pruchod lekcemi
     getUserData: () => IExUser;
-    setUserData: (modify: (data: IExUser) => void) => IExUser;
+    setUserData: (modify: (data: ITestUser) => void) => ITestUser;
+
+    createStatus(ud: IExUser) {
+      super.createStatus(ud);
+    }
+    moveForward(ud: IExUser): string { ud.done = true; return null; }
+    createChild(ud: IExUser, completed: () => void) { completed(); }
   }
 
 }
