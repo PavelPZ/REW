@@ -251,6 +251,9 @@
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.js" />
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.structure.css" />
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.theme.css" />
+    <Content Include="BlendedAPI\Doc.txt" />
+    <Content Include="BlendedAPI\views\exercise.html" />
+    <Content Include="BlendedAPI\vyzva\Views\_productTemplate.html" />
     <Content Include="BlendedAPI\vyzva\Views\productHome.html" />
     <Content Include="JsLib\css\flag-mid.css" />
     <Content Include="JsLib\css\flag-small.css" />
@@ -1342,14 +1345,15 @@
     <TypeScriptCompile Include="Author\doc.ts" />
     <TypeScriptCompile Include="Author\GenerateReflection.ts" />
     <TypeScriptCompile Include="Author\vsNet.ts" />
-    <TypeScriptCompile Include="BlendedAPI\appBoot.ts" />
+    <TypeScriptCompile Include="BlendedAPI\oldBoot.ts" />
     <TypeScriptCompile Include="BlendedAPI\app.ts" />
-    <TypeScriptCompile Include="BlendedAPI\Scripts\CourseMetaLib.ts" />
+    <TypeScriptCompile Include="BlendedAPI\Scripts\Lib.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\ShowExercise.ts" />
-    <TypeScriptCompile Include="BlendedAPI\vyzva\app.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\app.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Loader.ts" />
+    <TypeScriptCompile Include="BlendedAPI\Controlers\exercise.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Controllers\productHome.ts" />
-    <TypeScriptCompile Include="BlendedAPI\vyzva\tasks.ts" />
+    <TypeScriptCompile Include="BlendedAPI\Scripts\Tasks.ts" />
     <TypeScriptCompile Include="BS3\js\bootstrap.d.ts" />
     <TypeScriptCompile Include="Courses\codes\chinhSpeaking.ts" />
     <TypeScriptCompile Include="Courses\codes\docReference.ts" />
@@ -2707,7 +2711,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BlendedAPI\Styles\img\" />
-    <Folder Include="BlendedAPI\views\" />
     <Folder Include="BS3\css\" />
     <Folder Include="ClientBin\" />
     <Folder Include="JsLib\css\img\Reports\" />

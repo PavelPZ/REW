@@ -1,28 +1,40 @@
 ﻿namespace vyzva {
 
-  export class productHomeController {
-    //static $inject = ['$scope', '$state', 'loadedProduct'];
-    static $inject = ['$scope', '$state'];
+  export class controler extends blended.controller {
+    static $inject = ['$scope', '$state', '$q', '$loadedProduct', '$loadedTask'];
+    constructor($scope: productHomeScope, $state: angular.ui.IStateService, public product: CourseMeta.IProductEx, public courseTask: blended.blendedCourseTask) {
+      super($scope, $state);
+    }
+    greenBtnClick() { this.courseTask.goAhead({ $q: this.$scope.params.$q }) }
+  }
 
-    constructor($scope: productHomeScope, $state: angular.ui.IStateService, lp) {
-      $scope.state = $state.current;
-      $scope.params = <productHomePars><{}>($state.params);
-    }
-    static loadProduct(producturl: string): ng.IPromise<CourseMeta.product> {
-      //proxies.vyzva57services.getCourseUserId(1, 1, '/lm/blended/english/blended.product/', num => alert(num));
-      //return blended.loader.adjustProduct({ adminid: 0, userid: 1, companyid: 1, loc: LMComLib.Langs.cs_cz, persistence: persistNewEA.persistCourse, producturl: producturl, url: null, $http: null, $q:null });
-      return blended.loader.adjustEx({
-        adminid: 0, userid: 1, companyid: 1, loc: LMComLib.Langs.cs_cz, persistence: persistNewEA.persistCourse, producturl: producturl, taskid:'x',
-        url: '/lm/oldea/english1/l01/a/hueex0_l01_a04', $http: null, $q: null
-      });
+  export class productHomeController extends blended.controller {
+    static $inject = ['$scope', '$state'];
+    //static $inject = ['$scope', '$state'];
+
+    constructor($scope: productHomeScope, $state: angular.ui.IStateService, prod: CourseMeta.IProductEx, courseTask: blended.IBlendedCourseRepository) {
+      super($scope, $state);
     }
   }
-  export interface productHomeScope extends ng.IScope {
-    state: angular.ui.IState;
-    params: productHomePars; //query route parametry
-  }
-  //url paprametry
-  export interface productHomePars extends blended.learnContext {
+
+  //export var loadProduct = ["$route", ($route) => {
+  export var loadProduct = ['$stateParams', ($stateParams: blended.learnContext) => {
+    blended.finishContext($stateParams);
+    return blended.loader.adjustProduct($stateParams);
+    //{
+    //  adminid: 0, userid: 1, companyid: 1, loc: LMComLib.Langs.cs_cz, persistence: persistNewEA.persistCourse, producturl: prodUrl, taskid: blended.newGuid(), url: '', $http: null, $q: null
+    //});
+  }];
+  export var loadTask = ['$loadedProduct', '$stateParams', (prod: CourseMeta.IProductEx, $stateParams: blended.learnContext) => {
+    blended.finishContext($stateParams);
+    var def = $stateParams.$q.defer();
+    //other="{'loader':'vyzva57'}" z d:\LMCom\rew\Web4\lm\BLCourse\English\meta.xml. Jak vytvorit task z produktu
+    if (!prod.other || JSON.parse(prod.other)['loader'] != 'vyzva57') def.reject('$loadedProduct.loader != vyzva57');
+    new blended.blendedCourseTask(prod, $stateParams, t => def.resolve(t));
+    return def.promise;
+  }];
+
+  export interface productHomeScope extends blended.IScope {
   }
 
 }

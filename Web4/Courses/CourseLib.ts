@@ -751,7 +751,7 @@ module CourseMeta {
 
   //sluzby, ktere CourseMeta poskytuje persistent layer
   export interface IPersistence {
-    loadShortUserData: (userId: number, companyId: number, prodUrl: string, completed: (data: { [url: string]: Object; }) => void) => void;
+    loadShortUserData: (userId: number, companyId: number, prodUrl: string, completed: (data: { [url: string]: any; }) => void) => void;
     loadUserData: (userId: number, companyId: number, prodUrl: string, modUrl: string, completed: (data: Object) => void) => void;
     //data ve formatu [[key,short,long],...], long muze chybet
     saveUserData: (userId: number, companyId: number, prodUrl: string, data: Array<Array<string>>, completed: () => void) => void;

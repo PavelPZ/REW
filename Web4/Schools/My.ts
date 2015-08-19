@@ -10,7 +10,7 @@ module schoolMy {
 
     constructor() {
       super(schools.tMy, null);
-      this.licKey = validate.create(validate.types.rangelength,(prop) => {
+      this.licKey = validate.create(validate.types.rangelength, (prop) => {
         prop.min = 8;
         prop.max = 8;
       });
@@ -32,7 +32,7 @@ module schoolMy {
               case Login.EnterLicenceResult.ok:
                 //this.licKey.message(errOK());
                 this.licKey("");
-                Login.adjustMyData(true,() => Pager.reloadPage(this));
+                Login.adjustMyData(true, () => Pager.reloadPage(this));
                 anim.collapseExpanded();
                 //Pager.closePanels();
                 return;
@@ -53,7 +53,7 @@ module schoolMy {
           TreeView.adjustParents(c.DepTree.Departments);
           var comp: Company = {
             title: c.Title, items: [], courses: null, data: c,
-            department: ko.observable<Admin.Department>(c.PublisherOwnerUserId != 0 ? null : <Admin.Department>TreeView.findNode(c.DepTree.Departments,(d: Admin.Department) => d.Id == c.DepSelected)),
+            department: ko.observable<Admin.Department>(c.PublisherOwnerUserId != 0 ? null : <Admin.Department>TreeView.findNode(c.DepTree.Departments, (d: Admin.Department) => d.Id == c.DepSelected)),
             treeViewModel: null
           };
           if (c.DepTree.Departments) comp.treeViewModel = new TreeView.Model(c.DepTree.Departments, false, null, {
@@ -63,7 +63,7 @@ module schoolMy {
               Pager.ajaxGet(
                 Pager.pathType.restServices,
                 Login.CmdSaveDepartment_Type,
-                Login.CmdSaveDepartment_Create(LMStatus.Cookie.id, c.Id,(<Admin.Department>(nd.data)).Id),
+                Login.CmdSaveDepartment_Create(LMStatus.Cookie.id, c.Id, (<Admin.Department>(nd.data)).Id),
                 (res) => {
                   comp.department(<any>(nd.data));
                   anim.collapseExpanded();
@@ -142,7 +142,12 @@ module schoolMy {
         myCompany: comp,
         gotoUrl: (dt: courseLink) => {
           //nove AngularJS produkty
-          if (dt.isAngularJS) { Pager.navigateToHash(blended.root.href(vyzva.stateNames.ajs_vyzvaproduct, { producturl: pr.url})); return; } //window.location.hash = '/pg/ajs/vyzvaproduct/xxx'; return; }
+          if (dt.isAngularJS) {
+            var ctx: blended.learnContext = { producturl: blended.enocdeUrl(pr.url), companyid: comp.data.Id, userid: LMStatus.Cookie.id, adminid: LMStatus.Cookie.id, loc: Trados.actLang, url: null, taskid: 'def', persistence: null /*TODO*/ };
+            var hash = blended.root.href(vyzva.stateNames.ajs_vyzvaproduct, ctx)
+            Pager.navigateToHash(hash);
+            return;
+          } //window.location.hash = '/pg/ajs/vyzvaproduct/xxx'; return; }
           //stare produkty
           if (dt.isTest && dt.data.LicCount == 0) return;
           if (comp.data.PublisherOwnerUserId == 0 && /*!dt.data.isAuthoredCourse &&*/ dt.myCompany.data.DepTree && dt.myCompany.data.DepTree.Departments && !dt.myCompany.department()) { alert(CSLocalize('a85c8a527bb44bda9a7ee0721707d2ef', 'Choose company department (by clicking on [Change] link above)')); return; }

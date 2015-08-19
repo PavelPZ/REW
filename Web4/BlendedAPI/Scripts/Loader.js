@@ -1,15 +1,29 @@
+var CourseMeta;
+(function (CourseMeta) {
+    //rozsireni interface o metody
+    function extendProduct(prod) {
+        $.extend(prod, CourseMeta.productEx);
+        prod.moduleCache = new blended.loader.cacheOf(3);
+    }
+    CourseMeta.extendProduct = extendProduct;
+    CourseMeta.productEx = {
+        findParent: function (self, cond) {
+            var c = self;
+            while (c != null) {
+                if (cond(c))
+                    return c;
+                c = c.parent;
+            }
+            return null;
+        },
+        find: function (url) {
+            var pe = this;
+            return (pe.nodeDir[url]);
+        }
+    };
+})(CourseMeta || (CourseMeta = {}));
 var blended;
 (function (blended) {
-    blended.baseUrlRelToRoot = '..';
-    function cloneContext(ctx) { var res = {}; $.extend(res, ctx); return res; }
-    function finishContext(ctx) {
-        if (ctx.$http && ctx.$q)
-            return ctx;
-        var inj = angular.injector(['ng']);
-        ctx.$http = (inj.get('$http'));
-        ctx.$q = (inj.get('$q'));
-        return ctx;
-    }
     var loader;
     (function (loader) {
         //help
@@ -23,7 +37,7 @@ var blended;
         var _dictItemRoot;
         //baseUrlRelToRoot: relativni adresa rootu Web4 aplikace vyhledem k aktualni HTML strance
         function adjustProduct(ctx) {
-            ctx = finishContext(ctx);
+            ctx = blended.finishContext(ctx);
             var deferred = ctx.$q.defer();
             var prod = loader.productCache.fromCache(ctx);
             if (prod) {
@@ -45,8 +59,11 @@ var blended;
                 var instrs = files[2].data;
                 //vypln seznamy a adresar nodes
                 var scan;
-                scan = function (dt) { if (dt.Items)
-                    _.each(dt.Items, function (it) { it.parent = dt; scan(it); prod.nodeDir[it.url] = it; prod.nodeList.push(it); }); };
+                scan = function (dt) {
+                    prod.nodeDir[dt.url] = dt;
+                    prod.nodeList.push(dt); //if (dt.other) dt.other = $.extend(dt, JSON.parse(dt.other));
+                    _.each(dt.Items, function (it) { it.parent = dt; scan(it); });
+                };
                 scan(prod);
                 //lokalizace produktu
                 _.each(prod.nodeList, function (dt) { return dt.title = CourseMeta.localizeString(dt.url, dt.title, loc); });
@@ -64,15 +81,13 @@ var blended;
                             delete tg.id; }); //instrukce nemohou mit tag.id, protoze se ID tlucou s ID ze cviceni
                         prod.instructions[p] = JsRenderTemplateEngine.render("c_genitems", pg);
                     }
-                //merge s user data
+                //cache
+                loader.productCache.toCache(ctx, prod);
+                //user data
                 if (!!ctx.persistence)
                     ctx.persistence.loadShortUserData(ctx.userid, ctx.companyid, ctx.producturl, function (data) {
-                        if (data)
-                            for (var p in data) {
-                                var dt = prod.nodeDir[p];
-                                dt.userData = data[p];
-                            }
-                        loader.productCache.toCache(ctx, prod);
+                        prod.persistData = data;
+                        //if (data) for (var p in data) { var dt = prod.nodeDir[p]; if (dt) dt.userData = data[p]; /*nektera data mohou patrit taskum*/ }
                         deferred.resolve(prod);
                     });
                 else
@@ -84,7 +99,7 @@ var blended;
         }
         loader.adjustProduct = adjustProduct;
         function adjustModule(ctx, prod) {
-            ctx = finishContext(ctx);
+            ctx = blended.finishContext(ctx);
             var deferred = ctx.$q.defer();
             var mod = prod.moduleCache.fromCache(ctx.url);
             if (mod) {
@@ -107,14 +122,14 @@ var blended;
             return deferred.promise;
         }
         function adjustEx(ctx) {
-            ctx = finishContext(ctx);
+            ctx = blended.finishContext(ctx);
             var deferred = ctx.$q.defer();
             adjustProduct(ctx).then(function (prod) {
                 var exNode = prod.find(ctx.url);
                 var mod = prod.findParent(exNode, function (n) { return CourseMeta.isType(n, CourseMeta.runtimeType.mod); });
                 if (mod == null)
                     throw 'Exercise ' + ctx.url + ' does not have module';
-                var modCtx = cloneContext(ctx);
+                var modCtx = blended.cloneContext(ctx);
                 modCtx.url = mod.url;
                 adjustModule(modCtx, prod).then(function (mod) {
                     var pg = mod.cacheOfPages.fromCache(ctx.url);

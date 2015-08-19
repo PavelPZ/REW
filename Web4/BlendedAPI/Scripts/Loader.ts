@@ -1,18 +1,42 @@
-﻿module blended {
+﻿namespace CourseMeta {
 
-  export var baseUrlRelToRoot = '..';
-  export interface learnContext {
-    userid: number; adminid: number; companyid: number; loc: LMComLib.Langs; persistence: CourseMeta.IPersistence; producturl: string; url: string; taskid: string;//URL parametry
-    $http?: ng.IHttpService, $q?: ng.IQService; //services
+  //export interface data extends blended.IPersistNodeImpl { //rozsireni CourseMeta.data o novou persistenci
+  //}
+
+  export interface IProductEx extends product, IProductAddIn { //rozsireni CourseMeta.product o novou persistenci
+    instructions: { [id: string]: string; };
+    nodeDir: { [id: string]: data; };
+    nodeList: Array<data>;
+    moduleCache: blended.loader.cacheOf<blended.module>;
+    persistData: { [url: string]: any; }; //user short data pro cely produkt
   }
-  function cloneContext(ctx: learnContext): learnContext { var res = {}; $.extend(res, ctx); return <learnContext>res; }
-  function finishContext(ctx: learnContext): learnContext {
-    if (ctx.$http && ctx.$q) return ctx;
-    var inj = angular.injector(['ng']);
-    ctx.$http = <ng.IHttpService>(inj.get('$http'));
-    ctx.$q = <ng.IQService>(inj.get('$q'));
-    return ctx;
+
+  //Misto externi knihovny ma metody pristupu k nodes primo produkt
+  export interface IProductAddIn {
+    findParent<TRes extends data>(self: data, cond: (it: data) => boolean): TRes;
+    find<TRes extends data>(url: string): TRes;
   }
+
+  //rozsireni interface o metody
+  export function extendProduct(prod: IProductEx) {
+    $.extend(prod, productEx);
+    prod.moduleCache = new blended.loader.cacheOf<blended.module>(3);
+  }
+
+  export var productEx: IProductAddIn = {
+    findParent<TRes extends data>(self: data, cond: (it: data) => boolean): TRes {
+      var c = self;
+      while (c != null) { if (cond(c)) return <TRes>c; c = c.parent; }
+      return null;
+    },
+    find<TRes extends data>(url: string): TRes {
+      var pe = <IProductEx>this;
+      return <TRes>(pe.nodeDir[url]);
+    }
+  }
+}
+
+module blended {
 
   export interface module { //module z cache
     loc: { [id: string]: any; };
@@ -39,7 +63,9 @@
       var prod = productCache.fromCache(ctx);
       if (prod) { deferred.resolve(prod); return; }
       var href = ctx.producturl.substr(0, ctx.producturl.length - 1);
-      var promises = _.map([href + '.js', href + '.' + LMComLib.Langs[ctx.loc] + '.js', href + '_instrs.js'], url => ctx.$http.get(baseUrlRelToRoot + url, { transformResponse: s => CourseMeta.jsonParse(s) }));
+      var promises = _.map(
+        [href + '.js', href + '.' + LMComLib.Langs[ctx.loc] + '.js', href + '_instrs.js'],
+        url => ctx.$http.get(baseUrlRelToRoot + url, { transformResponse: s => CourseMeta.jsonParse(s) }));
       ctx.$q.all(promises).then(
         (files: Array<ng.IHttpPromiseCallbackArg<any>>) => {
           prod = files[0].data; prod.url = ctx.producturl; prod.instructions = {}; prod.nodeDir = {}; prod.nodeList = [];
@@ -48,7 +74,10 @@
           var instrs: Array<any> = files[2].data;
           //vypln seznamy a adresar nodes
           var scan: (dt: CourseMeta.data) => void;
-          scan = dt => { if (dt.Items) _.each(dt.Items, it => { it.parent = dt; scan(it); prod.nodeDir[it.url] = it; prod.nodeList.push(it); }); };
+          scan = dt => {
+            prod.nodeDir[dt.url] = dt; prod.nodeList.push(dt); //if (dt.other) dt.other = $.extend(dt, JSON.parse(dt.other));
+            _.each(dt.Items, it => { it.parent = dt; scan(it); });
+          };
           scan(prod);
           //lokalizace produktu
           _.each(prod.nodeList, dt => dt.title = CourseMeta.localizeString(dt.url, dt.title, loc));
@@ -60,10 +89,12 @@
             Course.scanEx(pg, tg => { if (!_.isString(tg)) delete tg.id; }); //instrukce nemohou mit tag.id, protoze se ID tlucou s ID ze cviceni
             prod.instructions[p] = JsRenderTemplateEngine.render("c_genitems", pg);
           }
-          //merge s user data
+          //cache
+          productCache.toCache(ctx, prod);
+          //user data
           if (!!ctx.persistence) ctx.persistence.loadShortUserData(ctx.userid, ctx.companyid, ctx.producturl, data => {
-            if (data) for (var p in data) { var dt = prod.nodeDir[p]; dt.userData = data[p]; }
-            productCache.toCache(ctx, prod);
+            prod.persistData = data;
+            //if (data) for (var p in data) { var dt = prod.nodeDir[p]; if (dt) dt.userData = data[p]; /*nektera data mohou patrit taskum*/ }
             deferred.resolve(prod);
           }); else
             deferred.resolve(prod);

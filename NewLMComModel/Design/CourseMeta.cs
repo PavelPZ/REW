@@ -739,6 +739,7 @@ namespace CourseMeta {
         sitemap.fromFileSystem("/lm/author/", log),
         sitemap.fromFileSystem("/lm/blended/", log),
         sitemap.fromFileSystem("/lm/ea/", log),
+        sitemap.fromFileSystem("/lm/blcourse/", log),
       };
 
       //nove kurzy a return

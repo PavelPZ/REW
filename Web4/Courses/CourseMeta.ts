@@ -22,9 +22,10 @@ module CourseMeta {
     name: string;
     ms: number;
     //specializovane blended AngularJS fields (nepouzivaji se, je kvuli prekladu)
-    userData: Object;
-    userDataChanged: boolean;
-    myProduct: IProductEx;
+    other: string;
+    //getPersistData: (taskId: string) => blended.IPersistNodeUser;
+    //setPersistData: (taskId: string, modify: (data: blended.IPersistNodeUser) => void) => void;
+    //myProduct: IProductEx;
     //static, plneno v finishStaticTree
     parent: dataImpl;
     exCount: number; //pocet cviceni
@@ -56,6 +57,7 @@ module CourseMeta {
     }
 
   }
+  Utils.applyMixins(dataImpl, []);
 
   export class productImpl extends dataImpl {
 

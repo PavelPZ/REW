@@ -76,7 +76,7 @@ namespace CourseMeta {
     multiQuestionnaire = 0x8000000, //dotaznik multitestu
     testDemo = 0x10000000, //demo test
     //runtimePage = 0x400000,
-    productNew = 0x20000000, //novy produkt pomoci AngularJS
+    productNew = 0x20000000, //novy produkt pomoci AngularJS. Příznak slouží k modifikaci skoku z hlavní obrazovky webu na produkt.
   }
 
   [XmlInclude(typeof(data)), XmlInclude(typeof(products)), XmlInclude(typeof(publisher)), XmlInclude(typeof(project)), XmlInclude(typeof(sitemap)), XmlInclude(typeof(ex)),
@@ -87,6 +87,21 @@ namespace CourseMeta {
     public string title;
     [XmlAttribute, DefaultValue(0), JsonIgnore]
     public int order;
+    [XmlAttribute, JsonGenOnly]
+    public string url;
+    [XmlAttribute, DefaultValue(0)]
+    public LineIds line; //line dat
+    [XmlAttribute, DefaultValue(0)]
+    public runtimeType type;
+    [XmlAttribute]
+    public string name;
+    [XmlAttribute]
+    public string other; //muze byt JSON s ostatnimi informacemi
+
+    [XmlAttribute, DefaultValue(0)]
+    public int ms;
+
+
     //fake udaje pro prevod z OldEA formatu. V novem formatu je nahrazeno url.
     [XmlIgnore, JsonIgnore]
     public string spaceId { get { return _spaceId; } set { _spaceId = value; setUrl(); } }
@@ -100,25 +115,13 @@ namespace CourseMeta {
       url += "/";
       return url;
     }
-    [XmlAttribute, JsonGenOnly]
-    public string url;
     static public string urlStripLast(string url) { return url[url.Length - 1] == '/' ? url.Substring(0, url.Length - 1) : url; }
-    [XmlAttribute, DefaultValue(0)]
-    public LineIds line; //line dat
     [XmlAttribute, JsonIgnore]
     public Langs[] allLocs; //vsechny dostupne lokalizace
-    [XmlAttribute, DefaultValue(0)]
-    public runtimeType type;
 
 
     [XmlAttribute, JsonIgnore]
     public string styleSheet; //data, vytazena z .css
-
-    [XmlAttribute]
-    public string name;
-
-    [XmlAttribute, DefaultValue(0)]
-    public int ms;
 
     public void modifyUrls(string prefix, string localVsNetPublisherId) {
       foreach (var d in scan())
@@ -245,6 +248,7 @@ namespace CourseMeta {
         _style = _style,
         styleSheet = styleSheet,
         ms = ms,
+        other = other,
       };
       if (finish != null) finish(res);
       if (deep) {
@@ -786,12 +790,9 @@ namespace CourseMeta {
     public static data genCourse(sitemap publishers, string publisherId, string prodId, CourseIds crsId, bool isTest, dictTypes defaultDictType, Langs[] defaultLocs, params object[] data) {
       var tasks = flateArrays(data).OfType<data>().Where(d => !(d is ptr) || !((ptr)d).isGramm).ToArray();
       if (tasks.Length == 0) throw new Exception("tasks.Length == 0");
-      //var ptrs = flateArrays(data).OfType<ptr>().Where(p => !p.isGramm).ToArray();
       var gramPtrs = flateArrays(data).OfType<ptr>().Where(p => p.isGramm).ToArray();
-      //var tasks = flateArrays(data).Where(d => d.GetType() == typeof(data)).Cast<data>().ToArray();
       var tit = flateArrays(data).OfType<string>().FirstOrDefault();
       if (tit == null) throw new Exception("Missing Product title");
-      //tit = tit ?? tasks[0].title; // ?? publishers.find(tasks[0].items[0].url ?? ((ptr)tasks[0].items[0]).urls[0]).title;
       if (tasks.Length == 1 && tasks[0].title == null) tasks[0].title = tit;
       var url = ("/" + publisherId + "/" + prodId + "/").ToLower();
       product res = new product {

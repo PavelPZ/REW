@@ -1,0 +1,30 @@
+﻿BlendedAPI\oldBoot.ts: registrace routes pro Old verzi runtime
+
+blendedapi/scripts/coursemetalib.ts",
+blendedapi/scripts/showexercise.ts",
+blendedapi/scripts/loader.ts",
+blendedapi/scripts/tasks.ts: tasks
+
+blendedapi/vyzva/controllers/producthome.ts: 
+blendedapi/vyzva/app.ts: registrace States pro Vyzva 57
+blendedapi/app.ts: root a start angular aplikace. Registrace vsech services apod.
+
+Request na spusteni produktu
+- spousti se v MY.ts
+- URL je parametrizovana pomoci learnContext (obsahuje userId, productUrl, jazyk lokalizace a ficn9 taskId='def')
+
+LOADER
+- Produkt (vcetne lokalizace a short persistence) se da do globalni cache
+- se cvicenim (s long persistenci) se naladuje i modul (s lokalizaci vsech jeho cviceni a slovnikem)
+- cviceni a moduly jsou ulozeny v cachem navazane na produkt.
+
+TASKS
+- root task 
+
+ROOT controler + status (vyzva.controler)
+- je parent vsech ostatnich kontroleru
+- laduje a drzi produkt a vytvari root task (blendedCourseTask)
+- obsluhuje spolecnou cast view (napr. TopBar se zelenou sipkou apod.)
+
+TODO:
+- propojit short-persistenci Produktu s Task persistenci

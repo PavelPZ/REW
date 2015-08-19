@@ -123,10 +123,24 @@ namespace CourseMeta {
           var prodId = url.Replace('/', '_');
           url += "/";
           node = Lib.publishers.find(url);
-          yield return prodDef.genCourse(Lib.publishers, "lm", "prods" + prodId, langProds.Key, id != "lessons/lesson_a1_1", dictTypes.no, new Langs[] { Langs.cs_cz, Langs.en_gb }, node.title,
+          var res = prodDef.genCourse(Lib.publishers, "lm", "prods" + prodId, langProds.Key, id != "lessons/lesson_a1_1", dictTypes.no, new Langs[] { Langs.cs_cz, Langs.en_gb }, node.title,
             new ptr(true, url) { takeChilds = childMode.selfChild }
           );
+          yield return res;
         }
+      }
+      //CourseIds[] vyzva57 = new CourseIds[] { CourseIds.English, CourseIds.German, CourseIds.French };
+      CourseIds[] vyzva57 = new CourseIds[] { CourseIds.English };
+      foreach (var lang in vyzva57) {
+        var url = ("/lm/BLCourse/" + lang.ToString()).ToLower();
+        var prodId = url.Replace('/', '_');
+        url += "/";
+        node = Lib.publishers.find(url);
+        var res = prodDef.genCourse(Lib.publishers, "lm", "prods" + prodId, lang, false, dictTypes.L, new Langs[] { Langs.cs_cz, Langs.en_gb }, node.title,
+          new ptr(true, url) { takeChilds = childMode.child }
+        );
+        res.other = node.other; res.type = runtimeType.product | runtimeType.productNew;
+        yield return res;
       }
     }
 

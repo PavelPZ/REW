@@ -1,23 +1,23 @@
-var CourseMeta;
-(function (CourseMeta) {
-    function extendProduct(prod) {
-        $.extend(prod, CourseMeta.productEx);
-        prod.moduleCache = new blended.loader.cacheOf(3);
+var blended;
+(function (blended) {
+    function enocdeUrl(url) {
+        return url.replace(/\//g, '!');
     }
-    CourseMeta.extendProduct = extendProduct;
-    CourseMeta.productEx = {
-        findParent: function (self, cond) {
-            var c = self;
-            while (c != null) {
-                if (cond(c))
-                    return c;
-                c = c.parent;
-            }
-            return null;
-        },
-        find: function (url) {
-            var pe = this;
-            return (pe.nodeDir[url]);
+    blended.enocdeUrl = enocdeUrl;
+    function decodeUrl(url) {
+        return url.replace(/\!/g, '/');
+    }
+    blended.decodeUrl = decodeUrl;
+    function newGuid() { return (new Date().getTime() + (startGui++)).toString(); }
+    blended.newGuid = newGuid;
+    var startGui = new Date().getTime();
+    var controller = (function () {
+        function controller($scope, $state) {
+            $scope.state = $state.current;
+            $scope.params = $state.params;
         }
-    };
-})(CourseMeta || (CourseMeta = {}));
+        controller.$inject = ['$scope', '$state'];
+        return controller;
+    })();
+    blended.controller = controller;
+})(blended || (blended = {}));

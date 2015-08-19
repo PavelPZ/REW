@@ -164,7 +164,9 @@ var schoolMy;
                 gotoUrl: function (dt) {
                     //nove AngularJS produkty
                     if (dt.isAngularJS) {
-                        Pager.navigateToHash(blended.root.href(vyzva.stateNames.ajs_vyzvaproduct, { producturl: pr.url }));
+                        var ctx = { producturl: blended.enocdeUrl(pr.url), companyid: comp.data.Id, userid: LMStatus.Cookie.id, adminid: LMStatus.Cookie.id, loc: Trados.actLang, url: null, taskid: 'def', persistence: null /*TODO*/ };
+                        var hash = blended.root.href(vyzva.stateNames.ajs_vyzvaproduct, ctx);
+                        Pager.navigateToHash(hash);
                         return;
                     } //window.location.hash = '/pg/ajs/vyzvaproduct/xxx'; return; }
                     //stare produkty

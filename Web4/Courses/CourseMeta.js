@@ -63,6 +63,7 @@ var CourseMeta;
         return dataImpl;
     })();
     CourseMeta.dataImpl = dataImpl;
+    Utils.applyMixins(dataImpl, []);
     var productImpl = (function (_super) {
         __extends(productImpl, _super);
         function productImpl() {

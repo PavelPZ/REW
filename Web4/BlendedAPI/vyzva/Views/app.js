@@ -14,7 +14,7 @@ var vyzva;
             name: 'pg.ajs.vyzvaproduct',
             url: "/vyzvaproduct?producturl&persistence&userid&companyid&loc&adminid",
             abstract: true,
-            controller: vyzva.productController,
+            controller: vyzva.controler,
             resolve: {
                 $loadedProduct: vyzva.loadProduct,
                 $loadedTask: vyzva.loadTask

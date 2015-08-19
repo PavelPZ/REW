@@ -170,6 +170,51 @@ module bowser {
 
 module Utils {
 
+  export function getObjectClassName(obj) {
+    if (obj && obj.constructor && obj.constructor.toString()) {
+
+      /*
+       *  for browsers which have name property in the constructor
+       *  of the object,such as chrome 
+       */
+      if (obj.constructor.name) {
+        return obj.constructor.name;
+      }
+      var str = obj.constructor.toString();
+      /*
+       * executed if the return of object.constructor.toString() is 
+       * "[object objectClass]"
+       */
+
+      if (str.charAt(0) == '[') {
+        var arr = str.match(/\[\w+\s*(\w+)\]/);
+      } else {
+        /*
+         * executed if the return of object.constructor.toString() is 
+         * "function objectClass () {}"
+         * for IE Firefox
+         */
+        var arr = str.match(/function\s*(\w+)/);
+      }
+      if (arr && arr.length == 2) {
+        return arr[1];
+      }
+    }
+    return undefined;
+  };
+
+
+  export function applyMixins(derivedCtor: any, baseCtors: any[]) {
+    baseCtors.forEach(baseCtor => {
+      Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+        if (name !== 'constructor') {
+          derivedCtor.prototype[name] = baseCtor.prototype[name];
+        }
+      });
+    });
+  }
+  //applyMixins (srcType, [copyFrom1, copyFrom2,...]);
+
   export function longLog(lines: string) { _.each(lines.split('\n'), l => console.log(l)); }
 
   export function extendJsonDataByClass(jsonData: Object, cls: Object) {
@@ -453,7 +498,7 @@ module Utils {
     var s = Math.floor(secs % 60); secs = secs / 60;
     var m = Math.floor(secs % 60);
     var h = Math.floor(secs / 60);
-    return (h==0 ? '' : (h.toString() + ":")) + (m < 10 ? "0" : "") + m.toString() + ":" + (s < 10 ? "0" : "") + s.toString();
+    return (h == 0 ? '' : (h.toString() + ":")) + (m < 10 ? "0" : "") + m.toString() + ":" + (s < 10 ? "0" : "") + s.toString();
   }
   export function IsTheSameDay(date1: Date, date2: Date): boolean {
     return date1.setHours(0, 0, 0, 0) == date2.setHours(0, 0, 0, 0);
@@ -819,7 +864,7 @@ module Logger {
   }
   export var delphiLog: logger;
 
-  var ids = null; 
+  var ids = null;
   var logProc: (msg: string, appId: string) => void;
   var noIds = null;
 

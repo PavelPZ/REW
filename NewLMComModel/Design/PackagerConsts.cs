@@ -241,7 +241,7 @@ namespace Packager {
       "jslib/js/Ajax.js",
       "jslib/js/Validate.js",
       "JsLib/Controls/TreeView/TreeView.js",
-      "blendedapi/appBoot.js"
+      "blendedapi/oldBoot.js"
     };
 
     public static string[] htmlJsLib = new string[] {
@@ -495,13 +495,14 @@ namespace Packager {
     };
 
     public static string[] angularJS = new string[] {
-      "blendedapi/scripts/coursemetalib.js",
+      "blendedapi/scripts/lib.js",
       "blendedapi/scripts/showexercise.js",
       "blendedapi/scripts/loader.js",
+      "blendedapi/scripts/tasks.js",
 
       "blendedapi/vyzva/controllers/producthome.js",
-      "blendedapi/app.js",
       "blendedapi/vyzva/app.js",
+      "blendedapi/app.js",
     };
 
     public static string[] jsAuthorWeb = new string[] {
