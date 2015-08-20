@@ -499,6 +499,7 @@ namespace Packager {
       "blendedapi/scripts/showexercise.js",
       "blendedapi/scripts/loader.js",
       "blendedapi/scripts/tasks.js",
+      "blendedapi/vyzva/scripts/tasks.js",
 
       "blendedapi/vyzva/controllers/producthome.js",
       "blendedapi/vyzva/app.js",

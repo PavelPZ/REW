@@ -18,8 +18,9 @@ var blended;
     var controller = (function () {
         function controller($scope, $state) {
             this.$scope = $scope;
-            $scope.state = $state.current;
             $scope.params = ($state.params);
+            //$scope.state =
+            $scope.params.$state = $state;
             finishContext($scope.params);
             $scope.events = this;
         }
@@ -28,16 +29,25 @@ var blended;
     })();
     blended.controller = controller;
     blended.baseUrlRelToRoot = '..'; //jak se z root stranky dostat do rootu webu
-    function cloneContext(ctx) { var res = {}; $.extend(res, ctx); return res; }
-    blended.cloneContext = cloneContext;
+    function cloneAndModifyContext(ctx, modify) {
+        if (modify === void 0) { modify = null; }
+        var res = {};
+        $.extend(res, ctx);
+        if (modify) {
+            modify(res);
+            finishContext(res);
+        }
+        return res;
+    }
+    blended.cloneAndModifyContext = cloneAndModifyContext;
     function finishContext(ctx) {
-        if (ctx.$http && ctx.$q)
-            return ctx;
-        ctx.producturl = decodeUrl(ctx.producturl);
-        ctx.url = decodeUrl(ctx.url);
-        var inj = angular.injector(['ng']);
-        ctx.$http = (inj.get('$http'));
-        ctx.$q = (inj.get('$q'));
+        ctx.productUrl = decodeUrl(ctx.producturl);
+        ctx.Url = decodeUrl(ctx.url);
+        if (!ctx.$http) {
+            var inj = angular.injector(['ng']);
+            ctx.$http = (inj.get('$http'));
+            ctx.$q = (inj.get('$q'));
+        }
         return ctx;
     }
     blended.finishContext = finishContext;

@@ -2,7 +2,7 @@
 
   export class Module {
     app: ng.IModule;
-    $actState: angular.ui.IStateService;
+    $oldActState: angular.ui.IStateService;
 
     constructor(name: string, modules: Array<string>) {
       var self = this;
@@ -10,19 +10,19 @@
     }
 
     href(stateName: string, params?: Object, options?: angular.ui.IHrefOptions): string {
-      return this.$actState.href(stateName, params)
+      return this.$oldActState.href(stateName, params)
     }
-    go(stateName: string, params?: Object, options?: angular.ui.IHrefOptions): string {
-      return this.$actState.href(stateName, params)
-    }
+    //go(stateName: string, params?: Object, options?: angular.ui.IHrefOptions): string {
+    //  return this.$actState.go(stateName, params)
+    //}
   }
 
-  export class OldController { //naladuje stranku dle zaregistrovane /old/... route
+  export class OldController { //naladuje stranku dle zaregistrovane /old/... route 
 
     static $inject = ['$scope', '$state'];
 
     constructor($scope: ng.IScope, $state: angular.ui.IStateService) {
-      root.$actState = $state;
+      root.$oldActState = $state;
       //prevezmi parametry
       var urlParts: Array<string> = [];
       for (var p = 0; p < 6; p++) {

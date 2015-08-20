@@ -6,9 +6,13 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var blended;
 (function (blended) {
-    //export interface IPersistNodeImpl {
-    //  userData: { [taskId: string]: IPersistNodeItem; } //dato pro jednotlive variatny
-    //}
+    function getPersistData(dataNode, taskid) {
+        if (!dataNode.userData)
+            return null;
+        var it = dataNode.userData[taskid];
+        return it ? it.data : null;
+    }
+    blended.getPersistData = getPersistData;
     //***************** metadata, popisujici metakurz
     (function (levelIds) {
         levelIds[levelIds["A1"] = 0] = "A1";
@@ -19,23 +23,21 @@ var blended;
     var levelIds = blended.levelIds;
     //************ TASKS
     var task = (function () {
-        function task(repository, taskId, completed) {
+        function task(dataNode, ctx, parent, completed) {
             var _this = this;
-            this.repository = repository;
-            this.taskId = taskId;
+            this.dataNode = dataNode;
+            this.ctx = ctx;
+            this.parent = parent;
             this.getPersistData = function () {
-                if (!_this.userData)
-                    return null;
-                var it = _this.userData[_this.taskId];
-                return it ? it.data : null;
+                return getPersistData(_this.dataNode, _this.ctx.taskid);
             };
             this.setPersistData = function (modify) {
-                var it = _this.userData ? _this.userData[_this.taskId] : null;
+                var it = _this.dataNode.userData ? _this.dataNode.userData[_this.ctx.taskid] : null;
                 if (!it) {
                     it = { data: {}, modified: true };
-                    if (!_this.userData)
-                        _this.userData = {};
-                    _this.userData[_this.taskId] = it;
+                    if (!_this.dataNode.userData)
+                        _this.dataNode.userData = {};
+                    _this.dataNode.userData[_this.ctx.taskid] = it;
                 }
                 else
                     it.modified = true;
@@ -52,9 +54,9 @@ var blended;
             this.createChild(ud, function () { return completed(_this); });
         }
         //posun zelenou sipkou
-        task.prototype.goAhead = function (ctx) {
+        task.prototype.goAhead = function () {
             var _this = this;
-            var def = ctx.$q.defer();
+            var def = this.ctx.$q.defer();
             try {
                 var ud = this.getPersistData();
                 if (ud.done) {
@@ -62,13 +64,12 @@ var blended;
                     return;
                 }
                 if (this.child) {
-                    this.child.goAhead(ctx).then(function (childOK) {
+                    this.child.goAhead().then(function (childOK) {
                         if (childOK) {
                             _this.addToHistory(_this.child, ud);
                             def.resolve(true);
                             return;
                         } //... ano, posun udelal child
-                        //this.child = null;
                         _this.log('doMoveForward, child finished');
                         _this.doMoveForward(def, ud); //... ne, posun delam ja
                     });
@@ -93,103 +94,27 @@ var blended;
         task.prototype.addToHistory = function (child, ud) {
             if (!ud.history)
                 ud.history = [];
-            var hist = { date: Utils.nowToNum(), url: child.repository.url, taskId: child.taskId };
+            var hist = { date: Utils.nowToNum(), url: child.dataNode.url, taskId: child.ctx.taskid };
             if (_.find(ud.history, function (h) { return h.url == hist.url && h.taskId == hist.taskId; }))
                 return;
             ud.history.push(hist);
         };
         task.prototype.log = function (msg) {
-            console.log('%%% ' + Utils.getObjectClassName(this) + ": " + msg + ' (' + this.repository.url + ')');
+            console.log('%%% ' + Utils.getObjectClassName(this) + ": " + msg + ' (' + this.dataNode.url + ')');
         };
         //********************** Virtualni procs
-        //sance na asynchroni inicializaci self (nacteni dat pomoci ajaxu apod.)
-        //init(ud: IPersistNodeUser, completed: () => void) { completed(); }
-        //inicialni naplneni statusu (pri jeho prvnim vytvoreni)
+        //inicialni naplneni user dat  (pri jejich prvnim vytvoreni)
         task.prototype.initPersistData = function (ud) {
-            ud.url = this.repository.url;
-            //ud.taskId = newGuid();
+            ud.url = this.dataNode.url;
         };
         //posun stavu dal
         task.prototype.moveForward = function (ud) { throw 'notimplemented'; };
         //vytvoreni child status na zaklade aktualniho stavu
         task.prototype.createChild = function (ud, completed) { completed(); };
+        task.prototype.getName = function () { return ''; };
         return task;
     })();
     blended.task = task;
-    var blendedCourseTask = (function (_super) {
-        __extends(blendedCourseTask, _super);
-        //cely produkt ma jedno globalni TASKID (ctx.taskid). Nastavuje se pri spusteni produktu (v MY.ts) na hodnotu 'def'.
-        function blendedCourseTask(product, ctx, completed) {
-            _super.call(this, blendedCourseTask.repositoryFromProduct(product), ctx.taskid, completed);
-            this.product = product;
-            this.ctx = ctx;
-        }
-        blendedCourseTask.repositoryFromProduct = function (prod) {
-            var clonedLessons = _.map(_.range(0, 4), function (idx) { return (_.clone(prod.Items[idx].Items)); }); //pro kazdou level kopie napr. </lm/blcourse/english/a1/>.Items
-            var firstPretests = _.map(clonedLessons, function (l) { return l.splice(0, 1)[0]; }); //z kopie vyndej prvni prvek (entry test) a dej jej do firstPretests;
-            var res = {
-                pretest: (prod.find('/lm/blcourse/' + LMComLib.LineIds[prod.line].toLowerCase() + '/pretests/')),
-                entryTests: firstPretests,
-                lessons: clonedLessons,
-                Items: null, title: prod.title, url: prod.url
-            };
-            _.each((res.pretest.Items), function (it) {
-                if (it.other)
-                    $.extend(it, JSON.parse(it.other));
-            });
-            if (prod.other)
-                prod.other = $.extend(prod, JSON.parse(prod.other));
-            return res;
-        };
-        blendedCourseTask.prototype.initPersistData = function (ud) {
-            _super.prototype.initPersistData.call(this, ud);
-            ud.startDate = Utils.nowToNum();
-            ud.pretest = { url: this.repository.pretest.url };
-        };
-        blendedCourseTask.prototype.createChild = function (ud, completed) {
-            if (!ud.pretest.done) {
-                this.child = new pretestTask(this.repository.pretest, this.taskId, completed);
-            }
-            else if (!ud.entryTest.done) {
-                this.child = new testTask(this.repository.entryTests[ud.pretest.targetLevel], this.taskId, completed);
-            }
-            else if (!ud.lessons.done) {
-                this.child = new listTask(this.repository.lessons[ud.pretest.targetLevel], this.taskId, completed);
-            }
-            else {
-                ud.done = true;
-                this.child = null;
-                completed();
-            }
-        };
-        blendedCourseTask.prototype.moveForward = function (ud) {
-            var _this = this;
-            var childUd = this.child.getPersistData();
-            if (childUd.url == ud.pretest.url) {
-                var pretUser = childUd;
-                if (!pretUser.done)
-                    return 'tasks.course.doGoAhead: !pretUser.done';
-                this.setPersistData(function (dt) { dt.pretest.done = true; dt.pretest.targetLevel = pretUser.targetLevel; dt.entryTest = { url: _this.repository.entryTests[dt.pretest.targetLevel].url }; });
-            }
-            else if (childUd.url == ud.entryTest.url) {
-                var entryTestUser = childUd;
-                if (!entryTestUser.done)
-                    return 'tasks.course.doGoAhead: !entryTestUser.done';
-                this.setPersistData(function (dt) { dt.entryTest.done = true; dt.entryTest.score = entryTestUser.score; dt.lessons = { url: _this.repository.lessons[dt.pretest.targetLevel].url }; });
-            }
-            else if (childUd.url == ud.lessons.url) {
-                var lessonsUser = childUd;
-                if (!lessonsUser.done)
-                    return 'tasks.course.doGoAhead: !lessonsUser.done';
-                this.setPersistData(function (dt) { dt.done = true; dt.lessons.done = true; });
-            }
-            else
-                return 'tasks.course.doGoAhead: unknown child url - ' + childUd.url;
-            return null;
-        };
-        return blendedCourseTask;
-    })(task);
-    blended.blendedCourseTask = blendedCourseTask;
     var pretestTask = (function (_super) {
         __extends(pretestTask, _super);
         function pretestTask() {
@@ -235,10 +160,10 @@ var blended;
             return null;
         };
         pretestTask.prototype.createChild = function (ud, completed) {
-            var act = _.find(this.repository.Items, function (l) { return l.level == ud.actLevel; });
+            var act = _.find(this.dataNode.Items, function (l) { return l.level == ud.actLevel; });
             if (!act)
                 throw '!act';
-            this.child = new testTask(act, this.taskId, completed);
+            this.child = new testTask(act, this.ctx, this, completed);
         };
         pretestTask.prototype.newTestItem = function (ud, lev) {
             ud.actLevel = lev;
@@ -249,7 +174,8 @@ var blended;
             ud.targetLevel = lev;
             this.child = null;
         };
-        pretestTask.prototype.actRepo = function (lev) { return _.find(this.repository.Items, function (l) { return l.level == lev; }); };
+        pretestTask.prototype.actRepo = function (lev) { return _.find(this.dataNode.Items, function (l) { return l.level == lev; }); };
+        pretestTask.prototype.getName = function () { return vyzva.stateNames.taskPretest; };
         return pretestTask;
     })(task);
     blended.pretestTask = pretestTask;

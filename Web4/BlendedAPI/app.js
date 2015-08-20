@@ -6,17 +6,14 @@ var blended;
             this.app = angular.module(name, modules);
         }
         Module.prototype.href = function (stateName, params, options) {
-            return this.$actState.href(stateName, params);
-        };
-        Module.prototype.go = function (stateName, params, options) {
-            return this.$actState.href(stateName, params);
+            return this.$oldActState.href(stateName, params);
         };
         return Module;
     })();
     blended.Module = Module;
     var OldController = (function () {
         function OldController($scope, $state) {
-            blended.root.$actState = $state;
+            blended.root.$oldActState = $state;
             //prevezmi parametry
             var urlParts = [];
             for (var p = 0; p < 6; p++) {

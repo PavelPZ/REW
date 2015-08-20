@@ -6,43 +6,87 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var vyzva;
 (function (vyzva) {
-    var controler = (function (_super) {
-        __extends(controler, _super);
-        function controler($scope, $state, product, courseTask) {
+    //******* predchudce vsech stranek. 
+    var controller = (function (_super) {
+        __extends(controller, _super);
+        function controller($scope, $state, $rootTask) {
             _super.call(this, $scope, $state);
-            this.product = product;
-            this.courseTask = courseTask;
+            this.$rootTask = $rootTask;
         }
-        controler.prototype.greenBtnClick = function () { this.courseTask.goAhead({ $q: this.$scope.params.$q }); };
-        controler.$inject = ['$scope', '$state', '$q', '$loadedProduct', '$loadedTask'];
-        return controler;
+        controller.$inject = ['$scope', '$state', '$rootTask'];
+        return controller;
     })(blended.controller);
-    vyzva.controler = controler;
+    vyzva.controller = controller;
+    //******* Home produktu
     var productHomeController = (function (_super) {
         __extends(productHomeController, _super);
-        //static $inject = ['$scope', '$state'];
-        function productHomeController($scope, $state, prod, courseTask) {
-            _super.call(this, $scope, $state);
+        function productHomeController($scope, $state, $rootTask) {
+            _super.call(this, $scope, $state, $rootTask);
         }
-        productHomeController.$inject = ['$scope', '$state'];
         return productHomeController;
-    })(blended.controller);
+    })(controller);
     vyzva.productHomeController = productHomeController;
-    //export var loadProduct = ["$route", ($route) => {
+    //******* Home pretestu
+    var pretestHomeController = (function (_super) {
+        __extends(pretestHomeController, _super);
+        function pretestHomeController($scope, $state, $rootTask) {
+            _super.call(this, $scope, $state, $rootTask);
+            $scope.greenBtnStatus = $rootTask.greenBtnStatus();
+        }
+        pretestHomeController.prototype.greenBtnClick = function () {
+            window.location.hash = this.$rootTask.greenBtnHash();
+        };
+        return pretestHomeController;
+    })(controller);
+    vyzva.pretestHomeController = pretestHomeController;
+    //******* Home pretestItem
+    var pretestItemHomeController = (function (_super) {
+        __extends(pretestItemHomeController, _super);
+        function pretestItemHomeController($scope, $state, $rootTask) {
+            _super.call(this, $scope, $state, $rootTask);
+        }
+        return pretestItemHomeController;
+    })(controller);
+    vyzva.pretestItemHomeController = pretestItemHomeController;
+    //******* Home checkTestu
+    var checkTestHomeController = (function (_super) {
+        __extends(checkTestHomeController, _super);
+        function checkTestHomeController($scope, $state, $rootTask) {
+            _super.call(this, $scope, $state, $rootTask);
+        }
+        return checkTestHomeController;
+    })(controller);
+    vyzva.checkTestHomeController = checkTestHomeController;
+    //******* Home lekce
+    var lessonHomeController = (function (_super) {
+        __extends(lessonHomeController, _super);
+        function lessonHomeController($scope, $state, $rootTask) {
+            _super.call(this, $scope, $state, $rootTask);
+        }
+        return lessonHomeController;
+    })(controller);
+    vyzva.lessonHomeController = lessonHomeController;
+    //******* Home testu
+    var exerciseController = (function (_super) {
+        __extends(exerciseController, _super);
+        function exerciseController($scope, $state, $rootTask) {
+            _super.call(this, $scope, $state, $rootTask);
+        }
+        return exerciseController;
+    })(controller);
+    vyzva.exerciseController = exerciseController;
+    //*************** RESOLVERs
+    //adjust produkt
     vyzva.loadProduct = ['$stateParams', function ($stateParams) {
             blended.finishContext($stateParams);
             return blended.loader.adjustProduct($stateParams);
-            //{
-            //  adminid: 0, userid: 1, companyid: 1, loc: LMComLib.Langs.cs_cz, persistence: persistNewEA.persistCourse, producturl: prodUrl, taskid: blended.newGuid(), url: '', $http: null, $q: null
-            //});
         }];
-    vyzva.loadTask = ['$loadedProduct', '$stateParams', function (prod, $stateParams) {
+    //adjust root task
+    vyzva.initRootTasks = ['$stateParams', '$q', '$loadedProduct', function ($stateParams, $q, product) {
+            var def = $q.defer();
+            $stateParams.product = product;
             blended.finishContext($stateParams);
-            var def = $stateParams.$q.defer();
-            //other="{'loader':'vyzva57'}" z d:\LMCom\rew\Web4\lm\BLCourse\English\meta.xml. Jak vytvorit task z produktu
-            if (!prod.other || JSON.parse(prod.other)['loader'] != 'vyzva57')
-                def.reject('$loadedProduct.loader != vyzva57');
-            new blended.blendedCourseTask(prod, $stateParams, function (t) { return def.resolve(t); });
+            new vyzva.blendedCourseTask(product, $stateParams, null, function (t) { return def.resolve(t); });
             return def.promise;
         }];
 })(vyzva || (vyzva = {}));

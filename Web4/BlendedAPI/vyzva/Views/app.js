@@ -12,12 +12,11 @@ var vyzva;
         })
             .state({
             name: 'pg.ajs.vyzvaproduct',
-            url: "/vyzvaproduct?producturl&persistence&userid&companyid&loc&adminid",
+            url: "/vyzvaproduct/:companyid/:userid/:adminid/:persistence/:loc/:producturl",
             abstract: true,
             controller: vyzva.controler,
             resolve: {
                 $loadedProduct: vyzva.loadProduct,
-                $loadedTask: vyzva.loadTask
             },
             //template: "_productTemplate <div data-ui-view></div>",
             templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/_productTemplate.html',

@@ -253,6 +253,11 @@
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.theme.css" />
     <Content Include="BlendedAPI\Doc.txt" />
     <Content Include="BlendedAPI\views\exercise.html" />
+    <Content Include="BlendedAPI\vyzva\Views\checkTestHome.html" />
+    <Content Include="BlendedAPI\vyzva\Views\lessonHome.html" />
+    <Content Include="BlendedAPI\vyzva\Views\pretestItemHome.html" />
+    <Content Include="BlendedAPI\vyzva\Views\pretestHome.html" />
+    <Content Include="BlendedAPI\vyzva\Views\exercise.html" />
     <Content Include="BlendedAPI\vyzva\Views\_productTemplate.html" />
     <Content Include="BlendedAPI\vyzva\Views\productHome.html" />
     <Content Include="JsLib\css\flag-mid.css" />
@@ -1349,11 +1354,12 @@
     <TypeScriptCompile Include="BlendedAPI\app.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Lib.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\ShowExercise.ts" />
-    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\app.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\app.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Loader.ts" />
     <TypeScriptCompile Include="BlendedAPI\Controlers\exercise.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Controllers\productHome.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Tasks.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Scripts\Tasks.ts" />
     <TypeScriptCompile Include="BS3\js\bootstrap.d.ts" />
     <TypeScriptCompile Include="Courses\codes\chinhSpeaking.ts" />
     <TypeScriptCompile Include="Courses\codes\docReference.ts" />

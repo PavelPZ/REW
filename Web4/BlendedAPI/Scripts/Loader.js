@@ -1,12 +1,25 @@
-var CourseMeta;
-(function (CourseMeta) {
+var blended;
+(function (blended) {
     //rozsireni interface o metody
-    function extendProduct(prod) {
-        $.extend(prod, CourseMeta.productEx);
+    function finishProduktStart(prod) {
+        $.extend(prod, blended.productEx);
         prod.moduleCache = new blended.loader.cacheOf(3);
     }
-    CourseMeta.extendProduct = extendProduct;
-    CourseMeta.productEx = {
+    blended.finishProduktStart = finishProduktStart;
+    function finishProduktEnd(prod) {
+        if (prod.pretest)
+            return;
+        var clonedLessons = _.map(_.range(0, 4), function (idx) { return (_.clone(prod.Items[idx].Items)); }); //pro kazdou level kopie napr. </lm/blcourse/english/a1/>.Items
+        var firstPretests = _.map(clonedLessons, function (l) { return l.splice(0, 1)[0]; }); //z kopie vyndej prvni prvek (entry test) a dej jej do firstPretests;
+        prod.pretest = (prod.find('/lm/blcourse/' + LMComLib.LineIds[prod.line].toLowerCase() + '/pretests/'));
+        prod.entryTests = firstPretests;
+        prod.lessons = clonedLessons;
+        //_.each(<any>(prod.pretest.Items), (it: CourseMeta.data) => {
+        //  if (it.other) $.extend(it, JSON.parse(it.other));
+        //});
+    }
+    blended.finishProduktEnd = finishProduktEnd;
+    blended.productEx = {
         findParent: function (self, cond) {
             var c = self;
             while (c != null) {
@@ -19,11 +32,15 @@ var CourseMeta;
         find: function (url) {
             var pe = this;
             return (pe.nodeDir[url]);
+        },
+        addExternalTaskNode: function (repo) {
+            var pe = this;
+            if (pe.nodeDir[repo.url])
+                return;
+            pe.nodeDir[repo.url] = repo;
+            pe.nodeList.push(repo);
         }
     };
-})(CourseMeta || (CourseMeta = {}));
-var blended;
-(function (blended) {
     var loader;
     (function (loader) {
         //help
@@ -37,22 +54,21 @@ var blended;
         var _dictItemRoot;
         //baseUrlRelToRoot: relativni adresa rootu Web4 aplikace vyhledem k aktualni HTML strance
         function adjustProduct(ctx) {
-            ctx = blended.finishContext(ctx);
             var deferred = ctx.$q.defer();
             var prod = loader.productCache.fromCache(ctx);
             if (prod) {
                 deferred.resolve(prod);
                 return;
             }
-            var href = ctx.producturl.substr(0, ctx.producturl.length - 1);
+            var href = ctx.productUrl.substr(0, ctx.productUrl.length - 1);
             var promises = _.map([href + '.js', href + '.' + LMComLib.Langs[ctx.loc] + '.js', href + '_instrs.js'], function (url) { return ctx.$http.get(blended.baseUrlRelToRoot + url, { transformResponse: function (s) { return CourseMeta.jsonParse(s); } }); });
             ctx.$q.all(promises).then(function (files) {
                 prod = files[0].data;
-                prod.url = ctx.producturl;
+                prod.url = ctx.productUrl;
                 prod.instructions = {};
                 prod.nodeDir = {};
                 prod.nodeList = [];
-                CourseMeta.extendProduct(prod);
+                finishProduktStart(prod);
                 var loc = files[1].data;
                 if (!loc)
                     loc = {};
@@ -61,7 +77,9 @@ var blended;
                 var scan;
                 scan = function (dt) {
                     prod.nodeDir[dt.url] = dt;
-                    prod.nodeList.push(dt); //if (dt.other) dt.other = $.extend(dt, JSON.parse(dt.other));
+                    prod.nodeList.push(dt);
+                    if (dt.other)
+                        dt.other = $.extend(dt, JSON.parse(dt.other));
                     _.each(dt.Items, function (it) { it.parent = dt; scan(it); });
                 };
                 scan(prod);
@@ -85,13 +103,16 @@ var blended;
                 loader.productCache.toCache(ctx, prod);
                 //user data
                 if (!!ctx.persistence)
-                    ctx.persistence.loadShortUserData(ctx.userid, ctx.companyid, ctx.producturl, function (data) {
+                    ctx.persistence.loadShortUserData(ctx.userid, ctx.companyid, ctx.productUrl, function (data) {
                         prod.persistData = data;
                         //if (data) for (var p in data) { var dt = prod.nodeDir[p]; if (dt) dt.userData = data[p]; /*nektera data mohou patrit taskum*/ }
+                        finishProduktEnd(prod);
                         deferred.resolve(prod);
                     });
-                else
+                else {
+                    finishProduktEnd(prod);
                     deferred.resolve(prod);
+                }
             }, function (errors) {
                 deferred.reject();
             });
@@ -129,8 +150,7 @@ var blended;
                 var mod = prod.findParent(exNode, function (n) { return CourseMeta.isType(n, CourseMeta.runtimeType.mod); });
                 if (mod == null)
                     throw 'Exercise ' + ctx.url + ' does not have module';
-                var modCtx = blended.cloneContext(ctx);
-                modCtx.url = mod.url;
+                var modCtx = blended.cloneAndModifyContext(ctx, function (m) { return m.url = mod.url; });
                 adjustModule(modCtx, prod).then(function (mod) {
                     var pg = mod.cacheOfPages.fromCache(ctx.url);
                     if (pg) {
@@ -147,7 +167,7 @@ var blended;
                             deferred.resolve(exNode);
                         else {
                             if (!!ctx.persistence)
-                                ctx.persistence.loadUserData(ctx.userid, ctx.companyid, ctx.producturl, ctx.url, function (exData) {
+                                ctx.persistence.loadUserData(ctx.userid, ctx.companyid, ctx.productUrl, ctx.url, function (exData) {
                                     if (pg.evalPage && !pg.isOldEa)
                                         exNode.ms = pg.evalPage.maxScore;
                                     //provazani produktu, stranky, modulu:
@@ -175,7 +195,7 @@ var blended;
             }
             cacheOfProducts.prototype.fromCache = function (ctx) {
                 var resIt = _.find(this.products, function (it) { return it.companyid == ctx.companyid && it.userid == ctx.userid && it.adminid == ctx.adminid &&
-                    it.persistence == ctx.persistence && it.loc == ctx.loc && it.producturl == ctx.producturl; });
+                    it.persistence == ctx.persistence && it.loc == ctx.loc && it.producturl == ctx.producturl && it.taskid == ctx.taskid; });
                 if (resIt)
                     resIt.insertOrder = this.maxInsertOrder++;
                 return resIt ? resIt.data : null;
@@ -187,7 +207,10 @@ var blended;
                         minIdx = Math.min(this.products[i].insertOrder, minIdx);
                     this.products.splice(minIdx, 1);
                 }
-                this.products.push({ companyid: ctx.companyid, userid: ctx.userid, data: prod, loc: ctx.loc, producturl: ctx.producturl, url: null, persistence: ctx.persistence, insertOrder: this.maxInsertOrder++, adminid: ctx.adminid, taskid: ctx.taskid });
+                this.products.push({
+                    companyid: ctx.companyid, userid: ctx.userid, data: prod, loc: ctx.loc, producturl: ctx.producturl,
+                    persistence: ctx.persistence, insertOrder: this.maxInsertOrder++, adminid: ctx.adminid, taskid: ctx.taskid, tasktype: ctx.tasktype,
+                });
             };
             return cacheOfProducts;
         })();
