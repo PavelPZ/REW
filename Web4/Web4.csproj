@@ -252,9 +252,9 @@
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.structure.css" />
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.theme.css" />
     <Content Include="BlendedAPI\Doc.txt" />
+    <None Include="BlendedAPI\Styles\style.less" />
     <Content Include="BlendedAPI\views\exercise.html" />
-    <Content Include="BlendedAPI\vyzva\Views\checkTestHome.html" />
-    <Content Include="BlendedAPI\vyzva\Views\lessonHome.html" />
+    <Content Include="BlendedAPI\vyzva\Views\moduleHome.html" />
     <Content Include="BlendedAPI\vyzva\Views\pretestItemHome.html" />
     <Content Include="BlendedAPI\vyzva\Views\pretestHome.html" />
     <Content Include="BlendedAPI\vyzva\Views\exercise.html" />
@@ -2717,6 +2717,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BlendedAPI\Styles\img\" />
+    <Folder Include="BlendedAPI\vyzva\Pages\" />
     <Folder Include="BS3\css\" />
     <Folder Include="ClientBin\" />
     <Folder Include="JsLib\css\img\Reports\" />

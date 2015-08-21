@@ -6,19 +6,6 @@ var blended;
         prod.moduleCache = new blended.loader.cacheOf(3);
     }
     blended.finishProduktStart = finishProduktStart;
-    function finishProduktEnd(prod) {
-        if (prod.pretest)
-            return;
-        var clonedLessons = _.map(_.range(0, 4), function (idx) { return (_.clone(prod.Items[idx].Items)); }); //pro kazdou level kopie napr. </lm/blcourse/english/a1/>.Items
-        var firstPretests = _.map(clonedLessons, function (l) { return l.splice(0, 1)[0]; }); //z kopie vyndej prvni prvek (entry test) a dej jej do firstPretests;
-        prod.pretest = (prod.find('/lm/blcourse/' + LMComLib.LineIds[prod.line].toLowerCase() + '/pretests/'));
-        prod.entryTests = firstPretests;
-        prod.lessons = clonedLessons;
-        //_.each(<any>(prod.pretest.Items), (it: CourseMeta.data) => {
-        //  if (it.other) $.extend(it, JSON.parse(it.other));
-        //});
-    }
-    blended.finishProduktEnd = finishProduktEnd;
     blended.productEx = {
         findParent: function (self, cond) {
             var c = self;
@@ -54,69 +41,73 @@ var blended;
         var _dictItemRoot;
         //baseUrlRelToRoot: relativni adresa rootu Web4 aplikace vyhledem k aktualni HTML strance
         function adjustProduct(ctx) {
-            var deferred = ctx.$q.defer();
-            var prod = loader.productCache.fromCache(ctx);
-            if (prod) {
-                deferred.resolve(prod);
-                return;
-            }
-            var href = ctx.productUrl.substr(0, ctx.productUrl.length - 1);
-            var promises = _.map([href + '.js', href + '.' + LMComLib.Langs[ctx.loc] + '.js', href + '_instrs.js'], function (url) { return ctx.$http.get(blended.baseUrlRelToRoot + url, { transformResponse: function (s) { return CourseMeta.jsonParse(s); } }); });
-            ctx.$q.all(promises).then(function (files) {
-                prod = files[0].data;
-                prod.url = ctx.productUrl;
-                prod.instructions = {};
-                prod.nodeDir = {};
-                prod.nodeList = [];
-                finishProduktStart(prod);
-                var loc = files[1].data;
-                if (!loc)
-                    loc = {};
-                var instrs = files[2].data;
-                //vypln seznamy a adresar nodes
-                var scan;
-                scan = function (dt) {
-                    prod.nodeDir[dt.url] = dt;
-                    prod.nodeList.push(dt);
-                    if (dt.other)
-                        dt.other = $.extend(dt, JSON.parse(dt.other));
-                    _.each(dt.Items, function (it) { it.parent = dt; scan(it); });
-                };
-                scan(prod);
-                //lokalizace produktu
-                _.each(prod.nodeList, function (dt) { return dt.title = CourseMeta.localizeString(dt.url, dt.title, loc); });
-                //finish instrukce
-                if (instrs)
-                    for (var p in instrs) {
-                        var pg = CourseMeta.extractEx(instrs[p]);
-                        if (pg == null) {
-                            debugger;
-                            throw 'missing instr';
-                        }
-                        pg.Items = _.filter(pg.Items, function (it) { return !_.isString(it); });
-                        Course.localize(pg, function (s) { return CourseMeta.localizeString(pg.url, s, loc); });
-                        Course.scanEx(pg, function (tg) { if (!_.isString(tg))
-                            delete tg.id; }); //instrukce nemohou mit tag.id, protoze se ID tlucou s ID ze cviceni
-                        prod.instructions[p] = JsRenderTemplateEngine.render("c_genitems", pg);
-                    }
-                //cache
-                loader.productCache.toCache(ctx, prod);
-                //user data
-                if (!!ctx.persistence)
-                    ctx.persistence.loadShortUserData(ctx.userid, ctx.companyid, ctx.productUrl, function (data) {
-                        prod.persistData = data;
-                        //if (data) for (var p in data) { var dt = prod.nodeDir[p]; if (dt) dt.userData = data[p]; /*nektera data mohou patrit taskum*/ }
-                        finishProduktEnd(prod);
-                        deferred.resolve(prod);
-                    });
-                else {
-                    finishProduktEnd(prod);
+            try {
+                var deferred = ctx.$q.defer();
+                var prod = loader.productCache.fromCache(ctx);
+                if (prod) {
                     deferred.resolve(prod);
+                    return;
                 }
-            }, function (errors) {
-                deferred.reject();
-            });
-            return deferred.promise;
+                var href = ctx.productUrl.substr(0, ctx.productUrl.length - 1);
+                var promises = _.map([href + '.js', href + '.' + LMComLib.Langs[ctx.loc] + '.js', href + '_instrs.js'], function (url) { return ctx.$http.get(blended.baseUrlRelToRoot + url, { transformResponse: function (s) { return CourseMeta.jsonParse(s); } }); });
+                ctx.$q.all(promises).then(function (files) {
+                    prod = files[0].data;
+                    prod.url = ctx.productUrl;
+                    prod.instructions = {};
+                    prod.nodeDir = {};
+                    prod.nodeList = [];
+                    finishProduktStart(prod);
+                    var loc = files[1].data;
+                    if (!loc)
+                        loc = {};
+                    var instrs = files[2].data;
+                    //vypln seznamy a adresar nodes
+                    var scan;
+                    scan = function (dt) {
+                        prod.nodeDir[dt.url] = dt;
+                        prod.nodeList.push(dt);
+                        if (dt.other)
+                            dt.other = $.extend(dt, JSON.parse(dt.other));
+                        _.each(dt.Items, function (it) { it.parent = dt; scan(it); });
+                    };
+                    scan(prod);
+                    //lokalizace produktu
+                    _.each(prod.nodeList, function (dt) { return dt.title = CourseMeta.localizeString(dt.url, dt.title, loc); });
+                    //finish instrukce
+                    if (instrs)
+                        for (var p in instrs) {
+                            var pg = CourseMeta.extractEx(instrs[p]);
+                            if (pg == null) {
+                                debugger;
+                                throw 'missing instr';
+                            }
+                            pg.Items = _.filter(pg.Items, function (it) { return !_.isString(it); });
+                            Course.localize(pg, function (s) { return CourseMeta.localizeString(pg.url, s, loc); });
+                            Course.scanEx(pg, function (tg) { if (!_.isString(tg))
+                                delete tg.id; }); //instrukce nemohou mit tag.id, protoze se ID tlucou s ID ze cviceni
+                            prod.instructions[p] = JsRenderTemplateEngine.render("c_genitems", pg);
+                        }
+                    //cache
+                    if (ctx.finishProduct)
+                        ctx.finishProduct(prod);
+                    loader.productCache.toCache(ctx, prod);
+                    //user data
+                    if (!!ctx.persistence)
+                        ctx.persistence.loadShortUserData(ctx.userid, ctx.companyid, ctx.productUrl, function (data) {
+                            prod.persistData = data;
+                            //if (data) for (var p in data) { var dt = prod.nodeDir[p]; if (dt) dt.userData = data[p]; /*nektera data mohou patrit taskum*/ }
+                            deferred.resolve(prod);
+                        });
+                    else {
+                        deferred.resolve(prod);
+                    }
+                }, function (errors) {
+                    deferred.reject();
+                });
+            }
+            finally {
+                return deferred.promise;
+            }
         }
         loader.adjustProduct = adjustProduct;
         function adjustModule(ctx, prod) {

@@ -149,7 +149,7 @@
     }
 
     moveForward(ud: IPretestUser): string {
-      var childTest = <testTask>(this.child);
+      var childTest = <moduleTask>(this.child);
       var actRepo = this.actRepo(ud.actLevel);
       var childUser = childTest.getPersistData(); if (!childUser.done || childUser.url != actRepo.url) return 'tasks.pretestTask.doGoAhead: !testUser.done || testUser.url != actRepo.url';
 
@@ -173,7 +173,7 @@
     createChild(ud: IPretestUser, completed: () => void) {
       var act: IPretestItemRepository = _.find(this.dataNode.Items, l => l.level == ud.actLevel);
       if (!act) throw '!act';
-      this.child = new testTask(act, this.ctx, this, completed);
+      this.child = new moduleTask(act, this.ctx, this, completed);
     }
 
     newTestItem(ud: IPretestUser, lev: levelIds) {
@@ -206,28 +206,11 @@
     createChild(ud: IListUser, completed: () => void) { completed(); }
   }
 
-  //****************** linearni TEST
-  export interface ITestUser extends IPersistNodeUser { //course dato pro test
+  //****************** linearni kurz nebo test
+  export interface IModuleUser extends IPersistNodeUser { //course dato pro test
   }
 
-  export class testTask extends task { //task pro pruchod lekcemi (repository je seznam cviceni)
-
-    getPersistData: () => ITestUser;
-    setPersistData: (modify: (data: ITestUser) => void) => ITestUser;
-
-    initPersistData(ud: ITestUser) {
-      super.initPersistData(ud);
-    }
-    moveForward(ud: ITestUser): string { ud.done = true; return null; }
-    createChild(ud: ITestUser, completed: () => void) { completed(); }
-
-  }
-
-  //****************** linearni KURZ
-  export interface IModuleUser extends IPersistNodeUser { //course dato pro test (repository je seznam cviceni)
-  }
-
-  export class moduleTask extends task { //task pro pruchod lekcemi
+  export class moduleTask extends task { //task pro pruchod lekcemi (repository je seznam cviceni)
 
     getPersistData: () => IModuleUser;
     setPersistData: (modify: (data: IModuleUser) => void) => IModuleUser;
@@ -240,13 +223,30 @@
 
   }
 
+  ////****************** linearni KURZ
+  //export interface IModuleUser extends IPersistNodeUser { //course dato pro test (repository je seznam cviceni)
+  //}
+
+  //export class moduleTask extends task { //task pro pruchod lekcemi
+
+  //  getPersistData: () => IModuleUser;
+  //  setPersistData: (modify: (data: IModuleUser) => void) => IModuleUser;
+
+  //  initPersistData(ud: IModuleUser) {
+  //    super.initPersistData(ud);
+  //  }
+  //  moveForward(ud: IModuleUser): string { ud.done = true; return null; }
+  //  createChild(ud: IModuleUser, completed: () => void) { completed(); }
+
+  //}
+
   //****************** EXERCISE
   export interface IExUser extends IPersistNodeUser { //course dato pro test
   }
 
   export class exTask extends task { //task pro pruchod lekcemi
     getPersistData: () => IExUser;
-    setPersistData: (modify: (data: ITestUser) => void) => ITestUser;
+    setPersistData: (modify: (data: IModuleUser) => void) => IModuleUser;
 
     initPersistData(ud: IExUser) {
       super.initPersistData(ud);

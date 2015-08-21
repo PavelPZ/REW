@@ -22,6 +22,7 @@ var vyzva;
         __extends(productHomeController, _super);
         function productHomeController($scope, $state, $rootTask) {
             _super.call(this, $scope, $state, $rootTask);
+            this.title = "Home";
         }
         return productHomeController;
     })(controller);
@@ -31,41 +32,32 @@ var vyzva;
         __extends(pretestHomeController, _super);
         function pretestHomeController($scope, $state, $rootTask) {
             _super.call(this, $scope, $state, $rootTask);
-            $scope.greenBtnStatus = $rootTask.greenBtnStatus();
+            this.title = "Pretest";
         }
-        pretestHomeController.prototype.greenBtnClick = function () {
-            window.location.hash = this.$rootTask.greenBtnHash();
-        };
         return pretestHomeController;
     })(controller);
     vyzva.pretestHomeController = pretestHomeController;
     //******* Home pretestItem
-    var pretestItemHomeController = (function (_super) {
-        __extends(pretestItemHomeController, _super);
-        function pretestItemHomeController($scope, $state, $rootTask) {
-            _super.call(this, $scope, $state, $rootTask);
-        }
-        return pretestItemHomeController;
-    })(controller);
-    vyzva.pretestItemHomeController = pretestItemHomeController;
+    //export class pretestItemHomeController extends controller {
+    //  constructor($scope: ng.IScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
+    //    super($scope, $state, $rootTask);
+    //  }
+    //}
     //******* Home checkTestu
-    var checkTestHomeController = (function (_super) {
-        __extends(checkTestHomeController, _super);
-        function checkTestHomeController($scope, $state, $rootTask) {
-            _super.call(this, $scope, $state, $rootTask);
-        }
-        return checkTestHomeController;
-    })(controller);
-    vyzva.checkTestHomeController = checkTestHomeController;
+    //export class checkTestHomeController extends controller {
+    //  constructor($scope: ng.IScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
+    //    super($scope, $state, $rootTask);
+    //  }
+    //}
     //******* Home lekce
-    var lessonHomeController = (function (_super) {
-        __extends(lessonHomeController, _super);
-        function lessonHomeController($scope, $state, $rootTask) {
+    var moduleHomeController = (function (_super) {
+        __extends(moduleHomeController, _super);
+        function moduleHomeController($scope, $state, $rootTask) {
             _super.call(this, $scope, $state, $rootTask);
         }
-        return lessonHomeController;
+        return moduleHomeController;
     })(controller);
-    vyzva.lessonHomeController = lessonHomeController;
+    vyzva.moduleHomeController = moduleHomeController;
     //******* Home testu
     var exerciseController = (function (_super) {
         __extends(exerciseController, _super);
@@ -79,6 +71,7 @@ var vyzva;
     //adjust produkt
     vyzva.loadProduct = ['$stateParams', function ($stateParams) {
             blended.finishContext($stateParams);
+            $stateParams.finishProduct = vyzva.finishProdukt;
             return blended.loader.adjustProduct($stateParams);
         }];
     //adjust root task

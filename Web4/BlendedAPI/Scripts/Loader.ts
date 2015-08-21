@@ -12,9 +12,9 @@ module blended {
     nodeList: Array<CourseMeta.data>; //seznam nodes
     moduleCache: loader.cacheOf<blended.cachedModule>; //cache modulu (kapitol) s lokalizacemi cviceni a slovniky
     //Repository data
-    pretest: IPretestRepository; //pretest
-    entryTests: Array<CourseMeta.data>; //vstupni check-testy (entryTests[0]..A1, ..)
-    lessons: Array<CourseMeta.data>; //jednotlive tydenni tasky. Jeden tydenni task je seznam z kurziku nebo testu
+    //pretest: IPretestRepository; //pretest
+    //entryTests: Array<CourseMeta.data>; //vstupni check-testy (entryTests[0]..A1, ..)
+    //lessons: Array<CourseMeta.data>; //jednotlive tydenni tasky. Jeden tydenni task je seznam z kurziku nebo testu
   }
 
   //Misto externi knihovny ma metody pristupu k nodes primo produkt
@@ -29,18 +29,7 @@ module blended {
     $.extend(prod, productEx);
     prod.moduleCache = new blended.loader.cacheOf<blended.cachedModule>(3);
   }
-  export function finishProduktEnd(prod: IProductEx) {
-    if (prod.pretest) return;
-    var clonedLessons = _.map(_.range(0, 4), idx => <any>(_.clone(prod.Items[idx].Items))); //pro kazdou level kopie napr. </lm/blcourse/english/a1/>.Items
-    var firstPretests = _.map(clonedLessons, l => l.splice(0, 1)[0]); //z kopie vyndej prvni prvek (entry test) a dej jej do firstPretests;
-    prod.pretest = <any>(prod.find('/lm/blcourse/' + LMComLib.LineIds[prod.line].toLowerCase() + '/pretests/'));
-    prod.entryTests = firstPretests;
-    prod.lessons = clonedLessons;
-    //_.each(<any>(prod.pretest.Items), (it: CourseMeta.data) => {
-    //  if (it.other) $.extend(it, JSON.parse(it.other));
-    //});
-  }
-
+  
   export var productEx: IProductAddIn = {
     findParent<TRes extends CourseMeta.data>(self: CourseMeta.data, cond: (it: CourseMeta.data) => boolean): TRes {
       var c = self;
@@ -80,54 +69,56 @@ module blended {
 
     //baseUrlRelToRoot: relativni adresa rootu Web4 aplikace vyhledem k aktualni HTML strance
     export function adjustProduct(ctx: learnContext): ng.IPromise<IProductEx> {
-      var deferred = ctx.$q.defer();
-      var prod = productCache.fromCache(ctx);
-      if (prod) { deferred.resolve(prod); return; }
-      var href = ctx.productUrl.substr(0, ctx.productUrl.length - 1);
-      var promises = _.map(
-        [href + '.js', href + '.' + LMComLib.Langs[ctx.loc] + '.js', href + '_instrs.js'],
-        url => ctx.$http.get(baseUrlRelToRoot + url, { transformResponse: s => CourseMeta.jsonParse(s) }));
-      ctx.$q.all(promises).then(
-        (files: Array<ng.IHttpPromiseCallbackArg<any>>) => {
-          prod = files[0].data; prod.url = ctx.productUrl; prod.instructions = {}; prod.nodeDir = {}; prod.nodeList = [];
-          finishProduktStart(prod);
-          var loc: { [id: string]: any; } = files[1].data; if (!loc) loc = {};
-          var instrs: Array<any> = files[2].data;
-          //vypln seznamy a adresar nodes
-          var scan: (dt: CourseMeta.data) => void;
-          scan = dt => {
-            prod.nodeDir[dt.url] = dt; prod.nodeList.push(dt);
-            if (dt.other) dt.other = $.extend(dt, JSON.parse(dt.other));
-            _.each(dt.Items, it => { it.parent = dt; scan(it); });
-          };
-          scan(prod);
-          //lokalizace produktu
-          _.each(prod.nodeList, dt => dt.title = CourseMeta.localizeString(dt.url, dt.title, loc));
-          //finish instrukce
-          if (instrs) for (var p in instrs) {
-            var pg = CourseMeta.extractEx(instrs[p]); if (pg == null) { debugger; throw 'missing instr'; }
-            pg.Items = _.filter(pg.Items, it => !_.isString(it));
-            Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, loc));
-            Course.scanEx(pg, tg => { if (!_.isString(tg)) delete tg.id; }); //instrukce nemohou mit tag.id, protoze se ID tlucou s ID ze cviceni
-            prod.instructions[p] = JsRenderTemplateEngine.render("c_genitems", pg);
-          }
-          //cache
-          productCache.toCache(ctx, prod);
-          //user data
-          if (!!ctx.persistence) ctx.persistence.loadShortUserData(ctx.userid, ctx.companyid, ctx.productUrl, data => {
-            prod.persistData = data;
-            //if (data) for (var p in data) { var dt = prod.nodeDir[p]; if (dt) dt.userData = data[p]; /*nektera data mohou patrit taskum*/ }
-            finishProduktEnd(prod);
-            deferred.resolve(prod);
-          }); else {
-            finishProduktEnd(prod);
-            deferred.resolve(prod);
-          }
-        },
-        errors => {
-          deferred.reject();
-        });
-      return deferred.promise;
+      try {
+        var deferred = ctx.$q.defer();
+        var prod = productCache.fromCache(ctx);
+        if (prod) { deferred.resolve(prod); return; }
+        var href = ctx.productUrl.substr(0, ctx.productUrl.length - 1);
+        var promises = _.map(
+          [href + '.js', href + '.' + LMComLib.Langs[ctx.loc] + '.js', href + '_instrs.js'],
+          url => ctx.$http.get(baseUrlRelToRoot + url, { transformResponse: s => CourseMeta.jsonParse(s) }));
+        ctx.$q.all(promises).then(
+          (files: Array<ng.IHttpPromiseCallbackArg<any>>) => {
+            prod = files[0].data; prod.url = ctx.productUrl; prod.instructions = {}; prod.nodeDir = {}; prod.nodeList = [];
+            finishProduktStart(prod);
+            var loc: { [id: string]: any; } = files[1].data; if (!loc) loc = {};
+            var instrs: Array<any> = files[2].data;
+            //vypln seznamy a adresar nodes
+            var scan: (dt: CourseMeta.data) => void;
+            scan = dt => {
+              prod.nodeDir[dt.url] = dt; prod.nodeList.push(dt);
+              if (dt.other) dt.other = $.extend(dt, JSON.parse(dt.other));
+              _.each(dt.Items, it => { it.parent = dt; scan(it); });
+            };
+            scan(prod);
+            //lokalizace produktu
+            _.each(prod.nodeList, dt => dt.title = CourseMeta.localizeString(dt.url, dt.title, loc));
+            //finish instrukce
+            if (instrs) for (var p in instrs) {
+              var pg = CourseMeta.extractEx(instrs[p]); if (pg == null) { debugger; throw 'missing instr'; }
+              pg.Items = _.filter(pg.Items, it => !_.isString(it));
+              Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, loc));
+              Course.scanEx(pg, tg => { if (!_.isString(tg)) delete tg.id; }); //instrukce nemohou mit tag.id, protoze se ID tlucou s ID ze cviceni
+              prod.instructions[p] = JsRenderTemplateEngine.render("c_genitems", pg);
+            }
+            //cache
+            if (ctx.finishProduct) ctx.finishProduct(prod);
+            productCache.toCache(ctx, prod);
+            //user data
+            if (!!ctx.persistence) ctx.persistence.loadShortUserData(ctx.userid, ctx.companyid, ctx.productUrl, data => {
+              prod.persistData = data;
+              //if (data) for (var p in data) { var dt = prod.nodeDir[p]; if (dt) dt.userData = data[p]; /*nektera data mohou patrit taskum*/ }
+              deferred.resolve(prod);
+            }); else {
+              deferred.resolve(prod);
+            }
+          },
+          errors => {
+            deferred.reject();
+          });
+      } finally {
+        return deferred.promise;
+      }
     }
     function adjustModule(ctx: learnContext, prod: IProductEx): ng.IPromise<cachedModule> {
       ctx = finishContext(ctx);

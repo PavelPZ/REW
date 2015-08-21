@@ -33,26 +33,14 @@ var vyzva;
             templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/pretestHome.html',
         })
             .state({
-            name: vyzva.stateNames.pretestItemHome = 'pg.ajs.vyzvaproduct.pretestitem',
-            url: '/pretestitem/:url',
-            controller: vyzva.pretestItemHomeController,
-            templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/pretestItemHome.html',
-        })
-            .state({
-            name: vyzva.stateNames.lessonHome = 'pg.ajs.vyzvaproduct.lessoon',
-            url: '/lesson/:url',
-            controller: vyzva.lessonHomeController,
-            templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/lessonHome.html',
-        })
-            .state({
-            name: vyzva.stateNames.checkTestHome = 'pg.ajs.vyzvaproduct.checktest',
-            url: '/checktest/:url',
-            controller: vyzva.checkTestHomeController,
-            templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/checkTestHome.html',
+            name: vyzva.stateNames.moduleHome = 'pg.ajs.vyzvaproduct.module',
+            url: '/module/:url/:mode',
+            controller: vyzva.moduleHomeController,
+            templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/moduleHome.html',
         })
             .state({
             name: vyzva.stateNames.exercise = 'pg.ajs.vyzvaproduct.exercise',
-            url: '/exercise/:tasktype/:url',
+            url: '/exercise/:tasktype/:url/:mode',
             controller: vyzva.exerciseController,
             templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/exercise.html',
         });

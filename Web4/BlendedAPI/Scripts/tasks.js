@@ -163,7 +163,7 @@ var blended;
             var act = _.find(this.dataNode.Items, function (l) { return l.level == ud.actLevel; });
             if (!act)
                 throw '!act';
-            this.child = new testTask(act, this.ctx, this, completed);
+            this.child = new moduleTask(act, this.ctx, this, completed);
         };
         pretestTask.prototype.newTestItem = function (ud, lev) {
             ud.actLevel = lev;
@@ -192,19 +192,6 @@ var blended;
         return listTask;
     })(task);
     blended.listTask = listTask;
-    var testTask = (function (_super) {
-        __extends(testTask, _super);
-        function testTask() {
-            _super.apply(this, arguments);
-        }
-        testTask.prototype.initPersistData = function (ud) {
-            _super.prototype.initPersistData.call(this, ud);
-        };
-        testTask.prototype.moveForward = function (ud) { ud.done = true; return null; };
-        testTask.prototype.createChild = function (ud, completed) { completed(); };
-        return testTask;
-    })(task);
-    blended.testTask = testTask;
     var moduleTask = (function (_super) {
         __extends(moduleTask, _super);
         function moduleTask() {

@@ -3,71 +3,61 @@
   //******* predchudce vsech stranek. 
   export class controller extends blended.controller {
     static $inject = ['$scope', '$state', '$rootTask'];
-    constructor($scope: IControlScope, $state: angular.ui.IStateService, public $rootTask: blendedCourseTask) {
+    constructor($scope: ng.IScope, $state: angular.ui.IStateService, public $rootTask: blendedCourseTask) {
       super($scope, $state);
     }
-  }
-  export interface IControlScope extends blended.IScope {
-    greenBtnStatus: greenStatus;
+    title: string;
   }
 
   //******* Home produktu
   export class productHomeController extends controller {
-    constructor($scope: IProductHomeScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
+    constructor($scope: ng.IScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
       super($scope, $state, $rootTask);
+      this.title = "Home"
     }
-  }
-  export interface IProductHomeScope extends IControlScope {
   }
 
   //******* Home pretestu
   export class pretestHomeController extends controller {
-    constructor($scope: IPretestHomeScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
+    constructor($scope: ng.IScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
       super($scope, $state, $rootTask);
-      $scope.greenBtnStatus = $rootTask.greenBtnStatus();
-    }
-    greenBtnClick() {
-      window.location.hash = this.$rootTask.greenBtnHash();
+      this.title = "Pretest"
     }
   }
-  export interface IPretestHomeScope extends IControlScope { }
 
   //******* Home pretestItem
-  export class pretestItemHomeController extends controller {
-    constructor($scope: IPretestItemHomeScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
-      super($scope, $state, $rootTask);
-    }
-  }
-  export interface IPretestItemHomeScope extends IControlScope { }
+  //export class pretestItemHomeController extends controller {
+  //  constructor($scope: ng.IScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
+  //    super($scope, $state, $rootTask);
+  //  }
+  //}
 
   //******* Home checkTestu
-  export class checkTestHomeController extends controller {
-    constructor($scope: ICheckTestHomeScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
-      super($scope, $state, $rootTask);
-    }
-  }
-  export interface ICheckTestHomeScope extends IControlScope { }
+  //export class checkTestHomeController extends controller {
+  //  constructor($scope: ng.IScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
+  //    super($scope, $state, $rootTask);
+  //  }
+  //}
 
   //******* Home lekce
-  export class lessonHomeController extends controller {
-    constructor($scope: ILessonHomeScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
+  export class moduleHomeController extends controller {
+    constructor($scope: ng.IScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
       super($scope, $state, $rootTask);
     }
   }
-  export interface ILessonHomeScope extends IControlScope { }
 
   //******* Home testu
   export class exerciseController extends controller {
-    constructor($scope: IExerciseHomeScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
+    constructor($scope: ng.IScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
       super($scope, $state, $rootTask);
     }
   }
-  export interface IExerciseHomeScope extends IControlScope { }
 
   //*************** RESOLVERs
   //adjust produkt
   export var loadProduct = ['$stateParams', ($stateParams: blended.learnContext) => {
     blended.finishContext($stateParams);
+    $stateParams.finishProduct = finishProdukt;
     return blended.loader.adjustProduct($stateParams);
   }];
 

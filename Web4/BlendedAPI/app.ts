@@ -41,16 +41,18 @@
 
   }
 
-  export var root = new Module('appRoot', ['ngResource', 'ui.router']);
+  export var root = new Module('appRoot', ['ngLocale', 'ngResource', 'ui.router']);
 
   root.app.directive('showExercise', blended.showExerciseDirective);
 
-  root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', (
+  root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', '$provide', (
     $stateProvider: angular.ui.IStateProvider,
     $urlRouterProvider: angular.route.IRouteProvider,
     $location: ng.ILocationProvider,
-    $urlMatcherFactoryProvider: angular.ui.IUrlMatcherFactory
+    $urlMatcherFactoryProvider: angular.ui.IUrlMatcherFactory,
+    $provide
     ) => {
+    routerLogging($provide);
     $urlMatcherFactoryProvider.caseInsensitive(true); //http://stackoverflow.com/questions/25994308/how-to-config-angular-ui-router-to-not-use-strict-url-matching-mode
     //Nefunguje pak browser historie
     //$urlMatcherFactoryProvider.type("urlType", { //http://stackoverflow.com/questions/27849260/angular-ui-sref-encode-parameter

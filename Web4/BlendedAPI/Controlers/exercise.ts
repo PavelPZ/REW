@@ -2,7 +2,7 @@
 
   export class exerciseController extends controller {
 
-    constructor($scope: IScope, $state: angular.ui.IStateService) {
+    constructor($scope: ng.IScope, $state: angular.ui.IStateService) {
       super($scope, $state);
     }
   }

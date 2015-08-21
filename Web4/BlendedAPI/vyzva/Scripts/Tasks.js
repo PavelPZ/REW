@@ -6,12 +6,19 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var vyzva;
 (function (vyzva) {
-    (function (greenStatus) {
-        greenStatus[greenStatus["green"] = 0] = "green";
-        greenStatus[greenStatus["disabled"] = 1] = "disabled";
-        greenStatus[greenStatus["blue"] = 2] = "blue";
-    })(vyzva.greenStatus || (vyzva.greenStatus = {}));
-    var greenStatus = vyzva.greenStatus;
+    function finishProdukt(prod) {
+        if (prod.pretest)
+            return;
+        var clonedLessons = _.map(_.range(0, 4), function (idx) { return (_.clone(prod.Items[idx].Items)); }); //pro kazdou level kopie napr. </lm/blcourse/english/a1/>.Items
+        var firstPretests = _.map(clonedLessons, function (l) { return l.splice(0, 1)[0]; }); //z kopie vyndej prvni prvek (entry test) a dej jej do firstPretests;
+        prod.pretest = (prod.find('/lm/blcourse/' + LMComLib.LineIds[prod.line].toLowerCase() + '/pretests/'));
+        prod.entryTests = firstPretests;
+        prod.lessons = clonedLessons;
+        //_.each(<any>(prod.pretest.Items), (it: CourseMeta.data) => {
+        //  if (it.other) $.extend(it, JSON.parse(it.other));
+        //});
+    }
+    vyzva.finishProdukt = finishProdukt;
     var blendedCourseTask = (function (_super) {
         __extends(blendedCourseTask, _super);
         function blendedCourseTask() {
@@ -24,10 +31,10 @@ var vyzva;
         };
         blendedCourseTask.prototype.createChild = function (ud, completed) {
             if (!ud.pretest.done) {
-                this.child = new blended.pretestTask(this.dataNode.pretest, this.ctx, this, completed);
+                this.child = new pretestTask(this.dataNode.pretest, this.ctx, this, completed);
             }
             else if (!ud.entryTest.done) {
-                this.child = new blended.testTask(this.dataNode.entryTests[ud.pretest.targetLevel], this.ctx, this, completed);
+                this.child = new blended.moduleTask(this.dataNode.entryTests[ud.pretest.targetLevel], this.ctx, this, completed);
             }
             else if (!ud.lessons.done) {
                 this.child = new blended.listTask(this.dataNode.lessons[ud.pretest.targetLevel], this.ctx, this, completed);
@@ -64,24 +71,6 @@ var vyzva;
             return null;
         };
         blendedCourseTask.prototype.getName = function () { return vyzva.stateNames.taskRoot; };
-        blendedCourseTask.prototype.greenBtnStatus = function () { var ud = this.getPersistData(); return ud && ud.lessons && ud.lessons.done ? greenStatus.disabled : greenStatus.green; };
-        blendedCourseTask.prototype.greenBtnHash = function () {
-            var _this = this;
-            var ud = this.getPersistData();
-            if (!ud || !ud.pretest || !ud.pretest.done)
-                return this.ctx.$state.href(vyzva.stateNames.pretestHome);
-            if (!ud.entryTest || !ud.entryTest.done)
-                return this.ctx.$state.href(vyzva.stateNames.taskCheckTest, { url: this.dataNode.entryTests[ud.pretest.targetLevel].url });
-            var actLessons = this.dataNode.lessons[ud.pretest.targetLevel].Items;
-            var less = _.find(actLessons, function (l) {
-                var lud = blended.getPersistData(less, _this.ctx.taskid);
-                return !lud || !lud.done;
-            });
-            if (!less)
-                return this.ctx.$state.href(vyzva.stateNames.pretestHome);
-            var statusId = less.url.indexOf('/lesson') < 0 ? vyzva.stateNames.taskCheckTest : vyzva.stateNames.taskLesson;
-            return this.ctx.$state.href(statusId, { url: less.url });
-        };
         return blendedCourseTask;
     })(blended.task);
     vyzva.blendedCourseTask = blendedCourseTask;

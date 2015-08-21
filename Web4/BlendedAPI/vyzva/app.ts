@@ -4,7 +4,7 @@
     productHome?: string;
     pretestHome?: string;
     exercise?: string;
-    lessonHome?: string;
+    moduleHome?: string;
     pretestItemHome?: string;
     checkTestHome?: string;
     taskRoot: string;
@@ -46,27 +46,21 @@
         controller: pretestHomeController,
         templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/pretestHome.html',
       })
+      //.state({
+      //  name: stateNames.pretestItemHome = 'pg.ajs.vyzvaproduct.pretestitem',
+      //  url: '/pretestitem/:url',
+      //  controller: pretestItemHomeController,
+      //  templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/pretestItemHome.html',
+      //})
       .state({
-        name: stateNames.pretestItemHome = 'pg.ajs.vyzvaproduct.pretestitem',
-        url: '/pretestitem/:url',
-        controller: pretestItemHomeController,
-        templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/pretestItemHome.html',
-      })
-      .state({
-        name: stateNames.lessonHome = 'pg.ajs.vyzvaproduct.lessoon',
-        url: '/lesson/:url',
-        controller: lessonHomeController,
-        templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/lessonHome.html',
-      })
-      .state({
-        name: stateNames.checkTestHome = 'pg.ajs.vyzvaproduct.checktest',
-        url: '/checktest/:url',
-        controller: checkTestHomeController,
-        templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/checkTestHome.html',
+        name: stateNames.moduleHome = 'pg.ajs.vyzvaproduct.module',
+        url: '/module/:url/:mode', //mode=course, test, preview
+        controller: moduleHomeController,
+        templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/moduleHome.html',
       })
       .state({
         name: stateNames.exercise = 'pg.ajs.vyzvaproduct.exercise',
-        url: '/exercise/:tasktype/:url',
+        url: '/exercise/:tasktype/:url/:mode',
         controller: exerciseController,
         templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/exercise.html',
       })
