@@ -142,9 +142,9 @@ var Pager;
         Pager: Pager,
     });
     //export function HomeUrl(): string { return "#"; }
-    function gotoHomeUrl() {
-        navigateToHash(LMStatus.isLogged() ? Pager.initHash() : Login.loginUrl());
-    }
+    function getHomeUrl() { return LMStatus.isLogged() ? Pager.initHash() : Login.loginUrl(); }
+    Pager.getHomeUrl = getHomeUrl;
+    function gotoHomeUrl() { navigateToHash(getHomeUrl()); }
     Pager.gotoHomeUrl = gotoHomeUrl;
     function navigateToHash(hash) {
         if (!hash)

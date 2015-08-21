@@ -15,6 +15,7 @@
     //go(stateName: string, params?: Object, options?: angular.ui.IHrefOptions): string {
     //  return this.$actState.go(stateName, params)
     //}
+
   }
 
   export class OldController { //naladuje stranku dle zaregistrovane /old/... route 
@@ -43,16 +44,23 @@
 
   export var root = new Module('appRoot', ['ngLocale', 'ngResource', 'ui.router']);
 
-  root.app.directive('showExercise', blended.showExerciseDirective);
+  root.app
+    .directive('showExercise', blended.showExerciseDirective)
+    .directive('lmInclude', function () {
+    return {
+      restrict: 'A',
+      templateUrl: (ele, attrs) => attrs.lmInclude,
+    };
+  });
 
-  root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', '$provide', (
+  root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', ( //'$provide', (
     $stateProvider: angular.ui.IStateProvider,
     $urlRouterProvider: angular.route.IRouteProvider,
     $location: ng.ILocationProvider,
     $urlMatcherFactoryProvider: angular.ui.IUrlMatcherFactory,
     $provide
     ) => {
-    routerLogging($provide);
+    //routerLogging($provide);
     $urlMatcherFactoryProvider.caseInsensitive(true); //http://stackoverflow.com/questions/25994308/how-to-config-angular-ui-router-to-not-use-strict-url-matching-mode
     //Nefunguje pak browser historie
     //$urlMatcherFactoryProvider.type("urlType", { //http://stackoverflow.com/questions/27849260/angular-ui-sref-encode-parameter

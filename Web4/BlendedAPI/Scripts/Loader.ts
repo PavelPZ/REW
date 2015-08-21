@@ -116,65 +116,65 @@ module blended {
           errors => {
             deferred.reject();
           });
-      } finally {
-        return deferred.promise;
-      }
+      } finally { return deferred.promise; }
     }
     function adjustModule(ctx: learnContext, prod: IProductEx): ng.IPromise<cachedModule> {
       ctx = finishContext(ctx);
       var deferred = ctx.$q.defer();
-      var mod = prod.moduleCache.fromCache(ctx.url);
-      if (mod) { deferred.resolve(mod); return; }
-      var href = baseUrlRelToRoot + ctx.url.substr(0, ctx.url.length - 1) + '.' + LMComLib.Langs[ctx.loc] + '.js';
-      ctx.$http.get(href).then(
-        (file: ng.IHttpPromiseCallbackArg<any>) => {
-          mod = file.data; if (!mod.loc) mod.loc = {}; if (mod.dict) mod.dict = RJSON.unpack(mod.dict);
-          mod.cacheOfPages = new loader.cacheOf<Course.Page>(30);
-          prod.moduleCache.toCache(ctx.url, mod);
-          deferred.resolve(mod);
-        },
-        errors => {
-          deferred.reject();
-        });
-      return deferred.promise;
+      try {
+        var mod = prod.moduleCache.fromCache(ctx.url);
+        if (mod) { deferred.resolve(mod); return; }
+        var href = baseUrlRelToRoot + ctx.url.substr(0, ctx.url.length - 1) + '.' + LMComLib.Langs[ctx.loc] + '.js';
+        ctx.$http.get(href).then(
+          (file: ng.IHttpPromiseCallbackArg<any>) => {
+            mod = file.data; if (!mod.loc) mod.loc = {}; if (mod.dict) mod.dict = RJSON.unpack(mod.dict);
+            mod.cacheOfPages = new loader.cacheOf<Course.Page>(30);
+            prod.moduleCache.toCache(ctx.url, mod);
+            deferred.resolve(mod);
+          },
+          errors => {
+            deferred.reject();
+          });
+      } finally { return deferred.promise; }
     }
     export function adjustEx(ctx: learnContext): ng.IPromise<CourseMeta.ex> {
       ctx = finishContext(ctx);
       var deferred = ctx.$q.defer();
-      adjustProduct(ctx).then(prod => {
-        var exNode = prod.find<CourseMeta.data>(ctx.url);
-        var mod = prod.findParent<CourseMeta.data>(exNode, (n: CourseMeta.data) => CourseMeta.isType(n, CourseMeta.runtimeType.mod));
-        if (mod == null) throw 'Exercise ' + ctx.url + ' does not have module';
-        var modCtx = cloneAndModifyContext(ctx, m => m.url = mod.url);
-        adjustModule(modCtx, prod).then(mod => {
-          var pg = mod.cacheOfPages.fromCache(ctx.url);
-          if (pg) { deferred.resolve(pg); return; }
-          var href = baseUrlRelToRoot + ctx.url + '.js';
-          ctx.$http.get(href, { transformResponse: s => CourseMeta.jsonParse(s) }).then(
-            (file: ng.IHttpPromiseCallbackArg<Array<any>>) => {
-              var pg = CourseMeta.extractEx(file.data);
-              Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, mod.loc));
-              var isGramm = CourseMeta.isType(exNode, CourseMeta.runtimeType.grammar);
-              mod.cacheOfPages.toCache(ctx.url, pg);
-              if (isGramm)
-                deferred.resolve(exNode);
-              else {
-                if (!!ctx.persistence) ctx.persistence.loadUserData(ctx.userid, ctx.companyid, ctx.productUrl, ctx.url, exData => {
-                  if (pg.evalPage && !pg.isOldEa) exNode.ms = pg.evalPage.maxScore;
-                  //provazani produktu, stranky, modulu:
-                  if (!exData) exData = {}; pg.userData = exData;
-                  pg.myNode = exNode;
+      try {
+        adjustProduct(ctx).then(prod => {
+          var exNode = prod.find<CourseMeta.data>(ctx.url);
+          var mod = prod.findParent<CourseMeta.data>(exNode, (n: CourseMeta.data) => CourseMeta.isType(n, CourseMeta.runtimeType.mod));
+          if (mod == null) throw 'Exercise ' + ctx.url + ' does not have module';
+          var modCtx = cloneAndModifyContext(ctx, m => m.url = mod.url);
+          adjustModule(modCtx, prod).then(mod => {
+            var pg = mod.cacheOfPages.fromCache(ctx.url);
+            if (pg) { deferred.resolve(pg); return; }
+            var href = baseUrlRelToRoot + ctx.url + '.js';
+            ctx.$http.get(href, { transformResponse: s => CourseMeta.jsonParse(s) }).then(
+              (file: ng.IHttpPromiseCallbackArg<Array<any>>) => {
+                var pg = CourseMeta.extractEx(file.data);
+                Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, mod.loc));
+                var isGramm = CourseMeta.isType(exNode, CourseMeta.runtimeType.grammar);
+                mod.cacheOfPages.toCache(ctx.url, pg);
+                if (isGramm)
                   deferred.resolve(exNode);
-                }); else
-                  deferred.resolve(exNode);
-              }
-            },
-            errors => {
-              deferred.reject();
-            });
+                else {
+                  if (!!ctx.persistence) ctx.persistence.loadUserData(ctx.userid, ctx.companyid, ctx.productUrl, ctx.url, exData => {
+                    if (pg.evalPage && !pg.isOldEa) exNode.ms = pg.evalPage.maxScore;
+                    //provazani produktu, stranky, modulu:
+                    if (!exData) exData = {}; pg.userData = exData;
+                    pg.myNode = exNode;
+                    deferred.resolve(exNode);
+                  }); else
+                    deferred.resolve(exNode);
+                }
+              },
+              errors => {
+                deferred.reject();
+              });
+          });
         });
-      });
-      return deferred.promise;
+      } finally { return deferred.promise; }
     }
 
     //*************** globalni CACHE produktu
@@ -186,7 +186,7 @@ module blended {
       products: Array<productCacheItem> = [];
       maxInsertOrder = 0;
       fromCache(ctx: learnContext): IProductEx {
-        var resIt = _.find(this.products, it => it.companyid == ctx.companyid && it.userid == ctx.userid && it.adminid == ctx.adminid &&
+        var resIt = _.find(this.products, it => it.companyid == ctx.companyid && it.userid == ctx.userid && it.subuserid == ctx.subuserid &&
           it.persistence == ctx.persistence && it.loc == ctx.loc && it.producturl == ctx.producturl && it.taskid == ctx.taskid);
         if (resIt) resIt.insertOrder = this.maxInsertOrder++;
         return resIt ? resIt.data : null;
@@ -199,7 +199,7 @@ module blended {
         }
         this.products.push({
           companyid: ctx.companyid, userid: ctx.userid, data: prod, loc: ctx.loc, producturl: ctx.producturl,
-          persistence: ctx.persistence, insertOrder: this.maxInsertOrder++, adminid: ctx.adminid, taskid: ctx.taskid, tasktype: ctx.tasktype,
+          persistence: ctx.persistence, insertOrder: this.maxInsertOrder++, subuserid: ctx.subuserid, taskid: ctx.taskid, 
         });
       }
     }

@@ -253,12 +253,17 @@
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.theme.css" />
     <Content Include="BlendedAPI\Doc.txt" />
     <None Include="BlendedAPI\Styles\style.less" />
+    <Content Include="BlendedAPI\Styles\img\lm-logo-black.png" />
     <Content Include="BlendedAPI\views\exercise.html" />
+    <Content Include="BlendedAPI\vyzva\ViewParts\Toolbar\Toolbar.html" />
+    <Content Include="BlendedAPI\vyzva\ViewParts\Toolbar\Empty.html" />
+    <Content Include="BlendedAPI\vyzva\ViewParts\Toolbar\Run.html" />
+    <Content Include="BlendedAPI\vyzva\ViewParts\Toolbar\Module.html" />
     <Content Include="BlendedAPI\vyzva\Views\moduleHome.html" />
-    <Content Include="BlendedAPI\vyzva\Views\pretestItemHome.html" />
     <Content Include="BlendedAPI\vyzva\Views\pretestHome.html" />
     <Content Include="BlendedAPI\vyzva\Views\exercise.html" />
-    <Content Include="BlendedAPI\vyzva\Views\_productTemplate.html" />
+    <Content Include="BlendedAPI\vyzva\Views\productHome\pretestItem.html" />
+    <Content Include="BlendedAPI\vyzva\Views\_pageTemplate.html" />
     <Content Include="BlendedAPI\vyzva\Views\productHome.html" />
     <Content Include="JsLib\css\flag-mid.css" />
     <Content Include="JsLib\css\flag-small.css" />
@@ -1357,9 +1362,19 @@
     <TypeScriptCompile Include="BlendedAPI\vyzva\app.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Loader.ts" />
     <TypeScriptCompile Include="BlendedAPI\Controlers\exercise.ts" />
-    <TypeScriptCompile Include="BlendedAPI\vyzva\Controllers\productHome.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Tasks.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Scripts\Lib.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Scripts\Tasks.ts" />
+    <TypeScriptCompile Include="BlendedAPI\Scripts\TasksNew.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\ViewParts\Toolbar\Toolbar.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\ViewParts\Toolbar\Empty.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\ViewParts\Toolbar\Run.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\ViewParts\Toolbar\Module.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\moduleHome.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\exerciseHome.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\pretestHome.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\productHome.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\productHome\pretestItem.ts" />
     <TypeScriptCompile Include="BS3\js\bootstrap.d.ts" />
     <TypeScriptCompile Include="Courses\codes\chinhSpeaking.ts" />
     <TypeScriptCompile Include="Courses\codes\docReference.ts" />
@@ -2716,7 +2731,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BlendedAPI\Styles\img\" />
     <Folder Include="BlendedAPI\vyzva\Pages\" />
     <Folder Include="BS3\css\" />
     <Folder Include="ClientBin\" />

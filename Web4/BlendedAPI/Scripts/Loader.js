@@ -113,70 +113,78 @@ var blended;
         function adjustModule(ctx, prod) {
             ctx = blended.finishContext(ctx);
             var deferred = ctx.$q.defer();
-            var mod = prod.moduleCache.fromCache(ctx.url);
-            if (mod) {
-                deferred.resolve(mod);
-                return;
+            try {
+                var mod = prod.moduleCache.fromCache(ctx.url);
+                if (mod) {
+                    deferred.resolve(mod);
+                    return;
+                }
+                var href = blended.baseUrlRelToRoot + ctx.url.substr(0, ctx.url.length - 1) + '.' + LMComLib.Langs[ctx.loc] + '.js';
+                ctx.$http.get(href).then(function (file) {
+                    mod = file.data;
+                    if (!mod.loc)
+                        mod.loc = {};
+                    if (mod.dict)
+                        mod.dict = RJSON.unpack(mod.dict);
+                    mod.cacheOfPages = new loader.cacheOf(30);
+                    prod.moduleCache.toCache(ctx.url, mod);
+                    deferred.resolve(mod);
+                }, function (errors) {
+                    deferred.reject();
+                });
             }
-            var href = blended.baseUrlRelToRoot + ctx.url.substr(0, ctx.url.length - 1) + '.' + LMComLib.Langs[ctx.loc] + '.js';
-            ctx.$http.get(href).then(function (file) {
-                mod = file.data;
-                if (!mod.loc)
-                    mod.loc = {};
-                if (mod.dict)
-                    mod.dict = RJSON.unpack(mod.dict);
-                mod.cacheOfPages = new loader.cacheOf(30);
-                prod.moduleCache.toCache(ctx.url, mod);
-                deferred.resolve(mod);
-            }, function (errors) {
-                deferred.reject();
-            });
-            return deferred.promise;
+            finally {
+                return deferred.promise;
+            }
         }
         function adjustEx(ctx) {
             ctx = blended.finishContext(ctx);
             var deferred = ctx.$q.defer();
-            adjustProduct(ctx).then(function (prod) {
-                var exNode = prod.find(ctx.url);
-                var mod = prod.findParent(exNode, function (n) { return CourseMeta.isType(n, CourseMeta.runtimeType.mod); });
-                if (mod == null)
-                    throw 'Exercise ' + ctx.url + ' does not have module';
-                var modCtx = blended.cloneAndModifyContext(ctx, function (m) { return m.url = mod.url; });
-                adjustModule(modCtx, prod).then(function (mod) {
-                    var pg = mod.cacheOfPages.fromCache(ctx.url);
-                    if (pg) {
-                        deferred.resolve(pg);
-                        return;
-                    }
-                    var href = blended.baseUrlRelToRoot + ctx.url + '.js';
-                    ctx.$http.get(href, { transformResponse: function (s) { return CourseMeta.jsonParse(s); } }).then(function (file) {
-                        var pg = CourseMeta.extractEx(file.data);
-                        Course.localize(pg, function (s) { return CourseMeta.localizeString(pg.url, s, mod.loc); });
-                        var isGramm = CourseMeta.isType(exNode, CourseMeta.runtimeType.grammar);
-                        mod.cacheOfPages.toCache(ctx.url, pg);
-                        if (isGramm)
-                            deferred.resolve(exNode);
-                        else {
-                            if (!!ctx.persistence)
-                                ctx.persistence.loadUserData(ctx.userid, ctx.companyid, ctx.productUrl, ctx.url, function (exData) {
-                                    if (pg.evalPage && !pg.isOldEa)
-                                        exNode.ms = pg.evalPage.maxScore;
-                                    //provazani produktu, stranky, modulu:
-                                    if (!exData)
-                                        exData = {};
-                                    pg.userData = exData;
-                                    pg.myNode = exNode;
-                                    deferred.resolve(exNode);
-                                });
-                            else
-                                deferred.resolve(exNode);
+            try {
+                adjustProduct(ctx).then(function (prod) {
+                    var exNode = prod.find(ctx.url);
+                    var mod = prod.findParent(exNode, function (n) { return CourseMeta.isType(n, CourseMeta.runtimeType.mod); });
+                    if (mod == null)
+                        throw 'Exercise ' + ctx.url + ' does not have module';
+                    var modCtx = blended.cloneAndModifyContext(ctx, function (m) { return m.url = mod.url; });
+                    adjustModule(modCtx, prod).then(function (mod) {
+                        var pg = mod.cacheOfPages.fromCache(ctx.url);
+                        if (pg) {
+                            deferred.resolve(pg);
+                            return;
                         }
-                    }, function (errors) {
-                        deferred.reject();
+                        var href = blended.baseUrlRelToRoot + ctx.url + '.js';
+                        ctx.$http.get(href, { transformResponse: function (s) { return CourseMeta.jsonParse(s); } }).then(function (file) {
+                            var pg = CourseMeta.extractEx(file.data);
+                            Course.localize(pg, function (s) { return CourseMeta.localizeString(pg.url, s, mod.loc); });
+                            var isGramm = CourseMeta.isType(exNode, CourseMeta.runtimeType.grammar);
+                            mod.cacheOfPages.toCache(ctx.url, pg);
+                            if (isGramm)
+                                deferred.resolve(exNode);
+                            else {
+                                if (!!ctx.persistence)
+                                    ctx.persistence.loadUserData(ctx.userid, ctx.companyid, ctx.productUrl, ctx.url, function (exData) {
+                                        if (pg.evalPage && !pg.isOldEa)
+                                            exNode.ms = pg.evalPage.maxScore;
+                                        //provazani produktu, stranky, modulu:
+                                        if (!exData)
+                                            exData = {};
+                                        pg.userData = exData;
+                                        pg.myNode = exNode;
+                                        deferred.resolve(exNode);
+                                    });
+                                else
+                                    deferred.resolve(exNode);
+                            }
+                        }, function (errors) {
+                            deferred.reject();
+                        });
                     });
                 });
-            });
-            return deferred.promise;
+            }
+            finally {
+                return deferred.promise;
+            }
         }
         loader.adjustEx = adjustEx;
         var cacheOfProducts = (function () {
@@ -185,7 +193,7 @@ var blended;
                 this.maxInsertOrder = 0;
             }
             cacheOfProducts.prototype.fromCache = function (ctx) {
-                var resIt = _.find(this.products, function (it) { return it.companyid == ctx.companyid && it.userid == ctx.userid && it.adminid == ctx.adminid &&
+                var resIt = _.find(this.products, function (it) { return it.companyid == ctx.companyid && it.userid == ctx.userid && it.subuserid == ctx.subuserid &&
                     it.persistence == ctx.persistence && it.loc == ctx.loc && it.producturl == ctx.producturl && it.taskid == ctx.taskid; });
                 if (resIt)
                     resIt.insertOrder = this.maxInsertOrder++;
@@ -200,7 +208,7 @@ var blended;
                 }
                 this.products.push({
                     companyid: ctx.companyid, userid: ctx.userid, data: prod, loc: ctx.loc, producturl: ctx.producturl,
-                    persistence: ctx.persistence, insertOrder: this.maxInsertOrder++, adminid: ctx.adminid, taskid: ctx.taskid, tasktype: ctx.tasktype,
+                    persistence: ctx.persistence, insertOrder: this.maxInsertOrder++, subuserid: ctx.subuserid, taskid: ctx.taskid,
                 });
             };
             return cacheOfProducts;

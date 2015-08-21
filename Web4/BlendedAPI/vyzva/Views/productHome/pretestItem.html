@@ -1,0 +1,16 @@
+﻿<div class="alert alert-success" data-ng-if="ts.prt.canRun">
+  <p>
+    <button class="btn btn-success btn-lg" data-ng-click="ts.prt.run()">1. {{ts.prt.btnTitle}}</button>
+  </p>
+  <p>
+    <br />
+    Rozřazovací určí vaši jazykovou úroveň (A1, A2, B1 nabo B2), na základě které se zvolí odpovídající pokračování vašeho kurzu.
+  </p>
+</div>
+
+<div class="alert alert-default" data-ng-if="!ts.prt.canRun" style="padding-top:10px;">
+  <h3>1. Rozřazovací test dokončen: vaše jazyková úroveň je <b class="text-success">{{ts.prt.resultLevel}}</b></h3>
+  <p>
+    Můžete si také <a ui-sref="{{ts.prt.previewUrl}}">Prohlédnout výsledky rozřazovacího testu.</a>.
+  </p>
+</div>

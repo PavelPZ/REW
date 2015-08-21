@@ -36,9 +36,17 @@ var blended;
     })();
     blended.OldController = OldController;
     blended.root = new Module('appRoot', ['ngLocale', 'ngResource', 'ui.router']);
-    blended.root.app.directive('showExercise', blended.showExerciseDirective);
-    blended.root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', '$provide', function ($stateProvider, $urlRouterProvider, $location, $urlMatcherFactoryProvider, $provide) {
-            blended.routerLogging($provide);
+    blended.root.app
+        .directive('showExercise', blended.showExerciseDirective)
+        .directive('lmInclude', function () {
+        return {
+            restrict: 'A',
+            templateUrl: function (ele, attrs) { return attrs.lmInclude; },
+        };
+    });
+    blended.root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', function (//'$provide', (
+            $stateProvider, $urlRouterProvider, $location, $urlMatcherFactoryProvider, $provide) {
+            //routerLogging($provide);
             $urlMatcherFactoryProvider.caseInsensitive(true); //http://stackoverflow.com/questions/25994308/how-to-config-angular-ui-router-to-not-use-strict-url-matching-mode
             //Nefunguje pak browser historie
             //$urlMatcherFactoryProvider.type("urlType", { //http://stackoverflow.com/questions/27849260/angular-ui-sref-encode-parameter

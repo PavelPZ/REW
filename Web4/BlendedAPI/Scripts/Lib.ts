@@ -1,4 +1,11 @@
 ﻿module blended {
+
+  export interface breadcrumbItem {
+    title: string;
+    url: string;
+    active?: boolean;
+  }
+
   export function enocdeUrl(url: string): string {
     if (!url) return url;
     return url.replace(/\//g, '!');
@@ -12,36 +19,34 @@
 
   export class controller {
     static $inject = ['$scope', '$state'];
-    constructor($scope: ng.IScope, $state: angular.ui.IStateService) {
-      Pager.clearHtml();
-      //this.$scope = $scope;
+    constructor($scope: IControllerScope, public $state: angular.ui.IStateService) {
       var params = <learnContext><any>($state.params);
       finishContext(params);
-      $.extend(this, [$scope, params]);
-      $scope['ts'] = this;
-      //$scope.params = <learnContext><any>($state.params);
-      ////$scope.state =
-      //$scope.params.$state = $state;
-      //finishContext($scope.params);
-      //$scope.events = this;
+      $.extend(this, $scope, $state.current.data);
+      $scope.ts = this;
+      this.urlParams = params;
     }
-    //$scope: IScope;
+    href(state: string, params?: {}): string {
+      return this.$state.href(state, params);
+    }
+    urlParams: {};
   }
-  //export interface IScope extends ng.IScope {
-  //  params: learnContext; //query route parametry
-  //  events: Object; //pro View zpristupnuje metody kontroleru
-  //}
+  export interface IControllerScope {
+    ts: controller;
+  }
 
   export var baseUrlRelToRoot = '..'; //jak se z root stranky dostat do rootu webu
 
   export interface learnContext {
     //URL parametry
-    userid: number; adminid: number; companyid: number; loc: LMComLib.Langs; persistence: CourseMeta.IPersistence; producturl: string; url?: string; taskid: string; tasktype?: string;
+    userid: number; subuserid: number; companyid: number; loc: LMComLib.Langs; persistence: CourseMeta.IPersistence;
+    producturl: string; taskid: string; 
+    pretesturl?: string; moduleurl?: string; url?: string; 
     //normalizovana url
-    productUrl?: string; Url?: string; 
+    productUrl?: string; Url?: string; pretestUrl?: string; moduleUrl?: string; 
     //services
     $http?: ng.IHttpService,
-    $q?: ng.IQService; 
+    $q?: ng.IQService;
     $state?: angular.ui.IStateService;
     //produkt
     product?: IProductEx;
@@ -56,8 +61,8 @@
     return res;
   }
   export function finishContext(ctx: learnContext): learnContext {
-    ctx.productUrl = decodeUrl(ctx.producturl);
-    ctx.Url = decodeUrl(ctx.url);
+    ctx.productUrl = decodeUrl(ctx.producturl); ctx.Url = decodeUrl(ctx.url);
+    ctx.pretestUrl = decodeUrl(ctx.pretesturl); ctx.moduleUrl = decodeUrl(ctx.moduleurl);
     if (!ctx.$http) {
       var inj = angular.injector(['ng']);
       ctx.$http = <ng.IHttpService>(inj.get('$http'));
@@ -66,7 +71,7 @@
     return ctx;
   }
 
-
+  //************ LOGGING functions
   export function traceRoute() {
     // Credits: Adam's answer in http://stackoverflow.com/a/20786262/69362
     var $rootScope = angular.element(document.querySelectorAll("[ui-view]")[0]).injector().get('$rootScope');
@@ -95,7 +100,7 @@
 
   }
   https://gist.github.com/mkropat/6de4e1dc3a9577789917
-  export function routerLogging ($provide) {
+  export function routerLogging($provide) {
     $provide.decorator('$rootScope', ['$delegate', function ($delegate) {
       wrapMethod($delegate, '$broadcast', function (method, args) {
         if (isNonSystemEvent(args[0]))

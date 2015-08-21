@@ -1,9 +1,5 @@
 ﻿module blended {
 
-  export interface IContext {
-    $q: ng.IQService;
-  }
-
   export interface IPersistNodeItem { //persistentni udaj pro jednu variantu (jeden taskId). Kazde cviceni apod. se muze spustit vicekrat, aniz by se prepisovaly jeho user data.
     data: IPersistNodeUser;
     modified: boolean;
@@ -33,7 +29,6 @@
     A1 = 0, A2 = 1, B1 = 2, B2 = 3,
   }
 
-  //************ TASKS
   export class task {
 
     child: task;
@@ -114,27 +109,6 @@
 
   
   //****************** PRETEST
-  export interface IPretestRepository extends CourseMeta.data {
-    Items: Array<IPretestItemRepository>; //levels, napr. levels[level.A1]
-  }
-
-  export interface IPretestItemRepository extends CourseMeta.data {
-    //pro A2: pod toto skore ma uroven A1
-    //pro B1: pod toto skore ma uroven A2
-    //pro B2: pod toto skore ma uroven B1
-    minScore: number; 
-    // pro A2: nad toto skore se spousti B1
-    // pro B1: nad toto skore se spousti B2
-    maxScore: number;
-    level: levelIds;
-  }
-
-  export interface IPretestUser extends IPersistNodeUser { //course dato pro IPretestRepository
-    urls: Array<string>;
-    actLevel: levelIds;
-    targetLevel: levelIds; //vysledek pretestu pro done=true
-  }
-
   export class pretestTask extends task { //task pro pruchod testem
 
     getPersistData: () => IPretestUser;
@@ -149,9 +123,9 @@
     }
 
     moveForward(ud: IPretestUser): string {
-      var childTest = <moduleTask>(this.child);
+      var actTestItem = <moduleTask>(this.child);
       var actRepo = this.actRepo(ud.actLevel);
-      var childUser = childTest.getPersistData(); if (!childUser.done || childUser.url != actRepo.url) return 'tasks.pretestTask.doGoAhead: !testUser.done || testUser.url != actRepo.url';
+      var childUser = actTestItem.getPersistData(); if (!childUser.done || actTestItem.dataNode.url != actRepo.url) return 'tasks.pretestTask.doGoAhead: !testUser.done || testUser.url != actRepo.url';
 
       if (actRepo.level == levelIds.A1) {
         this.finishPretest(ud, levelIds.A1);
@@ -207,9 +181,6 @@
   }
 
   //****************** linearni kurz nebo test
-  export interface IModuleUser extends IPersistNodeUser { //course dato pro test
-  }
-
   export class moduleTask extends task { //task pro pruchod lekcemi (repository je seznam cviceni)
 
     getPersistData: () => IModuleUser;
@@ -223,26 +194,7 @@
 
   }
 
-  ////****************** linearni KURZ
-  //export interface IModuleUser extends IPersistNodeUser { //course dato pro test (repository je seznam cviceni)
-  //}
-
-  //export class moduleTask extends task { //task pro pruchod lekcemi
-
-  //  getPersistData: () => IModuleUser;
-  //  setPersistData: (modify: (data: IModuleUser) => void) => IModuleUser;
-
-  //  initPersistData(ud: IModuleUser) {
-  //    super.initPersistData(ud);
-  //  }
-  //  moveForward(ud: IModuleUser): string { ud.done = true; return null; }
-  //  createChild(ud: IModuleUser, completed: () => void) { completed(); }
-
-  //}
-
   //****************** EXERCISE
-  export interface IExUser extends IPersistNodeUser { //course dato pro test
-  }
 
   export class exTask extends task { //task pro pruchod lekcemi
     getPersistData: () => IExUser;

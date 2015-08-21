@@ -1,9 +1,5 @@
-﻿<h2>Product home</h2>
-<a ui-sref="pg.ajs.vyzvaproduct.pretest">Pretest</a><br />
+﻿<a ui-sref="pg.ajs.vyzva.pretest.home({pretesturl:'!lm!blcourse!english!pretests!'})">Pretest</a><br />
 <a ui-sref="pg.ajs.vyzvaproduct.module({url:'url', mode:'course'})">Module</a><br />
 <a ui-sref="pg.ajs.vyzvaproduct.exercise({tasktype:'task', url:'url', mode:'course'})">Exercise</a><br />
 
-<a data-ng-click="events.greenBtnClick()" class="btn btn-success">Run</a><br />
-
-<!--<div id="ex-place" data-show-exercise="" data-ex-url="exercise url"></div>-->
-<h3>{{greenTitle}}</h3>
+<div data-ng-include="ts.dataPretestItem"></div>

@@ -40,6 +40,7 @@
 
   <link href="../font-awesome/lm/externals<#=themeId#>.css" rel="stylesheet"/>
   <link rel="stylesheet" type="text/css" href="../jslib/ea/ea.css" />
+  <link rel="stylesheet" type="text/css" href="../blendedapi/styles/style.css" />
   <link href="../jslib/css/lm<#=themeId#>.css" rel="stylesheet"/>
 
 <#

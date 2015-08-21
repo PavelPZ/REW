@@ -496,12 +496,25 @@ namespace Packager {
 
     public static string[] angularJS = new string[] {
       "blendedapi/scripts/lib.js",
-      "blendedapi/scripts/showexercise.js",
       "blendedapi/scripts/loader.js",
+      "blendedapi/scripts/showexercise.js",
       "blendedapi/scripts/tasks.js",
+      "blendedapi/scripts/tasksnew.js",
+
+      "blendedapi/vyzva/scripts/lib.js",
       "blendedapi/vyzva/scripts/tasks.js",
 
-      "blendedapi/vyzva/controllers/producthome.js",
+      "blendedapi/vyzva/viewparts/toolbar/empty.js",
+      "blendedapi/vyzva/viewparts/toolbar/module.js",
+      "blendedapi/vyzva/viewparts/toolbar/run.js",
+      "blendedapi/vyzva/viewparts/toolbar/toolbar.js",
+
+      "blendedapi/vyzva/views/productHome/pretestitem.js",
+      "blendedapi/vyzva/views/exercise.js",
+      "blendedapi/vyzva/views/moduleHome.js",
+      "blendedapi/vyzva/views/pretestHome.js",
+      "blendedapi/vyzva/views/productHome.js",
+
       "blendedapi/vyzva/app.js",
       "blendedapi/app.js",
     };

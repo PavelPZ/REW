@@ -17,26 +17,20 @@ var blended;
     var startGui = new Date().getTime();
     var controller = (function () {
         function controller($scope, $state) {
-            Pager.clearHtml();
-            //this.$scope = $scope;
+            this.$state = $state;
             var params = ($state.params);
             finishContext(params);
-            $.extend(this, [$scope, params]);
-            $scope['ts'] = this;
-            //$scope.params = <learnContext><any>($state.params);
-            ////$scope.state =
-            //$scope.params.$state = $state;
-            //finishContext($scope.params);
-            //$scope.events = this;
+            $.extend(this, $scope, $state.current.data);
+            $scope.ts = this;
+            this.urlParams = params;
         }
+        controller.prototype.href = function (state, params) {
+            return this.$state.href(state, params);
+        };
         controller.$inject = ['$scope', '$state'];
         return controller;
     })();
     blended.controller = controller;
-    //export interface IScope extends ng.IScope {
-    //  params: learnContext; //query route parametry
-    //  events: Object; //pro View zpristupnuje metody kontroleru
-    //}
     blended.baseUrlRelToRoot = '..'; //jak se z root stranky dostat do rootu webu
     function cloneAndModifyContext(ctx, modify) {
         if (modify === void 0) { modify = null; }
@@ -52,6 +46,8 @@ var blended;
     function finishContext(ctx) {
         ctx.productUrl = decodeUrl(ctx.producturl);
         ctx.Url = decodeUrl(ctx.url);
+        ctx.pretestUrl = decodeUrl(ctx.pretesturl);
+        ctx.moduleUrl = decodeUrl(ctx.moduleurl);
         if (!ctx.$http) {
             var inj = angular.injector(['ng']);
             ctx.$http = (inj.get('$http'));
@@ -60,6 +56,7 @@ var blended;
         return ctx;
     }
     blended.finishContext = finishContext;
+    //************ LOGGING functions
     function traceRoute() {
         // Credits: Adam's answer in http://stackoverflow.com/a/20786262/69362
         var $rootScope = angular.element(document.querySelectorAll("[ui-view]")[0]).injector().get('$rootScope');

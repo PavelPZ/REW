@@ -99,16 +99,17 @@ namespace NewData.Design.Templates
             #line default
             #line hidden
             this.Write(".css\" rel=\"stylesheet\"/>\r\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"../jslib" +
-                    "/ea/ea.css\" />\r\n  <link href=\"../jslib/css/lm");
+                    "/ea/ea.css\" />\r\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"../blendedapi/sty" +
+                    "les/style.css\" />\r\n  <link href=\"../jslib/css/lm");
             
-            #line 43 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 44 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(themeId));
             
             #line default
             #line hidden
             this.Write(".css\" rel=\"stylesheet\"/>\r\n\r\n");
             
-            #line 45 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 46 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
 
   WriteLine(RewApp.writeCfg(cfg));
   WriteLine(MainPage.writeCss(RewApp.publisherSkinCss(cfg)));
@@ -117,7 +118,7 @@ namespace NewData.Design.Templates
             #line default
             #line hidden
             
-            #line 49 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 50 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
 
   if (cfg.version == versions.minified) {
 
@@ -133,7 +134,7 @@ namespace NewData.Design.Templates
   }
 ");
             
-            #line 59 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 60 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
 
     if (cfg.licenceConfig.domain != null) WriteLine(string.Format("  if (window.location.host.toLowerCase().indexOf('{0}') < 0) {{ alert('Wrong domain: {0}'); isOk = false; }}", cfg.licenceConfig.domain.ToLower()));
     if (cfg.licenceConfig.intExpiration > 0) WriteLine("  if (new Date().getTime() > {0}) {{ alert('Trial version expired at {1}'); isOk = false; }}", cfg.licenceConfig.intExpiration, cfg.licenceConfig.expiration.ToString("yyyy-MM-dd"));

@@ -1,0 +1,52 @@
+.bl .topbar {
+  background-color: black;
+  height: 50px;
+}
+.bl .topbar .lm-logo-black-small {
+  float: left;
+  background: url(img/lm-logo-black.png) no-repeat;
+  margin-top: 10px;
+  margin-left: 0;
+  margin-right: 20px;
+  width: 41px;
+  height: 32px;
+  cursor: pointer;
+}
+.bl .topbar .btn {
+  margin-top: 2px;
+}
+.bl .navbar-center {
+  height: 50px;
+}
+.bl .navbar-center .lm-logo-black-small {
+  float: left;
+  background: url(img/lm-logo-black.png) no-repeat;
+  margin-top: 10px;
+  margin-left: 0;
+  width: 41px;
+  height: 32px;
+}
+.bl .navbar-center .content {
+  display: table-cell;
+  vertical-align: middle;
+}
+.bl .navbar-center .content.lm-logo {
+  padding-right: 20px;
+  border-right: 1px solid lightgray;
+}
+.bl .navbar-center .content.lm-logo > a {
+  display: block;
+  background: url(img/lm-logo.png) no-repeat;
+  width: 195px;
+  height: 41px;
+}
+.bl .navbar-center .content.slogan {
+  padding-top: 5px;
+  color: lightgray;
+  font-size: 14px;
+  font-weight: bold;
+}
+.bl .navbar-center .content.contact {
+  font-size: 14px;
+  font-weight: bold;
+}

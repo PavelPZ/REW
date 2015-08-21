@@ -1,36 +1,6 @@
 ﻿module vyzva {
 
-  //****************** COURSE
-
-  export interface IBlendedCourseRepository extends blended.IProductEx {
-    pretest: blended.IPretestRepository; //pretest
-    entryTests: Array<CourseMeta.data>; //vstupni check-testy (entryTests[0]..A1, ..)
-    lessons: Array<CourseMeta.data>; //jednotlive tydenni tasky. Jeden tydenni task je seznam z kurziku nebo testu
-  }
-
-  export interface IPretestProxyUser extends blended.IPersistNodeUser {
-    targetLevel?: blended.levelIds;
-  }
-  export interface IBlendedCourseUser extends blended.IPersistNodeUser { //user dato pro ICourseRepository
-    startDate: number; //datum zacatku prvni etapy
-    //child task infos
-    pretest: IPretestProxyUser;
-    entryTest: blended.IPersistNodeUser;
-    lessons: blended.IPersistNodeUser;
-  }
-
-  export function finishProdukt(prod: IBlendedCourseRepository) {
-    if (prod.pretest) return;
-    var clonedLessons = _.map(_.range(0, 4), idx => <any>(_.clone(prod.Items[idx].Items))); //pro kazdou level kopie napr. </lm/blcourse/english/a1/>.Items
-    var firstPretests = _.map(clonedLessons, l => l.splice(0, 1)[0]); //z kopie vyndej prvni prvek (entry test) a dej jej do firstPretests;
-    prod.pretest = <any>(prod.find('/lm/blcourse/' + LMComLib.LineIds[prod.line].toLowerCase() + '/pretests/'));
-    prod.entryTests = firstPretests;
-    prod.lessons = clonedLessons;
-    //_.each(<any>(prod.pretest.Items), (it: CourseMeta.data) => {
-    //  if (it.other) $.extend(it, JSON.parse(it.other));
-    //});
-  }
-
+  
   export class blendedCourseTask extends blended.task {
 
     getPersistData: () => IBlendedCourseUser;
@@ -74,7 +44,21 @@
 
     getName(): string { return vyzva.stateNames.taskRoot; }
 
-    //greenBtnStatus(): greenStatus { var ud = this.getPersistData(); return ud && ud.lessons && ud.lessons.done ? greenStatus.disabled : greenStatus.green; }
+    //********** PRETEST item
+    getPretestItemModel(): IHomePretest {
+      var ud = this.getPersistData();
+      return {
+        run: () => {
+          debugger;
+          if (!this.child || this.child.dataNode != this.dataNode.pretest) throw '!this.child || this.child.dataNode.url != ud.pretest.url';
+        },
+        canRun: !ud.pretest || !ud.pretest.done,
+        btnTitle: !ud.pretest ? 'Začněte spuštěním Rozřazovacího testu' : 'Dokončete Rozřazovací test',
+        resultLevel: ud.pretest.done ? blended.levelIds[ud.pretest.targetLevel] : '',
+        previewUrl: stateNames.pretestHome,
+      };
+    }
+
     //greenBtnHash(): string {
     //  var ud = this.getPersistData();
     //  if (!ud || !ud.pretest || !ud.pretest.done) return this.ctx.$state.href(vyzva.stateNames.pretestHome);
@@ -88,14 +72,14 @@
     //  var statusId = less.url.indexOf('/lesson') < 0 ? vyzva.stateNames.taskCheckTest : vyzva.stateNames.taskLesson;
     //  return this.ctx.$state.href(statusId, { url: less.url });
     //}
+
   }
 
-  //****************** PRETEST 
-
   export class pretestTask extends blended.pretestTask {
-    //greenBtnStatus(): greenStatus { var ud = this.getPersistData(); return null; }
-    //greenBtnHash(): string {
-    //  return null;
-    //}
+    runHash(): string {
+      var ud = this.getPersistData();
+
+      return null;
+    }
   }
 }

@@ -93,9 +93,8 @@ module Pager {
 
   //export function HomeUrl(): string { return "#"; }
 
-  export function gotoHomeUrl() {
-    navigateToHash(LMStatus.isLogged() ? Pager.initHash() : Login.loginUrl());
-  }
+  export function getHomeUrl() { return LMStatus.isLogged() ? Pager.initHash() : Login.loginUrl();}
+  export function gotoHomeUrl() { navigateToHash(getHomeUrl()); }
 
   export function navigateToHash(hash: string) {
     if (!hash) hash = '';

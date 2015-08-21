@@ -6,19 +6,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var vyzva;
 (function (vyzva) {
-    function finishProdukt(prod) {
-        if (prod.pretest)
-            return;
-        var clonedLessons = _.map(_.range(0, 4), function (idx) { return (_.clone(prod.Items[idx].Items)); }); //pro kazdou level kopie napr. </lm/blcourse/english/a1/>.Items
-        var firstPretests = _.map(clonedLessons, function (l) { return l.splice(0, 1)[0]; }); //z kopie vyndej prvni prvek (entry test) a dej jej do firstPretests;
-        prod.pretest = (prod.find('/lm/blcourse/' + LMComLib.LineIds[prod.line].toLowerCase() + '/pretests/'));
-        prod.entryTests = firstPretests;
-        prod.lessons = clonedLessons;
-        //_.each(<any>(prod.pretest.Items), (it: CourseMeta.data) => {
-        //  if (it.other) $.extend(it, JSON.parse(it.other));
-        //});
-    }
-    vyzva.finishProdukt = finishProdukt;
     var blendedCourseTask = (function (_super) {
         __extends(blendedCourseTask, _super);
         function blendedCourseTask() {
@@ -71,15 +58,34 @@ var vyzva;
             return null;
         };
         blendedCourseTask.prototype.getName = function () { return vyzva.stateNames.taskRoot; };
+        //********** PRETEST item
+        blendedCourseTask.prototype.getPretestItemModel = function () {
+            var _this = this;
+            var ud = this.getPersistData();
+            return {
+                run: function () {
+                    debugger;
+                    if (!_this.child || _this.child.dataNode != _this.dataNode.pretest)
+                        throw '!this.child || this.child.dataNode.url != ud.pretest.url';
+                },
+                canRun: !ud.pretest || !ud.pretest.done,
+                btnTitle: !ud.pretest ? 'Začněte spuštěním Rozřazovacího testu' : 'Dokončete Rozřazovací test',
+                resultLevel: ud.pretest.done ? blended.levelIds[ud.pretest.targetLevel] : '',
+                previewUrl: vyzva.stateNames.pretestHome,
+            };
+        };
         return blendedCourseTask;
     })(blended.task);
     vyzva.blendedCourseTask = blendedCourseTask;
-    //****************** PRETEST 
     var pretestTask = (function (_super) {
         __extends(pretestTask, _super);
         function pretestTask() {
             _super.apply(this, arguments);
         }
+        pretestTask.prototype.runHash = function () {
+            var ud = this.getPersistData();
+            return null;
+        };
         return pretestTask;
     })(blended.pretestTask);
     vyzva.pretestTask = pretestTask;

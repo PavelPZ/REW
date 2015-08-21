@@ -21,7 +21,6 @@ var blended;
         levelIds[levelIds["B2"] = 3] = "B2";
     })(blended.levelIds || (blended.levelIds = {}));
     var levelIds = blended.levelIds;
-    //************ TASKS
     var task = (function () {
         function task(dataNode, ctx, parent, completed) {
             var _this = this;
@@ -115,6 +114,7 @@ var blended;
         return task;
     })();
     blended.task = task;
+    //****************** PRETEST
     var pretestTask = (function (_super) {
         __extends(pretestTask, _super);
         function pretestTask() {
@@ -127,10 +127,10 @@ var blended;
             ud.urls.push(this.actRepo(levelIds.A2).url);
         };
         pretestTask.prototype.moveForward = function (ud) {
-            var childTest = (this.child);
+            var actTestItem = (this.child);
             var actRepo = this.actRepo(ud.actLevel);
-            var childUser = childTest.getPersistData();
-            if (!childUser.done || childUser.url != actRepo.url)
+            var childUser = actTestItem.getPersistData();
+            if (!childUser.done || actTestItem.dataNode.url != actRepo.url)
                 return 'tasks.pretestTask.doGoAhead: !testUser.done || testUser.url != actRepo.url';
             if (actRepo.level == levelIds.A1) {
                 this.finishPretest(ud, levelIds.A1);
@@ -192,6 +192,7 @@ var blended;
         return listTask;
     })(task);
     blended.listTask = listTask;
+    //****************** linearni kurz nebo test
     var moduleTask = (function (_super) {
         __extends(moduleTask, _super);
         function moduleTask() {
@@ -205,6 +206,7 @@ var blended;
         return moduleTask;
     })(task);
     blended.moduleTask = moduleTask;
+    //****************** EXERCISE
     var exTask = (function (_super) {
         __extends(exTask, _super);
         function exTask() {

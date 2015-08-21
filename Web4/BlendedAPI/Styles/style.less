@@ -1,2 +1,63 @@
-﻿body {
+﻿.bl {
+  .topbar {
+    background-color:black;
+    height: 50px;
+    .lm-logo-black-small {
+      float:left;
+      background: url(img/lm-logo-black.png) no-repeat;
+      margin-top: 10px;
+      margin-left: 0;
+      margin-right: 20px;
+      width: 41px;
+      height: 32px;
+      cursor:pointer;
+    }
+
+    .btn {
+      margin-top:2px;
+    }
+
+  }
+  .navbar-center {
+    //display: table !important;
+    height: 50px;
+
+    .lm-logo-black-small {
+      float:left;
+      background: url(img/lm-logo-black.png) no-repeat;
+      margin-top: 10px;
+      margin-left: 0;
+      width: 41px;
+      height: 32px;
+    }
+
+    .content {
+      display: table-cell;
+      vertical-align: middle;
+
+      &.lm-logo {
+        padding-right: 20px;
+        border-right: 1px solid lightgray;
+
+        > a {
+          display: block;
+          background: url(img/lm-logo.png) no-repeat;
+          width: 195px;
+          height: 41px;
+        }
+      }
+
+      &.slogan {
+        padding-top: 5px;
+        color: lightgray;
+        font-size: 14px;
+        font-weight: bold;
+      }
+
+      &.contact {
+        font-size: 14px;
+        font-weight: bold;
+      }
+    }
+  }
 }
