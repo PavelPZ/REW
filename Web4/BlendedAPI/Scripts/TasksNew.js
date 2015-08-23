@@ -17,17 +17,20 @@ var blended;
         return controllerLow;
     })();
     blended.controllerLow = controllerLow;
+    //******* TASK VIEW
     var taskViewController = (function (_super) {
         __extends(taskViewController, _super);
         function taskViewController($scope, $state) {
             _super.call(this, $scope, $state);
-            this.myControler = $scope.$parent.ts;
-            this.title = this.myControler.dataNode.title;
+            this.myTask = $scope.$parent.ts;
+            this.myTask.myView = this;
+            this.title = this.myTask.dataNode.title;
         }
         taskViewController.prototype.gotoHomeUrl = function () { Pager.gotoHomeUrl(); };
         return taskViewController;
     })(controllerLow);
     blended.taskViewController = taskViewController;
+    //******* TASK 
     var taskController = (function (_super) {
         __extends(taskController, _super);
         //********************** 
@@ -51,26 +54,22 @@ var blended;
                 modify(it.data);
                 return it.data;
             };
-            //this.ctx = <learnContext><any>($state.params);
-            //finishContext(this.ctx);
-            //$.extend(this, $state.current.data);
-            //$scope.ts = this;
-            //provazani scopes
             var paretScope = $scope.$parent;
             if (paretScope && paretScope.ts && paretScope.ts.product) {
                 this.parent = paretScope.ts;
                 this.product = paretScope.ts.product;
                 this.parent.child = this;
             }
-            else
+            else if ($loadedProduct)
                 this.product = $loadedProduct;
+            else
+                throw 'something wrong';
             this.dataNode = this.product.nodeDir[this.ctx[dataNodeUrlParName]];
-            //this.title = this.dataNode.title;
             //inicializace persistence
             var ud = this.getPersistData();
             if (!ud)
                 ud = this.setPersistData(function (ud) {
-                    _this.log('createStatus');
+                    _this.log('initPersistData');
                     _this.initPersistData(ud);
                 });
             //this.log('createChild');

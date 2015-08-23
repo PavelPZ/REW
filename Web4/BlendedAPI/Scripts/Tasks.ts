@@ -1,47 +1,82 @@
 ﻿module blended {
 
-  export interface IPersistNodeItem { //persistentni udaj pro jednu variantu (jeden taskId). Kazde cviceni apod. se muze spustit vicekrat, aniz by se prepisovaly jeho user data.
-    data: IPersistNodeUser;
-    modified: boolean;
-  }
+  //export class controllerLow {
+  //  constructor($scope: IControllerLowScope, public $state: angular.ui.IStateService) {
+  //    this.ctx = <learnContext><any>($state.params);
+  //    finishContext(this.ctx);
+  //    $.extend(this, $state.current.data);
+  //    $scope.ts = this;
+  //  }
+  //  ctx: learnContext;
+  //}
+  export interface IControllerLowScope extends ng.IScope { ts: taskViewController; }
+  export interface ITaskControllerScope extends ng.IScope { ts: taskController; }
 
-  export interface IPersistNodeUser { //user dato pro task obecne
-    url: string;
-    history?: Array<IPersistHistoryItem>;
-    done?: boolean;
-    score?: number;
-  }
-  export interface IPersistHistoryItem { date: number, url: string; taskId: string; }
-
-  export interface IPersistNodeImpl {
-    userData: { [taskId: string]: IPersistNodeItem; } //dato pro jednotlive variatny
-  }
-
-  export function getPersistData(dataNode: CourseMeta.data, taskid:string):IPersistNodeUser {
-    if (!dataNode.userData) return null;
-    var it = dataNode.userData[taskid];
-    return it ? it.data : null;
-  }
-
-
-  //***************** metadata, popisujici metakurz
-  export enum levelIds {
-    A1 = 0, A2 = 1, B1 = 2, B2 = 3,
-  }
-
-  export class task {
-
-    child: task;
-
-    constructor(public dataNode: CourseMeta.data, public ctx: learnContext, public parent: task, completed: (t: task) => void) {
-      var ud = this.getPersistData();
-      if (!ud) ud = this.setPersistData(ud => {
-        this.log('createStatus');
-        this.initPersistData(ud);
-      });
-      this.log('createChild');
-      this.createChild(ud, () => completed(this));
+  //******* TASK VIEW
+  export class taskViewController {
+    constructor(state: IStateService) {
+      this.ctx = state.params;
+      finishContext(this.ctx);
+      $.extend(this, state.current.data);
+      this.myTask = state.parent;
+      this.title = this.myTask.dataNode.title;
     }
+    ctx: learnContext;
+    title: string;
+    breadcrumb: Array<breadcrumbItem>;
+    gotoHomeUrl() { Pager.gotoHomeUrl(); }
+    myTask: taskController;
+  }
+
+  //******* GREEN PROXY 
+  //export class greenProxy {
+  //  constructor(public dataNode: CourseMeta.data, public ctx: learnContext) { }
+  //  getChild(): IStateUrl { throw 'notimplemented'; }
+  //  getPersistData: () => IPersistNodeUser = () => {
+  //    return getPersistData(this.dataNode, this.ctx.taskid);
+  //  }
+  //}
+
+  //******* TASK 
+  export class taskController {
+
+    //********************** FIELDS
+    child: taskController;
+    parent: taskController;
+    dataNode: CourseMeta.data;
+    product: IProductEx;
+    ctx: learnContext;
+
+    //********************** Virtualni procs
+    //inicialni naplneni user dat  (pri jejich prvnim vytvoreni)
+    initPersistData(ud: IPersistNodeUser) {
+      ud.url = this.dataNode.url;
+    }
+    //posun stavu dal
+    moveForward(ud: IPersistNodeUser): string { throw 'notimplemented'; }
+    //getName(): string { return ''; }
+    modifyTargetState(): IStateUrl { return null; }
+
+    //********************** 
+    constructor(state: IStateService) {
+      if (!state.current.dataNodeUrlParName) return;
+
+      this.ctx = state.params;
+      finishContext(this.ctx);
+
+      this.product = loader.productCache.fromCache(this.ctx);
+      if (!this.product) return;
+
+      var paretScope = this.parent = state.parent;
+      if (paretScope) paretScope.child = this;
+
+      this.dataNode = this.product.nodeDir[this.ctx[state.current.dataNodeUrlParName]];
+
+      if (state.canModifyUserData) this.doInitPersistData();
+      //this.log('createChild');
+      //this.createChild(ud);
+    }
+    //static $inject = ['$scope', '$state'];
 
     getPersistData: () => IPersistNodeUser = () => {
       return getPersistData(this.dataNode, this.ctx.taskid);
@@ -58,72 +93,176 @@
       return it.data;
     }
 
+    log(msg: string) {
+      console.log('%%% ' + Utils.getObjectClassName(this) + ": " + msg + ' (' + this.dataNode.url + ')');
+    }
+
+    doInitPersistData: () => IPersistNodeUser = () => {
+      var ud = this.getPersistData();
+      if (!ud) ud = this.setPersistData(ud => { //prvni vstup do tasku
+        this.log('initPersistData');
+        this.initPersistData(ud);
+      });
+      return ud;
+    }
+
     //posun zelenou sipkou
-    goAhead(): ng.IPromise<boolean> {
-      var def = this.ctx.$q.defer();
-      try {
-        var ud = this.getPersistData();
-        if (ud.done) { def.resolve(false); return; }
-        if (this.child) { //vyresi posun child?...
-          this.child.goAhead().then(childOK => {
-            if (childOK) { this.addToHistory(this.child, ud); def.resolve(true); return; } //... ano, posun udelal child
-            this.log('doMoveForward, child finished');
-            this.doMoveForward(def, ud); //... ne, posun delam ja
-          });
-        } else {
-          this.doMoveForward(def, ud); //neni child, udelej posun sam
-          this.log('doMoveForward');
-        }
-      } finally { return def.promise }
-    }
+    //goAhead(): boolean {
+    //  var ud = this.getPersistData();
+    //  if (ud.done) return false
+    //  if (this.child) { //vyresi posun child?...
+    //    if (this.child.goAhead()) { //... ano, posun udelal child
+    //      this.addToHistory(this.child, ud);
+    //      return true;
+    //    }
+    //    this.log('doMoveForward, child finished'); //... ne musim jej udelat sam
+    //  } else {
+    //    this.log('doMoveForward');
+    //  }
+    //  var error = this.moveForward(ud); //posun stav dopredu
+    //  if (error) throw error;
+    //  this.createChild(ud);
+    //  return !ud.done;
+    //}
 
-    doMoveForward(def: ng.IDeferred<boolean>, ud: IPersistNodeUser) {
-      var error = this.moveForward(ud); //posun stav dopredu
-      if (error) { def.reject(error); return; } //error? => reject
-      this.createChild(ud, () => def.resolve(!ud.done));
-    }
-
-    addToHistory(child: task, ud: IPersistNodeUser) {
+    addToHistory(child: taskController, ud: IPersistNodeUser) {
       if (!ud.history) ud.history = [];
       var hist: IPersistHistoryItem = { date: Utils.nowToNum(), url: child.dataNode.url, taskId: child.ctx.taskid };
       if (_.find(ud.history, h => h.url == hist.url && h.taskId == hist.taskId)) return;
       ud.history.push(hist);
     }
 
-    log(msg: string) {
-      console.log('%%% ' + Utils.getObjectClassName(this) + ": " + msg + ' (' + this.dataNode.url + ')');
+    href(state: string, params?: {}): string {
+      //return this.ctx.$state.href(state, params);
+      return '';
     }
 
-    //********************** Virtualni procs
-    //inicialni naplneni user dat  (pri jejich prvnim vytvoreni)
-    initPersistData(ud: IPersistNodeUser) {
-      ud.url = this.dataNode.url;
-    }
-    //posun stavu dal
-    moveForward(ud: IPersistNodeUser): string { throw 'notimplemented'; }
-    //vytvoreni child status na zaklade aktualniho stavu
-    createChild(ud: IPersistNodeUser, completed: () => void) { completed(); }
-    getName(): string { return ''; }
   }
-  
 
-  
   //****************** PRETEST
-  export class pretestTask extends task { //task pro pruchod testem
+  export interface IPretestRepository extends CourseMeta.data {
+    Items: Array<IPretestItemRepository>; //levels, napr. levels[level.A1]
+  }
+
+  export interface IPretestItemRepository extends CourseMeta.data {
+    //pro A2: pod toto skore ma uroven A1
+    //pro B1: pod toto skore ma uroven A2
+    //pro B2: pod toto skore ma uroven B1
+    minScore: number; 
+    // pro A2: nad toto skore se spousti B1
+    // pro B1: nad toto skore se spousti B2
+    maxScore: number;
+    level: levelIds;
+  }
+
+  export interface IPretestUser extends IPersistNodeUser { //course dato pro IPretestRepository
+    urls: Array<string>;
+    actLevel: levelIds; //aktualne probirany pretest
+    targetLevel: levelIds; //vysledek pretestu pro done=true
+  }
+
+  //export class pretestGreenProxy extends greenProxy {
+  //  constructor(public dataNode: IPretestRepository, ctx: learnContext) {
+  //    super(dataNode, ctx);
+  //  }
+  //  getPersistData: () => IPretestUser;
+  //  getChild(): IStateUrl {
+  //    var ud = this.getPersistData(); if (ud.done) return null;
+  //    var act: IPretestItemRepository = _.find(this.dataNode.Items, l => l.level == ud.actLevel); if (!act) throw '!act';
+  //    return new pretestItemGreenProxy(act, this.ctx).getChild();
+  //  }
+  //}
+
+  //export class pretestItemGreenProxy extends greenProxy {
+  //  constructor(public dataNode: IPretestItemRepository, ctx: learnContext) {
+  //    super(dataNode, ctx);
+  //  }
+  //  getPersistData: () => IModuleUser;
+  //  getChild(): IStateUrl {
+  //    var ud = this.getPersistData(); if (ud.done) return null;
+  //    var node = _.find(this.dataNode.Items, it => {
+  //      var nodeUd = blended.getPersistData(it, '*** TODO');
+  //      return nodeUd != null && !nodeUd.done;
+  //    });
+  //    //return node ? new greenProxy(node, this.ctx) /*TODO*/: null;
+  //  }
+  //}
+
+  export class pretestState extends state {
+    constructor(st: angular.ui.IState, public exerciseState: state) {
+      super(st);
+    }
+
+    //getPersistData: (data: IPretestStateData) => IPretestUser;
+    //setPersistData: (data: IPretestStateData, modify: (data: IPretestUser) => void) => IPretestUser;
+
+    //modifyTargetState(data: IPretestStateData): IStateUrl {
+    //  var ud = this.getPersistData(data);
+    //  //if (!ud) return { stateName: prodStates.home.name, pars: data.man.ctx }; //pretest jeste nezacal => goto home
+    //  if (ud && ud.done) return null; //done pretest: vse je povoleno
+    //  var dataNode = <IPretestRepository>data.dataNode;
+    //  if (!ud) ud = this.setPersistData(data, d => {
+    //    d.url = dataNode.url;
+    //    d.actLevel = levelIds.A2;
+    //    d.urls = [this.actRepo(data, levelIds.A2).url];
+    //  });
+    //  var actModule = dataNode.Items[ud.actLevel];
+    //  if (actModule.url != data.man.ctx.moduleUrl) {
+    //    var pars = cloneAndModifyContext(data.man.ctx, c => {
+    //      c.moduleurl = enocdeUrl(actModule.url);
+    //      c.url = enocdeUrl(actModule.Items[0].url);
+    //    });
+    //    return { stateName: this.exerciseState.name, pars: pars }; //v URL je adresa jineho nez aktivniho modulu (asi pomoci back) => jdi na prvni cviceni aktualniho modulu
+    //  }
+    //  return null;
+    //}
+
+    //initPersistData(data: IPretestStateData, ud: IPretestUser) {
+    //  super.initPersistData(data, ud);
+    //  ud.actLevel = levelIds.A2;
+    //  ud.urls = [this.actRepo(data, levelIds.A2).url];
+    //}
+
+    //actRepo(data: IPretestStateData, lev: levelIds): IPretestItemRepository { return _.find(data.dataNode.Items, l => l.level == lev); }
+
+  }
+
+  //export interface IPretestStateData extends blended.IStateData {
+  //  dataNode: IPretestRepository;
+  //}
+
+  export class pretestTaskController extends taskController { //task pro pruchod testem
 
     getPersistData: () => IPretestUser;
     setPersistData: (modify: (data: IPretestUser) => void) => IPretestUser;
+    doInitPersistData: () => IPretestUser;
     dataNode: IPretestRepository;
 
     initPersistData(ud: IPretestUser) {
       super.initPersistData(ud);
       ud.actLevel = levelIds.A2;
-      ud.urls = [];
-      ud.urls.push(this.actRepo(levelIds.A2).url);
+      ud.urls = [this.actRepo(levelIds.A2).url];
+    }
+
+    modifyTargetState(): IStateUrl {
+      var ud = this.getPersistData();
+      //if (!ud) return { stateName: prodStates.home.name, pars: data.man.ctx }; //pretest jeste nezacal => goto home
+      if (ud && ud.done) return null; //done pretest: vse je povoleno
+      var dataNode = <IPretestRepository>this.dataNode;
+      ud = this.doInitPersistData();
+      var actModule = dataNode.Items[ud.actLevel];
+      if (actModule.url != this.ctx.moduleUrl) {
+        var pars = cloneAndModifyContext(this.ctx, c => {
+          c.moduleurl = enocdeUrl(actModule.url);
+          c.url = enocdeUrl(actModule.Items[0].url);
+        });
+        return { stateName: blended.prodStates.pretestExercise.name, pars: pars }; //v URL je adresa jineho nez aktivniho modulu (asi pomoci back) => jdi na prvni cviceni aktualniho modulu
+      }
+      return null;
     }
 
     moveForward(ud: IPretestUser): string {
-      var actTestItem = <moduleTask>(this.child);
+      var actTestItem = <moduleTaskController>(this.child);
       var actRepo = this.actRepo(ud.actLevel);
       var childUser = actTestItem.getPersistData(); if (!childUser.done || actTestItem.dataNode.url != actRepo.url) return 'tasks.pretestTask.doGoAhead: !testUser.done || testUser.url != actRepo.url';
 
@@ -144,10 +283,10 @@
       return null;
     }
 
-    createChild(ud: IPretestUser, completed: () => void) {
+    createChild(ud: IPretestUser) {
       var act: IPretestItemRepository = _.find(this.dataNode.Items, l => l.level == ud.actLevel);
       if (!act) throw '!act';
-      this.child = new moduleTask(act, this.ctx, this, completed);
+      //????? TODO this.child = new moduleTask(act, this.ctx);
     }
 
     newTestItem(ud: IPretestUser, lev: levelIds) {
@@ -159,29 +298,20 @@
     }
     actRepo(lev: levelIds): IPretestItemRepository { return _.find(this.dataNode.Items, l => l.level == lev); }
 
-    getName(): string { return vyzva.stateNames.taskPretest; }
-  }
-
-  //****************** LEVEL LESSONS
-  export interface IListUser extends IPersistNodeUser {
-    lastUrl: string;
-  }
-
-  export class listTask extends task { //task pro nepodmineny pruchod seznamem tasku
-
-    dataNode: CourseMeta.data;
-    getPersistData: () => IListUser;
-    setPersistData: (modify: (data: IListUser) => void) => IListUser;
-
-    initPersistData(ud: IListUser) {
-      super.initPersistData(ud);
-    }
-    moveForward(ud: IListUser): string { ud.done = true; return null; }
-    createChild(ud: IListUser, completed: () => void) { completed(); }
+    //getName(): string { return vyzva.stateNames.taskPretest; }
   }
 
   //****************** linearni kurz nebo test
-  export class moduleTask extends task { //task pro pruchod lekcemi (repository je seznam cviceni)
+  export interface IModuleUser extends IPersistNodeUser { //course dato pro test
+  }
+
+  export interface IModuleUrlPars { //URL parametry
+    tasktype: string; //identifikace tasku, v ramci ktereho je modul spusten. Pro Vyzva projekt je to lesson, pretest
+    moduleurl: string; //url node s modulem
+    mode: string; //course, test, preview
+  }
+
+  export class moduleTaskController extends taskController { //task pro pruchod lekcemi (repository je seznam cviceni)
 
     getPersistData: () => IModuleUser;
     setPersistData: (modify: (data: IModuleUser) => void) => IModuleUser;
@@ -190,13 +320,19 @@
       super.initPersistData(ud);
     }
     moveForward(ud: IModuleUser): string { ud.done = true; return null; }
-    createChild(ud: IModuleUser, completed: () => void) { completed(); }
+    createChild(ud: IModuleUser) { }
 
   }
 
-  //****************** EXERCISE
+  export interface IExUser extends IPersistNodeUser { //course dato pro test
+  }
 
-  export class exTask extends task { //task pro pruchod lekcemi
+  export interface IExerciseUrlPars extends IModuleUrlPars { //URL parametry
+    url: string; //url node se cvicenim
+  }
+
+
+  export class exerciseTaskController extends taskController { //task pro pruchod lekcemi
     getPersistData: () => IExUser;
     setPersistData: (modify: (data: IModuleUser) => void) => IModuleUser;
 
@@ -204,7 +340,6 @@
       super.initPersistData(ud);
     }
     moveForward(ud: IExUser): string { ud.done = true; return null; }
-    createChild(ud: IExUser, completed: () => void) { completed(); }
+    createChild(ud: IExUser) { }
   }
-
 }

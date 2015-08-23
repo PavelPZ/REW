@@ -1,5 +1,12 @@
 var blended;
 (function (blended) {
+    (function (levelIds) {
+        levelIds[levelIds["A1"] = 0] = "A1";
+        levelIds[levelIds["A2"] = 1] = "A2";
+        levelIds[levelIds["B1"] = 2] = "B1";
+        levelIds[levelIds["B2"] = 3] = "B2";
+    })(blended.levelIds || (blended.levelIds = {}));
+    var levelIds = blended.levelIds;
     function enocdeUrl(url) {
         if (!url)
             return url;
@@ -56,6 +63,15 @@ var blended;
         return ctx;
     }
     blended.finishContext = finishContext;
+    //export function getStateChain($state: angular.ui.IStateService): Array<angular.ui.IState> {
+    //  var res = [];
+    //  var stWrapper = <any>$state.$current;
+    //  while (stWrapper) {
+    //    res.push(stWrapper);
+    //    stWrapper = stWrapper.parent;
+    //  }
+    //  return res;
+    //}
     //************ LOGGING functions
     function traceRoute() {
         // Credits: Adam's answer in http://stackoverflow.com/a/20786262/69362

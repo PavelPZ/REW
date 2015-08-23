@@ -4,6 +4,28 @@
 
 module blended {
 
+  export interface IPersistNodeItem { //persistentni udaj pro jednu variantu (jeden taskId). Kazde cviceni apod. se muze spustit vicekrat, aniz by se prepisovaly jeho user data.
+    data: IPersistNodeUser;
+    modified: boolean;
+  }
+
+  export interface IPersistNodeUser { //user dato pro task obecne
+    url: string;
+    history?: Array<IPersistHistoryItem>;
+    done?: boolean;
+    score?: number;
+  }
+  export interface IPersistHistoryItem { date: number, url: string; taskId: string; }
+
+  export interface IPersistNodeImpl {
+    userData: { [taskId: string]: IPersistNodeItem; } //dato pro jednotlive variatny
+  }
+
+  export function getPersistData(dataNode: CourseMeta.data, taskid: string): IPersistNodeUser {
+    if (!dataNode.userData) return null;
+    var it = dataNode.userData[taskid];
+    return it ? it.data : null;
+  }
 
   export interface IProductEx extends CourseMeta.product, IProductAddIn { //rozsireni CourseMeta.product o novou persistenci
     instructions: { [id: string]: string; }; //pool s instrukcemi
@@ -47,7 +69,6 @@ module blended {
       pe.nodeList.push(repo);
     }
   }
-
 
   export interface cachedModule { //module z cache
     loc: { [id: string]: any; };

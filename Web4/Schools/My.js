@@ -168,7 +168,7 @@ var schoolMy;
                             producturl: blended.enocdeUrl(pr.url), companyid: comp.data.Id, userid: LMStatus.Cookie.id,
                             subuserid: LMStatus.Cookie.id, loc: Trados.actLang, taskid: 'def', persistence: null /*TODO*/
                         };
-                        var hash = blended.root.href(vyzva.stateNames.productHome, ctx);
+                        var hash = blended.root.href(vyzva.stateNames.home.name, ctx);
                         Pager.navigateToHash(hash);
                         return;
                     } //window.location.hash = '/pg/ajs/vyzvaproduct/xxx'; return; }

@@ -6,29 +6,35 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var blended;
 (function (blended) {
-    function getPersistData(dataNode, taskid) {
-        if (!dataNode.userData)
-            return null;
-        var it = dataNode.userData[taskid];
-        return it ? it.data : null;
-    }
-    blended.getPersistData = getPersistData;
-    //***************** metadata, popisujici metakurz
-    (function (levelIds) {
-        levelIds[levelIds["A1"] = 0] = "A1";
-        levelIds[levelIds["A2"] = 1] = "A2";
-        levelIds[levelIds["B1"] = 2] = "B1";
-        levelIds[levelIds["B2"] = 3] = "B2";
-    })(blended.levelIds || (blended.levelIds = {}));
-    var levelIds = blended.levelIds;
-    var task = (function () {
-        function task(dataNode, ctx, parent, completed) {
+    //******* TASK VIEW
+    var taskViewController = (function () {
+        function taskViewController(state) {
+            this.ctx = state.params;
+            blended.finishContext(this.ctx);
+            $.extend(this, state.current.data);
+            this.myTask = state.parent;
+            this.title = this.myTask.dataNode.title;
+        }
+        taskViewController.prototype.gotoHomeUrl = function () { Pager.gotoHomeUrl(); };
+        return taskViewController;
+    })();
+    blended.taskViewController = taskViewController;
+    //******* GREEN PROXY 
+    //export class greenProxy {
+    //  constructor(public dataNode: CourseMeta.data, public ctx: learnContext) { }
+    //  getChild(): IStateUrl { throw 'notimplemented'; }
+    //  getPersistData: () => IPersistNodeUser = () => {
+    //    return getPersistData(this.dataNode, this.ctx.taskid);
+    //  }
+    //}
+    //******* TASK 
+    var taskController = (function () {
+        //********************** 
+        function taskController(state) {
             var _this = this;
-            this.dataNode = dataNode;
-            this.ctx = ctx;
-            this.parent = parent;
+            //static $inject = ['$scope', '$state'];
             this.getPersistData = function () {
-                return getPersistData(_this.dataNode, _this.ctx.taskid);
+                return blended.getPersistData(_this.dataNode, _this.ctx.taskid);
             };
             this.setPersistData = function (modify) {
                 var it = _this.dataNode.userData ? _this.dataNode.userData[_this.ctx.taskid] : null;
@@ -43,54 +49,62 @@ var blended;
                 modify(it.data);
                 return it.data;
             };
-            var ud = this.getPersistData();
-            if (!ud)
-                ud = this.setPersistData(function (ud) {
-                    _this.log('createStatus');
-                    _this.initPersistData(ud);
-                });
-            this.log('createChild');
-            this.createChild(ud, function () { return completed(_this); });
-        }
-        //posun zelenou sipkou
-        task.prototype.goAhead = function () {
-            var _this = this;
-            var def = this.ctx.$q.defer();
-            try {
-                var ud = this.getPersistData();
-                if (ud.done) {
-                    def.resolve(false);
-                    return;
-                }
-                if (this.child) {
-                    this.child.goAhead().then(function (childOK) {
-                        if (childOK) {
-                            _this.addToHistory(_this.child, ud);
-                            def.resolve(true);
-                            return;
-                        } //... ano, posun udelal child
-                        _this.log('doMoveForward, child finished');
-                        _this.doMoveForward(def, ud); //... ne, posun delam ja
+            this.doInitPersistData = function () {
+                var ud = _this.getPersistData();
+                if (!ud)
+                    ud = _this.setPersistData(function (ud) {
+                        _this.log('initPersistData');
+                        _this.initPersistData(ud);
                     });
-                }
-                else {
-                    this.doMoveForward(def, ud); //neni child, udelej posun sam
-                    this.log('doMoveForward');
-                }
-            }
-            finally {
-                return def.promise;
-            }
-        };
-        task.prototype.doMoveForward = function (def, ud) {
-            var error = this.moveForward(ud); //posun stav dopredu
-            if (error) {
-                def.reject(error);
+                return ud;
+            };
+            if (!state.current.dataNodeUrlParName)
                 return;
-            } //error? => reject
-            this.createChild(ud, function () { return def.resolve(!ud.done); });
+            this.ctx = state.params;
+            blended.finishContext(this.ctx);
+            this.product = blended.loader.productCache.fromCache(this.ctx);
+            if (!this.product)
+                return;
+            var paretScope = this.parent = state.parent;
+            if (paretScope)
+                paretScope.child = this;
+            this.dataNode = this.product.nodeDir[this.ctx[state.current.dataNodeUrlParName]];
+            if (state.canModifyUserData)
+                this.doInitPersistData();
+            //this.log('createChild');
+            //this.createChild(ud);
+        }
+        //********************** Virtualni procs
+        //inicialni naplneni user dat  (pri jejich prvnim vytvoreni)
+        taskController.prototype.initPersistData = function (ud) {
+            ud.url = this.dataNode.url;
         };
-        task.prototype.addToHistory = function (child, ud) {
+        //posun stavu dal
+        taskController.prototype.moveForward = function (ud) { throw 'notimplemented'; };
+        //getName(): string { return ''; }
+        taskController.prototype.modifyTargetState = function () { return null; };
+        taskController.prototype.log = function (msg) {
+            console.log('%%% ' + Utils.getObjectClassName(this) + ": " + msg + ' (' + this.dataNode.url + ')');
+        };
+        //posun zelenou sipkou
+        //goAhead(): boolean {
+        //  var ud = this.getPersistData();
+        //  if (ud.done) return false
+        //  if (this.child) { //vyresi posun child?...
+        //    if (this.child.goAhead()) { //... ano, posun udelal child
+        //      this.addToHistory(this.child, ud);
+        //      return true;
+        //    }
+        //    this.log('doMoveForward, child finished'); //... ne musim jej udelat sam
+        //  } else {
+        //    this.log('doMoveForward');
+        //  }
+        //  var error = this.moveForward(ud); //posun stav dopredu
+        //  if (error) throw error;
+        //  this.createChild(ud);
+        //  return !ud.done;
+        //}
+        taskController.prototype.addToHistory = function (child, ud) {
             if (!ud.history)
                 ud.history = [];
             var hist = { date: Utils.nowToNum(), url: child.dataNode.url, taskId: child.ctx.taskid };
@@ -98,126 +112,153 @@ var blended;
                 return;
             ud.history.push(hist);
         };
-        task.prototype.log = function (msg) {
-            console.log('%%% ' + Utils.getObjectClassName(this) + ": " + msg + ' (' + this.dataNode.url + ')');
+        taskController.prototype.href = function (state, params) {
+            //return this.ctx.$state.href(state, params);
+            return '';
         };
-        //********************** Virtualni procs
-        //inicialni naplneni user dat  (pri jejich prvnim vytvoreni)
-        task.prototype.initPersistData = function (ud) {
-            ud.url = this.dataNode.url;
-        };
-        //posun stavu dal
-        task.prototype.moveForward = function (ud) { throw 'notimplemented'; };
-        //vytvoreni child status na zaklade aktualniho stavu
-        task.prototype.createChild = function (ud, completed) { completed(); };
-        task.prototype.getName = function () { return ''; };
-        return task;
+        return taskController;
     })();
-    blended.task = task;
-    //****************** PRETEST
-    var pretestTask = (function (_super) {
-        __extends(pretestTask, _super);
-        function pretestTask() {
+    blended.taskController = taskController;
+    //export class pretestGreenProxy extends greenProxy {
+    //  constructor(public dataNode: IPretestRepository, ctx: learnContext) {
+    //    super(dataNode, ctx);
+    //  }
+    //  getPersistData: () => IPretestUser;
+    //  getChild(): IStateUrl {
+    //    var ud = this.getPersistData(); if (ud.done) return null;
+    //    var act: IPretestItemRepository = _.find(this.dataNode.Items, l => l.level == ud.actLevel); if (!act) throw '!act';
+    //    return new pretestItemGreenProxy(act, this.ctx).getChild();
+    //  }
+    //}
+    //export class pretestItemGreenProxy extends greenProxy {
+    //  constructor(public dataNode: IPretestItemRepository, ctx: learnContext) {
+    //    super(dataNode, ctx);
+    //  }
+    //  getPersistData: () => IModuleUser;
+    //  getChild(): IStateUrl {
+    //    var ud = this.getPersistData(); if (ud.done) return null;
+    //    var node = _.find(this.dataNode.Items, it => {
+    //      var nodeUd = blended.getPersistData(it, '*** TODO');
+    //      return nodeUd != null && !nodeUd.done;
+    //    });
+    //    //return node ? new greenProxy(node, this.ctx) /*TODO*/: null;
+    //  }
+    //}
+    var pretestState = (function (_super) {
+        __extends(pretestState, _super);
+        function pretestState(st, exerciseState) {
+            _super.call(this, st);
+            this.exerciseState = exerciseState;
+        }
+        return pretestState;
+    })(blended.state);
+    blended.pretestState = pretestState;
+    //export interface IPretestStateData extends blended.IStateData {
+    //  dataNode: IPretestRepository;
+    //}
+    var pretestTaskController = (function (_super) {
+        __extends(pretestTaskController, _super);
+        function pretestTaskController() {
             _super.apply(this, arguments);
         }
-        pretestTask.prototype.initPersistData = function (ud) {
+        pretestTaskController.prototype.initPersistData = function (ud) {
             _super.prototype.initPersistData.call(this, ud);
-            ud.actLevel = levelIds.A2;
-            ud.urls = [];
-            ud.urls.push(this.actRepo(levelIds.A2).url);
+            ud.actLevel = blended.levelIds.A2;
+            ud.urls = [this.actRepo(blended.levelIds.A2).url];
         };
-        pretestTask.prototype.moveForward = function (ud) {
+        pretestTaskController.prototype.modifyTargetState = function () {
+            var ud = this.getPersistData();
+            //if (!ud) return { stateName: prodStates.home.name, pars: data.man.ctx }; //pretest jeste nezacal => goto home
+            if (ud && ud.done)
+                return null; //done pretest: vse je povoleno
+            var dataNode = this.dataNode;
+            ud = this.doInitPersistData();
+            var actModule = dataNode.Items[ud.actLevel];
+            if (actModule.url != this.ctx.moduleUrl) {
+                var pars = blended.cloneAndModifyContext(this.ctx, function (c) {
+                    c.moduleurl = blended.enocdeUrl(actModule.url);
+                    c.url = blended.enocdeUrl(actModule.Items[0].url);
+                });
+                return { stateName: blended.prodStates.pretestExercise.name, pars: pars }; //v URL je adresa jineho nez aktivniho modulu (asi pomoci back) => jdi na prvni cviceni aktualniho modulu
+            }
+            return null;
+        };
+        pretestTaskController.prototype.moveForward = function (ud) {
             var actTestItem = (this.child);
             var actRepo = this.actRepo(ud.actLevel);
             var childUser = actTestItem.getPersistData();
             if (!childUser.done || actTestItem.dataNode.url != actRepo.url)
                 return 'tasks.pretestTask.doGoAhead: !testUser.done || testUser.url != actRepo.url';
-            if (actRepo.level == levelIds.A1) {
-                this.finishPretest(ud, levelIds.A1);
+            if (actRepo.level == blended.levelIds.A1) {
+                this.finishPretest(ud, blended.levelIds.A1);
             }
-            else if (actRepo.level == levelIds.A2) {
+            else if (actRepo.level == blended.levelIds.A2) {
                 if (childUser.score >= actRepo.minScore && childUser.score < actRepo.maxScore)
-                    this.finishPretest(ud, levelIds.A2);
+                    this.finishPretest(ud, blended.levelIds.A2);
                 else if (childUser.score < actRepo.minScore)
-                    this.newTestItem(ud, levelIds.A1);
+                    this.newTestItem(ud, blended.levelIds.A1);
                 else
-                    this.newTestItem(ud, levelIds.B1);
+                    this.newTestItem(ud, blended.levelIds.B1);
             }
-            else if (actRepo.level == levelIds.B1) {
+            else if (actRepo.level == blended.levelIds.B1) {
                 if (childUser.score >= actRepo.minScore && childUser.score < actRepo.maxScore)
-                    this.finishPretest(ud, levelIds.B1);
+                    this.finishPretest(ud, blended.levelIds.B1);
                 else if (childUser.score < actRepo.minScore)
-                    this.finishPretest(ud, levelIds.A2);
+                    this.finishPretest(ud, blended.levelIds.A2);
                 else
-                    this.newTestItem(ud, levelIds.B2);
+                    this.newTestItem(ud, blended.levelIds.B2);
             }
-            else if (actRepo.level == levelIds.B2) {
+            else if (actRepo.level == blended.levelIds.B2) {
                 if (childUser.score < actRepo.minScore)
-                    this.finishPretest(ud, levelIds.B1);
+                    this.finishPretest(ud, blended.levelIds.B1);
                 else
-                    this.finishPretest(ud, levelIds.B2);
+                    this.finishPretest(ud, blended.levelIds.B2);
             }
             return null;
         };
-        pretestTask.prototype.createChild = function (ud, completed) {
+        pretestTaskController.prototype.createChild = function (ud) {
             var act = _.find(this.dataNode.Items, function (l) { return l.level == ud.actLevel; });
             if (!act)
                 throw '!act';
-            this.child = new moduleTask(act, this.ctx, this, completed);
+            //????? TODO this.child = new moduleTask(act, this.ctx);
         };
-        pretestTask.prototype.newTestItem = function (ud, lev) {
+        pretestTaskController.prototype.newTestItem = function (ud, lev) {
             ud.actLevel = lev;
             ud.urls.push(this.actRepo(lev).url);
         };
-        pretestTask.prototype.finishPretest = function (ud, lev) {
+        pretestTaskController.prototype.finishPretest = function (ud, lev) {
             ud.done = true;
             ud.targetLevel = lev;
             this.child = null;
         };
-        pretestTask.prototype.actRepo = function (lev) { return _.find(this.dataNode.Items, function (l) { return l.level == lev; }); };
-        pretestTask.prototype.getName = function () { return vyzva.stateNames.taskPretest; };
-        return pretestTask;
-    })(task);
-    blended.pretestTask = pretestTask;
-    var listTask = (function (_super) {
-        __extends(listTask, _super);
-        function listTask() {
+        pretestTaskController.prototype.actRepo = function (lev) { return _.find(this.dataNode.Items, function (l) { return l.level == lev; }); };
+        return pretestTaskController;
+    })(taskController);
+    blended.pretestTaskController = pretestTaskController;
+    var moduleTaskController = (function (_super) {
+        __extends(moduleTaskController, _super);
+        function moduleTaskController() {
             _super.apply(this, arguments);
         }
-        listTask.prototype.initPersistData = function (ud) {
+        moduleTaskController.prototype.initPersistData = function (ud) {
             _super.prototype.initPersistData.call(this, ud);
         };
-        listTask.prototype.moveForward = function (ud) { ud.done = true; return null; };
-        listTask.prototype.createChild = function (ud, completed) { completed(); };
-        return listTask;
-    })(task);
-    blended.listTask = listTask;
-    //****************** linearni kurz nebo test
-    var moduleTask = (function (_super) {
-        __extends(moduleTask, _super);
-        function moduleTask() {
+        moduleTaskController.prototype.moveForward = function (ud) { ud.done = true; return null; };
+        moduleTaskController.prototype.createChild = function (ud) { };
+        return moduleTaskController;
+    })(taskController);
+    blended.moduleTaskController = moduleTaskController;
+    var exerciseTaskController = (function (_super) {
+        __extends(exerciseTaskController, _super);
+        function exerciseTaskController() {
             _super.apply(this, arguments);
         }
-        moduleTask.prototype.initPersistData = function (ud) {
+        exerciseTaskController.prototype.initPersistData = function (ud) {
             _super.prototype.initPersistData.call(this, ud);
         };
-        moduleTask.prototype.moveForward = function (ud) { ud.done = true; return null; };
-        moduleTask.prototype.createChild = function (ud, completed) { completed(); };
-        return moduleTask;
-    })(task);
-    blended.moduleTask = moduleTask;
-    //****************** EXERCISE
-    var exTask = (function (_super) {
-        __extends(exTask, _super);
-        function exTask() {
-            _super.apply(this, arguments);
-        }
-        exTask.prototype.initPersistData = function (ud) {
-            _super.prototype.initPersistData.call(this, ud);
-        };
-        exTask.prototype.moveForward = function (ud) { ud.done = true; return null; };
-        exTask.prototype.createChild = function (ud, completed) { completed(); };
-        return exTask;
-    })(task);
-    blended.exTask = exTask;
+        exerciseTaskController.prototype.moveForward = function (ud) { ud.done = true; return null; };
+        exerciseTaskController.prototype.createChild = function (ud) { };
+        return exerciseTaskController;
+    })(taskController);
+    blended.exerciseTaskController = exerciseTaskController;
 })(blended || (blended = {}));

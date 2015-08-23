@@ -5,6 +5,7 @@
     $urlRouterProvider: angular.route.IRouteProvider;
     $urlMatcherFactoryProvider: angular.ui.IUrlMatcherFactory;
     $location: ng.ILocationProvider;
+    app: ng.IModule;
   }
 
 

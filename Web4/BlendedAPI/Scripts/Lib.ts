@@ -1,5 +1,9 @@
 ﻿module blended {
 
+  export enum levelIds {
+    A1 = 0, A2 = 1, B1 = 2, B2 = 3,
+  }
+
   export interface breadcrumbItem {
     title: string;
     url: string;
@@ -40,16 +44,16 @@
   export interface learnContext {
     //URL parametry
     userid: number; subuserid: number; companyid: number; loc: LMComLib.Langs; persistence: CourseMeta.IPersistence;
-    producturl: string; taskid: string; 
+    producturl: string; taskid: string;
     pretesturl?: string; moduleurl?: string; url?: string; 
     //normalizovana url
     productUrl?: string; Url?: string; pretestUrl?: string; moduleUrl?: string; 
     //services
     $http?: ng.IHttpService,
     $q?: ng.IQService;
-    $state?: angular.ui.IStateService;
+    //$state?: angular.ui.IStateService;
     //produkt
-    product?: IProductEx;
+    //product?: IProductEx;
     finishProduct?: (prod: IProductEx) => void;
   }
   export function cloneAndModifyContext(ctx: learnContext, modify: (c: learnContext) => void = null): learnContext {
@@ -70,6 +74,19 @@
     }
     return ctx;
   }
+
+  //export function getStateChain($state: angular.ui.IStateService): Array<angular.ui.IState> {
+  //  var res = [];
+  //  var stWrapper = <any>$state.$current;
+  //  while (stWrapper) {
+  //    res.push(stWrapper);
+  //    stWrapper = stWrapper.parent;
+  //  }
+  //  return res;
+  //}
+
+  
+ 
 
   //************ LOGGING functions
   export function traceRoute() {

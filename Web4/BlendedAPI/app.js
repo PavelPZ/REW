@@ -35,6 +35,7 @@ var blended;
         return OldController;
     })();
     blended.OldController = OldController;
+    blended.prodStates = {};
     blended.root = new Module('appRoot', ['ngLocale', 'ngResource', 'ui.router']);
     blended.root.app
         .directive('showExercise', blended.showExerciseDirective)
@@ -43,7 +44,8 @@ var blended;
             restrict: 'A',
             templateUrl: function (ele, attrs) { return attrs.lmInclude; },
         };
-    });
+    }).
+        run(vyzva.initVyzvaApp);
     blended.root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', function (//'$provide', (
             $stateProvider, $urlRouterProvider, $location, $urlMatcherFactoryProvider, $provide) {
             //routerLogging($provide);
@@ -85,10 +87,11 @@ var blended;
                 $urlRouterProvider: $urlRouterProvider,
                 $urlMatcherFactoryProvider: $urlMatcherFactoryProvider,
                 $location: $location,
+                app: blended.root.app
             };
             _.each(blended.oldLocators, function (createLoc) { return createLoc(params); }); //vytvoreni states na zaklade registrovanych page models (pomoci registerOldLocator)
             //stavy pro novou verzi
-            vyzva.registerNew(params);
+            vyzva.initVyzvaStates(params);
             //log vsech validnich routes
             _.each(blended.debugAllRoutes, function (r) { return Logger.trace("Pager", 'Define:' + r); });
         }]);

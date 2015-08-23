@@ -6,11 +6,35 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var vyzva;
 (function (vyzva) {
+    //export interface IHomeStateData extends blended.IStateData{
+    //  dataNode: IBlendedCourseRepository;
+    //}
+    //export class homeState extends blended.state {
+    //  initPersistData(data: IHomeStateData, ud: IBlendedCourseUser) {
+    //    super.initPersistData(data, ud);
+    //    ud.startDate = Utils.nowToNum();
+    //    ud.pretest = { url: data.dataNode.pretest.url }
+    //  }
+    //  getPersistData: (data: IHomeStateData) => IBlendedCourseUser;
+    //  setPersistData: (data: IHomeStateData, modify: (data: IBlendedCourseUser) => void) => IBlendedCourseUser;
+    //  getPretestItemModel(data: IHomeStateData): IHomePretest {
+    //    var ud = this.getPersistData(data);
+    //    return {
+    //      run: () => {
+    //        debugger;
+    //      },
+    //      canRun: !ud.pretest || !ud.pretest.done,
+    //      btnTitle: !ud.pretest ? 'Začněte spuštěním Rozřazovacího testu' : 'Dokončete Rozřazovací test',
+    //      resultLevel: ud.pretest.done ? blended.levelIds[ud.pretest.targetLevel] : '',
+    //      previewUrl: stateNames.pretest.name,
+    //    };
+    //  }
+    //}
     //****************** VIEW
     var homeViewController = (function (_super) {
         __extends(homeViewController, _super);
-        function homeViewController($scope, $state) {
-            _super.call(this, $scope, $state);
+        function homeViewController(state) {
+            _super.call(this, state);
             this.breadcrumb = vyzva.breadcrumbBase(this.myTask);
             this.breadcrumb[1].active = true;
             this.prt = this.myTask.getPretestItemModel();
@@ -39,8 +63,8 @@ var vyzva;
     //****************** TASK
     var homeTaskController = (function (_super) {
         __extends(homeTaskController, _super);
-        function homeTaskController($scope, $state, $loadedProduct) {
-            _super.call(this, $scope, $state, 'productUrl', $loadedProduct);
+        function homeTaskController(state) {
+            _super.call(this, state);
             //this.breadcrumb = breadcrumbBase(this); this.breadcrumb[1].active = true;
             //this.prt = this.getPretestItemModel();
         }
@@ -104,7 +128,7 @@ var vyzva;
                 previewUrl: vyzva.stateNames.pretest.name,
             };
         };
-        homeTaskController.$inject = ['$scope', '$state', '$loadedProduct'];
+        homeTaskController.$inject = ['$scope', '$state'];
         return homeTaskController;
     })(blended.taskController);
     vyzva.homeTaskController = homeTaskController;

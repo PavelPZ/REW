@@ -1,5 +1,12 @@
 var blended;
 (function (blended) {
+    function getPersistData(dataNode, taskid) {
+        if (!dataNode.userData)
+            return null;
+        var it = dataNode.userData[taskid];
+        return it ? it.data : null;
+    }
+    blended.getPersistData = getPersistData;
     //rozsireni interface o metody
     function finishProduktStart(prod) {
         $.extend(prod, blended.productEx);

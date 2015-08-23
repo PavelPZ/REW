@@ -42,16 +42,24 @@
 
   }
 
-  export var root = new Module('appRoot', ['ngLocale', 'ngResource', 'ui.router']);
+  export interface IProductStates {
+    home?: blended.state;
+    homeTask?: blended.state;
+    pretestExercise?: blended.state;
+  }
+  export var prodStates: IProductStates = {};
 
+  export var root = new Module('appRoot', ['ngLocale', 'ngResource', 'ui.router']);
   root.app
     .directive('showExercise', blended.showExerciseDirective)
-    .directive('lmInclude', function () {
-    return {
-      restrict: 'A',
-      templateUrl: (ele, attrs) => attrs.lmInclude,
-    };
-  });
+    .directive('lmInclude', () => {
+      return {
+        restrict: 'A',
+        templateUrl: (ele, attrs) => attrs.lmInclude,
+      };
+    }).
+    run(vyzva.initVyzvaApp)
+  ;
 
   root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', ( //'$provide', (
     $stateProvider: angular.ui.IStateProvider,
@@ -104,11 +112,12 @@
       $urlRouterProvider: $urlRouterProvider,
       $urlMatcherFactoryProvider: $urlMatcherFactoryProvider,
       $location: $location,
+      app: root.app
     };
     _.each(oldLocators, createLoc => createLoc(params)); //vytvoreni states na zaklade registrovanych page models (pomoci registerOldLocator)
 
     //stavy pro novou verzi
-    vyzva.registerNew(params);
+    vyzva.initVyzvaStates(params);
 
     //log vsech validnich routes
     _.each(debugAllRoutes, r => Logger.trace("Pager", 'Define:' + r));
