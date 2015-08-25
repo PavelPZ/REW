@@ -319,6 +319,12 @@ var skrivanek;
 (function (skrivanek) {
     skrivanek.appId = "skrivanek";
 })(skrivanek || (skrivanek = {}));
+var hashDelim = '/';
+var oldPrefix = '/pg/old/';
+var encMask = new RegExp('/', 'g');
+var decMask = new RegExp('@', 'g');
+function encodeUrlHash(url) { return url ? url.replace(encMask, '@') : ''; }
+function decodeUrlHash(url) { return url ? url.replace(decMask, '/') : null; }
 var Pager;
 (function (Pager) {
     (function (ButtonType) {
@@ -345,11 +351,10 @@ var Pager;
         Page.prototype.loaded = function () { }; //naladovani HTML stranky
         Page.prototype.leave = function () { }; //pred opustenim stranky
         Page.prototype.htmlClearing = function () { }; //pred zrusenim HTML se strankou
-        Page.prototype.getHash = function () { return [this.appId, this.type].concat(this.urlParts).join('@'); }; //my hash
+        Page.prototype.getHash = function () { return [this.appId, this.type].concat(this.urlParts).join(hashDelim); }; //my hash
         return Page;
     })();
     Pager.Page = Page;
-    Pager.ignorePage = new Page(null, null, null);
     function registerAppLocator(appId, type, pageCreator) {
         if (!regApps[appId])
             regApps[appId] = {};
@@ -358,6 +363,7 @@ var Pager;
     Pager.registerAppLocator = registerAppLocator;
     var regApps = {};
     function locatePageFromHash(hash, completed) {
+        alert('locatePageFromHash cannot be called');
         locatePageFromHashLow(hash, function (pg) {
             if (pg) {
                 completed(pg);
@@ -373,6 +379,7 @@ var Pager;
     }
     Pager.locatePageFromHash = locatePageFromHash;
     function locatePageFromHashLow(hash, completed) {
+        alert('locatePageFromHash cannot be called');
         if (hash != null && hash.indexOf("access_token=") >= 0) {
             OAuth.checkForToken(function (obj) {
                 Pager.ajaxGet(Pager.pathType.restServices, Login.CmdAdjustUser_Type, Login.CmdAdjustUser_Create(obj.providerid, obj.id, obj.email, obj.firstName, obj.lastName), function (res) {
@@ -384,12 +391,17 @@ var Pager;
         }
         if (hash && hash.charAt(0) == '#')
             hash = hash.substring(1);
+        //if (blended.isAngularHash(hash)) { completed(angularPage); return; }
         if (!hash || hash.length < 3) {
             completed(null);
             return;
         }
         //hash = hash.toLowerCase();
-        var parts = hash.split("@");
+        var parts = hash.split(hashDelim);
+        if (parts[0] == 'old' || parts[1] == 'old') {
+            var removeNum = parts[0] == 'old' ? 1 : 2;
+            parts.splice(0, removeNum);
+        }
         if (parts.length < 2) {
             completed(null);
             return;
@@ -408,11 +420,25 @@ var Pager;
     }
     Pager.ActPage;
     Pager.htmlOwner;
+    Pager.ignorePage = new Page(null, null, null);
+    Pager.angularPage = new Page(null, null, null);
     $.views.helpers({
         ActPage: function () { return Pager.ActPage; },
+        Pager: Pager,
     });
     //export function HomeUrl(): string { return "#"; }
-    function navigateToHash(hash) { location.hash = '#' + hash; }
+    function getHomeUrl() { return LMStatus.isLogged() ? Pager.initHash() : Login.loginUrl(); }
+    Pager.getHomeUrl = getHomeUrl;
+    function gotoHomeUrl() { navigateToHash(getHomeUrl()); }
+    Pager.gotoHomeUrl = gotoHomeUrl;
+    function navigateToHash(hash) {
+        if (!hash)
+            hash = '';
+        if (hash.length > 0 && hash.charAt(0) != '#')
+            hash = '#' + hash;
+        Logger.trace('Pager', 'navigateToHash: ' + hash);
+        location.hash = hash;
+    }
     Pager.navigateToHash = navigateToHash;
     function closePanels() { anim.collapseExpanded(); }
     Pager.closePanels = closePanels;
@@ -432,6 +458,10 @@ var Pager;
             if (oldPg != null)
                 oldPg.leave();
             Pager.rootVM.pageChanged(oldPg, Pager.ActPage);
+        }
+        if (page == Pager.angularPage) {
+            renderTemplate('Dummy');
+            return;
         }
         reloadPage();
     }
@@ -701,9 +731,9 @@ var LMStatus;
         setReturnUrl();
         if (newHash == null)
             return;
-        if (newHash.charAt(0) != "#")
-            newHash = "#" + newHash;
-        location.hash = newHash;
+        Pager.navigateToHash(newHash);
+        //if (newHash.charAt(0) != "#") newHash = "#" + newHash;
+        //location.hash = newHash;
     }
     LMStatus.setReturnUrlAndGoto = setReturnUrlAndGoto;
     function setReturnUrl(newHash) {
@@ -723,16 +753,17 @@ var LMStatus;
         var url = Cook.read(LMComLib.CookieIds.returnUrl);
         if (_.isEmpty(url) || url == '#')
             return null;
-        if (url.charAt(0) != "#")
-            url = "#" + url;
-        return url;
+        if (url.charAt(0) == "#")
+            url = url.substr(1);
+        return oldPrefix + url;
     }
     LMStatus.getReturnUrl = getReturnUrl;
     function gotoReturnUrl() {
         var url = getReturnUrl();
         if (_.isEmpty(url))
-            url = schools.createHomeUrlStd();
-        location.hash = url;
+            Pager.gotoHomeUrl();
+        else
+            Pager.navigateToHash(url);
     }
     LMStatus.gotoReturnUrl = gotoReturnUrl;
     LMStatus.Cookie = null;
@@ -824,7 +855,7 @@ var LMStatus;
         //binec, setCookie nastavi pouze browser cookie a ponecha LMStatus.Cookie
         LMStatus.setCookie(null);
         LMStatus.Cookie = null;
-        Pager.loadPageHash(null);
+        Pager.gotoHomeUrl();
     }
     LMStatus.LogoutLow = LogoutLow;
     function Logout(obj, ev) {
@@ -1149,13 +1180,14 @@ var ViewBase;
     var modelIdToScriptId;
     ViewBase.init = function () {
         Logger.traceMsg('ViewBase.initBootStrapApp');
-        $(window).hashchange(function () { return Pager.loadPageHash(location.hash); });
+        //if (!location.hash || location.hash.length < 3) location.hash = '/old/school/schoolmymodel/-1///';
+        //$(window).hashchange(() => Pager.loadPageHash(location.hash));
         //Pager.locatePageFromHash(location.hash, (page: Pager.Page) => {
         //  if (page == null || page == Pager.ignorePage) return;
         //  Pager.loadPage(page);
         //});
         //});
-        $(window).hashchange();
+        //$(window).hashchange();
     };
 })(ViewBase || (ViewBase = {}));
 
@@ -2085,6 +2117,48 @@ var TreeView;
     TreeView.Node = Node;
 })(TreeView || (TreeView = {}));
 
+var blended;
+(function (blended) {
+    function registerOldLocator(params, name, appId, type, numOfPars, createModel, needsLogin) {
+        if (needsLogin === void 0) { needsLogin = true; }
+        if (_.isNumber(numOfPars))
+            numOfPars = [numOfPars]; //numOfPars je budto cislo nebo array cisel. Oznacuje mozne pocty parametru.
+        for (var np = 0; np < numOfPars.length; np++) {
+            var pars = '';
+            for (var i = 0; i < numOfPars; i++)
+                pars += '/:p' + i.toString();
+            var url = '/' + appId + '/' + type + pars;
+            blended.debugAllRoutes.push(url); //evidence vsech validnich state urls
+            params.$stateProvider.state({
+                name: 'pg.old.' + name,
+                url: url,
+                template: "<!--old-->",
+                controller: blended.OldController,
+                data: { createModel: createModel },
+                resolve: !needsLogin ? null : {
+                    isLoggedIn: ['$state', function ($state) { return checkLoggedIn($state); }] //cancel ladovani state pro stranky, pro ktere je potreba login
+                }
+            });
+        }
+    }
+    blended.registerOldLocator = registerOldLocator;
+    blended.oldLocators = []; //pro ladici ucely, validni URLS
+    blended.debugAllRoutes = [];
+    function checkLoggedIn($state) {
+        return angular.injector(['ng']).invoke(['$q', function ($q) {
+                var deferred = $q.defer();
+                if (!LMStatus.isLogged()) {
+                    deferred.reject();
+                    setTimeout(function () { return window.location.hash = Login.loginUrl(); }, 1);
+                }
+                else {
+                    deferred.resolve();
+                }
+                return deferred.promise;
+            }]);
+    }
+})(blended || (blended = {}));
+
 //Facebook: https://www.facebook.com/dialog/oauth ### https://graph.facebook.com/me
 //    https://developers.facebook.com/docs/reference/dialogs/oauth/ ### comma delimited scope: email ostatni automaticky
 //Google: https://accounts.google.com/o/oauth2/auth ### https://www.googleapis.com/oauth2/v1/userinfo 
@@ -2525,7 +2599,7 @@ var Login;
 (function (Login) {
     Login.cfg;
     function getHash(type) {
-        return [Login.appId, type].join('@');
+        return oldPrefix + [Login.appId, type].join(hashDelim);
     }
     Login.getHash = getHash;
     Login.myData; //info o mojich firmach, produktech a rolich
@@ -2726,6 +2800,8 @@ var Login;
     //Init Url
     //export var initUrl = () => new Url(pageLogin);
     //export var initHash = getHash(pageLogin);
+    function loginUrl() { return getHash(Login.pageLogin); }
+    Login.loginUrl = loginUrl;
     if ($.views)
         $.views.helpers({
             loginUrl: function (par) { return "#" + getHash(_.isEmpty(par) ? Login.pageLogin : par); },
@@ -2734,19 +2810,28 @@ var Login;
         LMStatus.setReturnUrlAndGoto(getHash(Login.pageProfile));
     }
     Login.newProfileUrl = newProfileUrl;
-    Login.pageDict = {};
-    Login.pageDict[Login.pageLogin] = function (urlParts, completed) { return completed(new Login.LoginModel(Login.pageLogin)); };
-    Login.pageDict[Login.pageLmLogin] = function (urlParts, completed) { return completed(new Login.LMLoginModel(Login.pageLmLogin, true)); };
-    Login.pageDict[Login.pageLmLoginNoEMail] = function (urlParts, completed) { return completed(new Login.LMLoginModel(Login.pageLmLoginNoEMail, false)); };
-    Login.pageDict[Login.pageRegister] = function (urlParts, completed) { return completed(new Login.RegisterModel(Login.pageRegister, true)); };
-    Login.pageDict[Login.pageRegisterNoEMail] = function (urlParts, completed) { return completed(new Login.RegisterModel(Login.pageRegisterNoEMail, false)); };
-    Login.pageDict[Login.pageConfirmRegistration] = function (urlParts, completed) { return completed(new Login.ConfirmRegistrationModel(Login.pageConfirmRegistration)); };
-    Login.pageDict[Login.pageChangePassword] = function (urlParts, completed) { return completed(new Login.ChangePassworModel(Login.pageChangePassword)); };
-    Login.pageDict[Login.pageForgotPassword] = function (urlParts, completed) { return completed(new Login.ForgotPasswordModel(Login.pageForgotPassword)); };
-    Login.pageDict[Login.pageProfile] = function (urlParts, completed) { return completed(new Login.ProfileModel(Login.pageProfile)); };
+    //export var pageDict: { [type: string]: (urlParts: string[], completed: (pg: Pager.Page) => void) => void } = {};
+    //pageDict[pageLogin] = (urlParts, completed) => completed(new LoginModel(pageLogin));
+    //pageDict[pageLmLogin] = (urlParts, completed) => completed(new LMLoginModel(pageLmLogin, true));
+    //pageDict[pageLmLoginNoEMail] = (urlParts, completed) => completed(new LMLoginModel(pageLmLoginNoEMail, false));
+    //pageDict[pageRegister] = (urlParts, completed) => completed(new RegisterModel(pageRegister, true));
+    //pageDict[pageRegisterNoEMail] = (urlParts, completed) => completed(new RegisterModel(pageRegisterNoEMail, false));
+    //pageDict[pageConfirmRegistration] = (urlParts, completed) => completed(new ConfirmRegistrationModel(pageConfirmRegistration));
+    //pageDict[pageChangePassword] = (urlParts, completed) => completed(new ChangePassworModel(pageChangePassword));
+    //pageDict[pageForgotPassword] = (urlParts, completed) => completed(new ForgotPasswordModel(pageForgotPassword));
+    //pageDict[pageProfile] = (urlParts, completed) => completed(new ProfileModel(pageProfile));
     //Registrace lokatoru
-    for (var p in Login.pageDict)
-        Pager.registerAppLocator(Login.appId, p, Login.pageDict[p]);
+    //for (var p in pageDict)
+    //  Pager.registerAppLocator(appId, p, pageDict[p]);
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageLogin, Login.appId, Login.pageLogin, 0, function (urlParts) { return new Login.LoginModel(Login.pageLogin); }, false); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageLmLogin, Login.appId, Login.pageLmLogin, 0, function (urlParts) { return new Login.LMLoginModel(Login.pageLmLogin, true); }, false); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageLmLoginNoEMail, Login.appId, Login.pageLmLoginNoEMail, 0, function (urlParts) { return new Login.LMLoginModel(Login.pageLmLoginNoEMail, false); }, false); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageRegister, Login.appId, Login.pageRegister, 0, function (urlParts) { return new Login.RegisterModel(Login.pageRegister, true); }, false); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageRegisterNoEMail, Login.appId, Login.pageRegisterNoEMail, 0, function (urlParts) { return new Login.RegisterModel(Login.pageRegisterNoEMail, false); }, false); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageConfirmRegistration, Login.appId, Login.pageConfirmRegistration, 0, function (urlParts) { return new Login.ConfirmRegistrationModel(Login.pageConfirmRegistration); }, false); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageChangePassword, Login.appId, Login.pageChangePassword, 0, function (urlParts) { return new Login.ChangePassworModel(Login.pageChangePassword); }, false); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageForgotPassword, Login.appId, Login.pageForgotPassword, 0, function (urlParts) { return new Login.ForgotPasswordModel(Login.pageForgotPassword); }, false); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, Login.pageProfile, Login.appId, Login.pageProfile, 0, function (urlParts) { return new Login.ProfileModel(Login.pageProfile); }, false); });
 })(Login || (Login = {}));
 
 var __extends = (this && this.__extends) || function (d, b) {
@@ -3763,6 +3848,28 @@ var proxies;
         return testme;
     })();
     proxies.testme = testme;
+    ;
+    var vyzva57services = (function () {
+        function vyzva57services() {
+        }
+        vyzva57services.getCourseUserId = function (companyid, userid, producturl, completed) {
+            invoke('vyzva57services/getcourseuserid', 'get', { companyid: companyid, userid: userid, producturl: producturl }, null, completed);
+        };
+        vyzva57services.deleteDataKeys = function (companyid, courseuserid, producturl, taskid, urls, completed) {
+            invoke('vyzva57services/deletedatakeys', 'post', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid }, JSON.stringify(urls), completed);
+        };
+        vyzva57services.getShortProductDatas = function (companyid, courseuserid, producturl, taskid, completed) {
+            invoke('vyzva57services/getshortproductdatas', 'get', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid }, null, completed);
+        };
+        vyzva57services.getLongData = function (companyid, courseuserid, producturl, taskid, key, completed) {
+            invoke('vyzva57services/getlongdata', 'get', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid, key: key }, null, completed);
+        };
+        vyzva57services.saveUserData = function (companyid, courseuserid, producturl, data, completed) {
+            invoke('vyzva57services/saveuserdata', 'post', { companyid: companyid, courseuserid: courseuserid, producturl: producturl }, JSON.stringify(data), completed);
+        };
+        return vyzva57services;
+    })();
+    proxies.vyzva57services = vyzva57services;
     ;
 })(proxies || (proxies = {}));
 
@@ -6059,7 +6166,7 @@ var schools;
     schools.tTest = "schoolTestModel".toLowerCase();
     schools.memoryPersistId = 'memory';
     function getHash(type, companyId, productUrl, persistence, url) {
-        return [schools.appId, type, companyId.toString(), productUrl, persistence, url].join('@');
+        return oldPrefix + [schools.appId, type, companyId.toString(), encodeUrlHash(productUrl), persistence, encodeUrlHash(url)].join(hashDelim);
     }
     schools.getHash = getHash;
     function InitModel(compl) {
@@ -6238,9 +6345,9 @@ var schools;
         function Model(typeName, urlParts /*companyId: number, productUrl: string, url: string*/) {
             _super.call(this, schools.appId, typeName, urlParts);
             CourseMeta.actCompanyId = this.copmanyId = urlParts && urlParts.length >= 1 ? parseInt(urlParts[0]) : -1;
-            this.productUrl = urlParts && urlParts.length >= 2 ? urlParts[1] : null;
+            this.productUrl = decodeUrlHash(urlParts && urlParts.length >= 2 ? urlParts[1] : null);
             this.persistence = urlParts && urlParts.length >= 3 ? urlParts[2] : null;
-            this.url = urlParts && urlParts.length >= 4 ? urlParts[3] : null;
+            this.url = decodeUrlHash(urlParts && urlParts.length >= 4 ? urlParts[3] : null);
             DictConnector.actDictData = null;
             this.tb = new schools.TopBarModel(this);
         }
@@ -6266,7 +6373,7 @@ var schools;
     schools.Model = Model;
     var offlineCompanyId = 0x4FFFFFFF;
     var offlineCookie = { id: 0x4FFFFFFF, EMail: null, Login: "localUser", LoginEMail: null, Type: 0, TypeId: null, FirstName: null, LastName: null, OtherData: null, Company: null, created: 0, Roles: null, VerifyStatus: 0 };
-    function createGrammUrl(type, url) { return getHash(type, CourseMeta.actCompanyId, CourseMeta.actProduct.url, CourseMeta.actProductPersistence, url); }
+    function createGrammUrl(type, url) { return getHash(type, CourseMeta.actCompanyId, encodeUrlHash(CourseMeta.actProduct.url), CourseMeta.actProductPersistence, encodeUrlHash(url)); }
     schools.createGrammUrl = createGrammUrl;
     function createDictIntroUrl() { return getHash(schools.tDictInfo, 0, '', null, null); }
     schools.createDictIntroUrl = createDictIntroUrl;
@@ -6861,9 +6968,14 @@ var CourseMeta;
         Pager.navigateToHash(nd.href());
     }
     CourseMeta.btnClick = btnClick;
+    //##GOTO
     function gotoData(url) {
+        if (_.isEmpty(url)) {
+            Pager.gotoHomeUrl();
+            return;
+        }
         //skok na hash nebo sitemap url, kvuli breadcrumb v testMe result apod.
-        Pager.navigateToHash(_.isEmpty(url) ? '' : (url.split('@').length > 1 ? url : CourseMeta.actProduct.getNode(url).href()));
+        Pager.navigateToHash(Utils.startsWith(url, '/old/') ? encodeUrlHash(url) : CourseMeta.actProduct.getNode(url).href());
         return false;
     }
     CourseMeta.gotoData = gotoData;
@@ -6876,9 +6988,10 @@ var CourseMeta;
                 window.alert('alert');
         }
         gui.alert = alert;
+        //##GOTO
         function gotoData(node) {
             if (!node)
-                node = CourseMeta.actCourseRoot;
+                Pager.gotoHomeUrl();
             Pager.navigateToHash(node.href());
         }
         gui.gotoData = gotoData;
@@ -7079,8 +7192,10 @@ var CourseMeta;
     CourseMeta.allActions[nodeAction.reset] = { icon: 'refresh', title: function () { return CSLocalize('27f1cba5240643fc9d0993cb6b5931b7', 'Reset'); } };
     CourseMeta.allActions[nodeAction.runTestAgain] = { icon: 'refresh', title: function () { return CSLocalize('9f77df2b307e48ad91291b0907fcbf4a', 'Run a new test'); } };
     CourseMeta.allActions[nodeAction.cancelTestSkip] = { icon: 'plus-circle', title: function () { return CSLocalize('f48f9615e3374fd2b6e1c377d1b8b0d3', 'Cancel and skip the test'); } };
-    Pager.registerAppLocator(schools.appId, schools.tCourseMeta, function (urlParts, completed) { return completed(new Model(urlParts)); });
-    Pager.registerAppLocator(schools.appId, schools.tCoursePretest, function (urlParts, completed) { return completed(new ModelPretest(urlParts)); });
+    //Pager.registerAppLocator(schools.appId, schools.tCourseMeta, (urlParts, completed) => { completed(new Model(urlParts)); });
+    //Pager.registerAppLocator(schools.appId, schools.tCoursePretest, (urlParts, completed) => completed(new ModelPretest(urlParts)));
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schools.tCourseMeta, schools.appId, schools.tCourseMeta, 4, function (urlParts) { return new Model(urlParts); }); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schools.tCoursePretest, schools.appId, schools.tCoursePretest, 4, function (urlParts) { return new ModelPretest(urlParts); }); });
 })(CourseMeta || (CourseMeta = {}));
 
 /// <reference path="../login/GenLogin.ts" />
@@ -7243,7 +7358,7 @@ var schoolAdmin;
     schoolAdmin.returnFalse = returnFalse;
     function returnTrue() { return true; }
     schoolAdmin.returnTrue = returnTrue;
-    function getHash(type, companyId) { return [schoolAdmin.appId, type, companyId.toString()].join('@'); }
+    function getHash(type, companyId) { return oldPrefix + [schoolAdmin.appId, type, companyId.toString()].join(hashDelim); }
     schoolAdmin.getHash = getHash;
     schoolAdmin.adminTypeName = "schoolAdminModel".toLowerCase(); //System administrator, dovoluje pridat dalsi system administrators a dalsi firmy
     schoolAdmin.keyGenTypeName = "schoolKeyGenModel".toLowerCase();
@@ -7467,7 +7582,8 @@ var schoolAdmin;
     }
     schoolAdmin.AdminDataCmd_from_MyData = AdminDataCmd_from_MyData;
     //Pager.registerAppLocator(adminTypeName, (url: Url, completed: (pg: Pager.Page) => void) => completed(new AdminModel()));
-    Pager.registerAppLocator(schoolAdmin.appId, schoolAdmin.adminTypeName, function (urlParts, completed) { return completed(new AdminModel()); });
+    //Pager.registerAppLocator(appId, adminTypeName, (urlParts, completed) => completed(new AdminModel()));
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.adminTypeName, schoolAdmin.appId, schoolAdmin.adminTypeName, 0, function (urlParts) { return new AdminModel(); }); });
 })(schoolAdmin || (schoolAdmin = {}));
 
 /// <reference path="../JsLib/jsd/jquery.d.ts" />
@@ -7572,7 +7688,8 @@ var schoolAdmin;
         return KeyGenModel;
     })(schoolAdmin.CompModel);
     schoolAdmin.KeyGenModel = KeyGenModel;
-    Pager.registerAppLocator(schoolAdmin.appId, schoolAdmin.keyGenTypeName, function (urlParts, completed) { return completed(new KeyGenModel(urlParts)); });
+    //Pager.registerAppLocator(appId, keyGenTypeName, (urlParts, completed) => completed(new KeyGenModel(urlParts)));
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.keyGenTypeName, schoolAdmin.appId, schoolAdmin.keyGenTypeName, 1, function (urlParts) { return new KeyGenModel(urlParts); }); });
 })(schoolAdmin || (schoolAdmin = {}));
 
 var __extends = (this && this.__extends) || function (d, b) {
@@ -7686,7 +7803,8 @@ var schoolAdmin;
         product.message(error ? error : '');
         return error ? ' ' : null;
     }
-    Pager.registerAppLocator(schoolAdmin.appId, schoolAdmin.productsTypeName, function (urlParts, completed) { return completed(new Products(urlParts)); });
+    //Pager.registerAppLocator(appId, productsTypeName,(urlParts, completed) => completed(new Products(urlParts)));
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.productsTypeName, schoolAdmin.appId, schoolAdmin.productsTypeName, 1, function (urlParts) { return new Products(urlParts); }); });
 })(schoolAdmin || (schoolAdmin = {}));
 
 var __extends = (this && this.__extends) || function (d, b) {
@@ -7728,7 +7846,10 @@ var schoolAdmin;
             this.assigned = Globalize.format(Utils.numToDate(data.assigned), 'd');
         }
         HumanEvalCrs.prototype.click = function () {
-            location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalExTypeName, this.owner.CompanyId) + '@' + this.owner.data.companyUserId.toString() + '@' + this.data.courseUserId.toString() + '@' + this.data.productId;
+            location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalExTypeName, this.owner.CompanyId) + hashDelim +
+                this.owner.data.companyUserId.toString() + hashDelim +
+                this.data.courseUserId.toString() + hashDelim +
+                encodeUrlHash(this.data.productId);
         };
         return HumanEvalCrs;
     })();
@@ -7743,7 +7864,7 @@ var schoolAdmin;
             this.greenTitle = ko.observable(CSLocalize('be62382f71e84e96a1837a8a5c565f66', 'Next'));
             this.companyUserId = parseInt(urlParts[1]);
             this.courseUserId = parseInt(urlParts[2]);
-            this.productId = urlParts[3];
+            this.productId = decodeUrlHash(urlParts[3]);
             this.productTitle = CourseMeta.lib.findProduct(this.productId.split('|')[0]).title;
         }
         HumanEvalEx.prototype.update = function (completed) {
@@ -7845,8 +7966,10 @@ var schoolAdmin;
         return humanEx;
     })();
     schoolAdmin.humanEx = humanEx;
-    Pager.registerAppLocator(schoolAdmin.appId, schoolAdmin.humanEvalTypeName, function (urlParts, completed) { return completed(new HumanEval(urlParts)); });
-    Pager.registerAppLocator(schoolAdmin.appId, schoolAdmin.humanEvalExTypeName, function (urlParts, completed) { return completed(new HumanEvalEx(urlParts)); });
+    //Pager.registerAppLocator(appId, humanEvalTypeName,(urlParts, completed) => completed(new HumanEval(urlParts)));
+    //Pager.registerAppLocator(appId, humanEvalExTypeName,(urlParts, completed) => completed(new HumanEvalEx(urlParts)));
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.humanEvalTypeName, schoolAdmin.appId, schoolAdmin.humanEvalTypeName, 1, function (urlParts) { return new HumanEval(urlParts); }); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.humanEvalExTypeName, schoolAdmin.appId, schoolAdmin.humanEvalExTypeName, 4, function (urlParts) { return new HumanEvalEx(urlParts); }); });
 })(schoolAdmin || (schoolAdmin = {}));
 
 var __extends = (this && this.__extends) || function (d, b) {
@@ -7885,7 +8008,7 @@ var schoolAdmin;
             });
         };
         HumanEvalManagerLangs.prototype.click = function (idx) {
-            location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalManagerTypeName, this.CompanyId) + '@' + this.langs[idx].lang.toString();
+            location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalManagerTypeName, this.CompanyId) + hashDelim + this.langs[idx].lang.toString();
         };
         HumanEvalManagerLangs.prototype.close = function () {
             location.hash = schools.createHomeUrlStd();
@@ -8235,10 +8358,14 @@ var schoolAdmin;
         return HumanEvalManagerEx;
     })(schoolAdmin.CompModel);
     schoolAdmin.HumanEvalManagerEx = HumanEvalManagerEx;
-    Pager.registerAppLocator(schoolAdmin.appId, schoolAdmin.humanEvalManagerLangsTypeName, function (urlParts, completed) { return completed(new HumanEvalManagerLangs(urlParts)); });
-    Pager.registerAppLocator(schoolAdmin.appId, schoolAdmin.humanEvalManagerTypeName, function (urlParts, completed) { return completed(new HumanEvalManager(urlParts)); });
-    Pager.registerAppLocator(schoolAdmin.appId, schoolAdmin.humanEvalManagerEvsTypeName, function (urlParts, completed) { return completed(new HumanEvalManagerEvs(urlParts)); });
-    Pager.registerAppLocator(schoolAdmin.appId, schoolAdmin.humanEvalManagerExTypeName, function (urlParts, completed) { return completed(new HumanEvalManagerEx(urlParts)); });
+    //Pager.registerAppLocator(appId, humanEvalManagerLangsTypeName,(urlParts, completed) => completed(new HumanEvalManagerLangs(urlParts)));
+    //Pager.registerAppLocator(appId, humanEvalManagerTypeName,(urlParts, completed) => completed(new HumanEvalManager(urlParts)));
+    //Pager.registerAppLocator(appId, humanEvalManagerEvsTypeName,(urlParts, completed) => completed(new HumanEvalManagerEvs(urlParts)));
+    //Pager.registerAppLocator(appId, humanEvalManagerExTypeName,(urlParts, completed) => completed(new HumanEvalManagerEx(urlParts)));
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.humanEvalManagerLangsTypeName, schoolAdmin.appId, schoolAdmin.humanEvalManagerLangsTypeName, 1, function (urlParts) { return new HumanEvalManagerLangs(urlParts); }); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.humanEvalManagerTypeName, schoolAdmin.appId, schoolAdmin.humanEvalManagerTypeName, 2, function (urlParts) { return new HumanEvalManager(urlParts); }); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.humanEvalManagerEvsTypeName, schoolAdmin.appId, schoolAdmin.humanEvalManagerEvsTypeName, 1, function (urlParts) { return new HumanEvalManagerEvs(urlParts); }); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.humanEvalManagerExTypeName, schoolAdmin.appId, schoolAdmin.humanEvalManagerExTypeName, 1, function (urlParts) { return new HumanEvalManagerEx(urlParts); }); });
 })(schoolAdmin || (schoolAdmin = {}));
 
 /// <reference path="../JsLib/jsd/jquery.d.ts" />
@@ -8349,7 +8476,8 @@ var schoolAdmin;
         }
         return CompanyAdminOption;
     })();
-    Pager.registerAppLocator(schoolAdmin.appId, schoolAdmin.compAdminsTypeName, function (urlParts, completed) { return completed(new CompAdmins(urlParts)); });
+    //Pager.registerAppLocator(appId, compAdminsTypeName, (urlParts, completed) => completed(new CompAdmins(urlParts)));
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.compAdminsTypeName, schoolAdmin.appId, schoolAdmin.compAdminsTypeName, 1, function (urlParts) { return new CompAdmins(urlParts); }); });
 })(schoolAdmin || (schoolAdmin = {}));
 
 var __extends = (this && this.__extends) || function (d, b) {
@@ -8374,7 +8502,8 @@ var schoolAdmin;
         return UserResults;
     })(schoolAdmin.CompModel);
     schoolAdmin.UserResults = UserResults;
-    Pager.registerAppLocator(schoolAdmin.appId, schoolAdmin.schoolUserResultsTypeName, function (urlParts, completed) { return completed(new UserResults(urlParts)); });
+    //Pager.registerAppLocator(appId, schoolUserResultsTypeName,(urlParts, completed) => completed(new UserResults(urlParts)));
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.schoolUserResultsTypeName, schoolAdmin.appId, schoolAdmin.schoolUserResultsTypeName, 1, function (urlParts) { return new UserResults(urlParts); }); });
 })(schoolAdmin || (schoolAdmin = {}));
 
 var __extends = (this && this.__extends) || function (d, b) {
@@ -8665,5 +8794,6 @@ var schoolAdmin;
         return scoreDr;
     })();
     schoolAdmin.scoreDr = scoreDr;
-    Pager.registerAppLocator(schoolAdmin.appId, schoolAdmin.editDepartmentTypeName, function (urlParts, completed) { return completed(new Departments(urlParts)); });
+    //Pager.registerAppLocator(appId, editDepartmentTypeName, (urlParts, completed) => completed(new Departments(urlParts)));
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.editDepartmentTypeName, schoolAdmin.appId, schoolAdmin.editDepartmentTypeName, 1, function (urlParts) { return new Departments(urlParts); }); });
 })(schoolAdmin || (schoolAdmin = {}));

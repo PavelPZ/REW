@@ -206,7 +206,7 @@ module Course {
     getScore: () => CourseModel.Score; //spocti score celeho cviceni
   }
 
-  export function finishCreatePage(ex: CourseMeta.exImpl): Page { var res = <Page>ex.page; res.finishCreatePage(ex); return res; }
+  export function finishCreatePage(ex: CourseMeta.exImpl): Page { var res = ex.page; res.finishCreatePage(ex); return res; }
 
   export class Page extends tagImpl implements CourseModel.body, CourseMeta.IScoreProvider {
 

@@ -9,6 +9,12 @@
     return blended.loader.adjustProduct($stateParams);
   }];
 
+  export var loadEx = ['$stateParams', ($stateParams: blended.learnContext) => {
+    blended.finishContext($stateParams);
+    $stateParams.finishProduct = finishHomeDataNode;
+    return blended.loader.adjustEx($stateParams);
+  }];
+
   export interface IStateNames extends blended.IProductStates {
     root?: blended.state;
     pretest?: blended.state;
@@ -62,10 +68,10 @@
               }),
               templateUrl: pageTemplate,
             }),
-            stateNames.pretestTask = new blended.pretestState({
+            stateNames.pretestTask = new blended.state({
               name: 'pretest',
               url: '/pretest/:pretesturl',
-              controller: pretestTaskController,
+              controller: blended.pretestTaskController,
               dataNodeUrlParName: 'pretestUrl',
               abstract: true,
               template: "<div data-ui-view></div>",
@@ -77,34 +83,38 @@
                   controller: pretestViewController,
                   templateUrl: pageTemplate,
                 }),
-                new blended.state({
+                blended.prodStates.pretestModule = new blended.state({
                   name: 'test',
                   url: '/test/:moduleurl',
-                  controller: blended.taskController,
+                  controller: blended.moduleTaskController,
                   dataNodeUrlParName: 'moduleUrl',
+                  data: blended.createStateData<blended.IModuleStateData>({ alowCycleExercise: false }),
                   abstract: true,
                   template: "<div data-ui-view></div>",
                   childs: [
                     blended.prodStates.pretestExercise = stateNames.pretestExercise = new blended.state({
                       name: 'ex',
                       url: '/ex/:url',
-                      controller: exerciseTaskController,
+                      controller: pretestExercise,
                       dataNodeUrlParName: 'Url',
-                      data: getDataConfig('exercise', 'run'),
+                      data: $.extend(getDataConfig('exercise', 'run'), blended.createStateData<blended.IExerciseStateData>({ isTest: true })),
+                      resolve: {
+                        $loadedEx: vyzva.loadEx,
+                      },
                       templateUrl: pageTemplate,
                     })
                   ]
                 }),
-                //stateNames.pretestExercise = new blended.state({
+                //blended.prodStates.pretestExercise = stateNames.pretestExercise = new blended.state({
                 //  name: 'ex',
-                //  url: '/ex/:moduleurl:/:url',
-                //  dataNodeUrlParName: ['moduleurl','url'],
-                //  data: getDataConfig('exercise', 'module'),
-                //  controller: exerciseTaskController,
+                //  url: '/ex/:url',
+                //  controller: pretestExercise,
+                //  dataNodeUrlParName: 'Url',
+                //  data: getDataConfig('exercise', 'run'),
                 //  templateUrl: pageTemplate,
                 //})
               ]
-            }, stateNames.pretestExercise),
+            }),
             stateNames.lessonTask = new blended.state({
               name: 'lesson',
               url: '/lesson/:moduleurl',
@@ -123,7 +133,7 @@
                 stateNames.lessonExercise = new blended.state({
                   name: 'ex',
                   url: '/ex/:url',
-                  controller: exerciseTaskController,
+                  controller: lessonExercise,
                   dataNodeUrlParName: 'Url',
                   data: getDataConfig('exercise', 'run'),
                   templateUrl: pageTemplate,

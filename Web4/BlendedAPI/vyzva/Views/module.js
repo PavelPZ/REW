@@ -17,7 +17,7 @@ var vyzva;
         __extends(moduleViewController, _super);
         function moduleViewController(state) {
             _super.call(this, state);
-            this.breadcrumb = vyzva.breadcrumbBase(this.myTask);
+            this.breadcrumb = vyzva.breadcrumbBase(this.ctx);
             this.breadcrumb.push({ title: this.title, url: null, active: true });
         }
         return moduleViewController;

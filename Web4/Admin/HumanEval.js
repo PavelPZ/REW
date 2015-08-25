@@ -37,7 +37,10 @@ var schoolAdmin;
             this.assigned = Globalize.format(Utils.numToDate(data.assigned), 'd');
         }
         HumanEvalCrs.prototype.click = function () {
-            location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalExTypeName, this.owner.CompanyId) + hashDelim + this.owner.data.companyUserId.toString() + hashDelim + this.data.courseUserId.toString() + hashDelim + this.data.productId;
+            location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalExTypeName, this.owner.CompanyId) + hashDelim +
+                this.owner.data.companyUserId.toString() + hashDelim +
+                this.data.courseUserId.toString() + hashDelim +
+                encodeUrlHash(this.data.productId);
         };
         return HumanEvalCrs;
     })();
@@ -52,7 +55,7 @@ var schoolAdmin;
             this.greenTitle = ko.observable(CSLocalize('be62382f71e84e96a1837a8a5c565f66', 'Next'));
             this.companyUserId = parseInt(urlParts[1]);
             this.courseUserId = parseInt(urlParts[2]);
-            this.productId = urlParts[3];
+            this.productId = decodeUrlHash(urlParts[3]);
             this.productTitle = CourseMeta.lib.findProduct(this.productId.split('|')[0]).title;
         }
         HumanEvalEx.prototype.update = function (completed) {
@@ -157,5 +160,5 @@ var schoolAdmin;
     //Pager.registerAppLocator(appId, humanEvalTypeName,(urlParts, completed) => completed(new HumanEval(urlParts)));
     //Pager.registerAppLocator(appId, humanEvalExTypeName,(urlParts, completed) => completed(new HumanEvalEx(urlParts)));
     blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.humanEvalTypeName, schoolAdmin.appId, schoolAdmin.humanEvalTypeName, 1, function (urlParts) { return new HumanEval(urlParts); }); });
-    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.humanEvalExTypeName, schoolAdmin.appId, schoolAdmin.humanEvalExTypeName, 1, function (urlParts) { return new HumanEvalEx(urlParts); }); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolAdmin.humanEvalExTypeName, schoolAdmin.appId, schoolAdmin.humanEvalExTypeName, 4, function (urlParts) { return new HumanEvalEx(urlParts); }); });
 })(schoolAdmin || (schoolAdmin = {}));
