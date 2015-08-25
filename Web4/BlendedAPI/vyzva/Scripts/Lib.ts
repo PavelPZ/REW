@@ -12,10 +12,10 @@
     //});
   }
 
-  export function breadcrumbBase(task: blended.taskController): Array<breadcrumbItem> {
+  export function breadcrumbBase(ctx: blended.learnContext): Array<breadcrumbItem> {
     return [
       { title: 'Moje Online jazykové kurzy a testy', url: '#' + Pager.getHomeUrl() },
-      { title: task.product.title, url: task.href(stateNames.home.name), active: false }
+      { title: ctx.product.title, url: ctx.$state.href(stateNames.home.name, ctx), active: false }
     ];
   }
 

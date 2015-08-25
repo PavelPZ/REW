@@ -17167,6 +17167,50 @@ var bowser;
 })(bowser || (bowser = {}));
 var Utils;
 (function (Utils) {
+    function getObjectClassName(obj) {
+        if (obj && obj.constructor && obj.constructor.toString()) {
+            /*
+             *  for browsers which have name property in the constructor
+             *  of the object,such as chrome
+             */
+            if (obj.constructor.name) {
+                return obj.constructor.name;
+            }
+            var str = obj.constructor.toString();
+            /*
+             * executed if the return of object.constructor.toString() is
+             * "[object objectClass]"
+             */
+            if (str.charAt(0) == '[') {
+                var arr = str.match(/\[\w+\s*(\w+)\]/);
+            }
+            else {
+                /*
+                 * executed if the return of object.constructor.toString() is
+                 * "function objectClass () {}"
+                 * for IE Firefox
+                 */
+                var arr = str.match(/function\s*(\w+)/);
+            }
+            if (arr && arr.length == 2) {
+                return arr[1];
+            }
+        }
+        return undefined;
+    }
+    Utils.getObjectClassName = getObjectClassName;
+    ;
+    function applyMixins(derivedCtor, baseCtors) {
+        baseCtors.forEach(function (baseCtor) {
+            Object.getOwnPropertyNames(baseCtor.prototype).forEach(function (name) {
+                if (name !== 'constructor') {
+                    derivedCtor.prototype[name] = baseCtor.prototype[name];
+                }
+            });
+        });
+    }
+    Utils.applyMixins = applyMixins;
+    //applyMixins (srcType, [copyFrom1, copyFrom2,...]);
     function longLog(lines) { _.each(lines.split('\n'), function (l) { return console.log(l); }); }
     Utils.longLog = longLog;
     function extendJsonDataByClass(jsonData, cls) {
@@ -18145,17 +18189,21 @@ var boot;
     }
     boot.Dummy = Dummy;
     function Start() {
+        bootStart($.noop);
+    }
+    boot.Start = Start;
+    function bootStart(compl) {
         Logger.traceMsg('boot.Start');
         if (cfg.target == LMComLib.Targets.no)
             return;
-        var completed = function () { ViewBase.init(); $('#splash').hide(); };
+        var completed = function () { ViewBase.init(); $('#splash').hide(); compl(); };
         if (cfg.target != LMComLib.Targets.web)
             schools.InitModel(completed);
         else {
             Login.InitModel({ logins: cfg.logins ? cfg.logins : [LMComLib.OtherType.LANGMaster, LMComLib.OtherType.Facebook, LMComLib.OtherType.Google, LMComLib.OtherType.Microsoft] }, function () { return schools.InitModel(completed); });
         }
     }
-    boot.Start = Start;
+    boot.bootStart = bootStart;
     function rewJSUrl() {
         return cfg.licenceConfig.serviceUrl + '?type=_rew_' + LMComLib.Targets[cfg.target] + '&version=' + cfg.licenceConfig.rewVersion.toString() + '&appUrl=' + Utils.appIdViaUrl() + '&LoggerLogId=' + Logger.logId() + "&LMComVersion=" + Utils.LMComVersion;
     }
@@ -18202,7 +18250,7 @@ var boot;
             $('body').addClass("rtl-able");
     }
     boot.minInit = minInit;
-    $(function () {
+    var doOldApplicationStart = function () {
         if (cfg.startProcName == 'no') {
             minInit();
             return;
@@ -18215,5 +18263,8 @@ var boot;
         for (var i = 0; i < parts.length; i++)
             ctx = ctx[parts[i]];
         ctx[fnc]();
-    });
+    };
+    function OldApplicationStart() { if (doOldApplicationStart)
+        doOldApplicationStart(); doOldApplicationStart = null; }
+    boot.OldApplicationStart = OldApplicationStart;
 })(boot || (boot = {}));

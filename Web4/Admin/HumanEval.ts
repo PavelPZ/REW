@@ -38,7 +38,10 @@ module schoolAdmin {
     title: string;
     assigned: string;
     click() {
-      location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalExTypeName, this.owner.CompanyId) + hashDelim + this.owner.data.companyUserId.toString() + hashDelim + this.data.courseUserId.toString() + hashDelim + this.data.productId;
+      location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalExTypeName, this.owner.CompanyId) + hashDelim +
+      this.owner.data.companyUserId.toString() + hashDelim +
+      this.data.courseUserId.toString() + hashDelim +
+      encodeUrlHash(this.data.productId);
     }
   }
 
@@ -50,7 +53,7 @@ module schoolAdmin {
       super(humanEvalExTypeName, urlParts);
       this.companyUserId = parseInt(urlParts[1]);
       this.courseUserId = parseInt(urlParts[2]);
-      this.productId = urlParts[3];
+      this.productId = decodeUrlHash(urlParts[3]);
       this.productTitle = CourseMeta.lib.findProduct(this.productId.split('|')[0]).title;
     }
     productId: string;
@@ -59,7 +62,7 @@ module schoolAdmin {
     testUser_lmcomId: number;
     actIdx: number;
     items: Array<humanEx>;
-    productTitle:string;
+    productTitle: string;
 
     update(completed: () => void): void {
       if (this.items) this.initEx(completed);
@@ -89,7 +92,7 @@ module schoolAdmin {
       if (this.items.length == 0) { this.greenTitle(CSLocalize('8817520256884045b0e94bcb005f02d0', 'Finish')); completed(); return; }
       this.greenTitle(this.isFinished() ? CSLocalize('9c834aec8bd94de284855521356f2fbd', 'Finish') : CSLocalize('232eaf4801724f4e9dc69ce12091c26d', 'Next'));
       var actEx = this.items[this.actIdx].ex;
-      CourseMeta.lib.adjustEx(actEx,() => {
+      CourseMeta.lib.adjustEx(actEx, () => {
         actEx.page.humanEvalMode = true;
         CourseMeta.lib.displayEx(actEx, null, null);
       }, this.testUser_lmcomId);
@@ -110,7 +113,7 @@ module schoolAdmin {
       };
       //volej processTestResult (ev. nejdrive nacti test.result z DB)
       if (!test.result)
-        CourseMeta.lib.actPersistence().loadUserData(this.testUser_lmcomId, CourseMeta.actCompanyId, CourseMeta.actProduct.url, testMe.testImpl.resultKey,(data: testMe.result) => { test.result = data; processTestResult(); });
+        CourseMeta.lib.actPersistence().loadUserData(this.testUser_lmcomId, CourseMeta.actCompanyId, CourseMeta.actProduct.url, testMe.testImpl.resultKey, (data: testMe.result) => { test.result = data; processTestResult(); });
       else
         processTestResult();
     }
@@ -127,7 +130,7 @@ module schoolAdmin {
     //close() {
     //  this.finishEx(() => location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalTypeName, this.CompanyId));
     //}
-    isFinished():boolean {
+    isFinished(): boolean {
       return this.items.length == 0 || _.all(this.items, it => !Course.needsHumanEval(it.ex.flag));
     }
 
@@ -144,6 +147,6 @@ module schoolAdmin {
   //Pager.registerAppLocator(appId, humanEvalExTypeName,(urlParts, completed) => completed(new HumanEvalEx(urlParts)));
 
   blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, humanEvalTypeName, appId, humanEvalTypeName, 1, urlParts => new HumanEval(urlParts)));
-  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, humanEvalExTypeName, appId, humanEvalExTypeName, 1, urlParts => new HumanEvalEx(urlParts)));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, humanEvalExTypeName, appId, humanEvalExTypeName, 4, urlParts => new HumanEvalEx(urlParts)));
 }
 

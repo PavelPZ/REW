@@ -165,7 +165,7 @@ var schoolMy;
                     //nove AngularJS produkty
                     if (dt.isAngularJS) {
                         var ctx = {
-                            producturl: blended.enocdeUrl(pr.url), companyid: comp.data.Id, userid: LMStatus.Cookie.id,
+                            producturl: blended.encodeUrl(pr.url), companyid: comp.data.Id, userid: LMStatus.Cookie.id,
                             subuserid: LMStatus.Cookie.id, loc: Trados.actLang, taskid: 'def', persistence: null /*TODO*/
                         };
                         var hash = blended.root.href(vyzva.stateNames.home.name, ctx);

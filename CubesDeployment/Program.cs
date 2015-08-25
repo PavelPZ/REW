@@ -446,16 +446,16 @@ namespace CubesDeployment {
                   //File.Move(tempZip, zipFn);
 
                   //*************** Skrivanek
-                  //webBatchId = "skrivanek_software";
-                  //Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
-                  //  actBatchVersion = Packager.batchVersion.release,
-                  //  version = schools.versions.debug,
-                  //  //version = schools.versions.minified,
-                  //  persistType = schools.persistTypes.persistNewEA,
-                  //  testGroup_debug = false,
-                  //});
-                  //zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; if (File.Exists(zipFn)) File.Delete(zipFn);
-                  //File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
+                  webBatchId = "skrivanek_software";
+                  Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
+                    actBatchVersion = Packager.batchVersion.release,
+                    version = schools.versions.debug,
+                    //version = schools.versions.minified,
+                    persistType = schools.persistTypes.persistNewEA,
+                    testGroup_debug = false,
+                  });
+                  zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; if (File.Exists(zipFn)) File.Delete(zipFn);
+                  File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
                   //webBatchId = "skrivanek_data-globals";
                   //zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; tempZip = @"c:\temp\build.zip";
                   //if (File.Exists(tempZip)) File.Delete(tempZip); if (File.Exists(zipFn)) File.Delete(zipFn);
@@ -466,28 +466,28 @@ namespace CubesDeployment {
                   //File.Move(tempZip, zipFn);
 
                   //*************** FE3
-                  //webBatchId = "LM_Software";
-                  //Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
-                  //  actBatchVersion = Packager.batchVersion.release,
-                  //  version = schools.versions.debug,
-                  //  //version = schools.versions.minified,
-                  //  persistType = schools.persistTypes.persistNewEA,
-                  //  testGroup_debug = false,
-                  //});
-                  //zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; if (File.Exists(zipFn)) File.Delete(zipFn);
-                  //File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
+                  webBatchId = "LM_Software";
+                  Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
+                    actBatchVersion = Packager.batchVersion.release,
+                    version = schools.versions.debug,
+                    //version = schools.versions.minified,
+                    persistType = schools.persistTypes.persistNewEA,
+                    testGroup_debug = false,
+                  });
+                  zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; if (File.Exists(zipFn)) File.Delete(zipFn);
+                  File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
 
                   //*************** chinhTestVN
-                  //webBatchId = "chinhTestvn_software";
-                  //Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
-                  //  actBatchVersion = Packager.batchVersion.release,
-                  //  version = schools.versions.debug,
-                  //  //version = schools.versions.minified,
-                  //  persistType = schools.persistTypes.persistNewEA,
-                  //  testGroup_debug = false,
-                  //});
-                  //zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; if (File.Exists(zipFn)) File.Delete(zipFn);
-                  //File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
+                  webBatchId = "chinhTestvn_software";
+                  Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
+                    actBatchVersion = Packager.batchVersion.release,
+                    version = schools.versions.debug,
+                    //version = schools.versions.minified,
+                    persistType = schools.persistTypes.persistNewEA,
+                    testGroup_debug = false,
+                  });
+                  zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; if (File.Exists(zipFn)) File.Delete(zipFn);
+                  File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
 
                   //webBatchId = "chinhTestvn_data-globals";
                   //zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; tempZip = @"c:\temp\build.zip";

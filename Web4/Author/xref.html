@@ -18,7 +18,7 @@ xref
 <div data-bind="with: Pager.ActPage" class="app-doc xref">
   <nav class="navbar navbar-{{:~CourseMeta.navBar()}}" role="navigation">
     <div class="container">
-      <a href="author.aspx?mode=xref" class="navbar-brand lm-logo-black lm-logo-black-small"></a>
+      <a href="author.aspx?mode=xref" class="navbar-brand lm-logo-black lm-logo-black-small" data-bind="click: Pager.gotoHomeUrl"></a>
       <a href="author.aspx?mode=xref" class="navbar-brand">Cross reference</a>
       {{if urlContext()}}
       <ul class="nav navbar-nav navbar-left">
