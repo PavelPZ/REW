@@ -38,7 +38,7 @@ var blended;
     blended.prodStates = {};
     blended.root = new Module('appRoot', ['ngLocale', 'ngResource', 'ui.router']);
     blended.root.app
-        .directive('showExercise', blended.showExerciseDirective2)
+        .directive('showExercise', blended.showExerciseDirective)
         .directive('lmInclude', function () {
         return {
             restrict: 'A',

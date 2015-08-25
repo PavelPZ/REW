@@ -142,6 +142,6 @@ var testMe;
     testMe.skillResultImpl = skillResultImpl;
     //Pager.registerAppLocator(appId, tResult,(urlParts, completed) => completed(new Result(urlParts)));
     //Pager.registerAppLocator(appId, tResults, (urlParts, completed) => completed(new Results(urlParts)));
-    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, testMe.tResult, testMe.appId, testMe.tResult, 3, function (urlParts) { return new Result(urlParts); }); });
-    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, testMe.tResults, testMe.appId, testMe.tResults, 3, function (urlParts) { return new Results(urlParts); }); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, testMe.tResult, testMe.appId, testMe.tResult, 4, function (urlParts) { return new Result(urlParts); }); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, testMe.tResults, testMe.appId, testMe.tResults, 4, function (urlParts) { return new Results(urlParts); }); });
 })(testMe || (testMe = {}));

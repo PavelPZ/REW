@@ -60,7 +60,7 @@ var schoolMy;
         }
         Model.prototype.doUpdate = function (completed) {
             var _this = this;
-            this.systemAdmin = Login.isSystemAdmin() ? function () { return LMStatus.setReturnUrlAndGoto(oldPrefix + "schoolAdmin" + hashDelim + "schoolAdminModel"); } : null;
+            this.systemAdmin = Login.isSystemAdmin() ? function () { return LMStatus.setReturnUrlAndGoto("schoolAdmin@schoolAdminModel"); } : null;
             //var hasCompany = /*this.systemAdmin != null || Login.companyExists();
             if (Login.companyExists()) {
                 this.companies = _.map(Login.myData.Companies, function (c) {
@@ -86,43 +86,43 @@ var schoolMy;
                         comp.items.push(it = {
                             id: 'manage_admin',
                             title: CSLocalize('7dbd71d1e623446e884febbd07c72f9f', 'Manage administrators and their roles'),
-                            gotoItem: function () { return Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.compAdminsTypeName, c.Id)); }
+                            gotoItem: function () { return location.hash = schoolAdmin.getHash(schoolAdmin.compAdminsTypeName, c.Id); }
                         });
                     if ((c.RoleEx.Role & LMComLib.CompRole.Products) != 0)
                         comp.items.push(it = {
                             id: 'manage_products',
                             title: CSLocalize('fd0acec43f7d487ba635b4a55343b23a', 'Manage products'),
-                            gotoItem: function () { return Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.productsTypeName, c.Id)); }
+                            gotoItem: function () { return location.hash = schoolAdmin.getHash(schoolAdmin.productsTypeName, c.Id); }
                         });
                     if ((c.RoleEx.Role & LMComLib.CompRole.Keys) != 0)
                         comp.items.push(it = {
                             id: 'gen_keys',
                             title: CSLocalize('643da9a0b02b4e209e26e20ca620f54c', 'Generate license keys'),
-                            gotoItem: function () { return Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.keyGenTypeName, c.Id)); }
+                            gotoItem: function () { return location.hash = schoolAdmin.getHash(schoolAdmin.keyGenTypeName, c.Id); }
                         });
                     if ((c.RoleEx.Role & LMComLib.CompRole.Department) != 0)
                         comp.items.push(it = {
                             id: 'edit_criteria',
                             title: CSLocalize('9231de5764184fd7a75389aa2ecfdad5', 'Edit Department structure and criteria for tracking study results'),
-                            gotoItem: function () { return Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.editDepartmentTypeName, c.Id)); }
+                            gotoItem: function () { return location.hash = schoolAdmin.getHash(schoolAdmin.editDepartmentTypeName, c.Id); }
                         });
                     if ((c.RoleEx.Role & LMComLib.CompRole.Results) != 0)
                         comp.items.push(it = {
                             id: 'view_students_results',
                             title: CSLocalize('2fb8a691d86e4f4181dba3f48708a363', 'View Student results'),
-                            gotoItem: function () { return Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.schoolUserResultsTypeName, c.Id)); }
+                            gotoItem: function () { return location.hash = schoolAdmin.getHash(schoolAdmin.schoolUserResultsTypeName, c.Id); }
                         });
                     if ((c.RoleEx.Role & LMComLib.CompRole.HumanEvalator) != 0)
                         comp.items.push(it = {
                             id: 'human_eval',
                             title: CSLocalize('f8fce20059f24b5e82b52bd41fef4bd4', 'Evaluate Speaking and Writing skills'),
-                            gotoItem: function () { return Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.humanEvalTypeName, c.Id)); }
+                            gotoItem: function () { return location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalTypeName, c.Id); }
                         });
                     if ((c.RoleEx.Role & LMComLib.CompRole.HumanEvalManager) != 0)
                         comp.items.push(it = {
                             id: 'human_eval_manager',
                             title: CSLocalize('e72a70b3d05244759ea5469440921ff2', 'Assign Tests to Evaluators'),
-                            gotoItem: function () { return Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.humanEvalManagerLangsTypeName, c.Id)); }
+                            gotoItem: function () { return location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalManagerLangsTypeName, c.Id); }
                         });
                     //if ((c.RoleEx.Role & LMComLib.CompRole.HumanEvalManager) != 0) comp.items.push(it = {
                     //  id: 'human_eval_manager',
@@ -133,7 +133,7 @@ var schoolMy;
                         comp.items.push(it = {
                             id: 'human_evaluators',
                             title: CSLocalize('bce009c57f4b418c9ff42e30c7998479', 'Configure Evaluators'),
-                            gotoItem: function () { return Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.humanEvalManagerEvsTypeName, c.Id)); }
+                            gotoItem: function () { return location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalManagerEvsTypeName, c.Id); }
                         });
                     comp.courses = [];
                     //kurzy, k nimz mam licenci
@@ -158,21 +158,9 @@ var schoolMy;
                 //isPublIndiv: crs==null,
                 expired: crs.Expired <= 0 ? new Date() : Utils.intToDate(crs.Expired),
                 line: pr.line, title: pr.title, prodId: pr.url, isTest: CourseMeta.lib.isTest(pr),
-                isAngularJS: CourseMeta.lib.isAngularJS(pr),
                 data: crs,
                 myCompany: comp,
                 gotoUrl: function (dt) {
-                    //nove AngularJS produkty
-                    if (dt.isAngularJS) {
-                        var ctx = {
-                            producturl: blended.encodeUrl(pr.url), companyid: comp.data.Id, userid: LMStatus.Cookie.id,
-                            subuserid: LMStatus.Cookie.id, loc: Trados.actLang, taskid: 'def', persistence: null /*TODO*/
-                        };
-                        var hash = blended.root.href(vyzva.stateNames.home.name, ctx);
-                        Pager.navigateToHash(hash);
-                        return;
-                    } //window.location.hash = '/pg/ajs/vyzvaproduct/xxx'; return; }
-                    //stare produkty
                     if (dt.isTest && dt.data.LicCount == 0)
                         return;
                     if (comp.data.PublisherOwnerUserId == 0 && dt.myCompany.data.DepTree && dt.myCompany.data.DepTree.Departments && !dt.myCompany.department()) {
@@ -198,9 +186,7 @@ var schoolMy;
         return Model;
     })(schools.Model);
     schoolMy.Model = Model;
-    //Pager.registerAppLocator(schools.appId, schools.tMy, (urlParts, completed) => completed(new schoolMy.Model()));
-    schoolMy.myStateName = 'schoolMy_Model'.toLowerCase();
-    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schoolMy.myStateName, schools.appId, schools.tMy, 0, function (urlParts) { return new schoolMy.Model(); }); });
+    Pager.registerAppLocator(schools.appId, schools.tMy, function (urlParts, completed) { return completed(new schoolMy.Model()); });
 })(schoolMy || (schoolMy = {}));
 
 /// <reference path="../courses/Course.ts" />
@@ -265,8 +251,7 @@ var CourseMeta;
         return ModelEx;
     })(CourseMeta.MetaModel);
     CourseMeta.ModelEx = ModelEx;
-    //Pager.registerAppLocator(schools.appId, schools.tEx, (urlParts, completed) => completed(new ModelEx(urlParts)));
-    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schools.tEx, schools.appId, schools.tEx, 4, function (urlParts) { return new ModelEx(urlParts); }); });
+    Pager.registerAppLocator(schools.appId, schools.tEx, function (urlParts, completed) { return completed(new ModelEx(urlParts)); });
 })(CourseMeta || (CourseMeta = {}));
 //xx/#DEBUG
 var Logger;
@@ -639,14 +624,10 @@ var CourseMeta;
         return GrPage;
     })(GrModel);
     CourseMeta.GrPage = GrPage;
-    //Pager.registerAppLocator(schools.appId, schools.tDictInfo, (urlParts, completed) => completed(new DictInfoModel(urlParts)));
-    //Pager.registerAppLocator(schools.appId, schools.tGrammFolder, (urlParts, completed) => completed(new GrFolder(urlParts)));
-    //Pager.registerAppLocator(schools.appId, schools.tGrammPage, (urlParts, completed) => completed(new GrPage(urlParts)));
-    //Pager.registerAppLocator(schools.appId, schools.tGrammContent, (urlParts, completed) => completed(new GrContent(urlParts)));
-    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schools.tDictInfo, schools.appId, schools.tDictInfo, 4, function (urlParts) { return new DictInfoModel(urlParts); }); });
-    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schools.tGrammFolder, schools.appId, schools.tGrammFolder, 4, function (urlParts) { return new GrFolder(urlParts); }); });
-    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schools.tGrammPage, schools.appId, schools.tGrammPage, 4, function (urlParts) { return new GrPage(urlParts); }); });
-    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, schools.tGrammContent, schools.appId, schools.tGrammContent, 4, function (urlParts) { return new GrContent(urlParts); }); });
+    Pager.registerAppLocator(schools.appId, schools.tDictInfo, function (urlParts, completed) { return completed(new DictInfoModel(urlParts)); });
+    Pager.registerAppLocator(schools.appId, schools.tGrammFolder, function (urlParts, completed) { return completed(new GrFolder(urlParts)); });
+    Pager.registerAppLocator(schools.appId, schools.tGrammPage, function (urlParts, completed) { return completed(new GrPage(urlParts)); });
+    Pager.registerAppLocator(schools.appId, schools.tGrammContent, function (urlParts, completed) { return completed(new GrContent(urlParts)); });
 })(CourseMeta || (CourseMeta = {}));
 
 /// <reference path="../jslib/js/GenLMComLib.ts" />
@@ -957,7 +938,6 @@ var CourseMeta;
         runtimeType[runtimeType["multiTest"] = 67108864] = "multiTest";
         runtimeType[runtimeType["multiQuestionnaire"] = 134217728] = "multiQuestionnaire";
         runtimeType[runtimeType["testDemo"] = 268435456] = "testDemo";
-        runtimeType[runtimeType["productNew"] = 536870912] = "productNew";
     })(CourseMeta.runtimeType || (CourseMeta.runtimeType = {}));
     var runtimeType = CourseMeta.runtimeType;
     (function (childMode) {
@@ -982,7 +962,7 @@ var CourseMeta;
         testNeeds[testNeeds["recording"] = 2] = "recording";
     })(CourseMeta.testNeeds || (CourseMeta.testNeeds = {}));
     var testNeeds = CourseMeta.testNeeds;
-    CourseMeta.meta = { "rootTagName": "data", "types": { "data": { "props": { "title": {}, "order": { "st": 1088 }, "url": {}, "line": { "enumType": LMComLib.LineIds }, "type": { "enumType": CourseMeta.runtimeType }, "name": {}, "other": {}, "ms": { "st": 64 }, "allLocs": { "st": 1024 }, "styleSheet": { "st": 1024 }, "parent": { "st": 512 }, "uniqId": { "st": 64 }, "Items": {}, "dataItems": { "st": 1536 }, "spaceId": { "st": 1536 }, "globalId": { "st": 1536 }, "style": { "st": 1536 }, "pathParts": { "st": 1024 } } }, "sitemap": { "anc": "data", "props": {} }, "publisher": { "anc": "data", "props": { "vsNetData": { "st": 1024 }, "publisherRoot": { "st": 1024 } } }, "project": { "anc": "data", "props": { "ftpPassword": {}, "FtpUser": {}, "FtpPassword": { "st": 512 } } }, "ptr": { "anc": "data", "props": { "takeChilds": { "enumType": CourseMeta.childMode }, "skip": { "st": 64 }, "take": { "st": 64 }, "urls": {}, "isGramm": { "st": 64 }, "modify": {} } }, "products": { "anc": "data", "props": {} }, "product": { "anc": "data", "props": { "defaultDictType": { "enumType": CourseMeta.dictTypes }, "defaultLocs": {} } }, "taskTestInCourse": { "anc": "data", "props": {} }, "test": { "anc": "data", "props": { "demoTestUrl": {}, "level": {}, "needs": { "enumType": CourseMeta.testNeeds }, "isDemoTest": { "st": 64 } } }, "mod": { "anc": "data", "props": {} }, "taskCourse": { "anc": "data", "props": {} }, "multiTask": { "anc": "data", "props": {} }, "taskTestSkill": { "anc": "data", "props": { "skill": {}, "minutes": { "st": 64 }, "scoreWeight": { "st": 64 } } }, "dynamicModuleData": { "anc": "data", "props": { "groups": {} } }, "testTaskGroup": { "anc": "data", "props": { "urls": {}, "take": { "st": 64 }, "designTitle": {} } }, "ex": { "anc": "data", "props": { "isOldEa": { "st": 1088 }, "isOldEaPassive": { "st": 1088 }, "instrs": { "st": 1024 } } } } };
+    CourseMeta.meta = { "rootTagName": "data", "types": { "data": { "props": { "title": {}, "order": { "st": 1088 }, "url": {}, "line": { "enumType": LMComLib.LineIds }, "allLocs": { "st": 1024 }, "type": { "enumType": CourseMeta.runtimeType }, "styleSheet": { "st": 1024 }, "name": {}, "ms": { "st": 64 }, "parent": { "st": 512 }, "uniqId": { "st": 64 }, "Items": {}, "dataItems": { "st": 1536 }, "spaceId": { "st": 1536 }, "globalId": { "st": 1536 }, "style": { "st": 1536 }, "pathParts": { "st": 1024 } } }, "sitemap": { "anc": "data", "props": {} }, "publisher": { "anc": "data", "props": { "vsNetData": { "st": 1024 }, "publisherRoot": { "st": 1024 } } }, "project": { "anc": "data", "props": { "ftpPassword": {}, "FtpUser": {}, "FtpPassword": { "st": 512 } } }, "ptr": { "anc": "data", "props": { "takeChilds": { "enumType": CourseMeta.childMode }, "skip": { "st": 64 }, "take": { "st": 64 }, "urls": {}, "isGramm": { "st": 64 }, "modify": {} } }, "products": { "anc": "data", "props": {} }, "product": { "anc": "data", "props": { "defaultDictType": { "enumType": CourseMeta.dictTypes }, "defaultLocs": {} } }, "taskTestInCourse": { "anc": "data", "props": {} }, "test": { "anc": "data", "props": { "demoTestUrl": {}, "level": {}, "needs": { "enumType": CourseMeta.testNeeds }, "isDemoTest": { "st": 64 } } }, "mod": { "anc": "data", "props": {} }, "taskCourse": { "anc": "data", "props": {} }, "multiTask": { "anc": "data", "props": {} }, "taskTestSkill": { "anc": "data", "props": { "skill": {}, "minutes": { "st": 64 }, "scoreWeight": { "st": 64 } } }, "dynamicModuleData": { "anc": "data", "props": { "groups": {} } }, "testTaskGroup": { "anc": "data", "props": { "urls": {}, "take": { "st": 64 }, "designTitle": {} } }, "ex": { "anc": "data", "props": { "isOldEa": { "st": 1088 }, "isOldEaPassive": { "st": 1088 }, "instrs": { "st": 1024 } } } } };
     CourseMeta.tdata = 'data';
     CourseMeta.tsitemap = 'sitemap';
     CourseMeta.tpublisher = 'publisher';
@@ -1953,7 +1933,6 @@ var Logger;
 //xx/#ENDDEBUG
 //var SoundNoop = null;
 
-//##GOTO
 function gotoHref(event, url) {
     if (_.isEmpty(url))
         url = $(event.currentTarget).attr('href');
@@ -2248,7 +2227,6 @@ var CourseMeta;
                 completed(null);
                 return;
             }
-            prodUrl = decodeURIComponent(prodUrl);
             adjustProduct(prodUrl, persistence, function () {
                 if (CourseMeta.actNode && CourseMeta.actNode.url == nodeUrl) {
                     completed(isType(CourseMeta.actNode, CourseMeta.runtimeType.ex) ? CourseMeta.actNode : null);
@@ -2392,10 +2370,6 @@ var CourseMeta;
             return prod && CourseMeta.isType(prod, CourseMeta.runtimeType.test);
         }
         lib.isTest = isTest;
-        function isAngularJS(prod) {
-            return prod && CourseMeta.isType(prod, CourseMeta.runtimeType.productNew);
-        }
-        lib.isAngularJS = isAngularJS;
         function keyTitle(prod, Days) {
             return prod.title + ' / ' + (CourseMeta.lib.isTest(prod) ? 'test' : 'days: ' + Days.toString());
         }
@@ -2542,21 +2516,6 @@ var CourseMeta;
         lib.info_continue = info_continue;
         function info_courseFinished() { return new CourseMeta.greenArrowInfo(CSLocalize('e06a4208d7c84c8ba97c1a700f00046c', 'Course completed!'), CourseMeta.actNode == CourseMeta.actCourseRoot, "info", "thumbs-up", CourseMeta.actNode == CourseMeta.actCourseRoot ? $.noop : function () { return CourseMeta.gui.gotoData(null); }); }
         lib.info_courseFinished = info_courseFinished;
-        function blendedDisplayEx(page, insertToHTMLPage) {
-            page.finishCreatePage({});
-            page.callInitProcs(Course.initPhase.beforeRender, function () {
-                //var html = JsRenderTemplateEngine.render("c_blended_body", page);
-                var html = JsRenderTemplateEngine.render("c_gen", page);
-                CourseMeta.actExPageControl = page;
-                insertToHTMLPage(html);
-                page.callInitProcs(Course.initPhase.afterRender, function () {
-                    page.callInitProcs(Course.initPhase.afterRender2, function () {
-                    });
-                });
-                //Pager.renderHtmlEx(true, '', page); //HTML rendering (kod, provedeny normalne za onUpdate)
-            });
-        }
-        lib.blendedDisplayEx = blendedDisplayEx;
         //vykresleni naladovaneho cviceni
         function displayEx(loadedEx, beforeUpdate, afterUpdate) {
             //TODO EVAL
@@ -2857,7 +2816,6 @@ var CourseMeta;
         return url.charAt(url.length - 1) == '/' ? url.substr(0, url.length - 1) : url;
     }
     function loadLocalizedProductAndInstrs(url, completed) {
-        url = decodeURIComponent(url);
         var href = urlStripLast(url);
         href = '..' + (href[0] == '/' ? '' : '/') + href;
         loadFiles([href + jsExt, href + '.' + Trados.actLangStr + jsExt, href + '_instrs.js'], function (ress) {
@@ -2882,7 +2840,6 @@ var CourseMeta;
             completed(prod);
         });
     }
-    CourseMeta.loadLocalizedProductAndInstrs = loadLocalizedProductAndInstrs;
     function finishInstr(url, jsonML, loc) {
         var pg = extractEx((jsonML));
         if (pg == null) {
@@ -2987,7 +2944,7 @@ var CourseMeta;
             return schools.getHash(tp, companyId, productUrl, persistence, this.url);
         };
         dataImpl.prototype.href = function () {
-            return this.hrefCompl(CourseMeta.actCompanyId, encodeUrlHash(CourseMeta.actProduct.url), CourseMeta.actProductPersistence);
+            return this.hrefCompl(CourseMeta.actCompanyId, CourseMeta.actProduct.url, CourseMeta.actProductPersistence);
         };
         dataImpl.prototype.iconId = function () {
             if (this == CourseMeta.actCourseRoot)
@@ -3000,7 +2957,6 @@ var CourseMeta;
         return dataImpl;
     })();
     CourseMeta.dataImpl = dataImpl;
-    Utils.applyMixins(dataImpl, []);
     var productImpl = (function (_super) {
         __extends(productImpl, _super);
         function productImpl() {
@@ -6173,7 +6129,7 @@ var testMe;
                     th.actTest.expandDynamicAll(); //expanze dynamickych modulu
                     th.findActModule(); //najdi aktualni modul
                     if (th.actModule == null) {
-                        location.hash = createResultUrl();
+                        location.hash = createUrl(testMe.tResult);
                         return;
                     } //neni aktualni modul (tj. hotovo) => jdi na vysledek 
                 }
@@ -6332,7 +6288,7 @@ var testMe;
                         saveProduct(function () {
                             Login.adjustMyData(true, function () {
                                 Logger.trace_course('testMe: finishModule, test end');
-                                window.location.hash = createResultUrl(); //jdi na result stranku
+                                window.location.hash = createUrl(testMe.tResult); //jdi na result stranku
                             });
                         });
                     });
@@ -6684,22 +6640,22 @@ var testMe;
     })(CourseMeta.modImpl);
     testMe.testSkillImpl = testSkillImpl;
     function createUrlPersist(type, companyId, productUrl, persistence) {
-        return oldPrefix + [testMe.appId, type, companyId.toString(), encodeUrlHash(productUrl), persistence].join(hashDelim);
+        return [testMe.appId, type, companyId.toString(), productUrl, persistence].join('@');
     }
     testMe.createUrlPersist = createUrlPersist;
     function createUrlCompl(type, companyId, productUrl) {
-        return createUrlPersist(type, companyId, encodeUrlHash(productUrl), CourseMeta.actProductPersistence);
+        return createUrlPersist(type, companyId, productUrl, CourseMeta.actProductPersistence);
     }
     testMe.createUrlCompl = createUrlCompl;
-    function createResultUrl(companyId, productUrl) {
+    function createUrl(type, companyId, productUrl) {
+        if (type === void 0) { type = null; }
         if (companyId === void 0) { companyId = 0; }
         if (productUrl === void 0) { productUrl = null; }
-        return createUrlCompl(testMe.tResult, companyId ? companyId : CourseMeta.actCompanyId, productUrl ? productUrl : CourseMeta.actProduct.url);
-        //return [appId, type ? type : tEx, companyId ? companyId : CourseMeta.actCompanyId, productUrl ? productUrl : CourseMeta.actProduct.url].join(hashDelim);
+        return createUrlCompl(type ? type : testMe.tEx, companyId ? companyId : CourseMeta.actCompanyId, productUrl ? productUrl : CourseMeta.actProduct.url);
+        //return [appId, type ? type : tEx, companyId ? companyId : CourseMeta.actCompanyId, productUrl ? productUrl : CourseMeta.actProduct.url].join('@');
     }
-    testMe.createResultUrl = createResultUrl;
-    //Pager.registerAppLocator(appId, tEx, (urlParts, completed) => completed(new Model(urlParts)));
-    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, testMe.tEx, testMe.appId, testMe.tEx, 3, function (urlParts) { return new Model(urlParts); }); });
+    testMe.createUrl = createUrl;
+    Pager.registerAppLocator(testMe.appId, testMe.tEx, function (urlParts, completed) { return completed(new Model(urlParts)); });
 })(testMe || (testMe = {}));
 
 var __extends = (this && this.__extends) || function (d, b) {
@@ -6844,10 +6800,8 @@ var testMe;
         return skillResultImpl;
     })();
     testMe.skillResultImpl = skillResultImpl;
-    //Pager.registerAppLocator(appId, tResult,(urlParts, completed) => completed(new Result(urlParts)));
-    //Pager.registerAppLocator(appId, tResults, (urlParts, completed) => completed(new Results(urlParts)));
-    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, testMe.tResult, testMe.appId, testMe.tResult, 3, function (urlParts) { return new Result(urlParts); }); });
-    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, testMe.tResults, testMe.appId, testMe.tResults, 3, function (urlParts) { return new Results(urlParts); }); });
+    Pager.registerAppLocator(testMe.appId, testMe.tResult, function (urlParts, completed) { return completed(new Result(urlParts)); });
+    Pager.registerAppLocator(testMe.appId, testMe.tResults, function (urlParts, completed) { return completed(new Results(urlParts)); });
 })(testMe || (testMe = {}));
 
 var __extends = (this && this.__extends) || function (d, b) {
@@ -6944,10 +6898,8 @@ var vsNet;
     })(Pager.Page);
     vsNet.ExModel = ExModel;
     var ex = null;
-    //Pager.registerAppLocator(appId, exModelTypeName, (urlParts, completed) => completed(new ExModel(urlParts)));
-    //Pager.registerAppLocator(appId, modModelTypeName, (urlParts, completed) => completed(new ModModel(urlParts)));
-    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, exModelTypeName, vsNet.appId, exModelTypeName, 1, function (urlParts) { return new ExModel(urlParts); }); });
-    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, modModelTypeName, vsNet.appId, modModelTypeName, 1, function (urlParts) { return new ModModel(urlParts); }); });
+    Pager.registerAppLocator(vsNet.appId, exModelTypeName, function (urlParts, completed) { return completed(new ExModel(urlParts)); });
+    Pager.registerAppLocator(vsNet.appId, modModelTypeName, function (urlParts, completed) { return completed(new ModModel(urlParts)); });
 })(vsNet || (vsNet = {}));
 
 var __extends = (this && this.__extends) || function (d, b) {
@@ -7119,7 +7071,7 @@ var doc;
         __extends(propModel, _super);
         function propModel(urlParts) {
             _super.call(this, true, propType, urlParts);
-            this.backUrl = oldPrefix + doc.appId + hashDelim + urlParts[1].replace(/~/g, hashDelim);
+            this.backUrl = doc.appId + '@' + urlParts[1].replace(/~/g, '@');
         }
         propModel.prototype.createModel = function (completed) {
             this.actDocNamedImpl = this.actImpl = doc.actMeta.propDir[this.memberId];
@@ -7298,7 +7250,7 @@ var doc;
     function getHash(type, url1, url2) {
         if (url1 === void 0) { url1 = null; }
         if (url2 === void 0) { url2 = null; }
-        return oldPrefix + [doc.appId, type, url1, url2].join(hashDelim);
+        return [doc.appId, type, url1, url2].join('@');
     }
     function Start() {
         CourseMeta.persist = persistMemory.persistCourse;
@@ -7604,7 +7556,7 @@ var xref;
         if (type === void 0) { type = null; }
         if (prop === void 0) { prop = null; }
         if (valueIdx === void 0) { valueIdx = 0; }
-        return oldPrefix + [xref.appId, modelType, nodeId.toString(), mainTab.toString(), type, prop, valueIdx ? valueIdx.toString() : '0', LowUtils.getQueryParams('url')].join(hashDelim);
+        return [xref.appId, modelType, nodeId.toString(), mainTab.toString(), type, prop, valueIdx ? valueIdx.toString() : '0', LowUtils.getQueryParams('url')].join('@');
     }
     function Start() {
         CourseMeta.persist = persistMemory.persistCourse;
@@ -9279,591 +9231,8763 @@ var prettyPrint;
   }
 })();
 
-var blended;
-(function (blended) {
-    (function (levelIds) {
-        levelIds[levelIds["A1"] = 0] = "A1";
-        levelIds[levelIds["A2"] = 1] = "A2";
-        levelIds[levelIds["B1"] = 2] = "B1";
-        levelIds[levelIds["B2"] = 3] = "B2";
-    })(blended.levelIds || (blended.levelIds = {}));
-    var levelIds = blended.levelIds;
-    function encodeUrl(url) {
-        if (!url)
-            return url;
-        return url.replace(/\//g, '!');
-    }
-    blended.encodeUrl = encodeUrl;
-    function decodeUrl(url) {
-        if (!url)
-            return url;
-        return url.replace(/\!/g, '/');
-    }
-    blended.decodeUrl = decodeUrl;
-    function newGuid() { return (new Date().getTime() + (startGui++)).toString(); }
-    blended.newGuid = newGuid;
-    var startGui = new Date().getTime();
-    var controller = (function () {
-        function controller($scope, $state) {
-            this.$state = $state;
-            var params = ($state.params);
-            finishContext(params);
-            $.extend(this, $scope, $state.current.data);
-            $scope.ts = this;
-            this.urlParams = params;
-        }
-        controller.prototype.href = function (state, params) {
-            return this.$state.href(state, params);
-        };
-        controller.$inject = ['$scope', '$state'];
-        return controller;
-    })();
-    blended.controller = controller;
-    blended.baseUrlRelToRoot = '..'; //jak se z root stranky dostat do rootu webu
-    function cloneAndModifyContext(ctx, modify) {
-        if (modify === void 0) { modify = null; }
-        var res = {};
-        $.extend(res, ctx);
-        if (modify) {
-            modify(res);
-            finishContext(res);
-        }
-        return res;
-    }
-    blended.cloneAndModifyContext = cloneAndModifyContext;
-    function finishContext(ctx) {
-        ctx.productUrl = decodeUrl(ctx.producturl);
-        ctx.Url = decodeUrl(ctx.url);
-        ctx.pretestUrl = decodeUrl(ctx.pretesturl);
-        ctx.moduleUrl = decodeUrl(ctx.moduleurl);
-        if (!ctx.$http) {
-            var inj = angular.injector(['ng']);
-            ctx.$http = (inj.get('$http'));
-            ctx.$q = (inj.get('$q'));
-        }
-        return ctx;
-    }
-    blended.finishContext = finishContext;
-    //export function getStateChain($state: angular.ui.IStateService): Array<angular.ui.IState> {
-    //  var res = [];
-    //  var stWrapper = <any>$state.$current;
-    //  while (stWrapper) {
-    //    res.push(stWrapper);
-    //    stWrapper = stWrapper.parent;
-    //  }
-    //  return res;
-    //}
-    //************ LOGGING functions
-    function traceRoute() {
-        // Credits: Adam's answer in http://stackoverflow.com/a/20786262/69362
-        var $rootScope = angular.element(document.querySelectorAll("[ui-view]")[0]).injector().get('$rootScope');
-        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-            console.log('$stateChangeStart to ' + toState.to + '- fired when the transition begins. toState,toParams : \n', toState, toParams);
-        });
-        $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams) {
-            console.log('$stateChangeError - fired when an error occurs during transition.');
-            console.log(arguments);
-        });
-        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-            console.log('$stateChangeSuccess to ' + toState.name + '- fired once the state transition is complete.');
-        });
-        $rootScope.$on('$viewContentLoaded', function (event) {
-            console.log('$viewContentLoaded - fired after dom rendered', event);
-        });
-        $rootScope.$on('$stateNotFound', function (event, unfoundState, fromState, fromParams) {
-            console.log('$stateNotFound ' + unfoundState.to + '  - fired when a state cannot be found by its name.');
-            console.log(unfoundState, fromState, fromParams);
-        });
-    }
-    blended.traceRoute = traceRoute;
-    https: function routerLogging($provide) {
-        $provide.decorator('$rootScope', ['$delegate', function ($delegate) {
-                wrapMethod($delegate, '$broadcast', function (method, args) {
-                    if (isNonSystemEvent(args[0]))
-                        logCall('$broadcast', args);
-                    return method.apply(this, args);
-                });
-                wrapMethod($delegate, '$emit', function (method, args) {
-                    if (isNonSystemEvent(args[0]))
-                        logCall('$emit', args);
-                    return method.apply(this, args);
-                });
-                return $delegate;
-                function isNonSystemEvent(eventName) {
-                    return eventName && eventName[0] && eventName[0] !== '$';
-                }
-            }]);
-        $provide.decorator('$state', ['$delegate', function ($delegate) {
-                wrapMethod($delegate, 'go', function (method, args) {
-                    logCall('$state.go', args);
-                    return method.apply(this, args);
-                });
-                return $delegate;
-            }]);
-        function wrapMethod(obj, methodName, wrapper) {
-            var original = obj[methodName];
-            obj[methodName] = function () {
-                var args = Array.prototype.slice.call(arguments, 0);
-                return wrapper.call(this, original, args);
-            };
-        }
-        function logCall(funcName, args) {
-            var prettyArgs = args.map(function (a) { return repr(a); })
-                .join(', ');
-            console.log(funcName + '(' + prettyArgs + ')');
-        }
-        function repr(obj) {
-            return JSON.stringify(obj, function (k, v) {
-                if (k !== '' && v instanceof Object)
-                    return '[Obj]';
-                else
-                    return v;
-            });
-        }
-    }
-    blended.routerLogging = routerLogging;
-    ;
-})(blended || (blended = {}));
+!function (e) { if ("object" == typeof exports && "undefined" != typeof module) module.exports = e(); else if ("function" == typeof define && define.amd) define([], e); else { var o; "undefined" != typeof window ? o = window : "undefined" != typeof global ? o = global : "undefined" != typeof self && (o = self), o.commonmark = e() } }(function () {
+  var define, module, exports; return (function e(t, n, r) { function s(o, u) { if (!n[o]) { if (!t[o]) { var a = typeof require == "function" && require; if (!u && a) return a(o, !0); if (i) return i(o, !0); var f = new Error("Cannot find module '" + o + "'"); throw f.code = "MODULE_NOT_FOUND", f } var l = n[o] = { exports: {} }; t[o][0].call(l.exports, function (e) { var n = t[o][1][e]; return s(n ? n : e) }, l, l.exports, e, t, n, r) } return n[o].exports } var i = typeof require == "function" && require; for (var o = 0; o < r.length; o++) s(r[o]); return s })({
+    1: [function (require, module, exports) {
+      "use strict";
 
-var blended;
-(function (blended) {
-    function getPersistData(dataNode, taskid) {
-        if (!dataNode.userData)
-            return null;
-        var it = dataNode.userData[taskid];
-        return it ? (it.data) : null;
-    }
-    blended.getPersistData = getPersistData;
-    function setPersistData(dataNode, taskid, modify) {
-        var it = dataNode.userData ? dataNode.userData[taskid] : null;
-        if (!it) {
-            it = { data: {}, modified: true };
-            if (!dataNode.userData)
-                dataNode.userData = {};
-            dataNode.userData[taskid] = it;
+      var Node = require('./node');
+      var unescapeString = require('./common').unescapeString;
+
+      var CODE_INDENT = 4;
+
+      var C_NEWLINE = 10;
+      var C_GREATERTHAN = 62;
+      var C_SPACE = 32;
+      var C_OPEN_BRACKET = 91;
+
+      var InlineParser = require('./inlines');
+
+      var BLOCKTAGNAME = '(?:article|header|aside|hgroup|iframe|blockquote|hr|body|li|map|button|object|canvas|ol|caption|output|col|p|colgroup|pre|dd|progress|div|section|dl|table|td|dt|tbody|embed|textarea|fieldset|tfoot|figcaption|th|figure|thead|footer|footer|tr|form|ul|h1|h2|h3|h4|h5|h6|video|script|style)';
+
+      var HTMLBLOCKOPEN = "<(?:" + BLOCKTAGNAME + "[\\s/>]" + "|" +
+              "/" + BLOCKTAGNAME + "[\\s>]" + "|" + "[?!])";
+
+      var reHtmlBlockOpen = new RegExp('^' + HTMLBLOCKOPEN, 'i');
+
+      var reHrule = /^(?:(?:\* *){3,}|(?:_ *){3,}|(?:- *){3,}) *$/;
+
+      var reMaybeSpecial = /^[#`~*+_=<>0-9-]/;
+
+      var reNonSpace = /[^ \t\f\v\r\n]/;
+
+      var reBulletListMarker = /^[*+-]( +|$)/;
+
+      var reOrderedListMarker = /^(\d+)([.)])( +|$)/;
+
+      var reATXHeaderMarker = /^#{1,6}(?: +|$)/;
+
+      var reCodeFence = /^`{3,}(?!.*`)|^~{3,}(?!.*~)/;
+
+      var reClosingCodeFence = /^(?:`{3,}|~{3,})(?= *$)/;
+
+      var reSetextHeaderLine = /^(?:=+|-+) *$/;
+
+      var reLineEnding = /\r\n|\n|\r/;
+
+      // Returns true if string contains only space characters.
+      var isBlank = function (s) {
+        return !(reNonSpace.test(s));
+      };
+
+      var tabSpaces = ['    ', '   ', '  ', ' '];
+
+      // Convert tabs to spaces on each line using a 4-space tab stop.
+      var detabLine = function (text) {
+        var start = 0;
+        var offset;
+        var lastStop = 0;
+
+        while ((offset = text.indexOf('\t', start)) !== -1) {
+          var numspaces = (offset - lastStop) % 4;
+          var spaces = tabSpaces[numspaces];
+          text = text.slice(0, offset) + spaces + text.slice(offset + 1);
+          lastStop = offset + numspaces;
+          start = lastStop;
         }
-        else
-            it.modified = true;
-        modify((it.data));
-        return (it.data);
-    }
-    blended.setPersistData = setPersistData;
-    //rozsireni interface o metody
-    function finishProduktStart(prod) {
-        $.extend(prod, blended.productEx);
-        prod.moduleCache = new blended.loader.cacheOf(3);
-    }
-    blended.finishProduktStart = finishProduktStart;
-    blended.productEx = {
-        findParent: function (self, cond) {
-            var c = self;
-            while (c != null) {
-                if (cond(c))
-                    return c;
-                c = c.parent;
+
+        return text;
+      };
+
+      var peek = function (ln, pos) {
+        if (pos < ln.length) {
+          return ln.charCodeAt(pos);
+        } else {
+          return -1;
+        }
+      };
+
+      // DOC PARSER
+
+      // These are methods of a Parser object, defined below.
+
+      // Returns true if block ends with a blank line, descending if needed
+      // into lists and sublists.
+      var endsWithBlankLine = function (block) {
+        while (block) {
+          if (block._lastLineBlank) {
+            return true;
+          }
+          var t = block.type;
+          if (t === 'List' || t === 'Item') {
+            block = block._lastChild;
+          } else {
+            break;
+          }
+        }
+        return false;
+      };
+
+      // Break out of all containing lists, resetting the tip of the
+      // document to the parent of the highest list, and finalizing
+      // all the lists.  (This is used to implement the "two blank lines
+      // break of of all lists" feature.)
+      var breakOutOfLists = function (block) {
+        var b = block;
+        var last_list = null;
+        do {
+          if (b.type === 'List') {
+            last_list = b;
+          }
+          b = b._parent;
+        } while (b);
+
+        if (last_list) {
+          while (block !== last_list) {
+            this.finalize(block, this.lineNumber);
+            block = block._parent;
+          }
+          this.finalize(last_list, this.lineNumber);
+          this.tip = last_list._parent;
+        }
+      };
+
+      // Add a line to the block at the tip.  We assume the tip
+      // can accept lines -- that check should be done before calling this.
+      var addLine = function () {
+        this.tip._string_content += this.currentLine.slice(this.offset) + '\n';
+      };
+
+      // Add block of type tag as a child of the tip.  If the tip can't
+      // accept children, close and finalize it and try its parent,
+      // and so on til we find a block that can accept children.
+      var addChild = function (tag, offset) {
+        while (!this.blocks[this.tip.type].canContain(tag)) {
+          this.finalize(this.tip, this.lineNumber - 1);
+        }
+
+        var column_number = offset + 1; // offset 0 = column 1
+        var newBlock = new Node(tag, [[this.lineNumber, column_number], [0, 0]]);
+        newBlock._string_content = '';
+        this.tip.appendChild(newBlock);
+        this.tip = newBlock;
+        return newBlock;
+      };
+
+      // Parse a list marker and return data on the marker (type,
+      // start, delimiter, bullet character, padding) or null.
+      var parseListMarker = function (ln, offset, indent) {
+        var rest = ln.slice(offset);
+        var match;
+        var spaces_after_marker;
+        var data = {
+          type: null,
+          tight: true,  // lists are tight by default
+          bulletChar: null,
+          start: null,
+          delimiter: null,
+          padding: null,
+          markerOffset: indent
+        };
+        if ((match = rest.match(reBulletListMarker))) {
+          spaces_after_marker = match[1].length;
+          data.type = 'Bullet';
+          data.bulletChar = match[0][0];
+
+        } else if ((match = rest.match(reOrderedListMarker))) {
+          spaces_after_marker = match[3].length;
+          data.type = 'Ordered';
+          data.start = parseInt(match[1]);
+          data.delimiter = match[2];
+        } else {
+          return null;
+        }
+        var blank_item = match[0].length === rest.length;
+        if (spaces_after_marker >= 5 ||
+            spaces_after_marker < 1 ||
+            blank_item) {
+          data.padding = match[0].length - spaces_after_marker + 1;
+        } else {
+          data.padding = match[0].length;
+        }
+        return data;
+      };
+
+      // Returns true if the two list items are of the same type,
+      // with the same delimiter and bullet character.  This is used
+      // in agglomerating list items into lists.
+      var listsMatch = function (list_data, item_data) {
+        return (list_data.type === item_data.type &&
+                list_data.delimiter === item_data.delimiter &&
+                list_data.bulletChar === item_data.bulletChar);
+      };
+
+      // Finalize and close any unmatched blocks. Returns true.
+      var closeUnmatchedBlocks = function () {
+        if (!this.allClosed) {
+          // finalize any blocks not matched
+          while (this.oldtip !== this.lastMatchedContainer) {
+            var parent = this.oldtip._parent;
+            this.finalize(this.oldtip, this.lineNumber - 1);
+            this.oldtip = parent;
+          }
+          this.allClosed = true;
+        }
+      };
+
+      // 'finalize' is run when the block is closed.
+      // 'continue' is run to check whether the block is continuing
+      // at a certain line and offset (e.g. whether a block quote
+      // contains a `>`.  It returns 0 for matched, 1 for not matched,
+      // and 2 for "we've dealt with this line completely, go to next."
+      var blocks = {
+        Document: {
+          'continue': function () { return 0; },
+          finalize: function () { return; },
+          canContain: function (t) { return (t !== 'Item'); },
+          acceptsLines: false
+        },
+        List: {
+          'continue': function () { return 0; },
+          finalize: function (parser, block) {
+            var item = block._firstChild;
+            while (item) {
+              // check for non-final list item ending with blank line:
+              if (endsWithBlankLine(item) && item._next) {
+                block._listData.tight = false;
+                break;
+              }
+              // recurse into children of list item, to see if there are
+              // spaces between any of them:
+              var subitem = item._firstChild;
+              while (subitem) {
+                if (endsWithBlankLine(subitem) &&
+                    (item._next || subitem._next)) {
+                  block._listData.tight = false;
+                  break;
+                }
+                subitem = subitem._next;
+              }
+              item = item._next;
             }
+          },
+          canContain: function (t) { return (t === 'Item'); },
+          acceptsLines: false
+        },
+        BlockQuote: {
+          'continue': function (parser) {
+            var ln = parser.currentLine;
+            if (parser.indent <= 3 &&
+                peek(ln, parser.nextNonspace) === C_GREATERTHAN) {
+              parser.offset = parser.nextNonspace + 1;
+              if (peek(ln, parser.offset) === C_SPACE) {
+                parser.offset++;
+              }
+            } else {
+              return 1;
+            }
+            return 0;
+          },
+          finalize: function () { return; },
+          canContain: function (t) { return (t !== 'Item'); },
+          acceptsLines: false
+        },
+        Item: {
+          'continue': function (parser, container) {
+            if (parser.blank) {
+              parser.offset = parser.nextNonspace;
+            } else if (parser.indent >=
+                       container._listData.markerOffset +
+                       container._listData.padding) {
+              parser.offset += container._listData.markerOffset +
+                  container._listData.padding;
+            } else {
+              return 1;
+            }
+            return 0;
+          },
+          finalize: function () { return; },
+          canContain: function (t) { return (t !== 'Item'); },
+          acceptsLines: false
+        },
+        Header: {
+          'continue': function () {
+            // a header can never container > 1 line, so fail to match:
+            return 1;
+          },
+          finalize: function () { return; },
+          canContain: function () { return false; },
+          acceptsLines: false
+        },
+        HorizontalRule: {
+          'continue': function () {
+            // an hrule can never container > 1 line, so fail to match:
+            return 1;
+          },
+          finalize: function () { return; },
+          canContain: function () { return false; },
+          acceptsLines: false
+        },
+        CodeBlock: {
+          'continue': function (parser, container) {
+            var ln = parser.currentLine;
+            var indent = parser.indent;
+            if (container._isFenced) { // fenced
+              var match = (indent <= 3 &&
+                  ln.charAt(parser.nextNonspace) === container._fenceChar &&
+                  ln.slice(parser.nextNonspace).match(reClosingCodeFence));
+              if (match && match[0].length >= container._fenceLength) {
+                // closing fence - we're at end of line, so we can return
+                parser.finalize(container, parser.lineNumber);
+                return 2;
+              } else {
+                // skip optional spaces of fence offset
+                var i = container._fenceOffset;
+                while (i > 0 && peek(ln, parser.offset) === C_SPACE) {
+                  parser.offset++;
+                  i--;
+                }
+              }
+            } else { // indented
+              if (indent >= CODE_INDENT) {
+                parser.offset += CODE_INDENT;
+              } else if (parser.blank) {
+                parser.offset = parser.nextNonspace;
+              } else {
+                return 1;
+              }
+            }
+            return 0;
+          },
+          finalize: function (parser, block) {
+            if (block._isFenced) { // fenced
+              // first line becomes info string
+              var content = block._string_content;
+              var newlinePos = content.indexOf('\n');
+              var firstLine = content.slice(0, newlinePos);
+              var rest = content.slice(newlinePos + 1);
+              block.info = unescapeString(firstLine.trim());
+              block._literal = rest;
+            } else { // indented
+              block._literal = block._string_content.replace(/(\n *)+$/, '\n');
+            }
+            block._string_content = null; // allow GC
+          },
+          canContain: function () { return false; },
+          acceptsLines: true
+        },
+        HtmlBlock: {
+          'continue': function (parser) {
+            return (parser.blank ? 1 : 0);
+          },
+          finalize: function (parser, block) {
+            block._literal = block._string_content.replace(/(\n *)+$/, '');
+            block._string_content = null; // allow GC
+          },
+          canContain: function () { return false; },
+          acceptsLines: true
+        },
+        Paragraph: {
+          'continue': function (parser) {
+            return (parser.blank ? 1 : 0);
+          },
+          finalize: function (parser, block) {
+            var pos;
+            var hasReferenceDefs = false;
+
+            // try parsing the beginning as link reference definitions:
+            while (peek(block._string_content, 0) === C_OPEN_BRACKET &&
+                   (pos =
+                    parser.inlineParser.parseReference(block._string_content,
+                                                       parser.refmap))) {
+              block._string_content = block._string_content.slice(pos);
+              hasReferenceDefs = true;
+            }
+            if (hasReferenceDefs && isBlank(block._string_content)) {
+              block.unlink();
+            }
+          },
+          canContain: function () { return false; },
+          acceptsLines: true
+        }
+      };
+
+      // block start functions.  Return values:
+      // 0 = no match
+      // 1 = matched container, keep going
+      // 2 = matched leaf, no more block starts
+      var blockStarts = [
+          // indented code block
+          function (parser) {
+            if (parser.indent >= CODE_INDENT) {
+              if (parser.tip.type !== 'Paragraph' && !parser.blank) {
+                // indented code
+                parser.offset += CODE_INDENT;
+                parser.closeUnmatchedBlocks();
+                parser.addChild('CodeBlock', parser.offset);
+              } else {
+                // lazy paragraph continuation
+                parser.offset = parser.nextNonspace;
+              }
+              return 2;
+            } else {
+              return 0;
+            }
+          },
+
+          // block quote
+          function (parser) {
+            if (peek(parser.currentLine, parser.nextNonspace) === C_GREATERTHAN) {
+              parser.offset = parser.nextNonspace + 1;
+              // optional following space
+              if (peek(parser.currentLine, parser.offset) === C_SPACE) {
+                parser.offset++;
+              }
+              parser.closeUnmatchedBlocks();
+              parser.addChild('BlockQuote', parser.nextNonspace);
+              return 1;
+            } else {
+              return 0;
+            }
+          },
+
+          // ATX header
+          function (parser) {
+            var match;
+            if ((match = parser.currentLine.slice(parser.nextNonspace).match(reATXHeaderMarker))) {
+              parser.offset = parser.nextNonspace + match[0].length;
+              parser.closeUnmatchedBlocks();
+              var container = parser.addChild('Header', parser.nextNonspace);
+              container.level = match[0].trim().length; // number of #s
+              // remove trailing ###s:
+              container._string_content =
+                  parser.currentLine.slice(parser.offset).replace(/^ *#+ *$/, '').replace(/ +#+ *$/, '');
+              parser.offset = parser.currentLine.length;
+              return 2;
+            } else {
+              return 0;
+            }
+          },
+
+          // Fenced code block
+          function (parser) {
+            var match;
+            if ((match = parser.currentLine.slice(parser.nextNonspace).match(reCodeFence))) {
+              var fenceLength = match[0].length;
+              parser.closeUnmatchedBlocks();
+              var container = parser.addChild('CodeBlock', parser.nextNonspace);
+              container._isFenced = true;
+              container._fenceLength = fenceLength;
+              container._fenceChar = match[0][0];
+              container._fenceOffset = parser.indent;
+              parser.offset = parser.nextNonspace + fenceLength;
+              return 2;
+            } else {
+              return 0;
+            }
+          },
+
+          // HTML block
+          function (parser) {
+            if (reHtmlBlockOpen.test(parser.currentLine.slice(parser.nextNonspace))) {
+              parser.closeUnmatchedBlocks();
+              parser.addChild('HtmlBlock', parser.offset);
+              // don't adjust parser.offset; spaces are part of block
+              return 2;
+            } else {
+              return 0;
+            }
+          },
+
+          // Setext header
+          function (parser, container) {
+            var match;
+            if (container.type === 'Paragraph' &&
+                       (container._string_content.indexOf('\n') ===
+                          container._string_content.length - 1) &&
+                       ((match = parser.currentLine.slice(parser.nextNonspace).match(reSetextHeaderLine)))) {
+              parser.closeUnmatchedBlocks();
+              var header = new Node('Header', container.sourcepos);
+              header.level = match[0][0] === '=' ? 1 : 2;
+              header._string_content = container._string_content;
+              container.insertAfter(header);
+              container.unlink();
+              parser.tip = header;
+              parser.offset = parser.currentLine.length;
+              return 2;
+            } else {
+              return 0;
+            }
+          },
+
+          // hrule
+          function (parser) {
+            if (reHrule.test(parser.currentLine.slice(parser.nextNonspace))) {
+              parser.closeUnmatchedBlocks();
+              parser.addChild('HorizontalRule', parser.nextNonspace);
+              parser.offset = parser.currentLine.length;
+              return 2;
+            } else {
+              return 0;
+            }
+          },
+
+          // list item
+          function (parser, container) {
+            var data;
+            if ((data = parseListMarker(parser.currentLine,
+                                        parser.nextNonspace, parser.indent))) {
+              parser.closeUnmatchedBlocks();
+              parser.offset = parser.nextNonspace + data.padding;
+
+              // add the list if needed
+              if (parser.tip.type !== 'List' ||
+                  !(listsMatch(container._listData, data))) {
+                container = parser.addChild('List', parser.nextNonspace);
+                container._listData = data;
+              }
+
+              // add the list item
+              container = parser.addChild('Item', parser.nextNonspace);
+              container._listData = data;
+              return 1;
+            } else {
+              return 0;
+            }
+          }
+      ];
+
+      var findNextNonspace = function () {
+        var currentLine = this.currentLine;
+        var match = currentLine.slice(this.offset).match(reNonSpace);
+        if (match === null) {
+          this.nextNonspace = currentLine.length;
+          this.blank = true;
+        } else {
+          this.nextNonspace = this.offset + match.index;
+          this.blank = false;
+        }
+        this.indent = this.nextNonspace - this.offset;
+      };
+
+      // Analyze a line of text and update the document appropriately.
+      // We parse markdown text by calling this on each line of input,
+      // then finalizing the document.
+      var incorporateLine = function (ln) {
+        var all_matched = true;
+        var t;
+
+        var container = this.doc;
+        this.oldtip = this.tip;
+        this.offset = 0;
+        this.lineNumber += 1;
+
+        // replace NUL characters for security
+        if (ln.indexOf('\u0000') !== -1) {
+          ln = ln.replace(/\0/g, '\uFFFD');
+        }
+
+        // Convert tabs to spaces:
+        ln = detabLine(ln);
+        this.currentLine = ln;
+
+        // For each containing block, try to parse the associated line start.
+        // Bail out on failure: container will point to the last matching block.
+        // Set all_matched to false if not all containers match.
+        var lastChild;
+        while ((lastChild = container._lastChild) && lastChild._open) {
+          container = lastChild;
+
+          this.findNextNonspace();
+
+          switch (this.blocks[container.type]['continue'](this, container)) {
+            case 0: // we've matched, keep going
+              break;
+            case 1: // we've failed to match a block
+              all_matched = false;
+              break;
+            case 2: // we've hit end of line for fenced code close and can return
+              this.lastLineLength = ln.length;
+              return;
+            default:
+              throw 'continue returned illegal value, must be 0, 1, or 2';
+          }
+          if (!all_matched) {
+            container = container._parent; // back up to last matching block
+            break;
+          }
+        }
+
+        this.allClosed = (container === this.oldtip);
+        this.lastMatchedContainer = container;
+
+        // Check to see if we've hit 2nd blank line; if so break out of list:
+        if (this.blank && container._lastLineBlank) {
+          this.breakOutOfLists(container);
+        }
+
+        var matchedLeaf = container.type !== 'Paragraph' &&
+                blocks[container.type].acceptsLines;
+        var starts = this.blockStarts;
+        var startsLen = starts.length;
+        // Unless last matched container is a code block, try new container starts,
+        // adding children to the last matched container:
+        while (!matchedLeaf) {
+
+          this.findNextNonspace();
+
+          // this is a little performance optimization:
+          if (this.indent < CODE_INDENT && !reMaybeSpecial.test(ln.slice(this.nextNonspace))) {
+            this.offset = this.nextNonspace;
+            break;
+          }
+
+          var i = 0;
+          while (i < startsLen) {
+            var res = starts[i](this, container);
+            if (res === 1) {
+              container = this.tip;
+              break;
+            } else if (res === 2) {
+              container = this.tip;
+              matchedLeaf = true;
+              break;
+            } else {
+              i++;
+            }
+          }
+
+          if (i === startsLen) { // nothing matched
+            this.offset = this.nextNonspace;
+            break;
+          }
+        }
+
+        // What remains at the offset is a text line.  Add the text to the
+        // appropriate container.
+
+        // First check for a lazy paragraph continuation:
+        if (!this.allClosed && !this.blank &&
+            this.tip.type === 'Paragraph') {
+          // lazy paragraph continuation
+          this.addLine();
+
+        } else { // not a lazy continuation
+
+          // finalize any blocks not matched
+          this.closeUnmatchedBlocks();
+          if (this.blank && container.lastChild) {
+            container.lastChild._lastLineBlank = true;
+          }
+
+          t = container.type;
+
+          // Block quote lines are never blank as they start with >
+          // and we don't count blanks in fenced code for purposes of tight/loose
+          // lists or breaking out of lists.  We also don't set _lastLineBlank
+          // on an empty list item, or if we just closed a fenced block.
+          var lastLineBlank = this.blank &&
+              !(t === 'BlockQuote' ||
+                (t === 'CodeBlock' && container._isFenced) ||
+                (t === 'Item' &&
+                 !container._firstChild &&
+                 container.sourcepos[0][0] === this.lineNumber));
+
+          // propagate lastLineBlank up through parents:
+          var cont = container;
+          while (cont) {
+            cont._lastLineBlank = lastLineBlank;
+            cont = cont._parent;
+          }
+
+          if (this.blocks[t].acceptsLines) {
+            this.addLine();
+          } else if (this.offset < ln.length && !this.blank) {
+            // create paragraph container for line
+            container = this.addChild('Paragraph', this.offset);
+            this.offset = this.nextNonspace;
+            this.addLine();
+          }
+        }
+        this.lastLineLength = ln.length;
+      };
+
+      // Finalize a block.  Close it and do any necessary postprocessing,
+      // e.g. creating string_content from strings, setting the 'tight'
+      // or 'loose' status of a list, and parsing the beginnings
+      // of paragraphs for reference definitions.  Reset the tip to the
+      // parent of the closed block.
+      var finalize = function (block, lineNumber) {
+        var above = block._parent;
+        block._open = false;
+        block.sourcepos[1] = [lineNumber, this.lastLineLength];
+
+        this.blocks[block.type].finalize(this, block);
+
+        this.tip = above;
+      };
+
+      // Walk through a block & children recursively, parsing string content
+      // into inline content where appropriate.
+      var processInlines = function (block) {
+        var node, event, t;
+        var walker = block.walker();
+        this.inlineParser.refmap = this.refmap;
+        while ((event = walker.next())) {
+          node = event.node;
+          t = node.type;
+          if (!event.entering && (t === 'Paragraph' || t === 'Header')) {
+            this.inlineParser.parse(node);
+          }
+        }
+      };
+
+      var Document = function () {
+        var doc = new Node('Document', [[1, 1], [0, 0]]);
+        return doc;
+      };
+
+      // The main parsing function.  Returns a parsed document AST.
+      var parse = function (input) {
+        this.doc = new Document();
+        this.tip = this.doc;
+        this.refmap = {};
+        this.lineNumber = 0;
+        this.lastLineLength = 0;
+        this.offset = 0;
+        this.lastMatchedContainer = this.doc;
+        this.currentLine = "";
+        if (this.options.time) { console.time("preparing input"); }
+        var lines = input.split(reLineEnding);
+        var len = lines.length;
+        if (input.charCodeAt(input.length - 1) === C_NEWLINE) {
+          // ignore last blank line created by final newline
+          len -= 1;
+        }
+        if (this.options.time) { console.timeEnd("preparing input"); }
+        if (this.options.time) { console.time("block parsing"); }
+        for (var i = 0; i < len; i++) {
+          this.incorporateLine(lines[i]);
+        }
+        while (this.tip) {
+          this.finalize(this.tip, len);
+        }
+        if (this.options.time) { console.timeEnd("block parsing"); }
+        if (this.options.time) { console.time("inline parsing"); }
+        this.processInlines(this.doc);
+        if (this.options.time) { console.timeEnd("inline parsing"); }
+        return this.doc;
+      };
+
+
+      // The Parser object.
+      function Parser(options) {
+        return {
+          doc: new Document(),
+          blocks: blocks,
+          blockStarts: blockStarts,
+          tip: this.doc,
+          oldtip: this.doc,
+          currentLine: "",
+          lineNumber: 0,
+          offset: 0,
+          nextNonspace: 0,
+          indent: 0,
+          blank: false,
+          allClosed: true,
+          lastMatchedContainer: this.doc,
+          refmap: {},
+          lastLineLength: 0,
+          inlineParser: new InlineParser(options),
+          findNextNonspace: findNextNonspace,
+          breakOutOfLists: breakOutOfLists,
+          addLine: addLine,
+          addChild: addChild,
+          incorporateLine: incorporateLine,
+          finalize: finalize,
+          processInlines: processInlines,
+          closeUnmatchedBlocks: closeUnmatchedBlocks,
+          parse: parse,
+          options: options || {}
+        };
+      }
+
+      module.exports = Parser;
+
+    }, { "./common": 2, "./inlines": 9, "./node": 10 }], 2: [function (require, module, exports) {
+      "use strict";
+
+      var encode = require('./encode');
+      var decode = require('./decode');
+
+      var C_BACKSLASH = 92;
+
+      var entityToChar = require('./html5-entities.js').entityToChar;
+
+      var ENTITY = "&(?:#x[a-f0-9]{1,8}|#[0-9]{1,8}|[a-z][a-z0-9]{1,31});";
+
+      var reBackslashOrAmp = /[\\&]/;
+
+      var ESCAPABLE = '[!"#$%&\'()*+,./:;<=>?@[\\\\\\]^_`{|}~-]';
+
+      var reEntityOrEscapedChar = new RegExp('\\\\' + ESCAPABLE + '|' + ENTITY, 'gi');
+
+      var XMLSPECIAL = '[&<>"]';
+
+      var reXmlSpecial = new RegExp(XMLSPECIAL, 'g');
+
+      var reXmlSpecialOrEntity = new RegExp(ENTITY + '|' + XMLSPECIAL, 'gi');
+
+      var unescapeChar = function (s) {
+        if (s.charCodeAt(0) === C_BACKSLASH) {
+          return s.charAt(1);
+        } else {
+          return entityToChar(s);
+        }
+      };
+
+      // Replace entities and backslash escapes with literal characters.
+      var unescapeString = function (s) {
+        if (reBackslashOrAmp.test(s)) {
+          return s.replace(reEntityOrEscapedChar, unescapeChar);
+        } else {
+          return s;
+        }
+      };
+
+      var normalizeURI = function (uri) {
+        try {
+          return encode(decode(uri));
+        }
+        catch (err) {
+          return uri;
+        }
+      };
+
+      var replaceUnsafeChar = function (s) {
+        switch (s) {
+          case '&':
+            return '&amp;';
+          case '<':
+            return '&lt;';
+          case '>':
+            return '&gt;';
+          case '"':
+            return '&quot;';
+          default:
+            return s;
+        }
+      };
+
+      var escapeXml = function (s, preserve_entities) {
+        if (reXmlSpecial.test(s)) {
+          if (preserve_entities) {
+            return s.replace(reXmlSpecialOrEntity, replaceUnsafeChar);
+          } else {
+            return s.replace(reXmlSpecial, replaceUnsafeChar);
+          }
+        } else {
+          return s;
+        }
+      };
+
+      module.exports = {
+        unescapeString: unescapeString,
+        normalizeURI: normalizeURI,
+        escapeXml: escapeXml,
+        ENTITY: ENTITY,
+        ESCAPABLE: ESCAPABLE
+      };
+
+    }, { "./decode": 3, "./encode": 4, "./html5-entities.js": 7 }], 3: [function (require, module, exports) {
+      // from https://github.com/markdown-it/mdurl
+      // Copyright (c) 2015 Vitaly Puzrin, Alex Kocharin, MIT license.
+
+      'use strict';
+
+
+      /* eslint-disable no-bitwise */
+
+      var decodeCache = {};
+
+      function getDecodeCache(exclude) {
+        var i, ch, cache = decodeCache[exclude];
+        if (cache) { return cache; }
+
+        cache = decodeCache[exclude] = [];
+
+        for (i = 0; i < 128; i++) {
+          ch = String.fromCharCode(i);
+          cache.push(ch);
+        }
+
+        for (i = 0; i < exclude.length; i++) {
+          ch = exclude.charCodeAt(i);
+          cache[ch] = '%' + ('0' + ch.toString(16).toUpperCase()).slice(-2);
+        }
+
+        return cache;
+      }
+
+
+      // Decode percent-encoded string.
+      //
+      function decode(string, exclude) {
+        var cache;
+
+        if (typeof exclude !== 'string') {
+          exclude = decode.defaultChars;
+        }
+
+        cache = getDecodeCache(exclude);
+
+        return string.replace(/(%[a-f0-9]{2})+/gi, function (seq) {
+          var i, l, b1, b2, b3, b4, vchar,
+              result = '';
+
+          for (i = 0, l = seq.length; i < l; i += 3) {
+            b1 = parseInt(seq.slice(i + 1, i + 3), 16);
+
+            if (b1 < 0x80) {
+              result += cache[b1];
+              continue;
+            }
+
+            if ((b1 & 0xE0) === 0xC0 && (i + 3 < l)) {
+              // 110xxxxx 10xxxxxx
+              b2 = parseInt(seq.slice(i + 4, i + 6), 16);
+
+              if ((b2 & 0xC0) === 0x80) {
+                vchar = ((b1 << 6) & 0x7C0) | (b2 & 0x3F);
+
+                if (vchar < 0x80) {
+                  result += '\ufffd\ufffd';
+                } else {
+                  result += String.fromCharCode(vchar);
+                }
+
+                i += 3;
+                continue;
+              }
+            }
+
+            if ((b1 & 0xF0) === 0xE0 && (i + 6 < l)) {
+              // 1110xxxx 10xxxxxx 10xxxxxx
+              b2 = parseInt(seq.slice(i + 4, i + 6), 16);
+              b3 = parseInt(seq.slice(i + 7, i + 9), 16);
+
+              if ((b2 & 0xC0) === 0x80 && (b3 & 0xC0) === 0x80) {
+                vchar = ((b1 << 12) & 0xF000) | ((b2 << 6) & 0xFC0) | (b3 & 0x3F);
+
+                if (vchar < 0x800 || (vchar >= 0xD800 && vchar <= 0xDFFF)) {
+                  result += '\ufffd\ufffd\ufffd';
+                } else {
+                  result += String.fromCharCode(vchar);
+                }
+
+                i += 6;
+                continue;
+              }
+            }
+
+            if ((b1 & 0xF8) === 0xF0 && (i + 9 < l)) {
+              // 111110xx 10xxxxxx 10xxxxxx 10xxxxxx
+              b2 = parseInt(seq.slice(i + 4, i + 6), 16);
+              b3 = parseInt(seq.slice(i + 7, i + 9), 16);
+              b4 = parseInt(seq.slice(i + 10, i + 12), 16);
+
+              if ((b2 & 0xC0) === 0x80 && (b3 & 0xC0) === 0x80 && (b4 & 0xC0) === 0x80) {
+                vchar = ((b1 << 18) & 0x1C0000) | ((b2 << 12) & 0x3F000) | ((b3 << 6) & 0xFC0) | (b4 & 0x3F);
+
+                if (vchar < 0x10000 || vchar > 0x10FFFF) {
+                  result += '\ufffd\ufffd\ufffd\ufffd';
+                } else {
+                  vchar -= 0x10000;
+                  result += String.fromCharCode(0xD800 + (vchar >> 10), 0xDC00 + (vchar & 0x3FF));
+                }
+
+                i += 9;
+                continue;
+              }
+            }
+
+            result += '\ufffd';
+          }
+
+          return result;
+        });
+      }
+
+
+      decode.defaultChars = ';/?:@&=+$,#';
+      decode.componentChars = '';
+
+
+      module.exports = decode;
+
+    }, {}], 4: [function (require, module, exports) {
+      // from https://github.com/markdown-it/mdurl
+      // Copyright (c) 2015 Vitaly Puzrin, Alex Kocharin, MIT license.
+
+      'use strict';
+
+
+      var encodeCache = {};
+
+
+      // Create a lookup array where anything but characters in `chars` string
+      // and alphanumeric chars is percent-encoded.
+      //
+      function getEncodeCache(exclude) {
+        var i, ch, cache = encodeCache[exclude];
+        if (cache) { return cache; }
+
+        cache = encodeCache[exclude] = [];
+
+        for (i = 0; i < 128; i++) {
+          ch = String.fromCharCode(i);
+
+          if (/^[0-9a-z]$/i.test(ch)) {
+            // always allow unencoded alphanumeric characters
+            cache.push(ch);
+          } else {
+            cache.push('%' + ('0' + i.toString(16).toUpperCase()).slice(-2));
+          }
+        }
+
+        for (i = 0; i < exclude.length; i++) {
+          cache[exclude.charCodeAt(i)] = exclude[i];
+        }
+
+        return cache;
+      }
+
+
+      // Encode unsafe characters with percent-encoding, skipping already
+      // encoded sequences.
+      //
+      //  - string       - string to encode
+      //  - exclude      - list of characters to ignore (in addition to a-zA-Z0-9)
+      //  - keepEscaped  - don't encode '%' in a correct escape sequence (default: true)
+      //
+      function encode(string, exclude, keepEscaped) {
+        var i, l, code, nextCode, cache,
+            result = '';
+
+        if (typeof exclude !== 'string') {
+          // encode(string, keepEscaped)
+          keepEscaped = exclude;
+          exclude = encode.defaultChars;
+        }
+
+        if (typeof keepEscaped === 'undefined') {
+          keepEscaped = true;
+        }
+
+        cache = getEncodeCache(exclude);
+
+        for (i = 0, l = string.length; i < l; i++) {
+          code = string.charCodeAt(i);
+
+          if (keepEscaped && code === 0x25 && i + 2 < l) {
+            if (/^[0-9a-f]{2}$/i.test(string.slice(i + 1, i + 3))) {
+              result += string.slice(i, i + 3);
+              i += 2;
+              continue;
+            }
+          }
+
+          if (code < 128) {
+            result += cache[code];
+            continue;
+          }
+
+          if (code >= 0xD800 && code <= 0xDFFF) {
+            if (code >= 0xD800 && code <= 0xDBFF && i + 1 < l) {
+              nextCode = string.charCodeAt(i + 1);
+              if (nextCode >= 0xDC00 && nextCode <= 0xDFFF) {
+                result += encodeURIComponent(string[i] + string[i + 1]);
+                i++;
+                continue;
+              }
+            }
+            result += '%EF%BF%BD';
+            continue;
+          }
+
+          result += encodeURIComponent(string[i]);
+        }
+
+        return result;
+      }
+
+      encode.defaultChars = ";/?:@&=+$,-_.!~*'()#";
+      encode.componentChars = "-_.!~*'()";
+
+
+      module.exports = encode;
+
+    }, {}], 5: [function (require, module, exports) {
+      "use strict";
+
+      // derived from https://github.com/mathiasbynens/String.fromCodePoint
+      /*! http://mths.be/fromcodepoint v0.2.1 by @mathias */
+      if (String.fromCodePoint) {
+        module.exports = function (_) {
+          try {
+            return String.fromCodePoint(_);
+          } catch (e) {
+            if (e instanceof RangeError) {
+              return String.fromCharCode(0xFFFD);
+            }
+            throw e;
+          }
+        };
+
+      } else {
+
+        var stringFromCharCode = String.fromCharCode;
+        var floor = Math.floor;
+        var fromCodePoint = function () {
+          var MAX_SIZE = 0x4000;
+          var codeUnits = [];
+          var highSurrogate;
+          var lowSurrogate;
+          var index = -1;
+          var length = arguments.length;
+          if (!length) {
+            return '';
+          }
+          var result = '';
+          while (++index < length) {
+            var codePoint = Number(arguments[index]);
+            if (
+                !isFinite(codePoint) || // `NaN`, `+Infinity`, or `-Infinity`
+                    codePoint < 0 || // not a valid Unicode code point
+                    codePoint > 0x10FFFF || // not a valid Unicode code point
+                    floor(codePoint) !== codePoint // not an integer
+            ) {
+              return String.fromCharCode(0xFFFD);
+            }
+            if (codePoint <= 0xFFFF) { // BMP code point
+              codeUnits.push(codePoint);
+            } else { // Astral code point; split in surrogate halves
+              // http://mathiasbynens.be/notes/javascript-encoding#surrogate-formulae
+              codePoint -= 0x10000;
+              highSurrogate = (codePoint >> 10) + 0xD800;
+              lowSurrogate = (codePoint % 0x400) + 0xDC00;
+              codeUnits.push(highSurrogate, lowSurrogate);
+            }
+            if (index + 1 === length || codeUnits.length > MAX_SIZE) {
+              result += stringFromCharCode.apply(null, codeUnits);
+              codeUnits.length = 0;
+            }
+          }
+          return result;
+        };
+        module.exports = fromCodePoint;
+      }
+
+    }, {}], 6: [function (require, module, exports) {
+      "use strict";
+
+      var escapeXml = require('./common').escapeXml;
+
+      // Helper function to produce an HTML tag.
+      var tag = function (name, attrs, selfclosing) {
+        var result = '<' + name;
+        if (attrs && attrs.length > 0) {
+          var i = 0;
+          var attrib;
+          while ((attrib = attrs[i]) !== undefined) {
+            result += ' ' + attrib[0] + '="' + attrib[1] + '"';
+            i++;
+          }
+        }
+        if (selfclosing) {
+          result += ' /';
+        }
+
+        result += '>';
+        return result;
+      };
+
+      var reHtmlTag = /\<[^>]*\>/;
+
+      var renderNodes = function (block) {
+
+        var attrs;
+        var info_words;
+        var tagname;
+        var walker = block.walker();
+        var event, node, entering;
+        var buffer = "";
+        var lastOut = "\n";
+        var disableTags = 0;
+        var grandparent;
+        var out = function (s) {
+          if (disableTags > 0) {
+            buffer += s.replace(reHtmlTag, '');
+          } else {
+            buffer += s;
+          }
+          lastOut = s;
+        };
+        var esc = this.escape;
+        var cr = function () {
+          if (lastOut !== '\n') {
+            buffer += '\n';
+            lastOut = '\n';
+          }
+        };
+
+        var options = this.options;
+
+        if (options.time) { console.time("rendering"); }
+
+        while ((event = walker.next())) {
+          entering = event.entering;
+          node = event.node;
+
+          attrs = [];
+          if (options.sourcepos) {
+            var pos = node.sourcepos;
+            if (pos) {
+              attrs.push(['data-sourcepos', String(pos[0][0]) + ':' +
+                          String(pos[0][1]) + '-' + String(pos[1][0]) + ':' +
+                          String(pos[1][1])]);
+            }
+          }
+
+          switch (node.type) {
+            case 'Text':
+              out(esc(node.literal, false));
+              break;
+
+            case 'Softbreak':
+              out(this.softbreak);
+              break;
+
+            case 'Hardbreak':
+              out(tag('br', [], true));
+              cr();
+              break;
+
+            case 'Emph':
+              out(tag(entering ? 'em' : '/em'));
+              break;
+
+            case 'Strong':
+              out(tag(entering ? 'strong' : '/strong'));
+              break;
+
+            case 'Html':
+              out(node.literal);
+              break;
+
+            case 'Link':
+              if (entering) {
+                attrs.push(['href', esc(node.destination, true)]);
+                if (node.title) {
+                  attrs.push(['title', esc(node.title, true)]);
+                }
+                out(tag('a', attrs));
+              } else {
+                out(tag('/a'));
+              }
+              break;
+
+            case 'Image':
+              if (entering) {
+                if (disableTags === 0) {
+                  out('<img src="' + esc(node.destination, true) +
+                      '" alt="');
+                }
+                disableTags += 1;
+              } else {
+                disableTags -= 1;
+                if (disableTags === 0) {
+                  if (node.title) {
+                    out('" title="' + esc(node.title, true));
+                  }
+                  out('" />');
+                }
+              }
+              break;
+
+            case 'Code':
+              out(tag('code') + esc(node.literal, false) + tag('/code'));
+              break;
+
+            case 'Document':
+              break;
+
+            case 'Paragraph':
+              grandparent = node.parent.parent;
+              if (grandparent !== null &&
+                  grandparent.type === 'List') {
+                if (grandparent.listTight) {
+                  break;
+                }
+              }
+              if (entering) {
+                cr();
+                out(tag('p', attrs));
+              } else {
+                out(tag('/p'));
+                cr();
+              }
+              break;
+
+            case 'BlockQuote':
+              if (entering) {
+                cr();
+                out(tag('blockquote', attrs));
+                cr();
+              } else {
+                cr();
+                out(tag('/blockquote'));
+                cr();
+              }
+              break;
+
+            case 'Item':
+              if (entering) {
+                out(tag('li', attrs));
+              } else {
+                out(tag('/li'));
+                cr();
+              }
+              break;
+
+            case 'List':
+              tagname = node.listType === 'Bullet' ? 'ul' : 'ol';
+              if (entering) {
+                var start = node.listStart;
+                if (start !== null && start !== 1) {
+                  attrs.push(['start', start.toString()]);
+                }
+                cr();
+                out(tag(tagname, attrs));
+                cr();
+              } else {
+                cr();
+                out(tag('/' + tagname));
+                cr();
+              }
+              break;
+
+            case 'Header':
+              tagname = 'h' + node.level;
+              if (entering) {
+                cr();
+                out(tag(tagname, attrs));
+              } else {
+                out(tag('/' + tagname));
+                cr();
+              }
+              break;
+
+            case 'CodeBlock':
+              info_words = node.info ? node.info.split(/ +/) : [];
+              if (info_words.length > 0 && info_words[0].length > 0) {
+                attrs.push(['class', 'language-' + esc(info_words[0], true)]);
+              }
+              cr();
+              out(tag('pre') + tag('code', attrs));
+              out(esc(node.literal, false));
+              out(tag('/code') + tag('/pre'));
+              cr();
+              break;
+
+            case 'HtmlBlock':
+              cr();
+              out(node.literal);
+              cr();
+              break;
+
+            case 'HorizontalRule':
+              cr();
+              out(tag('hr', attrs, true));
+              cr();
+              break;
+
+            default:
+              throw "Unknown node type " + node.type;
+          }
+
+        }
+        if (options.time) { console.timeEnd("rendering"); }
+        return buffer;
+      };
+
+      // The HtmlRenderer object.
+      function HtmlRenderer(options) {
+        return {
+          // default options:
+          softbreak: '\n', // by default, soft breaks are rendered as newlines in HTML
+          // set to "<br />" to make them hard breaks
+          // set to " " if you want to ignore line wrapping in source
+          escape: escapeXml,
+          options: options || {},
+          render: renderNodes
+        };
+      }
+
+      module.exports = HtmlRenderer;
+
+    }, { "./common": 2 }], 7: [function (require, module, exports) {
+      "use strict";
+
+      var fromCodePoint = require('./from-code-point');
+
+      var entities = {
+        "AAacute": 193,
+        "aacute": 225,
+        "Abreve": 258,
+        "abreve": 259,
+        "ac": 8766,
+        "acd": 8767,
+        "acE": 8766,
+        "Acirc": 194,
+        "acirc": 226,
+        "acute": 180,
+        "Acy": 1040,
+        "acy": 1072,
+        "AElig": 198,
+        "aelig": 230,
+        "af": 8289,
+        "Afr": 55349,
+        "afr": 55349,
+        "Agrave": 192,
+        "agrave": 224,
+        "alefsym": 8501,
+        "aleph": 8501,
+        "Alpha": 913,
+        "alpha": 945,
+        "Amacr": 256,
+        "amacr": 257,
+        "amalg": 10815,
+        "amp": 38,
+        "AMP": 38,
+        "andand": 10837,
+        "And": 10835,
+        "and": 8743,
+        "andd": 10844,
+        "andslope": 10840,
+        "andv": 10842,
+        "ang": 8736,
+        "ange": 10660,
+        "angle": 8736,
+        "angmsdaa": 10664,
+        "angmsdab": 10665,
+        "angmsdac": 10666,
+        "angmsdad": 10667,
+        "angmsdae": 10668,
+        "angmsdaf": 10669,
+        "angmsdag": 10670,
+        "angmsdah": 10671,
+        "angmsd": 8737,
+        "angrt": 8735,
+        "angrtvb": 8894,
+        "angrtvbd": 10653,
+        "angsph": 8738,
+        "angst": 197,
+        "angzarr": 9084,
+        "Aogon": 260,
+        "aogon": 261,
+        "Aopf": 55349,
+        "aopf": 55349,
+        "apacir": 10863,
+        "ap": 8776,
+        "apE": 10864,
+        "ape": 8778,
+        "apid": 8779,
+        "apos": 39,
+        "ApplyFunction": 8289,
+        "approx": 8776,
+        "approxeq": 8778,
+        "Aring": 197,
+        "aring": 229,
+        "Ascr": 55349,
+        "ascr": 55349,
+        "Assign": 8788,
+        "ast": 42,
+        "asymp": 8776,
+        "asympeq": 8781,
+        "Atilde": 195,
+        "atilde": 227,
+        "Auml": 196,
+        "auml": 228,
+        "awconint": 8755,
+        "awint": 10769,
+        "backcong": 8780,
+        "backepsilon": 1014,
+        "backprime": 8245,
+        "backsim": 8765,
+        "backsimeq": 8909,
+        "Backslash": 8726,
+        "Barv": 10983,
+        "barvee": 8893,
+        "barwed": 8965,
+        "Barwed": 8966,
+        "barwedge": 8965,
+        "bbrk": 9141,
+        "bbrktbrk": 9142,
+        "bcong": 8780,
+        "Bcy": 1041,
+        "bcy": 1073,
+        "bdquo": 8222,
+        "becaus": 8757,
+        "because": 8757,
+        "Because": 8757,
+        "bemptyv": 10672,
+        "bepsi": 1014,
+        "bernou": 8492,
+        "Bernoullis": 8492,
+        "Beta": 914,
+        "beta": 946,
+        "beth": 8502,
+        "between": 8812,
+        "Bfr": 55349,
+        "bfr": 55349,
+        "bigcap": 8898,
+        "bigcirc": 9711,
+        "bigcup": 8899,
+        "bigodot": 10752,
+        "bigoplus": 10753,
+        "bigotimes": 10754,
+        "bigsqcup": 10758,
+        "bigstar": 9733,
+        "bigtriangledown": 9661,
+        "bigtriangleup": 9651,
+        "biguplus": 10756,
+        "bigvee": 8897,
+        "bigwedge": 8896,
+        "bkarow": 10509,
+        "blacklozenge": 10731,
+        "blacksquare": 9642,
+        "blacktriangle": 9652,
+        "blacktriangledown": 9662,
+        "blacktriangleleft": 9666,
+        "blacktriangleright": 9656,
+        "blank": 9251,
+        "blk12": 9618,
+        "blk14": 9617,
+        "blk34": 9619,
+        "block": 9608,
+        "bne": 61,
+        "bnequiv": 8801,
+        "bNot": 10989,
+        "bnot": 8976,
+        "Bopf": 55349,
+        "bopf": 55349,
+        "bot": 8869,
+        "bottom": 8869,
+        "bowtie": 8904,
+        "boxbox": 10697,
+        "boxdl": 9488,
+        "boxdL": 9557,
+        "boxDl": 9558,
+        "boxDL": 9559,
+        "boxdr": 9484,
+        "boxdR": 9554,
+        "boxDr": 9555,
+        "boxDR": 9556,
+        "boxh": 9472,
+        "boxH": 9552,
+        "boxhd": 9516,
+        "boxHd": 9572,
+        "boxhD": 9573,
+        "boxHD": 9574,
+        "boxhu": 9524,
+        "boxHu": 9575,
+        "boxhU": 9576,
+        "boxHU": 9577,
+        "boxminus": 8863,
+        "boxplus": 8862,
+        "boxtimes": 8864,
+        "boxul": 9496,
+        "boxuL": 9563,
+        "boxUl": 9564,
+        "boxUL": 9565,
+        "boxur": 9492,
+        "boxuR": 9560,
+        "boxUr": 9561,
+        "boxUR": 9562,
+        "boxv": 9474,
+        "boxV": 9553,
+        "boxvh": 9532,
+        "boxvH": 9578,
+        "boxVh": 9579,
+        "boxVH": 9580,
+        "boxvl": 9508,
+        "boxvL": 9569,
+        "boxVl": 9570,
+        "boxVL": 9571,
+        "boxvr": 9500,
+        "boxvR": 9566,
+        "boxVr": 9567,
+        "boxVR": 9568,
+        "bprime": 8245,
+        "breve": 728,
+        "Breve": 728,
+        "brvbar": 166,
+        "bscr": 55349,
+        "Bscr": 8492,
+        "bsemi": 8271,
+        "bsim": 8765,
+        "bsime": 8909,
+        "bsolb": 10693,
+        "bsol": 92,
+        "bsolhsub": 10184,
+        "bull": 8226,
+        "bullet": 8226,
+        "bump": 8782,
+        "bumpE": 10926,
+        "bumpe": 8783,
+        "Bumpeq": 8782,
+        "bumpeq": 8783,
+        "Cacute": 262,
+        "cacute": 263,
+        "capand": 10820,
+        "capbrcup": 10825,
+        "capcap": 10827,
+        "cap": 8745,
+        "Cap": 8914,
+        "capcup": 10823,
+        "capdot": 10816,
+        "CapitalDifferentialD": 8517,
+        "caps": 8745,
+        "caret": 8257,
+        "caron": 711,
+        "Cayleys": 8493,
+        "ccaps": 10829,
+        "Ccaron": 268,
+        "ccaron": 269,
+        "Ccedil": 199,
+        "ccedil": 231,
+        "Ccirc": 264,
+        "ccirc": 265,
+        "Cconint": 8752,
+        "ccups": 10828,
+        "ccupssm": 10832,
+        "Cdot": 266,
+        "cdot": 267,
+        "cedil": 184,
+        "Cedilla": 184,
+        "cemptyv": 10674,
+        "cent": 162,
+        "centerdot": 183,
+        "CenterDot": 183,
+        "cfr": 55349,
+        "Cfr": 8493,
+        "CHcy": 1063,
+        "chcy": 1095,
+        "check": 10003,
+        "checkmark": 10003,
+        "Chi": 935,
+        "chi": 967,
+        "circ": 710,
+        "circeq": 8791,
+        "circlearrowleft": 8634,
+        "circlearrowright": 8635,
+        "circledast": 8859,
+        "circledcirc": 8858,
+        "circleddash": 8861,
+        "CircleDot": 8857,
+        "circledR": 174,
+        "circledS": 9416,
+        "CircleMinus": 8854,
+        "CirclePlus": 8853,
+        "CircleTimes": 8855,
+        "cir": 9675,
+        "cirE": 10691,
+        "cire": 8791,
+        "cirfnint": 10768,
+        "cirmid": 10991,
+        "cirscir": 10690,
+        "ClockwiseContourIntegral": 8754,
+        "CloseCurlyDoubleQuote": 8221,
+        "CloseCurlyQuote": 8217,
+        "clubs": 9827,
+        "clubsuit": 9827,
+        "colon": 58,
+        "Colon": 8759,
+        "Colone": 10868,
+        "colone": 8788,
+        "coloneq": 8788,
+        "comma": 44,
+        "commat": 64,
+        "comp": 8705,
+        "compfn": 8728,
+        "complement": 8705,
+        "complexes": 8450,
+        "cong": 8773,
+        "congdot": 10861,
+        "Congruent": 8801,
+        "conint": 8750,
+        "Conint": 8751,
+        "ContourIntegral": 8750,
+        "copf": 55349,
+        "Copf": 8450,
+        "coprod": 8720,
+        "Coproduct": 8720,
+        "copy": 169,
+        "COPY": 169,
+        "copysr": 8471,
+        "CounterClockwiseContourIntegral": 8755,
+        "crarr": 8629,
+        "cross": 10007,
+        "Cross": 10799,
+        "Cscr": 55349,
+        "cscr": 55349,
+        "csub": 10959,
+        "csube": 10961,
+        "csup": 10960,
+        "csupe": 10962,
+        "ctdot": 8943,
+        "cudarrl": 10552,
+        "cudarrr": 10549,
+        "cuepr": 8926,
+        "cuesc": 8927,
+        "cularr": 8630,
+        "cularrp": 10557,
+        "cupbrcap": 10824,
+        "cupcap": 10822,
+        "CupCap": 8781,
+        "cup": 8746,
+        "Cup": 8915,
+        "cupcup": 10826,
+        "cupdot": 8845,
+        "cupor": 10821,
+        "cups": 8746,
+        "curarr": 8631,
+        "curarrm": 10556,
+        "curlyeqprec": 8926,
+        "curlyeqsucc": 8927,
+        "curlyvee": 8910,
+        "curlywedge": 8911,
+        "curren": 164,
+        "curvearrowleft": 8630,
+        "curvearrowright": 8631,
+        "cuvee": 8910,
+        "cuwed": 8911,
+        "cwconint": 8754,
+        "cwint": 8753,
+        "cylcty": 9005,
+        "dagger": 8224,
+        "Dagger": 8225,
+        "daleth": 8504,
+        "darr": 8595,
+        "Darr": 8609,
+        "dArr": 8659,
+        "dash": 8208,
+        "Dashv": 10980,
+        "dashv": 8867,
+        "dbkarow": 10511,
+        "dblac": 733,
+        "Dcaron": 270,
+        "dcaron": 271,
+        "Dcy": 1044,
+        "dcy": 1076,
+        "ddagger": 8225,
+        "ddarr": 8650,
+        "DD": 8517,
+        "dd": 8518,
+        "DDotrahd": 10513,
+        "ddotseq": 10871,
+        "deg": 176,
+        "Del": 8711,
+        "Delta": 916,
+        "delta": 948,
+        "demptyv": 10673,
+        "dfisht": 10623,
+        "Dfr": 55349,
+        "dfr": 55349,
+        "dHar": 10597,
+        "dharl": 8643,
+        "dharr": 8642,
+        "DiacriticalAcute": 180,
+        "DiacriticalDot": 729,
+        "DiacriticalDoubleAcute": 733,
+        "DiacriticalGrave": 96,
+        "DiacriticalTilde": 732,
+        "diam": 8900,
+        "diamond": 8900,
+        "Diamond": 8900,
+        "diamondsuit": 9830,
+        "diams": 9830,
+        "die": 168,
+        "DifferentialD": 8518,
+        "digamma": 989,
+        "disin": 8946,
+        "div": 247,
+        "divide": 247,
+        "divideontimes": 8903,
+        "divonx": 8903,
+        "DJcy": 1026,
+        "djcy": 1106,
+        "dlcorn": 8990,
+        "dlcrop": 8973,
+        "dollar": 36,
+        "Dopf": 55349,
+        "dopf": 55349,
+        "Dot": 168,
+        "dot": 729,
+        "DotDot": 8412,
+        "doteq": 8784,
+        "doteqdot": 8785,
+        "DotEqual": 8784,
+        "dotminus": 8760,
+        "dotplus": 8724,
+        "dotsquare": 8865,
+        "doublebarwedge": 8966,
+        "DoubleContourIntegral": 8751,
+        "DoubleDot": 168,
+        "DoubleDownArrow": 8659,
+        "DoubleLeftArrow": 8656,
+        "DoubleLeftRightArrow": 8660,
+        "DoubleLeftTee": 10980,
+        "DoubleLongLeftArrow": 10232,
+        "DoubleLongLeftRightArrow": 10234,
+        "DoubleLongRightArrow": 10233,
+        "DoubleRightArrow": 8658,
+        "DoubleRightTee": 8872,
+        "DoubleUpArrow": 8657,
+        "DoubleUpDownArrow": 8661,
+        "DoubleVerticalBar": 8741,
+        "DownArrowBar": 10515,
+        "downarrow": 8595,
+        "DownArrow": 8595,
+        "Downarrow": 8659,
+        "DownArrowUpArrow": 8693,
+        "DownBreve": 785,
+        "downdownarrows": 8650,
+        "downharpoonleft": 8643,
+        "downharpoonright": 8642,
+        "DownLeftRightVector": 10576,
+        "DownLeftTeeVector": 10590,
+        "DownLeftVectorBar": 10582,
+        "DownLeftVector": 8637,
+        "DownRightTeeVector": 10591,
+        "DownRightVectorBar": 10583,
+        "DownRightVector": 8641,
+        "DownTeeArrow": 8615,
+        "DownTee": 8868,
+        "drbkarow": 10512,
+        "drcorn": 8991,
+        "drcrop": 8972,
+        "Dscr": 55349,
+        "dscr": 55349,
+        "DScy": 1029,
+        "dscy": 1109,
+        "dsol": 10742,
+        "Dstrok": 272,
+        "dstrok": 273,
+        "dtdot": 8945,
+        "dtri": 9663,
+        "dtrif": 9662,
+        "duarr": 8693,
+        "duhar": 10607,
+        "dwangle": 10662,
+        "DZcy": 1039,
+        "dzcy": 1119,
+        "dzigrarr": 10239,
+        "Eacute": 201,
+        "eacute": 233,
+        "easter": 10862,
+        "Ecaron": 282,
+        "ecaron": 283,
+        "Ecirc": 202,
+        "ecirc": 234,
+        "ecir": 8790,
+        "ecolon": 8789,
+        "Ecy": 1069,
+        "ecy": 1101,
+        "eDDot": 10871,
+        "Edot": 278,
+        "edot": 279,
+        "eDot": 8785,
+        "ee": 8519,
+        "efDot": 8786,
+        "Efr": 55349,
+        "efr": 55349,
+        "eg": 10906,
+        "Egrave": 200,
+        "egrave": 232,
+        "egs": 10902,
+        "egsdot": 10904,
+        "el": 10905,
+        "Element": 8712,
+        "elinters": 9191,
+        "ell": 8467,
+        "els": 10901,
+        "elsdot": 10903,
+        "Emacr": 274,
+        "emacr": 275,
+        "empty": 8709,
+        "emptyset": 8709,
+        "EmptySmallSquare": 9723,
+        "emptyv": 8709,
+        "EmptyVerySmallSquare": 9643,
+        "emsp13": 8196,
+        "emsp14": 8197,
+        "emsp": 8195,
+        "ENG": 330,
+        "eng": 331,
+        "ensp": 8194,
+        "Eogon": 280,
+        "eogon": 281,
+        "Eopf": 55349,
+        "eopf": 55349,
+        "epar": 8917,
+        "eparsl": 10723,
+        "eplus": 10865,
+        "epsi": 949,
+        "Epsilon": 917,
+        "epsilon": 949,
+        "epsiv": 1013,
+        "eqcirc": 8790,
+        "eqcolon": 8789,
+        "eqsim": 8770,
+        "eqslantgtr": 10902,
+        "eqslantless": 10901,
+        "Equal": 10869,
+        "equals": 61,
+        "EqualTilde": 8770,
+        "equest": 8799,
+        "Equilibrium": 8652,
+        "equiv": 8801,
+        "equivDD": 10872,
+        "eqvparsl": 10725,
+        "erarr": 10609,
+        "erDot": 8787,
+        "escr": 8495,
+        "Escr": 8496,
+        "esdot": 8784,
+        "Esim": 10867,
+        "esim": 8770,
+        "Eta": 919,
+        "eta": 951,
+        "ETH": 208,
+        "eth": 240,
+        "Euml": 203,
+        "euml": 235,
+        "euro": 8364,
+        "excl": 33,
+        "exist": 8707,
+        "Exists": 8707,
+        "expectation": 8496,
+        "exponentiale": 8519,
+        "ExponentialE": 8519,
+        "fallingdotseq": 8786,
+        "Fcy": 1060,
+        "fcy": 1092,
+        "female": 9792,
+        "ffilig": 64259,
+        "fflig": 64256,
+        "ffllig": 64260,
+        "Ffr": 55349,
+        "ffr": 55349,
+        "filig": 64257,
+        "FilledSmallSquare": 9724,
+        "FilledVerySmallSquare": 9642,
+        "fjlig": 102,
+        "flat": 9837,
+        "fllig": 64258,
+        "fltns": 9649,
+        "fnof": 402,
+        "Fopf": 55349,
+        "fopf": 55349,
+        "forall": 8704,
+        "ForAll": 8704,
+        "fork": 8916,
+        "forkv": 10969,
+        "Fouriertrf": 8497,
+        "fpartint": 10765,
+        "frac12": 189,
+        "frac13": 8531,
+        "frac14": 188,
+        "frac15": 8533,
+        "frac16": 8537,
+        "frac18": 8539,
+        "frac23": 8532,
+        "frac25": 8534,
+        "frac34": 190,
+        "frac35": 8535,
+        "frac38": 8540,
+        "frac45": 8536,
+        "frac56": 8538,
+        "frac58": 8541,
+        "frac78": 8542,
+        "frasl": 8260,
+        "frown": 8994,
+        "fscr": 55349,
+        "Fscr": 8497,
+        "gacute": 501,
+        "Gamma": 915,
+        "gamma": 947,
+        "Gammad": 988,
+        "gammad": 989,
+        "gap": 10886,
+        "Gbreve": 286,
+        "gbreve": 287,
+        "Gcedil": 290,
+        "Gcirc": 284,
+        "gcirc": 285,
+        "Gcy": 1043,
+        "gcy": 1075,
+        "Gdot": 288,
+        "gdot": 289,
+        "ge": 8805,
+        "gE": 8807,
+        "gEl": 10892,
+        "gel": 8923,
+        "geq": 8805,
+        "geqq": 8807,
+        "geqslant": 10878,
+        "gescc": 10921,
+        "ges": 10878,
+        "gesdot": 10880,
+        "gesdoto": 10882,
+        "gesdotol": 10884,
+        "gesl": 8923,
+        "gesles": 10900,
+        "Gfr": 55349,
+        "gfr": 55349,
+        "gg": 8811,
+        "Gg": 8921,
+        "ggg": 8921,
+        "gimel": 8503,
+        "GJcy": 1027,
+        "gjcy": 1107,
+        "gla": 10917,
+        "gl": 8823,
+        "glE": 10898,
+        "glj": 10916,
+        "gnap": 10890,
+        "gnapprox": 10890,
+        "gne": 10888,
+        "gnE": 8809,
+        "gneq": 10888,
+        "gneqq": 8809,
+        "gnsim": 8935,
+        "Gopf": 55349,
+        "gopf": 55349,
+        "grave": 96,
+        "GreaterEqual": 8805,
+        "GreaterEqualLess": 8923,
+        "GreaterFullEqual": 8807,
+        "GreaterGreater": 10914,
+        "GreaterLess": 8823,
+        "GreaterSlantEqual": 10878,
+        "GreaterTilde": 8819,
+        "Gscr": 55349,
+        "gscr": 8458,
+        "gsim": 8819,
+        "gsime": 10894,
+        "gsiml": 10896,
+        "gtcc": 10919,
+        "gtcir": 10874,
+        "gt": 62,
+        "GT": 62,
+        "Gt": 8811,
+        "gtdot": 8919,
+        "gtlPar": 10645,
+        "gtquest": 10876,
+        "gtrapprox": 10886,
+        "gtrarr": 10616,
+        "gtrdot": 8919,
+        "gtreqless": 8923,
+        "gtreqqless": 10892,
+        "gtrless": 8823,
+        "gtrsim": 8819,
+        "gvertneqq": 8809,
+        "gvnE": 8809,
+        "Hacek": 711,
+        "hairsp": 8202,
+        "half": 189,
+        "hamilt": 8459,
+        "HARDcy": 1066,
+        "hardcy": 1098,
+        "harrcir": 10568,
+        "harr": 8596,
+        "hArr": 8660,
+        "harrw": 8621,
+        "Hat": 94,
+        "hbar": 8463,
+        "Hcirc": 292,
+        "hcirc": 293,
+        "hearts": 9829,
+        "heartsuit": 9829,
+        "hellip": 8230,
+        "hercon": 8889,
+        "hfr": 55349,
+        "Hfr": 8460,
+        "HilbertSpace": 8459,
+        "hksearow": 10533,
+        "hkswarow": 10534,
+        "hoarr": 8703,
+        "homtht": 8763,
+        "hookleftarrow": 8617,
+        "hookrightarrow": 8618,
+        "hopf": 55349,
+        "Hopf": 8461,
+        "horbar": 8213,
+        "HorizontalLine": 9472,
+        "hscr": 55349,
+        "Hscr": 8459,
+        "hslash": 8463,
+        "Hstrok": 294,
+        "hstrok": 295,
+        "HumpDownHump": 8782,
+        "HumpEqual": 8783,
+        "hybull": 8259,
+        "hyphen": 8208,
+        "Iacute": 205,
+        "iacute": 237,
+        "ic": 8291,
+        "Icirc": 206,
+        "icirc": 238,
+        "Icy": 1048,
+        "icy": 1080,
+        "Idot": 304,
+        "IEcy": 1045,
+        "iecy": 1077,
+        "iexcl": 161,
+        "iff": 8660,
+        "ifr": 55349,
+        "Ifr": 8465,
+        "Igrave": 204,
+        "igrave": 236,
+        "ii": 8520,
+        "iiiint": 10764,
+        "iiint": 8749,
+        "iinfin": 10716,
+        "iiota": 8489,
+        "IJlig": 306,
+        "ijlig": 307,
+        "Imacr": 298,
+        "imacr": 299,
+        "image": 8465,
+        "ImaginaryI": 8520,
+        "imagline": 8464,
+        "imagpart": 8465,
+        "imath": 305,
+        "Im": 8465,
+        "imof": 8887,
+        "imped": 437,
+        "Implies": 8658,
+        "incare": 8453,
+        '"in"': 8712,
+        "infin": 8734,
+        "infintie": 10717,
+        "inodot": 305,
+        "intcal": 8890,
+        "int": 8747,
+        "Int": 8748,
+        "integers": 8484,
+        "Integral": 8747,
+        "intercal": 8890,
+        "Intersection": 8898,
+        "intlarhk": 10775,
+        "intprod": 10812,
+        "InvisibleComma": 8291,
+        "InvisibleTimes": 8290,
+        "IOcy": 1025,
+        "iocy": 1105,
+        "Iogon": 302,
+        "iogon": 303,
+        "Iopf": 55349,
+        "iopf": 55349,
+        "Iota": 921,
+        "iota": 953,
+        "iprod": 10812,
+        "iquest": 191,
+        "iscr": 55349,
+        "Iscr": 8464,
+        "isin": 8712,
+        "isindot": 8949,
+        "isinE": 8953,
+        "isins": 8948,
+        "isinsv": 8947,
+        "isinv": 8712,
+        "it": 8290,
+        "Itilde": 296,
+        "itilde": 297,
+        "Iukcy": 1030,
+        "iukcy": 1110,
+        "Iuml": 207,
+        "iuml": 239,
+        "Jcirc": 308,
+        "jcirc": 309,
+        "Jcy": 1049,
+        "jcy": 1081,
+        "Jfr": 55349,
+        "jfr": 55349,
+        "jmath": 567,
+        "Jopf": 55349,
+        "jopf": 55349,
+        "Jscr": 55349,
+        "jscr": 55349,
+        "Jsercy": 1032,
+        "jsercy": 1112,
+        "Jukcy": 1028,
+        "jukcy": 1108,
+        "Kappa": 922,
+        "kappa": 954,
+        "kappav": 1008,
+        "Kcedil": 310,
+        "kcedil": 311,
+        "Kcy": 1050,
+        "kcy": 1082,
+        "Kfr": 55349,
+        "kfr": 55349,
+        "kgreen": 312,
+        "KHcy": 1061,
+        "khcy": 1093,
+        "KJcy": 1036,
+        "kjcy": 1116,
+        "Kopf": 55349,
+        "kopf": 55349,
+        "Kscr": 55349,
+        "kscr": 55349,
+        "lAarr": 8666,
+        "Lacute": 313,
+        "lacute": 314,
+        "laemptyv": 10676,
+        "lagran": 8466,
+        "Lambda": 923,
+        "lambda": 955,
+        "lang": 10216,
+        "Lang": 10218,
+        "langd": 10641,
+        "langle": 10216,
+        "lap": 10885,
+        "Laplacetrf": 8466,
+        "laquo": 171,
+        "larrb": 8676,
+        "larrbfs": 10527,
+        "larr": 8592,
+        "Larr": 8606,
+        "lArr": 8656,
+        "larrfs": 10525,
+        "larrhk": 8617,
+        "larrlp": 8619,
+        "larrpl": 10553,
+        "larrsim": 10611,
+        "larrtl": 8610,
+        "latail": 10521,
+        "lAtail": 10523,
+        "lat": 10923,
+        "late": 10925,
+        "lates": 10925,
+        "lbarr": 10508,
+        "lBarr": 10510,
+        "lbbrk": 10098,
+        "lbrace": 123,
+        "lbrack": 91,
+        "lbrke": 10635,
+        "lbrksld": 10639,
+        "lbrkslu": 10637,
+        "Lcaron": 317,
+        "lcaron": 318,
+        "Lcedil": 315,
+        "lcedil": 316,
+        "lceil": 8968,
+        "lcub": 123,
+        "Lcy": 1051,
+        "lcy": 1083,
+        "ldca": 10550,
+        "ldquo": 8220,
+        "ldquor": 8222,
+        "ldrdhar": 10599,
+        "ldrushar": 10571,
+        "ldsh": 8626,
+        "le": 8804,
+        "lE": 8806,
+        "LeftAngleBracket": 10216,
+        "LeftArrowBar": 8676,
+        "leftarrow": 8592,
+        "LeftArrow": 8592,
+        "Leftarrow": 8656,
+        "LeftArrowRightArrow": 8646,
+        "leftarrowtail": 8610,
+        "LeftCeiling": 8968,
+        "LeftDoubleBracket": 10214,
+        "LeftDownTeeVector": 10593,
+        "LeftDownVectorBar": 10585,
+        "LeftDownVector": 8643,
+        "LeftFloor": 8970,
+        "leftharpoondown": 8637,
+        "leftharpoonup": 8636,
+        "leftleftarrows": 8647,
+        "leftrightarrow": 8596,
+        "LeftRightArrow": 8596,
+        "Leftrightarrow": 8660,
+        "leftrightarrows": 8646,
+        "leftrightharpoons": 8651,
+        "leftrightsquigarrow": 8621,
+        "LeftRightVector": 10574,
+        "LeftTeeArrow": 8612,
+        "LeftTee": 8867,
+        "LeftTeeVector": 10586,
+        "leftthreetimes": 8907,
+        "LeftTriangleBar": 10703,
+        "LeftTriangle": 8882,
+        "LeftTriangleEqual": 8884,
+        "LeftUpDownVector": 10577,
+        "LeftUpTeeVector": 10592,
+        "LeftUpVectorBar": 10584,
+        "LeftUpVector": 8639,
+        "LeftVectorBar": 10578,
+        "LeftVector": 8636,
+        "lEg": 10891,
+        "leg": 8922,
+        "leq": 8804,
+        "leqq": 8806,
+        "leqslant": 10877,
+        "lescc": 10920,
+        "les": 10877,
+        "lesdot": 10879,
+        "lesdoto": 10881,
+        "lesdotor": 10883,
+        "lesg": 8922,
+        "lesges": 10899,
+        "lessapprox": 10885,
+        "lessdot": 8918,
+        "lesseqgtr": 8922,
+        "lesseqqgtr": 10891,
+        "LessEqualGreater": 8922,
+        "LessFullEqual": 8806,
+        "LessGreater": 8822,
+        "lessgtr": 8822,
+        "LessLess": 10913,
+        "lesssim": 8818,
+        "LessSlantEqual": 10877,
+        "LessTilde": 8818,
+        "lfisht": 10620,
+        "lfloor": 8970,
+        "Lfr": 55349,
+        "lfr": 55349,
+        "lg": 8822,
+        "lgE": 10897,
+        "lHar": 10594,
+        "lhard": 8637,
+        "lharu": 8636,
+        "lharul": 10602,
+        "lhblk": 9604,
+        "LJcy": 1033,
+        "ljcy": 1113,
+        "llarr": 8647,
+        "ll": 8810,
+        "Ll": 8920,
+        "llcorner": 8990,
+        "Lleftarrow": 8666,
+        "llhard": 10603,
+        "lltri": 9722,
+        "Lmidot": 319,
+        "lmidot": 320,
+        "lmoustache": 9136,
+        "lmoust": 9136,
+        "lnap": 10889,
+        "lnapprox": 10889,
+        "lne": 10887,
+        "lnE": 8808,
+        "lneq": 10887,
+        "lneqq": 8808,
+        "lnsim": 8934,
+        "loang": 10220,
+        "loarr": 8701,
+        "lobrk": 10214,
+        "longleftarrow": 10229,
+        "LongLeftArrow": 10229,
+        "Longleftarrow": 10232,
+        "longleftrightarrow": 10231,
+        "LongLeftRightArrow": 10231,
+        "Longleftrightarrow": 10234,
+        "longmapsto": 10236,
+        "longrightarrow": 10230,
+        "LongRightArrow": 10230,
+        "Longrightarrow": 10233,
+        "looparrowleft": 8619,
+        "looparrowright": 8620,
+        "lopar": 10629,
+        "Lopf": 55349,
+        "lopf": 55349,
+        "loplus": 10797,
+        "lotimes": 10804,
+        "lowast": 8727,
+        "lowbar": 95,
+        "LowerLeftArrow": 8601,
+        "LowerRightArrow": 8600,
+        "loz": 9674,
+        "lozenge": 9674,
+        "lozf": 10731,
+        "lpar": 40,
+        "lparlt": 10643,
+        "lrarr": 8646,
+        "lrcorner": 8991,
+        "lrhar": 8651,
+        "lrhard": 10605,
+        "lrm": 8206,
+        "lrtri": 8895,
+        "lsaquo": 8249,
+        "lscr": 55349,
+        "Lscr": 8466,
+        "lsh": 8624,
+        "Lsh": 8624,
+        "lsim": 8818,
+        "lsime": 10893,
+        "lsimg": 10895,
+        "lsqb": 91,
+        "lsquo": 8216,
+        "lsquor": 8218,
+        "Lstrok": 321,
+        "lstrok": 322,
+        "ltcc": 10918,
+        "ltcir": 10873,
+        "lt": 60,
+        "LT": 60,
+        "Lt": 8810,
+        "ltdot": 8918,
+        "lthree": 8907,
+        "ltimes": 8905,
+        "ltlarr": 10614,
+        "ltquest": 10875,
+        "ltri": 9667,
+        "ltrie": 8884,
+        "ltrif": 9666,
+        "ltrPar": 10646,
+        "lurdshar": 10570,
+        "luruhar": 10598,
+        "lvertneqq": 8808,
+        "lvnE": 8808,
+        "macr": 175,
+        "male": 9794,
+        "malt": 10016,
+        "maltese": 10016,
+        "Map": 10501,
+        "map": 8614,
+        "mapsto": 8614,
+        "mapstodown": 8615,
+        "mapstoleft": 8612,
+        "mapstoup": 8613,
+        "marker": 9646,
+        "mcomma": 10793,
+        "Mcy": 1052,
+        "mcy": 1084,
+        "mdash": 8212,
+        "mDDot": 8762,
+        "measuredangle": 8737,
+        "MediumSpace": 8287,
+        "Mellintrf": 8499,
+        "Mfr": 55349,
+        "mfr": 55349,
+        "mho": 8487,
+        "micro": 181,
+        "midast": 42,
+        "midcir": 10992,
+        "mid": 8739,
+        "middot": 183,
+        "minusb": 8863,
+        "minus": 8722,
+        "minusd": 8760,
+        "minusdu": 10794,
+        "MinusPlus": 8723,
+        "mlcp": 10971,
+        "mldr": 8230,
+        "mnplus": 8723,
+        "models": 8871,
+        "Mopf": 55349,
+        "mopf": 55349,
+        "mp": 8723,
+        "mscr": 55349,
+        "Mscr": 8499,
+        "mstpos": 8766,
+        "Mu": 924,
+        "mu": 956,
+        "multimap": 8888,
+        "mumap": 8888,
+        "nabla": 8711,
+        "Nacute": 323,
+        "nacute": 324,
+        "nang": 8736,
+        "nap": 8777,
+        "napE": 10864,
+        "napid": 8779,
+        "napos": 329,
+        "napprox": 8777,
+        "natural": 9838,
+        "naturals": 8469,
+        "natur": 9838,
+        "nbsp": 160,
+        "nbump": 8782,
+        "nbumpe": 8783,
+        "ncap": 10819,
+        "Ncaron": 327,
+        "ncaron": 328,
+        "Ncedil": 325,
+        "ncedil": 326,
+        "ncong": 8775,
+        "ncongdot": 10861,
+        "ncup": 10818,
+        "Ncy": 1053,
+        "ncy": 1085,
+        "ndash": 8211,
+        "nearhk": 10532,
+        "nearr": 8599,
+        "neArr": 8663,
+        "nearrow": 8599,
+        "ne": 8800,
+        "nedot": 8784,
+        "NegativeMediumSpace": 8203,
+        "NegativeThickSpace": 8203,
+        "NegativeThinSpace": 8203,
+        "NegativeVeryThinSpace": 8203,
+        "nequiv": 8802,
+        "nesear": 10536,
+        "nesim": 8770,
+        "NestedGreaterGreater": 8811,
+        "NestedLessLess": 8810,
+        "NewLine": 10,
+        "nexist": 8708,
+        "nexists": 8708,
+        "Nfr": 55349,
+        "nfr": 55349,
+        "ngE": 8807,
+        "nge": 8817,
+        "ngeq": 8817,
+        "ngeqq": 8807,
+        "ngeqslant": 10878,
+        "nges": 10878,
+        "nGg": 8921,
+        "ngsim": 8821,
+        "nGt": 8811,
+        "ngt": 8815,
+        "ngtr": 8815,
+        "nGtv": 8811,
+        "nharr": 8622,
+        "nhArr": 8654,
+        "nhpar": 10994,
+        "ni": 8715,
+        "nis": 8956,
+        "nisd": 8954,
+        "niv": 8715,
+        "NJcy": 1034,
+        "njcy": 1114,
+        "nlarr": 8602,
+        "nlArr": 8653,
+        "nldr": 8229,
+        "nlE": 8806,
+        "nle": 8816,
+        "nleftarrow": 8602,
+        "nLeftarrow": 8653,
+        "nleftrightarrow": 8622,
+        "nLeftrightarrow": 8654,
+        "nleq": 8816,
+        "nleqq": 8806,
+        "nleqslant": 10877,
+        "nles": 10877,
+        "nless": 8814,
+        "nLl": 8920,
+        "nlsim": 8820,
+        "nLt": 8810,
+        "nlt": 8814,
+        "nltri": 8938,
+        "nltrie": 8940,
+        "nLtv": 8810,
+        "nmid": 8740,
+        "NoBreak": 8288,
+        "NonBreakingSpace": 160,
+        "nopf": 55349,
+        "Nopf": 8469,
+        "Not": 10988,
+        "not": 172,
+        "NotCongruent": 8802,
+        "NotCupCap": 8813,
+        "NotDoubleVerticalBar": 8742,
+        "NotElement": 8713,
+        "NotEqual": 8800,
+        "NotEqualTilde": 8770,
+        "NotExists": 8708,
+        "NotGreater": 8815,
+        "NotGreaterEqual": 8817,
+        "NotGreaterFullEqual": 8807,
+        "NotGreaterGreater": 8811,
+        "NotGreaterLess": 8825,
+        "NotGreaterSlantEqual": 10878,
+        "NotGreaterTilde": 8821,
+        "NotHumpDownHump": 8782,
+        "NotHumpEqual": 8783,
+        "notin": 8713,
+        "notindot": 8949,
+        "notinE": 8953,
+        "notinva": 8713,
+        "notinvb": 8951,
+        "notinvc": 8950,
+        "NotLeftTriangleBar": 10703,
+        "NotLeftTriangle": 8938,
+        "NotLeftTriangleEqual": 8940,
+        "NotLess": 8814,
+        "NotLessEqual": 8816,
+        "NotLessGreater": 8824,
+        "NotLessLess": 8810,
+        "NotLessSlantEqual": 10877,
+        "NotLessTilde": 8820,
+        "NotNestedGreaterGreater": 10914,
+        "NotNestedLessLess": 10913,
+        "notni": 8716,
+        "notniva": 8716,
+        "notnivb": 8958,
+        "notnivc": 8957,
+        "NotPrecedes": 8832,
+        "NotPrecedesEqual": 10927,
+        "NotPrecedesSlantEqual": 8928,
+        "NotReverseElement": 8716,
+        "NotRightTriangleBar": 10704,
+        "NotRightTriangle": 8939,
+        "NotRightTriangleEqual": 8941,
+        "NotSquareSubset": 8847,
+        "NotSquareSubsetEqual": 8930,
+        "NotSquareSuperset": 8848,
+        "NotSquareSupersetEqual": 8931,
+        "NotSubset": 8834,
+        "NotSubsetEqual": 8840,
+        "NotSucceeds": 8833,
+        "NotSucceedsEqual": 10928,
+        "NotSucceedsSlantEqual": 8929,
+        "NotSucceedsTilde": 8831,
+        "NotSuperset": 8835,
+        "NotSupersetEqual": 8841,
+        "NotTilde": 8769,
+        "NotTildeEqual": 8772,
+        "NotTildeFullEqual": 8775,
+        "NotTildeTilde": 8777,
+        "NotVerticalBar": 8740,
+        "nparallel": 8742,
+        "npar": 8742,
+        "nparsl": 11005,
+        "npart": 8706,
+        "npolint": 10772,
+        "npr": 8832,
+        "nprcue": 8928,
+        "nprec": 8832,
+        "npreceq": 10927,
+        "npre": 10927,
+        "nrarrc": 10547,
+        "nrarr": 8603,
+        "nrArr": 8655,
+        "nrarrw": 8605,
+        "nrightarrow": 8603,
+        "nRightarrow": 8655,
+        "nrtri": 8939,
+        "nrtrie": 8941,
+        "nsc": 8833,
+        "nsccue": 8929,
+        "nsce": 10928,
+        "Nscr": 55349,
+        "nscr": 55349,
+        "nshortmid": 8740,
+        "nshortparallel": 8742,
+        "nsim": 8769,
+        "nsime": 8772,
+        "nsimeq": 8772,
+        "nsmid": 8740,
+        "nspar": 8742,
+        "nsqsube": 8930,
+        "nsqsupe": 8931,
+        "nsub": 8836,
+        "nsubE": 10949,
+        "nsube": 8840,
+        "nsubset": 8834,
+        "nsubseteq": 8840,
+        "nsubseteqq": 10949,
+        "nsucc": 8833,
+        "nsucceq": 10928,
+        "nsup": 8837,
+        "nsupE": 10950,
+        "nsupe": 8841,
+        "nsupset": 8835,
+        "nsupseteq": 8841,
+        "nsupseteqq": 10950,
+        "ntgl": 8825,
+        "Ntilde": 209,
+        "ntilde": 241,
+        "ntlg": 8824,
+        "ntriangleleft": 8938,
+        "ntrianglelefteq": 8940,
+        "ntriangleright": 8939,
+        "ntrianglerighteq": 8941,
+        "Nu": 925,
+        "nu": 957,
+        "num": 35,
+        "numero": 8470,
+        "numsp": 8199,
+        "nvap": 8781,
+        "nvdash": 8876,
+        "nvDash": 8877,
+        "nVdash": 8878,
+        "nVDash": 8879,
+        "nvge": 8805,
+        "nvgt": 62,
+        "nvHarr": 10500,
+        "nvinfin": 10718,
+        "nvlArr": 10498,
+        "nvle": 8804,
+        "nvlt": 62,
+        "nvltrie": 8884,
+        "nvrArr": 10499,
+        "nvrtrie": 8885,
+        "nvsim": 8764,
+        "nwarhk": 10531,
+        "nwarr": 8598,
+        "nwArr": 8662,
+        "nwarrow": 8598,
+        "nwnear": 10535,
+        "Oacute": 211,
+        "oacute": 243,
+        "oast": 8859,
+        "Ocirc": 212,
+        "ocirc": 244,
+        "ocir": 8858,
+        "Ocy": 1054,
+        "ocy": 1086,
+        "odash": 8861,
+        "Odblac": 336,
+        "odblac": 337,
+        "odiv": 10808,
+        "odot": 8857,
+        "odsold": 10684,
+        "OElig": 338,
+        "oelig": 339,
+        "ofcir": 10687,
+        "Ofr": 55349,
+        "ofr": 55349,
+        "ogon": 731,
+        "Ograve": 210,
+        "ograve": 242,
+        "ogt": 10689,
+        "ohbar": 10677,
+        "ohm": 937,
+        "oint": 8750,
+        "olarr": 8634,
+        "olcir": 10686,
+        "olcross": 10683,
+        "oline": 8254,
+        "olt": 10688,
+        "Omacr": 332,
+        "omacr": 333,
+        "Omega": 937,
+        "omega": 969,
+        "Omicron": 927,
+        "omicron": 959,
+        "omid": 10678,
+        "ominus": 8854,
+        "Oopf": 55349,
+        "oopf": 55349,
+        "opar": 10679,
+        "OpenCurlyDoubleQuote": 8220,
+        "OpenCurlyQuote": 8216,
+        "operp": 10681,
+        "oplus": 8853,
+        "orarr": 8635,
+        "Or": 10836,
+        "or": 8744,
+        "ord": 10845,
+        "order": 8500,
+        "orderof": 8500,
+        "ordf": 170,
+        "ordm": 186,
+        "origof": 8886,
+        "oror": 10838,
+        "orslope": 10839,
+        "orv": 10843,
+        "oS": 9416,
+        "Oscr": 55349,
+        "oscr": 8500,
+        "Oslash": 216,
+        "oslash": 248,
+        "osol": 8856,
+        "Otilde": 213,
+        "otilde": 245,
+        "otimesas": 10806,
+        "Otimes": 10807,
+        "otimes": 8855,
+        "Ouml": 214,
+        "ouml": 246,
+        "ovbar": 9021,
+        "OverBar": 8254,
+        "OverBrace": 9182,
+        "OverBracket": 9140,
+        "OverParenthesis": 9180,
+        "para": 182,
+        "parallel": 8741,
+        "par": 8741,
+        "parsim": 10995,
+        "parsl": 11005,
+        "part": 8706,
+        "PartialD": 8706,
+        "Pcy": 1055,
+        "pcy": 1087,
+        "percnt": 37,
+        "period": 46,
+        "permil": 8240,
+        "perp": 8869,
+        "pertenk": 8241,
+        "Pfr": 55349,
+        "pfr": 55349,
+        "Phi": 934,
+        "phi": 966,
+        "phiv": 981,
+        "phmmat": 8499,
+        "phone": 9742,
+        "Pi": 928,
+        "pi": 960,
+        "pitchfork": 8916,
+        "piv": 982,
+        "planck": 8463,
+        "planckh": 8462,
+        "plankv": 8463,
+        "plusacir": 10787,
+        "plusb": 8862,
+        "pluscir": 10786,
+        "plus": 43,
+        "plusdo": 8724,
+        "plusdu": 10789,
+        "pluse": 10866,
+        "PlusMinus": 177,
+        "plusmn": 177,
+        "plussim": 10790,
+        "plustwo": 10791,
+        "pm": 177,
+        "Poincareplane": 8460,
+        "pointint": 10773,
+        "popf": 55349,
+        "Popf": 8473,
+        "pound": 163,
+        "prap": 10935,
+        "Pr": 10939,
+        "pr": 8826,
+        "prcue": 8828,
+        "precapprox": 10935,
+        "prec": 8826,
+        "preccurlyeq": 8828,
+        "Precedes": 8826,
+        "PrecedesEqual": 10927,
+        "PrecedesSlantEqual": 8828,
+        "PrecedesTilde": 8830,
+        "preceq": 10927,
+        "precnapprox": 10937,
+        "precneqq": 10933,
+        "precnsim": 8936,
+        "pre": 10927,
+        "prE": 10931,
+        "precsim": 8830,
+        "prime": 8242,
+        "Prime": 8243,
+        "primes": 8473,
+        "prnap": 10937,
+        "prnE": 10933,
+        "prnsim": 8936,
+        "prod": 8719,
+        "Product": 8719,
+        "profalar": 9006,
+        "profline": 8978,
+        "profsurf": 8979,
+        "prop": 8733,
+        "Proportional": 8733,
+        "Proportion": 8759,
+        "propto": 8733,
+        "prsim": 8830,
+        "prurel": 8880,
+        "Pscr": 55349,
+        "pscr": 55349,
+        "Psi": 936,
+        "psi": 968,
+        "puncsp": 8200,
+        "Qfr": 55349,
+        "qfr": 55349,
+        "qint": 10764,
+        "qopf": 55349,
+        "Qopf": 8474,
+        "qprime": 8279,
+        "Qscr": 55349,
+        "qscr": 55349,
+        "quaternions": 8461,
+        "quatint": 10774,
+        "quest": 63,
+        "questeq": 8799,
+        "quot": 34,
+        "QUOT": 34,
+        "rAarr": 8667,
+        "race": 8765,
+        "Racute": 340,
+        "racute": 341,
+        "radic": 8730,
+        "raemptyv": 10675,
+        "rang": 10217,
+        "Rang": 10219,
+        "rangd": 10642,
+        "range": 10661,
+        "rangle": 10217,
+        "raquo": 187,
+        "rarrap": 10613,
+        "rarrb": 8677,
+        "rarrbfs": 10528,
+        "rarrc": 10547,
+        "rarr": 8594,
+        "Rarr": 8608,
+        "rArr": 8658,
+        "rarrfs": 10526,
+        "rarrhk": 8618,
+        "rarrlp": 8620,
+        "rarrpl": 10565,
+        "rarrsim": 10612,
+        "Rarrtl": 10518,
+        "rarrtl": 8611,
+        "rarrw": 8605,
+        "ratail": 10522,
+        "rAtail": 10524,
+        "ratio": 8758,
+        "rationals": 8474,
+        "rbarr": 10509,
+        "rBarr": 10511,
+        "RBarr": 10512,
+        "rbbrk": 10099,
+        "rbrace": 125,
+        "rbrack": 93,
+        "rbrke": 10636,
+        "rbrksld": 10638,
+        "rbrkslu": 10640,
+        "Rcaron": 344,
+        "rcaron": 345,
+        "Rcedil": 342,
+        "rcedil": 343,
+        "rceil": 8969,
+        "rcub": 125,
+        "Rcy": 1056,
+        "rcy": 1088,
+        "rdca": 10551,
+        "rdldhar": 10601,
+        "rdquo": 8221,
+        "rdquor": 8221,
+        "rdsh": 8627,
+        "real": 8476,
+        "realine": 8475,
+        "realpart": 8476,
+        "reals": 8477,
+        "Re": 8476,
+        "rect": 9645,
+        "reg": 174,
+        "REG": 174,
+        "ReverseElement": 8715,
+        "ReverseEquilibrium": 8651,
+        "ReverseUpEquilibrium": 10607,
+        "rfisht": 10621,
+        "rfloor": 8971,
+        "rfr": 55349,
+        "Rfr": 8476,
+        "rHar": 10596,
+        "rhard": 8641,
+        "rharu": 8640,
+        "rharul": 10604,
+        "Rho": 929,
+        "rho": 961,
+        "rhov": 1009,
+        "RightAngleBracket": 10217,
+        "RightArrowBar": 8677,
+        "rightarrow": 8594,
+        "RightArrow": 8594,
+        "Rightarrow": 8658,
+        "RightArrowLeftArrow": 8644,
+        "rightarrowtail": 8611,
+        "RightCeiling": 8969,
+        "RightDoubleBracket": 10215,
+        "RightDownTeeVector": 10589,
+        "RightDownVectorBar": 10581,
+        "RightDownVector": 8642,
+        "RightFloor": 8971,
+        "rightharpoondown": 8641,
+        "rightharpoonup": 8640,
+        "rightleftarrows": 8644,
+        "rightleftharpoons": 8652,
+        "rightrightarrows": 8649,
+        "rightsquigarrow": 8605,
+        "RightTeeArrow": 8614,
+        "RightTee": 8866,
+        "RightTeeVector": 10587,
+        "rightthreetimes": 8908,
+        "RightTriangleBar": 10704,
+        "RightTriangle": 8883,
+        "RightTriangleEqual": 8885,
+        "RightUpDownVector": 10575,
+        "RightUpTeeVector": 10588,
+        "RightUpVectorBar": 10580,
+        "RightUpVector": 8638,
+        "RightVectorBar": 10579,
+        "RightVector": 8640,
+        "ring": 730,
+        "risingdotseq": 8787,
+        "rlarr": 8644,
+        "rlhar": 8652,
+        "rlm": 8207,
+        "rmoustache": 9137,
+        "rmoust": 9137,
+        "rnmid": 10990,
+        "roang": 10221,
+        "roarr": 8702,
+        "robrk": 10215,
+        "ropar": 10630,
+        "ropf": 55349,
+        "Ropf": 8477,
+        "roplus": 10798,
+        "rotimes": 10805,
+        "RoundImplies": 10608,
+        "rpar": 41,
+        "rpargt": 10644,
+        "rppolint": 10770,
+        "rrarr": 8649,
+        "Rrightarrow": 8667,
+        "rsaquo": 8250,
+        "rscr": 55349,
+        "Rscr": 8475,
+        "rsh": 8625,
+        "Rsh": 8625,
+        "rsqb": 93,
+        "rsquo": 8217,
+        "rsquor": 8217,
+        "rthree": 8908,
+        "rtimes": 8906,
+        "rtri": 9657,
+        "rtrie": 8885,
+        "rtrif": 9656,
+        "rtriltri": 10702,
+        "RuleDelayed": 10740,
+        "ruluhar": 10600,
+        "rx": 8478,
+        "Sacute": 346,
+        "sacute": 347,
+        "sbquo": 8218,
+        "scap": 10936,
+        "Scaron": 352,
+        "scaron": 353,
+        "Sc": 10940,
+        "sc": 8827,
+        "sccue": 8829,
+        "sce": 10928,
+        "scE": 10932,
+        "Scedil": 350,
+        "scedil": 351,
+        "Scirc": 348,
+        "scirc": 349,
+        "scnap": 10938,
+        "scnE": 10934,
+        "scnsim": 8937,
+        "scpolint": 10771,
+        "scsim": 8831,
+        "Scy": 1057,
+        "scy": 1089,
+        "sdotb": 8865,
+        "sdot": 8901,
+        "sdote": 10854,
+        "searhk": 10533,
+        "searr": 8600,
+        "seArr": 8664,
+        "searrow": 8600,
+        "sect": 167,
+        "semi": 59,
+        "seswar": 10537,
+        "setminus": 8726,
+        "setmn": 8726,
+        "sext": 10038,
+        "Sfr": 55349,
+        "sfr": 55349,
+        "sfrown": 8994,
+        "sharp": 9839,
+        "SHCHcy": 1065,
+        "shchcy": 1097,
+        "SHcy": 1064,
+        "shcy": 1096,
+        "ShortDownArrow": 8595,
+        "ShortLeftArrow": 8592,
+        "shortmid": 8739,
+        "shortparallel": 8741,
+        "ShortRightArrow": 8594,
+        "ShortUpArrow": 8593,
+        "shy": 173,
+        "Sigma": 931,
+        "sigma": 963,
+        "sigmaf": 962,
+        "sigmav": 962,
+        "sim": 8764,
+        "simdot": 10858,
+        "sime": 8771,
+        "simeq": 8771,
+        "simg": 10910,
+        "simgE": 10912,
+        "siml": 10909,
+        "simlE": 10911,
+        "simne": 8774,
+        "simplus": 10788,
+        "simrarr": 10610,
+        "slarr": 8592,
+        "SmallCircle": 8728,
+        "smallsetminus": 8726,
+        "smashp": 10803,
+        "smeparsl": 10724,
+        "smid": 8739,
+        "smile": 8995,
+        "smt": 10922,
+        "smte": 10924,
+        "smtes": 10924,
+        "SOFTcy": 1068,
+        "softcy": 1100,
+        "solbar": 9023,
+        "solb": 10692,
+        "sol": 47,
+        "Sopf": 55349,
+        "sopf": 55349,
+        "spades": 9824,
+        "spadesuit": 9824,
+        "spar": 8741,
+        "sqcap": 8851,
+        "sqcaps": 8851,
+        "sqcup": 8852,
+        "sqcups": 8852,
+        "Sqrt": 8730,
+        "sqsub": 8847,
+        "sqsube": 8849,
+        "sqsubset": 8847,
+        "sqsubseteq": 8849,
+        "sqsup": 8848,
+        "sqsupe": 8850,
+        "sqsupset": 8848,
+        "sqsupseteq": 8850,
+        "square": 9633,
+        "Square": 9633,
+        "SquareIntersection": 8851,
+        "SquareSubset": 8847,
+        "SquareSubsetEqual": 8849,
+        "SquareSuperset": 8848,
+        "SquareSupersetEqual": 8850,
+        "SquareUnion": 8852,
+        "squarf": 9642,
+        "squ": 9633,
+        "squf": 9642,
+        "srarr": 8594,
+        "Sscr": 55349,
+        "sscr": 55349,
+        "ssetmn": 8726,
+        "ssmile": 8995,
+        "sstarf": 8902,
+        "Star": 8902,
+        "star": 9734,
+        "starf": 9733,
+        "straightepsilon": 1013,
+        "straightphi": 981,
+        "strns": 175,
+        "sub": 8834,
+        "Sub": 8912,
+        "subdot": 10941,
+        "subE": 10949,
+        "sube": 8838,
+        "subedot": 10947,
+        "submult": 10945,
+        "subnE": 10955,
+        "subne": 8842,
+        "subplus": 10943,
+        "subrarr": 10617,
+        "subset": 8834,
+        "Subset": 8912,
+        "subseteq": 8838,
+        "subseteqq": 10949,
+        "SubsetEqual": 8838,
+        "subsetneq": 8842,
+        "subsetneqq": 10955,
+        "subsim": 10951,
+        "subsub": 10965,
+        "subsup": 10963,
+        "succapprox": 10936,
+        "succ": 8827,
+        "succcurlyeq": 8829,
+        "Succeeds": 8827,
+        "SucceedsEqual": 10928,
+        "SucceedsSlantEqual": 8829,
+        "SucceedsTilde": 8831,
+        "succeq": 10928,
+        "succnapprox": 10938,
+        "succneqq": 10934,
+        "succnsim": 8937,
+        "succsim": 8831,
+        "SuchThat": 8715,
+        "sum": 8721,
+        "Sum": 8721,
+        "sung": 9834,
+        "sup1": 185,
+        "sup2": 178,
+        "sup3": 179,
+        "sup": 8835,
+        "Sup": 8913,
+        "supdot": 10942,
+        "supdsub": 10968,
+        "supE": 10950,
+        "supe": 8839,
+        "supedot": 10948,
+        "Superset": 8835,
+        "SupersetEqual": 8839,
+        "suphsol": 10185,
+        "suphsub": 10967,
+        "suplarr": 10619,
+        "supmult": 10946,
+        "supnE": 10956,
+        "supne": 8843,
+        "supplus": 10944,
+        "supset": 8835,
+        "Supset": 8913,
+        "supseteq": 8839,
+        "supseteqq": 10950,
+        "supsetneq": 8843,
+        "supsetneqq": 10956,
+        "supsim": 10952,
+        "supsub": 10964,
+        "supsup": 10966,
+        "swarhk": 10534,
+        "swarr": 8601,
+        "swArr": 8665,
+        "swarrow": 8601,
+        "swnwar": 10538,
+        "szlig": 223,
+        "Tab": "NaN",
+        "target": 8982,
+        "Tau": 932,
+        "tau": 964,
+        "tbrk": 9140,
+        "Tcaron": 356,
+        "tcaron": 357,
+        "Tcedil": 354,
+        "tcedil": 355,
+        "Tcy": 1058,
+        "tcy": 1090,
+        "tdot": 8411,
+        "telrec": 8981,
+        "Tfr": 55349,
+        "tfr": 55349,
+        "there4": 8756,
+        "therefore": 8756,
+        "Therefore": 8756,
+        "Theta": 920,
+        "theta": 952,
+        "thetasym": 977,
+        "thetav": 977,
+        "thickapprox": 8776,
+        "thicksim": 8764,
+        "ThickSpace": 8287,
+        "ThinSpace": 8201,
+        "thinsp": 8201,
+        "thkap": 8776,
+        "thksim": 8764,
+        "THORN": 222,
+        "thorn": 254,
+        "tilde": 732,
+        "Tilde": 8764,
+        "TildeEqual": 8771,
+        "TildeFullEqual": 8773,
+        "TildeTilde": 8776,
+        "timesbar": 10801,
+        "timesb": 8864,
+        "times": 215,
+        "timesd": 10800,
+        "tint": 8749,
+        "toea": 10536,
+        "topbot": 9014,
+        "topcir": 10993,
+        "top": 8868,
+        "Topf": 55349,
+        "topf": 55349,
+        "topfork": 10970,
+        "tosa": 10537,
+        "tprime": 8244,
+        "trade": 8482,
+        "TRADE": 8482,
+        "triangle": 9653,
+        "triangledown": 9663,
+        "triangleleft": 9667,
+        "trianglelefteq": 8884,
+        "triangleq": 8796,
+        "triangleright": 9657,
+        "trianglerighteq": 8885,
+        "tridot": 9708,
+        "trie": 8796,
+        "triminus": 10810,
+        "TripleDot": 8411,
+        "triplus": 10809,
+        "trisb": 10701,
+        "tritime": 10811,
+        "trpezium": 9186,
+        "Tscr": 55349,
+        "tscr": 55349,
+        "TScy": 1062,
+        "tscy": 1094,
+        "TSHcy": 1035,
+        "tshcy": 1115,
+        "Tstrok": 358,
+        "tstrok": 359,
+        "twixt": 8812,
+        "twoheadleftarrow": 8606,
+        "twoheadrightarrow": 8608,
+        "Uacute": 218,
+        "uacute": 250,
+        "uarr": 8593,
+        "Uarr": 8607,
+        "uArr": 8657,
+        "Uarrocir": 10569,
+        "Ubrcy": 1038,
+        "ubrcy": 1118,
+        "Ubreve": 364,
+        "ubreve": 365,
+        "Ucirc": 219,
+        "ucirc": 251,
+        "Ucy": 1059,
+        "ucy": 1091,
+        "udarr": 8645,
+        "Udblac": 368,
+        "udblac": 369,
+        "udhar": 10606,
+        "ufisht": 10622,
+        "Ufr": 55349,
+        "ufr": 55349,
+        "Ugrave": 217,
+        "ugrave": 249,
+        "uHar": 10595,
+        "uharl": 8639,
+        "uharr": 8638,
+        "uhblk": 9600,
+        "ulcorn": 8988,
+        "ulcorner": 8988,
+        "ulcrop": 8975,
+        "ultri": 9720,
+        "Umacr": 362,
+        "umacr": 363,
+        "uml": 168,
+        "UnderBar": 95,
+        "UnderBrace": 9183,
+        "UnderBracket": 9141,
+        "UnderParenthesis": 9181,
+        "Union": 8899,
+        "UnionPlus": 8846,
+        "Uogon": 370,
+        "uogon": 371,
+        "Uopf": 55349,
+        "uopf": 55349,
+        "UpArrowBar": 10514,
+        "uparrow": 8593,
+        "UpArrow": 8593,
+        "Uparrow": 8657,
+        "UpArrowDownArrow": 8645,
+        "updownarrow": 8597,
+        "UpDownArrow": 8597,
+        "Updownarrow": 8661,
+        "UpEquilibrium": 10606,
+        "upharpoonleft": 8639,
+        "upharpoonright": 8638,
+        "uplus": 8846,
+        "UpperLeftArrow": 8598,
+        "UpperRightArrow": 8599,
+        "upsi": 965,
+        "Upsi": 978,
+        "upsih": 978,
+        "Upsilon": 933,
+        "upsilon": 965,
+        "UpTeeArrow": 8613,
+        "UpTee": 8869,
+        "upuparrows": 8648,
+        "urcorn": 8989,
+        "urcorner": 8989,
+        "urcrop": 8974,
+        "Uring": 366,
+        "uring": 367,
+        "urtri": 9721,
+        "Uscr": 55349,
+        "uscr": 55349,
+        "utdot": 8944,
+        "Utilde": 360,
+        "utilde": 361,
+        "utri": 9653,
+        "utrif": 9652,
+        "uuarr": 8648,
+        "Uuml": 220,
+        "uuml": 252,
+        "uwangle": 10663,
+        "vangrt": 10652,
+        "varepsilon": 1013,
+        "varkappa": 1008,
+        "varnothing": 8709,
+        "varphi": 981,
+        "varpi": 982,
+        "varpropto": 8733,
+        "varr": 8597,
+        "vArr": 8661,
+        "varrho": 1009,
+        "varsigma": 962,
+        "varsubsetneq": 8842,
+        "varsubsetneqq": 10955,
+        "varsupsetneq": 8843,
+        "varsupsetneqq": 10956,
+        "vartheta": 977,
+        "vartriangleleft": 8882,
+        "vartriangleright": 8883,
+        "vBar": 10984,
+        "Vbar": 10987,
+        "vBarv": 10985,
+        "Vcy": 1042,
+        "vcy": 1074,
+        "vdash": 8866,
+        "vDash": 8872,
+        "Vdash": 8873,
+        "VDash": 8875,
+        "Vdashl": 10982,
+        "veebar": 8891,
+        "vee": 8744,
+        "Vee": 8897,
+        "veeeq": 8794,
+        "vellip": 8942,
+        "verbar": 124,
+        "Verbar": 8214,
+        "vert": 124,
+        "Vert": 8214,
+        "VerticalBar": 8739,
+        "VerticalLine": 124,
+        "VerticalSeparator": 10072,
+        "VerticalTilde": 8768,
+        "VeryThinSpace": 8202,
+        "Vfr": 55349,
+        "vfr": 55349,
+        "vltri": 8882,
+        "vnsub": 8834,
+        "vnsup": 8835,
+        "Vopf": 55349,
+        "vopf": 55349,
+        "vprop": 8733,
+        "vrtri": 8883,
+        "Vscr": 55349,
+        "vscr": 55349,
+        "vsubnE": 10955,
+        "vsubne": 8842,
+        "vsupnE": 10956,
+        "vsupne": 8843,
+        "Vvdash": 8874,
+        "vzigzag": 10650,
+        "Wcirc": 372,
+        "wcirc": 373,
+        "wedbar": 10847,
+        "wedge": 8743,
+        "Wedge": 8896,
+        "wedgeq": 8793,
+        "weierp": 8472,
+        "Wfr": 55349,
+        "wfr": 55349,
+        "Wopf": 55349,
+        "wopf": 55349,
+        "wp": 8472,
+        "wr": 8768,
+        "wreath": 8768,
+        "Wscr": 55349,
+        "wscr": 55349,
+        "xcap": 8898,
+        "xcirc": 9711,
+        "xcup": 8899,
+        "xdtri": 9661,
+        "Xfr": 55349,
+        "xfr": 55349,
+        "xharr": 10231,
+        "xhArr": 10234,
+        "Xi": 926,
+        "xi": 958,
+        "xlarr": 10229,
+        "xlArr": 10232,
+        "xmap": 10236,
+        "xnis": 8955,
+        "xodot": 10752,
+        "Xopf": 55349,
+        "xopf": 55349,
+        "xoplus": 10753,
+        "xotime": 10754,
+        "xrarr": 10230,
+        "xrArr": 10233,
+        "Xscr": 55349,
+        "xscr": 55349,
+        "xsqcup": 10758,
+        "xuplus": 10756,
+        "xutri": 9651,
+        "xvee": 8897,
+        "xwedge": 8896,
+        "Yacute": 221,
+        "yacute": 253,
+        "YAcy": 1071,
+        "yacy": 1103,
+        "Ycirc": 374,
+        "ycirc": 375,
+        "Ycy": 1067,
+        "ycy": 1099,
+        "yen": 165,
+        "Yfr": 55349,
+        "yfr": 55349,
+        "YIcy": 1031,
+        "yicy": 1111,
+        "Yopf": 55349,
+        "yopf": 55349,
+        "Yscr": 55349,
+        "yscr": 55349,
+        "YUcy": 1070,
+        "yucy": 1102,
+        "yuml": 255,
+        "Yuml": 376,
+        "Zacute": 377,
+        "zacute": 378,
+        "Zcaron": 381,
+        "zcaron": 382,
+        "Zcy": 1047,
+        "zcy": 1079,
+        "Zdot": 379,
+        "zdot": 380,
+        "zeetrf": 8488,
+        "ZeroWidthSpace": 8203,
+        "Zeta": 918,
+        "zeta": 950,
+        "zfr": 55349,
+        "Zfr": 8488,
+        "ZHcy": 1046,
+        "zhcy": 1078,
+        "zigrarr": 8669,
+        "zopf": 55349,
+        "Zopf": 8484,
+        "Zscr": 55349,
+        "zscr": 55349,
+        "zwj": 8205,
+        "zwnj": 8204
+      };
+
+      var entityToChar = function (m) {
+        var isNumeric = m.slice(0, 2) === "&#";
+        var c;
+        var isHex = isNumeric && (c = m.slice(2, 3)) && (c === 'X' || c === 'x');
+        var uchar;
+        var ucode;
+        if (isNumeric) {
+          var num;
+          if (isHex) {
+            num = parseInt(m.slice(3, m.length - 1), 16);
+          } else {
+            num = parseInt(m.slice(2, m.length - 1), 10);
+          }
+          uchar = fromCodePoint(num);
+        } else {
+          ucode = entities[m.slice(1, m.length - 1)];
+          if (ucode) {
+            uchar = fromCodePoint(entities[m.slice(1, m.length - 1)]);
+          }
+        }
+        return (uchar || m);
+      };
+
+      module.exports.entityToChar = entityToChar;
+
+    }, { "./from-code-point": 5 }], 8: [function (require, module, exports) {
+      "use strict";
+
+      // commonmark.js - CommomMark in JavaScript
+      // Copyright (C) 2014 John MacFarlane
+      // License: BSD3.
+
+      // Basic usage:
+      //
+      // var commonmark = require('commonmark');
+      // var parser = new commonmark.Parser();
+      // var renderer = new commonmark.HtmlRenderer();
+      // console.log(renderer.render(parser.parse('Hello *world*')));
+
+      module.exports.Node = require('./node');
+      module.exports.Parser = require('./blocks');
+      module.exports.HtmlRenderer = require('./html');
+      module.exports.XmlRenderer = require('./xml');
+
+    }, { "./blocks": 1, "./html": 6, "./node": 10, "./xml": 12 }], 9: [function (require, module, exports) {
+      "use strict";
+
+      var Node = require('./node');
+      var common = require('./common');
+      var normalizeReference = require('./normalize-reference');
+
+      var normalizeURI = common.normalizeURI;
+      var unescapeString = common.unescapeString;
+      var fromCodePoint = require('./from-code-point.js');
+      var entityToChar = require('./html5-entities.js').entityToChar;
+
+      // Constants for character codes:
+
+      var C_NEWLINE = 10;
+      var C_ASTERISK = 42;
+      var C_UNDERSCORE = 95;
+      var C_BACKTICK = 96;
+      var C_OPEN_BRACKET = 91;
+      var C_CLOSE_BRACKET = 93;
+      var C_LESSTHAN = 60;
+      var C_BANG = 33;
+      var C_BACKSLASH = 92;
+      var C_AMPERSAND = 38;
+      var C_OPEN_PAREN = 40;
+      var C_CLOSE_PAREN = 41;
+      var C_COLON = 58;
+      var C_SINGLEQUOTE = 39;
+      var C_DOUBLEQUOTE = 34;
+
+      // Some regexps used in inline parser:
+
+      var ESCAPABLE = common.ESCAPABLE;
+      var ESCAPED_CHAR = '\\\\' + ESCAPABLE;
+      var REG_CHAR = '[^\\\\()\\x00-\\x20]';
+      var IN_PARENS_NOSP = '\\((' + REG_CHAR + '|' + ESCAPED_CHAR + ')*\\)';
+      var TAGNAME = '[A-Za-z][A-Za-z0-9]*';
+      var ATTRIBUTENAME = '[a-zA-Z_:][a-zA-Z0-9:._-]*';
+      var UNQUOTEDVALUE = "[^\"'=<>`\\x00-\\x20]+";
+      var SINGLEQUOTEDVALUE = "'[^']*'";
+      var DOUBLEQUOTEDVALUE = '"[^"]*"';
+      var ATTRIBUTEVALUE = "(?:" + UNQUOTEDVALUE + "|" + SINGLEQUOTEDVALUE + "|" + DOUBLEQUOTEDVALUE + ")";
+      var ATTRIBUTEVALUESPEC = "(?:" + "\\s*=" + "\\s*" + ATTRIBUTEVALUE + ")";
+      var ATTRIBUTE = "(?:" + "\\s+" + ATTRIBUTENAME + ATTRIBUTEVALUESPEC + "?)";
+      var OPENTAG = "<" + TAGNAME + ATTRIBUTE + "*" + "\\s*/?>";
+      var CLOSETAG = "</" + TAGNAME + "\\s*[>]";
+      var HTMLCOMMENT = "<!---->|<!--(?:-?[^>-])(?:-?[^-])*-->";
+      var PROCESSINGINSTRUCTION = "[<][?].*?[?][>]";
+      var DECLARATION = "<![A-Z]+" + "\\s+[^>]*>";
+      var CDATA = "<!\\[CDATA\\[[\\s\\S]*?\\]\\]>";
+      var HTMLTAG = "(?:" + OPENTAG + "|" + CLOSETAG + "|" + HTMLCOMMENT + "|" +
+              PROCESSINGINSTRUCTION + "|" + DECLARATION + "|" + CDATA + ")";
+      var ENTITY = common.ENTITY;
+
+      var rePunctuation = new RegExp(/^[\u2000-\u206F\u2E00-\u2E7F\\'!"#\$%&\(\)\*\+,\-\.\/:;<=>\?@\[\]\^_`\{\|\}~]/);
+
+      var reHtmlTag = new RegExp('^' + HTMLTAG, 'i');
+
+      var reLinkTitle = new RegExp(
+          '^(?:"(' + ESCAPED_CHAR + '|[^"\\x00])*"' +
+              '|' +
+              '\'(' + ESCAPED_CHAR + '|[^\'\\x00])*\'' +
+              '|' +
+              '\\((' + ESCAPED_CHAR + '|[^)\\x00])*\\))');
+
+      var reLinkDestinationBraces = new RegExp(
+          '^(?:[<](?:[^<>\\n\\\\\\x00]' + '|' + ESCAPED_CHAR + '|' + '\\\\)*[>])');
+
+      var reLinkDestination = new RegExp(
+          '^(?:' + REG_CHAR + '+|' + ESCAPED_CHAR + '|' + IN_PARENS_NOSP + ')*');
+
+      var reEscapable = new RegExp('^' + ESCAPABLE);
+
+      var reEntityHere = new RegExp('^' + ENTITY, 'i');
+
+      var reTicks = /`+/;
+
+      var reTicksHere = /^`+/;
+
+      var reEllipses = /\.\.\./g;
+
+      var reDash = /---?/g;
+
+      var reEmailAutolink = /^<([a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)>/;
+
+      var reAutolink = /^<(?:coap|doi|javascript|aaa|aaas|about|acap|cap|cid|crid|data|dav|dict|dns|file|ftp|geo|go|gopher|h323|http|https|iax|icap|im|imap|info|ipp|iris|iris.beep|iris.xpc|iris.xpcs|iris.lwz|ldap|mailto|mid|msrp|msrps|mtqp|mupdate|news|nfs|ni|nih|nntp|opaquelocktoken|pop|pres|rtsp|service|session|shttp|sieve|sip|sips|sms|snmp|soap.beep|soap.beeps|tag|tel|telnet|tftp|thismessage|tn3270|tip|tv|urn|vemmi|ws|wss|xcon|xcon-userid|xmlrpc.beep|xmlrpc.beeps|xmpp|z39.50r|z39.50s|adiumxtra|afp|afs|aim|apt|attachment|aw|beshare|bitcoin|bolo|callto|chrome|chrome-extension|com-eventbrite-attendee|content|cvs|dlna-playsingle|dlna-playcontainer|dtn|dvb|ed2k|facetime|feed|finger|fish|gg|git|gizmoproject|gtalk|hcp|icon|ipn|irc|irc6|ircs|itms|jar|jms|keyparc|lastfm|ldaps|magnet|maps|market|message|mms|ms-help|msnim|mumble|mvn|notes|oid|palm|paparazzi|platform|proxy|psyc|query|res|resource|rmi|rsync|rtmp|secondlife|sftp|sgn|skype|smb|soldat|spotify|ssh|steam|svn|teamspeak|things|udp|unreal|ut2004|ventrilo|view-source|webcal|wtai|wyciwyg|xfire|xri|ymsgr):[^<>\x00-\x20]*>/i;
+
+      var reSpnl = /^ *(?:\n *)?/;
+
+      var reWhitespaceChar = /^\s/;
+
+      var reWhitespace = /\s+/g;
+
+      var reFinalSpace = / *$/;
+
+      var reInitialSpace = /^ */;
+
+      var reSpaceAtEndOfLine = /^ *(?:\n|$)/;
+
+      var reLinkLabel = /^\[(?:[^\\\[\]]|\\[\[\]]){0,1000}\]/;
+
+      // Matches a string of non-special characters.
+      var reMain = /^[^\n`\[\]\\!<&*_'"]+/m;
+
+      var text = function (s) {
+        var node = new Node('Text');
+        node._literal = s;
+        return node;
+      };
+
+      // INLINE PARSER
+
+      // These are methods of an InlineParser object, defined below.
+      // An InlineParser keeps track of a subject (a string to be
+      // parsed) and a position in that subject.
+
+      // If re matches at current position in the subject, advance
+      // position in subject and return the match; otherwise return null.
+      var match = function (re) {
+        var m = re.exec(this.subject.slice(this.pos));
+        if (m === null) {
+          return null;
+        } else {
+          this.pos += m.index + m[0].length;
+          return m[0];
+        }
+      };
+
+      // Returns the code for the character at the current subject position, or -1
+      // there are no more characters.
+      var peek = function () {
+        if (this.pos < this.subject.length) {
+          return this.subject.charCodeAt(this.pos);
+        } else {
+          return -1;
+        }
+      };
+
+      // Parse zero or more space characters, including at most one newline
+      var spnl = function () {
+        this.match(reSpnl);
+        return true;
+      };
+
+      // All of the parsers below try to match something at the current position
+      // in the subject.  If they succeed in matching anything, they
+      // return the inline matched, advancing the subject.
+
+      // Attempt to parse backticks, adding either a backtick code span or a
+      // literal sequence of backticks.
+      var parseBackticks = function (block) {
+        var ticks = this.match(reTicksHere);
+        if (ticks === null) {
+          return false;
+        }
+        var afterOpenTicks = this.pos;
+        var matched;
+        var node;
+        while ((matched = this.match(reTicks)) !== null) {
+          if (matched === ticks) {
+            node = new Node('Code');
+            node._literal = this.subject.slice(afterOpenTicks,
+                                        this.pos - ticks.length)
+                          .trim().replace(reWhitespace, ' ');
+            block.appendChild(node);
+            return true;
+          }
+        }
+        // If we got here, we didn't match a closing backtick sequence.
+        this.pos = afterOpenTicks;
+        block.appendChild(text(ticks));
+        return true;
+      };
+
+      // Parse a backslash-escaped special character, adding either the escaped
+      // character, a hard line break (if the backslash is followed by a newline),
+      // or a literal backslash to the block's children.  Assumes current character
+      // is a backslash.
+      var parseBackslash = function (block) {
+        var subj = this.subject;
+        var node;
+        this.pos += 1;
+        if (this.peek() === C_NEWLINE) {
+          this.pos += 1;
+          node = new Node('Hardbreak');
+          block.appendChild(node);
+        } else if (reEscapable.test(subj.charAt(this.pos))) {
+          block.appendChild(text(subj.charAt(this.pos)));
+          this.pos += 1;
+        } else {
+          block.appendChild(text('\\'));
+        }
+        return true;
+      };
+
+      // Attempt to parse an autolink (URL or email in pointy brackets).
+      var parseAutolink = function (block) {
+        var m;
+        var dest;
+        var node;
+        if ((m = this.match(reEmailAutolink))) {
+          dest = m.slice(1, m.length - 1);
+          node = new Node('Link');
+          node._destination = normalizeURI('mailto:' + dest);
+          node._title = '';
+          node.appendChild(text(dest));
+          block.appendChild(node);
+          return true;
+        } else if ((m = this.match(reAutolink))) {
+          dest = m.slice(1, m.length - 1);
+          node = new Node('Link');
+          node._destination = normalizeURI(dest);
+          node._title = '';
+          node.appendChild(text(dest));
+          block.appendChild(node);
+          return true;
+        } else {
+          return false;
+        }
+      };
+
+      // Attempt to parse a raw HTML tag.
+      var parseHtmlTag = function (block) {
+        var m = this.match(reHtmlTag);
+        if (m === null) {
+          return false;
+        } else {
+          var node = new Node('Html');
+          node._literal = m;
+          block.appendChild(node);
+          return true;
+        }
+      };
+
+      // Scan a sequence of characters with code cc, and return information about
+      // the number of delimiters and whether they are positioned such that
+      // they can open and/or close emphasis or strong emphasis.  A utility
+      // function for strong/emph parsing.
+      var scanDelims = function (cc) {
+        var numdelims = 0;
+        var char_before, char_after, cc_after;
+        var startpos = this.pos;
+        var left_flanking, right_flanking, can_open, can_close;
+
+        char_before = this.pos === 0 ? '\n' :
+            this.subject.charAt(this.pos - 1);
+
+        if (cc === C_SINGLEQUOTE || cc === C_DOUBLEQUOTE) {
+          numdelims++;
+          this.pos++;
+        } else {
+          while (this.peek() === cc) {
+            numdelims++;
+            this.pos++;
+          }
+        }
+
+        cc_after = this.peek();
+        if (cc_after === -1) {
+          char_after = '\n';
+        } else {
+          char_after = fromCodePoint(cc_after);
+        }
+
+        left_flanking = numdelims > 0 &&
+                !(reWhitespaceChar.test(char_after)) &&
+                !(rePunctuation.test(char_after) &&
+                 !(reWhitespaceChar.test(char_before)) &&
+                 !(rePunctuation.test(char_before)));
+        right_flanking = numdelims > 0 &&
+                !(reWhitespaceChar.test(char_before)) &&
+                !(rePunctuation.test(char_before) &&
+                  !(reWhitespaceChar.test(char_after)) &&
+                  !(rePunctuation.test(char_after)));
+        if (cc === C_UNDERSCORE) {
+          can_open = left_flanking &&
+              (!right_flanking || rePunctuation.test(char_before));
+          can_close = right_flanking &&
+              (!left_flanking || rePunctuation.test(char_after));
+        } else {
+          can_open = left_flanking;
+          can_close = right_flanking;
+        }
+        this.pos = startpos;
+        return {
+          numdelims: numdelims,
+          can_open: can_open,
+          can_close: can_close
+        };
+      };
+
+      // Handle a delimiter marker for emphasis or a quote.
+      var handleDelim = function (cc, block) {
+        var res = this.scanDelims(cc);
+        var numdelims = res.numdelims;
+        var startpos = this.pos;
+        var contents;
+
+        if (numdelims === 0) {
+          return false;
+        }
+
+        this.pos += numdelims;
+        if (cc === C_SINGLEQUOTE) {
+          contents = "\u2019";
+        } else if (cc === C_DOUBLEQUOTE) {
+          contents = "\u201C";
+        } else {
+          contents = this.subject.slice(startpos, this.pos);
+        }
+        var node = text(contents);
+        block.appendChild(node);
+
+        // Add entry to stack for this opener
+        this.delimiters = {
+          cc: cc,
+          numdelims: numdelims,
+          node: node,
+          previous: this.delimiters,
+          next: null,
+          can_open: res.can_open,
+          can_close: res.can_close,
+          active: true
+        };
+        if (this.delimiters.previous !== null) {
+          this.delimiters.previous.next = this.delimiters;
+        }
+
+        return true;
+
+      };
+
+      var removeDelimiter = function (delim) {
+        if (delim.previous !== null) {
+          delim.previous.next = delim.next;
+        }
+        if (delim.next === null) {
+          // top of stack
+          this.delimiters = delim.previous;
+        } else {
+          delim.next.previous = delim.previous;
+        }
+      };
+
+      var removeDelimitersBetween = function (bottom, top) {
+        if (bottom.next !== top) {
+          bottom.next = top;
+          top.previous = bottom;
+        }
+      };
+
+      var processEmphasis = function (stack_bottom) {
+        var opener, closer;
+        var opener_inl, closer_inl;
+        var tempstack;
+        var use_delims;
+        var tmp, next;
+
+        // find first closer above stack_bottom:
+        closer = this.delimiters;
+        while (closer !== null && closer.previous !== stack_bottom) {
+          closer = closer.previous;
+        }
+        // move forward, looking for closers, and handling each
+        while (closer !== null) {
+          var closercc = closer.cc;
+          if (!(closer.can_close && (closercc === C_UNDERSCORE ||
+                                     closercc === C_ASTERISK ||
+                                     closercc === C_SINGLEQUOTE ||
+                                     closercc === C_DOUBLEQUOTE))) {
+            closer = closer.next;
+          } else {
+            // found emphasis closer. now look back for first matching opener:
+            opener = closer.previous;
+            while (opener !== null && opener !== stack_bottom) {
+              if (opener.cc === closer.cc && opener.can_open) {
+                break;
+              }
+              opener = opener.previous;
+            }
+            if (closercc === C_ASTERISK || closercc === C_UNDERSCORE) {
+              if (opener === null || opener === stack_bottom) {
+                closer = closer.next;
+              } else {
+                // calculate actual number of delimiters used from closer
+                if (closer.numdelims < 3 || opener.numdelims < 3) {
+                  use_delims = closer.numdelims <= opener.numdelims ?
+                      closer.numdelims : opener.numdelims;
+                } else {
+                  use_delims = closer.numdelims % 2 === 0 ? 2 : 1;
+                }
+
+                opener_inl = opener.node;
+                closer_inl = closer.node;
+
+                // remove used delimiters from stack elts and inlines
+                opener.numdelims -= use_delims;
+                closer.numdelims -= use_delims;
+                opener_inl._literal =
+                    opener_inl._literal.slice(0,
+                                              opener_inl._literal.length - use_delims);
+                closer_inl._literal =
+                    closer_inl._literal.slice(0,
+                                              closer_inl._literal.length - use_delims);
+
+                // build contents for new emph element
+                var emph = new Node(use_delims === 1 ? 'Emph' : 'Strong');
+
+                tmp = opener_inl._next;
+                while (tmp && tmp !== closer_inl) {
+                  next = tmp._next;
+                  tmp.unlink();
+                  emph.appendChild(tmp);
+                  tmp = next;
+                }
+
+                opener_inl.insertAfter(emph);
+
+                // remove elts between opener and closer in delimiters stack
+                removeDelimitersBetween(opener, closer);
+
+                // if opener has 0 delims, remove it and the inline
+                if (opener.numdelims === 0) {
+                  opener_inl.unlink();
+                  this.removeDelimiter(opener);
+                }
+
+                if (closer.numdelims === 0) {
+                  closer_inl.unlink();
+                  tempstack = closer.next;
+                  this.removeDelimiter(closer);
+                  closer = tempstack;
+                }
+
+              }
+
+            } else if (closercc === C_SINGLEQUOTE) {
+              closer.node._literal = "\u2019";
+              if (opener !== null && opener !== stack_bottom) {
+                opener.node._literal = "\u2018";
+              }
+              closer = closer.next;
+
+            } else if (closercc === C_DOUBLEQUOTE) {
+              closer.node._literal = "\u201D";
+              if (opener !== null && opener !== stack_bottom) {
+                opener.node.literal = "\u201C";
+              }
+              closer = closer.next;
+
+            }
+
+          }
+
+        }
+
+        // remove all delimiters
+        while (this.delimiters !== stack_bottom) {
+          this.removeDelimiter(this.delimiters);
+        }
+      };
+
+      // Attempt to parse link title (sans quotes), returning the string
+      // or null if no match.
+      var parseLinkTitle = function () {
+        var title = this.match(reLinkTitle);
+        if (title === null) {
+          return null;
+        } else {
+          // chop off quotes from title and unescape:
+          return unescapeString(title.substr(1, title.length - 2));
+        }
+      };
+
+      // Attempt to parse link destination, returning the string or
+      // null if no match.
+      var parseLinkDestination = function () {
+        var res = this.match(reLinkDestinationBraces);
+        if (res === null) {
+          res = this.match(reLinkDestination);
+          if (res === null) {
             return null;
+          } else {
+            return normalizeURI(unescapeString(res));
+          }
+        } else {  // chop off surrounding <..>:
+          return normalizeURI(unescapeString(res.substr(1, res.length - 2)));
+        }
+      };
+
+      // Attempt to parse a link label, returning number of characters parsed.
+      var parseLinkLabel = function () {
+        var m = this.match(reLinkLabel);
+        return m === null ? 0 : m.length;
+      };
+
+      // Add open bracket to delimiter stack and add a text node to block's children.
+      var parseOpenBracket = function (block) {
+        var startpos = this.pos;
+        this.pos += 1;
+
+        var node = text('[');
+        block.appendChild(node);
+
+        // Add entry to stack for this opener
+        this.delimiters = {
+          cc: C_OPEN_BRACKET,
+          numdelims: 1,
+          node: node,
+          previous: this.delimiters,
+          next: null,
+          can_open: true,
+          can_close: false,
+          index: startpos,
+          active: true
+        };
+        if (this.delimiters.previous !== null) {
+          this.delimiters.previous.next = this.delimiters;
+        }
+
+        return true;
+
+      };
+
+      // IF next character is [, and ! delimiter to delimiter stack and
+      // add a text node to block's children.  Otherwise just add a text node.
+      var parseBang = function (block) {
+        var startpos = this.pos;
+        this.pos += 1;
+        if (this.peek() === C_OPEN_BRACKET) {
+          this.pos += 1;
+
+          var node = text('![');
+          block.appendChild(node);
+
+          // Add entry to stack for this opener
+          this.delimiters = {
+            cc: C_BANG,
+            numdelims: 1,
+            node: node,
+            previous: this.delimiters,
+            next: null,
+            can_open: true,
+            can_close: false,
+            index: startpos + 1,
+            active: true
+          };
+          if (this.delimiters.previous !== null) {
+            this.delimiters.previous.next = this.delimiters;
+          }
+        } else {
+          block.appendChild(text('!'));
+        }
+        return true;
+      };
+
+      // Try to match close bracket against an opening in the delimiter
+      // stack.  Add either a link or image, or a plain [ character,
+      // to block's children.  If there is a matching delimiter,
+      // remove it from the delimiter stack.
+      var parseCloseBracket = function (block) {
+        var startpos;
+        var is_image;
+        var dest;
+        var title;
+        var matched = false;
+        var reflabel;
+        var opener;
+
+        this.pos += 1;
+        startpos = this.pos;
+
+        // look through stack of delimiters for a [ or ![
+        opener = this.delimiters;
+
+        while (opener !== null) {
+          if (opener.cc === C_OPEN_BRACKET || opener.cc === C_BANG) {
+            break;
+          }
+          opener = opener.previous;
+        }
+
+        if (opener === null) {
+          // no matched opener, just return a literal
+          block.appendChild(text(']'));
+          return true;
+        }
+
+        if (!opener.active) {
+          // no matched opener, just return a literal
+          block.appendChild(text(']'));
+          // take opener off emphasis stack
+          this.removeDelimiter(opener);
+          return true;
+        }
+
+        // If we got here, open is a potential opener
+        is_image = opener.cc === C_BANG;
+
+        // Check to see if we have a link/image
+
+        // Inline link?
+        if (this.peek() === C_OPEN_PAREN) {
+          this.pos++;
+          if (this.spnl() &&
+              ((dest = this.parseLinkDestination()) !== null) &&
+              this.spnl() &&
+            // make sure there's a space before the title:
+              (reWhitespaceChar.test(this.subject.charAt(this.pos - 1)) &&
+               (title = this.parseLinkTitle()) || true) &&
+              this.spnl() &&
+              this.peek() === C_CLOSE_PAREN) {
+            this.pos += 1;
+            matched = true;
+          }
+        } else {
+
+          // Next, see if there's a link label
+          var savepos = this.pos;
+          this.spnl();
+          var beforelabel = this.pos;
+          var n = this.parseLinkLabel();
+          if (n === 0 || n === 2) {
+            // empty or missing second label
+            reflabel = this.subject.slice(opener.index, startpos);
+          } else {
+            reflabel = this.subject.slice(beforelabel, beforelabel + n);
+          }
+          if (n === 0) {
+            // If shortcut reference link, rewind before spaces we skipped.
+            this.pos = savepos;
+          }
+
+          // lookup rawlabel in refmap
+          var link = this.refmap[normalizeReference(reflabel)];
+          if (link) {
+            dest = link.destination;
+            title = link.title;
+            matched = true;
+          }
+        }
+
+        if (matched) {
+          var node = new Node(is_image ? 'Image' : 'Link');
+          node._destination = dest;
+          node._title = title || '';
+
+          var tmp, next;
+          tmp = opener.node._next;
+          while (tmp) {
+            next = tmp._next;
+            tmp.unlink();
+            node.appendChild(tmp);
+            tmp = next;
+          }
+          block.appendChild(node);
+          this.processEmphasis(opener.previous);
+
+          opener.node.unlink();
+
+          // processEmphasis will remove this and later delimiters.
+          // Now, for a link, we also deactivate earlier link openers.
+          // (no links in links)
+          if (!is_image) {
+            opener = this.delimiters;
+            while (opener !== null) {
+              if (opener.cc === C_OPEN_BRACKET) {
+                opener.active = false; // deactivate this opener
+              }
+              opener = opener.previous;
+            }
+          }
+
+          return true;
+
+        } else { // no match
+
+          this.removeDelimiter(opener);  // remove this opener from stack
+          this.pos = startpos;
+          block.appendChild(text(']'));
+          return true;
+        }
+
+      };
+
+      // Attempt to parse an entity.
+      var parseEntity = function (block) {
+        var m;
+        if ((m = this.match(reEntityHere))) {
+          block.appendChild(text(entityToChar(m)));
+          return true;
+        } else {
+          return false;
+        }
+      };
+
+      // Parse a run of ordinary characters, or a single character with
+      // a special meaning in markdown, as a plain string.
+      var parseString = function (block) {
+        var m;
+        if ((m = this.match(reMain))) {
+          if (this.options.smart) {
+            block.appendChild(text(
+                m.replace(reEllipses, "\u2026")
+                    .replace(reDash, function (chars) {
+                      return (chars.length === 3) ? "\u2014" : "\u2013";
+                    })));
+          } else {
+            block.appendChild(text(m));
+          }
+          return true;
+        } else {
+          return false;
+        }
+      };
+
+      // Parse a newline.  If it was preceded by two spaces, return a hard
+      // line break; otherwise a soft line break.
+      var parseNewline = function (block) {
+        this.pos += 1; // assume we're at a \n
+        // check previous node for trailing spaces
+        var lastc = block._lastChild;
+        if (lastc && lastc.type === 'Text' && lastc._literal[lastc._literal.length - 1] === ' ') {
+          var hardbreak = lastc._literal[lastc._literal.length - 2] === ' ';
+          lastc._literal = lastc._literal.replace(reFinalSpace, '');
+          block.appendChild(new Node(hardbreak ? 'Hardbreak' : 'Softbreak'));
+        } else {
+          block.appendChild(new Node('Softbreak'));
+        }
+        this.match(reInitialSpace); // gobble leading spaces in next line
+        return true;
+      };
+
+      // Attempt to parse a link reference, modifying refmap.
+      var parseReference = function (s, refmap) {
+        this.subject = s;
+        this.pos = 0;
+        var rawlabel;
+        var dest;
+        var title;
+        var matchChars;
+        var startpos = this.pos;
+
+        // label:
+        matchChars = this.parseLinkLabel();
+        if (matchChars === 0) {
+          return 0;
+        } else {
+          rawlabel = this.subject.substr(0, matchChars);
+        }
+
+        // colon:
+        if (this.peek() === C_COLON) {
+          this.pos++;
+        } else {
+          this.pos = startpos;
+          return 0;
+        }
+
+        //  link url
+        this.spnl();
+
+        dest = this.parseLinkDestination();
+        if (dest === null || dest.length === 0) {
+          this.pos = startpos;
+          return 0;
+        }
+
+        var beforetitle = this.pos;
+        this.spnl();
+        title = this.parseLinkTitle();
+        if (title === null) {
+          title = '';
+          // rewind before spaces
+          this.pos = beforetitle;
+        }
+
+        // make sure we're at line end:
+        if (this.match(reSpaceAtEndOfLine) === null) {
+          this.pos = startpos;
+          return 0;
+        }
+
+        var normlabel = normalizeReference(rawlabel);
+
+        if (!refmap[normlabel]) {
+          refmap[normlabel] = { destination: dest, title: title };
+        }
+        return this.pos - startpos;
+      };
+
+      // Parse the next inline element in subject, advancing subject position.
+      // On success, add the result to block's children and return true.
+      // On failure, return false.
+      var parseInline = function (block) {
+        var res = false;
+        var c = this.peek();
+        if (c === -1) {
+          return false;
+        }
+        switch (c) {
+          case C_NEWLINE:
+            res = this.parseNewline(block);
+            break;
+          case C_BACKSLASH:
+            res = this.parseBackslash(block);
+            break;
+          case C_BACKTICK:
+            res = this.parseBackticks(block);
+            break;
+          case C_ASTERISK:
+          case C_UNDERSCORE:
+            res = this.handleDelim(c, block);
+            break;
+          case C_SINGLEQUOTE:
+          case C_DOUBLEQUOTE:
+            res = this.options.smart && this.handleDelim(c, block);
+            break;
+          case C_OPEN_BRACKET:
+            res = this.parseOpenBracket(block);
+            break;
+          case C_BANG:
+            res = this.parseBang(block);
+            break;
+          case C_CLOSE_BRACKET:
+            res = this.parseCloseBracket(block);
+            break;
+          case C_LESSTHAN:
+            res = this.parseAutolink(block) || this.parseHtmlTag(block);
+            break;
+          case C_AMPERSAND:
+            res = this.parseEntity(block);
+            break;
+          default:
+            res = this.parseString(block);
+            break;
+        }
+        if (!res) {
+          this.pos += 1;
+          block.appendChild(text(fromCodePoint(c)));
+        }
+
+        return true;
+      };
+
+      // Parse string content in block into inline children,
+      // using refmap to resolve references.
+      var parseInlines = function (block) {
+        this.subject = block._string_content.trim();
+        this.pos = 0;
+        this.delimiters = null;
+        while (this.parseInline(block)) {
+        }
+        block._string_content = null; // allow raw string to be garbage collected
+        this.processEmphasis(null);
+      };
+
+      // The InlineParser object.
+      function InlineParser(options) {
+        return {
+          subject: '',
+          delimiters: null,  // used by handleDelim method
+          pos: 0,
+          refmap: {},
+          match: match,
+          peek: peek,
+          spnl: spnl,
+          parseBackticks: parseBackticks,
+          parseBackslash: parseBackslash,
+          parseAutolink: parseAutolink,
+          parseHtmlTag: parseHtmlTag,
+          scanDelims: scanDelims,
+          handleDelim: handleDelim,
+          parseLinkTitle: parseLinkTitle,
+          parseLinkDestination: parseLinkDestination,
+          parseLinkLabel: parseLinkLabel,
+          parseOpenBracket: parseOpenBracket,
+          parseCloseBracket: parseCloseBracket,
+          parseBang: parseBang,
+          parseEntity: parseEntity,
+          parseString: parseString,
+          parseNewline: parseNewline,
+          parseReference: parseReference,
+          parseInline: parseInline,
+          processEmphasis: processEmphasis,
+          removeDelimiter: removeDelimiter,
+          options: options || {},
+          parse: parseInlines
+        };
+      }
+
+      module.exports = InlineParser;
+
+    }, { "./common": 2, "./from-code-point.js": 5, "./html5-entities.js": 7, "./node": 10, "./normalize-reference": 11 }], 10: [function (require, module, exports) {
+      "use strict";
+
+      function isContainer(node) {
+        switch (node._type) {
+          case 'Document':
+          case 'BlockQuote':
+          case 'List':
+          case 'Item':
+          case 'Paragraph':
+          case 'Header':
+          case 'Emph':
+          case 'Strong':
+          case 'Link':
+          case 'Image':
+            return true;
+          default:
+            return false;
+        }
+      }
+
+      var resumeAt = function (node, entering) {
+        this.current = node;
+        this.entering = (entering === true);
+      };
+
+      var next = function () {
+        var cur = this.current;
+        var entering = this.entering;
+
+        if (cur === null) {
+          return null;
+        }
+
+        var container = isContainer(cur);
+
+        if (entering && container) {
+          if (cur._firstChild) {
+            this.current = cur._firstChild;
+            this.entering = true;
+          } else {
+            // stay on node but exit
+            this.entering = false;
+          }
+
+        } else if (cur === this.root) {
+          this.current = null;
+
+        } else if (cur._next === null) {
+          this.current = cur._parent;
+          this.entering = false;
+
+        } else {
+          this.current = cur._next;
+          this.entering = true;
+        }
+
+        return { entering: entering, node: cur };
+      };
+
+      var NodeWalker = function (root) {
+        return {
+          current: root,
+          root: root,
+          entering: true,
+          next: next,
+          resumeAt: resumeAt
+        };
+      };
+
+      var Node = function (nodeType, sourcepos) {
+        this._type = nodeType;
+        this._parent = null;
+        this._firstChild = null;
+        this._lastChild = null;
+        this._prev = null;
+        this._next = null;
+        this._sourcepos = sourcepos;
+        this._lastLineBlank = false;
+        this._open = true;
+        this._string_content = null;
+        this._literal = null;
+        this._listData = null;
+        this._info = null;
+        this._destination = null;
+        this._title = null;
+        this._isFenced = false;
+        this._fenceChar = null;
+        this._fenceLength = 0;
+        this._fenceOffset = null;
+        this._level = null;
+      };
+
+      var proto = Node.prototype;
+
+      Object.defineProperty(proto, 'isContainer', {
+        get: function () { return isContainer(this); }
+      });
+
+      Object.defineProperty(proto, 'type', {
+        get: function () { return this._type; }
+      });
+
+      Object.defineProperty(proto, 'firstChild', {
+        get: function () { return this._firstChild; }
+      });
+
+      Object.defineProperty(proto, 'lastChild', {
+        get: function () { return this._lastChild; }
+      });
+
+      Object.defineProperty(proto, 'next', {
+        get: function () { return this._next; }
+      });
+
+      Object.defineProperty(proto, 'prev', {
+        get: function () { return this._prev; }
+      });
+
+      Object.defineProperty(proto, 'parent', {
+        get: function () { return this._parent; }
+      });
+
+      Object.defineProperty(proto, 'sourcepos', {
+        get: function () { return this._sourcepos; }
+      });
+
+      Object.defineProperty(proto, 'literal', {
+        get: function () { return this._literal; },
+        set: function (s) { this._literal = s; }
+      });
+
+      Object.defineProperty(proto, 'destination', {
+        get: function () { return this._destination; },
+        set: function (s) { this._destination = s; }
+      });
+
+      Object.defineProperty(proto, 'title', {
+        get: function () { return this._title; },
+        set: function (s) { this._title = s; }
+      });
+
+      Object.defineProperty(proto, 'info', {
+        get: function () { return this._info; },
+        set: function (s) { this._info = s; }
+      });
+
+      Object.defineProperty(proto, 'level', {
+        get: function () { return this._level; },
+        set: function (s) { this._level = s; }
+      });
+
+      Object.defineProperty(proto, 'listType', {
+        get: function () { return this._listData.type; },
+        set: function (t) { this._listData.type = t; }
+      });
+
+      Object.defineProperty(proto, 'listTight', {
+        get: function () { return this._listData.tight; },
+        set: function (t) { this._listData.tight = t; }
+      });
+
+      Object.defineProperty(proto, 'listStart', {
+        get: function () { return this._listData.start; },
+        set: function (n) { this._listData.start = n; }
+      });
+
+      Object.defineProperty(proto, 'listDelimiter', {
+        get: function () { return this._listData.delimiter; },
+        set: function (delim) { this._listData.delimiter = delim; }
+      });
+
+      Node.prototype.appendChild = function (child) {
+        child.unlink();
+        child._parent = this;
+        if (this._lastChild) {
+          this._lastChild._next = child;
+          child._prev = this._lastChild;
+          this._lastChild = child;
+        } else {
+          this._firstChild = child;
+          this._lastChild = child;
+        }
+      };
+
+      Node.prototype.prependChild = function (child) {
+        child.unlink();
+        child._parent = this;
+        if (this._firstChild) {
+          this._firstChild._prev = child;
+          child._next = this._firstChild;
+          this._firstChild = child;
+        } else {
+          this._firstChild = child;
+          this._lastChild = child;
+        }
+      };
+
+      Node.prototype.unlink = function () {
+        if (this._prev) {
+          this._prev._next = this._next;
+        } else if (this._parent) {
+          this._parent._firstChild = this._next;
+        }
+        if (this._next) {
+          this._next._prev = this._prev;
+        } else if (this._parent) {
+          this._parent._lastChild = this._prev;
+        }
+        this._parent = null;
+        this._next = null;
+        this._prev = null;
+      };
+
+      Node.prototype.insertAfter = function (sibling) {
+        sibling.unlink();
+        sibling._next = this._next;
+        if (sibling._next) {
+          sibling._next._prev = sibling;
+        }
+        sibling._prev = this;
+        this._next = sibling;
+        sibling._parent = this._parent;
+        if (!sibling._next) {
+          sibling._parent._lastChild = sibling;
+        }
+      };
+
+      Node.prototype.insertBefore = function (sibling) {
+        sibling.unlink();
+        sibling._prev = this._prev;
+        if (sibling._prev) {
+          sibling._prev._next = sibling;
+        }
+        sibling._next = this;
+        this._prev = sibling;
+        sibling._parent = this._parent;
+        if (!sibling._prev) {
+          sibling._parent._firstChild = sibling;
+        }
+      };
+
+      Node.prototype.walker = function () {
+        var walker = new NodeWalker(this);
+        return walker;
+      };
+
+      module.exports = Node;
+
+
+      /* Example of use of walker:
+      
+       var walker = w.walker();
+       var event;
+      
+       while (event = walker.next()) {
+       console.log(event.entering, event.node.type);
+       }
+      
+       */
+
+    }, {}], 11: [function (require, module, exports) {
+      "use strict";
+
+      /* The bulk of this code derives from https://github.com/dmoscrop/fold-case
+      But in addition to case-folding, we also normalize whitespace.
+      
+      fold-case is Copyright Mathias Bynens <https://mathiasbynens.be/>
+      
+      Permission is hereby granted, free of charge, to any person obtaining
+      a copy of this software and associated documentation files (the
+      "Software"), to deal in the Software without restriction, including
+      without limitation the rights to use, copy, modify, merge, publish,
+      distribute, sublicense, and/or sell copies of the Software, and to
+      permit persons to whom the Software is furnished to do so, subject to
+      the following conditions:
+      
+      The above copyright notice and this permission notice shall be
+      included in all copies or substantial portions of the Software.
+      
+      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+      */
+
+      /*eslint-disable  key-spacing, comma-spacing */
+
+      var regex = /[ \t\r\n]+|[A-Z\xB5\xC0-\xD6\xD8-\xDF\u0100\u0102\u0104\u0106\u0108\u010A\u010C\u010E\u0110\u0112\u0114\u0116\u0118\u011A\u011C\u011E\u0120\u0122\u0124\u0126\u0128\u012A\u012C\u012E\u0130\u0132\u0134\u0136\u0139\u013B\u013D\u013F\u0141\u0143\u0145\u0147\u0149\u014A\u014C\u014E\u0150\u0152\u0154\u0156\u0158\u015A\u015C\u015E\u0160\u0162\u0164\u0166\u0168\u016A\u016C\u016E\u0170\u0172\u0174\u0176\u0178\u0179\u017B\u017D\u017F\u0181\u0182\u0184\u0186\u0187\u0189-\u018B\u018E-\u0191\u0193\u0194\u0196-\u0198\u019C\u019D\u019F\u01A0\u01A2\u01A4\u01A6\u01A7\u01A9\u01AC\u01AE\u01AF\u01B1-\u01B3\u01B5\u01B7\u01B8\u01BC\u01C4\u01C5\u01C7\u01C8\u01CA\u01CB\u01CD\u01CF\u01D1\u01D3\u01D5\u01D7\u01D9\u01DB\u01DE\u01E0\u01E2\u01E4\u01E6\u01E8\u01EA\u01EC\u01EE\u01F0-\u01F2\u01F4\u01F6-\u01F8\u01FA\u01FC\u01FE\u0200\u0202\u0204\u0206\u0208\u020A\u020C\u020E\u0210\u0212\u0214\u0216\u0218\u021A\u021C\u021E\u0220\u0222\u0224\u0226\u0228\u022A\u022C\u022E\u0230\u0232\u023A\u023B\u023D\u023E\u0241\u0243-\u0246\u0248\u024A\u024C\u024E\u0345\u0370\u0372\u0376\u037F\u0386\u0388-\u038A\u038C\u038E-\u03A1\u03A3-\u03AB\u03B0\u03C2\u03CF-\u03D1\u03D5\u03D6\u03D8\u03DA\u03DC\u03DE\u03E0\u03E2\u03E4\u03E6\u03E8\u03EA\u03EC\u03EE\u03F0\u03F1\u03F4\u03F5\u03F7\u03F9\u03FA\u03FD-\u042F\u0460\u0462\u0464\u0466\u0468\u046A\u046C\u046E\u0470\u0472\u0474\u0476\u0478\u047A\u047C\u047E\u0480\u048A\u048C\u048E\u0490\u0492\u0494\u0496\u0498\u049A\u049C\u049E\u04A0\u04A2\u04A4\u04A6\u04A8\u04AA\u04AC\u04AE\u04B0\u04B2\u04B4\u04B6\u04B8\u04BA\u04BC\u04BE\u04C0\u04C1\u04C3\u04C5\u04C7\u04C9\u04CB\u04CD\u04D0\u04D2\u04D4\u04D6\u04D8\u04DA\u04DC\u04DE\u04E0\u04E2\u04E4\u04E6\u04E8\u04EA\u04EC\u04EE\u04F0\u04F2\u04F4\u04F6\u04F8\u04FA\u04FC\u04FE\u0500\u0502\u0504\u0506\u0508\u050A\u050C\u050E\u0510\u0512\u0514\u0516\u0518\u051A\u051C\u051E\u0520\u0522\u0524\u0526\u0528\u052A\u052C\u052E\u0531-\u0556\u0587\u10A0-\u10C5\u10C7\u10CD\u1E00\u1E02\u1E04\u1E06\u1E08\u1E0A\u1E0C\u1E0E\u1E10\u1E12\u1E14\u1E16\u1E18\u1E1A\u1E1C\u1E1E\u1E20\u1E22\u1E24\u1E26\u1E28\u1E2A\u1E2C\u1E2E\u1E30\u1E32\u1E34\u1E36\u1E38\u1E3A\u1E3C\u1E3E\u1E40\u1E42\u1E44\u1E46\u1E48\u1E4A\u1E4C\u1E4E\u1E50\u1E52\u1E54\u1E56\u1E58\u1E5A\u1E5C\u1E5E\u1E60\u1E62\u1E64\u1E66\u1E68\u1E6A\u1E6C\u1E6E\u1E70\u1E72\u1E74\u1E76\u1E78\u1E7A\u1E7C\u1E7E\u1E80\u1E82\u1E84\u1E86\u1E88\u1E8A\u1E8C\u1E8E\u1E90\u1E92\u1E94\u1E96-\u1E9B\u1E9E\u1EA0\u1EA2\u1EA4\u1EA6\u1EA8\u1EAA\u1EAC\u1EAE\u1EB0\u1EB2\u1EB4\u1EB6\u1EB8\u1EBA\u1EBC\u1EBE\u1EC0\u1EC2\u1EC4\u1EC6\u1EC8\u1ECA\u1ECC\u1ECE\u1ED0\u1ED2\u1ED4\u1ED6\u1ED8\u1EDA\u1EDC\u1EDE\u1EE0\u1EE2\u1EE4\u1EE6\u1EE8\u1EEA\u1EEC\u1EEE\u1EF0\u1EF2\u1EF4\u1EF6\u1EF8\u1EFA\u1EFC\u1EFE\u1F08-\u1F0F\u1F18-\u1F1D\u1F28-\u1F2F\u1F38-\u1F3F\u1F48-\u1F4D\u1F50\u1F52\u1F54\u1F56\u1F59\u1F5B\u1F5D\u1F5F\u1F68-\u1F6F\u1F80-\u1FAF\u1FB2-\u1FB4\u1FB6-\u1FBC\u1FBE\u1FC2-\u1FC4\u1FC6-\u1FCC\u1FD2\u1FD3\u1FD6-\u1FDB\u1FE2-\u1FE4\u1FE6-\u1FEC\u1FF2-\u1FF4\u1FF6-\u1FFC\u2126\u212A\u212B\u2132\u2160-\u216F\u2183\u24B6-\u24CF\u2C00-\u2C2E\u2C60\u2C62-\u2C64\u2C67\u2C69\u2C6B\u2C6D-\u2C70\u2C72\u2C75\u2C7E-\u2C80\u2C82\u2C84\u2C86\u2C88\u2C8A\u2C8C\u2C8E\u2C90\u2C92\u2C94\u2C96\u2C98\u2C9A\u2C9C\u2C9E\u2CA0\u2CA2\u2CA4\u2CA6\u2CA8\u2CAA\u2CAC\u2CAE\u2CB0\u2CB2\u2CB4\u2CB6\u2CB8\u2CBA\u2CBC\u2CBE\u2CC0\u2CC2\u2CC4\u2CC6\u2CC8\u2CCA\u2CCC\u2CCE\u2CD0\u2CD2\u2CD4\u2CD6\u2CD8\u2CDA\u2CDC\u2CDE\u2CE0\u2CE2\u2CEB\u2CED\u2CF2\uA640\uA642\uA644\uA646\uA648\uA64A\uA64C\uA64E\uA650\uA652\uA654\uA656\uA658\uA65A\uA65C\uA65E\uA660\uA662\uA664\uA666\uA668\uA66A\uA66C\uA680\uA682\uA684\uA686\uA688\uA68A\uA68C\uA68E\uA690\uA692\uA694\uA696\uA698\uA69A\uA722\uA724\uA726\uA728\uA72A\uA72C\uA72E\uA732\uA734\uA736\uA738\uA73A\uA73C\uA73E\uA740\uA742\uA744\uA746\uA748\uA74A\uA74C\uA74E\uA750\uA752\uA754\uA756\uA758\uA75A\uA75C\uA75E\uA760\uA762\uA764\uA766\uA768\uA76A\uA76C\uA76E\uA779\uA77B\uA77D\uA77E\uA780\uA782\uA784\uA786\uA78B\uA78D\uA790\uA792\uA796\uA798\uA79A\uA79C\uA79E\uA7A0\uA7A2\uA7A4\uA7A6\uA7A8\uA7AA-\uA7AD\uA7B0\uA7B1\uFB00-\uFB06\uFB13-\uFB17\uFF21-\uFF3A]|\uD801[\uDC00-\uDC27]|\uD806[\uDCA0-\uDCBF]/g;
+
+      var map = { 'A': 'a', 'B': 'b', 'C': 'c', 'D': 'd', 'E': 'e', 'F': 'f', 'G': 'g', 'H': 'h', 'I': 'i', 'J': 'j', 'K': 'k', 'L': 'l', 'M': 'm', 'N': 'n', 'O': 'o', 'P': 'p', 'Q': 'q', 'R': 'r', 'S': 's', 'T': 't', 'U': 'u', 'V': 'v', 'W': 'w', 'X': 'x', 'Y': 'y', 'Z': 'z', '\xB5': '\u03BC', '\xC0': '\xE0', '\xC1': '\xE1', '\xC2': '\xE2', '\xC3': '\xE3', '\xC4': '\xE4', '\xC5': '\xE5', '\xC6': '\xE6', '\xC7': '\xE7', '\xC8': '\xE8', '\xC9': '\xE9', '\xCA': '\xEA', '\xCB': '\xEB', '\xCC': '\xEC', '\xCD': '\xED', '\xCE': '\xEE', '\xCF': '\xEF', '\xD0': '\xF0', '\xD1': '\xF1', '\xD2': '\xF2', '\xD3': '\xF3', '\xD4': '\xF4', '\xD5': '\xF5', '\xD6': '\xF6', '\xD8': '\xF8', '\xD9': '\xF9', '\xDA': '\xFA', '\xDB': '\xFB', '\xDC': '\xFC', '\xDD': '\xFD', '\xDE': '\xFE', '\u0100': '\u0101', '\u0102': '\u0103', '\u0104': '\u0105', '\u0106': '\u0107', '\u0108': '\u0109', '\u010A': '\u010B', '\u010C': '\u010D', '\u010E': '\u010F', '\u0110': '\u0111', '\u0112': '\u0113', '\u0114': '\u0115', '\u0116': '\u0117', '\u0118': '\u0119', '\u011A': '\u011B', '\u011C': '\u011D', '\u011E': '\u011F', '\u0120': '\u0121', '\u0122': '\u0123', '\u0124': '\u0125', '\u0126': '\u0127', '\u0128': '\u0129', '\u012A': '\u012B', '\u012C': '\u012D', '\u012E': '\u012F', '\u0132': '\u0133', '\u0134': '\u0135', '\u0136': '\u0137', '\u0139': '\u013A', '\u013B': '\u013C', '\u013D': '\u013E', '\u013F': '\u0140', '\u0141': '\u0142', '\u0143': '\u0144', '\u0145': '\u0146', '\u0147': '\u0148', '\u014A': '\u014B', '\u014C': '\u014D', '\u014E': '\u014F', '\u0150': '\u0151', '\u0152': '\u0153', '\u0154': '\u0155', '\u0156': '\u0157', '\u0158': '\u0159', '\u015A': '\u015B', '\u015C': '\u015D', '\u015E': '\u015F', '\u0160': '\u0161', '\u0162': '\u0163', '\u0164': '\u0165', '\u0166': '\u0167', '\u0168': '\u0169', '\u016A': '\u016B', '\u016C': '\u016D', '\u016E': '\u016F', '\u0170': '\u0171', '\u0172': '\u0173', '\u0174': '\u0175', '\u0176': '\u0177', '\u0178': '\xFF', '\u0179': '\u017A', '\u017B': '\u017C', '\u017D': '\u017E', '\u017F': 's', '\u0181': '\u0253', '\u0182': '\u0183', '\u0184': '\u0185', '\u0186': '\u0254', '\u0187': '\u0188', '\u0189': '\u0256', '\u018A': '\u0257', '\u018B': '\u018C', '\u018E': '\u01DD', '\u018F': '\u0259', '\u0190': '\u025B', '\u0191': '\u0192', '\u0193': '\u0260', '\u0194': '\u0263', '\u0196': '\u0269', '\u0197': '\u0268', '\u0198': '\u0199', '\u019C': '\u026F', '\u019D': '\u0272', '\u019F': '\u0275', '\u01A0': '\u01A1', '\u01A2': '\u01A3', '\u01A4': '\u01A5', '\u01A6': '\u0280', '\u01A7': '\u01A8', '\u01A9': '\u0283', '\u01AC': '\u01AD', '\u01AE': '\u0288', '\u01AF': '\u01B0', '\u01B1': '\u028A', '\u01B2': '\u028B', '\u01B3': '\u01B4', '\u01B5': '\u01B6', '\u01B7': '\u0292', '\u01B8': '\u01B9', '\u01BC': '\u01BD', '\u01C4': '\u01C6', '\u01C5': '\u01C6', '\u01C7': '\u01C9', '\u01C8': '\u01C9', '\u01CA': '\u01CC', '\u01CB': '\u01CC', '\u01CD': '\u01CE', '\u01CF': '\u01D0', '\u01D1': '\u01D2', '\u01D3': '\u01D4', '\u01D5': '\u01D6', '\u01D7': '\u01D8', '\u01D9': '\u01DA', '\u01DB': '\u01DC', '\u01DE': '\u01DF', '\u01E0': '\u01E1', '\u01E2': '\u01E3', '\u01E4': '\u01E5', '\u01E6': '\u01E7', '\u01E8': '\u01E9', '\u01EA': '\u01EB', '\u01EC': '\u01ED', '\u01EE': '\u01EF', '\u01F1': '\u01F3', '\u01F2': '\u01F3', '\u01F4': '\u01F5', '\u01F6': '\u0195', '\u01F7': '\u01BF', '\u01F8': '\u01F9', '\u01FA': '\u01FB', '\u01FC': '\u01FD', '\u01FE': '\u01FF', '\u0200': '\u0201', '\u0202': '\u0203', '\u0204': '\u0205', '\u0206': '\u0207', '\u0208': '\u0209', '\u020A': '\u020B', '\u020C': '\u020D', '\u020E': '\u020F', '\u0210': '\u0211', '\u0212': '\u0213', '\u0214': '\u0215', '\u0216': '\u0217', '\u0218': '\u0219', '\u021A': '\u021B', '\u021C': '\u021D', '\u021E': '\u021F', '\u0220': '\u019E', '\u0222': '\u0223', '\u0224': '\u0225', '\u0226': '\u0227', '\u0228': '\u0229', '\u022A': '\u022B', '\u022C': '\u022D', '\u022E': '\u022F', '\u0230': '\u0231', '\u0232': '\u0233', '\u023A': '\u2C65', '\u023B': '\u023C', '\u023D': '\u019A', '\u023E': '\u2C66', '\u0241': '\u0242', '\u0243': '\u0180', '\u0244': '\u0289', '\u0245': '\u028C', '\u0246': '\u0247', '\u0248': '\u0249', '\u024A': '\u024B', '\u024C': '\u024D', '\u024E': '\u024F', '\u0345': '\u03B9', '\u0370': '\u0371', '\u0372': '\u0373', '\u0376': '\u0377', '\u037F': '\u03F3', '\u0386': '\u03AC', '\u0388': '\u03AD', '\u0389': '\u03AE', '\u038A': '\u03AF', '\u038C': '\u03CC', '\u038E': '\u03CD', '\u038F': '\u03CE', '\u0391': '\u03B1', '\u0392': '\u03B2', '\u0393': '\u03B3', '\u0394': '\u03B4', '\u0395': '\u03B5', '\u0396': '\u03B6', '\u0397': '\u03B7', '\u0398': '\u03B8', '\u0399': '\u03B9', '\u039A': '\u03BA', '\u039B': '\u03BB', '\u039C': '\u03BC', '\u039D': '\u03BD', '\u039E': '\u03BE', '\u039F': '\u03BF', '\u03A0': '\u03C0', '\u03A1': '\u03C1', '\u03A3': '\u03C3', '\u03A4': '\u03C4', '\u03A5': '\u03C5', '\u03A6': '\u03C6', '\u03A7': '\u03C7', '\u03A8': '\u03C8', '\u03A9': '\u03C9', '\u03AA': '\u03CA', '\u03AB': '\u03CB', '\u03C2': '\u03C3', '\u03CF': '\u03D7', '\u03D0': '\u03B2', '\u03D1': '\u03B8', '\u03D5': '\u03C6', '\u03D6': '\u03C0', '\u03D8': '\u03D9', '\u03DA': '\u03DB', '\u03DC': '\u03DD', '\u03DE': '\u03DF', '\u03E0': '\u03E1', '\u03E2': '\u03E3', '\u03E4': '\u03E5', '\u03E6': '\u03E7', '\u03E8': '\u03E9', '\u03EA': '\u03EB', '\u03EC': '\u03ED', '\u03EE': '\u03EF', '\u03F0': '\u03BA', '\u03F1': '\u03C1', '\u03F4': '\u03B8', '\u03F5': '\u03B5', '\u03F7': '\u03F8', '\u03F9': '\u03F2', '\u03FA': '\u03FB', '\u03FD': '\u037B', '\u03FE': '\u037C', '\u03FF': '\u037D', '\u0400': '\u0450', '\u0401': '\u0451', '\u0402': '\u0452', '\u0403': '\u0453', '\u0404': '\u0454', '\u0405': '\u0455', '\u0406': '\u0456', '\u0407': '\u0457', '\u0408': '\u0458', '\u0409': '\u0459', '\u040A': '\u045A', '\u040B': '\u045B', '\u040C': '\u045C', '\u040D': '\u045D', '\u040E': '\u045E', '\u040F': '\u045F', '\u0410': '\u0430', '\u0411': '\u0431', '\u0412': '\u0432', '\u0413': '\u0433', '\u0414': '\u0434', '\u0415': '\u0435', '\u0416': '\u0436', '\u0417': '\u0437', '\u0418': '\u0438', '\u0419': '\u0439', '\u041A': '\u043A', '\u041B': '\u043B', '\u041C': '\u043C', '\u041D': '\u043D', '\u041E': '\u043E', '\u041F': '\u043F', '\u0420': '\u0440', '\u0421': '\u0441', '\u0422': '\u0442', '\u0423': '\u0443', '\u0424': '\u0444', '\u0425': '\u0445', '\u0426': '\u0446', '\u0427': '\u0447', '\u0428': '\u0448', '\u0429': '\u0449', '\u042A': '\u044A', '\u042B': '\u044B', '\u042C': '\u044C', '\u042D': '\u044D', '\u042E': '\u044E', '\u042F': '\u044F', '\u0460': '\u0461', '\u0462': '\u0463', '\u0464': '\u0465', '\u0466': '\u0467', '\u0468': '\u0469', '\u046A': '\u046B', '\u046C': '\u046D', '\u046E': '\u046F', '\u0470': '\u0471', '\u0472': '\u0473', '\u0474': '\u0475', '\u0476': '\u0477', '\u0478': '\u0479', '\u047A': '\u047B', '\u047C': '\u047D', '\u047E': '\u047F', '\u0480': '\u0481', '\u048A': '\u048B', '\u048C': '\u048D', '\u048E': '\u048F', '\u0490': '\u0491', '\u0492': '\u0493', '\u0494': '\u0495', '\u0496': '\u0497', '\u0498': '\u0499', '\u049A': '\u049B', '\u049C': '\u049D', '\u049E': '\u049F', '\u04A0': '\u04A1', '\u04A2': '\u04A3', '\u04A4': '\u04A5', '\u04A6': '\u04A7', '\u04A8': '\u04A9', '\u04AA': '\u04AB', '\u04AC': '\u04AD', '\u04AE': '\u04AF', '\u04B0': '\u04B1', '\u04B2': '\u04B3', '\u04B4': '\u04B5', '\u04B6': '\u04B7', '\u04B8': '\u04B9', '\u04BA': '\u04BB', '\u04BC': '\u04BD', '\u04BE': '\u04BF', '\u04C0': '\u04CF', '\u04C1': '\u04C2', '\u04C3': '\u04C4', '\u04C5': '\u04C6', '\u04C7': '\u04C8', '\u04C9': '\u04CA', '\u04CB': '\u04CC', '\u04CD': '\u04CE', '\u04D0': '\u04D1', '\u04D2': '\u04D3', '\u04D4': '\u04D5', '\u04D6': '\u04D7', '\u04D8': '\u04D9', '\u04DA': '\u04DB', '\u04DC': '\u04DD', '\u04DE': '\u04DF', '\u04E0': '\u04E1', '\u04E2': '\u04E3', '\u04E4': '\u04E5', '\u04E6': '\u04E7', '\u04E8': '\u04E9', '\u04EA': '\u04EB', '\u04EC': '\u04ED', '\u04EE': '\u04EF', '\u04F0': '\u04F1', '\u04F2': '\u04F3', '\u04F4': '\u04F5', '\u04F6': '\u04F7', '\u04F8': '\u04F9', '\u04FA': '\u04FB', '\u04FC': '\u04FD', '\u04FE': '\u04FF', '\u0500': '\u0501', '\u0502': '\u0503', '\u0504': '\u0505', '\u0506': '\u0507', '\u0508': '\u0509', '\u050A': '\u050B', '\u050C': '\u050D', '\u050E': '\u050F', '\u0510': '\u0511', '\u0512': '\u0513', '\u0514': '\u0515', '\u0516': '\u0517', '\u0518': '\u0519', '\u051A': '\u051B', '\u051C': '\u051D', '\u051E': '\u051F', '\u0520': '\u0521', '\u0522': '\u0523', '\u0524': '\u0525', '\u0526': '\u0527', '\u0528': '\u0529', '\u052A': '\u052B', '\u052C': '\u052D', '\u052E': '\u052F', '\u0531': '\u0561', '\u0532': '\u0562', '\u0533': '\u0563', '\u0534': '\u0564', '\u0535': '\u0565', '\u0536': '\u0566', '\u0537': '\u0567', '\u0538': '\u0568', '\u0539': '\u0569', '\u053A': '\u056A', '\u053B': '\u056B', '\u053C': '\u056C', '\u053D': '\u056D', '\u053E': '\u056E', '\u053F': '\u056F', '\u0540': '\u0570', '\u0541': '\u0571', '\u0542': '\u0572', '\u0543': '\u0573', '\u0544': '\u0574', '\u0545': '\u0575', '\u0546': '\u0576', '\u0547': '\u0577', '\u0548': '\u0578', '\u0549': '\u0579', '\u054A': '\u057A', '\u054B': '\u057B', '\u054C': '\u057C', '\u054D': '\u057D', '\u054E': '\u057E', '\u054F': '\u057F', '\u0550': '\u0580', '\u0551': '\u0581', '\u0552': '\u0582', '\u0553': '\u0583', '\u0554': '\u0584', '\u0555': '\u0585', '\u0556': '\u0586', '\u10A0': '\u2D00', '\u10A1': '\u2D01', '\u10A2': '\u2D02', '\u10A3': '\u2D03', '\u10A4': '\u2D04', '\u10A5': '\u2D05', '\u10A6': '\u2D06', '\u10A7': '\u2D07', '\u10A8': '\u2D08', '\u10A9': '\u2D09', '\u10AA': '\u2D0A', '\u10AB': '\u2D0B', '\u10AC': '\u2D0C', '\u10AD': '\u2D0D', '\u10AE': '\u2D0E', '\u10AF': '\u2D0F', '\u10B0': '\u2D10', '\u10B1': '\u2D11', '\u10B2': '\u2D12', '\u10B3': '\u2D13', '\u10B4': '\u2D14', '\u10B5': '\u2D15', '\u10B6': '\u2D16', '\u10B7': '\u2D17', '\u10B8': '\u2D18', '\u10B9': '\u2D19', '\u10BA': '\u2D1A', '\u10BB': '\u2D1B', '\u10BC': '\u2D1C', '\u10BD': '\u2D1D', '\u10BE': '\u2D1E', '\u10BF': '\u2D1F', '\u10C0': '\u2D20', '\u10C1': '\u2D21', '\u10C2': '\u2D22', '\u10C3': '\u2D23', '\u10C4': '\u2D24', '\u10C5': '\u2D25', '\u10C7': '\u2D27', '\u10CD': '\u2D2D', '\u1E00': '\u1E01', '\u1E02': '\u1E03', '\u1E04': '\u1E05', '\u1E06': '\u1E07', '\u1E08': '\u1E09', '\u1E0A': '\u1E0B', '\u1E0C': '\u1E0D', '\u1E0E': '\u1E0F', '\u1E10': '\u1E11', '\u1E12': '\u1E13', '\u1E14': '\u1E15', '\u1E16': '\u1E17', '\u1E18': '\u1E19', '\u1E1A': '\u1E1B', '\u1E1C': '\u1E1D', '\u1E1E': '\u1E1F', '\u1E20': '\u1E21', '\u1E22': '\u1E23', '\u1E24': '\u1E25', '\u1E26': '\u1E27', '\u1E28': '\u1E29', '\u1E2A': '\u1E2B', '\u1E2C': '\u1E2D', '\u1E2E': '\u1E2F', '\u1E30': '\u1E31', '\u1E32': '\u1E33', '\u1E34': '\u1E35', '\u1E36': '\u1E37', '\u1E38': '\u1E39', '\u1E3A': '\u1E3B', '\u1E3C': '\u1E3D', '\u1E3E': '\u1E3F', '\u1E40': '\u1E41', '\u1E42': '\u1E43', '\u1E44': '\u1E45', '\u1E46': '\u1E47', '\u1E48': '\u1E49', '\u1E4A': '\u1E4B', '\u1E4C': '\u1E4D', '\u1E4E': '\u1E4F', '\u1E50': '\u1E51', '\u1E52': '\u1E53', '\u1E54': '\u1E55', '\u1E56': '\u1E57', '\u1E58': '\u1E59', '\u1E5A': '\u1E5B', '\u1E5C': '\u1E5D', '\u1E5E': '\u1E5F', '\u1E60': '\u1E61', '\u1E62': '\u1E63', '\u1E64': '\u1E65', '\u1E66': '\u1E67', '\u1E68': '\u1E69', '\u1E6A': '\u1E6B', '\u1E6C': '\u1E6D', '\u1E6E': '\u1E6F', '\u1E70': '\u1E71', '\u1E72': '\u1E73', '\u1E74': '\u1E75', '\u1E76': '\u1E77', '\u1E78': '\u1E79', '\u1E7A': '\u1E7B', '\u1E7C': '\u1E7D', '\u1E7E': '\u1E7F', '\u1E80': '\u1E81', '\u1E82': '\u1E83', '\u1E84': '\u1E85', '\u1E86': '\u1E87', '\u1E88': '\u1E89', '\u1E8A': '\u1E8B', '\u1E8C': '\u1E8D', '\u1E8E': '\u1E8F', '\u1E90': '\u1E91', '\u1E92': '\u1E93', '\u1E94': '\u1E95', '\u1E9B': '\u1E61', '\u1EA0': '\u1EA1', '\u1EA2': '\u1EA3', '\u1EA4': '\u1EA5', '\u1EA6': '\u1EA7', '\u1EA8': '\u1EA9', '\u1EAA': '\u1EAB', '\u1EAC': '\u1EAD', '\u1EAE': '\u1EAF', '\u1EB0': '\u1EB1', '\u1EB2': '\u1EB3', '\u1EB4': '\u1EB5', '\u1EB6': '\u1EB7', '\u1EB8': '\u1EB9', '\u1EBA': '\u1EBB', '\u1EBC': '\u1EBD', '\u1EBE': '\u1EBF', '\u1EC0': '\u1EC1', '\u1EC2': '\u1EC3', '\u1EC4': '\u1EC5', '\u1EC6': '\u1EC7', '\u1EC8': '\u1EC9', '\u1ECA': '\u1ECB', '\u1ECC': '\u1ECD', '\u1ECE': '\u1ECF', '\u1ED0': '\u1ED1', '\u1ED2': '\u1ED3', '\u1ED4': '\u1ED5', '\u1ED6': '\u1ED7', '\u1ED8': '\u1ED9', '\u1EDA': '\u1EDB', '\u1EDC': '\u1EDD', '\u1EDE': '\u1EDF', '\u1EE0': '\u1EE1', '\u1EE2': '\u1EE3', '\u1EE4': '\u1EE5', '\u1EE6': '\u1EE7', '\u1EE8': '\u1EE9', '\u1EEA': '\u1EEB', '\u1EEC': '\u1EED', '\u1EEE': '\u1EEF', '\u1EF0': '\u1EF1', '\u1EF2': '\u1EF3', '\u1EF4': '\u1EF5', '\u1EF6': '\u1EF7', '\u1EF8': '\u1EF9', '\u1EFA': '\u1EFB', '\u1EFC': '\u1EFD', '\u1EFE': '\u1EFF', '\u1F08': '\u1F00', '\u1F09': '\u1F01', '\u1F0A': '\u1F02', '\u1F0B': '\u1F03', '\u1F0C': '\u1F04', '\u1F0D': '\u1F05', '\u1F0E': '\u1F06', '\u1F0F': '\u1F07', '\u1F18': '\u1F10', '\u1F19': '\u1F11', '\u1F1A': '\u1F12', '\u1F1B': '\u1F13', '\u1F1C': '\u1F14', '\u1F1D': '\u1F15', '\u1F28': '\u1F20', '\u1F29': '\u1F21', '\u1F2A': '\u1F22', '\u1F2B': '\u1F23', '\u1F2C': '\u1F24', '\u1F2D': '\u1F25', '\u1F2E': '\u1F26', '\u1F2F': '\u1F27', '\u1F38': '\u1F30', '\u1F39': '\u1F31', '\u1F3A': '\u1F32', '\u1F3B': '\u1F33', '\u1F3C': '\u1F34', '\u1F3D': '\u1F35', '\u1F3E': '\u1F36', '\u1F3F': '\u1F37', '\u1F48': '\u1F40', '\u1F49': '\u1F41', '\u1F4A': '\u1F42', '\u1F4B': '\u1F43', '\u1F4C': '\u1F44', '\u1F4D': '\u1F45', '\u1F59': '\u1F51', '\u1F5B': '\u1F53', '\u1F5D': '\u1F55', '\u1F5F': '\u1F57', '\u1F68': '\u1F60', '\u1F69': '\u1F61', '\u1F6A': '\u1F62', '\u1F6B': '\u1F63', '\u1F6C': '\u1F64', '\u1F6D': '\u1F65', '\u1F6E': '\u1F66', '\u1F6F': '\u1F67', '\u1FB8': '\u1FB0', '\u1FB9': '\u1FB1', '\u1FBA': '\u1F70', '\u1FBB': '\u1F71', '\u1FBE': '\u03B9', '\u1FC8': '\u1F72', '\u1FC9': '\u1F73', '\u1FCA': '\u1F74', '\u1FCB': '\u1F75', '\u1FD8': '\u1FD0', '\u1FD9': '\u1FD1', '\u1FDA': '\u1F76', '\u1FDB': '\u1F77', '\u1FE8': '\u1FE0', '\u1FE9': '\u1FE1', '\u1FEA': '\u1F7A', '\u1FEB': '\u1F7B', '\u1FEC': '\u1FE5', '\u1FF8': '\u1F78', '\u1FF9': '\u1F79', '\u1FFA': '\u1F7C', '\u1FFB': '\u1F7D', '\u2126': '\u03C9', '\u212A': 'k', '\u212B': '\xE5', '\u2132': '\u214E', '\u2160': '\u2170', '\u2161': '\u2171', '\u2162': '\u2172', '\u2163': '\u2173', '\u2164': '\u2174', '\u2165': '\u2175', '\u2166': '\u2176', '\u2167': '\u2177', '\u2168': '\u2178', '\u2169': '\u2179', '\u216A': '\u217A', '\u216B': '\u217B', '\u216C': '\u217C', '\u216D': '\u217D', '\u216E': '\u217E', '\u216F': '\u217F', '\u2183': '\u2184', '\u24B6': '\u24D0', '\u24B7': '\u24D1', '\u24B8': '\u24D2', '\u24B9': '\u24D3', '\u24BA': '\u24D4', '\u24BB': '\u24D5', '\u24BC': '\u24D6', '\u24BD': '\u24D7', '\u24BE': '\u24D8', '\u24BF': '\u24D9', '\u24C0': '\u24DA', '\u24C1': '\u24DB', '\u24C2': '\u24DC', '\u24C3': '\u24DD', '\u24C4': '\u24DE', '\u24C5': '\u24DF', '\u24C6': '\u24E0', '\u24C7': '\u24E1', '\u24C8': '\u24E2', '\u24C9': '\u24E3', '\u24CA': '\u24E4', '\u24CB': '\u24E5', '\u24CC': '\u24E6', '\u24CD': '\u24E7', '\u24CE': '\u24E8', '\u24CF': '\u24E9', '\u2C00': '\u2C30', '\u2C01': '\u2C31', '\u2C02': '\u2C32', '\u2C03': '\u2C33', '\u2C04': '\u2C34', '\u2C05': '\u2C35', '\u2C06': '\u2C36', '\u2C07': '\u2C37', '\u2C08': '\u2C38', '\u2C09': '\u2C39', '\u2C0A': '\u2C3A', '\u2C0B': '\u2C3B', '\u2C0C': '\u2C3C', '\u2C0D': '\u2C3D', '\u2C0E': '\u2C3E', '\u2C0F': '\u2C3F', '\u2C10': '\u2C40', '\u2C11': '\u2C41', '\u2C12': '\u2C42', '\u2C13': '\u2C43', '\u2C14': '\u2C44', '\u2C15': '\u2C45', '\u2C16': '\u2C46', '\u2C17': '\u2C47', '\u2C18': '\u2C48', '\u2C19': '\u2C49', '\u2C1A': '\u2C4A', '\u2C1B': '\u2C4B', '\u2C1C': '\u2C4C', '\u2C1D': '\u2C4D', '\u2C1E': '\u2C4E', '\u2C1F': '\u2C4F', '\u2C20': '\u2C50', '\u2C21': '\u2C51', '\u2C22': '\u2C52', '\u2C23': '\u2C53', '\u2C24': '\u2C54', '\u2C25': '\u2C55', '\u2C26': '\u2C56', '\u2C27': '\u2C57', '\u2C28': '\u2C58', '\u2C29': '\u2C59', '\u2C2A': '\u2C5A', '\u2C2B': '\u2C5B', '\u2C2C': '\u2C5C', '\u2C2D': '\u2C5D', '\u2C2E': '\u2C5E', '\u2C60': '\u2C61', '\u2C62': '\u026B', '\u2C63': '\u1D7D', '\u2C64': '\u027D', '\u2C67': '\u2C68', '\u2C69': '\u2C6A', '\u2C6B': '\u2C6C', '\u2C6D': '\u0251', '\u2C6E': '\u0271', '\u2C6F': '\u0250', '\u2C70': '\u0252', '\u2C72': '\u2C73', '\u2C75': '\u2C76', '\u2C7E': '\u023F', '\u2C7F': '\u0240', '\u2C80': '\u2C81', '\u2C82': '\u2C83', '\u2C84': '\u2C85', '\u2C86': '\u2C87', '\u2C88': '\u2C89', '\u2C8A': '\u2C8B', '\u2C8C': '\u2C8D', '\u2C8E': '\u2C8F', '\u2C90': '\u2C91', '\u2C92': '\u2C93', '\u2C94': '\u2C95', '\u2C96': '\u2C97', '\u2C98': '\u2C99', '\u2C9A': '\u2C9B', '\u2C9C': '\u2C9D', '\u2C9E': '\u2C9F', '\u2CA0': '\u2CA1', '\u2CA2': '\u2CA3', '\u2CA4': '\u2CA5', '\u2CA6': '\u2CA7', '\u2CA8': '\u2CA9', '\u2CAA': '\u2CAB', '\u2CAC': '\u2CAD', '\u2CAE': '\u2CAF', '\u2CB0': '\u2CB1', '\u2CB2': '\u2CB3', '\u2CB4': '\u2CB5', '\u2CB6': '\u2CB7', '\u2CB8': '\u2CB9', '\u2CBA': '\u2CBB', '\u2CBC': '\u2CBD', '\u2CBE': '\u2CBF', '\u2CC0': '\u2CC1', '\u2CC2': '\u2CC3', '\u2CC4': '\u2CC5', '\u2CC6': '\u2CC7', '\u2CC8': '\u2CC9', '\u2CCA': '\u2CCB', '\u2CCC': '\u2CCD', '\u2CCE': '\u2CCF', '\u2CD0': '\u2CD1', '\u2CD2': '\u2CD3', '\u2CD4': '\u2CD5', '\u2CD6': '\u2CD7', '\u2CD8': '\u2CD9', '\u2CDA': '\u2CDB', '\u2CDC': '\u2CDD', '\u2CDE': '\u2CDF', '\u2CE0': '\u2CE1', '\u2CE2': '\u2CE3', '\u2CEB': '\u2CEC', '\u2CED': '\u2CEE', '\u2CF2': '\u2CF3', '\uA640': '\uA641', '\uA642': '\uA643', '\uA644': '\uA645', '\uA646': '\uA647', '\uA648': '\uA649', '\uA64A': '\uA64B', '\uA64C': '\uA64D', '\uA64E': '\uA64F', '\uA650': '\uA651', '\uA652': '\uA653', '\uA654': '\uA655', '\uA656': '\uA657', '\uA658': '\uA659', '\uA65A': '\uA65B', '\uA65C': '\uA65D', '\uA65E': '\uA65F', '\uA660': '\uA661', '\uA662': '\uA663', '\uA664': '\uA665', '\uA666': '\uA667', '\uA668': '\uA669', '\uA66A': '\uA66B', '\uA66C': '\uA66D', '\uA680': '\uA681', '\uA682': '\uA683', '\uA684': '\uA685', '\uA686': '\uA687', '\uA688': '\uA689', '\uA68A': '\uA68B', '\uA68C': '\uA68D', '\uA68E': '\uA68F', '\uA690': '\uA691', '\uA692': '\uA693', '\uA694': '\uA695', '\uA696': '\uA697', '\uA698': '\uA699', '\uA69A': '\uA69B', '\uA722': '\uA723', '\uA724': '\uA725', '\uA726': '\uA727', '\uA728': '\uA729', '\uA72A': '\uA72B', '\uA72C': '\uA72D', '\uA72E': '\uA72F', '\uA732': '\uA733', '\uA734': '\uA735', '\uA736': '\uA737', '\uA738': '\uA739', '\uA73A': '\uA73B', '\uA73C': '\uA73D', '\uA73E': '\uA73F', '\uA740': '\uA741', '\uA742': '\uA743', '\uA744': '\uA745', '\uA746': '\uA747', '\uA748': '\uA749', '\uA74A': '\uA74B', '\uA74C': '\uA74D', '\uA74E': '\uA74F', '\uA750': '\uA751', '\uA752': '\uA753', '\uA754': '\uA755', '\uA756': '\uA757', '\uA758': '\uA759', '\uA75A': '\uA75B', '\uA75C': '\uA75D', '\uA75E': '\uA75F', '\uA760': '\uA761', '\uA762': '\uA763', '\uA764': '\uA765', '\uA766': '\uA767', '\uA768': '\uA769', '\uA76A': '\uA76B', '\uA76C': '\uA76D', '\uA76E': '\uA76F', '\uA779': '\uA77A', '\uA77B': '\uA77C', '\uA77D': '\u1D79', '\uA77E': '\uA77F', '\uA780': '\uA781', '\uA782': '\uA783', '\uA784': '\uA785', '\uA786': '\uA787', '\uA78B': '\uA78C', '\uA78D': '\u0265', '\uA790': '\uA791', '\uA792': '\uA793', '\uA796': '\uA797', '\uA798': '\uA799', '\uA79A': '\uA79B', '\uA79C': '\uA79D', '\uA79E': '\uA79F', '\uA7A0': '\uA7A1', '\uA7A2': '\uA7A3', '\uA7A4': '\uA7A5', '\uA7A6': '\uA7A7', '\uA7A8': '\uA7A9', '\uA7AA': '\u0266', '\uA7AB': '\u025C', '\uA7AC': '\u0261', '\uA7AD': '\u026C', '\uA7B0': '\u029E', '\uA7B1': '\u0287', '\uFF21': '\uFF41', '\uFF22': '\uFF42', '\uFF23': '\uFF43', '\uFF24': '\uFF44', '\uFF25': '\uFF45', '\uFF26': '\uFF46', '\uFF27': '\uFF47', '\uFF28': '\uFF48', '\uFF29': '\uFF49', '\uFF2A': '\uFF4A', '\uFF2B': '\uFF4B', '\uFF2C': '\uFF4C', '\uFF2D': '\uFF4D', '\uFF2E': '\uFF4E', '\uFF2F': '\uFF4F', '\uFF30': '\uFF50', '\uFF31': '\uFF51', '\uFF32': '\uFF52', '\uFF33': '\uFF53', '\uFF34': '\uFF54', '\uFF35': '\uFF55', '\uFF36': '\uFF56', '\uFF37': '\uFF57', '\uFF38': '\uFF58', '\uFF39': '\uFF59', '\uFF3A': '\uFF5A', '\uD801\uDC00': '\uD801\uDC28', '\uD801\uDC01': '\uD801\uDC29', '\uD801\uDC02': '\uD801\uDC2A', '\uD801\uDC03': '\uD801\uDC2B', '\uD801\uDC04': '\uD801\uDC2C', '\uD801\uDC05': '\uD801\uDC2D', '\uD801\uDC06': '\uD801\uDC2E', '\uD801\uDC07': '\uD801\uDC2F', '\uD801\uDC08': '\uD801\uDC30', '\uD801\uDC09': '\uD801\uDC31', '\uD801\uDC0A': '\uD801\uDC32', '\uD801\uDC0B': '\uD801\uDC33', '\uD801\uDC0C': '\uD801\uDC34', '\uD801\uDC0D': '\uD801\uDC35', '\uD801\uDC0E': '\uD801\uDC36', '\uD801\uDC0F': '\uD801\uDC37', '\uD801\uDC10': '\uD801\uDC38', '\uD801\uDC11': '\uD801\uDC39', '\uD801\uDC12': '\uD801\uDC3A', '\uD801\uDC13': '\uD801\uDC3B', '\uD801\uDC14': '\uD801\uDC3C', '\uD801\uDC15': '\uD801\uDC3D', '\uD801\uDC16': '\uD801\uDC3E', '\uD801\uDC17': '\uD801\uDC3F', '\uD801\uDC18': '\uD801\uDC40', '\uD801\uDC19': '\uD801\uDC41', '\uD801\uDC1A': '\uD801\uDC42', '\uD801\uDC1B': '\uD801\uDC43', '\uD801\uDC1C': '\uD801\uDC44', '\uD801\uDC1D': '\uD801\uDC45', '\uD801\uDC1E': '\uD801\uDC46', '\uD801\uDC1F': '\uD801\uDC47', '\uD801\uDC20': '\uD801\uDC48', '\uD801\uDC21': '\uD801\uDC49', '\uD801\uDC22': '\uD801\uDC4A', '\uD801\uDC23': '\uD801\uDC4B', '\uD801\uDC24': '\uD801\uDC4C', '\uD801\uDC25': '\uD801\uDC4D', '\uD801\uDC26': '\uD801\uDC4E', '\uD801\uDC27': '\uD801\uDC4F', '\uD806\uDCA0': '\uD806\uDCC0', '\uD806\uDCA1': '\uD806\uDCC1', '\uD806\uDCA2': '\uD806\uDCC2', '\uD806\uDCA3': '\uD806\uDCC3', '\uD806\uDCA4': '\uD806\uDCC4', '\uD806\uDCA5': '\uD806\uDCC5', '\uD806\uDCA6': '\uD806\uDCC6', '\uD806\uDCA7': '\uD806\uDCC7', '\uD806\uDCA8': '\uD806\uDCC8', '\uD806\uDCA9': '\uD806\uDCC9', '\uD806\uDCAA': '\uD806\uDCCA', '\uD806\uDCAB': '\uD806\uDCCB', '\uD806\uDCAC': '\uD806\uDCCC', '\uD806\uDCAD': '\uD806\uDCCD', '\uD806\uDCAE': '\uD806\uDCCE', '\uD806\uDCAF': '\uD806\uDCCF', '\uD806\uDCB0': '\uD806\uDCD0', '\uD806\uDCB1': '\uD806\uDCD1', '\uD806\uDCB2': '\uD806\uDCD2', '\uD806\uDCB3': '\uD806\uDCD3', '\uD806\uDCB4': '\uD806\uDCD4', '\uD806\uDCB5': '\uD806\uDCD5', '\uD806\uDCB6': '\uD806\uDCD6', '\uD806\uDCB7': '\uD806\uDCD7', '\uD806\uDCB8': '\uD806\uDCD8', '\uD806\uDCB9': '\uD806\uDCD9', '\uD806\uDCBA': '\uD806\uDCDA', '\uD806\uDCBB': '\uD806\uDCDB', '\uD806\uDCBC': '\uD806\uDCDC', '\uD806\uDCBD': '\uD806\uDCDD', '\uD806\uDCBE': '\uD806\uDCDE', '\uD806\uDCBF': '\uD806\uDCDF', '\xDF': 'ss', '\u0130': 'i\u0307', '\u0149': '\u02BCn', '\u01F0': 'j\u030C', '\u0390': '\u03B9\u0308\u0301', '\u03B0': '\u03C5\u0308\u0301', '\u0587': '\u0565\u0582', '\u1E96': 'h\u0331', '\u1E97': 't\u0308', '\u1E98': 'w\u030A', '\u1E99': 'y\u030A', '\u1E9A': 'a\u02BE', '\u1E9E': 'ss', '\u1F50': '\u03C5\u0313', '\u1F52': '\u03C5\u0313\u0300', '\u1F54': '\u03C5\u0313\u0301', '\u1F56': '\u03C5\u0313\u0342', '\u1F80': '\u1F00\u03B9', '\u1F81': '\u1F01\u03B9', '\u1F82': '\u1F02\u03B9', '\u1F83': '\u1F03\u03B9', '\u1F84': '\u1F04\u03B9', '\u1F85': '\u1F05\u03B9', '\u1F86': '\u1F06\u03B9', '\u1F87': '\u1F07\u03B9', '\u1F88': '\u1F00\u03B9', '\u1F89': '\u1F01\u03B9', '\u1F8A': '\u1F02\u03B9', '\u1F8B': '\u1F03\u03B9', '\u1F8C': '\u1F04\u03B9', '\u1F8D': '\u1F05\u03B9', '\u1F8E': '\u1F06\u03B9', '\u1F8F': '\u1F07\u03B9', '\u1F90': '\u1F20\u03B9', '\u1F91': '\u1F21\u03B9', '\u1F92': '\u1F22\u03B9', '\u1F93': '\u1F23\u03B9', '\u1F94': '\u1F24\u03B9', '\u1F95': '\u1F25\u03B9', '\u1F96': '\u1F26\u03B9', '\u1F97': '\u1F27\u03B9', '\u1F98': '\u1F20\u03B9', '\u1F99': '\u1F21\u03B9', '\u1F9A': '\u1F22\u03B9', '\u1F9B': '\u1F23\u03B9', '\u1F9C': '\u1F24\u03B9', '\u1F9D': '\u1F25\u03B9', '\u1F9E': '\u1F26\u03B9', '\u1F9F': '\u1F27\u03B9', '\u1FA0': '\u1F60\u03B9', '\u1FA1': '\u1F61\u03B9', '\u1FA2': '\u1F62\u03B9', '\u1FA3': '\u1F63\u03B9', '\u1FA4': '\u1F64\u03B9', '\u1FA5': '\u1F65\u03B9', '\u1FA6': '\u1F66\u03B9', '\u1FA7': '\u1F67\u03B9', '\u1FA8': '\u1F60\u03B9', '\u1FA9': '\u1F61\u03B9', '\u1FAA': '\u1F62\u03B9', '\u1FAB': '\u1F63\u03B9', '\u1FAC': '\u1F64\u03B9', '\u1FAD': '\u1F65\u03B9', '\u1FAE': '\u1F66\u03B9', '\u1FAF': '\u1F67\u03B9', '\u1FB2': '\u1F70\u03B9', '\u1FB3': '\u03B1\u03B9', '\u1FB4': '\u03AC\u03B9', '\u1FB6': '\u03B1\u0342', '\u1FB7': '\u03B1\u0342\u03B9', '\u1FBC': '\u03B1\u03B9', '\u1FC2': '\u1F74\u03B9', '\u1FC3': '\u03B7\u03B9', '\u1FC4': '\u03AE\u03B9', '\u1FC6': '\u03B7\u0342', '\u1FC7': '\u03B7\u0342\u03B9', '\u1FCC': '\u03B7\u03B9', '\u1FD2': '\u03B9\u0308\u0300', '\u1FD3': '\u03B9\u0308\u0301', '\u1FD6': '\u03B9\u0342', '\u1FD7': '\u03B9\u0308\u0342', '\u1FE2': '\u03C5\u0308\u0300', '\u1FE3': '\u03C5\u0308\u0301', '\u1FE4': '\u03C1\u0313', '\u1FE6': '\u03C5\u0342', '\u1FE7': '\u03C5\u0308\u0342', '\u1FF2': '\u1F7C\u03B9', '\u1FF3': '\u03C9\u03B9', '\u1FF4': '\u03CE\u03B9', '\u1FF6': '\u03C9\u0342', '\u1FF7': '\u03C9\u0342\u03B9', '\u1FFC': '\u03C9\u03B9', '\uFB00': 'ff', '\uFB01': 'fi', '\uFB02': 'fl', '\uFB03': 'ffi', '\uFB04': 'ffl', '\uFB05': 'st', '\uFB06': 'st', '\uFB13': '\u0574\u0576', '\uFB14': '\u0574\u0565', '\uFB15': '\u0574\u056B', '\uFB16': '\u057E\u0576', '\uFB17': '\u0574\u056D' };
+
+      // Normalize reference label: collapse internal whitespace
+      // to single space, remove leading/trailing whitespace, case fold.
+      module.exports = function (string) {
+        return string.trim().replace(regex, function ($0) {
+          // Note: there is no need to check `hasOwnProperty($0)` here.
+          // If character not found in lookup table, it must be whitespace.
+          return map[$0] || ' ';
+        });
+      };
+
+    }, {}], 12: [function (require, module, exports) {
+      "use strict";
+
+      var escapeXml = require('./common').escapeXml;
+
+      // Helper function to produce an XML tag.
+      var tag = function (name, attrs, selfclosing) {
+        var result = '<' + name;
+        if (attrs && attrs.length > 0) {
+          var i = 0;
+          var attrib;
+          while ((attrib = attrs[i]) !== undefined) {
+            result += ' ' + attrib[0] + '="' + attrib[1] + '"';
+            i++;
+          }
+        }
+        if (selfclosing) {
+          result += ' /';
+        }
+
+        result += '>';
+        return result;
+      };
+
+      var reXMLTag = /\<[^>]*\>/;
+
+      var toTagName = function (s) {
+        return s.replace(/([a-z])([A-Z])/g, "$1_$2").toLowerCase();
+      };
+
+      var renderNodes = function (block) {
+
+        var attrs;
+        var tagname;
+        var walker = block.walker();
+        var event, node, entering;
+        var buffer = "";
+        var lastOut = "\n";
+        var disableTags = 0;
+        var indentLevel = 0;
+        var indent = '  ';
+        var unescapedContents;
+        var container;
+        var selfClosing;
+        var nodetype;
+
+        var out = function (s) {
+          if (disableTags > 0) {
+            buffer += s.replace(reXMLTag, '');
+          } else {
+            buffer += s;
+          }
+          lastOut = s;
+        };
+        var esc = this.escape;
+        var cr = function () {
+          if (lastOut !== '\n') {
+            buffer += '\n';
+            lastOut = '\n';
+            for (var i = indentLevel; i--;) {
+              buffer += indent;
+            }
+          }
+        };
+
+        var options = this.options;
+
+        if (options.time) { console.time("rendering"); }
+
+        buffer += '<?xml version="1.0" encoding="UTF-8"?>\n';
+        buffer += '<!DOCTYPE CommonMark SYSTEM "CommonMark.dtd">\n';
+
+        while ((event = walker.next())) {
+          entering = event.entering;
+          node = event.node;
+          nodetype = node.type;
+
+          container = node.isContainer;
+          selfClosing = nodetype === 'HorizontalRule' || nodetype === 'Hardbreak' ||
+              nodetype === 'Softbreak' || nodetype === 'Image';
+          unescapedContents = nodetype === 'Html' || nodetype === 'HtmlInline';
+          tagname = toTagName(nodetype);
+
+          if (entering) {
+
+            attrs = [];
+
+            switch (nodetype) {
+              case 'List':
+                if (node.listType !== null) {
+                  attrs.push(['type', node.listType.toLowerCase()]);
+                }
+                if (node.listStart !== null) {
+                  attrs.push(['start', String(node.listStart)]);
+                }
+                if (node.listTight !== null) {
+                  attrs.push(['tight', (node.listTight ? 'true' : 'false')]);
+                }
+                var delim = node.listDelimiter;
+                if (delim !== null) {
+                  var delimword = '';
+                  if (delim === '.') {
+                    delimword = 'period';
+                  } else {
+                    delimword = 'paren';
+                  }
+                  attrs.push(['delimiter', delimword]);
+                }
+                break;
+              case 'CodeBlock':
+                if (node.info) {
+                  attrs.push(['info', node.info]);
+                }
+                break;
+              case 'Header':
+                attrs.push(['level', String(node.level)]);
+                break;
+              case 'Link':
+              case 'Image':
+                attrs.push(['destination', node.destination]);
+                attrs.push(['title', node.title]);
+                break;
+              default:
+                break;
+            }
+            if (options.sourcepos) {
+              var pos = node.sourcepos;
+              if (pos) {
+                attrs.push(['sourcepos', String(pos[0][0]) + ':' +
+                            String(pos[0][1]) + '-' + String(pos[1][0]) + ':' +
+                            String(pos[1][1])]);
+              }
+            }
+
+            cr();
+            out(tag(tagname, attrs, selfClosing));
+            if (container) {
+              indentLevel += 1;
+            } else if (!container && !selfClosing) {
+              var lit = node.literal;
+              if (lit) {
+                out(unescapedContents ? lit : esc(lit));
+              }
+              out(tag('/' + tagname));
+            }
+          } else {
+            indentLevel -= 1;
+            cr();
+            out(tag('/' + tagname));
+          }
+
+
+        }
+        if (options.time) { console.timeEnd("rendering"); }
+        buffer += '\n';
+        return buffer;
+      };
+
+      // The XmlRenderer object.
+      function XmlRenderer(options) {
+        return {
+          // default options:
+          softbreak: '\n', // by default, soft breaks are rendered as newlines in HTML
+          // set to "<br />" to make them hard breaks
+          // set to " " if you want to ignore line wrapping in source
+          escape: escapeXml,
+          options: options || {},
+          render: renderNodes
+        };
+      }
+
+      module.exports = XmlRenderer;
+
+    }, { "./common": 2 }]
+  }, {}, [8])(8)
+});
+var textRange;
+(function (textRange) {
+    function getRange(self) {
+        var jq;
+        return _textrange[browserType(self)].get(self);
+    }
+    textRange.getRange = getRange;
+    /**
+     * $().textrange('set')
+     *
+     * Sets the selected text of an object by specifying the start and length of the selection.
+     *
+     * The start and length parameters are identical to PHP's substr() function with the following changes:
+     *  - excluding start will select all the text in the field.
+     *  - passing 0 for length will set the cursor at start. See $().textrange('setcursor')
+     *
+     * @param (optional) start
+     * @param (optional) length
+     *
+     * @see http://php.net/manual/en/function.substr.php
+     */
+    function setRange(self, s, l) {
+        var e;
+        if (typeof s === 'undefined') {
+            s = 0;
+        }
+        else if (s < 0) {
+            s = self.val().length + s;
+        }
+        if (typeof l === 'undefined') {
+            e = self.val().length;
+        }
+        else if (length >= 0) {
+            e = s + l;
+        }
+        else {
+            e = self.val().length + l;
+        }
+        _textrange[browserType(self)].set(self, s, e);
+        return self;
+    }
+    textRange.setRange = setRange;
+    /*
+     * $().textrange('setcursor')
+    *
+     * Sets the cursor at a position of the text field.
+     *
+     * @param position
+    */
+    function setcursor(self, position) {
+        return setRange(self, position, 0);
+    }
+    textRange.setcursor = setcursor;
+    /*
+     * $().textrange('replace')
+    * Replaces the selected text in the input field or textarea with text.
+     *
+     * @param text The text to replace the selection with.
+     */
+    function replace(self, text) {
+        _textrange[browserType(self)].replace(self, text);
+        return self;
+    }
+    textRange.replace = replace;
+    /*
+     * Alias for $().textrange('replace')
+      */
+    function insert(self, text) {
+        return replace(self, text);
+    }
+    textRange.insert = insert;
+    function browserType(self) {
+        return 'selectionStart' in self[0] ? 'xul' : document.selection ? 'msie' : 'unknown';
+    }
+    var _textrange = {
+        xul: {
+            get: function (self, property) {
+                var ta = (self[0]);
+                var props = {
+                    position: ta.selectionStart,
+                    start: ta.selectionStart,
+                    end: ta.selectionEnd,
+                    length: ta.selectionEnd - ta.selectionStart,
+                    text: self.val().substring(ta.selectionStart, ta.selectionEnd)
+                };
+                return typeof property === 'undefined' ? props : props[property];
+            },
+            set: function (self, start, end) {
+                var ta = (self[0]);
+                ta.selectionStart = start;
+                ta.selectionEnd = end;
+            },
+            replace: function (self, text) {
+                var ta = (self[0]);
+                var val = self.val();
+                var start = ta.selectionStart;
+                self.val(val.substring(0, ta.selectionStart) + text + val.substring(ta.selectionEnd, val.length));
+                ta.selectionStart = start;
+                ta.selectionEnd = start + text.length;
+            }
         },
-        find: function (url) {
-            var pe = this;
-            return (pe.nodeDir[url]);
-        },
-        addExternalTaskNode: function (repo) {
-            var pe = this;
-            if (pe.nodeDir[repo.url])
-                return;
-            pe.nodeDir[repo.url] = repo;
-            pe.nodeList.push(repo);
+        msie: {
+            get: function (self, property) {
+                var range = document.selection.createRange();
+                if (typeof range === 'undefined') {
+                    return {
+                        position: 0,
+                        start: 0,
+                        end: self.val().length,
+                        length: self.val().length,
+                        text: self.val()
+                    };
+                }
+                var rangetext = self[0].createTextRange();
+                var rangetextcopy = rangetext.duplicate();
+                rangetext.moveToBookmark(range.getBookmark());
+                rangetextcopy.setEndPoint('EndToStart', rangetext);
+                var props = {
+                    position: rangetextcopy.text.length,
+                    start: rangetextcopy.text.length,
+                    end: rangetextcopy.text.length + range.text.length,
+                    length: range.text.length,
+                    text: range.text
+                };
+                return typeof property === 'undefined' ? props : props[property];
+            },
+            set: function (self, start, end) {
+                var range = self[0].createTextRange();
+                if (typeof range === 'undefined') {
+                    return self;
+                }
+                if (typeof start !== 'undefined') {
+                    range.moveStart('character', start);
+                    range.collapse();
+                }
+                if (typeof end !== 'undefined') {
+                    range.moveEnd('character', end - start);
+                }
+                range.select();
+            },
+            replace: function (self, text) {
+                document.selection.createRange().text = text;
+            }
         }
     };
-    var cachedModule = (function () {
-        function cachedModule(data, dataNode) {
-            this.dataNode = dataNode;
-            this.cacheOfPages = new loader.cacheOf(30);
-            $.extend(this, data);
-            if (!this.loc)
-                this.loc = {};
-            if (this.dict)
-                this.dict = RJSON.unpack(this.dict);
-        }
-        return cachedModule;
-    })();
-    blended.cachedModule = cachedModule;
-    var loader;
-    (function (loader) {
-        //help
-        var _adjustProduct = CourseMeta.lib.adjustProduct;
-        var _adjustMod = CourseMeta.lib.adjustMod;
-        var _loadLocalizedProductAndInstrs = CourseMeta.loadLocalizedProductAndInstrs;
-        var _finishInstr = CourseMeta.finishInstr;
-        //slovnik pro modul
-        var _dict;
-        var _dictItem;
-        var _dictItemRoot;
-        //baseUrlRelToRoot: relativni adresa rootu Web4 aplikace vyhledem k aktualni HTML strance
-        function adjustProduct(ctx) {
-            try {
-                var deferred = ctx.$q.defer();
-                var prod = loader.productCache.fromCache(ctx);
-                if (prod) {
-                    deferred.resolve(prod);
-                    return;
-                }
-                var href = ctx.productUrl.substr(0, ctx.productUrl.length - 1);
-                var promises = _.map([href + '.js', href + '.' + LMComLib.Langs[ctx.loc] + '.js', href + '_instrs.js'], function (url) { return ctx.$http.get(blended.baseUrlRelToRoot + url, { transformResponse: function (s) { return CourseMeta.jsonParse(s); } }); });
-                ctx.$q.all(promises).then(function (files) {
-                    prod = files[0].data;
-                    prod.url = ctx.productUrl;
-                    prod.instructions = {};
-                    prod.nodeDir = {};
-                    prod.nodeList = [];
-                    finishProduktStart(prod);
-                    var loc = files[1].data;
-                    if (!loc)
-                        loc = {};
-                    var instrs = files[2].data;
-                    //vypln seznamy a adresar nodes
-                    var scan;
-                    scan = function (dt) {
-                        prod.nodeDir[dt.url] = dt;
-                        prod.nodeList.push(dt);
-                        if (dt.other)
-                            dt.other = $.extend(dt, JSON.parse(dt.other));
-                        _.each(dt.Items, function (it) { it.parent = dt; scan(it); });
-                    };
-                    scan(prod);
-                    //lokalizace produktu
-                    _.each(prod.nodeList, function (dt) { return dt.title = CourseMeta.localizeString(dt.url, dt.title, loc); });
-                    //finish instrukce
-                    if (instrs)
-                        for (var p in instrs) {
-                            var pg = CourseMeta.extractEx(instrs[p]);
-                            if (pg == null) {
-                                debugger;
-                                throw 'missing instr';
-                            }
-                            pg.Items = _.filter(pg.Items, function (it) { return !_.isString(it); });
-                            Course.localize(pg, function (s) { return CourseMeta.localizeString(pg.url, s, loc); });
-                            Course.scanEx(pg, function (tg) { if (!_.isString(tg))
-                                delete tg.id; }); //instrukce nemohou mit tag.id, protoze se ID tlucou s ID ze cviceni
-                            prod.instructions[p] = JsRenderTemplateEngine.render("c_genitems", pg);
-                        }
-                    //cache
-                    if (ctx.finishProduct)
-                        ctx.finishProduct(prod);
-                    loader.productCache.toCache(ctx, prod);
-                    //user data
-                    if (!!ctx.persistence)
-                        ctx.persistence.loadShortUserData(ctx.userid, ctx.companyid, ctx.productUrl, function (data) {
-                            prod.persistData = data;
-                            //if (data) for (var p in data) { var dt = prod.nodeDir[p]; if (dt) dt.userData = data[p]; /*nektera data mohou patrit taskum*/ }
-                            deferred.resolve(prod);
-                        });
-                    else {
-                        deferred.resolve(prod);
-                    }
-                }, function (errors) {
-                    deferred.reject();
-                });
-            }
-            finally {
-                return deferred.promise;
-            }
-        }
-        loader.adjustProduct = adjustProduct;
-        function adjustModule(ctx, modData, prod) {
-            ctx = blended.finishContext(ctx);
-            var deferred = ctx.$q.defer();
-            try {
-                var mod = prod.moduleCache.fromCache(ctx.moduleUrl, null);
-                if (mod) {
-                    deferred.resolve(mod);
-                    return;
-                }
-                var href = blended.baseUrlRelToRoot + ctx.moduleUrl.substr(0, ctx.moduleUrl.length - 1) + '.' + LMComLib.Langs[ctx.loc] + '.js';
-                ctx.$http.get(href).then(function (file) {
-                    mod = new cachedModule(file.data, modData);
-                    prod.moduleCache.toCache(ctx.moduleUrl, null, mod);
-                    deferred.resolve(mod);
-                }, function (errors) {
-                    deferred.reject();
-                });
-            }
-            finally {
-                return deferred.promise;
-            }
-        }
-        function adjustEx(ctx) {
-            ctx = blended.finishContext(ctx);
-            var deferred = ctx.$q.defer();
-            try {
-                adjustProduct(ctx).then(function (prod) {
-                    var exNode = prod.find(ctx.Url);
-                    var modData = prod.findParent(exNode, function (n) { return CourseMeta.isType(n, CourseMeta.runtimeType.mod); });
-                    if (modData == null)
-                        throw 'Exercise ' + ctx.Url + ' does not have module';
-                    var modCtx = blended.cloneAndModifyContext(ctx, function (m) { return m.moduleurl = blended.encodeUrl(modData.url); });
-                    adjustModule(modCtx, modData, prod).then(function (mod) {
-                        var exServ = mod.cacheOfPages.fromCache(ctx.Url, ctx.taskid);
-                        if (exServ) {
-                            deferred.resolve(exServ);
-                            return;
-                        }
-                        var href = blended.baseUrlRelToRoot + ctx.Url + '.js';
-                        ctx.$http.get(href, { transformResponse: function (s) { return CourseMeta.jsonParse(s); } }).then(function (file) {
-                            var pg = CourseMeta.extractEx(file.data);
-                            Course.localize(pg, function (s) { return CourseMeta.localizeString(pg.url, s, mod.loc); });
-                            var isGramm = CourseMeta.isType(exNode, CourseMeta.runtimeType.grammar);
-                            var resolve = function (exData) {
-                                var exServ = new blended.exerciseService(ctx, mod, exNode, pg, exData);
-                                mod.cacheOfPages.toCache(ctx.Url, ctx.taskid, exServ);
-                                deferred.resolve(exServ);
-                            };
-                            if (isGramm)
-                                resolve();
-                            else {
-                                if (!!ctx.persistence)
-                                    ctx.persistence.loadUserData(ctx.userid, ctx.companyid, ctx.productUrl, ctx.Url, function (exData) {
-                                        if (pg.evalPage && !pg.isOldEa)
-                                            exNode.ms = pg.evalPage.maxScore;
-                                        //provazani produktu, stranky, modulu:
-                                        if (!exData)
-                                            exData = {};
-                                        pg.userData = exData;
-                                        pg.myNode = exNode;
-                                        resolve(exData);
-                                    });
-                                else
-                                    resolve();
-                            }
-                        }, function (errors) {
-                            deferred.reject();
-                        });
-                    });
-                });
-            }
-            finally {
-                return deferred.promise;
-            }
-        }
-        loader.adjustEx = adjustEx;
-        var cacheOfProducts = (function () {
-            function cacheOfProducts() {
-                this.products = [];
-                this.maxInsertOrder = 0;
-            }
-            cacheOfProducts.prototype.fromCache = function (ctx) {
-                var resIt = _.find(this.products, function (it) { return it.companyid == ctx.companyid && it.userid == ctx.userid && it.subuserid == ctx.subuserid &&
-                    it.persistence == ctx.persistence && it.loc == ctx.loc && it.producturl == ctx.producturl && it.taskid == ctx.taskid; });
-                if (resIt)
-                    resIt.insertOrder = this.maxInsertOrder++;
-                return resIt ? resIt.data : null;
-            };
-            cacheOfProducts.prototype.toCache = function (ctx, prod) {
-                if (this.products.length >= 3) {
-                    var minIdx = 99999;
-                    for (var i = 0; i < this.products.length; i++)
-                        minIdx = Math.min(this.products[i].insertOrder, minIdx);
-                    this.products.splice(minIdx, 1);
-                }
-                this.products.push({
-                    companyid: ctx.companyid, userid: ctx.userid, data: prod, loc: ctx.loc, producturl: ctx.producturl,
-                    persistence: ctx.persistence, insertOrder: this.maxInsertOrder++, subuserid: ctx.subuserid, taskid: ctx.taskid,
-                });
-            };
-            return cacheOfProducts;
-        })();
-        loader.cacheOfProducts = cacheOfProducts;
-        loader.productCache = new cacheOfProducts();
-        //*************** CACHE modulu (v produktu), cache cviceni (v modulu)
-        var cacheOf = (function () {
-            function cacheOf(maxLength) {
-                this.maxLength = maxLength;
-                this.modules = {};
-                this.maxInsertOrder = 0;
-            }
-            cacheOf.prototype.fromCache = function (url, taskId) {
-                var urlTaskId = url + (taskId ? '|' + taskId : '');
-                var cch = this.modules[urlTaskId];
-                return cch ? cch.data : null;
-            };
-            cacheOf.prototype.toCache = function (url, taskId, mod) {
-                var urlTaskId = url + (taskId ? '|' + taskId : '');
-                var cnt = 0;
-                var minIdx = 99999;
-                var propName;
-                for (var p in this.modules) {
-                    cnt++;
-                    var m = this.modules[p];
-                    if (m.insertOrder >= minIdx)
-                        return;
-                    minIdx = m.insertOrder;
-                    propName = p;
-                }
-                if (cnt > 5)
-                    delete this.modules[propName];
-                this.modules[urlTaskId] = { data: mod, insertOrder: this.maxInsertOrder++ };
-            };
-            return cacheOf;
-        })();
-        loader.cacheOf = cacheOf;
-    })(loader = blended.loader || (blended.loader = {}));
-})(blended || (blended = {}));
+})(textRange || (textRange = {}));
 
-var blended;
-(function (blended) {
-    blended.showExerciseDirective2 = ['$stateParams', function ($stateParams) { return new showExerciseModel($stateParams); }];
-    var showExerciseModel = (function () {
-        function showExerciseModel($stateParams) {
-            var _this = this;
-            this.$stateParams = $stateParams;
-            this.link = function (scope, el, attrs) {
-                scope.$on('$destroy', function () {
-                    if (_this.page.sndPage)
-                        _this.page.sndPage.htmlClearing();
-                    if (_this.page.sndPage)
-                        _this.page.sndPage.leave();
-                    ko.cleanNode(el[0]);
-                    el.html('');
-                });
-                blended.loader.adjustEx(_this.$stateParams).then(function (exserv) {
-                    _this.page = exserv.page;
-                    ko.cleanNode(el[0]);
-                    el.html('');
-                    CourseMeta.lib.blendedDisplayEx(_this.page, function (html) {
-                        el.html(html);
-                        ko.applyBindings({}, el[0]);
-                    });
-                });
-            };
-        }
-        return showExerciseModel;
-    })();
-    blended.showExerciseModel = showExerciseModel;
-    var exerciseServiceProxy = (function () {
-        function exerciseServiceProxy() {
-        }
-        return exerciseServiceProxy;
-    })();
-    blended.exerciseServiceProxy = exerciseServiceProxy;
-    var exerciseService = (function () {
-        function exerciseService(ctx /*ctx v dobe vlozeni do cache*/, mod, dataNode, page, userLong) {
-            this.ctx = ctx;
-            this.mod = mod;
-            this.dataNode = dataNode;
-            this.page = page;
-            this.userLong = userLong;
-            this.idxInMod = _.indexOf(mod.dataNode.Items, dataNode);
-            this.userShort = this.userShort;
-            if (!this.userShort)
-                this.userShort = this.setPersistData(function (d) { });
-        }
-        exerciseService.prototype.display = function (el, attrs) { };
-        exerciseService.prototype.destroy = function (el) { };
-        exerciseService.prototype.getPersistData = function () { return blended.getPersistData(this.dataNode, this.ctx.taskid); };
-        exerciseService.prototype.setPersistData = function (modify) { return blended.setPersistData(this.dataNode, this.ctx.taskid, modify); };
-        return exerciseService;
-    })();
-    blended.exerciseService = exerciseService;
-})(blended || (blended = {}));
-//export var showExerciseDirective2_ = ['$stateParams', ($stateParams: blended.learnContext) => {
-//  var model = new showExerciseModel($stateParams);
-//  return { link: model.link };
-//  return {
-//    link: (scope: ng.IScope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
-//      scope.$on('$destroy', () => {
-//        ko.cleanNode(el[0]);
-//        el.html('');
-//      });
-//      var page: Course.Page = blended.loader.productCache.fromCache($stateParams).moduleCache.fromCache($stateParams.moduleUrl).cacheOfPages.fromCache($stateParams.Url);
-//      ko.cleanNode(el[0].parentElement);
-//      el.html('');
-//      CourseMeta.lib.blendedDisplayEx(page, html => {
-//        el.html(html);
-//        ko.applyBindings({}, el[0].parentElement);
-//      });
-//    }
-//  };
-//}]; 
-
-var blended;
-(function (blended) {
-    function createStateData(data) { return data; }
-    blended.createStateData = createStateData;
-    (function (createControllerCtx) {
-        createControllerCtx[createControllerCtx["adjustChild"] = 0] = "adjustChild";
-        createControllerCtx[createControllerCtx["checkForUrl"] = 1] = "checkForUrl";
-        createControllerCtx[createControllerCtx["navigate"] = 2] = "navigate";
-    })(blended.createControllerCtx || (blended.createControllerCtx = {}));
-    var createControllerCtx = blended.createControllerCtx;
-    //zaregistrovany stav (v app.ts)
-    var state = (function () {
-        function state(st) {
-            var _this = this;
-            this.oldController = (st.controller);
-            var self = this;
-            if (this.oldController) {
-                st.controller = ['$scope', '$state', function ($scope, $state) {
-                        var params = ($state.params);
-                        params.$state = $state;
-                        var ss = { current: self, params: params, parent: ($scope.$parent).ts, createForCheckUrl: createControllerCtx.navigate };
-                        var task = new _this.oldController(ss);
-                        $scope.ts = task;
-                    }];
+var metaJS;
+(function (metaJS) {
+    (function (xsdPropType) {
+        xsdPropType[xsdPropType["Number"] = 0] = "Number";
+        xsdPropType[xsdPropType["String"] = 1] = "String";
+        xsdPropType[xsdPropType["Enum"] = 2] = "Enum";
+        xsdPropType[xsdPropType["Bool"] = 3] = "Bool";
+        xsdPropType[xsdPropType["Class"] = 4] = "Class";
+    })(metaJS.xsdPropType || (metaJS.xsdPropType = {}));
+    var xsdPropType = metaJS.xsdPropType;
+    (function (xsdPropModifier) {
+        xsdPropModifier[xsdPropModifier["no"] = 0] = "no";
+        xsdPropModifier[xsdPropModifier["Array"] = 1] = "Array";
+        xsdPropModifier[xsdPropModifier["ArrayArray"] = 2] = "ArrayArray";
+        xsdPropModifier[xsdPropModifier["Dict"] = 3] = "Dict";
+    })(metaJS.xsdPropModifier || (metaJS.xsdPropModifier = {}));
+    var xsdPropModifier = metaJS.xsdPropModifier;
+    (function (xsdInheritsFrom) {
+        xsdInheritsFrom[xsdInheritsFrom["tag"] = 0] = "tag";
+        xsdInheritsFrom[xsdInheritsFrom["eval"] = 1] = "eval";
+        xsdInheritsFrom[xsdInheritsFrom["media"] = 2] = "media";
+    })(metaJS.xsdInheritsFrom || (metaJS.xsdInheritsFrom = {}));
+    var xsdInheritsFrom = metaJS.xsdInheritsFrom;
+    (function (xsdPropConstrains) {
+        xsdPropConstrains[xsdPropConstrains["no"] = 0] = "no";
+        xsdPropConstrains[xsdPropConstrains["regex"] = 1] = "regex";
+        xsdPropConstrains[xsdPropConstrains["id"] = 2] = "id";
+        xsdPropConstrains[xsdPropConstrains["idref"] = 3] = "idref";
+        xsdPropConstrains[xsdPropConstrains["intNumber"] = 4] = "intNumber";
+        xsdPropConstrains[xsdPropConstrains["ncname"] = 5] = "ncname";
+    })(metaJS.xsdPropConstrains || (metaJS.xsdPropConstrains = {}));
+    var xsdPropConstrains = metaJS.xsdPropConstrains;
+    metaJS.metaData = {
+        "types": {
+            "tag": {
+                "ancestor": null,
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "tag",
+                "summary": "tag",
+                "descr": "tag descr",
+                "flag": 384,
+                "_newName": null
+            },
+            "eval-control": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "eval-control",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            "html-tag": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "html-tag",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            "script": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "script",
+                "summary": null,
+                "descr": null,
+                "flag": 386,
+                "_newName": null
+            },
+            "img": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "img",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            "text": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "text",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            "body": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "body",
+                "summary": null,
+                "descr": null,
+                "flag": 131333,
+                "_newName": null
+            },
+            "header-prop": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "header-prop",
+                "summary": null,
+                "descr": null,
+                "flag": 36992,
+                "_newName": null
+            },
+            "macro": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "macro",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            "human-eval": {
+                "ancestor": "eval-control",
+                "inheritsFrom": 1,
+                "required": false,
+                "name": "human-eval",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            "tts-sound": {
+                "ancestor": "media-tag",
+                "inheritsFrom": 2,
+                "required": false,
+                "name": "tts-sound",
+                "summary": null,
+                "descr": null,
+                "flag": 133,
+                "_newName": null
+            },
+            "eval-button": {
+                "ancestor": "eval-control",
+                "inheritsFrom": 1,
+                "required": false,
+                "name": "eval-button",
+                "summary": null,
+                "descr": "@summary tlacitko pro vyhodnoceni jedne skupiny vyhodnotitelnych elementu.\n            @descr ??",
+                "flag": 5,
+                "_newName": "eval-btn"
+            },
+            "drop-down": {
+                "ancestor": "edit",
+                "inheritsFrom": 1,
+                "required": false,
+                "name": "drop-down",
+                "summary": null,
+                "descr": null,
+                "flag": 5,
+                "_newName": null
+            },
+            "edit": {
+                "ancestor": "eval-control",
+                "inheritsFrom": 1,
+                "required": false,
+                "name": "edit",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            "gap-fill": {
+                "ancestor": "edit",
+                "inheritsFrom": 1,
+                "required": false,
+                "name": "gap-fill",
+                "summary": null,
+                "descr": null,
+                "flag": 5,
+                "_newName": null
+            },
+            "radio-button": {
+                "ancestor": "eval-control",
+                "inheritsFrom": 1,
+                "required": false,
+                "name": "radio-button",
+                "summary": null,
+                "descr": null,
+                "flag": 4101,
+                "_newName": null
+            },
+            "check-low": {
+                "ancestor": "eval-control",
+                "inheritsFrom": 1,
+                "required": false,
+                "name": "check-low",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            "check-item": {
+                "ancestor": "check-low",
+                "inheritsFrom": 1,
+                "required": false,
+                "name": "check-item",
+                "summary": null,
+                "descr": null,
+                "flag": 4101,
+                "_newName": null
+            },
+            "check-box": {
+                "ancestor": "check-low",
+                "inheritsFrom": 1,
+                "required": false,
+                "name": "check-box",
+                "summary": null,
+                "descr": null,
+                "flag": 5,
+                "_newName": null
+            },
+            "pairing-item": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "pairing-item",
+                "summary": null,
+                "descr": null,
+                "flag": 4101,
+                "_newName": null
+            },
+            "pairing": {
+                "ancestor": "eval-control",
+                "inheritsFrom": 1,
+                "required": false,
+                "name": "pairing",
+                "summary": null,
+                "descr": null,
+                "flag": 5,
+                "_newName": null
+            },
+            "single-choice": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "single-choice",
+                "summary": null,
+                "descr": null,
+                "flag": 4,
+                "_newName": null
+            },
+            "word-selection": {
+                "ancestor": "eval-control",
+                "inheritsFrom": 1,
+                "required": false,
+                "name": "word-selection",
+                "summary": null,
+                "descr": null,
+                "flag": 5,
+                "_newName": null
+            },
+            "word-multi-selection": {
+                "ancestor": "eval-control",
+                "inheritsFrom": 1,
+                "required": false,
+                "name": "word-multi-selection",
+                "summary": null,
+                "descr": null,
+                "flag": 5,
+                "_newName": null
+            },
+            "word-ordering": {
+                "ancestor": "eval-control",
+                "inheritsFrom": 1,
+                "required": false,
+                "name": "word-ordering",
+                "summary": null,
+                "descr": null,
+                "flag": 5,
+                "_newName": null
+            },
+            "sentence-ordering": {
+                "ancestor": "eval-control",
+                "inheritsFrom": 1,
+                "required": false,
+                "name": "sentence-ordering",
+                "summary": null,
+                "descr": null,
+                "flag": 5,
+                "_newName": null
+            },
+            "sentence-ordering-item": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "sentence-ordering-item",
+                "summary": null,
+                "descr": null,
+                "flag": 4101,
+                "_newName": "sentence"
+            },
+            "extension": {
+                "ancestor": "eval-control",
+                "inheritsFrom": 1,
+                "required": false,
+                "name": "extension",
+                "summary": null,
+                "descr": null,
+                "flag": 135,
+                "_newName": null
+            },
+            "writing": {
+                "ancestor": "human-eval",
+                "inheritsFrom": 1,
+                "required": false,
+                "name": "writing",
+                "summary": null,
+                "descr": null,
+                "flag": 4101,
+                "_newName": null
+            },
+            "recording": {
+                "ancestor": "human-eval",
+                "inheritsFrom": 1,
+                "required": false,
+                "name": "recording",
+                "summary": null,
+                "descr": null,
+                "flag": 4101,
+                "_newName": "audio-capture"
+            },
+            "list": {
+                "ancestor": "macro",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "list",
+                "summary": null,
+                "descr": null,
+                "flag": 4,
+                "_newName": null
+            },
+            "list-group": {
+                "ancestor": "macro",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "list-group",
+                "summary": null,
+                "descr": null,
+                "flag": 12293,
+                "_newName": null
+            },
+            "two-column": {
+                "ancestor": "macro",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "two-column",
+                "summary": null,
+                "descr": null,
+                "flag": 4101,
+                "_newName": null
+            },
+            "panel": {
+                "ancestor": "macro",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "panel",
+                "summary": null,
+                "descr": null,
+                "flag": 131077,
+                "_newName": null
+            },
+            "node": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "node",
+                "summary": null,
+                "descr": null,
+                "flag": 4228,
+                "_newName": null
+            },
+            "offering": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "offering",
+                "summary": null,
+                "descr": null,
+                "flag": 5,
+                "_newName": null
+            },
+            "url-tag": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "url-tag",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            "media-tag": {
+                "ancestor": "url-tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "media-tag",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            "media-big-mark": {
+                "ancestor": "media-tag",
+                "inheritsFrom": 2,
+                "required": false,
+                "name": "media-big-mark",
+                "summary": null,
+                "descr": null,
+                "flag": 5,
+                "_newName": null
+            },
+            "media-player": {
+                "ancestor": "media-tag",
+                "inheritsFrom": 2,
+                "required": false,
+                "name": "media-player",
+                "summary": null,
+                "descr": null,
+                "flag": 5,
+                "_newName": null
+            },
+            "media-video": {
+                "ancestor": "media-tag",
+                "inheritsFrom": 2,
+                "required": false,
+                "name": "media-video",
+                "summary": null,
+                "descr": null,
+                "flag": 5,
+                "_newName": null
+            },
+            "media-text": {
+                "ancestor": "media-tag",
+                "inheritsFrom": 2,
+                "required": false,
+                "name": "media-text",
+                "summary": null,
+                "descr": null,
+                "flag": 5,
+                "_newName": null
+            },
+            "_media-replica": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "_media-replica",
+                "summary": null,
+                "descr": null,
+                "flag": 389,
+                "_newName": null
+            },
+            "_media-sent": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "_media-sent",
+                "summary": null,
+                "descr": null,
+                "flag": 131461,
+                "_newName": null
+            },
+            "_snd-page": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "_snd-page",
+                "summary": null,
+                "descr": null,
+                "flag": 385,
+                "_newName": null
+            },
+            "_snd-file-group": {
+                "ancestor": "url-tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "_snd-file-group",
+                "summary": null,
+                "descr": null,
+                "flag": 385,
+                "_newName": null
+            },
+            "_snd-group": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "_snd-group",
+                "summary": null,
+                "descr": null,
+                "flag": 385,
+                "_newName": null
+            },
+            "_snd-interval": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "_snd-interval",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            "_snd-sent": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "_snd-sent",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            "_snd-file": {
+                "ancestor": "url-tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "_snd-file",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            "cut-dialog": {
+                "ancestor": "_snd-file",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "cut-dialog",
+                "summary": null,
+                "descr": null,
+                "flag": 98308,
+                "_newName": null
+            },
+            "cut-text": {
+                "ancestor": "_snd-file",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "cut-text",
+                "summary": null,
+                "descr": null,
+                "flag": 98308,
+                "_newName": null
+            },
+            "phrase": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "phrase",
+                "summary": null,
+                "descr": null,
+                "flag": 102405,
+                "_newName": "sent"
+            },
+            "replica": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "replica",
+                "summary": null,
+                "descr": null,
+                "flag": 98309,
+                "_newName": null
+            },
+            "include": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "include",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            "include-text": {
+                "ancestor": "include",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "include-text",
+                "summary": null,
+                "descr": null,
+                "flag": 98304,
+                "_newName": null
+            },
+            "include-dialog": {
+                "ancestor": "include",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "include-dialog",
+                "summary": null,
+                "descr": null,
+                "flag": 98304,
+                "_newName": null
+            },
+            "phrase-replace": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "phrase-replace",
+                "summary": null,
+                "descr": null,
+                "flag": 102400,
+                "_newName": "sent-replace"
+            },
+            "_eval-page": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "_eval-page",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            "_eval-btn": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "_eval-btn",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            "_eval-group": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "_eval-group",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            "macro-template": {
+                "ancestor": "macro",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "macro-template",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            "macro-true-false": {
+                "ancestor": "macro-template",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "macro-true-false",
+                "summary": null,
+                "descr": null,
+                "flag": 6,
+                "_newName": null
+            },
+            "macro-single-choices": {
+                "ancestor": "macro-template",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "macro-single-choices",
+                "summary": null,
+                "descr": null,
+                "flag": 6,
+                "_newName": null
+            },
+            "macro-pairing": {
+                "ancestor": "macro-template",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "macro-pairing",
+                "summary": null,
+                "descr": null,
+                "flag": 6,
+                "_newName": null
+            },
+            "macro-table": {
+                "ancestor": "macro-template",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "macro-table",
+                "summary": null,
+                "descr": null,
+                "flag": 6,
+                "_newName": null
+            },
+            "macro-list-word-ordering": {
+                "ancestor": "macro-template",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "macro-list-word-ordering",
+                "summary": null,
+                "descr": null,
+                "flag": 6,
+                "_newName": null
+            },
+            "macro-list": {
+                "ancestor": "macro-template",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "macro-list",
+                "summary": null,
+                "descr": null,
+                "flag": 6,
+                "_newName": null
+            },
+            "macro-icon-list": {
+                "ancestor": "macro-template",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "macro-icon-list",
+                "summary": null,
+                "descr": null,
+                "flag": 6,
+                "_newName": null
+            },
+            "macro-article": {
+                "ancestor": "macro-template",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "macro-article",
+                "summary": null,
+                "descr": null,
+                "flag": 6,
+                "_newName": null
+            },
+            "macro-vocabulary": {
+                "ancestor": "macro-template",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "macro-vocabulary",
+                "summary": null,
+                "descr": null,
+                "flag": 6,
+                "_newName": null
+            },
+            "macro-video": {
+                "ancestor": "macro-template",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "macro-video",
+                "summary": null,
+                "descr": null,
+                "flag": 6,
+                "_newName": null
+            },
+            "inline-tag": {
+                "ancestor": "macro-template",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "inline-tag",
+                "summary": null,
+                "descr": null,
+                "flag": 16388,
+                "_newName": null
+            },
+            "smart-tag": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "smart-tag",
+                "summary": null,
+                "descr": null,
+                "flag": 2180,
+                "_newName": null
+            },
+            "smart-element-low": {
+                "ancestor": "macro-template",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "smart-element-low",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            "smart-element": {
+                "ancestor": "smart-element-low",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "smart-element",
+                "summary": null,
+                "descr": null,
+                "flag": 6,
+                "_newName": null
+            },
+            "smart-offering": {
+                "ancestor": "smart-element-low",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "smart-offering",
+                "summary": null,
+                "descr": null,
+                "flag": 6,
+                "_newName": null
+            },
+            "smart-pairing": {
+                "ancestor": "smart-element-low",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "smart-pairing",
+                "summary": null,
+                "descr": null,
+                "flag": 6,
+                "_newName": null
+            },
+            "doc-tags-meta": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "doc-tags-meta",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            "doc-named": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "doc-named",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            "doc-type": {
+                "ancestor": "doc-named",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "doc-type",
+                "summary": null,
+                "descr": null,
+                "flag": 386,
+                "_newName": null
+            },
+            "doc-enum": {
+                "ancestor": "doc-named",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "doc-enum",
+                "summary": null,
+                "descr": null,
+                "flag": 386,
+                "_newName": null
+            },
+            "doc-enum-item": {
+                "ancestor": "doc-named",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "doc-enum-item",
+                "summary": null,
+                "descr": null,
+                "flag": 386,
+                "_newName": null
+            },
+            "doc-prop": {
+                "ancestor": "doc-named",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "doc-prop",
+                "summary": null,
+                "descr": null,
+                "flag": 386,
+                "_newName": null
+            },
+            "doc-descr": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "doc-descr",
+                "summary": null,
+                "descr": null,
+                "flag": 36992,
+                "_newName": null
+            },
+            "doc-example": {
+                "ancestor": "tag",
+                "inheritsFrom": 0,
+                "required": false,
+                "name": "doc-example",
+                "summary": null,
+                "descr": null,
+                "flag": 133,
+                "_newName": null
             }
-            $.extend(this, st);
-        }
-        //******* Inicializace: linearizace state tree na definict states
-        state.prototype.initFromStateTree = function (provider, root) {
-            var _this = this;
-            provider.state(this);
-            _.each(this.childs, function (ch) {
-                ch.parent = _this;
-                ch.name = _this.name + '.' + ch.name;
-                ch.initFromStateTree(provider, root);
-            });
-        };
-        //sance osetrit nekonsistentni URL (kterou by se prislo do nekonsistentniho stavu)
-        state.onRouteChangeStart = function (e, toState, toParams, $location, $state) {
-            //v parents neni prodStates.homeTask (jedna se o stav mimo spravu managera, napr. na home webu)
-            var st = toState;
-            while (st && st != blended.prodStates.homeTask)
-                st = st.parent;
-            if (!st)
-                return;
-            //neni produkt - laduje se na home:
-            var prod = blended.loader.productCache.fromCache(toParams);
-            //var stateMan = new stateManager(toState, toParams);
-            if (!prod) {
-                if (toState == blended.prodStates.home)
-                    return; //jsem na home => return (home se musi naladovat vzdy, neni z ni redirekc)
-                //neni naladovan produkt a neni home page => goto home page
-                e.preventDefault();
-                var hash = $state.href(blended.prodStates.home.name, toParams);
-                setTimeout(function () { return window.location.hash = hash; }, 1);
-                return;
+        },
+        "properties": [
+            {
+                "propOf": "tag",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 2,
+                "regexConstrains": null,
+                "name": "id",
+                "summary": null,
+                "descr": "@summary jednoznacna identifikace elementu\n            @descr ??",
+                "flag": 524288,
+                "_newName": null
+            },
+            {
+                "propOf": "tag",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "srcpos",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            {
+                "propOf": "tag",
+                "type": 4,
+                "modifier": 1,
+                "clsEnumName": "tag",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "items",
+                "summary": null,
+                "descr": null,
+                "flag": 128,
+                "_newName": null
+            },
+            {
+                "propOf": "tag",
+                "type": 1,
+                "modifier": 1,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "class",
+                "summary": null,
+                "descr": "@summary seznam CSS classes\n            @descr ??",
+                "flag": 160,
+                "_newName": null
+            },
+            {
+                "propOf": "eval-control",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 1,
+                "regexConstrains": "^((and)-\\w+-(exchangeable)|(and)-\\w+|\\w+-(exchangeable))$",
+                "name": "eval-group",
+                "summary": null,
+                "descr": "@summary and-[id] nebo [id]-exchangeable nebo and-[id]-exchangeable.\n            Pro radioButton pouze [id]\n             @descr ??",
+                "flag": 524288,
+                "_newName": null
+            },
+            {
+                "propOf": "eval-control",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "score-weight",
+                "summary": null,
+                "descr": null,
+                "flag": 524288,
+                "_newName": null
+            },
+            {
+                "propOf": "eval-control",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 3,
+                "regexConstrains": null,
+                "name": "eval-button-id",
+                "summary": null,
+                "descr": null,
+                "flag": 524288,
+                "_newName": "eval-btn-id"
+            },
+            {
+                "propOf": "html-tag",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "tag-name",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "html-tag",
+                "type": 4,
+                "modifier": 1,
+                "clsEnumName": "attr",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "attrs",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            {
+                "propOf": "script",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "cdata",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "img",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "src",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "text",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "title",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "body",
+                "type": 4,
+                "modifier": 0,
+                "clsEnumName": "_snd-page",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "snd-page",
+                "summary": null,
+                "descr": null,
+                "flag": 128,
+                "_newName": null
+            },
+            {
+                "propOf": "body",
+                "type": 4,
+                "modifier": 0,
+                "clsEnumName": "_eval-page",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "eval-page",
+                "summary": null,
+                "descr": null,
+                "flag": 128,
+                "_newName": null
+            },
+            {
+                "propOf": "body",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "url",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            {
+                "propOf": "body",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "order",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "body",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "instr-title",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "body",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "externals",
+                "summary": null,
+                "descr": null,
+                "flag": 128,
+                "_newName": null
+            },
+            {
+                "propOf": "body",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "see-also-links",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "course-see-also-str"
+            },
+            {
+                "propOf": "body",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "old-ea-is-passive",
+                "summary": null,
+                "descr": null,
+                "flag": 128,
+                "_newName": null
+            },
+            {
+                "propOf": "body",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "is-old-ea",
+                "summary": null,
+                "descr": null,
+                "flag": 128,
+                "_newName": null
+            },
+            {
+                "propOf": "body",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "instr-body",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "instrs-str"
+            },
+            {
+                "propOf": "body",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "see-also-str",
+                "summary": null,
+                "descr": null,
+                "flag": 128,
+                "_newName": null
+            },
+            {
+                "propOf": "tts-sound",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "text",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "eval-button",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "score-as-ratio",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "ratio-score"
+            },
+            {
+                "propOf": "drop-down",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "gap-fill-like",
+                "summary": null,
+                "descr": null,
+                "flag": 524672,
+                "_newName": null
+            },
+            {
+                "propOf": "edit",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "correct-value",
+                "summary": "Spravana hodnota vyhodnotitelneho elementu.",
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "edit",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 5,
+                "regexConstrains": null,
+                "name": "width-group",
+                "summary": "vsem elementum se stejnou hodnotou smartWidth se nastavi stejna sirka (rovna maximu z sirky techto elementu)",
+                "descr": null,
+                "flag": 524288,
+                "_newName": "smart-width"
+            },
+            {
+                "propOf": "edit",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "width",
+                "summary": null,
+                "descr": null,
+                "flag": 524288,
+                "_newName": null
+            },
+            {
+                "propOf": "edit",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 3,
+                "regexConstrains": null,
+                "name": "offering-id",
+                "summary": "id \"offering\" elementu, do ktereho se pridaji vsechny spravne hodnoty z correctValue.",
+                "descr": "Pri nastaveni offeringId se zaroven na stejnou hodnotu nastavi i smartWidth (pokud smartWidth jiz neni nastavena na neco jineho)",
+                "flag": 524288,
+                "_newName": null
+            },
+            {
+                "propOf": "edit",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "case-sensitive",
+                "summary": null,
+                "descr": null,
+                "flag": 524288,
+                "_newName": null
+            },
+            {
+                "propOf": "gap-fill",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "hint",
+                "summary": null,
+                "descr": null,
+                "flag": 524288,
+                "_newName": "place-holder"
+            },
+            {
+                "propOf": "gap-fill",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "init-value",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "gap-fill",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "read-only",
+                "summary": null,
+                "descr": null,
+                "flag": 524288,
+                "_newName": null
+            },
+            {
+                "propOf": "gap-fill",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "skip-evaluation",
+                "summary": null,
+                "descr": null,
+                "flag": 524288,
+                "_newName": null
+            },
+            {
+                "propOf": "radio-button",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "correct-value",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "radio-button",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "init-value",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "radio-button",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "read-only",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "radio-button",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "skip-evaluation",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "check-low",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "correct-value",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "check-low",
+                "type": 2,
+                "modifier": 0,
+                "clsEnumName": "check-item-texts",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "text-type",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "text-id"
+            },
+            {
+                "propOf": "check-low",
+                "type": 2,
+                "modifier": 0,
+                "clsEnumName": "three-state-bool",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "init-value",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "check-low",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "read-only",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "check-low",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "skip-evaluation",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "pairing-item",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "right",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "pairing",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "left-random",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "random"
+            },
+            {
+                "propOf": "pairing",
+                "type": 2,
+                "modifier": 0,
+                "clsEnumName": "pairing-left-width",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "left-width",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "single-choice",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "read-only",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "single-choice",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "skip-evaluation",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "single-choice",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "score-weight",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "single-choice",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 3,
+                "regexConstrains": null,
+                "name": "eval-button-id",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "eval-btn-id"
+            },
+            {
+                "propOf": "word-selection",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "words",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "word-multi-selection",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "words",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "word-ordering",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "correct-order",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "correct-value"
+            },
+            {
+                "propOf": "extension",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "data",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "extension",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "cdata",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "writing",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "limit-recommend",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "recommend-words-min"
+            },
+            {
+                "propOf": "writing",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "limit-min",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "words-min"
+            },
+            {
+                "propOf": "writing",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "limit-max",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "words-max"
+            },
+            {
+                "propOf": "writing",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "number-of-rows",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "init-rows"
+            },
+            {
+                "propOf": "recording",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "limit-recommend",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "recommend-seconds-from"
+            },
+            {
+                "propOf": "recording",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "limit-min",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "speak-seconds-from"
+            },
+            {
+                "propOf": "recording",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "limit-max",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "speak-seconds-to"
+            },
+            {
+                "propOf": "recording",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "record-in-dialog",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "stop-in-modal-dialog"
+            },
+            {
+                "propOf": "recording",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 3,
+                "regexConstrains": null,
+                "name": "dialog-header-id",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "modal-dialog-header"
+            },
+            {
+                "propOf": "recording",
+                "type": 2,
+                "modifier": 0,
+                "clsEnumName": "modal-size",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "dialog-size",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "modal-dialog-size"
+            },
+            {
+                "propOf": "recording",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "single-attempt",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "disable-re-record"
+            },
+            {
+                "propOf": "list",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "delim",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "list",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "is-striped",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "list",
+                "type": 2,
+                "modifier": 0,
+                "clsEnumName": "list-icon",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "icon",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "list",
+                "type": 2,
+                "modifier": 0,
+                "clsEnumName": "colors",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "color",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "list-group",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "is-striped",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "panel",
+                "type": 4,
+                "modifier": 0,
+                "clsEnumName": "header-prop",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "header",
+                "summary": null,
+                "descr": null,
+                "flag": 128,
+                "_newName": null
+            },
+            {
+                "propOf": "offering",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "words",
+                "summary": "",
+                "descr": "seznam prvku nabidky, oddeleny \"|\"",
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "offering",
+                "type": 2,
+                "modifier": 0,
+                "clsEnumName": "offering-drop-down-mode",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "mode",
+                "summary": "",
+                "descr": "pro \"drop-down\" tagy: drop-down-discard\" => kazdy prvek nabidky muze byt vybrana pouze jednim drop-down elementem.\n            drop-down-mode=\"keep\" => jeden prvek nabidky muze pouzit vice drop-down elementu",
+                "flag": 524288,
+                "_newName": "drop-down-mode"
+            },
+            {
+                "propOf": "offering",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "hidden",
+                "summary": "",
+                "descr": "pro offering s drop-down : offering se nezobrazi.",
+                "flag": 524288,
+                "_newName": "is-hidden"
+            },
+            {
+                "propOf": "url-tag",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 1,
+                "regexConstrains": "^.*\\.mp3$|^.*@((std-4|std-2)$|(16by9|4by3):((\\d+|\\*)-((\\w|\\.)*webm|(\\w|\\.)*mp4)+(,(\\w|\\.)*webm|,(\\w|\\.)*mp4)*)+(\\|(\\d+|\\*)-((\\w|\\.)*webm|(\\w|\\.)*mp4)+(,(\\w|\\.)*webm|,(\\w|\\.)*mp4)*)*)$",
+                "name": "media-url",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "media-tag",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "cut-url",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "media-tag",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 1,
+                "regexConstrains": "^(\\d+|-\\d+|\\d+-\\d+|\\d+-)(,\\d+|,-\\d+|,\\d+-\\d+|,\\d+-)*$",
+                "name": "subset",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "media-tag",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 3,
+                "regexConstrains": null,
+                "name": "share-media-id",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "share-id"
+            },
+            {
+                "propOf": "media-tag",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "_sent-group-id",
+                "summary": null,
+                "descr": null,
+                "flag": 384,
+                "_newName": null
+            },
+            {
+                "propOf": "media-text",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 3,
+                "regexConstrains": null,
+                "name": "continue-media-id",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "continue-id"
+            },
+            {
+                "propOf": "media-text",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "passive",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "is-passive"
+            },
+            {
+                "propOf": "media-text",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "is-old-to-new",
+                "summary": null,
+                "descr": null,
+                "flag": 128,
+                "_newName": null
+            },
+            {
+                "propOf": "media-text",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "hidden",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "is-hidden"
+            },
+            {
+                "propOf": "_media-replica",
+                "type": 2,
+                "modifier": 0,
+                "clsEnumName": "icon-ids",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "icon-id",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "_media-replica",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "dlg-left",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "_media-replica",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "actor",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "_media-sent",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "idx",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "_snd-sent",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "idx",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "_snd-sent",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "beg-pos",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "_snd-sent",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "end-pos",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "_snd-sent",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "text",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "_snd-sent",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "actor",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "_snd-file",
+                "type": 4,
+                "modifier": 0,
+                "clsEnumName": "include",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "file",
+                "summary": null,
+                "descr": null,
+                "flag": 128,
+                "_newName": null
+            },
+            {
+                "propOf": "phrase",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "beg-pos",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "phrase",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "end-pos",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "replica",
+                "type": 2,
+                "modifier": 0,
+                "clsEnumName": "icon-ids",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "actor-id",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "icon-id"
+            },
+            {
+                "propOf": "replica",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "actor-name",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "actor"
+            },
+            {
+                "propOf": "replica",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "number-of-phrases",
+                "summary": "",
+                "descr": "uvedena konstrukce slou?? k vytvo?en? dialogu z plain textu. Podporov?n je POUZE souvisl? text (bez p?eskakov?n? zvukov?ch v?t). \n            Tak?e z?pis je ten, ?e pro ka?dou repliku se ur?? PO?ET v?t repliky (ur?ovat za??tek a konec je zbyte?n? slo?it?). \n            Dal?? replika za??n? prvn? v?tou po posledn? v?t? p?edchoz? repliky. \n            jestli preci jenom ale nebude nejlepsi \"take-phrases\" (puvodne \"sent-take\").",
+                "flag": 0,
+                "_newName": "sent-take"
+            },
+            {
+                "propOf": "include",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "cut-url",
+                "summary": null,
+                "descr": "@summary pointer na XML file s sndDialog nebo sndText (extenze se ignoruje). \n            @descr",
+                "flag": 262144,
+                "_newName": null
+            },
+            {
+                "propOf": "phrase-replace",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 4,
+                "regexConstrains": null,
+                "name": "phrase-idx",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "sent-idx"
+            },
+            {
+                "propOf": "phrase-replace",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 1,
+                "regexConstrains": "^\\d+\\.\\d+$",
+                "name": "replica-phrase-idx",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": "replica-sent-idx"
+            },
+            {
+                "propOf": "_eval-page",
+                "type": 0,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "max-score",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "_eval-page",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "radio-groups",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "_eval-btn",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "btn-id",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "_eval-group",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "is-and",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "_eval-group",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "is-exchangeable",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "_eval-group",
+                "type": 1,
+                "modifier": 1,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "eval-control-ids",
+                "summary": null,
+                "descr": null,
+                "flag": 32,
+                "_newName": null
+            },
+            {
+                "propOf": "macro-template",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "name",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "macro-template",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "cdata",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "macro-true-false",
+                "type": 2,
+                "modifier": 0,
+                "clsEnumName": "check-item-texts",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "text-id",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "macro-table",
+                "type": 2,
+                "modifier": 0,
+                "clsEnumName": "inline-control-types",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "inline-type",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "macro-list",
+                "type": 2,
+                "modifier": 0,
+                "clsEnumName": "inline-control-types",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "inline-type",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "macro-icon-list",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "delim",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "macro-icon-list",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "is-striped",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "macro-icon-list",
+                "type": 2,
+                "modifier": 0,
+                "clsEnumName": "list-icon",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "icon",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "macro-icon-list",
+                "type": 2,
+                "modifier": 0,
+                "clsEnumName": "colors",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "color",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "macro-video",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "cut-url",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "macro-video",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 1,
+                "regexConstrains": "^.*\\.mp3$|^.*@((std-4|std-2)$|(16by9|4by3):((\\d+|\\*)-((\\w|\\.)*webm|(\\w|\\.)*mp4)+(,(\\w|\\.)*webm|,(\\w|\\.)*mp4)*)+(\\|(\\d+|\\*)-((\\w|\\.)*webm|(\\w|\\.)*mp4)+(,(\\w|\\.)*webm|,(\\w|\\.)*mp4)*)*)$",
+                "name": "media-url",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "macro-video",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "display-style",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "inline-tag",
+                "type": 2,
+                "modifier": 0,
+                "clsEnumName": "inline-element-types",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "inline-type",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "smart-tag",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "correct",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "smart-tag",
+                "type": 2,
+                "modifier": 0,
+                "clsEnumName": "inline-control-types",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "default-inline-type",
+                "summary": null,
+                "descr": null,
+                "flag": 128,
+                "_newName": null
+            },
+            {
+                "propOf": "smart-element",
+                "type": 2,
+                "modifier": 0,
+                "clsEnumName": "smart-element-types",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "inline-type",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "smart-offering",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "words",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "smart-offering",
+                "type": 2,
+                "modifier": 0,
+                "clsEnumName": "smart-offering-mode",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "mode",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "smart-pairing",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "random",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "smart-pairing",
+                "type": 2,
+                "modifier": 0,
+                "clsEnumName": "pairing-left-width",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "left-width",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-tags-meta",
+                "type": 4,
+                "modifier": 1,
+                "clsEnumName": "doc-type",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "types",
+                "summary": null,
+                "descr": null,
+                "flag": 32,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-tags-meta",
+                "type": 4,
+                "modifier": 1,
+                "clsEnumName": "doc-prop",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "props",
+                "summary": null,
+                "descr": null,
+                "flag": 32,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-tags-meta",
+                "type": 4,
+                "modifier": 1,
+                "clsEnumName": "doc-enum",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "enums",
+                "summary": null,
+                "descr": null,
+                "flag": 32,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-named",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "name",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-named",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "summary",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-named",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "cdata",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-type",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "is-html",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-type",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "is-ign",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-type",
+                "type": 1,
+                "modifier": 1,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "descendants-and-self",
+                "summary": null,
+                "descr": null,
+                "flag": 32,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-type",
+                "type": 1,
+                "modifier": 1,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "my-props",
+                "summary": null,
+                "descr": null,
+                "flag": 32,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-type",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "xref",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-enum",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "xref",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-enum",
+                "type": 4,
+                "modifier": 1,
+                "clsEnumName": "doc-enum-item",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "enums",
+                "summary": null,
+                "descr": null,
+                "flag": 32,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-enum-item",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "xref",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-prop",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "owner-type",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-prop",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "data-type",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-prop",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "xref",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-prop",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "is-html",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-example",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "todo",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-example",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "code-listing",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-example",
+                "type": 1,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "code-post-listing",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-example",
+                "type": 4,
+                "modifier": 0,
+                "clsEnumName": "header-prop",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "header",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-example",
+                "type": 4,
+                "modifier": 0,
+                "clsEnumName": "doc-descr",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "descr",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            {
+                "propOf": "doc-example",
+                "type": 4,
+                "modifier": 0,
+                "clsEnumName": "eval-button",
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "eval-btn",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
             }
-            //vse je OK, zjisti konsistenci stavu
-            var st = toState;
-            while (st) {
-                if (st.dataNodeUrlParName) {
-                    var ss = { current: st, params: toParams, parent: null, createForCheckUrl: createControllerCtx.checkForUrl };
-                    var task = new st.oldController(ss);
-                    var url = task.checkCommingUrl();
-                    if (url) {
-                        e.preventDefault();
-                        var hash = $state.href(url.stateName, url.pars);
-                        setTimeout(function () { return window.location.hash = hash; }, 1);
-                        return;
+        ],
+        "enums": {
+            "check-item-texts": {
+                "enumData": [
+                    {
+                        "value": 0,
+                        "name": "yes-no",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": "yes-no"
+                    },
+                    {
+                        "value": 1,
+                        "name": "true-false",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": "true-false"
+                    },
+                    {
+                        "value": 2,
+                        "name": "no",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
                     }
-                }
-                st = st.parent;
+                ],
+                "name": "check-item-texts",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            "three-state-bool": {
+                "enumData": [
+                    {
+                        "value": 0,
+                        "name": "no",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 1,
+                        "name": "true",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": "true"
+                    },
+                    {
+                        "value": 2,
+                        "name": "false",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": "false"
+                    }
+                ],
+                "name": "three-state-bool",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            "pairing-left-width": {
+                "enumData": [
+                    {
+                        "value": 0,
+                        "name": "normal",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 1,
+                        "name": "small",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 2,
+                        "name": "xsmall",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 3,
+                        "name": "large",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    }
+                ],
+                "name": "pairing-left-width",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            "modal-size": {
+                "enumData": [
+                    {
+                        "value": 0,
+                        "name": "normal",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 1,
+                        "name": "small",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 2,
+                        "name": "large",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    }
+                ],
+                "name": "modal-size",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
+                "_newName": null
+            },
+            "list-icon": {
+                "enumData": [
+                    {
+                        "value": 0,
+                        "name": "number",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 1,
+                        "name": "letter",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 2,
+                        "name": "upper-letter",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 3,
+                        "name": "angle-double-right",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 4,
+                        "name": "angle-right",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 5,
+                        "name": "arrow-circle-o-right",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 6,
+                        "name": "arrow-circle-right",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 7,
+                        "name": "arrow-right",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 8,
+                        "name": "caret-right",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 9,
+                        "name": "caret-square-o-right",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 10,
+                        "name": "chevron-circle-right",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 11,
+                        "name": "chevron-right",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 12,
+                        "name": "hand-o-right",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 13,
+                        "name": "long-arrow-right",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 14,
+                        "name": "play",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 15,
+                        "name": "play-circle",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 16,
+                        "name": "play-circle-o",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 17,
+                        "name": "circle-o-notch",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 18,
+                        "name": "cog",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 19,
+                        "name": "refresh",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 20,
+                        "name": "spinner",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 21,
+                        "name": "square-o",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 22,
+                        "name": "bullseye",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 23,
+                        "name": "asterisk",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 24,
+                        "name": "circle",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 25,
+                        "name": "circle-o",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 26,
+                        "name": "circle-thin",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 27,
+                        "name": "dot-circle-o",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    }
+                ],
+                "name": "list-icon",
+                "summary": null,
+                "descr": null,
+                "flag": 128,
+                "_newName": null
+            },
+            "colors": {
+                "enumData": [
+                    {
+                        "value": 0,
+                        "name": "black",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 1,
+                        "name": "white",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 2,
+                        "name": "primary",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 3,
+                        "name": "success",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 4,
+                        "name": "info",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 5,
+                        "name": "warning",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 6,
+                        "name": "danger",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    }
+                ],
+                "name": "colors",
+                "summary": null,
+                "descr": null,
+                "flag": 128,
+                "_newName": null
+            },
+            "offering-drop-down-mode": {
+                "enumData": [
+                    {
+                        "value": 0,
+                        "name": "drop-down-discard",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": "drop-down-discard"
+                    },
+                    {
+                        "value": 1,
+                        "name": "drop-down-keep",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": "drop-down-keep"
+                    },
+                    {
+                        "value": 2,
+                        "name": "gap-fill-ignore",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": "gap-fill-ignore"
+                    }
+                ],
+                "name": "offering-drop-down-mode",
+                "summary": null,
+                "descr": null,
+                "flag": 524288,
+                "_newName": "offering-mode"
+            },
+            "icon-ids": {
+                "enumData": [
+                    {
+                        "value": 0,
+                        "name": "no",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 1,
+                        "name": "a",
+                        "summary": "Dialog speaker A",
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 2,
+                        "name": "b",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 3,
+                        "name": "c",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 4,
+                        "name": "d",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 5,
+                        "name": "e",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 6,
+                        "name": "f",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    }
+                ],
+                "name": "icon-ids",
+                "summary": "Dialog speaker identification",
+                "descr": "descr",
+                "flag": 0,
+                "_newName": "replica-actor"
+            },
+            "inline-control-types": {
+                "enumData": [
+                    {
+                        "value": 0,
+                        "name": "no",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 1,
+                        "name": "gap-fill",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 2,
+                        "name": "gap-fill_-correction",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 3,
+                        "name": "word-selection",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 4,
+                        "name": "drag-target",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 5,
+                        "name": "img",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 6,
+                        "name": "tts-sound",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    }
+                ],
+                "name": "inline-control-types",
+                "summary": null,
+                "descr": null,
+                "flag": 128,
+                "_newName": null
+            },
+            "inline-element-types": {
+                "enumData": [
+                    {
+                        "value": 0,
+                        "name": "no",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 1,
+                        "name": "gap-fill",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 2,
+                        "name": "gap-fill-correction",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 3,
+                        "name": "word-selection",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 4,
+                        "name": "drop-down",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 5,
+                        "name": "img",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 6,
+                        "name": "tts-sound",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    }
+                ],
+                "name": "inline-element-types",
+                "summary": null,
+                "descr": null,
+                "flag": 128,
+                "_newName": null
+            },
+            "smart-element-types": {
+                "enumData": [
+                    {
+                        "value": 0,
+                        "name": "no",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 1,
+                        "name": "gap-fill",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 2,
+                        "name": "drop-down",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 3,
+                        "name": "offering",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 4,
+                        "name": "img",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 5,
+                        "name": "word-selection",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    }
+                ],
+                "name": "smart-element-types",
+                "summary": null,
+                "descr": null,
+                "flag": 128,
+                "_newName": null
+            },
+            "smart-offering-mode": {
+                "enumData": [
+                    {
+                        "value": 0,
+                        "name": "gap-fill",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 1,
+                        "name": "drop-down-discard",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 2,
+                        "name": "drop-down-keep",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": null
+                    },
+                    {
+                        "value": 3,
+                        "name": "gap-fill-passive",
+                        "summary": null,
+                        "descr": null,
+                        "flag": 0,
+                        "_newName": "gap-fill-ignore"
+                    }
+                ],
+                "name": "smart-offering-mode",
+                "summary": null,
+                "descr": null,
+                "flag": 128,
+                "_newName": null
             }
-        };
-        return state;
-    })();
-    blended.state = state;
-})(blended || (blended = {}));
+        }
+    };
+})(metaJS || (metaJS = {}));
 
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -9871,883 +17995,2107 @@ var __extends = (this && this.__extends) || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var blended;
-(function (blended) {
-    //******* TASK VIEW
-    var taskViewController = (function () {
-        function taskViewController(state) {
-            this.ctx = state.params;
-            blended.finishContext(this.ctx);
-            $.extend(this, state.current.data);
-            this.myTask = state.parent;
-            if (!this.ctx.$state)
-                this.ctx.$state = this.myTask.ctx.$state;
-            this.title = this.myTask.dataNode.title;
+var metaJS;
+(function (metaJS) {
+    var implLow = (function () {
+        function implLow(json) {
+            if (json)
+                for (var p in json)
+                    this[p] = json[p];
         }
-        taskViewController.prototype.gotoHomeUrl = function () { Pager.gotoHomeUrl(); };
-        return taskViewController;
+        implLow.prototype.hasFlag = function (fl) {
+            var val = _.isString(fl) ? CourseModel.tgSt[fl] : fl;
+            return (this.flag & val) != 0;
+        };
+        implLow.prototype.rnName = function () {
+            if (_.isEmpty(this._newName))
+                return this.name;
+            return this.name + ' => <span class="label label-default">' + this._newName + '</span>';
+        };
+        implLow.prototype.rnNameNew = function () { return this._newName || this.name; };
+        return implLow;
     })();
-    blended.taskViewController = taskViewController;
-    //******* TASK 
-    var taskController = (function () {
-        //********************* 
-        function taskController(state) {
-            var _this = this;
-            this.getPersistData = function () { return blended.getPersistData(_this.dataNode, _this.ctx.taskid); };
-            this.setPersistData = function (modify) { return blended.setPersistData(_this.dataNode, _this.ctx.taskid, modify); };
-            this.doInitPersistData = function () {
-                var ud = _this.getPersistData();
-                if (!ud)
-                    ud = _this.setPersistData(function (ud) {
-                        _this.log('initPersistData');
-                        _this.initPersistData(ud);
-                    });
-                return ud;
-            };
-            if (!state.current.dataNodeUrlParName)
-                return;
-            this.ctx = state.params;
-            blended.finishContext(this.ctx);
-            $.extend(this, state.current.data);
-            this.myState = state.current;
-            this.ctx.product = blended.loader.productCache.fromCache(this.ctx);
-            if (!this.ctx.product)
-                return;
-            var paretScope = this.parent = state.parent;
-            if (paretScope) {
-                paretScope.child = this;
-                if (!this.ctx.$state)
-                    this.ctx.$state = state.parent.ctx.$state;
-            }
-            this.dataNode = this.ctx.product.nodeDir[this.ctx[state.current.dataNodeUrlParName]];
-            if (!this.dataNode)
-                throw '!this.dataNode';
-            if (state.createForCheckUrl != blended.createControllerCtx.checkForUrl)
-                this.doInitPersistData();
+    metaJS.implLow = implLow;
+    var enumImpl = (function (_super) {
+        __extends(enumImpl, _super);
+        function enumImpl(json) {
+            _super.call(this, json);
+            for (var i = 0; i < this.enumData.length; i++)
+                this.enumData[i] = new enumItemImpl(this.enumData[i]);
         }
-        //********************** Virtualni procs
-        //inicialni naplneni user dat  (pri jejich prvnim vytvoreni)
-        taskController.prototype.initPersistData = function (ud) { ud.done = false; }; //ud.url = this.dataNode.url; }
-        //test na validnost URL - sance presmerovat system jinam
-        taskController.prototype.checkCommingUrl = function () { return null; };
-        //dodelej task list do green stavu
-        taskController.prototype.adjustChild = function () { };
-        //posun stavu dal
-        taskController.prototype.moveForward = function (ud) { throw 'notimplemented'; };
-        //var it = this.dataNode.userData ? this.dataNode.userData[this.ctx.taskid] : null;
-        //if (!it) {
-        //  it = { data: <any>{}, modified: true };
-        //  if (!this.dataNode.userData) this.dataNode.userData = {};
-        //  this.dataNode.userData[this.ctx.taskid] = it;
-        //} else
-        //  it.modified = true;
-        //modify(it.data);
-        //return it.data;
-        taskController.prototype.log = function (msg) {
-            console.log('%%% ' + Utils.getObjectClassName(this) + ": " + msg + ' (' + this.dataNode.url + ')');
-        };
-        taskController.prototype.goCurrent = function () {
-            var t = this;
-            while (t) {
-                t.adjustChild();
-                if (!t.child)
-                    return { stateName: t.myState.name, pars: t.ctx };
-                t = t.child;
-            }
-        };
-        //posun zelenou sipkou. Child Musi byt adjusted (goCurrent -> goAhead -> goAhead...)
-        taskController.prototype.goAhead = function () {
-            var ud = this.getPersistData();
-            if (ud.done)
-                return null;
-            if (this.child) {
-                var childUrl = this.child.goAhead();
-                if (childUrl)
-                    return childUrl; //... ano, posun udelal child
-                this.log('doMoveForward, child finished'); //... ne musim jej udelat sam
-            }
-            else {
-                this.log('doMoveForward');
-            }
-            this.moveForward(ud); //posun stav dopredu
-            if (ud.done)
-                return null;
-            return this.goCurrent();
-        };
-        //addToHistory(child: taskController, ud: IPersistNodeUser) {
-        //  if (!ud.history) ud.history = [];
-        //  var hist: IPersistHistoryItem = { date: Utils.nowToNum(), url: child.dataNode.url, taskId: child.ctx.taskid };
-        //  if (_.find(ud.history, h => h.url == hist.url && h.taskId == hist.taskId)) return;
-        //  ud.history.push(hist);
-        //}
-        taskController.prototype.href = function (url) {
-            return this.ctx.$state.href(url.stateName, url.pars);
-        };
-        taskController.prototype.navigate = function (url) {
-            var hash = this.href(url);
-            setTimeout(function () { return window.location.hash = hash; }, 1);
-        };
-        taskController.prototype.taskList = function () {
-            var t = this.taskRoot();
-            var res = [];
-            while (t) {
-                res.push(t);
-                t = t.child;
-            }
-            return res;
-        };
-        taskController.prototype.taskRoot = function () {
-            var t = this;
-            while (t.myState.name != blended.prodStates.homeTask.name)
-                t = t.parent;
-            return t;
-        };
-        return taskController;
-    })();
-    blended.taskController = taskController;
-    var pretestTaskController = (function (_super) {
-        __extends(pretestTaskController, _super);
-        function pretestTaskController() {
+        return enumImpl;
+    })(implLow);
+    metaJS.enumImpl = enumImpl;
+    var enumItemImpl = (function (_super) {
+        __extends(enumItemImpl, _super);
+        function enumItemImpl() {
             _super.apply(this, arguments);
         }
-        pretestTaskController.prototype.checkCommingUrl = function () {
-            var ud = this.getPersistData();
-            if (!ud)
-                return { stateName: blended.prodStates.home.name, pars: this.ctx }; //pretest jeste nezacal => goto product home
-            if (ud.done)
-                return null; //done pretest: vse je povoleno
-            var dataNode = this.dataNode;
-            var actModule = dataNode.Items[ud.actLevel];
-            var actEx = this.ctx.product.nodeDir[this.ctx.Url];
-            if (actModule.url != actEx.parent.url) {
-                var pars = blended.cloneAndModifyContext(this.ctx, function (c) { return c.moduleurl = blended.encodeUrl(actModule.url); });
-                return { stateName: blended.prodStates.home.name, pars: pars }; //v URL je adresa jineho nez aktivniho modulu (asi pomoci back) => jdi na prvni cviceni aktualniho modulu
+        return enumItemImpl;
+    })(implLow);
+    metaJS.enumItemImpl = enumItemImpl;
+    var typeImpl = (function (_super) {
+        __extends(typeImpl, _super);
+        function typeImpl() {
+            _super.apply(this, arguments);
+        }
+        typeImpl.prototype.rnDescendants = function () {
+            var _this = this;
+            if (this.name == 'macro')
+                return null;
+            var cond = function (d) { d.isTrashMode = _this.isTrashMode; var ok = !!d.rnDescendants() || !d.hasFlag(CourseModel.tgSt.docIgnore); return _this.isTrashMode ? !ok || !!d.rnProps() : ok; };
+            var res = _.filter(this.descendants, function (d) { return cond(d); });
+            return res.length == 0 ? null : res;
+        };
+        typeImpl.prototype.rnProps = function () {
+            var _this = this;
+            var cond = function (p) { var ok = !p.hasFlag(CourseModel.tgSt.docIgnore); return _this.isTrashMode ? !ok : ok; };
+            var res = _.filter(this.ownProps, function (p) { return cond(p); });
+            return res.length == 0 ? null : res;
+        };
+        typeImpl.prototype.rnPropsNew = function () {
+            var res = _.filter(this.props, function (p) { return !p.hasFlag(CourseModel.tgSt.docIgnore); });
+            return _.sortBy(res, function (p) { return p.name; }); //p._newName || p.name);
+        };
+        return typeImpl;
+    })(implLow);
+    metaJS.typeImpl = typeImpl;
+    //**************** objekt pro data, exportovana z CSharp
+    var xsdObj = (function () {
+        function xsdObj(json) {
+            var _this = this;
+            this.props = []; //prop impl
+            this.allEnums = [];
+            this.allTypes = [];
+            //properties from JSON
+            if (json)
+                for (var p in json)
+                    this[p] = json[p];
+            //interface => impl
+            for (var p in this.types)
+                this.allTypes.push(this.types[p] = new typeImpl(this.types[p]));
+            for (var p in this.enums)
+                this.allEnums.push(this.enums[p] = new enumImpl(this.enums[p]));
+            //spocti typeProps
+            var ownPropDirs = {};
+            _.map(this.properties, function (p) {
+                var props = ownPropDirs[p.propOf];
+                if (!props)
+                    ownPropDirs[p.propOf] = props = [];
+                props.push(p);
+            });
+            _.each(this.types, function (tp) {
+                tp.propDir = {};
+                tp.props = [];
+                tp.ownProps = [];
+                var t = tp;
+                do {
+                    _.each(ownPropDirs[t.name], function (p) {
+                        var impl = new propImpl(p);
+                        tp.propDir[p.name] = impl;
+                        tp.props.push(impl);
+                        if (t == tp) {
+                            tp.ownProps.push(impl);
+                            _this.props.push(impl);
+                        }
+                    });
+                    t = t.ancestor ? _this.types[t.ancestor] : null;
+                } while (t);
+                tp.props = _.sortBy(tp.props, function (p) { return p.name; });
+                tp.ownProps = _.sortBy(tp.ownProps, function (p) { return p.name; });
+                //descendants
+                if (tp.ancestor) {
+                    var anc = _this.types[tp.ancestor];
+                    if (!anc.descendants)
+                        anc.descendants = [];
+                    anc.descendants.push(tp);
+                }
+            });
+            this.props = _.sortBy(this.props, function (p) { return p.name; });
+            //sorting descendants
+            for (var p in this.types) {
+                var t = this.types[p];
+                if (t.descendants)
+                    t.descendants = _.sortBy(t.descendants, function (t) { return t.name; });
+            }
+        }
+        xsdObj.prototype.rnRoot = function (isTrash) {
+            var res = this.types['tag'];
+            res.isTrashMode = isTrash;
+            return res;
+        };
+        xsdObj.prototype.rnElements = function () {
+            var _this = this;
+            return _.sortBy(this.allTypes.filter(function (t) { return t.descendants == null && !t.hasFlag(CourseModel.tgSt.docIgnore) && !_this.inheritsFrom(t.name, 'macro'); }), function (t) { return t.name; }); //t => t._newName || t.name);
+        };
+        xsdObj.prototype.rnEnums = function () {
+            return _.filter(this.allEnums, function (e) { return !e.hasFlag(CourseModel.tgSt.docIgnore); });
+        };
+        xsdObj.prototype.rnRenameJson = function () {
+            var res = _.map(this.rnElements(), function (e) {
+                return {
+                    old: e.name,
+                    'new': e._newName || undefined,
+                    props: _.map(e.rnPropsNew(), function (p) { return { old: p.name, 'new': p._newName || undefined }; })
+                };
+            });
+            return JSON.stringify(res).replace(/"/g, '\\"');
+        };
+        xsdObj.prototype.dcElements = function (isCut) {
+            return _.filter(this.rnElements(), function (el) { return isCut == !!xsdObj.cutEls[el.name]; });
+        };
+        xsdObj.prototype.inheritsFrom = function (self, ancestor) { while (self) {
+            if (self == ancestor)
+                return true;
+            var self = this.types[self].ancestor;
+        } return false; };
+        xsdObj.prototype.tooglePanel = function (model, ev) {
+            var $a = $(ev.currentTarget);
+            var $body = $a.parents('.panel').find('.panel-body');
+            $body.toggle();
+            var isVisible = $body.is(":visible");
+            $a.toggleClass('fa-minus', isVisible);
+            $a.toggleClass('fa-plus', !isVisible);
+        };
+        xsdObj.prototype.showProp = function (ev, propOf, prop) {
+            alert(propOf + '.' + prop);
+        };
+        xsdObj.cutEls = { 'cut-dialog': true, 'cut-text': true, 'include-dialog': true, 'include-text': true, 'phrase': true, 'phrase-replace': true, 'replica': true };
+        return xsdObj;
+    })();
+    metaJS.xsdObj = xsdObj;
+    var propImpl = (function (_super) {
+        __extends(propImpl, _super);
+        function propImpl(json) {
+            _super.call(this, json);
+            this.camelName = Utils.toCammelCase(this.name);
+        }
+        propImpl.prototype.validateAndAssign = function (value, tag) {
+            var trimVal = value.trim();
+            delete tag[this.camelName];
+            switch (this.type) {
+                case metaJS.xsdPropType.Enum:
+                    if (this.modifier != metaJS.xsdPropModifier.no)
+                        throw 'System error: boolean and modifier';
+                    trimVal = trimVal.toLowerCase();
+                    var en = this.myEnum();
+                    var it = _.find(en.enumData, function (v) { return v.name == trimVal; });
+                    if (it) {
+                        tag[this.camelName] = it.value;
+                        return null;
+                    }
+                    return 'One from enum value expected';
+                case metaJS.xsdPropType.Bool:
+                    if (this.modifier != metaJS.xsdPropModifier.no)
+                        throw 'System error: boolean and modifier';
+                    var isOK = boolVal.test(trimVal = trimVal.toLowerCase());
+                    if (isOK) {
+                        tag[this.camelName] = trimVal == 'true';
+                        return null;
+                    }
+                    return '[true] or [false] expected';
+                case metaJS.xsdPropType.Number:
+                    if (this.modifier != metaJS.xsdPropModifier.no)
+                        throw 'System error: number and modifier';
+                    var isOK = numVal.test(trimVal);
+                    if (isOK) {
+                        tag[this.camelName] = parseInt(trimVal);
+                        return null;
+                    }
+                    return 'Number expected';
+                case metaJS.xsdPropType.String:
+                    if (this.modifier == metaJS.xsdPropModifier.no) {
+                        switch (this.constrains) {
+                            case metaJS.xsdPropConstrains.no:
+                                tag[this.camelName] = waEncode.unEscape(value);
+                                return null;
+                            case metaJS.xsdPropConstrains.idref:
+                            case metaJS.xsdPropConstrains.ncname:
+                            case metaJS.xsdPropConstrains.id:
+                                var isOK = idVal.test(trimVal);
+                                if (isOK) {
+                                    tag[this.camelName] = trimVal;
+                                    return null;
+                                }
+                                return 'Identifier expected';
+                            default: throw 'System error: xsdPropType.String with unknown constrains';
+                        }
+                    }
             }
             return null;
         };
-        pretestTaskController.prototype.initPersistData = function (ud) {
-            if (ud.urls)
-                return;
-            _super.prototype.initPersistData.call(this, ud);
-            ud.actLevel = blended.levelIds.A2;
-            ud.urls = [this.actRepo(blended.levelIds.A2).url];
+        propImpl.prototype.myEnum = function () {
+            if (this.type != metaJS.xsdPropType.Enum)
+                throw 'metaJS.propImpl.Enum: this.type != xsdPropType.Enum';
+            return metaJS.metaObj.enums[this.clsEnumName];
         };
-        pretestTaskController.prototype.adjustChild = function () {
-            if (this.child)
-                return;
-            var ud = this.getPersistData();
-            if (ud.done)
-                return;
-            var actModule = this.actRepo(ud.actLevel);
-            if (!actModule)
-                throw '!actModule';
-            var state = {
-                params: blended.cloneAndModifyContext(this.ctx, function (d) { return d.moduleurl = blended.encodeUrl(actModule.url); }),
-                parent: this,
-                current: blended.prodStates.pretestModule,
-                createForCheckUrl: blended.createControllerCtx.adjustChild
-            };
-            this.child = new moduleTaskController(state);
-        };
-        pretestTaskController.prototype.moveForward = function (ud) {
-            var actTestItem = (this.child);
-            var actRepo = this.actRepo(ud.actLevel);
-            var childUser = actTestItem.getPersistData();
-            if (!childUser.done || actTestItem.dataNode.url != actRepo.url)
-                throw '!childUser.done || actTestItem.dataNode.parent.url != actRepo.url';
-            if (actRepo.level == blended.levelIds.A1) {
-                this.finishPretest(ud, blended.levelIds.A1);
-            }
-            else if (actRepo.level == blended.levelIds.A2) {
-                if (childUser.score >= actRepo.minScore && childUser.score < actRepo.maxScore)
-                    this.finishPretest(ud, blended.levelIds.A2);
-                else if (childUser.score < actRepo.minScore)
-                    this.newTestItem(ud, blended.levelIds.A1);
-                else
-                    this.newTestItem(ud, blended.levelIds.B1);
-            }
-            else if (actRepo.level == blended.levelIds.B1) {
-                if (childUser.score >= actRepo.minScore && childUser.score < actRepo.maxScore)
-                    this.finishPretest(ud, blended.levelIds.B1);
-                else if (childUser.score < actRepo.minScore)
-                    this.finishPretest(ud, blended.levelIds.A2);
-                else
-                    this.newTestItem(ud, blended.levelIds.B2);
-            }
-            else if (actRepo.level == blended.levelIds.B2) {
-                if (childUser.score < actRepo.minScore)
-                    this.finishPretest(ud, blended.levelIds.B1);
-                else
-                    this.finishPretest(ud, blended.levelIds.B2);
-            }
-        };
-        pretestTaskController.prototype.newTestItem = function (ud, lev) {
-            this.child = null;
-            ud.actLevel = lev;
-            ud.urls.push(this.actRepo(lev).url);
-        };
-        pretestTaskController.prototype.finishPretest = function (ud, lev) {
-            this.child = null;
-            ud.done = true;
-            ud.targetLevel = lev;
-            delete ud.actLevel;
-        };
-        pretestTaskController.prototype.actRepo = function (lev) { return _.find(this.dataNode.Items, function (l) { return l.level == lev; }); };
-        return pretestTaskController;
-    })(taskController);
-    blended.pretestTaskController = pretestTaskController;
-    var moduleTaskController = (function (_super) {
-        __extends(moduleTaskController, _super);
-        function moduleTaskController() {
-            _super.apply(this, arguments);
+        return propImpl;
+    })(implLow);
+    metaJS.propImpl = propImpl;
+    var boolVal = /^(true)|(false)$/i;
+    var numVal = /^\d+$/;
+    var idVal = /^\s*[a-z][\w-]*\s*$/i;
+    metaJS.metaObj = new xsdObj(metaJS.metaData);
+})(metaJS || (metaJS = {}));
+
+var waObjs;
+(function (waObjs) {
+    (function (markType) {
+        markType[markType["no"] = 0] = "no";
+        markType[markType["spanOpen"] = 1] = "spanOpen";
+        markType[markType["spanClose"] = 2] = "spanClose";
+        markType[markType["inline"] = 3] = "inline";
+        markType[markType["style"] = 4] = "style";
+        markType[markType["blockPtr"] = 5] = "blockPtr";
+        markType[markType["caret"] = 6] = "caret";
+        //pro property editor
+        markType[markType["propName"] = 7] = "propName";
+        markType[markType["propEq"] = 8] = "propEq";
+        markType[markType["propValue"] = 9] = "propValue";
+    })(waObjs.markType || (waObjs.markType = {}));
+    var markType = waObjs.markType;
+    var viewmarkLow = (function () {
+        function viewmarkLow(owner, type, start, end) {
+            this.owner = owner;
+            this.type = type;
+            this.start = start;
+            this.end = end;
         }
-        moduleTaskController.prototype.adjustChild = function () {
+        viewmarkLow.prototype.classes = function () {
+            if (this.errorMsg)
+                return 'error';
+            switch (this.type) {
+                case markType.spanOpen:
+                case markType.spanClose: return 'span';
+                case markType.inline: return 'inline';
+                case markType.style: return 'style';
+                case markType.caret: return '';
+                case markType.propValue: return 'prop-value';
+                case markType.propName: return 'prop-name';
+                default: throw 'not implemented';
+            }
+        };
+        return viewmarkLow;
+    })();
+    waObjs.viewmarkLow = viewmarkLow;
+    var viewmarksLow = (function () {
+        function viewmarksLow(text, view) {
+            this.text = text;
+            this.view = view;
+            this.escaped = waEncode.escape(text);
+        }
+        viewmarksLow.prototype.finishConstructor = function () {
+            this.marks = this.parseBrackets();
+            if (this.marks)
+                this.marks = _.sortBy(this.marks, function (m) { return m.end > m.start ? m.start * 2 : m.start * 2 - 0.5; });
+        };
+        viewmarksLow.prototype.hasError = function () { return _.any(this.marks, function (m) { return !!m.errorMsg; }); };
+        //najde mark a jeji index, obsahujici caret. includeStart: do mark se pocita i kurzor pred pocatkem
+        viewmarksLow.prototype.findMark = function (pos) {
+            if (!this.marks)
+                return { mark: null, idx: -1 };
+            for (var i = 0; i < this.marks.length; i++) {
+                var m = this.marks[i];
+                if (m.type == markType.caret || m.errorMsg)
+                    continue;
+                if (m.start < pos && m.end > pos)
+                    return { idx: i, mark: this.marks[i] };
+            }
+            return { mark: null, idx: -1 };
+        };
+        viewmarksLow.prototype.renderHTML = function () {
+            var html = this.html();
+            //console.log(html);
+            this.view.html(html);
+            if (this.marks)
+                _.each(_.zip(this.marks, this.view.find('> span')), function (arr) {
+                    arr[0].$self = $(arr[1]);
+                    //zip inner spans
+                    var inline = (arr[0]);
+                    if (inline.type != markType.inline)
+                        return;
+                    if (inline.marks.marks)
+                        _.each(_.zip(inline.marks.marks, inline.$self.find('> span')), function (arr) { return arr[0].$self = $(arr[1]); });
+                });
+        };
+        viewmarksLow.prototype.insertCaretMark = function (pos) {
+            var m = new waObjs.caretMark(this, pos);
+            if (!this.marks)
+                this.marks = [];
+            else
+                this.marks = _.filter(this.marks, function (m) { return m.type != markType.caret; });
+            this.marks.push(m);
+            this.renderHTML();
+            return m;
+        };
+        viewmarksLow.prototype.html = function () { throw 'not implemented'; };
+        viewmarksLow.prototype.parseBrackets = function () { throw 'not implemented'; };
+        return viewmarksLow;
+    })();
+    waObjs.viewmarksLow = viewmarksLow;
+})(waObjs || (waObjs = {}));
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var metaJS;
+(function (metaJS) {
+    //******************* propEditor marks
+    var viewmarks = (function (_super) {
+        __extends(viewmarks, _super);
+        function viewmarks(tag /*napr. gap-fill*/, text /*napr. id=gp1; smart-width=sm1; */ /*, view: JQuery*/) {
             var _this = this;
-            if (this.child)
+            _super.call(this, text, null);
+            this.tag = tag;
+            this.propDir = metaJS.metaObj.types[this.tag].propDir;
+            this.props = metaJS.metaObj.types[this.tag].props;
+            this.finishConstructor();
+            this.json = { _tg: this.tag };
+            if (this.hasError())
                 return;
-            var ud = this.getPersistData();
-            if (ud.done)
-                return;
-            var exNode;
-            if (!this.alowCycleExercise) {
-                exNode = _.find(this.dataNode.Items, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (!itUd || !itUd.done); });
-            }
-            else {
-                exNode = this.dataNode.Items[ud.actChildIdx];
-            }
-            if (!exNode)
-                return;
-            var state = {
-                params: blended.cloneAndModifyContext(this.ctx, function (d) { return d.url = blended.encodeUrl(exNode.url); }),
-                parent: this,
-                current: blended.prodStates.pretestExercise,
-                createForCheckUrl: blended.createControllerCtx.adjustChild
-            };
-            this.child = new vyzva.pretestExercise(state);
-        };
-        moduleTaskController.prototype.initPersistData = function (ud) {
-            _super.prototype.initPersistData.call(this, ud);
-            ud.actChildIdx = 0;
-        };
-        moduleTaskController.prototype.moveForward = function (ud) {
-            var _this = this;
-            var ud = this.getPersistData();
-            if (this.alowCycleExercise) {
-                this.setPersistData(function (d) { if (d.actChildIdx == _this.dataNode.Items.length - 1)
-                    d.actChildIdx = 0;
-                else
-                    d.actChildIdx++; });
-            }
-            if (_.all(this.dataNode.Items, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (itUd && itUd.done); }))
-                this.setPersistData(function (d) { return d.done = true; });
-            this.child = null;
-        };
-        return moduleTaskController;
-    })(taskController);
-    blended.moduleTaskController = moduleTaskController;
-    var exerciseTaskViewController = (function (_super) {
-        __extends(exerciseTaskViewController, _super);
-        function exerciseTaskViewController(state) {
-            _super.call(this, state);
-            this.title = this.dataNode.title;
-        }
-        exerciseTaskViewController.prototype.gotoHomeUrl = function () { Pager.gotoHomeUrl(); };
-        exerciseTaskViewController.prototype.initPersistData = function (ud) {
-            _super.prototype.initPersistData.call(this, ud);
-        };
-        exerciseTaskViewController.prototype.moveForward = function (ud) {
-            ud.done = true;
-        };
-        return exerciseTaskViewController;
-    })(taskController);
-    blended.exerciseTaskViewController = exerciseTaskViewController;
-})(blended || (blended = {}));
-//export class controllerLow {
-//  constructor($scope: IControllerLowScope, public $state: angular.ui.IStateService) {
-//    this.ctx = <learnContext><any>($state.params);
-//    finishContext(this.ctx);
-//    $.extend(this, $state.current.data);
-//    $scope.ts = this;
-//  }
-//  ctx: learnContext;
-//}
-//export class pretestGreenProxy extends greenProxy {
-//  constructor(public dataNode: IPretestRepository, ctx: learnContext) {
-//    super(dataNode, ctx);
-//  }
-//  getPersistData: () => IPretestUser;
-//  getChild(): IStateUrl {
-//    var ud = this.getPersistData(); if (ud.done) return null;
-//    var act: IPretestItemRepository = _.find(this.dataNode.Items, l => l.level == ud.actLevel); if (!act) throw '!act';
-//    return new pretestItemGreenProxy(act, this.ctx).getChild();
-//  }
-//}
-//export class pretestItemGreenProxy extends greenProxy {
-//  constructor(public dataNode: IPretestItemRepository, ctx: learnContext) {
-//    super(dataNode, ctx);
-//  }
-//  getPersistData: () => IModuleUser;
-//  getChild(): IStateUrl {
-//    var ud = this.getPersistData(); if (ud.done) return null;
-//    var node = _.find(this.dataNode.Items, it => {
-//      var nodeUd = blended.getPersistData(it, '*** TODO');
-//      return nodeUd != null && !nodeUd.done;
-//    });
-//    //return node ? new greenProxy(node, this.ctx) /*TODO: null;
-//  }
-//}
-//export class pretestState extends state {
-//  constructor(st: angular.ui.IState, public exerciseState: state) {
-//    super(st);
-//  }
-//getPersistData: (data: IPretestStateData) => IPretestUser;
-//setPersistData: (data: IPretestStateData, modify: (data: IPretestUser) => void) => IPretestUser;
-//modifyTargetState(data: IPretestStateData): IStateUrl {
-//  var ud = this.getPersistData(data);
-//  //if (!ud) return { stateName: prodStates.home.name, pars: data.man.ctx }; //pretest jeste nezacal => goto home
-//  if (ud && ud.done) return null; //done pretest: vse je povoleno
-//  var dataNode = <IPretestRepository>data.dataNode;
-//  if (!ud) ud = this.setPersistData(data, d => {
-//    d.url = dataNode.url;
-//    d.actLevel = levelIds.A2;
-//    d.urls = [this.actRepo(data, levelIds.A2).url];
-//  });
-//  var actModule = dataNode.Items[ud.actLevel];
-//  if (actModule.url != data.man.ctx.moduleUrl) {
-//    var pars = cloneAndModifyContext(data.man.ctx, c => {
-//      c.moduleurl = enocdeUrl(actModule.url);
-//      c.url = enocdeUrl(actModule.Items[0].url);
-//    });
-//    return { stateName: this.exerciseState.name, pars: pars }; //v URL je adresa jineho nez aktivniho modulu (asi pomoci back) => jdi na prvni cviceni aktualniho modulu
-//  }
-//  return null;
-//}
-//initPersistData(data: IPretestStateData, ud: IPretestUser) {
-//  super.initPersistData(data, ud);
-//  ud.actLevel = levelIds.A2;
-//  ud.urls = [this.actRepo(data, levelIds.A2).url];
-//}
-//actRepo(data: IPretestStateData, lev: levelIds): IPretestItemRepository { return _.find(data.dataNode.Items, l => l.level == lev); }
-//}
-//export interface IPretestStateData extends blended.IStateData {
-//  dataNode: IPretestRepository;
-//}
-
-var vyzva;
-(function (vyzva) {
-    function finishHomeDataNode(prod) {
-        if (prod.pretest)
-            return;
-        var clonedLessons = _.map(_.range(0, 4), function (idx) { return (_.clone(prod.Items[idx].Items)); }); //pro kazdou level kopie napr. </lm/blcourse/english/a1/>.Items
-        var firstEntryTests = _.map(clonedLessons, function (l) { return l.splice(0, 1)[0]; }); //z kopie vyndej prvni prvek (entry test) a dej jej do firstPretests;
-        prod.pretest = (prod.find('/lm/blcourse/' + LMComLib.LineIds[prod.line].toLowerCase() + '/pretests/'));
-        prod.entryTests = firstEntryTests;
-        prod.lessons = clonedLessons;
-        //_.each(<any>(prod.pretest.Items), (it: CourseMeta.data) => {
-        //  if (it.other) $.extend(it, JSON.parse(it.other));
-        //});
-    }
-    vyzva.finishHomeDataNode = finishHomeDataNode;
-    function breadcrumbBase(ctx) {
-        return [
-            { title: 'Moje Online jazykové kurzy a testy', url: '#' + Pager.getHomeUrl() },
-            { title: ctx.product.title, url: ctx.$state.href(vyzva.stateNames.home.name, ctx), active: false }
-        ];
-    }
-    vyzva.breadcrumbBase = breadcrumbBase;
-})(vyzva || (vyzva = {}));
-
-
-
-
-
-
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-var vyzva;
-(function (vyzva) {
-    //export class exerciseController extends controller implements IToolbar, IToolbarModule {
-    //  constructor($scope: blended.IControllerScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
-    //    super($scope, $state, $rootTask);
-    //  }
-    //  tbTitle = 'Spustit lekci';
-    //  tbClick() { alert('click exercise'); }
-    //  tbSkipClick() { alert('skip exercise'); }
-    //  tbFinishClick() { alert('finish exercise'); }
-    //}
-    var pretestExercise = (function (_super) {
-        __extends(pretestExercise, _super);
-        function pretestExercise(state) {
-            _super.call(this, state);
-            if (state.createForCheckUrl != blended.createControllerCtx.navigate)
-                return;
-            this.breadcrumb = vyzva.breadcrumbBase(this.ctx);
-            this.breadcrumb.push({ title: this.title, url: null, active: true });
-            this.tbTitle = 'Pokračovat';
-            this.pageUrls = this.ctx.productUrl + '|' + this.ctx.moduleUrl + '|' + this.ctx.Url;
-        }
-        pretestExercise.prototype.tbClick = function () {
-            var pretest = _.find(this.taskList(), function (t) { return t.myState.name == vyzva.stateNames.pretestTask.name; });
-            if (pretest == null)
-                throw 'pretest==null';
-            var url = pretest.goAhead();
-            if (url == null)
-                url = { stateName: vyzva.stateNames.home.name, pars: this.ctx };
-            this.navigate(url);
-        };
-        return pretestExercise;
-    })(blended.exerciseTaskViewController);
-    vyzva.pretestExercise = pretestExercise;
-    var lessonExercise = (function (_super) {
-        __extends(lessonExercise, _super);
-        function lessonExercise() {
-            _super.apply(this, arguments);
-        }
-        return lessonExercise;
-    })(blended.exerciseTaskViewController);
-    vyzva.lessonExercise = lessonExercise;
-})(vyzva || (vyzva = {}));
-
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-var vyzva;
-(function (vyzva) {
-    //export class moduleHomeController extends controller implements IToolbar, IToolbarRun {
-    //  constructor($scope: blended.IControllerScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
-    //    super($scope, $state, $rootTask);
-    //  }
-    //  tbTitle = 'Spustit lekci';
-    //  tbClick() { alert('click lesson'); }
-    //}
-    var moduleViewController = (function (_super) {
-        __extends(moduleViewController, _super);
-        function moduleViewController(state) {
-            _super.call(this, state);
-            this.breadcrumb = vyzva.breadcrumbBase(this.ctx);
-            this.breadcrumb.push({ title: this.title, url: null, active: true });
-        }
-        return moduleViewController;
-    })(blended.taskViewController);
-    vyzva.moduleViewController = moduleViewController;
-    var moduleTaskController = (function (_super) {
-        __extends(moduleTaskController, _super);
-        function moduleTaskController(state) {
-            _super.call(this, state);
-        }
-        return moduleTaskController;
-    })(blended.pretestTaskController);
-    vyzva.moduleTaskController = moduleTaskController;
-})(vyzva || (vyzva = {}));
-
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-var vyzva;
-(function (vyzva) {
-    var pretestViewController = (function (_super) {
-        __extends(pretestViewController, _super);
-        function pretestViewController(state) {
-            _super.call(this, state);
-            this.breadcrumb = vyzva.breadcrumbBase(this.ctx);
-            this.breadcrumb.push({ title: this.title, url: null, active: true });
-        }
-        return pretestViewController;
-    })(blended.taskViewController);
-    vyzva.pretestViewController = pretestViewController;
-})(vyzva || (vyzva = {}));
-
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-var vyzva;
-(function (vyzva) {
-    //****************** VIEW
-    var homeViewController = (function (_super) {
-        __extends(homeViewController, _super);
-        function homeViewController(state) {
-            _super.call(this, state);
-            this.breadcrumb = vyzva.breadcrumbBase(this.ctx);
-            this.breadcrumb[1].active = true;
-            this.prt = this.myTask.getPretestItemModel();
-        }
-        return homeViewController;
-    })(blended.taskViewController);
-    vyzva.homeViewController = homeViewController;
-    //****************** TASK
-    var homeTaskController = (function (_super) {
-        __extends(homeTaskController, _super);
-        function homeTaskController() {
-            _super.apply(this, arguments);
-        }
-        homeTaskController.prototype.initPersistData = function (ud) {
-            _super.prototype.initPersistData.call(this, ud);
-            ud.startDate = Utils.nowToNum();
-            //ud.pretest = { url: this.dataNode.pretest.url }
-        };
-        homeTaskController.prototype.moveForward = function (ud) {
-            var childUd = this.child.getPersistData();
-            if (this.child.dataNode.url == this.dataNode.pretest.url) {
-            }
-            else {
-                var pretestUd = blended.getPersistData(this.dataNode.pretest, this.ctx.taskid);
-                if (this.child.dataNode.url == this.dataNode.entryTests[pretestUd.targetLevel].url) {
+            var props = _.filter(this.marks, function (m) { return m.type == waObjs.markType.propName; });
+            var checkUniq = {}; //pro check unique prop names
+            _.each(props, function (p) {
+                if (checkUniq[p.prop.name]) {
+                    p.errorMsg = 'Duplicated attribute name: ' + p.prop.name;
+                    return;
                 }
-                else if (this.child.dataNode.url == this.dataNode.lessons[pretestUd.targetLevel].url) {
-                }
-                else
-                    throw 'tasks.course.doGoAhead: unknown child url - ' + this.child.dataNode.url;
-            }
-        };
-        //getName(): string { return stateNames.taskRoot; }
-        //********** PRETEST item
-        homeTaskController.prototype.getPretestItemModel = function () {
-            var _this = this;
-            var prUd = blended.getPersistData(this.dataNode.pretest, this.ctx.taskid);
-            return {
-                run: function () {
-                    _this.child = new blended.pretestTaskController({
-                        params: blended.cloneAndModifyContext(_this.ctx, function (d) { return d.pretesturl = blended.encodeUrl(_this.dataNode.pretest.url); }),
-                        current: vyzva.stateNames.pretestTask,
-                        parent: _this,
-                        createForCheckUrl: blended.createControllerCtx.adjustChild
-                    });
-                    var url = _this.child.goCurrent();
-                    _this.navigate(url);
-                },
-                canRun: !prUd || !prUd.done,
-                btnTitle: !prUd ? 'Začněte spuštěním Rozřazovacího testu' : 'Dokončete Rozřazovací test',
-                resultLevel: prUd && prUd.done ? blended.levelIds[prUd.targetLevel] : '',
-                previewUrl: vyzva.stateNames.pretest.name,
-            };
-        };
-        return homeTaskController;
-    })(blended.taskController);
-    vyzva.homeTaskController = homeTaskController;
-})(vyzva || (vyzva = {}));
-//******* Home produktu
-//export class productHomeController extends controller implements IToolbar, IToolbarEmpty {
-//  constructor($scope: blended.IControllerScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
-//    super($scope, $state, $rootTask);
-//    this.title = $rootTask.dataNode.title;
-//    this.breadcrumb[1].active = true;
-//    this.prt = $rootTask.getPretestItemModel();
-//  }
-//  //************ IHomePretest
-//  prt: IHomePretest;
-//}
-//export interface IHomeStateData extends blended.IStateData{
-//  dataNode: IBlendedCourseRepository;
-//}
-//export class homeState extends blended.state {
-//  initPersistData(data: IHomeStateData, ud: IBlendedCourseUser) {
-//    super.initPersistData(data, ud);
-//    ud.startDate = Utils.nowToNum();
-//    ud.pretest = { url: data.dataNode.pretest.url }
-//  }
-//  getPersistData: (data: IHomeStateData) => IBlendedCourseUser;
-//  setPersistData: (data: IHomeStateData, modify: (data: IBlendedCourseUser) => void) => IBlendedCourseUser;
-//  getPretestItemModel(data: IHomeStateData): IHomePretest {
-//    var ud = this.getPersistData(data);
-//    return {
-//      run: () => {
-//        debugger;
-//      },
-//      canRun: !ud.pretest || !ud.pretest.done,
-//      btnTitle: !ud.pretest ? 'Začněte spuštěním Rozřazovacího testu' : 'Dokončete Rozřazovací test',
-//      resultLevel: ud.pretest.done ? blended.levelIds[ud.pretest.targetLevel] : '',
-//      previewUrl: stateNames.pretest.name,
-//    };
-//  }
-//}
-//export class homeGreenProxy extends blended.greenProxy {
-//  constructor(public dataNode: IBlendedCourseRepository, ctx: blended.learnContext) {
-//    super(dataNode, ctx);
-//  }
-//  getPersistData: () => IBlendedCourseUser;
-//  getChild(): blended.IStateUrl {
-//    var ud = this.getPersistData();
-//    if (!ud.pretest.done) { //pretest task neexistuje nebo neni dokoncen
-//      return new blended.pretestGreenProxy(this.dataNode.pretest, this.ctx).getChild();
-//    } else if (!ud.entryTest.done) { //entryTest task neexistuje nebo neni dokoncen
-//      return new blended.greenProxy(this.dataNode.entryTests[ud.pretest.targetLevel], this.ctx).getChild();
-//    } else if (!ud.lessons.done) { //level task neexistuje nebo neni dokoncen
-//      return new blended.greenProxy(this.dataNode.lessons[ud.pretest.targetLevel], this.ctx).getChild();
-//    } else {
-//      return null;
-//    }
-//  }
-//}
-//greenChild(): taskController {
-//  var ud = this.getPersistData();
-//  if (!ud.pretest.done) { //pretest task neexistuje nebo neni dokoncen
-//    this.child = new pretestTaskController(this.dataNode.pretest, this.ctx, this, completed);
-//  } else if (!ud.entryTest.done) { //entryTest task neexistuje nebo neni dokoncen
-//    this.child = new blended.moduleTask(this.dataNode.entryTests[ud.pretest.targetLevel], this.ctx, this, completed);
-//  } else if (!ud.lessons.done) { //level task neexistuje nebo neni dokoncen
-//    this.child = new blended.listTask(this.dataNode.lessons[ud.pretest.targetLevel], this.ctx, this, completed);
-//  } else {
-//    ud.done = true; this.child = null;
-//    completed();
-//  }
-//}
-
-var vyzva;
-(function (vyzva) {
-    //*************** RESOLVERs
-    //adjust produkt
-    vyzva.loadProduct = ['$stateParams', function ($stateParams) {
-            blended.finishContext($stateParams);
-            $stateParams.finishProduct = vyzva.finishHomeDataNode;
-            return blended.loader.adjustProduct($stateParams);
-        }];
-    vyzva.loadEx = ['$stateParams', function ($stateParams) {
-            blended.finishContext($stateParams);
-            $stateParams.finishProduct = vyzva.finishHomeDataNode;
-            return blended.loader.adjustEx($stateParams);
-        }];
-    vyzva.stateNames = {}; //taskRoot: 'root', taskCheckTest: 'checktest', taskLesson: 'lesson', taskPretest: 'pretest', taskPretestItem: 'pretestitem' };
-    vyzva.initVyzvaApp = ['$rootScope', '$location', '$state', function ($rootScope, $location, $state) {
-            //sance zrusit ladovani stranky
-            $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
-                blended.finishContext(toParams);
-                blended.state.onRouteChangeStart(e, toState, toParams, $location, $state);
+                checkUniq[p.prop.name] = p;
+                p.value.errorMsg = p.prop.validateAndAssign(p.value.value, _this.json);
+                if (p.value.errorMsg)
+                    return;
             });
-        }];
-    function initVyzvaStates(params) {
-        vyzva.stateNames.root = new blended.state({
-            name: 'pg.ajs',
-            url: '/ajs',
-            abstract: true,
-            controller: function () { Pager.clearHtml(); },
-            template: "<div data-ui-view></div>",
-            childs: [
-                blended.prodStates.homeTask = vyzva.stateNames.homeTask = new blended.state({
-                    name: 'vyzva',
-                    url: "/vyzva/:persistence/:taskid/:companyid/:userid/:subuserid/:loc/:producturl",
-                    dataNodeUrlParName: 'productUrl',
-                    controller: vyzva.homeTaskController,
-                    abstract: true,
-                    resolve: {
-                        $loadedProduct: vyzva.loadProduct,
-                    },
-                    template: "<div data-ui-view></div>",
-                    childs: [
-                        blended.prodStates.home = vyzva.stateNames.home = new blended.state({
-                            name: 'home',
-                            url: "/home",
-                            controller: vyzva.homeViewController,
-                            data: $.extend(getDataConfig('home', 'empty'), {
-                                dataPretestItem: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/home/pretestItem.html',
-                            }),
-                            templateUrl: pageTemplate,
-                        }),
-                        vyzva.stateNames.pretestTask = new blended.state({
-                            name: 'pretest',
-                            url: '/pretest/:pretesturl',
-                            controller: blended.pretestTaskController,
-                            dataNodeUrlParName: 'pretestUrl',
-                            abstract: true,
-                            template: "<div data-ui-view></div>",
-                            childs: [
-                                vyzva.stateNames.pretest = new blended.state({
-                                    name: 'home',
-                                    url: "/home",
-                                    data: getDataConfig('pretest', 'empty'),
-                                    controller: vyzva.pretestViewController,
-                                    templateUrl: pageTemplate,
-                                }),
-                                blended.prodStates.pretestModule = new blended.state({
-                                    name: 'test',
-                                    url: '/test/:moduleurl',
-                                    controller: blended.moduleTaskController,
-                                    dataNodeUrlParName: 'moduleUrl',
-                                    data: blended.createStateData({ alowCycleExercise: false }),
-                                    abstract: true,
-                                    template: "<div data-ui-view></div>",
-                                    childs: [
-                                        blended.prodStates.pretestExercise = vyzva.stateNames.pretestExercise = new blended.state({
-                                            name: 'ex',
-                                            url: '/ex/:url',
-                                            controller: vyzva.pretestExercise,
-                                            dataNodeUrlParName: 'Url',
-                                            data: $.extend(getDataConfig('exercise', 'run'), blended.createStateData({ isTest: true })),
-                                            resolve: {
-                                                $loadedEx: vyzva.loadEx,
-                                            },
-                                            templateUrl: pageTemplate,
-                                        })
-                                    ]
-                                }),
-                            ]
-                        }),
-                        vyzva.stateNames.lessonTask = new blended.state({
-                            name: 'lesson',
-                            url: '/lesson/:moduleurl',
-                            controller: vyzva.moduleTaskController,
-                            dataNodeUrlParName: 'moduleUrl',
-                            abstract: true,
-                            template: "<div data-ui-view></div>",
-                            childs: [
-                                vyzva.stateNames.lesson = new blended.state({
-                                    name: 'home',
-                                    url: '/home',
-                                    data: getDataConfig('module', 'run'),
-                                    controller: vyzva.moduleViewController,
-                                    templateUrl: pageTemplate,
-                                }),
-                                vyzva.stateNames.lessonExercise = new blended.state({
-                                    name: 'ex',
-                                    url: '/ex/:url',
-                                    controller: vyzva.lessonExercise,
-                                    dataNodeUrlParName: 'Url',
-                                    data: getDataConfig('exercise', 'run'),
-                                    templateUrl: pageTemplate,
-                                })
-                            ]
-                        })
-                    ]
-                })
-            ]
+        }
+        viewmarks.prototype.html = function () {
+            var text = this.text;
+            if (this.marks == null)
+                return text;
+            var sb = [];
+            var lastPos = 0;
+            _.each(this.marks, function (m) {
+                if (m.start < lastPos)
+                    throw 'm.start < lastPos';
+                if (m.start > lastPos)
+                    sb.push(text.substring(lastPos, m.start));
+                var isFake = m.type == waObjs.markType.propEq;
+                if (!isFake) {
+                    sb.push('<span class="');
+                    sb.push(m.classes());
+                    sb.push('">');
+                }
+                sb.push(text.substring(m.start, m.end));
+                if (!isFake)
+                    sb.push('</span>');
+                lastPos = m.end;
+            });
+            if (lastPos < text.length)
+                sb.push(text.substr(lastPos));
+            return sb.join('');
+        };
+        viewmarks.prototype.hasSeriousError = function () { return _.any(this.marks, function (m) { return !!m.errorMsg && m.type != waObjs.markType.propName && m.type != waObjs.markType.propValue; }); };
+        viewmarks.prototype.parseBrackets = function () {
+            var txt = this.text;
+            if (_.isEmpty(txt))
+                return null;
+            var match;
+            var lastPos = 0;
+            var res = [];
+            while (match = nameValueMask.exec(this.escaped)) {
+                var m = match.index;
+                var m1 = match[1].length;
+                var m2 = match[2].length;
+                var m3 = match[3].length;
+                var m4 = match[4].length;
+                var m5 = match[5].length;
+                var name = new nameMark(this, m + m1, m + m1 + m2);
+                viewmark.createEqMark(res, this, m + m1 + m2 + m3, m + m1 + m2 + m3 + m4);
+                var value = new valueMark(this, m + m1 + m2 + m3 + m4, m + m1 + m2 + m3 + m4 + m5);
+                name.value = value;
+                value.name = name; //name.before = before; name.after = after; 
+                res.push(name);
+                res.push(value);
+                if (lastPos < match.index)
+                    viewmark.createErrorMark(res, this, lastPos, match.index, 'Wrong format, [attribute name] expected');
+                lastPos = match.index + match[0].length;
+            }
+            if (lastPos < txt.trim().length)
+                viewmark.createErrorMark(res, this, lastPos, txt.length, 'Wrong format, [attribute name]=[value] expected.');
+            res = _.sortBy(res, function (m) { return m.start; });
+            return res;
+        };
+        return viewmarks;
+    })(waObjs.viewmarksLow);
+    metaJS.viewmarks = viewmarks;
+    var nameValueMask = /(\s*)([\w-]*)(\s*)(=)([^;]*);?/g;
+    var viewmark = (function (_super) {
+        __extends(viewmark, _super);
+        function viewmark() {
+            _super.apply(this, arguments);
+        }
+        viewmark.createErrorMark = function (res, owner, start, end, errorMsg) {
+            var m = new viewmark(owner, waObjs.markType.no, start, end);
+            m.errorMsg = errorMsg;
+            res.push(m);
+        };
+        viewmark.createEqMark = function (res, owner, start, end) {
+            res.push(new viewmark(owner, waObjs.markType.propEq, start, end));
+        };
+        return viewmark;
+    })(waObjs.viewmarkLow);
+    metaJS.viewmark = viewmark;
+    var nameMark = (function (_super) {
+        __extends(nameMark, _super);
+        function nameMark(owner, start, end) {
+            _super.call(this, owner, waObjs.markType.propName, start, end);
+            var name = owner.text.substring(start, end);
+            this.prop = this.owner.propDir[name];
+            if (!this.prop)
+                this.errorMsg = 'Wrong attribute name: ' + name;
+        }
+        return nameMark;
+    })(viewmark);
+    metaJS.nameMark = nameMark;
+    var valueMark = (function (_super) {
+        __extends(valueMark, _super);
+        function valueMark(owner, start, end) {
+            _super.call(this, owner, waObjs.markType.propValue, start, end);
+            this.value = owner.text.substring(start, end);
+        }
+        return valueMark;
+    })(viewmark);
+    metaJS.valueMark = valueMark;
+})(metaJS || (metaJS = {}));
+
+var waEncode;
+(function (waEncode) {
+    //**************** Escape, bracket content encoding, ...
+    function escape(s) {
+        if (_.isEmpty(s))
+            return s;
+        var res = [];
+        var encodeNext = false;
+        for (var i = 0; i < s.length; i++) {
+            var ch = s.charAt(i);
+            if (encodeNext) {
+                encodeNext = false;
+                if (ch == '\n') {
+                    res.push(escapeChar + ch);
+                    continue;
+                }
+                res.push(escapeFlag);
+                var idx = ch.charCodeAt(0);
+                if (idx > waEncode.s2Max - waEncode.s2)
+                    throw 'idx > s2Max - s2';
+                res.push(String.fromCharCode(waEncode.s2 + idx));
+                continue;
+            }
+            if (ch != escapeChar) {
+                res.push(ch);
+                continue;
+            }
+            encodeNext = true;
+        }
+        return res.join('');
+    }
+    waEncode.escape = escape;
+    function unEscape(s) {
+        if (_.isEmpty(s))
+            return s;
+        var res = [];
+        var encodeNext = false;
+        for (var i = 0; i < s.length; i++) {
+            var ch = s.charAt(i);
+            if (encodeNext) {
+                encodeNext = false;
+                var idx = ch.charCodeAt(0);
+                res.push(String.fromCharCode(idx - waEncode.s2));
+                continue;
+            }
+            if (ch != escapeFlag) {
+                res.push(ch);
+                continue;
+            }
+            encodeNext = true;
+        }
+        return res.join('');
+    }
+    waEncode.unEscape = unEscape;
+    var escapeFlag = '\u167F';
+    var escapeChar = '\\';
+    waEncode.s1 = 0x1400;
+    waEncode.s1Max = 0x15FF;
+    var s1First = '\u1400';
+    var s1Last = '\u15FF';
+    waEncode.s2 = 0x4E00;
+    waEncode.s2Max = 0x9FCC;
+    var s2First = '\u4E00';
+    var s2Last = '\u9FCC';
+    var lowerMask = 0x000001ff;
+    var fill = '≡';
+    function firstCode(sb, idx) { sb.push(String.fromCharCode(waEncode.s1 + (idx & lowerMask))); }
+    function secondCode(sb, idx) { sb.push(String.fromCharCode(waEncode.s2 + (idx >> 9))); }
+    function encode(sb, idx, length) {
+        firstCode(sb, idx);
+        secondCode(sb, idx);
+        for (var i = 0; i < length; i++)
+            sb.push(fill);
+    }
+    waEncode.encode = encode;
+    function decode(ch1, ch2) {
+        return ch1 - waEncode.s1 + ((ch2 - waEncode.s2) << 9);
+    }
+    waEncode.decode = decode;
+    //*********** styleParams
+    var styleParams = (function () {
+        function styleParams() {
+            this.attrs = {};
+            this.values = [];
+        }
+        styleParams.prototype.id = function () { return !this.ids || this.ids.length == 0 ? null : this.ids[0]; };
+        styleParams.prototype.fillParValue = function (parVal, trim) {
+            if (trim === void 0) { trim = true; }
+            var match = waEncode.inlineParsMask.exec(parVal);
+            if (!match)
+                return;
+            var par = match[1];
+            this.valStr = match[2];
+            this.fillPar(par);
+            this.values = !this.valStr ? [] : _.map(this.valStr.split('|'), function (v) { return unEscape(trim ? v.trim() : v); });
+            return this;
+        };
+        styleParams.prototype.fillPar = function (par, trim) {
+            var _this = this;
+            if (trim === void 0) { trim = true; }
+            if (_.isEmpty(par))
+                return this;
+            var kvs = _.map(par.replace(/[\n\s;]+$/, "").split(';'), function (p) {
+                var idx = p.indexOf('=');
+                return idx < 0 ? [p] : [p.substring(0, idx), p.substr(idx + 1)];
+            });
+            var ids = kvs[0][0].trim().split(/\s+/);
+            if (kvs.length > 1 || kvs[0].length > 1) {
+                kvs[0][0] = ids[ids.length - 1];
+                this.ids = ids.slice(0, ids.length - 1);
+                _.each(kvs, function (kv) { return _this.attrs[kv[0].trim()] = unEscape(trim && kv[1] ? kv[1].trim() : kv[1]); });
+            }
+            else
+                this.ids = ids;
+            return this;
+        };
+        return styleParams;
+    })();
+    waEncode.styleParams = styleParams;
+    waEncode.inlineParsMask = /^(?:\((.*?)\))?(?:\s(.*))?$/;
+    var inlineParams = (function () {
+        function inlineParams(parVal) {
+            this.values = [];
+            var match = waEncode.inlineParsMask.exec(parVal);
+            if (!match)
+                return;
+            this.pars = match[1];
+            var valStr = this.vals = match[2];
+            this.values = !valStr ? [] : _.map(valStr.split('|'), function (v) { return unEscape(v); });
+        }
+        return inlineParams;
+    })();
+    waEncode.inlineParams = inlineParams;
+})(waEncode || (waEncode = {}));
+
+var waObjs;
+(function (waObjs) {
+    //************* interfaces *****************
+    (function (itemType) {
+        itemType[itemType["text"] = 0] = "text";
+        itemType[itemType["block"] = 1] = "block";
+        itemType[itemType["rootBlock"] = 2] = "rootBlock";
+    })(waObjs.itemType || (waObjs.itemType = {}));
+    var itemType = waObjs.itemType;
+    var IItemProps = ['type'];
+    waObjs.ITextProps = ['text'].pushArray(IItemProps);
+    waObjs.IBlockProps = ['name', 'pars'].pushArray(IItemProps);
+    //************* ITEM *****************
+    var item = (function () {
+        function item(json, $parent, parent) {
+            this.parent = parent;
+            this.selfProps = IItemProps; //property names pro JSON serializaci. Serializuji se pouze tyto props, ostatni se ignoruji. Virtualni dato, pouzito v getJSONObject();
+            if (!json)
+                return;
+            this.root = parent ? parent.root : this;
+            if (json)
+                for (var p in json)
+                    this[p] = json[p];
+            this.$self = $(this.toHTMLString());
+            this.$self.data('wa', this);
+            $parent.append(this.$self);
+        }
+        item.prototype.toHTMLString = function () { return ''; }; //vrati HTML fragment pro $self
+        item.prototype.refreshPropsFromHtml = function () { }; //z HTML prevezme data pro JSON serializaci
+        item.prototype.getJSONObject = function (modify) {
+            var _this = this;
+            if (modify === void 0) { modify = null; }
+            if (modify)
+                modify();
+            var res = {};
+            _.each(this.selfProps, function (p) { return res[p] = _this[p]; });
+            var chs = this['childs'];
+            if (chs)
+                res['childs'] = _.map(chs, function (ch) { return ch.getJSONObject(); });
+            return res;
+        };
+        return item;
+    })();
+    waObjs.item = item;
+    //************* test *****************
+    function test() {
+        $(function () {
+            var item = waObjs.block.itemFromJSON(testJson, $('#edit-content'), null);
+            //new metaJS.propEditor($('#prop-editor > .sm-text'), 'gap-fill', 'id=gp1; smart-width=sw1');
+            //testJson = item.getJSONObject();
+            //Utils.longLog(JSON.stringify(testJson, null, 2));
+            //$('#edit-content').html('');
+            //block.itemFromJSON(testJson, $('#edit-content'), null);
         });
-        vyzva.stateNames.root.initFromStateTree(params.$stateProvider);
     }
-    vyzva.initVyzvaStates = initVyzvaStates;
-    function getDataConfig(page, toolbar) {
-        return {
-            dataTemplate: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/' + page + '.html',
-            dataToolbar: blended.baseUrlRelToRoot + '/blendedapi/vyzva/ViewParts/Toolbar/toolbar.html',
-            dataToolbarType: blended.baseUrlRelToRoot + '/blendedapi/vyzva/ViewParts/Toolbar/' + toolbar + '.html',
-        };
-    }
-    var pageTemplate = blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/_pageTemplate.html';
-})(vyzva || (vyzva = {}));
+    waObjs.test = test;
+    var testJson = {
+        type: itemType.rootBlock, name: '', pars: '',
+        childs: [
+            //{ type: itemType.text, text: '{+gap-fill(id=gp; smart-width=sw1;)}' },
+            { type: itemType.text, text: '{+offering(drop-down-mode=discard)}' },
+        ]
+    };
+})(waObjs || (waObjs = {}));
 
-var blended;
-(function (blended) {
-    var Module = (function () {
-        function Module(name, modules) {
-            var self = this;
-            this.app = angular.module(name, modules);
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var waObjs;
+(function (waObjs) {
+    var viewmark = (function (_super) {
+        __extends(viewmark, _super);
+        function viewmark() {
+            _super.apply(this, arguments);
         }
-        Module.prototype.href = function (stateName, params, options) {
-            return this.$oldActState.href(stateName, params);
+        //vlozeni mask na pozici caret
+        //static insertSnipset(mask: string, rng: textRange.IRange, self: text): textRange.IRange {
+        //  var caretIdx = mask.indexOf('|');
+        //  self.setText(self.text.substr(0, rng.start) + mask.replace('|', '') + self.text.substr(rng.start));
+        //  self.notifyTextChanged(false);
+        //  return <any>{ start: rng.start + caretIdx, end: rng.start + caretIdx };
+        //}
+        //obaleni selekce {**} zavorkou
+        //static surroundSpan(rng: textRange.IRange, self: text): textRange.IRange {
+        //  if (self.marks.findMark(rng.start).idx != self.marks.findMark(rng.end).idx) {
+        //    return viewmark.insertSnipset('{*| *}', rng, self);
+        //  }
+        //  self.setText(self.text.substr(0, rng.start) + '{* ' + self.text.substring(rng.start, rng.end) + '*}' + self.text.substr(rng.end));
+        //  self.notifyTextChanged(false);
+        //  return <any>{ start: rng.start + 2, end: rng.start + 2 };
+        //}
+        //******* COMPILE ******
+        viewmark.prototype.markToTag = function (addCtx) {
+            if (this.errorMsg)
+                addCtx.addToItems(('*** ERROR: ' + this.errorMsg));
+            else
+                throw 'not implimented';
         };
-        return Module;
-    })();
-    blended.Module = Module;
-    var OldController = (function () {
-        function OldController($scope, $state) {
-            blended.root.$oldActState = $state;
-            //prevezmi parametry
-            var urlParts = [];
-            for (var p = 0; p < 6; p++) {
-                var parName = 'p' + p.toString();
-                var val = $state.params[parName];
-                if (val === undefined)
+        return viewmark;
+    })(waObjs.viewmarkLow);
+    waObjs.viewmark = viewmark;
+    var errorMark = (function (_super) {
+        __extends(errorMark, _super);
+        function errorMark(owner, start, end) {
+            _super.call(this, owner, waObjs.markType.no, start, end);
+        }
+        return errorMark;
+    })(viewmark);
+    waObjs.errorMark = errorMark;
+    var caretMark = (function (_super) {
+        __extends(caretMark, _super);
+        function caretMark(owner, start) {
+            _super.call(this, owner, waObjs.markType.caret, start, start);
+        }
+        return caretMark;
+    })(viewmark);
+    waObjs.caretMark = caretMark;
+    var styleMark = (function (_super) {
+        __extends(styleMark, _super);
+        function styleMark(owner, start, end, text) {
+            _super.call(this, owner, waObjs.markType.style, start, end);
+            this.data = text.substring(start + 2, end - 1);
+        }
+        //******* COMPILE ******
+        styleMark.prototype.markToTag = function (addCtx) {
+        };
+        return styleMark;
+    })(viewmark);
+    waObjs.styleMark = styleMark;
+    var spanMark = (function (_super) {
+        __extends(spanMark, _super);
+        function spanMark(owner, isOpen, start, end, text) {
+            _super.call(this, owner, isOpen ? waObjs.markType.spanOpen : waObjs.markType.spanClose, start, end);
+            if (isOpen)
+                this.data = text.substring(start + 2, end);
+        }
+        //******* COMPILE ******
+        spanMark.prototype.markToTag = function (addCtx) {
+            switch (this.type) {
+                case waObjs.markType.spanOpen:
+                    addCtx.addTag({ _tg: 'span' });
                     break;
-                urlParts.push($state.params[parName]);
+                case waObjs.markType.spanClose:
+                    addCtx.stack.pop();
+                    break;
             }
-            //procedura pro vytvoreni stareho modelu
-            var createProc = $state.current.data['createModel'];
-            //vytvor page model a naladuj stranku
-            $scope.$on('$viewContentLoaded', function () {
-                Pager.loadPage(createProc(urlParts));
+        };
+        return spanMark;
+    })(viewmark);
+    waObjs.spanMark = spanMark;
+    var blockPtrMark = (function (_super) {
+        __extends(blockPtrMark, _super);
+        function blockPtrMark(owner, myBlock) {
+            _super.call(this, owner, waObjs.markType.blockPtr, 0, 1);
+            this.myBlock = myBlock;
+        }
+        //******* COMPILE ******
+        blockPtrMark.prototype.markToTag = function (addCtx) {
+            _.each(this.myBlock.compileResult, function (t) { return addCtx.addToItems(t); });
+        };
+        return blockPtrMark;
+    })(viewmark);
+    waObjs.blockPtrMark = blockPtrMark;
+    var viewmarks = (function (_super) {
+        __extends(viewmarks, _super);
+        function viewmarks(text, view) {
+            _super.call(this, text, view);
+            this.finishConstructor();
+            if (this.view)
+                this.renderHTML();
+        }
+        viewmarks.prototype.html = function () {
+            var text = this.text;
+            if (this.marks == null)
+                return text;
+            var sb = [];
+            var lastPos = 0;
+            _.each(this.marks, function (m) {
+                if (m.start < lastPos)
+                    throw 'm.start < lastPos';
+                if (m.start > lastPos)
+                    sb.push(text.substring(lastPos, m.start));
+                sb.push('<span class="');
+                sb.push(m.classes());
+                sb.push('">');
+                if (m.type == waObjs.markType.inline)
+                    sb.push(m.html);
+                else
+                    sb.push(text.substring(m.start, m.end));
+                sb.push('</span>');
+                lastPos = m.end;
+            });
+            if (lastPos < text.length)
+                sb.push(text.substr(lastPos));
+            return sb.join('');
+        };
+        viewmarks.prototype.parseBrackets = function () {
+            var _this = this;
+            var escaped = this.escaped;
+            if (_.isEmpty(escaped))
+                return null;
+            var match;
+            var stack = [];
+            var res = [];
+            var st = null; //non stack brackets - {!, {+
+            var addError = function (start, length, msg) {
+                var vm = new errorMark(_this, start, start + length);
+                vm.errorMsg = msg;
+                res.push(vm);
+            };
+            while (match = bracketMask.exec(escaped)) {
+                var m = match[0];
+                if (st && m != '}') {
+                    addError(st.start, st.length, 'Bracket not closed');
+                    st = null;
+                }
+                switch (m.substr(0, 2)) {
+                    case '{*':
+                        var spanBr = new spanMark(this, true, match.index, match.index + m.length, escaped);
+                        stack.push(spanBr);
+                        res.push(spanBr);
+                        break;
+                    case '*}':
+                        if (stack.length == 0) {
+                            addError(match.index, m.length, '* bracket not opened');
+                            continue;
+                        }
+                        var spanBr = stack.pop();
+                        var endBr = new spanMark(this, false, match.index, match.index + m.length, null);
+                        spanBr.closeBr = endBr;
+                        res.push(endBr);
+                        break;
+                    case '{+':
+                    case '{!':
+                        st = { type: m[1] == '+' ? waObjs.markType.inline : waObjs.markType.style, start: match.index, length: m.length };
+                        break;
+                    case '}':
+                        if (!st) {
+                            addError(match.index, m.length, 'Bracket not opened');
+                            continue;
+                        }
+                        var vm = st.type == waObjs.markType.inline ? new waObjs.inlineMark(this, st.start, st.length, match.index + m.length, escaped) : new styleMark(this, st.start, match.index + m.length, escaped);
+                        res.push(vm);
+                        st = null;
+                        break;
+                    case '{':
+                        addError(match.index, m.length, 'Wrong open bracket');
+                        break;
+                }
+            }
+            _.each(stack, function (bl) { return bl.errorMsg = 'Bracket not closed'; });
+            return res;
+        };
+        return viewmarks;
+    })(waObjs.viewmarksLow);
+    waObjs.viewmarks = viewmarks;
+    var bracketMask = /{\+gap-fill|{\+drop-down|{\+offering|{\+word-selection|{\+\s|{!|{\*[^\s\}]*|\*}|{|}/g;
+})(waObjs || (waObjs = {}));
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var waObjs;
+(function (waObjs) {
+    var inlineMark = (function (_super) {
+        __extends(inlineMark, _super);
+        function inlineMark(owner, start, startLen, end, encoded) {
+            _super.call(this, owner, waObjs.markType.inline, start, end);
+            this.encoded = encoded;
+            this.tag = encoded.substr(start + 2, startLen - 2);
+            this.marks = new metaJS.viewmarks(this.tag, null); //pro jistotu
+            var body = encoded.substring(start + startLen, end - 1);
+            var match = inlineParsMask.exec(body);
+            if (!match) {
+                this.html = encoded;
+                if (!_.isEmpty(body.trim()))
+                    this.errorMsg = 'Wrong format';
+                return;
+            }
+            var m1 = match[1];
+            var m2 = match[2];
+            var m3 = match[3];
+            var m4 = match[4];
+            var m5 = match[5];
+            this.html = '{+' + this.tag;
+            if (m1) {
+                this.html += m1;
+                this.parsRng = { start: start + startLen + m1.length, end: start + startLen + m1.length + m2.length };
+                if (encoded.substring(this.parsRng.start, this.parsRng.end) != m2)
+                    throw 'encoded.substring(this.parsRng.start, this.parsRng.end';
+            }
+            if (m2) {
+                this.marks = new metaJS.viewmarks(this.tag, m2);
+                this.html += this.marks.html();
+            }
+            if (m3)
+                this.html += m3;
+            if (m4)
+                this.html += m4;
+            if (m5)
+                this.html += m5;
+            this.html += '}';
+        }
+        inlineMark.prototype.markToTag = function (addCtx) {
+            if (this.errorMsg)
+                return;
+            if (this.marks.json)
+                addCtx.addToItems(this.marks.json);
+        };
+        inlineMark.prototype.editAttributeName = function (text, rng, insertSemicolon, name) {
+            new waObjs.DlgPropName(text.edit, rng, this.$self, this, function (snipset) { return text.insertSnipset((insertSemicolon ? '; ' : '') + snipset, rng); });
+        };
+        inlineMark.prototype.keyDown = function (text, rng, ev) {
+            var parsRng = this.parsRng;
+            if (!parsRng || rng.start < parsRng.start || rng.end > parsRng.end)
+                return waObjs.keyDownResult.no;
+            //typ klavesy
+            var isEq = waObjs.isEq(ev.keyCode);
+            var isSemicolon = waObjs.isSemicolon(ev.keyCode);
+            var isBracket = ev.keyCode == waObjs.key.openBracket;
+            if (!isEq && !isSemicolon && !isBracket)
+                return waObjs.keyDownResult.no;
+            //isBracket a prazdna zavorka
+            if (isBracket && (!this.marks.marks || this.marks.marks.length == 0)) {
+                this.editAttributeName(text, rng, false, null);
+                return waObjs.keyDownResult.false;
+            }
+            var pos = rng.start - this.parsRng.start;
+            //*********************** '=;'
+            if (isEq || isSemicolon) {
+                //spocitej marks jako po dokonceni stisku klavesy
+                var futured = this.encoded.substring(parsRng.start, rng.start) + (isEq ? '=' : ';') + this.encoded.substring(rng.start, parsRng.end);
+                var act = new metaJS.viewmarks(this.tag, futured);
+                if (act.hasSeriousError())
+                    return waObjs.keyDownResult.no;
+                if (isEq) {
+                    //najdi posledni mark pred aktulni EQ mark
+                    var nameMark = null;
+                    _.find(act.marks, function (m) { if (m.type == waObjs.markType.propName)
+                        nameMark = m; return m.type == waObjs.markType.propEq && m.start >= pos; });
+                    if (!nameMark)
+                        throw 'Something wrong: !mark';
+                    alert('select value');
+                }
+                else {
+                    this.editAttributeName(text, rng, true, null);
+                }
+                return waObjs.keyDownResult.false;
+            }
+            //*********************** '{'
+            var act = this.marks;
+            if (act.hasSeriousError())
+                return waObjs.keyDownResult.no;
+            //find act mark
+            var nameMark = null;
+            var valueMark = null;
+            _.find(act.marks, function (m) {
+                if (m.type == waObjs.markType.propName) {
+                    nameMark = m;
+                    valueMark = null;
+                }
+                else if (m.type == waObjs.markType.propValue) {
+                    nameMark = null;
+                    if (m.start <= pos && m.end >= pos) {
+                        valueMark = m;
+                        return true;
+                    }
+                }
+                return m.end > pos;
+            });
+            if (nameMark != null)
+                new waObjs.DlgEditInline(text.edit, rng, this.$self, this, function () { return null; });
+            else if (valueMark != null)
+                alert('edit value');
+            else
+                this.editAttributeName(text, rng, false, nameMark);
+            return waObjs.keyDownResult.false;
+        };
+        return inlineMark;
+    })(waObjs.viewmark);
+    waObjs.inlineMark = inlineMark;
+    var inlineParsMask = /^(?:(\()([^\)]*)(\)))?(?:(\s)(.*))?$/;
+})(waObjs || (waObjs = {}));
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var waObjs;
+(function (waObjs) {
+    (function (keyDownResult) {
+        keyDownResult[keyDownResult["no"] = 0] = "no";
+        keyDownResult[keyDownResult["true"] = 1] = "true";
+        keyDownResult[keyDownResult["false"] = 2] = "false";
+    })(waObjs.keyDownResult || (waObjs.keyDownResult = {}));
+    var keyDownResult = waObjs.keyDownResult;
+    //export interface editorLow {
+    //  $self: JQuery;
+    //  edit: JQuery;
+    //  view: JQuery;
+    //  text: string;
+    //}
+    //export function editorConstructor(self: editorLow) {
+    //  self.edit = self.$self.find('> textarea');
+    //  var pre = self.$self.find('> pre');
+    //  self.view = pre.find('> span');
+    //}
+    //************* TEXT *****************
+    var text = (function (_super) {
+        __extends(text, _super);
+        //escaped: string;
+        function text(data, $parent, parent) {
+            _super.call(this, data, $parent, parent);
+            this.selfProps = waObjs.ITextProps;
+            this.lastRefresh = 0;
+            if (!data)
+                return;
+            var self = this;
+            self.edit = self.$self.find('> textarea');
+            var pre = self.$self.find('> pre');
+            self.view = pre.find('> span');
+            if (bowser.agent.msie) {
+                self.edit.css('whiteSpace', 'pre');
+                self.view.css('whiteSpace', 'pre');
+                pre.css('whiteSpace', 'pre');
+            }
+            //http://stackoverflow.com/questions/2823733/textarea-onchange-detection
+            self.edit.on('input onpropertychange', function () {
+                self.text = self.edit.val();
+                //self.setText();
+                self.notifyTextChanged(true);
+            });
+            self.edit.on("keydown", function (ev) {
+                //IE hack: DEL a BACKSPACE se nevola v on('input onpropertychange')
+                if (bowser.agent.msie && (ev.keyCode == key.k_delete || ev.keyCode == key.backspace)) {
+                    setTimeout(function () { return self.notifyTextChanged(true); }, 1);
+                    return;
+                }
+                var rng = textRange.getRange(self.edit); //text a range
+                if (rng.start > 0 && self.text[rng.start - 1] == '\\')
+                    return true; // '\<any>' => continue
+                var mark = self.marks.findMark(rng.start).mark; //mark ve ktere je caret
+                if (mark != null && mark.type == waObjs.markType.inline && rng.start == rng.end) {
+                    var res = mark.keyDown(self, rng, ev); //inline pars editor
+                    switch (res) {
+                        case keyDownResult.true: return true;
+                        case keyDownResult.false: return false;
+                        default: break; //continue procesing
+                    }
+                }
+                if (ev.keyCode != key.openBracket)
+                    return true;
+                //edit or insert?
+                if (mark == null)
+                    mark = self.marks.insertCaretMark(rng.start); //neni => vloz a vrat specialni caret mark
+                if (mark.type != waObjs.markType.caret) {
+                    alert('Edit todo');
+                }
+                else {
+                    new waObjs.DlgOpenBracket(self.edit, rng, mark.$self, function ($btn) {
+                        //dlgOpenBracket.showForText(self.edit, rng, mark.$self,($btn: JQuery) => {
+                        var dlgRes = ($btn.data('dlgRes'));
+                        var parts = dlgRes.split(':');
+                        var grp = parts[0];
+                        var grpItem = parts[1];
+                        if (grp == 'inline' || grp == 'style' || (grp == 'span' && rng.start == rng.end)) {
+                            return self.insertSnipset($btn.data('sm-gen'), rng);
+                        }
+                        else if (grp == 'span') {
+                            return self.surroundSpan(rng);
+                        }
+                        else if (grp == 'block') {
+                            self.parent.insert(self, rng, self.text, grpItem); //vloz block
+                        }
+                        else
+                            throw 'not implemented';
+                        return null;
+                    });
+                }
+                return false;
+            });
+            self.notifyTextChanged(false);
+        }
+        text.prototype.setText = function (text) {
+            if (text === void 0) { text = null; }
+            if (text != null)
+                this.edit.val(text);
+            else
+                text = this.edit.val();
+            this.text = text;
+            this.marks = new waObjs.viewmarks(text, this.view);
+        };
+        text.prototype.toHTMLString = function () {
+            return '<div class="sm-text"><textarea>' + this.text + '</textarea><pre class="sm-view"><span></span><br /></pre></div>';
+        };
+        text.prototype.notifyTextChanged = function (inUserAction) {
+            var self = this;
+            if (self.refreshTimer) {
+                clearTimeout(self.refreshTimer);
+                self.refreshTimer = 0;
+            }
+            if (!inUserAction || self.text.length < 400) {
+                self.setText();
+                self.lastRefresh = new Date().getTime();
+                self.root.notifyDataChanged();
+                return;
+            }
+            var now = new Date().getTime();
+            if (self.lastRefresh == 0 || now - self.lastRefresh < text.updateSpeed) {
+                self.setText();
+                self.lastRefresh = now;
+                self.root.notifyDataChanged();
+                return;
+            }
+            self.refreshTimer = setTimeout(function () {
+                clearTimeout(self.refreshTimer);
+                self.refreshTimer = 0;
+                self.lastRefresh = new Date().getTime();
+                self.setText();
+                self.root.notifyDataChanged();
+            }, text.updateSpeed);
+        };
+        //vlozeni mask na pozici caret
+        text.prototype.insertSnipset = function (mask, rng) {
+            var self = this;
+            var caretIdx = mask.indexOf('|');
+            self.setText(self.text.substr(0, rng.start) + mask.replace('|', '') + self.text.substr(rng.start));
+            self.notifyTextChanged(false);
+            return { start: rng.start + caretIdx, end: rng.start + caretIdx };
+        };
+        //obaleni selekce {**} zavorkou
+        text.prototype.surroundSpan = function (rng) {
+            var self = this;
+            if (self.marks.findMark(rng.start).idx != self.marks.findMark(rng.end).idx) {
+                return self.insertSnipset('{*| *}', rng);
+            }
+            self.setText(self.text.substr(0, rng.start) + '{* ' + self.text.substring(rng.start, rng.end) + '*}' + self.text.substr(rng.end));
+            self.notifyTextChanged(false);
+            return { start: rng.start + 2, end: rng.start + 2 };
+        };
+        text.updateSpeed = 500;
+        return text;
+    })(waObjs.item);
+    waObjs.text = text;
+    //http://www.javascripter.net/faq/keycodes.htm
+    (function (key) {
+        key[key["backspace"] = 8] = "backspace";
+        key[key["tab"] = 9] = "tab";
+        key[key["enter"] = 13] = "enter";
+        key[key["shift"] = 16] = "shift";
+        key[key["ctrl"] = 17] = "ctrl";
+        key[key["alt"] = 18] = "alt";
+        key[key["pause"] = 19] = "pause";
+        key[key["capsLock"] = 20] = "capsLock";
+        key[key["escape"] = 27] = "escape";
+        key[key["pageUp"] = 33] = "pageUp";
+        key[key["pageDown"] = 34] = "pageDown";
+        key[key["end"] = 35] = "end";
+        key[key["home"] = 36] = "home";
+        key[key["leftArrow"] = 37] = "leftArrow";
+        key[key["upArrow"] = 38] = "upArrow";
+        key[key["rightArrow"] = 39] = "rightArrow";
+        key[key["downArrow"] = 40] = "downArrow";
+        key[key["insert"] = 45] = "insert";
+        key[key["k_delete"] = 46] = "k_delete";
+        key[key["k_0"] = 48] = "k_0";
+        key[key["k_1"] = 49] = "k_1";
+        key[key["k_2"] = 50] = "k_2";
+        key[key["k_3"] = 51] = "k_3";
+        key[key["k_4"] = 52] = "k_4";
+        key[key["k_5"] = 53] = "k_5";
+        key[key["k_6"] = 54] = "k_6";
+        key[key["k_7"] = 55] = "k_7";
+        key[key["k_8"] = 56] = "k_8";
+        key[key["k_9"] = 57] = "k_9";
+        key[key["a"] = 65] = "a";
+        key[key["b"] = 66] = "b";
+        key[key["c"] = 67] = "c";
+        key[key["d"] = 68] = "d";
+        key[key["e"] = 69] = "e";
+        key[key["f"] = 70] = "f";
+        key[key["g"] = 71] = "g";
+        key[key["h"] = 72] = "h";
+        key[key["i"] = 73] = "i";
+        key[key["j"] = 74] = "j";
+        key[key["k"] = 75] = "k";
+        key[key["l"] = 76] = "l";
+        key[key["m"] = 77] = "m";
+        key[key["n"] = 78] = "n";
+        key[key["o"] = 79] = "o";
+        key[key["p"] = 80] = "p";
+        key[key["q"] = 81] = "q";
+        key[key["r"] = 82] = "r";
+        key[key["s"] = 83] = "s";
+        key[key["t"] = 84] = "t";
+        key[key["u"] = 85] = "u";
+        key[key["v"] = 86] = "v";
+        key[key["w"] = 87] = "w";
+        key[key["x"] = 88] = "x";
+        key[key["y"] = 89] = "y";
+        key[key["z"] = 90] = "z";
+        key[key["leftWindow"] = 91] = "leftWindow";
+        key[key["rightWindowKey"] = 92] = "rightWindowKey";
+        key[key["select"] = 93] = "select";
+        key[key["numpad0"] = 96] = "numpad0";
+        key[key["numpad1"] = 97] = "numpad1";
+        key[key["numpad2"] = 98] = "numpad2";
+        key[key["numpad3"] = 99] = "numpad3";
+        key[key["numpad4"] = 100] = "numpad4";
+        key[key["numpad5"] = 101] = "numpad5";
+        key[key["numpad6"] = 102] = "numpad6";
+        key[key["numpad7"] = 103] = "numpad7";
+        key[key["numpad8"] = 104] = "numpad8";
+        key[key["numpad9"] = 105] = "numpad9";
+        key[key["multiply"] = 106] = "multiply";
+        key[key["add"] = 107] = "add";
+        key[key["subtract"] = 109] = "subtract";
+        key[key["decimalPoint"] = 110] = "decimalPoint";
+        key[key["divide"] = 111] = "divide";
+        key[key["f1"] = 112] = "f1";
+        key[key["f2"] = 113] = "f2";
+        key[key["f3"] = 114] = "f3";
+        key[key["f4"] = 115] = "f4";
+        key[key["f5"] = 116] = "f5";
+        key[key["f6"] = 117] = "f6";
+        key[key["f7"] = 118] = "f7";
+        key[key["f8"] = 119] = "f8";
+        key[key["f9"] = 120] = "f9";
+        key[key["f10"] = 121] = "f10";
+        key[key["f11"] = 122] = "f11";
+        key[key["f12"] = 123] = "f12";
+        key[key["numLock"] = 144] = "numLock";
+        key[key["scrollLock"] = 145] = "scrollLock";
+        key[key["semiColon"] = 186] = "semiColon";
+        key[key["equalSign"] = 187] = "equalSign";
+        key[key["comma"] = 188] = "comma";
+        key[key["dash"] = 189] = "dash";
+        key[key["period"] = 190] = "period";
+        key[key["forwardSlash"] = 191] = "forwardSlash";
+        key[key["graveAccent"] = 192] = "graveAccent";
+        key[key["openBracket"] = 219] = "openBracket";
+        key[key["backSlash"] = 220] = "backSlash";
+        key[key["closeBracket"] = 221] = "closeBracket";
+        key[key["singleQuote"] = 222] = "singleQuote";
+    })(waObjs.key || (waObjs.key = {}));
+    var key = waObjs.key;
+    ;
+    function isEq(code) { return bowser.agent.firefox ? code == 61 : code == 187; }
+    waObjs.isEq = isEq;
+    function isSemicolon(code) { return bowser.agent.firefox ? code == 59 : code == 186; }
+    waObjs.isSemicolon = isSemicolon;
+})(waObjs || (waObjs = {}));
+//if (ch == '{') { //automaticke doplneni } po zapsani {
+//  var rng = textRange.getRange(self.edit);
+//  if (rng.start > 0 && self.edit.val()[rng.start - 1] == '\\') return true; //\{
+//  textRange.replace(self.edit, '{}');
+//  textRange.setcursor(self.edit, rng.start + 1);
+//  self.notifyTextChanged();
+//  return false;
+//} else if (ch == '*' || ch == 'x#') { //automaticke doplneni * nebo # po zapsani {* nebo {#
+//  var edVal: string = self.edit.val(); var edEscaped = waCompiler.escape(edVal);
+//  var rng = textRange.getRange(self.edit);
+//  if (rng.start > 0 && edEscaped.substr(rng.start - 1, 2) != '{}') return true; //not {}
+//  var newEd = edVal.substr(0, rng.start - 1) + '{' + ch + /*' ' +*/ ch + '}' + edVal.substr(rng.start + 1);
+//  self.edit.val(newEd);
+//  textRange.setcursor(self.edit, rng.start + 1);
+//  self.notifyTextChanged();
+//  return false;
+//} else if (ch == '#') {
+//  var edVal: string = self.edit.val(); var rng = textRange.getRange(self.edit);
+//  edVal = edVal.substr(0, rng.start) + setRangeSpan(rng.start, rng.end, '') + edVal.substr(rng.start);
+//  self.view.html(edVal);
+//  modalOpenBracketInst.show(self, rng, () => {
+//    return true;
+//  });
+//  return false;
+//DEL v IE 
+//if (bowser.agent.msie)
+//  self.edit.on('keypress', ev => {
+//    if (ev.keyCode == key.k_delete) self.notifyTextChanged();
+//  });
+//self.edit.on("focus blur keydown keyup paste click mousedown", ev => {
+//self.edit.on('contextmenu', ev => {
+//self.edit.trigger('click');
+//var span = _.find(this.marks.marks, m => {
+//  var off = m.$self.offset(); var w = m.$self.width(); var h = m.$self.height();
+//  var res = ev.pageX >= off.left && ev.pageX <= off.left + w && ev.pageY >= off.top && ev.pageY <= off.top + h;
+//  return res;
+//});
+//return false;
+//});
+/*
+//var cloneCSSProperties = [
+//  'lineHeight', 'textDecoration', 'letterSpacing',
+//  'fontSize', 'fontFamily', 'fontStyle', 'fontVariant',
+//  'fontWeight', 'textTransform', 'textAlign',
+//  'direction', 'fontSizeAdjust',
+//  'wordSpacing', 'wordWrap', 'wordBreak',
+//  'whiteSpace',
+//];
+*/
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var waObjs;
+(function (waObjs) {
+    //************* BLOCK *****************
+    var block = (function (_super) {
+        __extends(block, _super);
+        function block(json, $parent, parent) {
+            _super.call(this, json, $parent, parent);
+            this.selfProps = waObjs.IBlockProps; //pro JSON serializaci
+            if (!json)
+                return;
+            this.appendChilds(this.myChildPlaceHolder());
+        }
+        block.prototype.appendChilds = function (placeHolder) {
+            var chs = this.childs;
+            if (!chs)
+                return;
+            for (var i = 0; i < chs.length; i++)
+                chs[i] = block.itemFromJSON((chs[i]), placeHolder, this);
+        };
+        block.itemFromJSON = function (json, $parent, parent) {
+            switch (json.type) {
+                case waObjs.itemType.text:
+                    return new waObjs.text(json, $parent, parent);
+                    break;
+                case waObjs.itemType.block:
+                    return new block(json, $parent, parent);
+                    break;
+                case waObjs.itemType.rootBlock:
+                    return new rootBlock(json, $parent, parent);
+                    break;
+                default: throw "";
+            }
+        };
+        block.prototype.toHTMLString = function () {
+            return '<div class="sm-block"><div class="sm-block-header">' +
+                '<span class="sm-block-name sm-edit-block-lnk">{#' + this.name.toUpperCase() + (this.pars ? '</span><span class="sm-block-par"> ' + this.pars + '</span>' : '') +
+                '</div><div class="sm-block-body"></div><div class="sm-block-footer">' +
+                '<span class="sm-block-name">#}</span>' +
+                '</div></div>';
+        };
+        block.prototype.myChildPlaceHolder = function () { return this.$self.find('> .sm-block-body'); };
+        block.prototype.refreshPropsFromHtml = function () { _.each(this.childs, function (ch) { return ch.refreshPropsFromHtml(); }); };
+        block.prototype.buildEditContent = function (modifyProc) {
+            this.root.refreshPropsFromHtml(); //prevezmi data z HTML dom
+            var newRoot = this.root.getJSONObject(modifyProc);
+            this.root.$content.html('');
+            block.itemFromJSON(newRoot, this.root.$content, null);
+        };
+        /************ EDIT BLOCK TREE *************/
+        block.prototype.insert = function (self, rng, edVal, blockName) {
+            var _this = this;
+            if (self.marks.findMark(rng.start).idx != self.marks.findMark(rng.end).idx)
+                rng.start = rng.end;
+            //data pro nove bloky
+            var blText = new waObjs.text();
+            blText.type = waObjs.itemType.text;
+            blText.text = edVal.substring(rng.start, rng.end);
+            var bl = new block();
+            bl.name = blockName;
+            bl.type = waObjs.itemType.block;
+            bl.childs = [blText];
+            var txt = new waObjs.text();
+            txt.type = waObjs.itemType.text;
+            txt.text = edVal.substr(rng.end);
+            //strip puvodni blok
+            self.setText(edVal.substr(0, rng.start));
+            //uprav nahrad self 
+            this.buildEditContent(function () {
+                var selfIdx = _this.childs.indexOf(self);
+                _this.childs.splice(selfIdx + 1, 0, bl, txt);
+            });
+        };
+        block.prototype.delContent = function () {
+            var _this = this;
+            this.buildEditContent(function () { return _this.childs = []; });
+        };
+        block.prototype.delBracket = function () {
+            var _this = this;
+            this.buildEditContent(function () {
+                var parChilds = _this.parent.childs;
+                var childs = _this.childs;
+                var selfIdx = parChilds.indexOf(_this);
+                if (selfIdx == 0 || selfIdx == parChilds.length - 1 || parChilds[selfIdx - 1].type != waObjs.itemType.text || parChilds[selfIdx + 1].type != waObjs.itemType.text)
+                    throw 'block not between two texts';
+                if (childs.length > 0 && (childs[0].type != waObjs.itemType.text || childs[childs.length - 1].type != waObjs.itemType.text))
+                    throw 'block not starts and ends with text';
+                var parRes = [];
+                for (var i = 0; i < selfIdx; i++)
+                    parRes.push(parChilds[i]);
+                for (var i = 0; i < childs.length; i++) {
+                    if (i == 0) {
+                        var it = (childs[i]);
+                        var last = (parRes[parRes.length - 1]);
+                        last.text += it.text;
+                    }
+                    else
+                        parRes.push(childs[i]);
+                }
+                for (var i = selfIdx + 1; i < parChilds.length; i++) {
+                    if (i == selfIdx + 1) {
+                        var it = (parChilds[i]);
+                        var last = (parRes[parRes.length - 1]);
+                        last.text += it.text;
+                    }
+                    else
+                        parRes.push(childs[i]);
+                }
+                _this.parent.childs = parRes;
+            });
+        };
+        block.prototype.delAll = function () {
+            var _this = this;
+            this.buildEditContent(function () {
+                var parChilds = _this.parent.childs;
+                var selfIdx = parChilds.indexOf(_this);
+                if (selfIdx == 0 || selfIdx == parChilds.length - 1 || parChilds[selfIdx - 1].type != waObjs.itemType.text || parChilds[selfIdx + 1].type != waObjs.itemType.text)
+                    throw 'block not between two texts';
+                var before = (parChilds[selfIdx - 1]);
+                var after = (parChilds[selfIdx + 1]);
+                before.text += after.text;
+                parChilds.splice(selfIdx, 2);
+            });
+        };
+        return block;
+    })(waObjs.item);
+    waObjs.block = block;
+    //************* ROOT BLOCK *****************
+    var rootBlock = (function (_super) {
+        __extends(rootBlock, _super);
+        function rootBlock(json, $parent, parent) {
+            _super.call(this, json, $parent, parent);
+            this.parent = parent;
+            if (!json)
+                return;
+            this.$content = $parent;
+            this.$content.on('click', '.sm-edit-block-lnk', function (ev) {
+                var target = (ev.target);
+                var $block = $(target.parentElement.parentElement);
+                var bl = ($block.data('wa'));
+                new waObjs.DlgEditBlock($(target), function (res) {
+                    switch (res) {
+                        case 'content':
+                            bl.delContent();
+                            break;
+                        case 'bracket':
+                            bl.delBracket();
+                            break;
+                        case 'both':
+                            bl.delAll();
+                            break;
+                        default: throw 'not implemented';
+                    }
+                    return null;
+                });
             });
         }
-        ;
-        OldController.$inject = ['$scope', '$state'];
-        return OldController;
-    })();
-    blended.OldController = OldController;
-    blended.prodStates = {};
-    blended.root = new Module('appRoot', ['ngLocale', 'ngResource', 'ui.router']);
-    blended.root.app
-        .directive('showExercise', blended.showExerciseDirective2)
-        .directive('lmInclude', function () {
-        return {
-            restrict: 'A',
-            templateUrl: function (ele, attrs) { return attrs.lmInclude; },
+        rootBlock.prototype.toHTMLString = function () {
+            return '<div class="sm-block-body"></div>';
         };
-    }).
-        run(vyzva.initVyzvaApp);
-    blended.root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', function (//'$provide', (
-            $stateProvider, $urlRouterProvider, $location, $urlMatcherFactoryProvider, $provide) {
-            //routerLogging($provide);
-            $urlMatcherFactoryProvider.caseInsensitive(true); //http://stackoverflow.com/questions/25994308/how-to-config-angular-ui-router-to-not-use-strict-url-matching-mode
-            //Nefunguje pak browser historie
-            //$urlMatcherFactoryProvider.type("urlType", { //http://stackoverflow.com/questions/27849260/angular-ui-sref-encode-parameter
-            //  encode: (val: string) => val ? (val[0]=='/' ? val.replace(/\//g, '@') : val) : val,
-            //  decode: (val: string) => val ? val.replace(/@/g, '/') : val,
-            //  is: item => _.isString(item) && item[0] == '/',
-            //  //equal: (v1: string, v2: string) => false,
-            //});
-            $urlRouterProvider.otherwise('/pg/old/school/schoolmymodel');
-            function checkOldApplicationStart() {
-                return angular.injector(['ng']).invoke(['$q', function ($q) {
-                        var deferred = $q.defer();
-                        boot.bootStart(function () { return deferred.resolve(); });
-                        return deferred.promise;
-                    }]);
-            }
-            $stateProvider
-                .state({
-                name: 'pg',
-                url: '/pg',
-                abstract: true,
-                template: "<div data-ui-view></div>",
-                resolve: {
-                    checkOldApplicationStart: checkOldApplicationStart //ceka se na dokonceni inicalizace nasi technologie
-                }
-            })
-                .state({
-                name: 'pg.old',
-                url: '/old',
-                abstract: true,
-                template: "<div data-ui-view></div>",
+        rootBlock.prototype.myChildPlaceHolder = function () { return this.$self; };
+        rootBlock.prototype.notifyDataChanged = function () {
+            var _this = this;
+            var self = this;
+            if (self.refreshTimer)
+                return;
+            self.refreshTimer = setTimeout(function () {
+                clearTimeout(self.refreshTimer);
+                self.refreshTimer = 0;
+                waCompile.compile(_this);
+                var res = JSON.stringify(_this.compileResult, null, 2);
+                $('#preview-content').text(res);
+            }, 1);
+        };
+        return rootBlock;
+    })(block);
+    waObjs.rootBlock = rootBlock;
+})(waObjs || (waObjs = {}));
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var waObjs;
+(function (waObjs) {
+    var DlgModelLow = (function () {
+        function DlgModelLow(modalId, place, completed) {
+            this.modalId = modalId;
+            this.place = place;
+            this.completed = completed;
+            this.btnGrid = []; //button grid pro ovladani by arrow keys
+        }
+        DlgModelLow.prototype.show = function () {
+            this.$mod = render(this.modalId, this);
+            this.$mod.modal();
+            DlgModelLow.init(this);
+            this.$mod.modal('show');
+            if (this.btnGrid.length > 0)
+                this.btnGrid[0][0].focus();
+        };
+        DlgModelLow.prototype.btnGridOK = function (btn) { }; //zvoleno grid tlacitko
+        DlgModelLow.prototype.hide = function () { this.$mod.modal('hide'); };
+        DlgModelLow.prototype.onHide = function () { };
+        DlgModelLow.prototype.onInit = function () { };
+        DlgModelLow.prototype.onGetResult = function () { };
+        DlgModelLow.init = function (dlg) {
+            //*** init focus grid
+            _.each(dlg.$mod.find('[data-focus-grid]'), function (el) {
+                var $el = $(el);
+                var d = $el.data('focusGrid').split(':');
+                var row = parseInt(d[0]);
+                var cell = parseInt(d[1]);
+                if (!dlg.btnGrid[row])
+                    dlg.btnGrid[row] = [];
+                dlg.btnGrid[row][cell] = $el;
             });
-            //stavy pro starou verzi
-            var params = {
-                $stateProvider: $stateProvider,
-                $urlRouterProvider: $urlRouterProvider,
-                $urlMatcherFactoryProvider: $urlMatcherFactoryProvider,
-                $location: $location,
-                app: blended.root.app
+            if (dlg.btnGrid.length > 0)
+                dlg.btnGridEvents();
+            dlg.onInit();
+            var self = dlg;
+            dlg.$mod.on('show.bs.modal', function () {
+                if (!self.place)
+                    return;
+                self.$mod.css({ 'top': 'auto', 'left': 'auto' }); //inicializace position. Musi byt, jinak se nasledujici position pocita z jiz zmenenych properties
+                self.$mod.position({ my: "center top+20", at: 'horizontal ', of: self.place[0], collision: 'flipfit' });
+            });
+            dlg.$mod.on('shown.bs.modal', function () {
+                var bd = $('.modal-backdrop.in');
+                bd.on('click', function () { return self.$mod.modal('hide'); });
+                if (self.caller) {
+                    bd.css({ 'z-index': '1051' });
+                    self.$mod.css({ 'z-index': '1061' });
+                }
+            });
+            dlg.$mod.on('hidden.bs.modal', function () {
+                self.onHide();
+                self.caller = null;
+            });
+        };
+        DlgModelLow.prototype.btnGridEvents = function () {
+            var _this = this;
+            this.$mod.on('keydown', '[data-focus-grid]', function (ev) {
+                var $btn = $((ev.target));
+                var d = $btn.data('focusGrid').split(':');
+                var row = parseInt(d[0]);
+                var cell = parseInt(d[1]);
+                //enter
+                if (ev.keyCode == waObjs.key.enter) {
+                    if ($btn.data('dlgRes')) {
+                        _this.btnGridOK($btn);
+                        return false;
+                    }
+                    else
+                        return true;
+                }
+                if (!$btn.data('arrowIgnore')) {
+                    switch (ev.keyCode) {
+                        case waObjs.key.tab:
+                        case waObjs.key.rightArrow:
+                            _this.btnGrid[row][cell == _this.btnGrid[row].length - 1 ? 0 : cell + 1].focus();
+                            break;
+                        case waObjs.key.leftArrow:
+                            _this.btnGrid[row][cell == 0 ? _this.btnGrid[row].length - 1 : cell - 1].focus();
+                            break;
+                        case waObjs.key.downArrow:
+                            _this.btnGrid[row == _this.btnGrid.length - 1 ? 0 : row + 1][0].focus();
+                            break;
+                        case waObjs.key.upArrow:
+                            _this.btnGrid[row == 0 ? _this.btnGrid.length - 1 : row - 1][0].focus();
+                            break;
+                        //case key.enter: if ($btn.data('dlgRes')) this.btnGridOK($btn); break;
+                        default: return true;
+                    }
+                    return false;
+                }
+            });
+            this.$mod.on('click', '[data-dlg-res]', function (ev) {
+                var $btn = $((ev.target));
+                _this.btnGridOK($btn);
+            });
+        };
+        return DlgModelLow;
+    })();
+    waObjs.DlgModelLow = DlgModelLow;
+    //************* DlgTextModel *****************
+    var DlgTextModel = (function (_super) {
+        __extends(DlgTextModel, _super);
+        function DlgTextModel(modalId, edit, rng, place, completed) {
+            _super.call(this, modalId, place, completed);
+            this.edit = edit;
+            this.rng = rng;
+            this.rng = rng;
+        }
+        DlgTextModel.prototype.btnGridOK = function (btn) {
+            var rng = this.callCompleted(btn);
+            if (rng)
+                this.rng = rng;
+            var edit = this.edit;
+            this.edit = null;
+            var completedNotCalled = this.rng.start < 0; //
+            if (!completedNotCalled)
+                this.recoverRange(edit);
+            this.hide();
+            if (completedNotCalled)
+                this.edit = edit;
+        };
+        DlgTextModel.prototype.callCompleted = function (btn) {
+            return this.completed(btn);
+        };
+        DlgTextModel.prototype.recoverRange = function (edit) {
+            var _this = this;
+            if (!edit)
+                return;
+            setTimeout(function () {
+                edit.focus();
+                textRange.setRange(edit, _this.rng.start, _this.rng.end - _this.rng.start);
+            }, 1);
+        };
+        DlgTextModel.prototype.onHide = function () {
+            this.recoverRange(this.edit);
+        };
+        return DlgTextModel;
+    })(DlgModelLow);
+    waObjs.DlgTextModel = DlgTextModel;
+    //************* DlgOpenBracket *****************
+    var DlgOpenBracket = (function (_super) {
+        __extends(DlgOpenBracket, _super);
+        function DlgOpenBracket(edit, rng, place, completed) {
+            _super.call(this, 'dlg-open-bracket', edit, rng, place, completed);
+            this.show();
+        }
+        return DlgOpenBracket;
+    })(DlgTextModel);
+    waObjs.DlgOpenBracket = DlgOpenBracket;
+    //************* DlgEditBlock *****************
+    var DlgEditBlock = (function (_super) {
+        __extends(DlgEditBlock, _super);
+        function DlgEditBlock(place, completed) {
+            _super.call(this, 'dlg-edit-block', place, completed);
+            this.show();
+        }
+        DlgEditBlock.prototype.btnGridOK = function (btn) {
+            this.completed(btn.data('dlgRes'));
+            this.hide();
+        };
+        return DlgEditBlock;
+    })(DlgModelLow);
+    waObjs.DlgEditBlock = DlgEditBlock;
+    //************* DlgPropName *****************
+    var DlgPropName = (function (_super) {
+        __extends(DlgPropName, _super);
+        function DlgPropName(edit, rng, place, mark, completed) {
+            _super.call(this, 'dlg-prop-name', edit, rng, place, completed);
+            this.list = ko.observable();
+            this.list(new propName(mark));
+            this.show();
+        }
+        DlgPropName.prototype.callCompleted = function (btn) {
+            var prop = (this.list().value().dato);
+            if (prop.type == metaJS.xsdPropType.Enum) {
+                var self = this;
+                setTimeout(function () { return new DlgEnumValue(self.edit, self.rng, self.place, self.list().mark, prop, function (enumItem) { return self.completed(prop.name + '=' + enumItem.name + '|'); }); }, 1);
+                return { start: -1, end: -1 };
+            }
+            else {
+                var boolVal = prop.type == metaJS.xsdPropType.Bool ? 'true' : '';
+                var snipset = prop.name + '=' + boolVal + '|';
+                return this.completed(snipset);
+            }
+        };
+        return DlgPropName;
+    })(DlgTextModel);
+    waObjs.DlgPropName = DlgPropName;
+    //************* DlgEnumValue *****************
+    var DlgEnumValue = (function (_super) {
+        __extends(DlgEnumValue, _super);
+        function DlgEnumValue(edit, rng, place, mark, prop, completed) {
+            _super.call(this, 'dlg-enum-value', edit, rng, place, completed);
+            this.list = ko.observable();
+            this.list(new enumValue(mark, prop));
+            this.show();
+        }
+        DlgEnumValue.prototype.callCompleted = function (btn) {
+            return this.completed(this.list().value().dato);
+        };
+        return DlgEnumValue;
+    })(DlgTextModel);
+    waObjs.DlgEnumValue = DlgEnumValue;
+    //************* DlgEditInline *****************
+    var DlgEditInline = (function (_super) {
+        __extends(DlgEditInline, _super);
+        function DlgEditInline(edit, rng, place, mark, completed) {
+            var _this = this;
+            _super.call(this, 'dlg-edit-inline', edit, rng, place, completed);
+            this.propEditor = ko.observable();
+            this.valueEditor = ko.observable();
+            var p = new propName(mark, false);
+            p.value(null);
+            p.selected = function (sel) {
+                if (!sel) {
+                    _this.valueEditor(null);
+                    return;
+                }
+                _this.valueEditor(new enumValue(p.mark, metaJS.metaObj.types['offering'].propDir['drop-down-mode']));
             };
-            _.each(blended.oldLocators, function (createLoc) { return createLoc(params); }); //vytvoreni states na zaklade registrovanych page models (pomoci registerOldLocator)
-            //stavy pro novou verzi
-            vyzva.initVyzvaStates(params);
-            //log vsech validnich routes
-            _.each(blended.debugAllRoutes, function (r) { return Logger.trace("Pager", 'Define:' + r); });
-        }]);
-    //dokumentace pro dostupne services
-    function servicesDocumentation() {
-        //https://docs.angularjs.org/api/ng/function/angular.injector
-        //http://stackoverflow.com/questions/17497006/use-http-inside-custom-provider-in-app-config-angular-js
-        //https://docs.angularjs.org/api/ng/service/$sce
-        var initInjector = angular.injector(['ng']);
-        var $http = initInjector.get('$http');
-        var $q = initInjector.get('$q');
-        var srv = initInjector.get('$filter');
-        srv = initInjector.get('$timeout');
-        srv = initInjector.get('$log');
-        srv = initInjector.get('$rootScope');
-        //srv = initInjector.get('$location'); nefunguje
-        srv = initInjector.get('$parse');
-        //srv = initInjector.get('$rootElement'); nefunguje
+            this.propEditor(p);
+            this.show();
+        }
+        return DlgEditInline;
+    })(DlgTextModel);
+    waObjs.DlgEditInline = DlgEditInline;
+    //**************** EDITORS MODELS ********************
+    var edModel = (function () {
+        function edModel(scriptId) {
+            this.scriptId = scriptId;
+        }
+        return edModel;
+    })();
+    waObjs.edModel = edModel;
+    var listModel = (function (_super) {
+        __extends(listModel, _super);
+        function listModel(scriptId, list) {
+            _super.call(this, scriptId);
+            this.list = list;
+            this.value = ko.observable();
+            this.descr = ko.observable();
+            this.value(this.list[0]);
+        }
+        listModel.prototype.changed = function () {
+            var sel = this.value();
+            if (this.selected)
+                this.selected(sel);
+            if (!sel)
+                return '';
+            this.descr((sel.summary ? '<b>' + sel.summary + '</b><br/>' : '') + (sel.descr || ''));
+        };
+        return listModel;
+    })(edModel);
+    waObjs.listModel = listModel;
+    var propName = (function (_super) {
+        __extends(propName, _super);
+        function propName(mark, removeUsed) {
+            if (removeUsed === void 0) { removeUsed = true; }
+            _super.call(this, 'ed-prop-name', propName.getList(mark, removeUsed));
+            this.mark = mark;
+        }
+        propName.getList = function (mark, removeUsed) {
+            var usedProps = !removeUsed ? [] : _.map(_.filter(mark.marks.marks, function (m) { return m.type == waObjs.markType.propName; }), function (m) { return m.prop; });
+            var okProps = _.filter(metaJS.metaObj.types[mark.tag].props, function (p) { return (p.flag & CourseModel.tgSt.metaJS_browse) != 0 && !_.contains(usedProps, p); });
+            return _.map(okProps, function (p) { return { name: p.name, value: p.name, dato: p, summary: p.summary, descr: p.descr }; });
+        };
+        return propName;
+    })(listModel);
+    waObjs.propName = propName;
+    var enumValue = (function (_super) {
+        __extends(enumValue, _super);
+        function enumValue(mark, prop) {
+            _super.call(this, 'ed-enum', enumValue.getList(prop));
+            this.mark = mark;
+            this.prop = prop;
+        }
+        enumValue.getList = function (prop) {
+            return _.map(prop.myEnum().enumData, function (en) { return { name: en.name, value: en.name, summary: en.summary, descr: en.descr, dato: en }; });
+        };
+        return enumValue;
+    })(listModel);
+    waObjs.enumValue = enumValue;
+    //**************** JSRender LIB ********************
+    //var templCache: JsTemplate[] = [];
+    //export function tmpl(id: string): any {
+    //  id = id.toLowerCase();
+    //  var tmpl = templCache[id];
+    //  if (tmpl == null) {
+    //    var t = $('#' + id);
+    //    var txt = t.html();
+    //    if (!txt) { debugger; throw 'cannot read template ' + id; }
+    //    t.remove();
+    //    try {
+    //      tmpl = $.templates(txt);
+    //    } catch (msg) {
+    //      alert("cannot compile template " + id);
+    //      throw msg;
+    //    }
+    //    templCache[id] = tmpl;
+    //  }
+    //  return tmpl;
+    //}
+    function render(templateId, data) {
+        var str = JsRenderTemplateEngine.tmpl(templateId).render(data);
+        $('#' + templateId).remove();
+        $('body').append($(str));
+        var res = $('#' + templateId);
+        ko.applyBindings(data, res[0]);
+        return res;
     }
-    blended.servicesDocumentation = servicesDocumentation;
-})(blended || (blended = {}));
+    waObjs.render = render;
+    ko.nativeTemplateEngine.instance['renderTemplateSource'] = function (template, bindingContext, options) {
+        if (_.isEmpty(template))
+            return [];
+        var data = bindingContext.$data;
+        var str = JsRenderTemplateEngine.tmpl(template).render(data);
+        return $.parseHTML(str, null, true);
+    };
+    ko.nativeTemplateEngine.instance['makeTemplateSource'] = function (template, templateDocument) { return _.isString(template) ? template : null; };
+})(waObjs || (waObjs = {}));
+
+var waCompile;
+(function (waCompile) {
+    //rekurzivne:
+    //- zakoduje {} zavorky (do pointeru do context.marks)
+    //- provede markdown predkompilaci
+    //- provede JSON tag rendering (z predkompilace). V nem pri rendering stringu rozleze string a expanduje pointery zpet na JSON tag (context.decodeMarksToTag, pouzita v compRenderTag.ts)
+    //- pro kazdy block vse ulozi do block.compileResult
+    function compile(block, ctx) {
+        if (ctx === void 0) { ctx = null; }
+        if (!ctx)
+            ctx = new context();
+        var sb = [];
+        _.each(block.childs, function (ch) {
+            if (ch.type != waObjs.itemType.text) {
+                compile(ch, ctx); //rekurzivni priprava podrizenych bloku
+                ctx.encodeMarkForCompile(new waObjs.blockPtrMark(null, block), sb); //pointer na block
+            }
+            else {
+                ctx.encodeTextBlockForCompile(ch, sb);
+            }
+        });
+        var str = sb.join('');
+        //common mark kompilace
+        var reader = new commonmark.Parser();
+        var parsed = reader.parse(str);
+        //common mark render
+        block.compileResult = waCompile.compileRenderTag(parsed, ctx);
+    }
+    waCompile.compile = compile;
+    //helper class pro common mark preprocess
+    var context = (function () {
+        function context() {
+            this.marks = [];
+        }
+        //decode markdown-predkompilovaneho textu
+        context.prototype.decodeMarksToTag = function (expandedStr, addCtx) {
+            if (_.isEmpty(expandedStr)) {
+                addCtx.addToItems(expandedStr);
+                return;
+            }
+            var i = 0;
+            var textBuf = [];
+            while (i < expandedStr.length) {
+                var act = expandedStr.charCodeAt(i);
+                var next = i == expandedStr.length - 1 ? 0 : expandedStr.charCodeAt(i + 1);
+                if (act >= waEncode.s1 && act <= waEncode.s1Max && next >= waEncode.s2 && next <= waEncode.s2Max) {
+                    if (textBuf.length > 0) {
+                        addCtx.addToItems((textBuf.join('')));
+                        textBuf = [];
+                    }
+                    var code = this.marks[waEncode.decode(act, next)];
+                    i += code.end - code.start + 1;
+                    code.markToTag(addCtx);
+                }
+                else {
+                    textBuf.push(expandedStr.charAt(i));
+                    i++;
+                }
+            }
+            if (textBuf.length > 0) {
+                addCtx.addToItems((textBuf.join('')));
+                textBuf = [];
+            }
+        };
+        //encode jedne mark
+        context.prototype.encodeMarkForCompile = function (mark, sb) {
+            var idx = this.marks.length;
+            this.marks.push(mark);
+            waEncode.encode(sb, idx, (mark.end - mark.start + 1) - 2);
+        };
+        //encode text-bloku
+        context.prototype.encodeTextBlockForCompile = function (textBlock, sb) {
+            var _this = this;
+            var marks = textBlock.marks.marks;
+            var text = textBlock.text;
+            if (marks == null) {
+                if (!_.isEmpty(text))
+                    sb.push(text);
+                return;
+            }
+            var lastPos = 0;
+            _.each(marks, function (m) {
+                if (m.start < lastPos)
+                    throw 'm.start < lastPos';
+                if (m.start > lastPos)
+                    sb.push(text.substring(lastPos, m.start));
+                //m.encodeMarksForCompile(ctx, sb);
+                _this.encodeMarkForCompile(m, sb);
+                lastPos = m.end;
+            });
+            if (lastPos < text.length)
+                sb.push(text.substr(lastPos));
+        };
+        return context;
+    })();
+    waCompile.context = context;
+})(waCompile || (waCompile = {}));
+
+var waCompile;
+(function (waCompile) {
+    function compileRenderTag(parsedBlocks, ctx) {
+        var stack = [];
+        var addToItems = function (it) { if (!it)
+            return; var tg = stack[stack.length - 1]; if (!tg.Items)
+            tg.Items = []; tg.Items.push(it); };
+        var addTag = function (name, attrs, selfclosing) {
+            var tg = { _tg: name };
+            if (attrs && attrs.length > 0) {
+                var i = 0;
+                var attrib;
+                while ((attrib = attrs[i]) !== undefined) {
+                    tg[attrib[0]] = attrib[1];
+                    i++;
+                }
+            }
+            addToItems(tg);
+            if (!selfclosing)
+                stack.push(tg);
+        };
+        var addContext = { addToItems: addToItems, addTag: function (tg) { addToItems(tg); stack.push(tg); }, stack: stack };
+        stack.push({ _tg: 'root' });
+        var attrs;
+        var info_words;
+        var tagname;
+        var walker = parsedBlocks.walker();
+        var event, node;
+        var entering;
+        //var buffer = "";
+        var lastOut = "\n";
+        //var disableTags = 0;
+        var grandparent;
+        //var out = function (s) {
+        //  if (disableTags > 0) {
+        //    buffer += s.replace(reHtmlTag, '');
+        //  } else {
+        //    buffer += s;
+        //  }
+        //  lastOut = s;
+        //};
+        var options = { sourcepos: true };
+        //if (options.time) { console.time("rendering"); }
+        //var newOpeningTag: CourseModel.tag;
+        while ((event = walker.next())) {
+            entering = event.entering;
+            node = event.node;
+            attrs = [];
+            if (options.sourcepos) {
+                var pos = node.sourcepos;
+                if (pos) {
+                    attrs.push(['srcpos', String(pos[0][0]) + ':' +
+                            String(pos[0][1]) + '-' + String(pos[1][0]) + ':' +
+                            String(pos[1][1])]);
+                }
+            }
+            switch (node.type) {
+                case 'Text':
+                    ctx.decodeMarksToTag(node.literal, addContext);
+                    //addToItems(node.literal);
+                    break;
+                case 'Softbreak':
+                    addToItems('\n');
+                    break;
+                case 'Hardbreak':
+                    addTag('br', null, true);
+                    break;
+                case 'Emph':
+                    if (entering)
+                        addTag('em');
+                    else
+                        stack.pop();
+                    break;
+                case 'Strong':
+                    if (entering)
+                        addTag('strong');
+                    else
+                        stack.pop();
+                    break;
+                case 'Html':
+                    addTag(node.literal.substring(1, node.literal.length - 2), null, true);
+                    break;
+                case 'Link':
+                    if (entering) {
+                        attrs.push(['href', node.destination]);
+                        if (node.title) {
+                            attrs.push(['title', node.title]);
+                        }
+                        addTag('a', attrs);
+                    }
+                    else {
+                        stack.pop();
+                    }
+                    break;
+                case 'Image':
+                    throw 'Html';
+                    break;
+                case 'Code':
+                    addTag('code');
+                    addToItems(node.literal);
+                    stack.pop();
+                    break;
+                case 'Document':
+                    break;
+                case 'Paragraph':
+                    grandparent = node.parent.parent;
+                    if (grandparent !== null &&
+                        grandparent.type === 'List') {
+                        if (grandparent.listTight) {
+                            break;
+                        }
+                    }
+                    if (entering)
+                        addTag('p', attrs);
+                    else
+                        stack.pop();
+                    break;
+                case 'BlockQuote':
+                    if (entering)
+                        addTag('blockquote', attrs);
+                    else
+                        stack.pop();
+                    break;
+                case 'Item':
+                    if (entering)
+                        addTag('li', attrs);
+                    else
+                        stack.pop();
+                    break;
+                case 'List':
+                    tagname = node.listType === 'Bullet' ? 'ul' : 'ol';
+                    if (entering) {
+                        var start = node.listStart;
+                        if (start !== null && start !== 1) {
+                            attrs.push(['start', start.toString()]);
+                        }
+                        addTag(tagname, attrs);
+                    }
+                    else {
+                        stack.pop();
+                    }
+                    break;
+                case 'Header':
+                    tagname = 'h' + node.level;
+                    if (entering)
+                        addTag(tagname, attrs);
+                    else
+                        stack.pop();
+                    break;
+                case 'CodeBlock':
+                    info_words = node.info ? node.info.split(/ +/) : [];
+                    if (info_words.length > 0 && info_words[0].length > 0) {
+                        attrs.push(['class', 'language-' + info_words[0]]);
+                    }
+                    addTag('pre');
+                    addTag('code', attrs);
+                    addToItems(node.literal);
+                    stack.pop();
+                    stack.pop();
+                    break;
+                case 'HtmlBlock':
+                    throw 'HtmlBlock';
+                    break;
+                case 'HorizontalRule':
+                    addTag('hr', null, true);
+                    break;
+                default:
+                    throw "Unknown node type " + node.type;
+            }
+        }
+        return stack[0].Items;
+    }
+    waCompile.compileRenderTag = compileRenderTag;
+})(waCompile || (waCompile = {}));

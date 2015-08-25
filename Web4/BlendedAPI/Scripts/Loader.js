@@ -4,23 +4,9 @@ var blended;
         if (!dataNode.userData)
             return null;
         var it = dataNode.userData[taskid];
-        return it ? (it.data) : null;
+        return it ? it.data : null;
     }
     blended.getPersistData = getPersistData;
-    function setPersistData(dataNode, taskid, modify) {
-        var it = dataNode.userData ? dataNode.userData[taskid] : null;
-        if (!it) {
-            it = { data: {}, modified: true };
-            if (!dataNode.userData)
-                dataNode.userData = {};
-            dataNode.userData[taskid] = it;
-        }
-        else
-            it.modified = true;
-        modify((it.data));
-        return (it.data);
-    }
-    blended.setPersistData = setPersistData;
     //rozsireni interface o metody
     function finishProduktStart(prod) {
         $.extend(prod, blended.productEx);
@@ -49,19 +35,6 @@ var blended;
             pe.nodeList.push(repo);
         }
     };
-    var cachedModule = (function () {
-        function cachedModule(data, dataNode) {
-            this.dataNode = dataNode;
-            this.cacheOfPages = new loader.cacheOf(30);
-            $.extend(this, data);
-            if (!this.loc)
-                this.loc = {};
-            if (this.dict)
-                this.dict = RJSON.unpack(this.dict);
-        }
-        return cachedModule;
-    })();
-    blended.cachedModule = cachedModule;
     var loader;
     (function (loader) {
         //help
@@ -144,19 +117,24 @@ var blended;
             }
         }
         loader.adjustProduct = adjustProduct;
-        function adjustModule(ctx, modData, prod) {
+        function adjustModule(ctx, prod) {
             ctx = blended.finishContext(ctx);
             var deferred = ctx.$q.defer();
             try {
-                var mod = prod.moduleCache.fromCache(ctx.moduleUrl, null);
+                var mod = prod.moduleCache.fromCache(ctx.url);
                 if (mod) {
                     deferred.resolve(mod);
                     return;
                 }
-                var href = blended.baseUrlRelToRoot + ctx.moduleUrl.substr(0, ctx.moduleUrl.length - 1) + '.' + LMComLib.Langs[ctx.loc] + '.js';
+                var href = blended.baseUrlRelToRoot + ctx.url.substr(0, ctx.url.length - 1) + '.' + LMComLib.Langs[ctx.loc] + '.js';
                 ctx.$http.get(href).then(function (file) {
-                    mod = new cachedModule(file.data, modData);
-                    prod.moduleCache.toCache(ctx.moduleUrl, null, mod);
+                    mod = file.data;
+                    if (!mod.loc)
+                        mod.loc = {};
+                    if (mod.dict)
+                        mod.dict = RJSON.unpack(mod.dict);
+                    mod.cacheOfPages = new loader.cacheOf(30);
+                    prod.moduleCache.toCache(ctx.url, mod);
                     deferred.resolve(mod);
                 }, function (errors) {
                     deferred.reject();
@@ -171,32 +149,28 @@ var blended;
             var deferred = ctx.$q.defer();
             try {
                 adjustProduct(ctx).then(function (prod) {
-                    var exNode = prod.find(ctx.Url);
-                    var modData = prod.findParent(exNode, function (n) { return CourseMeta.isType(n, CourseMeta.runtimeType.mod); });
-                    if (modData == null)
-                        throw 'Exercise ' + ctx.Url + ' does not have module';
-                    var modCtx = blended.cloneAndModifyContext(ctx, function (m) { return m.moduleurl = blended.encodeUrl(modData.url); });
-                    adjustModule(modCtx, modData, prod).then(function (mod) {
-                        var exServ = mod.cacheOfPages.fromCache(ctx.Url, ctx.taskid);
-                        if (exServ) {
-                            deferred.resolve(exServ);
+                    var exNode = prod.find(ctx.url);
+                    var mod = prod.findParent(exNode, function (n) { return CourseMeta.isType(n, CourseMeta.runtimeType.mod); });
+                    if (mod == null)
+                        throw 'Exercise ' + ctx.url + ' does not have module';
+                    var modCtx = blended.cloneAndModifyContext(ctx, function (m) { return m.url = mod.url; });
+                    adjustModule(modCtx, prod).then(function (mod) {
+                        var pg = mod.cacheOfPages.fromCache(ctx.url);
+                        if (pg) {
+                            deferred.resolve(pg);
                             return;
                         }
-                        var href = blended.baseUrlRelToRoot + ctx.Url + '.js';
+                        var href = blended.baseUrlRelToRoot + ctx.url + '.js';
                         ctx.$http.get(href, { transformResponse: function (s) { return CourseMeta.jsonParse(s); } }).then(function (file) {
                             var pg = CourseMeta.extractEx(file.data);
                             Course.localize(pg, function (s) { return CourseMeta.localizeString(pg.url, s, mod.loc); });
                             var isGramm = CourseMeta.isType(exNode, CourseMeta.runtimeType.grammar);
-                            var resolve = function (exData) {
-                                var exServ = new blended.exerciseService(ctx, mod, exNode, pg, exData);
-                                mod.cacheOfPages.toCache(ctx.Url, ctx.taskid, exServ);
-                                deferred.resolve(exServ);
-                            };
+                            mod.cacheOfPages.toCache(ctx.url, pg);
                             if (isGramm)
-                                resolve();
+                                deferred.resolve(exNode);
                             else {
                                 if (!!ctx.persistence)
-                                    ctx.persistence.loadUserData(ctx.userid, ctx.companyid, ctx.productUrl, ctx.Url, function (exData) {
+                                    ctx.persistence.loadUserData(ctx.userid, ctx.companyid, ctx.productUrl, ctx.url, function (exData) {
                                         if (pg.evalPage && !pg.isOldEa)
                                             exNode.ms = pg.evalPage.maxScore;
                                         //provazani produktu, stranky, modulu:
@@ -204,10 +178,10 @@ var blended;
                                             exData = {};
                                         pg.userData = exData;
                                         pg.myNode = exNode;
-                                        resolve(exData);
+                                        deferred.resolve(exNode);
                                     });
                                 else
-                                    resolve();
+                                    deferred.resolve(exNode);
                             }
                         }, function (errors) {
                             deferred.reject();
@@ -248,20 +222,18 @@ var blended;
         })();
         loader.cacheOfProducts = cacheOfProducts;
         loader.productCache = new cacheOfProducts();
-        //*************** CACHE modulu (v produktu), cache cviceni (v modulu)
+        //*************** CACHE modulu (v produkut), cache cviceni (v modulu)
         var cacheOf = (function () {
             function cacheOf(maxLength) {
                 this.maxLength = maxLength;
                 this.modules = {};
                 this.maxInsertOrder = 0;
             }
-            cacheOf.prototype.fromCache = function (url, taskId) {
-                var urlTaskId = url + (taskId ? '|' + taskId : '');
-                var cch = this.modules[urlTaskId];
+            cacheOf.prototype.fromCache = function (url) {
+                var cch = this.modules[url];
                 return cch ? cch.data : null;
             };
-            cacheOf.prototype.toCache = function (url, taskId, mod) {
-                var urlTaskId = url + (taskId ? '|' + taskId : '');
+            cacheOf.prototype.toCache = function (url, mod) {
                 var cnt = 0;
                 var minIdx = 99999;
                 var propName;
@@ -275,7 +247,7 @@ var blended;
                 }
                 if (cnt > 5)
                     delete this.modules[propName];
-                this.modules[urlTaskId] = { data: mod, insertOrder: this.maxInsertOrder++ };
+                this.modules[url] = { data: mod, insertOrder: this.maxInsertOrder++ };
             };
             return cacheOf;
         })();

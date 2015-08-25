@@ -2744,10 +2744,6 @@
       <Project>{0e71cdce-d1c8-459e-ac82-2869f3200953}</Project>
       <Name>EduAuthor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EPPlus\EPPlus.csproj">
-      <Project>{7b288026-5502-4a39-bf41-77e086f3e4a3}</Project>
-      <Name>EPPlus</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LMComExternal\LMComExternal.csproj">
       <Project>{a0024fc2-c528-45f8-9391-4b45889e53d9}</Project>
       <Name>LMComExternal</Name>

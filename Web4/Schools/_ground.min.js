@@ -562,9 +562,9 @@ var LMStatus;
         setReturnUrl();
         if (newHash == null)
             return;
-        Pager.navigateToHash(newHash);
-        //if (newHash.charAt(0) != "#") newHash = "#" + newHash;
-        //location.hash = newHash;
+        if (newHash.charAt(0) != "#")
+            newHash = "#" + newHash;
+        location.hash = newHash;
     }
     LMStatus.setReturnUrlAndGoto = setReturnUrlAndGoto;
     function setReturnUrl(newHash) {
@@ -584,17 +584,16 @@ var LMStatus;
         var url = Cook.read(LMComLib.CookieIds.returnUrl);
         if (_.isEmpty(url) || url == '#')
             return null;
-        if (url.charAt(0) == "#")
-            url = url.substr(1);
-        return oldPrefix + url;
+        if (url.charAt(0) != "#")
+            url = "#" + url;
+        return url;
     }
     LMStatus.getReturnUrl = getReturnUrl;
     function gotoReturnUrl() {
         var url = getReturnUrl();
         if (_.isEmpty(url))
-            Pager.gotoHomeUrl();
-        else
-            Pager.navigateToHash(url);
+            url = schools.createHomeUrlStd();
+        location.hash = url;
     }
     LMStatus.gotoReturnUrl = gotoReturnUrl;
     LMStatus.Cookie = null;
@@ -686,7 +685,7 @@ var LMStatus;
         //binec, setCookie nastavi pouze browser cookie a ponecha LMStatus.Cookie
         LMStatus.setCookie(null);
         LMStatus.Cookie = null;
-        Pager.gotoHomeUrl();
+        Pager.loadPageHash(null);
     }
     LMStatus.LogoutLow = LogoutLow;
     function Logout(obj, ev) {

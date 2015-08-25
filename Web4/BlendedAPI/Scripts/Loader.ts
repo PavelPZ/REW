@@ -5,47 +5,34 @@
 module blended {
 
   export interface IPersistNodeItem { //persistentni udaj pro jednu variantu (jeden taskId). Kazde cviceni apod. se muze spustit vicekrat, aniz by se prepisovaly jeho user data.
-    data: {};
+    data: IPersistNodeUser;
     modified: boolean;
   }
 
   export interface IPersistNodeUser { //user dato pro task obecne
-    //url: string;
-    //history?: Array<IPersistHistoryItem>;
-    done: boolean;
+    url: string;
+    history?: Array<IPersistHistoryItem>;
+    done?: boolean;
     score?: number;
   }
-  //export interface IPersistHistoryItem { date: number, url: string; taskId: string; }
+  export interface IPersistHistoryItem { date: number, url: string; taskId: string; }
 
   export interface IPersistNodeImpl {
     userData: { [taskId: string]: IPersistNodeItem; } //dato pro jednotlive variatny
   }
 
-  export function getPersistData<T>(dataNode: CourseMeta.data, taskid: string): T {
+  export function getPersistData(dataNode: CourseMeta.data, taskid: string): IPersistNodeUser {
     if (!dataNode.userData) return null;
     var it = dataNode.userData[taskid];
-    return it ? <T>(it.data) : null;
+    return it ? it.data : null;
   }
-
-  export function setPersistData<T>(dataNode: CourseMeta.data, taskid: string, modify: (data: T) => void): T {
-    var it = dataNode.userData ? dataNode.userData[taskid] : null;
-    if (!it) {
-      it = { data: <any>{}, modified: true };
-      if (!dataNode.userData) dataNode.userData = {};
-      dataNode.userData[taskid] = it;
-    } else
-      it.modified = true;
-    modify(<T>(it.data));
-    return <T>(it.data);
-  }
-
 
   export interface IProductEx extends CourseMeta.product, IProductAddIn { //rozsireni CourseMeta.product o novou persistenci
     instructions: { [id: string]: string; }; //pool s instrukcemi
     persistData: { [url: string]: any; }; //short user data pro cely produkt
     nodeDir: { [id: string]: CourseMeta.data; }; //adresar nodes
     nodeList: Array<CourseMeta.data>; //seznam nodes
-    moduleCache: loader.cacheOf<cachedModule>; //cache modulu (kapitol) s lokalizacemi cviceni a slovniky
+    moduleCache: loader.cacheOf<blended.cachedModule>; //cache modulu (kapitol) s lokalizacemi cviceni a slovniky
     //Repository data
     //pretest: IPretestRepository; //pretest
     //entryTests: Array<CourseMeta.data>; //vstupni check-testy (entryTests[0]..A1, ..)
@@ -62,9 +49,9 @@ module blended {
   //rozsireni interface o metody
   export function finishProduktStart(prod: IProductEx) {
     $.extend(prod, productEx);
-    prod.moduleCache = new blended.loader.cacheOf<cachedModule>(3);
+    prod.moduleCache = new blended.loader.cacheOf<blended.cachedModule>(3);
   }
-
+  
   export var productEx: IProductAddIn = {
     findParent<TRes extends CourseMeta.data>(self: CourseMeta.data, cond: (it: CourseMeta.data) => boolean): TRes {
       var c = self;
@@ -83,15 +70,10 @@ module blended {
     }
   }
 
-  export class cachedModule { //module z cache
-    constructor(data: any, public dataNode: CourseMeta.data) {
-      $.extend(this, data);
-      if (!this.loc) this.loc = {};
-      if (this.dict) this.dict = RJSON.unpack(this.dict);
-    }
+  export interface cachedModule { //module z cache
     loc: { [id: string]: any; };
     dict: schools.DictItemRoot;
-    cacheOfPages = new loader.cacheOf<exerciseService>(30);
+    cacheOfPages: loader.cacheOf<Course.Page>;
   }
 
   export module loader {
@@ -157,17 +139,18 @@ module blended {
           });
       } finally { return deferred.promise; }
     }
-    function adjustModule(ctx: learnContext, modData: CourseMeta.data, prod: IProductEx): ng.IPromise<cachedModule> {
+    function adjustModule(ctx: learnContext, prod: IProductEx): ng.IPromise<cachedModule> {
       ctx = finishContext(ctx);
       var deferred = ctx.$q.defer();
       try {
-        var mod = prod.moduleCache.fromCache(ctx.moduleUrl, null);
+        var mod = prod.moduleCache.fromCache(ctx.url);
         if (mod) { deferred.resolve(mod); return; }
-        var href = baseUrlRelToRoot + ctx.moduleUrl.substr(0, ctx.moduleUrl.length - 1) + '.' + LMComLib.Langs[ctx.loc] + '.js';
+        var href = baseUrlRelToRoot + ctx.url.substr(0, ctx.url.length - 1) + '.' + LMComLib.Langs[ctx.loc] + '.js';
         ctx.$http.get(href).then(
           (file: ng.IHttpPromiseCallbackArg<any>) => {
-            mod = new cachedModule(file.data, modData);
-            prod.moduleCache.toCache(ctx.moduleUrl, null, mod);
+            mod = file.data; if (!mod.loc) mod.loc = {}; if (mod.dict) mod.dict = RJSON.unpack(mod.dict);
+            mod.cacheOfPages = new loader.cacheOf<Course.Page>(30);
+            prod.moduleCache.toCache(ctx.url, mod);
             deferred.resolve(mod);
           },
           errors => {
@@ -175,40 +158,36 @@ module blended {
           });
       } finally { return deferred.promise; }
     }
-    export function adjustEx(ctx: learnContext): ng.IPromise<exerciseService> {
+    export function adjustEx(ctx: learnContext): ng.IPromise<CourseMeta.ex> {
       ctx = finishContext(ctx);
-      var deferred = ctx.$q.defer<exerciseService>();
+      var deferred = ctx.$q.defer();
       try {
         adjustProduct(ctx).then(prod => {
-          var exNode = prod.find<CourseMeta.data>(ctx.Url);
-          var modData = prod.findParent<CourseMeta.data>(exNode, (n: CourseMeta.data) => CourseMeta.isType(n, CourseMeta.runtimeType.mod));
-          if (modData == null) throw 'Exercise ' + ctx.Url + ' does not have module';
-          var modCtx = cloneAndModifyContext(ctx, m => m.moduleurl = encodeUrl(modData.url));
-          adjustModule(modCtx, modData, prod).then(mod => {
-            var exServ = mod.cacheOfPages.fromCache(ctx.Url, ctx.taskid);
-            if (exServ) { deferred.resolve(exServ); return; }
-            var href = baseUrlRelToRoot + ctx.Url + '.js';
+          var exNode = prod.find<CourseMeta.data>(ctx.url);
+          var mod = prod.findParent<CourseMeta.data>(exNode, (n: CourseMeta.data) => CourseMeta.isType(n, CourseMeta.runtimeType.mod));
+          if (mod == null) throw 'Exercise ' + ctx.url + ' does not have module';
+          var modCtx = cloneAndModifyContext(ctx, m => m.url = mod.url);
+          adjustModule(modCtx, prod).then(mod => {
+            var pg = mod.cacheOfPages.fromCache(ctx.url);
+            if (pg) { deferred.resolve(pg); return; }
+            var href = baseUrlRelToRoot + ctx.url + '.js';
             ctx.$http.get(href, { transformResponse: s => CourseMeta.jsonParse(s) }).then(
               (file: ng.IHttpPromiseCallbackArg<Array<any>>) => {
                 var pg = CourseMeta.extractEx(file.data);
                 Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, mod.loc));
                 var isGramm = CourseMeta.isType(exNode, CourseMeta.runtimeType.grammar);
-                var resolve = (exData?: IExLong) => {
-                  var exServ = new exerciseService(ctx, mod, exNode, pg, exData);
-                  mod.cacheOfPages.toCache(ctx.Url, ctx.taskid, exServ);
-                  deferred.resolve(exServ);
-                }
+                mod.cacheOfPages.toCache(ctx.url, pg);
                 if (isGramm)
-                  resolve();
+                  deferred.resolve(exNode);
                 else {
-                  if (!!ctx.persistence) ctx.persistence.loadUserData(ctx.userid, ctx.companyid, ctx.productUrl, ctx.Url, (exData: IExLong) => {
+                  if (!!ctx.persistence) ctx.persistence.loadUserData(ctx.userid, ctx.companyid, ctx.productUrl, ctx.url, exData => {
                     if (pg.evalPage && !pg.isOldEa) exNode.ms = pg.evalPage.maxScore;
                     //provazani produktu, stranky, modulu:
                     if (!exData) exData = {}; pg.userData = exData;
                     pg.myNode = exNode;
-                    resolve(exData);
+                    deferred.resolve(exNode);
                   }); else
-                    resolve();
+                    deferred.resolve(exNode);
                 }
               },
               errors => {
@@ -241,25 +220,23 @@ module blended {
         }
         this.products.push({
           companyid: ctx.companyid, userid: ctx.userid, data: prod, loc: ctx.loc, producturl: ctx.producturl,
-          persistence: ctx.persistence, insertOrder: this.maxInsertOrder++, subuserid: ctx.subuserid, taskid: ctx.taskid,
+          persistence: ctx.persistence, insertOrder: this.maxInsertOrder++, subuserid: ctx.subuserid, taskid: ctx.taskid, 
         });
       }
     }
 
     export var productCache = new cacheOfProducts();
 
-    //*************** CACHE modulu (v produktu), cache cviceni (v modulu)
+    //*************** CACHE modulu (v produkut), cache cviceni (v modulu)
     export class cacheOf<T> { //cache modulu v produktu
       constructor(public maxLength: number) { }
-      modules: { [urlTaskId: string]: cacheItem<T>; } = {};
+      modules: { [url: string]: cacheItem<T>; } = {};
       maxInsertOrder = 0;
-      fromCache(url: string, taskId: string): T {
-        var urlTaskId = url + (taskId ? '|' + taskId : '');
-        var cch = this.modules[urlTaskId];
+      fromCache(url: string): T {
+        var cch = this.modules[url];
         return cch ? cch.data : null;
       }
-      toCache(url: string, taskId: string, mod: T): void {
-        var urlTaskId = url + (taskId ? '|' + taskId : '');
+      toCache(url: string, mod: T): void {
         var cnt = 0; var minIdx = 99999; var propName: string;
         for (var p in this.modules) {
           cnt++;
@@ -268,7 +245,7 @@ module blended {
           minIdx = m.insertOrder; propName = p;
         }
         if (cnt > 5) delete this.modules[propName];
-        this.modules[urlTaskId] = { data: mod, insertOrder: this.maxInsertOrder++ };
+        this.modules[url] = { data: mod, insertOrder: this.maxInsertOrder++ };
       }
     }
     export interface cacheItem<T> { //prvek cache

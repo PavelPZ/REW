@@ -46,14 +46,12 @@
     home?: blended.state;
     homeTask?: blended.state;
     pretestExercise?: blended.state;
-    pretestModule?: blended.state;
   }
   export var prodStates: IProductStates = {};
 
   export var root = new Module('appRoot', ['ngLocale', 'ngResource', 'ui.router']);
   root.app
-    //.directive('showExercise', blended.showExerciseDirective)
-    .directive('showExercise', blended.showExerciseDirective2)
+    .directive('showExercise', blended.showExerciseDirective)
     .directive('lmInclude', () => {
       return {
         restrict: 'A',

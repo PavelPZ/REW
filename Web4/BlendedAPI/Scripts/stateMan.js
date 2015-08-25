@@ -1,13 +1,5 @@
 var blended;
 (function (blended) {
-    function createStateData(data) { return data; }
-    blended.createStateData = createStateData;
-    (function (createControllerCtx) {
-        createControllerCtx[createControllerCtx["adjustChild"] = 0] = "adjustChild";
-        createControllerCtx[createControllerCtx["checkForUrl"] = 1] = "checkForUrl";
-        createControllerCtx[createControllerCtx["navigate"] = 2] = "navigate";
-    })(blended.createControllerCtx || (blended.createControllerCtx = {}));
-    var createControllerCtx = blended.createControllerCtx;
     //zaregistrovany stav (v app.ts)
     var state = (function () {
         function state(st) {
@@ -16,9 +8,7 @@ var blended;
             var self = this;
             if (this.oldController) {
                 st.controller = ['$scope', '$state', function ($scope, $state) {
-                        var params = ($state.params);
-                        params.$state = $state;
-                        var ss = { current: self, params: params, parent: ($scope.$parent).ts, createForCheckUrl: createControllerCtx.navigate };
+                        var ss = { current: self, params: ($state.params), parent: ($scope.$parent).ts, canModifyUserData: true };
                         var task = new _this.oldController(ss);
                         $scope.ts = task;
                     }];
@@ -59,9 +49,9 @@ var blended;
             var st = toState;
             while (st) {
                 if (st.dataNodeUrlParName) {
-                    var ss = { current: st, params: toParams, parent: null, createForCheckUrl: createControllerCtx.checkForUrl };
+                    var ss = { current: st, params: toParams, parent: null, canModifyUserData: false };
                     var task = new st.oldController(ss);
-                    var url = task.checkCommingUrl();
+                    var url = task.modifyTargetState();
                     if (url) {
                         e.preventDefault();
                         var hash = $state.href(url.stateName, url.pars);

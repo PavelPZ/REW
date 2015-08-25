@@ -10,7 +10,7 @@
     active?: boolean;
   }
 
-  export function encodeUrl(url: string): string {
+  export function enocdeUrl(url: string): string {
     if (!url) return url;
     return url.replace(/\//g, '!');
   }
@@ -51,9 +51,9 @@
     //services
     $http?: ng.IHttpService,
     $q?: ng.IQService;
-    $state?: angular.ui.IStateService;
+    //$state?: angular.ui.IStateService;
     //produkt
-    product?: IProductEx;
+    //product?: IProductEx;
     finishProduct?: (prod: IProductEx) => void;
   }
   export function cloneAndModifyContext(ctx: learnContext, modify: (c: learnContext) => void = null): learnContext {

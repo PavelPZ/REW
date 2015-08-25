@@ -131,7 +131,7 @@ var testMe;
                     th.actTest.expandDynamicAll(); //expanze dynamickych modulu
                     th.findActModule(); //najdi aktualni modul
                     if (th.actModule == null) {
-                        location.hash = createResultUrl();
+                        location.hash = createUrl(testMe.tResult);
                         return;
                     } //neni aktualni modul (tj. hotovo) => jdi na vysledek 
                 }
@@ -290,7 +290,7 @@ var testMe;
                         saveProduct(function () {
                             Login.adjustMyData(true, function () {
                                 Logger.trace_course('testMe: finishModule, test end');
-                                window.location.hash = createResultUrl(); //jdi na result stranku
+                                window.location.hash = createUrl(testMe.tResult); //jdi na result stranku
                             });
                         });
                     });
@@ -649,13 +649,14 @@ var testMe;
         return createUrlPersist(type, companyId, encodeUrlHash(productUrl), CourseMeta.actProductPersistence);
     }
     testMe.createUrlCompl = createUrlCompl;
-    function createResultUrl(companyId, productUrl) {
+    function createUrl(type, companyId, productUrl) {
+        if (type === void 0) { type = null; }
         if (companyId === void 0) { companyId = 0; }
         if (productUrl === void 0) { productUrl = null; }
-        return createUrlCompl(testMe.tResult, companyId ? companyId : CourseMeta.actCompanyId, productUrl ? productUrl : CourseMeta.actProduct.url);
+        return createUrlCompl(type ? type : testMe.tEx, companyId ? companyId : CourseMeta.actCompanyId, encodeURIComponent(productUrl ? productUrl : CourseMeta.actProduct.url));
         //return [appId, type ? type : tEx, companyId ? companyId : CourseMeta.actCompanyId, productUrl ? productUrl : CourseMeta.actProduct.url].join(hashDelim);
     }
-    testMe.createResultUrl = createResultUrl;
+    testMe.createUrl = createUrl;
     //Pager.registerAppLocator(appId, tEx, (urlParts, completed) => completed(new Model(urlParts)));
-    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, testMe.tEx, testMe.appId, testMe.tEx, 3, function (urlParts) { return new Model(urlParts); }); });
+    blended.oldLocators.push(function ($stateProvider) { return blended.registerOldLocator($stateProvider, testMe.tEx, testMe.appId, testMe.tEx, 4, function (urlParts) { return new Model(urlParts); }); });
 })(testMe || (testMe = {}));

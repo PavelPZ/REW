@@ -13,10 +13,10 @@ var vyzva;
         //});
     }
     vyzva.finishHomeDataNode = finishHomeDataNode;
-    function breadcrumbBase(ctx) {
+    function breadcrumbBase(task) {
         return [
             { title: 'Moje Online jazykové kurzy a testy', url: '#' + Pager.getHomeUrl() },
-            { title: ctx.product.title, url: ctx.$state.href(vyzva.stateNames.home.name, ctx), active: false }
+            { title: task.product.title, url: task.href(vyzva.stateNames.home.name), active: false }
         ];
     }
     vyzva.breadcrumbBase = breadcrumbBase;

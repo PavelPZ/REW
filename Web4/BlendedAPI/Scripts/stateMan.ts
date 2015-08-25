@@ -8,19 +8,11 @@
 
 module blended {
 
-  export function createStateData<T>(data: T): T { return data; }
-
-  export enum createControllerCtx {
-    adjustChild,
-    checkForUrl,
-    navigate
-  }
-
   export interface IStateService  {
     current: state;
     params: learnContext;
     parent: taskController;
-    createForCheckUrl: createControllerCtx;
+    canModifyUserData: boolean;
   }
 
   //aktualni data ke stavu: user data z persistence a CourseMeta.data z URL parametru
@@ -32,7 +24,7 @@ module blended {
 
   export interface IStateUrl {
     stateName: string;
-    pars?: learnContext;
+    pars: learnContext;
   }
 
   //zaregistrovany stav (v app.ts)
@@ -41,9 +33,7 @@ module blended {
       this.oldController = <any>(st.controller); var self = this;
       if (this.oldController) {
         st.controller = <any>['$scope', '$state', ($scope: ITaskControllerScope, $state: angular.ui.IStateService) => {
-          var params = <learnContext><any>($state.params);
-          params.$state = $state;
-          var ss: IStateService = { current: self, params: params, parent: (<ITaskControllerScope>($scope.$parent)).ts, createForCheckUrl: createControllerCtx.navigate };
+          var ss: IStateService = { current: self, params: <learnContext><any>($state.params), parent: (<ITaskControllerScope>($scope.$parent)).ts, canModifyUserData: true };
           var task = new this.oldController(ss);
           $scope.ts = task;
         }];
@@ -90,9 +80,9 @@ module blended {
       var st = toState;
       while (st) {
         if (st.dataNodeUrlParName) {
-          var ss: IStateService = { current: st, params: toParams, parent: null, createForCheckUrl: createControllerCtx.checkForUrl };
-          var task: taskController = new st.oldController(ss);
-          var url = task.checkCommingUrl();
+          var ss: IStateService = { current: st, params: toParams, parent: null, canModifyUserData: false };
+          var task = new st.oldController(ss);
+          var url = task.modifyTargetState();
           if (url) {
             e.preventDefault();
             var hash = $state.href(url.stateName, url.pars);

@@ -7,12 +7,12 @@ var blended;
         levelIds[levelIds["B2"] = 3] = "B2";
     })(blended.levelIds || (blended.levelIds = {}));
     var levelIds = blended.levelIds;
-    function encodeUrl(url) {
+    function enocdeUrl(url) {
         if (!url)
             return url;
         return url.replace(/\//g, '!');
     }
-    blended.encodeUrl = encodeUrl;
+    blended.enocdeUrl = enocdeUrl;
     function decodeUrl(url) {
         if (!url)
             return url;

@@ -7,11 +7,6 @@ var vyzva;
             $stateParams.finishProduct = vyzva.finishHomeDataNode;
             return blended.loader.adjustProduct($stateParams);
         }];
-    vyzva.loadEx = ['$stateParams', function ($stateParams) {
-            blended.finishContext($stateParams);
-            $stateParams.finishProduct = vyzva.finishHomeDataNode;
-            return blended.loader.adjustEx($stateParams);
-        }];
     vyzva.stateNames = {}; //taskRoot: 'root', taskCheckTest: 'checktest', taskLesson: 'lesson', taskPretest: 'pretest', taskPretestItem: 'pretestitem' };
     vyzva.initVyzvaApp = ['$rootScope', '$location', '$state', function ($rootScope, $location, $state) {
             //sance zrusit ladovani stranky
@@ -48,10 +43,10 @@ var vyzva;
                             }),
                             templateUrl: pageTemplate,
                         }),
-                        vyzva.stateNames.pretestTask = new blended.state({
+                        vyzva.stateNames.pretestTask = new blended.pretestState({
                             name: 'pretest',
                             url: '/pretest/:pretesturl',
-                            controller: blended.pretestTaskController,
+                            controller: vyzva.pretestTaskController,
                             dataNodeUrlParName: 'pretestUrl',
                             abstract: true,
                             template: "<div data-ui-view></div>",
@@ -63,30 +58,26 @@ var vyzva;
                                     controller: vyzva.pretestViewController,
                                     templateUrl: pageTemplate,
                                 }),
-                                blended.prodStates.pretestModule = new blended.state({
+                                new blended.state({
                                     name: 'test',
                                     url: '/test/:moduleurl',
-                                    controller: blended.moduleTaskController,
+                                    controller: blended.taskController,
                                     dataNodeUrlParName: 'moduleUrl',
-                                    data: blended.createStateData({ alowCycleExercise: false }),
                                     abstract: true,
                                     template: "<div data-ui-view></div>",
                                     childs: [
                                         blended.prodStates.pretestExercise = vyzva.stateNames.pretestExercise = new blended.state({
                                             name: 'ex',
                                             url: '/ex/:url',
-                                            controller: vyzva.pretestExercise,
+                                            controller: vyzva.exerciseTaskController,
                                             dataNodeUrlParName: 'Url',
-                                            data: $.extend(getDataConfig('exercise', 'run'), blended.createStateData({ isTest: true })),
-                                            resolve: {
-                                                $loadedEx: vyzva.loadEx,
-                                            },
+                                            data: getDataConfig('exercise', 'run'),
                                             templateUrl: pageTemplate,
                                         })
                                     ]
                                 }),
                             ]
-                        }),
+                        }, vyzva.stateNames.pretestExercise),
                         vyzva.stateNames.lessonTask = new blended.state({
                             name: 'lesson',
                             url: '/lesson/:moduleurl',
@@ -105,7 +96,7 @@ var vyzva;
                                 vyzva.stateNames.lessonExercise = new blended.state({
                                     name: 'ex',
                                     url: '/ex/:url',
-                                    controller: vyzva.lessonExercise,
+                                    controller: vyzva.exerciseTaskController,
                                     dataNodeUrlParName: 'Url',
                                     data: getDataConfig('exercise', 'run'),
                                     templateUrl: pageTemplate,

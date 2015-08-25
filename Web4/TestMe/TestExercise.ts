@@ -135,7 +135,7 @@
           th.actTest.expandDynamicAll(); //expanze dynamickych modulu
 
           th.findActModule(); //najdi aktualni modul
-          if (th.actModule == null) { location.hash = createResultUrl(); return; }//neni aktualni modul (tj. hotovo) => jdi na vysledek 
+          if (th.actModule == null) { location.hash = createUrl(tResult); return; }//neni aktualni modul (tj. hotovo) => jdi na vysledek 
         }
 
         th.createSkillsModel();
@@ -272,7 +272,7 @@
             saveProduct(() => { //save testu i s results
               Login.adjustMyData(true,() => { //aktualizuj my home data
                 Logger.trace_course('testMe: finishModule, test end');
-                window.location.hash = createResultUrl(); //jdi na result stranku
+                window.location.hash = createUrl(tResult); //jdi na result stranku
               });
             });
           }));
@@ -604,14 +604,14 @@
   export function createUrlCompl(type: string, companyId: number, productUrl: string): string {
     return createUrlPersist(type, companyId, encodeUrlHash(productUrl), CourseMeta.actProductPersistence);
   }
-  export function createResultUrl(companyId: number = 0, productUrl: string = null): string {
-    return createUrlCompl(tResult, companyId ? companyId : CourseMeta.actCompanyId, productUrl ? productUrl : CourseMeta.actProduct.url);
+  export function createUrl(type: string = null, companyId: number = 0, productUrl: string = null): string {
+    return createUrlCompl(type ? type : tEx, companyId ? companyId : CourseMeta.actCompanyId, encodeURIComponent(productUrl ? productUrl : CourseMeta.actProduct.url));
     //return [appId, type ? type : tEx, companyId ? companyId : CourseMeta.actCompanyId, productUrl ? productUrl : CourseMeta.actProduct.url].join(hashDelim);
   }
 
   //Pager.registerAppLocator(appId, tEx, (urlParts, completed) => completed(new Model(urlParts)));
 
-  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, tEx, appId, tEx, 3, urlParts => new Model(urlParts)));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, tEx, appId, tEx, 4, urlParts => new Model(urlParts)));
 
 }
 
