@@ -1,3 +1,9 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
 var blended;
 (function (blended) {
     blended.showExerciseDirective2 = ['$stateParams', function ($stateParams) { return new showExerciseModel($stateParams); }];
@@ -28,31 +34,51 @@ var blended;
         return showExerciseModel;
     })();
     blended.showExerciseModel = showExerciseModel;
-    var exerciseServiceProxy = (function () {
-        function exerciseServiceProxy() {
+    var exItemProxy = (function () {
+        function exItemProxy() {
         }
-        return exerciseServiceProxy;
+        return exItemProxy;
     })();
-    blended.exerciseServiceProxy = exerciseServiceProxy;
+    blended.exItemProxy = exItemProxy;
+    //***************** $scope.ex, je v cache
     var exerciseService = (function () {
         function exerciseService(ctx /*ctx v dobe vlozeni do cache*/, mod, dataNode, page, userLong) {
-            this.ctx = ctx;
             this.mod = mod;
             this.dataNode = dataNode;
             this.page = page;
             this.userLong = userLong;
-            this.idxInMod = _.indexOf(mod.dataNode.Items, dataNode);
-            this.userShort = this.userShort;
-            if (!this.userShort)
-                this.userShort = this.setPersistData(function (d) { });
+            this.modIdx = _.indexOf(mod.dataNode.Items, dataNode);
         }
         exerciseService.prototype.display = function (el, attrs) { };
         exerciseService.prototype.destroy = function (el) { };
-        exerciseService.prototype.getPersistData = function () { return blended.getPersistData(this.dataNode, this.ctx.taskid); };
-        exerciseService.prototype.setPersistData = function (modify) { return blended.setPersistData(this.dataNode, this.ctx.taskid, modify); };
         return exerciseService;
     })();
     blended.exerciseService = exerciseService;
+    var exerciseTaskViewController = (function (_super) {
+        __extends(exerciseTaskViewController, _super);
+        function exerciseTaskViewController(state, $loadedEx) {
+            var _this = this;
+            _super.call(this, state);
+            this.$loadedEx = $loadedEx;
+            //state.params. = loader.adjustEx(this.ctx).then()
+            this.title = this.dataNode.title;
+            if (!this.parent)
+                return;
+            this.modItems = _.map(this.parent.dataNode.Items, function (node, idx) {
+                return { user: blended.getPersistData(node, _this.ctx.taskid), modIdx: idx, title: node.title };
+            });
+            this.modIdx = _.indexOf(this.parent.dataNode.Items, this.dataNode);
+        }
+        exerciseTaskViewController.prototype.gotoHomeUrl = function () { Pager.gotoHomeUrl(); };
+        exerciseTaskViewController.prototype.initPersistData = function (ud) {
+            _super.prototype.initPersistData.call(this, ud);
+        };
+        exerciseTaskViewController.prototype.moveForward = function (ud) {
+            ud.done = true;
+        };
+        return exerciseTaskViewController;
+    })(blended.taskController);
+    blended.exerciseTaskViewController = exerciseTaskViewController;
 })(blended || (blended = {}));
 //export var showExerciseDirective2_ = ['$stateParams', ($stateParams: blended.learnContext) => {
 //  var model = new showExerciseModel($stateParams);

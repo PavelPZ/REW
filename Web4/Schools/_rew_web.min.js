@@ -378,6 +378,19 @@ var Pager;
         });
     }
     Pager.locatePageFromHash = locatePageFromHash;
+    //reakce na callback z OAuth2 login
+    function angularJS_OAuthLogin(hash, completed) {
+        if (hash != null && hash.indexOf("access_token=") >= 0) {
+            OAuth.checkForToken(function (obj) {
+                Pager.ajaxGet(Pager.pathType.restServices, Login.CmdAdjustUser_Type, Login.CmdAdjustUser_Create(obj.providerid, obj.id, obj.email, obj.firstName, obj.lastName), function (res) {
+                    LMStatus.logged(res.Cookie, false);
+                });
+            });
+            return true;
+        }
+        return false;
+    }
+    Pager.angularJS_OAuthLogin = angularJS_OAuthLogin;
     function locatePageFromHashLow(hash, completed) {
         alert('locatePageFromHash cannot be called');
         if (hash != null && hash.indexOf("access_token=") >= 0) {
@@ -865,7 +878,7 @@ var LMStatus;
             if (!isLMComCookie()) {
                 var a = ev.currentTarget;
                 if (a.tagName.toLowerCase() != CourseModel.ta)
-                    throw "OAuth.logoutEx";
+                    return false; //throw "OAuth.logoutEx";
                 a.href = OAuth.logoutUrl(LMStatus.Cookie.Type);
                 return true;
             }
@@ -2210,6 +2223,7 @@ var blended;
 //    }
 //  });
 //}
+//declare var OAuthDefaultClient: 
 var OAuth;
 (function (OAuth) {
     var client_type;
@@ -2232,8 +2246,8 @@ var OAuth;
             break;
         //case "localhost": client_type = "localhost"; break;
         default:
-            client_type = null;
-            break;
+            client_type = location.protocol == "http:" ? 'default' : 'hdefault';
+            break; //app keys musi byt ulozeny v OAuthDefaultClient (v JsLib\JS\lmconsoleinit.js)
     }
     ;
     var cfg = [];
@@ -2306,6 +2320,14 @@ var OAuth;
     /********************* LM *****************************/
     addCfg(LMComLib.OtherType.LANGMaster, null, null, null, null, null, null, null);
     addCfg(LMComLib.OtherType.LANGMasterNoEMail, null, null, null, null, null, null, null);
+    if (OAuthDefaultClient) {
+        for (var p in OAuthDefaultClient) {
+            var clients = OAuthDefaultClient[p];
+            for (var pp in clients) {
+                cfg[p].client_id[pp] = clients[pp];
+            }
+        }
+    }
     //https://developer.linkedin.com/documents/authentication
     //addCfg(LMComLib.OtherType.LinkedIn, "bbeqjmfcikpm", "https://www.linkedin.com/uas/oauth2/authorization", "http://api.linkedin.com/v1/people/~:(id,first-name,last-name,email-address)", "r_basicprofile,r_emailaddress",
     //  (obj: any) => { var res: profile = { id: obj.id, email: obj.email, firstName: obj.first_name, lastName: obj.last_name }; return res; },
@@ -2376,6 +2398,8 @@ var OAuth;
         }
         while (h.indexOf('#') >= 0)
             h = h.substring(h.indexOf('#') + 1);
+        if (h.indexOf('/') >= 0)
+            h = h.substring(1);
         if (h.indexOf("access_token") === -1) {
             callback(null, null, true, "missing access token");
             return;

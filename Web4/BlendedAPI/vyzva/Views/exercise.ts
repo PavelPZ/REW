@@ -13,10 +13,10 @@
 
     pageUrls: string;
 
-    constructor(state: blended.IStateService) {
-      super(state);
+    constructor(state: blended.IStateService, $loadedEx?: blended.exerciseService) {
+      super(state, $loadedEx);
       if (state.createForCheckUrl != blended.createControllerCtx.navigate) return;
-      this.breadcrumb = breadcrumbBase(this.ctx);
+      this.breadcrumb = breadcrumbBase(this);
       this.breadcrumb.push({ title: this.title, url: null, active: true });
       this.tbTitle = 'Pokračovat';
       

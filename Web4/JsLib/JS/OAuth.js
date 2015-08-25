@@ -49,6 +49,7 @@
 //    }
 //  });
 //}
+//declare var OAuthDefaultClient: 
 var OAuth;
 (function (OAuth) {
     var client_type;
@@ -71,8 +72,8 @@ var OAuth;
             break;
         //case "localhost": client_type = "localhost"; break;
         default:
-            client_type = null;
-            break;
+            client_type = location.protocol == "http:" ? 'default' : 'hdefault';
+            break; //app keys musi byt ulozeny v OAuthDefaultClient (v JsLib\JS\lmconsoleinit.js)
     }
     ;
     var cfg = [];
@@ -145,6 +146,14 @@ var OAuth;
     /********************* LM *****************************/
     addCfg(LMComLib.OtherType.LANGMaster, null, null, null, null, null, null, null);
     addCfg(LMComLib.OtherType.LANGMasterNoEMail, null, null, null, null, null, null, null);
+    if (OAuthDefaultClient) {
+        for (var p in OAuthDefaultClient) {
+            var clients = OAuthDefaultClient[p];
+            for (var pp in clients) {
+                cfg[p].client_id[pp] = clients[pp];
+            }
+        }
+    }
     //https://developer.linkedin.com/documents/authentication
     //addCfg(LMComLib.OtherType.LinkedIn, "bbeqjmfcikpm", "https://www.linkedin.com/uas/oauth2/authorization", "http://api.linkedin.com/v1/people/~:(id,first-name,last-name,email-address)", "r_basicprofile,r_emailaddress",
     //  (obj: any) => { var res: profile = { id: obj.id, email: obj.email, firstName: obj.first_name, lastName: obj.last_name }; return res; },
@@ -215,6 +224,8 @@ var OAuth;
         }
         while (h.indexOf('#') >= 0)
             h = h.substring(h.indexOf('#') + 1);
+        if (h.indexOf('/') >= 0)
+            h = h.substring(1);
         if (h.indexOf("access_token") === -1) {
             callback(null, null, true, "missing access token");
             return;

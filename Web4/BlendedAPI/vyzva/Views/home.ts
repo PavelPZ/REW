@@ -5,10 +5,10 @@
   export class homeViewController extends blended.taskViewController {
     constructor(state: blended.IStateService) {
       super(state);
-      this.breadcrumb = breadcrumbBase(this.ctx); this.breadcrumb[1].active = true;
-      this.prt = this.myTask.getPretestItemModel();
+      this.breadcrumb = breadcrumbBase(this); this.breadcrumb[1].active = true;
+      this.prt = this.parent.getPretestItemModel();
     }
-    myTask: homeTaskController;
+    parent: homeTaskController;
 
     //************ IHomePretest
     prt: IHomePretest;
@@ -16,6 +16,10 @@
 
   //****************** TASK
   export class homeTaskController extends blended.taskController {
+
+    constructor(state: blended.IStateService, public $loadedProduct: blended.IProductEx) {
+      super(state);
+    }
 
     //************* TASK
     getPersistData: () => IBlendedCourseUser;

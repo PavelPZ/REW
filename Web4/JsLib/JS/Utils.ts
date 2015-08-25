@@ -248,7 +248,7 @@ module LMStatus {
     try {
       if (!isLMComCookie()) {
         var a = <HTMLAnchorElement>ev.currentTarget;
-        if (a.tagName.toLowerCase() != CourseModel.ta) throw "OAuth.logoutEx";
+        if (a.tagName.toLowerCase() != CourseModel.ta) return false; //throw "OAuth.logoutEx";
         a.href = OAuth.logoutUrl(Cookie.Type);
         return true;
       } else {

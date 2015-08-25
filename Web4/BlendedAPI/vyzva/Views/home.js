@@ -11,9 +11,9 @@ var vyzva;
         __extends(homeViewController, _super);
         function homeViewController(state) {
             _super.call(this, state);
-            this.breadcrumb = vyzva.breadcrumbBase(this.ctx);
+            this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb[1].active = true;
-            this.prt = this.myTask.getPretestItemModel();
+            this.prt = this.parent.getPretestItemModel();
         }
         return homeViewController;
     })(blended.taskViewController);
@@ -21,8 +21,9 @@ var vyzva;
     //****************** TASK
     var homeTaskController = (function (_super) {
         __extends(homeTaskController, _super);
-        function homeTaskController() {
-            _super.apply(this, arguments);
+        function homeTaskController(state, $loadedProduct) {
+            _super.call(this, state);
+            this.$loadedProduct = $loadedProduct;
         }
         homeTaskController.prototype.initPersistData = function (ud) {
             _super.prototype.initPersistData.call(this, ud);

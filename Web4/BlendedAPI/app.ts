@@ -52,15 +52,20 @@
 
   export var root = new Module('appRoot', ['ngLocale', 'ngResource', 'ui.router']);
   root.app
-    //.directive('showExercise', blended.showExerciseDirective)
+  //.directive('showExercise', blended.showExerciseDirective)
     .directive('showExercise', blended.showExerciseDirective2)
     .directive('lmInclude', () => {
       return {
         restrict: 'A',
         templateUrl: (ele, attrs) => attrs.lmInclude,
       };
-    }).
-    run(vyzva.initVyzvaApp)
+    })
+    .run(vyzva.initVyzvaApp)
+    .run(['$rootScope', '$location', ($rootScope: angular.IRootScopeService, $location: angular.ILocationService) => {
+      $rootScope.$on('$locationChangeStart', (event: angular.IAngularEvent, newUrl: string, oldUrl: string, newState, oldState) => {
+        if (Pager.angularJS_OAuthLogin(location.hash, () => Pager.gotoHomeUrl())) event.preventDefault()
+      })
+    }])
   ;
 
   root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', ( //'$provide', (

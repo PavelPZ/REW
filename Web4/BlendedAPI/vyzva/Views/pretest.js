@@ -10,7 +10,7 @@ var vyzva;
         __extends(pretestViewController, _super);
         function pretestViewController(state) {
             _super.call(this, state);
-            this.breadcrumb = vyzva.breadcrumbBase(this.ctx);
+            this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb.push({ title: this.title, url: null, active: true });
         }
         return pretestViewController;

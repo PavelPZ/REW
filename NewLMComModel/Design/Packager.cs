@@ -94,7 +94,6 @@ namespace Packager {
             case "LANGMaster": smtp = "Chilkat.MailMan=SGORDICMAILQ_tPNaZl6U8K3D;Chilkat.Mht=SGORDICMHT_TQ85okoF8B4v;Email.SmtpHost=medea.inway.cz;Email.SmtpUsername=obchod@langmaster.cz;Email.SmtpPassword=lmobchodlm"; break;
             case "Chinh": smtp = "Chilkat.MailMan=SGORDICMAILQ_tPNaZl6U8K3D;Chilkat.Mht=SGORDICMHT_TQ85okoF8B4v;Email.SmtpHost=pop.edusoft.com.vn;Email.SmtpUsername=etestme@edusoft.com.vn;Email.SmtpPassword=langmaster2015"; break;
           }
-          //if (smtp == "LANGMaster") smtp = "Chilkat.MailMan=SGORDICMAILQ_tPNaZl6U8K3D;Chilkat.Mht=SGORDICMHT_TQ85okoF8B4v;Email.SmtpHost=medea.inway.cz;Email.SmtpUsername=obchod@langmaster.cz;Email.SmtpPassword=lmobchodlm";
           if (!string.IsNullOrEmpty(smtp))
             root.Add(smtp.Split(';').Select(nv => nv.Split('=')).Select(nv => new XElement("add", new XAttribute("key", nv[0]), new XAttribute("value", nv[1]))));
           if (!string.IsNullOrEmpty(basicPath))

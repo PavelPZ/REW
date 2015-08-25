@@ -93,6 +93,19 @@ var Pager;
         });
     }
     Pager.locatePageFromHash = locatePageFromHash;
+    //reakce na callback z OAuth2 login
+    function angularJS_OAuthLogin(hash, completed) {
+        if (hash != null && hash.indexOf("access_token=") >= 0) {
+            OAuth.checkForToken(function (obj) {
+                Pager.ajaxGet(Pager.pathType.restServices, Login.CmdAdjustUser_Type, Login.CmdAdjustUser_Create(obj.providerid, obj.id, obj.email, obj.firstName, obj.lastName), function (res) {
+                    LMStatus.logged(res.Cookie, false);
+                });
+            });
+            return true;
+        }
+        return false;
+    }
+    Pager.angularJS_OAuthLogin = angularJS_OAuthLogin;
     function locatePageFromHashLow(hash, completed) {
         alert('locatePageFromHash cannot be called');
         if (hash != null && hash.indexOf("access_token=") >= 0) {

@@ -15,13 +15,29 @@ var blended;
             this.oldController = (st.controller);
             var self = this;
             if (this.oldController) {
-                st.controller = ['$scope', '$state', function ($scope, $state) {
-                        var params = ($state.params);
-                        params.$state = $state;
-                        var ss = { current: self, params: params, parent: ($scope.$parent).ts, createForCheckUrl: createControllerCtx.navigate };
-                        var task = new _this.oldController(ss);
-                        $scope.ts = task;
-                    }];
+                var services = ['$scope', '$state'];
+                if (st.resolve)
+                    for (var p in st.resolve)
+                        services.push(p);
+                services.push(function ($scope, $state) {
+                    var resolves = [];
+                    for (var _i = 2; _i < arguments.length; _i++) {
+                        resolves[_i - 2] = arguments[_i];
+                    }
+                    var parent = ($scope.$parent).ts;
+                    //kontrola jestli nektery z parentu nenastavil isWrongUrl. Pokud ano, vrat fake controller
+                    if (parent && parent.isWrongUrl) {
+                        $scope.ts = { isWrongUrl: true, parent: parent };
+                        return;
+                    }
+                    //neni isWrongUrl, pokracuj
+                    var params = ($state.params);
+                    params.$state = $state;
+                    var ss = { current: self, params: params, parent: parent, createForCheckUrl: createControllerCtx.navigate };
+                    var task = (new _this.oldController(ss, resolves));
+                    $scope.ts = task;
+                });
+                st.controller = services;
             }
             $.extend(this, st);
         }
@@ -34,43 +50,6 @@ var blended;
                 ch.name = _this.name + '.' + ch.name;
                 ch.initFromStateTree(provider, root);
             });
-        };
-        //sance osetrit nekonsistentni URL (kterou by se prislo do nekonsistentniho stavu)
-        state.onRouteChangeStart = function (e, toState, toParams, $location, $state) {
-            //v parents neni prodStates.homeTask (jedna se o stav mimo spravu managera, napr. na home webu)
-            var st = toState;
-            while (st && st != blended.prodStates.homeTask)
-                st = st.parent;
-            if (!st)
-                return;
-            //neni produkt - laduje se na home:
-            var prod = blended.loader.productCache.fromCache(toParams);
-            //var stateMan = new stateManager(toState, toParams);
-            if (!prod) {
-                if (toState == blended.prodStates.home)
-                    return; //jsem na home => return (home se musi naladovat vzdy, neni z ni redirekc)
-                //neni naladovan produkt a neni home page => goto home page
-                e.preventDefault();
-                var hash = $state.href(blended.prodStates.home.name, toParams);
-                setTimeout(function () { return window.location.hash = hash; }, 1);
-                return;
-            }
-            //vse je OK, zjisti konsistenci stavu
-            var st = toState;
-            while (st) {
-                if (st.dataNodeUrlParName) {
-                    var ss = { current: st, params: toParams, parent: null, createForCheckUrl: createControllerCtx.checkForUrl };
-                    var task = new st.oldController(ss);
-                    var url = task.checkCommingUrl();
-                    if (url) {
-                        e.preventDefault();
-                        var hash = $state.href(url.stateName, url.pars);
-                        setTimeout(function () { return window.location.hash = hash; }, 1);
-                        return;
-                    }
-                }
-                st = st.parent;
-            }
         };
         return state;
     })();

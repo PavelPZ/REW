@@ -696,7 +696,7 @@ var LMStatus;
             if (!isLMComCookie()) {
                 var a = ev.currentTarget;
                 if (a.tagName.toLowerCase() != CourseModel.ta)
-                    throw "OAuth.logoutEx";
+                    return false; //throw "OAuth.logoutEx";
                 a.href = OAuth.logoutUrl(LMStatus.Cookie.Type);
                 return true;
             }

@@ -33,12 +33,10 @@
 
   export var initVyzvaApp = ['$rootScope', '$location', '$state', ($rootScope: angular.IRootScopeService, $location: angular.ILocationService, $state: angular.ui.IStateService) => {
     //sance zrusit ladovani stranky
-    $rootScope.$on('$stateChangeStart',
-      (e, toState, toParams, fromState, fromParams) => {
-        blended.finishContext(toParams);
-        blended.state.onRouteChangeStart(e, toState, toParams, $location, $state);
-      }
-      );
+    //$rootScope.$on('$stateChangeStart', (e, toState, toParams, fromState, fromParams) => {
+    //  blended.finishContext(toParams);
+    //  blended.state.onRouteChangeStart(e, toState, toParams, $location, $state);
+    //});
   }];
   export function initVyzvaStates(params: blended.createStatePars) {
     stateNames.root = new blended.state({

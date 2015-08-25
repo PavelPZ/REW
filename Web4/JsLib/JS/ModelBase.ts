@@ -51,6 +51,23 @@ module Pager {
     });
   }
 
+  //reakce na callback z OAuth2 login
+  export function angularJS_OAuthLogin(hash: string, completed: () => void): boolean {
+    if (hash != null && hash.indexOf("access_token=") >= 0) { //navrat z externiho loginu
+      OAuth.checkForToken((obj: OAuth.profile) => {
+        Pager.ajaxGet( //dle externiho ID zjisti LM Id (a ev. zaloz usera)
+          Pager.pathType.restServices,
+          Login.CmdAdjustUser_Type,
+          Login.CmdAdjustUser_Create(obj.providerid, obj.id, obj.email, obj.firstName, obj.lastName),
+          (res: Login.CmdProfile) => { //dej usera do cookie a proved redirekt
+            LMStatus.logged(res.Cookie, false);
+          });
+      });
+      return true;
+    }
+    return false;
+  }
+
   function locatePageFromHashLow(hash: string, completed: (pg: Page) => void): void {
     alert('locatePageFromHash cannot be called');
     if (hash != null && hash.indexOf("access_token=") >= 0) { //navrat z externiho loginu
@@ -93,7 +110,7 @@ module Pager {
 
   //export function HomeUrl(): string { return "#"; }
 
-  export function getHomeUrl() { return LMStatus.isLogged() ? Pager.initHash() : Login.loginUrl();}
+  export function getHomeUrl() { return LMStatus.isLogged() ? Pager.initHash() : Login.loginUrl(); }
   export function gotoHomeUrl() { navigateToHash(getHomeUrl()); }
 
   export function navigateToHash(hash: string) {

@@ -44,8 +44,14 @@ var blended;
             restrict: 'A',
             templateUrl: function (ele, attrs) { return attrs.lmInclude; },
         };
-    }).
-        run(vyzva.initVyzvaApp);
+    })
+        .run(vyzva.initVyzvaApp)
+        .run(['$rootScope', '$location', function ($rootScope, $location) {
+            $rootScope.$on('$locationChangeStart', function (event, newUrl, oldUrl, newState, oldState) {
+                if (Pager.angularJS_OAuthLogin(location.hash, function () { return Pager.gotoHomeUrl(); }))
+                    event.preventDefault();
+            });
+        }]);
     blended.root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', function (//'$provide', (
             $stateProvider, $urlRouterProvider, $location, $urlMatcherFactoryProvider, $provide) {
             //routerLogging($provide);

@@ -15,10 +15,10 @@ var vyzva;
     vyzva.stateNames = {}; //taskRoot: 'root', taskCheckTest: 'checktest', taskLesson: 'lesson', taskPretest: 'pretest', taskPretestItem: 'pretestitem' };
     vyzva.initVyzvaApp = ['$rootScope', '$location', '$state', function ($rootScope, $location, $state) {
             //sance zrusit ladovani stranky
-            $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
-                blended.finishContext(toParams);
-                blended.state.onRouteChangeStart(e, toState, toParams, $location, $state);
-            });
+            //$rootScope.$on('$stateChangeStart', (e, toState, toParams, fromState, fromParams) => {
+            //  blended.finishContext(toParams);
+            //  blended.state.onRouteChangeStart(e, toState, toParams, $location, $state);
+            //});
         }];
     function initVyzvaStates(params) {
         vyzva.stateNames.root = new blended.state({

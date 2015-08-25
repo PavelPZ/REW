@@ -6,28 +6,87 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var blended;
 (function (blended) {
-    //******* TASK VIEW
-    var taskViewController = (function () {
-        function taskViewController(state) {
+    var controller = (function () {
+        function controller(state) {
             this.ctx = state.params;
             blended.finishContext(this.ctx);
             $.extend(this, state.current.data);
-            this.myTask = state.parent;
+            this.myState = state.current;
+            this.parent = state.parent;
+            //if (state.createForCheckUrl == createControllerCtx.navigate) { //sance zkontrolovat spravnost URL adresy
+            //  _.each(this.taskList(), t => {
+            //    if (!t.checkCommingUrl) return;
+            //    var url = t.checkCommingUrl(); if (!url) return;
+            //  });
+            //}
+        }
+        controller.prototype.href = function (url) {
+            return this.ctx.$state.href(url.stateName, url.pars);
+        };
+        controller.prototype.navigate = function (url) {
+            var hash = this.href(url);
+            setTimeout(function () { return window.location.hash = hash; }, 1);
+        };
+        //test na validnost URL - sance presmerovat system jinam
+        //checkCommingUrl: () => IStateUrl;
+        controller.prototype.taskList = function () {
+            var t = this.taskRoot();
+            var res = [];
+            while (t) {
+                res.push(t);
+                t = t.child;
+            }
+            return res;
+        };
+        controller.prototype.taskRoot = function () {
+            var t = this;
+            while (t.myState.name != blended.prodStates.homeTask.name)
+                t = t.parent;
+            return t;
+        };
+        controller.prototype.wrongUrlRedirect = function (url) {
+            if (!url)
+                return;
+            this.isWrongUrl = true;
+            setTimeout(this.navigate(url), 1);
+        };
+        return controller;
+    })();
+    blended.controller = controller;
+    //******* TASK VIEW
+    var taskViewController = (function (_super) {
+        __extends(taskViewController, _super);
+        function taskViewController(state) {
+            _super.call(this, state);
+            this.ctx = state.params;
+            blended.finishContext(this.ctx);
+            $.extend(this, state.current.data);
             if (!this.ctx.$state)
-                this.ctx.$state = this.myTask.ctx.$state;
-            this.title = this.myTask.dataNode.title;
+                this.ctx.$state = this.parent.ctx.$state;
+            this.title = this.parent.dataNode.title;
         }
         taskViewController.prototype.gotoHomeUrl = function () { Pager.gotoHomeUrl(); };
         return taskViewController;
-    })();
+    })(controller);
     blended.taskViewController = taskViewController;
     //******* TASK 
-    var taskController = (function () {
+    var taskController = (function (_super) {
+        __extends(taskController, _super);
         //********************* 
         function taskController(state) {
             var _this = this;
+            _super.call(this, state);
             this.getPersistData = function () { return blended.getPersistData(_this.dataNode, _this.ctx.taskid); };
             this.setPersistData = function (modify) { return blended.setPersistData(_this.dataNode, _this.ctx.taskid, modify); };
+            //var it = this.dataNode.userData ? this.dataNode.userData[this.ctx.taskid] : null;
+            //if (!it) {
+            //  it = { data: <any>{}, modified: true };
+            //  if (!this.dataNode.userData) this.dataNode.userData = {};
+            //  this.dataNode.userData[this.ctx.taskid] = it;
+            //} else
+            //  it.modified = true;
+            //modify(it.data);
+            //return it.data;
             this.doInitPersistData = function () {
                 var ud = _this.getPersistData();
                 if (!ud)
@@ -39,10 +98,6 @@ var blended;
             };
             if (!state.current.dataNodeUrlParName)
                 return;
-            this.ctx = state.params;
-            blended.finishContext(this.ctx);
-            $.extend(this, state.current.data);
-            this.myState = state.current;
             this.ctx.product = blended.loader.productCache.fromCache(this.ctx);
             if (!this.ctx.product)
                 return;
@@ -55,30 +110,22 @@ var blended;
             this.dataNode = this.ctx.product.nodeDir[this.ctx[state.current.dataNodeUrlParName]];
             if (!this.dataNode)
                 throw '!this.dataNode';
+            //var wrongRedirect = this.checkCommingUrl();
+            //if (wrongRedirect) {
+            //  this.isWrongUrl = true;
+            //  this.navigate(wrongRedirect);
+            //  return;
+            //}
             if (state.createForCheckUrl != blended.createControllerCtx.checkForUrl)
                 this.doInitPersistData();
         }
         //********************** Virtualni procs
         //inicialni naplneni user dat  (pri jejich prvnim vytvoreni)
         taskController.prototype.initPersistData = function (ud) { ud.done = false; }; //ud.url = this.dataNode.url; }
-        //test na validnost URL - sance presmerovat system jinam
-        taskController.prototype.checkCommingUrl = function () { return null; };
         //dodelej task list do green stavu
         taskController.prototype.adjustChild = function () { };
         //posun stavu dal
         taskController.prototype.moveForward = function (ud) { throw 'notimplemented'; };
-        //var it = this.dataNode.userData ? this.dataNode.userData[this.ctx.taskid] : null;
-        //if (!it) {
-        //  it = { data: <any>{}, modified: true };
-        //  if (!this.dataNode.userData) this.dataNode.userData = {};
-        //  this.dataNode.userData[this.ctx.taskid] = it;
-        //} else
-        //  it.modified = true;
-        //modify(it.data);
-        //return it.data;
-        taskController.prototype.log = function (msg) {
-            console.log('%%% ' + Utils.getObjectClassName(this) + ": " + msg + ' (' + this.dataNode.url + ')');
-        };
         taskController.prototype.goCurrent = function () {
             var t = this;
             while (t) {
@@ -107,41 +154,18 @@ var blended;
                 return null;
             return this.goCurrent();
         };
-        //addToHistory(child: taskController, ud: IPersistNodeUser) {
-        //  if (!ud.history) ud.history = [];
-        //  var hist: IPersistHistoryItem = { date: Utils.nowToNum(), url: child.dataNode.url, taskId: child.ctx.taskid };
-        //  if (_.find(ud.history, h => h.url == hist.url && h.taskId == hist.taskId)) return;
-        //  ud.history.push(hist);
-        //}
-        taskController.prototype.href = function (url) {
-            return this.ctx.$state.href(url.stateName, url.pars);
-        };
-        taskController.prototype.navigate = function (url) {
-            var hash = this.href(url);
-            setTimeout(function () { return window.location.hash = hash; }, 1);
-        };
-        taskController.prototype.taskList = function () {
-            var t = this.taskRoot();
-            var res = [];
-            while (t) {
-                res.push(t);
-                t = t.child;
-            }
-            return res;
-        };
-        taskController.prototype.taskRoot = function () {
-            var t = this;
-            while (t.myState.name != blended.prodStates.homeTask.name)
-                t = t.parent;
-            return t;
+        taskController.prototype.log = function (msg) {
+            console.log('%%% ' + Utils.getObjectClassName(this) + ": " + msg + ' (' + this.dataNode.url + ')');
         };
         return taskController;
-    })();
+    })(controller);
     blended.taskController = taskController;
     var pretestTaskController = (function (_super) {
         __extends(pretestTaskController, _super);
-        function pretestTaskController() {
-            _super.apply(this, arguments);
+        function pretestTaskController(state) {
+            _super.call(this, state);
+            //sance prerusit navigaci
+            this.wrongUrlRedirect(this.checkCommingUrl());
         }
         pretestTaskController.prototype.checkCommingUrl = function () {
             var ud = this.getPersistData();
@@ -278,22 +302,6 @@ var blended;
         return moduleTaskController;
     })(taskController);
     blended.moduleTaskController = moduleTaskController;
-    var exerciseTaskViewController = (function (_super) {
-        __extends(exerciseTaskViewController, _super);
-        function exerciseTaskViewController(state) {
-            _super.call(this, state);
-            this.title = this.dataNode.title;
-        }
-        exerciseTaskViewController.prototype.gotoHomeUrl = function () { Pager.gotoHomeUrl(); };
-        exerciseTaskViewController.prototype.initPersistData = function (ud) {
-            _super.prototype.initPersistData.call(this, ud);
-        };
-        exerciseTaskViewController.prototype.moveForward = function (ud) {
-            ud.done = true;
-        };
-        return exerciseTaskViewController;
-    })(taskController);
-    blended.exerciseTaskViewController = exerciseTaskViewController;
 })(blended || (blended = {}));
 //export class controllerLow {
 //  constructor($scope: IControllerLowScope, public $state: angular.ui.IStateService) {

@@ -16,11 +16,12 @@ module blended {
     navigate
   }
 
-  export interface IStateService  {
+  export interface IStateService {
     current: state;
     params: learnContext;
     parent: taskController;
     createForCheckUrl: createControllerCtx;
+    isWrongUrl?: boolean;
   }
 
   //aktualni data ke stavu: user data z persistence a CourseMeta.data z URL parametru
@@ -40,21 +41,38 @@ module blended {
     constructor(st: angular.ui.IState) {
       this.oldController = <any>(st.controller); var self = this;
       if (this.oldController) {
-        st.controller = <any>['$scope', '$state', ($scope: ITaskControllerScope, $state: angular.ui.IStateService) => {
+        var services: Array<any> = ['$scope', '$state'];
+        if (st.resolve) for (var p in st.resolve) services.push(p);
+        services.push(($scope: IControllerScope, $state: angular.ui.IStateService, ...resolves: Array<Object>) => {
+          var parent: taskController = (<any>($scope.$parent)).ts;
+          //kontrola jestli nektery z parentu nenastavil isWrongUrl. Pokud ano, vrat fake controller
+          if (parent && parent.isWrongUrl) {
+            $scope.ts = <any>{ isWrongUrl: true, parent: parent }; return;
+          }
+          //neni isWrongUrl, pokracuj
           var params = <learnContext><any>($state.params);
           params.$state = $state;
-          var ss: IStateService = { current: self, params: params, parent: (<ITaskControllerScope>($scope.$parent)).ts, createForCheckUrl: createControllerCtx.navigate };
-          var task = new this.oldController(ss);
+          var ss: IStateService = { current: self, params: params, parent: parent, createForCheckUrl: createControllerCtx.navigate };
+          var task = <controller>(new this.oldController(ss, resolves));
           $scope.ts = task;
-        }];
+        });
+        st.controller = <any>services;
+        //st.controller = <any>['$scope', '$state', ($scope: ITaskControllerScope, $state: angular.ui.IStateService) => {
+        //  var params = <learnContext><any>($state.params);
+        //  params.$state = $state;
+        //  var ss: IStateService = { current: self, params: params, parent: (<ITaskControllerScope>($scope.$parent)).ts, createForCheckUrl: createControllerCtx.navigate };
+        //  var task = new this.oldController(ss);
+        //  $scope.ts = task;
+        //}];
       }
-      $.extend(this, st); 
+      $.extend(this, st);
     }
     childs: Array<state>;
     parent: state;
     name: string;
     dataNodeUrlParName: string;
     data: {};
+    resolve: {};
     oldController: any;
     
     //******* Inicializace: linearizace state tree na definict states
@@ -68,41 +86,41 @@ module blended {
     }
 
     //sance osetrit nekonsistentni URL (kterou by se prislo do nekonsistentniho stavu)
-    static onRouteChangeStart(e: angular.IAngularEvent, toState: blended.state, toParams: learnContext, $location: angular.ILocationService, $state: angular.ui.IStateService) {
-      //v parents neni prodStates.homeTask (jedna se o stav mimo spravu managera, napr. na home webu)
-      var st = toState;
-      while (st && st != prodStates.homeTask) st = st.parent;
-      if (!st) return;
+    //static onRouteChangeStart(e: angular.IAngularEvent, toState: blended.state, toParams: learnContext, $location: angular.ILocationService, $state: angular.ui.IStateService) {
+    //  //v parents neni prodStates.homeTask (jedna se o stav mimo spravu managera, napr. na home webu)
+    //  var st = toState;
+    //  while (st && st != prodStates.homeTask) st = st.parent;
+    //  if (!st) return;
 
-      //neni produkt - laduje se na home:
-      var prod = loader.productCache.fromCache(toParams);
-      //var stateMan = new stateManager(toState, toParams);
-      if (!prod) { //jeste neni naladovan produkt, jdi na home, kde se naladuje.
-        if (toState == prodStates.home) return; //jsem na home => return (home se musi naladovat vzdy, neni z ni redirekc)
-        //neni naladovan produkt a neni home page => goto home page
-        e.preventDefault();
-        var hash = $state.href(prodStates.home.name, toParams);
-        setTimeout(() => window.location.hash = hash, 1);
-        return;
-      }
+    //  //neni produkt - laduje se na home:
+    //  var prod = loader.productCache.fromCache(toParams);
+    //  //var stateMan = new stateManager(toState, toParams);
+    //  if (!prod) { //jeste neni naladovan produkt, jdi na home, kde se naladuje.
+    //    if (toState == prodStates.home) return; //jsem na home => return (home se musi naladovat vzdy, neni z ni redirekc)
+    //    //neni naladovan produkt a neni home page => goto home page
+    //    e.preventDefault();
+    //    var hash = $state.href(prodStates.home.name, toParams);
+    //    setTimeout(() => window.location.hash = hash, 1);
+    //    return;
+    //  }
 
-      //vse je OK, zjisti konsistenci stavu
-      var st = toState;
-      while (st) {
-        if (st.dataNodeUrlParName) {
-          var ss: IStateService = { current: st, params: toParams, parent: null, createForCheckUrl: createControllerCtx.checkForUrl };
-          var task: taskController = new st.oldController(ss);
-          var url = task.checkCommingUrl();
-          if (url) {
-            e.preventDefault();
-            var hash = $state.href(url.stateName, url.pars);
-            setTimeout(() => window.location.hash = hash, 1);
-            return;
-          }
-        }
-        st = st.parent;
-      }
-    }
+    //  //vse je OK, zjisti konsistenci stavu
+    //  var st = toState;
+    //  while (st) {
+    //    if (st.dataNodeUrlParName) {
+    //      var ss: IStateService = { current: st, params: toParams, parent: null, createForCheckUrl: createControllerCtx.checkForUrl };
+    //      var task: taskController = new st.oldController(ss);
+    //      var url = task.checkCommingUrl();
+    //      if (url) {
+    //        e.preventDefault();
+    //        var hash = $state.href(url.stateName, url.pars);
+    //        setTimeout(() => window.location.hash = hash, 1);
+    //        return;
+    //      }
+    //    }
+    //    st = st.parent;
+    //  }
+    //}
     //******* state man persistence
     //getPersistData: (data: IStateData) => IPersistNodeUser = (data) => {
     //  return getPersistData(data.dataNode, data.man.ctx.taskid);

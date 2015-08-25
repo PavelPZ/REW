@@ -17,11 +17,11 @@ var vyzva;
     //}
     var pretestExercise = (function (_super) {
         __extends(pretestExercise, _super);
-        function pretestExercise(state) {
-            _super.call(this, state);
+        function pretestExercise(state, $loadedEx) {
+            _super.call(this, state, $loadedEx);
             if (state.createForCheckUrl != blended.createControllerCtx.navigate)
                 return;
-            this.breadcrumb = vyzva.breadcrumbBase(this.ctx);
+            this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb.push({ title: this.title, url: null, active: true });
             this.tbTitle = 'Pokračovat';
             this.pageUrls = this.ctx.productUrl + '|' + this.ctx.moduleUrl + '|' + this.ctx.Url;

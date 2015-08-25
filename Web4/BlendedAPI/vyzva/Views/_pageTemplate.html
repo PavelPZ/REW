@@ -1,7 +1,9 @@
-﻿<div data-ng-include="ts.dataToolbar"></div>
-<div class="container-fluid">
-  <div class="container">
-    <h1>{{ts.title}}</h1>
-    <div data-ng-include="ts.dataTemplate"></div>
+﻿<div data-ng-if="::ts">
+  <div data-ng-include="::ts.dataToolbar"></div>
+  <div class="container-fluid">
+    <div class="container">
+      <h1>{{::ts.title}}</h1>
+      <div data-ng-include="::ts.dataTemplate"></div>
+    </div>
   </div>
 </div>

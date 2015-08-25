@@ -9740,23 +9740,25 @@ var blended;
         return showExerciseModel;
     })();
     blended.showExerciseModel = showExerciseModel;
-    var exerciseServiceProxy = (function () {
-        function exerciseServiceProxy() {
+    var exItemProxy = (function () {
+        function exItemProxy() {
         }
-        return exerciseServiceProxy;
+        return exItemProxy;
     })();
-    blended.exerciseServiceProxy = exerciseServiceProxy;
+    blended.exItemProxy = exItemProxy;
     var exerciseService = (function () {
         function exerciseService(ctx /*ctx v dobe vlozeni do cache*/, mod, dataNode, page, userLong) {
+            var _this = this;
             this.ctx = ctx;
             this.mod = mod;
             this.dataNode = dataNode;
             this.page = page;
             this.userLong = userLong;
-            this.idxInMod = _.indexOf(mod.dataNode.Items, dataNode);
-            this.userShort = this.userShort;
-            if (!this.userShort)
-                this.userShort = this.setPersistData(function (d) { });
+            this.modIdx = _.indexOf(mod.dataNode.Items, dataNode);
+            this.modItems = _.map(mod.dataNode.Items, function (node, idx) {
+                return { user: blended.getPersistData(node, _this.ctx.taskid), modIdx: idx, title: node.title };
+            });
+            this.userShort = this.modItems[this.modIdx].user;
         }
         exerciseService.prototype.display = function (el, attrs) { };
         exerciseService.prototype.destroy = function (el) { };
@@ -10682,8 +10684,14 @@ var blended;
             restrict: 'A',
             templateUrl: function (ele, attrs) { return attrs.lmInclude; },
         };
-    }).
-        run(vyzva.initVyzvaApp);
+    })
+        .run(vyzva.initVyzvaApp)
+        .run(['$rootScope', '$location', function ($rootScope, $location) {
+            $rootScope.$on('$locationChangeStart', function (event, newUrl, oldUrl, newState, oldState) {
+                if (Pager.angularJS_OAuthLogin(location.hash, function () { return Pager.gotoHomeUrl(); }))
+                    event.preventDefault();
+            });
+        }]);
     blended.root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', function (//'$provide', (
             $stateProvider, $urlRouterProvider, $location, $urlMatcherFactoryProvider, $provide) {
             //routerLogging($provide);
@@ -10704,6 +10712,11 @@ var blended;
                     }]);
             }
             $stateProvider
+                .state({
+                name: 'loginwaiting',
+                url: '/loginwaiting',
+                template: ''
+            })
                 .state({
                 name: 'pg',
                 url: '/pg',

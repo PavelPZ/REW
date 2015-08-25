@@ -1,41 +1,87 @@
 ﻿module blended {
 
-  //export interface IViewControllerScope extends ng.IScope { ts: taskViewController; }
-  export interface ITaskControllerScope extends ng.IScope { ts: taskController; }
+  export class controller  {
+    ctx: learnContext;
+    myState: state;
+    parent: taskController;
+    isWrongUrl: boolean;
 
-  //******* TASK VIEW
-  export class taskViewController {
     constructor(state: IStateService) {
       this.ctx = state.params;
       finishContext(this.ctx);
       $.extend(this, state.current.data);
-      this.myTask = state.parent;
-      if (!this.ctx.$state) this.ctx.$state = this.myTask.ctx.$state;
-      this.title = this.myTask.dataNode.title;
+      this.myState = state.current;
+      this.parent = state.parent;
+      //if (state.createForCheckUrl == createControllerCtx.navigate) { //sance zkontrolovat spravnost URL adresy
+      //  _.each(this.taskList(), t => {
+      //    if (!t.checkCommingUrl) return;
+      //    var url = t.checkCommingUrl(); if (!url) return;
+
+      //  });
+      //}
+    }
+    href(url: IStateUrl): string {
+      return this.ctx.$state.href(url.stateName, url.pars);
+    }
+
+    navigate(url: IStateUrl) {
+      var hash = this.href(url);
+      setTimeout(() => window.location.hash = hash, 1);
+    }
+
+    //test na validnost URL - sance presmerovat system jinam
+    //checkCommingUrl: () => IStateUrl;
+
+    taskList(): Array<taskController> {
+      var t = this.taskRoot();
+      var res: Array<taskController> = [];
+      while (t) { res.push(t); t = t.child; }
+      return res;
+    }
+    taskRoot(): taskController {
+      var t = this;
+      while (t.myState.name != prodStates.homeTask.name) t = t.parent;
+      return <taskController>t;
+    }
+
+    wrongUrlRedirect(url: IStateUrl) {
+      if (!url) return;
+      this.isWrongUrl = true;
+      setTimeout(this.navigate(url), 1);
+    }
+
+  }
+
+  //export interface IViewControllerScope extends ng.IScope { ts: taskViewController; }
+  export interface IControllerScope extends ng.IScope { ts: controller; }
+
+  //******* TASK VIEW
+  export class taskViewController extends controller {
+    constructor(state: IStateService) {
+      super(state);
+      this.ctx = state.params;
+      finishContext(this.ctx);
+      $.extend(this, state.current.data);
+      if (!this.ctx.$state) this.ctx.$state = this.parent.ctx.$state;
+      this.title = this.parent.dataNode.title;
     }
     ctx: learnContext;
     title: string;
     breadcrumb: Array<breadcrumbItem>;
     gotoHomeUrl() { Pager.gotoHomeUrl(); }
-    myTask: taskController;
   }
 
   //******* TASK 
-  export class taskController {
+  export class taskController extends controller {
 
     //********************** FIELDS
     child: taskController;
-    parent: taskController;
     dataNode: CourseMeta.data;
     product: IProductEx;
-    ctx: learnContext;
-    myState: state;
 
     //********************** Virtualni procs
     //inicialni naplneni user dat  (pri jejich prvnim vytvoreni)
     initPersistData(ud: IPersistNodeUser) { ud.done = false; } //ud.url = this.dataNode.url; }
-    //test na validnost URL - sance presmerovat system jinam
-    checkCommingUrl(): IStateUrl { return null; }
     //dodelej task list do green stavu
     adjustChild() { }
     //posun stavu dal
@@ -43,12 +89,9 @@
 
     //********************* 
     constructor(state: IStateService) {
-      if (!state.current.dataNodeUrlParName) return;
+      super(state);
 
-      this.ctx = state.params;
-      finishContext(this.ctx);
-      $.extend(this, state.current.data);
-      this.myState = state.current;
+      if (!state.current.dataNodeUrlParName) return;
 
       this.ctx.product = loader.productCache.fromCache(this.ctx);
       if (!this.ctx.product) return;
@@ -60,6 +103,13 @@
 
       this.dataNode = this.ctx.product.nodeDir[this.ctx[state.current.dataNodeUrlParName]];
       if (!this.dataNode) throw '!this.dataNode';
+
+      //var wrongRedirect = this.checkCommingUrl();
+      //if (wrongRedirect) {
+      //  this.isWrongUrl = true;
+      //  this.navigate(wrongRedirect);
+      //  return;
+      //}
 
       if (state.createForCheckUrl != createControllerCtx.checkForUrl) this.doInitPersistData();
     }
@@ -75,10 +125,6 @@
       //  it.modified = true;
       //modify(it.data);
       //return it.data;
-
-    log(msg: string) {
-      console.log('%%% ' + Utils.getObjectClassName(this) + ": " + msg + ' (' + this.dataNode.url + ')');
-    }
 
     doInitPersistData: () => IPersistNodeUser = () => {
       var ud = this.getPersistData();
@@ -114,33 +160,16 @@
       return this.goCurrent();
     }
 
+    log(msg: string) {
+      console.log('%%% ' + Utils.getObjectClassName(this) + ": " + msg + ' (' + this.dataNode.url + ')');
+    }
+
     //addToHistory(child: taskController, ud: IPersistNodeUser) {
     //  if (!ud.history) ud.history = [];
     //  var hist: IPersistHistoryItem = { date: Utils.nowToNum(), url: child.dataNode.url, taskId: child.ctx.taskid };
     //  if (_.find(ud.history, h => h.url == hist.url && h.taskId == hist.taskId)) return;
     //  ud.history.push(hist);
     //}
-
-    href(url: IStateUrl): string {
-      return this.ctx.$state.href(url.stateName, url.pars);
-    }
-
-    navigate(url: IStateUrl) {
-      var hash = this.href(url);
-      setTimeout(() => window.location.hash = hash, 1);
-    }
-
-    taskList(): Array<taskController> {
-      var t = this.taskRoot();
-      var res: Array<taskController> = [];
-      while (t) { res.push(t); t = t.child; }
-      return res;
-    }
-    taskRoot(): taskController {
-      var t = this;
-      while (t.myState.name != prodStates.homeTask.name) t = t.parent;
-      return t;
-    }
 
   }
 
@@ -169,12 +198,18 @@
 
   export class pretestTaskController extends taskController { //task pro pruchod testem
 
+    constructor(state: IStateService) {
+      super(state);
+      //sance prerusit navigaci
+      this.wrongUrlRedirect(this.checkCommingUrl());
+    }
+
     getPersistData: () => IPretestUser;
     setPersistData: (modify: (data: IPretestUser) => void) => IPretestUser;
     doInitPersistData: () => IPretestUser;
     dataNode: IPretestRepository;
 
-    checkCommingUrl(): IStateUrl {
+    checkCommingUrl () {
       var ud = this.getPersistData();
       if (!ud) return { stateName: prodStates.home.name, pars: this.ctx }; //pretest jeste nezacal => goto product home
       if (ud.done) return null; //done pretest: vse je povoleno
@@ -296,34 +331,6 @@
 
   }
 
-
-  export interface IExShort extends IPersistNodeUser { //course dato pro test
-  }
-  export interface IExerciseStateData {
-    isTest: boolean;
-  }
-
-  export class exerciseTaskViewController extends taskController { //task pro pruchod lekcemi
-
-    title: string;
-    breadcrumb: Array<breadcrumbItem>;
-    gotoHomeUrl() { Pager.gotoHomeUrl(); }
-
-    constructor(state: IStateService) {
-      super(state);
-      this.title = this.dataNode.title;
-    }
-
-    getPersistData: () => IExShort;
-    setPersistData: (modify: (data: IModuleUser) => void) => IModuleUser;
-
-    initPersistData(ud: IExShort) {
-      super.initPersistData(ud);
-    }
-    moveForward(ud: IExShort) {
-      ud.done = true;
-    }
-  }
 }
 
   //export class controllerLow {
