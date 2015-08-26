@@ -2,12 +2,11 @@ var blended;
 (function (blended) {
     function createStateData(data) { return data; }
     blended.createStateData = createStateData;
-    (function (createControllerCtx) {
-        createControllerCtx[createControllerCtx["adjustChild"] = 0] = "adjustChild";
-        createControllerCtx[createControllerCtx["checkForUrl"] = 1] = "checkForUrl";
-        createControllerCtx[createControllerCtx["navigate"] = 2] = "navigate";
-    })(blended.createControllerCtx || (blended.createControllerCtx = {}));
-    var createControllerCtx = blended.createControllerCtx;
+    (function (createControllerModes) {
+        createControllerModes[createControllerModes["adjustChild"] = 0] = "adjustChild";
+        createControllerModes[createControllerModes["navigate"] = 1] = "navigate"; //controller, vytvoreny by ui-route
+    })(blended.createControllerModes || (blended.createControllerModes = {}));
+    var createControllerModes = blended.createControllerModes;
     //zaregistrovany stav (v app.ts)
     var state = (function () {
         function state(st) {
@@ -33,7 +32,7 @@ var blended;
                     //neni isWrongUrl, pokracuj
                     var params = ($state.params);
                     params.$state = $state;
-                    var ss = { current: self, params: params, parent: parent, createForCheckUrl: createControllerCtx.navigate, $scope: $scope };
+                    var ss = { current: self, params: params, parent: parent, createMode: createControllerModes.navigate, $scope: $scope };
                     var task = (new _this.oldController(ss, resolves));
                     $scope.ts = task;
                 });

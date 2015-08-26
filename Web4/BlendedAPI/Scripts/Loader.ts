@@ -11,27 +11,33 @@ module blended {
   }
 
   export interface IPersistNodeUser { //user dato pro task obecne
-    done: boolean;
-    //url: string;
-    //history?: Array<IPersistHistoryItem>;
-    score?: number;
   }
-  //export interface IPersistHistoryItem { date: number, url: string; taskId: string; }
 
   export interface IPersistNodeImpl {
     userData: { [taskId: string]: IPersistNodeItem<any>; } //dato pro jednotlive variatny
   }
 
+  export function getPersistWrapper<T>(dataNode: CourseMeta.data, taskid: string, createProc?: () => T): IPersistNodeItem<T> {
+    if (createProc) {
+      if (!dataNode.userData) dataNode.userData = {};
+      var res = dataNode.userData[taskid]; if (res) return res;
+      res = { long: null, short: createProc(), modified: true };
+      dataNode.userData[taskid] = res;
+      return res;
+    } else {
+      if (!dataNode.userData) return null;
+      return dataNode.userData[taskid];
+    }
+  }
   export function getPersistData<T>(dataNode: CourseMeta.data, taskid: string): T {
-    if (!dataNode.userData) return null;
-    var it = dataNode.userData[taskid];
-    return it ? <T>(it.short) : null;
+    var res = getPersistWrapper<T>(dataNode, taskid);
+    return res ? res.short : null;
   }
 
   export function setPersistData<T>(dataNode: CourseMeta.data, taskid: string, modify: (data: T) => void): T {
     var it = dataNode.userData ? dataNode.userData[taskid] : null;
     if (!it) {
-      it = { short: <any>{}, modified: true };
+      it = { short: <T>{}, modified: true, long:null };
       if (!dataNode.userData) dataNode.userData = {};
       dataNode.userData[taskid] = it;
     } else
@@ -47,10 +53,6 @@ module blended {
     nodeDir: { [id: string]: CourseMeta.data; }; //adresar nodes
     nodeList: Array<CourseMeta.data>; //seznam nodes
     moduleCache: loader.cacheOf<cachedModule>; //cache modulu (kapitol) s lokalizacemi cviceni a slovniky
-    //Repository data
-    //pretest: IPretestRepository; //pretest
-    //entryTests: Array<CourseMeta.data>; //vstupni check-testy (entryTests[0]..A1, ..)
-    //lessons: Array<CourseMeta.data>; //jednotlive tydenni tasky. Jeden tydenni task je seznam z kurziku nebo testu
   }
 
   //Misto externi knihovny ma metody pristupu k nodes primo produkt

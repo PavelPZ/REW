@@ -23,7 +23,7 @@ module CourseMeta {
     ms: number;
     //specializovane blended AngularJS fields (nepouzivaji se, je kvuli prekladu)
     other: string;
-    userData: { [taskId: string]: blended.IPersistNodeItem; } //dato pro jednotlive variatny
+    userData: { [taskId: string]: blended.IPersistNodeItem<any>; } //dato pro jednotlive variatny
     //getPersistData: (taskId: string) => blended.IPersistNodeUser;
     //setPersistData: (taskId: string, modify: (data: blended.IPersistNodeUser) => void) => void;
     //myProduct: IProductEx;

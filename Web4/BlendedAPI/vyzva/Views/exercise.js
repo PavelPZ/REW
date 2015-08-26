@@ -6,20 +6,11 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var vyzva;
 (function (vyzva) {
-    //export class exerciseController extends controller implements IToolbar, IToolbarModule {
-    //  constructor($scope: blended.IControllerScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
-    //    super($scope, $state, $rootTask);
-    //  }
-    //  tbTitle = 'Spustit lekci';
-    //  tbClick() { alert('click exercise'); }
-    //  tbSkipClick() { alert('skip exercise'); }
-    //  tbFinishClick() { alert('finish exercise'); }
-    //}
     var pretestExercise = (function (_super) {
         __extends(pretestExercise, _super);
-        function pretestExercise(state, $loadedEx) {
-            _super.call(this, state, $loadedEx);
-            if (state.createForCheckUrl != blended.createControllerCtx.navigate)
+        function pretestExercise(state, resolves) {
+            _super.call(this, state, resolves);
+            if (state.createMode != blended.createControllerModes.navigate)
                 return;
             this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb.push({ title: this.title, url: null, active: true });

@@ -21,12 +21,6 @@
     lesson?: blended.state;
     pretestTask?: blended.state;
     lessonTask?: blended.state;
-
-    //taskRoot: string;
-    //taskLesson: string;
-    //taskPretest: string;
-    //taskPretestItem: string;
-    //taskCheckTest: string;
   }
   export var stateNames: IStateNames = {}; //taskRoot: 'root', taskCheckTest: 'checktest', taskLesson: 'lesson', taskPretest: 'pretest', taskPretestItem: 'pretestitem' };
 
@@ -102,14 +96,6 @@
                     })
                   ]
                 }),
-                //blended.prodStates.pretestExercise = stateNames.pretestExercise = new blended.state({
-                //  name: 'ex',
-                //  url: '/ex/:url',
-                //  controller: pretestExercise,
-                //  dataNodeUrlParName: 'Url',
-                //  data: getDataConfig('exercise', 'run'),
-                //  templateUrl: pageTemplate,
-                //})
               ]
             }),
             stateNames.lessonTask = new blended.state({

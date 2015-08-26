@@ -40,6 +40,34 @@ var blended;
         return exItemProxy;
     })();
     blended.exItemProxy = exItemProxy;
+    function scorePercent(sc) { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
+    blended.scorePercent = scorePercent;
+    function exSummaryNode(node, taskId) {
+        var res = $.extend({}, shortDefault);
+        res.done = true;
+        _.each(node.Items, function (nd) {
+            var us = blended.getPersistWrapper(nd, taskId);
+            res.done = res.done && (us ? us.short.done : false);
+            if (nd.ms) {
+                res.ms += nd.ms;
+                res.s += us ? us.short.s : 0;
+            }
+            if (us) {
+                res.beg = setDate(res.beg, us.short.beg, true);
+                res.end = setDate(res.end, us.short.end, false);
+                res.elapsed += us.short.elapsed;
+            }
+        });
+        return res;
+    }
+    blended.exSummaryNode = exSummaryNode;
+    var shortDefault = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0 };
+    function setDate(dt1, dt2, min) { if (!dt1)
+        return dt2; if (!dt2)
+        return dt1; if (min)
+        return dt2 > dt1 ? dt1 : dt2;
+    else
+        return dt2 < dt1 ? dt1 : dt2; }
     //***************** $scope.ex, je v cache
     var exerciseService = (function () {
         function exerciseService(ctx /*ctx v dobe vlozeni do cache*/, mod, dataNode, page, userLong) {
@@ -50,32 +78,33 @@ var blended;
             this.taskId = ctx.taskid;
             if (!userLong)
                 userLong = {};
+            this.user = blended.getPersistWrapper(dataNode, this.taskId, function () { return $.extend({}, shortDefault); });
+            this.user.long = userLong;
         }
         exerciseService.prototype.display = function (el, attrs) { };
         exerciseService.prototype.destroy = function (el) { };
-        exerciseService.prototype.getPersistData = function () { return blended.getPersistData(this.dataNode, this.taskId); };
-        exerciseService.prototype.setPersistData = function (modify) { return blended.setPersistData(this.dataNode, this.taskId, modify); };
         exerciseService.prototype.evaluate = function () { };
         return exerciseService;
     })();
     blended.exerciseService = exerciseService;
     var exerciseTaskViewController = (function (_super) {
         __extends(exerciseTaskViewController, _super);
-        function exerciseTaskViewController(state, $loadedEx) {
+        function exerciseTaskViewController(state, resolves) {
             var _this = this;
             _super.call(this, state);
-            this.$loadedEx = $loadedEx;
+            if (state.createMode != blended.createControllerModes.navigate)
+                return;
+            this.service = (resolves[0]);
+            this.user = this.service.user;
             if (state.$scope)
-                (state.$scope).ex = $loadedEx;
+                (state.$scope).ex = this.service;
             this.title = this.dataNode.title;
             this.modItems = _.map(this.parent.dataNode.Items, function (node, idx) {
                 return { user: blended.getPersistData(node, _this.ctx.taskid), modIdx: idx, title: node.title };
             });
             this.modIdx = _.indexOf(this.parent.dataNode.Items, this.dataNode);
         }
-        exerciseTaskViewController.prototype.initPersistData = function (ud) {
-            _super.prototype.initPersistData.call(this, ud);
-        };
+        exerciseTaskViewController.prototype.isDone = function () { return this.user.short.done; };
         exerciseTaskViewController.prototype.moveForward = function (ud) {
             ud.done = true;
         };
@@ -83,22 +112,3 @@ var blended;
     })(blended.taskController);
     blended.exerciseTaskViewController = exerciseTaskViewController;
 })(blended || (blended = {}));
-//export var showExerciseDirective2_ = ['$stateParams', ($stateParams: blended.learnContext) => {
-//  var model = new showExerciseModel($stateParams);
-//  return { link: model.link };
-//  return {
-//    link: (scope: ng.IScope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
-//      scope.$on('$destroy', () => {
-//        ko.cleanNode(el[0]);
-//        el.html('');
-//      });
-//      var page: Course.Page = blended.loader.productCache.fromCache($stateParams).moduleCache.fromCache($stateParams.moduleUrl).cacheOfPages.fromCache($stateParams.Url);
-//      ko.cleanNode(el[0].parentElement);
-//      el.html('');
-//      CourseMeta.lib.blendedDisplayEx(page, html => {
-//        el.html(html);
-//        ko.applyBindings({}, el[0].parentElement);
-//      });
-//    }
-//  };
-//}]; 

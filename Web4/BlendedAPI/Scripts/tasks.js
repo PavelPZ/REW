@@ -13,12 +13,6 @@ var blended;
             $.extend(this, state.current.data);
             this.myState = state.current;
             this.parent = state.parent;
-            //if (state.createForCheckUrl == createControllerCtx.navigate) { //sance zkontrolovat spravnost URL adresy
-            //  _.each(this.taskList(), t => {
-            //    if (!t.checkCommingUrl) return;
-            //    var url = t.checkCommingUrl(); if (!url) return;
-            //  });
-            //}
         }
         controller.prototype.href = function (url) {
             return this.ctx.$state.href(url.stateName, url.pars);
@@ -27,8 +21,6 @@ var blended;
             var hash = this.href(url);
             setTimeout(function () { return window.location.hash = hash; }, 1);
         };
-        //test na validnost URL - sance presmerovat system jinam
-        //checkCommingUrl: () => IStateUrl;
         controller.prototype.taskList = function () {
             var t = this.taskRoot();
             var res = [];
@@ -53,79 +45,49 @@ var blended;
         return controller;
     })();
     blended.controller = controller;
-    //******* TASK VIEW
+    //******* TASK VIEW - predchudce vsech controllers, co maji vizualni podobu (html stranku)
     var taskViewController = (function (_super) {
         __extends(taskViewController, _super);
         function taskViewController(state) {
             _super.call(this, state);
-            this.ctx = state.params;
-            blended.finishContext(this.ctx);
-            $.extend(this, state.current.data);
-            if (!this.ctx.$state)
-                this.ctx.$state = this.parent.ctx.$state;
             this.title = this.parent.dataNode.title;
         }
         taskViewController.prototype.gotoHomeUrl = function () { Pager.gotoHomeUrl(); };
         return taskViewController;
     })(controller);
     blended.taskViewController = taskViewController;
-    //******* TASK 
+    //******* TASK (predchudce vse abstraktnich controllers (mimo cviceni), reprezentujicich TASK). Task umi obslouzit zelenou sipku apod.
     var taskController = (function (_super) {
         __extends(taskController, _super);
         //********************* 
-        function taskController(state) {
-            var _this = this;
+        function taskController(state, resolves) {
             _super.call(this, state);
-            this.getPersistData = function () { return blended.getPersistData(_this.dataNode, _this.ctx.taskid); };
-            this.setPersistData = function (modify) { return blended.setPersistData(_this.dataNode, _this.ctx.taskid, modify); };
-            //var it = this.dataNode.userData ? this.dataNode.userData[this.ctx.taskid] : null;
-            //if (!it) {
-            //  it = { data: <any>{}, modified: true };
-            //  if (!this.dataNode.userData) this.dataNode.userData = {};
-            //  this.dataNode.userData[this.ctx.taskid] = it;
-            //} else
-            //  it.modified = true;
-            //modify(it.data);
-            //return it.data;
-            this.doInitPersistData = function () {
-                var ud = _this.getPersistData();
-                if (!ud)
-                    ud = _this.setPersistData(function (ud) {
-                        _this.log('initPersistData');
-                        _this.initPersistData(ud);
-                    });
-                return ud;
-            };
             if (!state.current.dataNodeUrlParName)
                 return;
-            this.ctx.product = blended.loader.productCache.fromCache(this.ctx);
-            if (!this.ctx.product)
-                return;
+            //provaz parent - child
             var paretScope = this.parent = state.parent;
-            if (paretScope) {
+            if (paretScope)
                 paretScope.child = this;
-                if (!this.ctx.$state)
-                    this.ctx.$state = state.parent.ctx.$state;
+            //dataNode
+            var taskoot = this.taskRoot();
+            if (taskoot == this) {
+                this.dataNode = (resolves[0]);
             }
-            this.dataNode = this.ctx.product.nodeDir[this.ctx[state.current.dataNodeUrlParName]];
+            else {
+                this.dataNode = this.taskRoot().dataNode.nodeDir[this.ctx[state.current.dataNodeUrlParName]];
+            }
             if (!this.dataNode)
                 throw '!this.dataNode';
-            //var wrongRedirect = this.checkCommingUrl();
-            //if (wrongRedirect) {
-            //  this.isWrongUrl = true;
-            //  this.navigate(wrongRedirect);
-            //  return;
-            //}
-            if (state.createForCheckUrl != blended.createControllerCtx.checkForUrl)
-                this.doInitPersistData();
+            //user data
+            this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid);
         }
         //********************** Virtualni procs
-        //inicialni naplneni user dat  (pri jejich prvnim vytvoreni)
-        taskController.prototype.initPersistData = function (ud) { ud.done = false; }; //ud.url = this.dataNode.url; }
         //dodelej task list do green stavu
         taskController.prototype.adjustChild = function () { };
         //posun stavu dal
         taskController.prototype.moveForward = function (ud) { throw 'notimplemented'; };
+        //done priznak
+        taskController.prototype.isDone = function () { throw 'notimplemented'; };
         taskController.prototype.goCurrent = function () {
             var t = this;
             while (t) {
@@ -137,8 +99,8 @@ var blended;
         };
         //posun zelenou sipkou. Child Musi byt adjusted (goCurrent -> goAhead -> goAhead...)
         taskController.prototype.goAhead = function () {
-            var ud = this.getPersistData();
-            if (ud.done)
+            var ud = this.user.short;
+            if (this.isDone())
                 return null;
             if (this.child) {
                 var childUrl = this.child.goAhead();
@@ -150,7 +112,7 @@ var blended;
                 this.log('doMoveForward');
             }
             this.moveForward(ud); //posun stav dopredu
-            if (ud.done)
+            if (this.isDone())
                 return null;
             return this.goCurrent();
         };
@@ -160,39 +122,48 @@ var blended;
         return taskController;
     })(controller);
     blended.taskController = taskController;
+    //****************** PRODUCT HOME
+    var homeTaskController = (function (_super) {
+        __extends(homeTaskController, _super);
+        function homeTaskController() {
+            _super.apply(this, arguments);
+        }
+        return homeTaskController;
+    })(taskController);
+    blended.homeTaskController = homeTaskController;
     var pretestTaskController = (function (_super) {
         __extends(pretestTaskController, _super);
         function pretestTaskController(state) {
+            var _this = this;
             _super.call(this, state);
             //sance prerusit navigaci
+            this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () {
+                return { actLevel: blended.levelIds.A2, urls: [_this.actRepo(blended.levelIds.A2).url], targetLevel: -1, done: false };
+            });
+            if (state.createMode != blended.createControllerModes.navigate)
+                return;
             this.wrongUrlRedirect(this.checkCommingUrl());
         }
+        pretestTaskController.prototype.isDone = function () { return this.user.short.done; };
         pretestTaskController.prototype.checkCommingUrl = function () {
-            var ud = this.getPersistData();
+            var ud = this.user.short;
             if (!ud)
                 return { stateName: blended.prodStates.home.name, pars: this.ctx }; //pretest jeste nezacal => goto product home
             if (ud.done)
                 return null; //done pretest: vse je povoleno
             var dataNode = this.dataNode;
             var actModule = dataNode.Items[ud.actLevel];
-            var actEx = this.ctx.product.nodeDir[this.ctx.Url];
+            var actEx = this.taskRoot().dataNode.nodeDir[this.ctx.Url];
             if (actModule.url != actEx.parent.url) {
                 var pars = blended.cloneAndModifyContext(this.ctx, function (c) { return c.moduleurl = blended.encodeUrl(actModule.url); });
                 return { stateName: blended.prodStates.home.name, pars: pars }; //v URL je adresa jineho nez aktivniho modulu (asi pomoci back) => jdi na prvni cviceni aktualniho modulu
             }
             return null;
         };
-        pretestTaskController.prototype.initPersistData = function (ud) {
-            if (ud.urls)
-                return;
-            _super.prototype.initPersistData.call(this, ud);
-            ud.actLevel = blended.levelIds.A2;
-            ud.urls = [this.actRepo(blended.levelIds.A2).url];
-        };
         pretestTaskController.prototype.adjustChild = function () {
             if (this.child)
                 return;
-            var ud = this.getPersistData();
+            var ud = this.user.short;
             if (ud.done)
                 return;
             var actModule = this.actRepo(ud.actLevel);
@@ -202,37 +173,38 @@ var blended;
                 params: blended.cloneAndModifyContext(this.ctx, function (d) { return d.moduleurl = blended.encodeUrl(actModule.url); }),
                 parent: this,
                 current: blended.prodStates.pretestModule,
-                createForCheckUrl: blended.createControllerCtx.adjustChild
+                createMode: blended.createControllerModes.adjustChild
             };
             this.child = new moduleTaskController(state);
         };
         pretestTaskController.prototype.moveForward = function (ud) {
             var actTestItem = (this.child);
             var actRepo = this.actRepo(ud.actLevel);
-            var childUser = actTestItem.getPersistData();
-            if (!childUser.done || actTestItem.dataNode.url != actRepo.url)
+            var childSummary = blended.exSummaryNode(this.child.dataNode, this.ctx.taskid);
+            if (!childSummary.done || actTestItem.dataNode.url != actRepo.url)
                 throw '!childUser.done || actTestItem.dataNode.parent.url != actRepo.url';
+            var score = blended.scorePercent(childSummary);
             if (actRepo.level == blended.levelIds.A1) {
                 this.finishPretest(ud, blended.levelIds.A1);
             }
             else if (actRepo.level == blended.levelIds.A2) {
-                if (childUser.score >= actRepo.minScore && childUser.score < actRepo.maxScore)
+                if (score >= actRepo.minScore && score < actRepo.maxScore)
                     this.finishPretest(ud, blended.levelIds.A2);
-                else if (childUser.score < actRepo.minScore)
+                else if (score < actRepo.minScore)
                     this.newTestItem(ud, blended.levelIds.A1);
                 else
                     this.newTestItem(ud, blended.levelIds.B1);
             }
             else if (actRepo.level == blended.levelIds.B1) {
-                if (childUser.score >= actRepo.minScore && childUser.score < actRepo.maxScore)
+                if (score >= actRepo.minScore && score < actRepo.maxScore)
                     this.finishPretest(ud, blended.levelIds.B1);
-                else if (childUser.score < actRepo.minScore)
+                else if (score < actRepo.minScore)
                     this.finishPretest(ud, blended.levelIds.A2);
                 else
                     this.newTestItem(ud, blended.levelIds.B2);
             }
             else if (actRepo.level == blended.levelIds.B2) {
-                if (childUser.score < actRepo.minScore)
+                if (score < actRepo.minScore)
                     this.finishPretest(ud, blended.levelIds.B1);
                 else
                     this.finishPretest(ud, blended.levelIds.B2);
@@ -255,16 +227,19 @@ var blended;
     blended.pretestTaskController = pretestTaskController;
     var moduleTaskController = (function (_super) {
         __extends(moduleTaskController, _super);
-        function moduleTaskController() {
-            _super.apply(this, arguments);
+        function moduleTaskController(state) {
+            _super.call(this, state);
+            this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { done: false, actChildIdx: 0 }; });
         }
+        moduleTaskController.prototype.isDone = function () {
+            var _this = this;
+            return !_.find(this.dataNode.Items, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (!itUd || !itUd.done); });
+        };
         moduleTaskController.prototype.adjustChild = function () {
             var _this = this;
             if (this.child)
                 return;
-            var ud = this.getPersistData();
-            if (ud.done)
-                return;
+            var ud = this.user.short;
             var exNode;
             if (!this.alowCycleExercise) {
                 exNode = _.find(this.dataNode.Items, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (!itUd || !itUd.done); });
@@ -278,98 +253,19 @@ var blended;
                 params: blended.cloneAndModifyContext(this.ctx, function (d) { return d.url = blended.encodeUrl(exNode.url); }),
                 parent: this,
                 current: blended.prodStates.pretestExercise,
-                createForCheckUrl: blended.createControllerCtx.adjustChild
+                createMode: blended.createControllerModes.adjustChild
             };
-            this.child = new vyzva.pretestExercise(state);
-        };
-        moduleTaskController.prototype.initPersistData = function (ud) {
-            _super.prototype.initPersistData.call(this, ud);
-            ud.actChildIdx = 0;
+            this.child = new vyzva.pretestExercise(state, null);
         };
         moduleTaskController.prototype.moveForward = function (ud) {
-            var _this = this;
-            var ud = this.getPersistData();
+            var ud = this.user.short;
             if (this.alowCycleExercise) {
-                this.setPersistData(function (d) { if (d.actChildIdx == _this.dataNode.Items.length - 1)
-                    d.actChildIdx = 0;
-                else
-                    d.actChildIdx++; });
+                ud.actChildIdx = ud.actChildIdx == this.dataNode.Items.length - 1 ? 0 : ud.actChildIdx + 1;
+                this.user.modified = true;
             }
-            if (_.all(this.dataNode.Items, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (itUd && itUd.done); }))
-                this.setPersistData(function (d) { return d.done = true; });
             this.child = null;
         };
         return moduleTaskController;
     })(taskController);
     blended.moduleTaskController = moduleTaskController;
 })(blended || (blended = {}));
-//export class controllerLow {
-//  constructor($scope: IControllerLowScope, public $state: angular.ui.IStateService) {
-//    this.ctx = <learnContext><any>($state.params);
-//    finishContext(this.ctx);
-//    $.extend(this, $state.current.data);
-//    $scope.ts = this;
-//  }
-//  ctx: learnContext;
-//}
-//export class pretestGreenProxy extends greenProxy {
-//  constructor(public dataNode: IPretestRepository, ctx: learnContext) {
-//    super(dataNode, ctx);
-//  }
-//  getPersistData: () => IPretestUser;
-//  getChild(): IStateUrl {
-//    var ud = this.getPersistData(); if (ud.done) return null;
-//    var act: IPretestItemRepository = _.find(this.dataNode.Items, l => l.level == ud.actLevel); if (!act) throw '!act';
-//    return new pretestItemGreenProxy(act, this.ctx).getChild();
-//  }
-//}
-//export class pretestItemGreenProxy extends greenProxy {
-//  constructor(public dataNode: IPretestItemRepository, ctx: learnContext) {
-//    super(dataNode, ctx);
-//  }
-//  getPersistData: () => IModuleUser;
-//  getChild(): IStateUrl {
-//    var ud = this.getPersistData(); if (ud.done) return null;
-//    var node = _.find(this.dataNode.Items, it => {
-//      var nodeUd = blended.getPersistData(it, '*** TODO');
-//      return nodeUd != null && !nodeUd.done;
-//    });
-//    //return node ? new greenProxy(node, this.ctx) /*TODO: null;
-//  }
-//}
-//export class pretestState extends state {
-//  constructor(st: angular.ui.IState, public exerciseState: state) {
-//    super(st);
-//  }
-//getPersistData: (data: IPretestStateData) => IPretestUser;
-//setPersistData: (data: IPretestStateData, modify: (data: IPretestUser) => void) => IPretestUser;
-//modifyTargetState(data: IPretestStateData): IStateUrl {
-//  var ud = this.getPersistData(data);
-//  //if (!ud) return { stateName: prodStates.home.name, pars: data.man.ctx }; //pretest jeste nezacal => goto home
-//  if (ud && ud.done) return null; //done pretest: vse je povoleno
-//  var dataNode = <IPretestRepository>data.dataNode;
-//  if (!ud) ud = this.setPersistData(data, d => {
-//    d.url = dataNode.url;
-//    d.actLevel = levelIds.A2;
-//    d.urls = [this.actRepo(data, levelIds.A2).url];
-//  });
-//  var actModule = dataNode.Items[ud.actLevel];
-//  if (actModule.url != data.man.ctx.moduleUrl) {
-//    var pars = cloneAndModifyContext(data.man.ctx, c => {
-//      c.moduleurl = enocdeUrl(actModule.url);
-//      c.url = enocdeUrl(actModule.Items[0].url);
-//    });
-//    return { stateName: this.exerciseState.name, pars: pars }; //v URL je adresa jineho nez aktivniho modulu (asi pomoci back) => jdi na prvni cviceni aktualniho modulu
-//  }
-//  return null;
-//}
-//initPersistData(data: IPretestStateData, ud: IPretestUser) {
-//  super.initPersistData(data, ud);
-//  ud.actLevel = levelIds.A2;
-//  ud.urls = [this.actRepo(data, levelIds.A2).url];
-//}
-//actRepo(data: IPretestStateData, lev: levelIds): IPretestItemRepository { return _.find(data.dataNode.Items, l => l.level == lev); }
-//}
-//export interface IPretestStateData extends blended.IStateData {
-//  dataNode: IPretestRepository;
-//}

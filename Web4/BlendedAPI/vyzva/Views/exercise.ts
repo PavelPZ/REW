@@ -1,21 +1,12 @@
 ﻿namespace vyzva {
-  //export class exerciseController extends controller implements IToolbar, IToolbarModule {
-  //  constructor($scope: blended.IControllerScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
-  //    super($scope, $state, $rootTask);
-  //  }
-  //  tbTitle = 'Spustit lekci';
-  //  tbClick() { alert('click exercise'); }
-  //  tbSkipClick() { alert('skip exercise'); }
-  //  tbFinishClick() { alert('finish exercise'); }
-  //}
 
   export class pretestExercise extends blended.exerciseTaskViewController implements IToolbarRun {
 
     pageUrls: string;
 
-    constructor(state: blended.IStateService, $loadedEx?: blended.exerciseService) {
-      super(state, $loadedEx);
-      if (state.createForCheckUrl != blended.createControllerCtx.navigate) return;
+    constructor(state: blended.IStateService, resolves: Array<any>) {
+      super(state, resolves);
+      if (state.createMode != blended.createControllerModes.navigate) return;
       this.breadcrumb = breadcrumbBase(this);
       this.breadcrumb.push({ title: this.title, url: null, active: true });
       this.tbTitle = 'Pokračovat';

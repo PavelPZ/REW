@@ -30,6 +30,28 @@
     modIdx: number; //index v modulu
   }
 
+  export function scorePercent(sc: IExShort) { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
+
+  export function exSummaryNode(node: CourseMeta.data, taskId: string): IExShort {
+    var res: IExShort = $.extend({}, shortDefault);
+    res.done = true;
+    _.each(node.Items, nd => {
+      var us = getPersistWrapper<IExShort>(nd, taskId);
+      res.done = res.done && (us ? us.short.done : false);
+      if (nd.ms) { //skore
+        res.ms += nd.ms; res.s += us ? us.short.s : 0;
+      }
+      if (us) {
+        res.beg = setDate(res.beg, us.short.beg, true); res.end = setDate(res.end, us.short.end, false);
+        res.elapsed += us.short.elapsed;
+      }
+    })
+    return res;
+  }
+  var shortDefault: IExShort = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0 };
+  function setDate(dt1: number, dt2: number, min: boolean): number { if (!dt1) return dt2; if (!dt2) return dt1; if (min) return dt2 > dt1 ? dt1 : dt2; else return dt2 < dt1 ? dt1 : dt2; }
+
+
   export interface IExLong { [exId: string]: CourseModel.Result; }
 
 
@@ -37,21 +59,21 @@
   export class exerciseService {
 
     taskId: string;
+    user: IPersistNodeItem<IExShort>;
     constructor(ctx: learnContext /*ctx v dobe vlozeni do cache*/, public mod: cachedModule, public dataNode: CourseMeta.data, public page: Course.Page, public userLong: IExLong) {
       this.taskId = ctx.taskid; if (!userLong) userLong = {};
+      this.user = getPersistWrapper<IExShort>(dataNode, this.taskId, () => $.extend({}, shortDefault));
+      this.user.long = userLong;
     }
     display(el: ng.IAugmentedJQuery, attrs: ng.IAttributes) { }
     destroy(el: ng.IAugmentedJQuery) { }
 
-    getPersistData(): IExShort { return getPersistData<IExShort>(this.dataNode, this.taskId); }
-    setPersistData(modify: (data: IExShort) => void): IExShort { return setPersistData<IExShort>(this.dataNode, this.taskId, modify); }
-
     evaluate() { }
-
   }
 
   //***************** EXERCISE $scope.ts, vznika pri kazdem cviceni 
   export interface IExShort extends IPersistNodeUser { //course dato pro test
+    done: boolean;
     ms: number;
     s: number;
     elapsed: number;
@@ -69,16 +91,23 @@
 
   export class exerciseTaskViewController extends taskController { //task pro pruchod lekcemi
 
+    user: IPersistNodeItem<IExShort>;
     title: string;
     modItems: Array<exItemProxy>; //info o vsech cvicenich modulu
     modIdx: number; //self index v modulu
     breadcrumb: Array<breadcrumbItem>;
     //gotoHomeUrl() { Pager.gotoHomeUrl(); }
     startTime: number; //datum vstupu do stranky
+    service: exerciseService;
 
-    constructor(state: IStateService, public $loadedEx: exerciseService) {
+    isDone(): boolean { return this.user.short.done; }
+
+    constructor(state: IStateService, resolves: Array<any>) {
       super(state);
-      if (state.$scope) (<IExerciseScope>(state.$scope)).ex = $loadedEx;
+      if (state.createMode != createControllerModes.navigate) return;
+      this.service = <exerciseService>(resolves[0])
+      this.user = this.service.user;
+      if (state.$scope) (<IExerciseScope>(state.$scope)).ex = this.service;
       this.title = this.dataNode.title;
       this.modItems = _.map(this.parent.dataNode.Items, (node, idx) => {
         return { user: blended.getPersistData<IExShort>(node, this.ctx.taskid), modIdx: idx, title: node.title };
@@ -86,42 +115,8 @@
       this.modIdx = _.indexOf(this.parent.dataNode.Items, this.dataNode);
     }
 
-    getPersistData: () => IExShort;
-    setPersistData: (modify: (data: IModuleUser) => void) => IModuleUser;
-
-    initPersistData(ud: IExShort) {
-      super.initPersistData(ud);
-    }
     moveForward(ud: IExShort) {
       ud.done = true;
     }
   }
-
-
-  //var frameId = 0; //citac frames kvuli events namespace
-
-  //function onIFrameResize(frm: JQuery) { //zmena velikosti frame pri resize hlavniho okna
-  //  frm.height($(window).height() - frm.offset().top - 10);
-  //}
-
 }
-
-  //export var showExerciseDirective2_ = ['$stateParams', ($stateParams: blended.learnContext) => {
-  //  var model = new showExerciseModel($stateParams);
-  //  return { link: model.link };
-  //  return {
-  //    link: (scope: ng.IScope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
-  //      scope.$on('$destroy', () => {
-  //        ko.cleanNode(el[0]);
-  //        el.html('');
-  //      });
-  //      var page: Course.Page = blended.loader.productCache.fromCache($stateParams).moduleCache.fromCache($stateParams.moduleUrl).cacheOfPages.fromCache($stateParams.Url);
-  //      ko.cleanNode(el[0].parentElement);
-  //      el.html('');
-  //      CourseMeta.lib.blendedDisplayEx(page, html => {
-  //        el.html(html);
-  //        ko.applyBindings({}, el[0].parentElement);
-  //      });
-  //    }
-  //  };
-  //}];

@@ -1,16 +1,32 @@
 var blended;
 (function (blended) {
+    function getPersistWrapper(dataNode, taskid, createProc) {
+        if (createProc) {
+            if (!dataNode.userData)
+                dataNode.userData = {};
+            var res = dataNode.userData[taskid];
+            if (res)
+                return res;
+            res = { long: null, short: createProc(), modified: true };
+            dataNode.userData[taskid] = res;
+            return res;
+        }
+        else {
+            if (!dataNode.userData)
+                return null;
+            return dataNode.userData[taskid];
+        }
+    }
+    blended.getPersistWrapper = getPersistWrapper;
     function getPersistData(dataNode, taskid) {
-        if (!dataNode.userData)
-            return null;
-        var it = dataNode.userData[taskid];
-        return it ? (it.short) : null;
+        var res = getPersistWrapper(dataNode, taskid);
+        return res ? res.short : null;
     }
     blended.getPersistData = getPersistData;
     function setPersistData(dataNode, taskid, modify) {
         var it = dataNode.userData ? dataNode.userData[taskid] : null;
         if (!it) {
-            it = { short: {}, modified: true };
+            it = { short: {}, modified: true, long: null };
             if (!dataNode.userData)
                 dataNode.userData = {};
             dataNode.userData[taskid] = it;
