@@ -468,8 +468,7 @@ module CourseMeta {
       this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
       if (!this.testMode) this.evaluator.acceptData(true, this.result);
       this.done = true;
-      if (this.page.isOldEa) this.ms = score.ms;
-      else if (this.ms != score.ms) { debugger; throw "this.maxScore != score.ms"; }
+      if (this.page.isOldEa) this.ms = score.ms; else if (this.ms != score.ms) { debugger; throw "this.maxScore != score.ms"; }
       this.s = score.s;
       this.flag = score.flag;
       return true;

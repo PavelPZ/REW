@@ -199,7 +199,7 @@
     moveForward(ud: IPretestUser) {
       var actTestItem = <exerciseTaskViewController>(this.child);
       var actRepo = this.actRepo(ud.actLevel);
-      var childSummary = exSummaryNode(this.child.dataNode, this.ctx.taskid);
+      var childSummary = agregateChildShortInfos(this.child.dataNode, this.ctx.taskid);
       if (!childSummary.done || actTestItem.dataNode.url != actRepo.url) throw '!childUser.done || actTestItem.dataNode.parent.url != actRepo.url';
       var score = scorePercent(childSummary);
 

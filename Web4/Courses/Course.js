@@ -256,6 +256,9 @@ var Course;
                 completed();
             });
         };
+        //blendedProvideData(allData: { [ctrlId: string]: CourseModel.Result; }): void { this.result.result = allData; this.provideData(null); }
+        //blendedAcceptData(done: boolean, allData: { [ctrlId: string]: CourseModel.Result; }): void { this.result.result = allData; this.acceptData(done, null); }
+        //blendedGetScore(): CourseModel.Score { return this.evalPage.getScore(); }// getORScore(this.evalItems); }
         /*** IScoreProvider ***/
         Page.prototype.provideData = function (allData) {
             //_.each(this.evalItems, ctrl => ctrl.provideData(allData[ctrl.id]));

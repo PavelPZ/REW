@@ -223,7 +223,7 @@ module Course {
     instrBody: string;
     seeAlsoStr: string;
     //blended angular: 
-    userData: Object; //uzivatelova long data stranky (short data jsou v produkut u kazdeho node)
+    //userData: Object; //uzivatelova long data stranky (short data jsou v produkut u kazdeho node)
     myNode: CourseMeta.data; //my node v produktu
     myModule: blended.cachedModule; //muj slovnik a lokalizace
     //---
@@ -270,6 +270,11 @@ module Course {
         completed();
       });
     }
+
+
+    //blendedProvideData(allData: { [ctrlId: string]: CourseModel.Result; }): void { this.result.result = allData; this.provideData(null); }
+    //blendedAcceptData(done: boolean, allData: { [ctrlId: string]: CourseModel.Result; }): void { this.result.result = allData; this.acceptData(done, null); }
+    //blendedGetScore(): CourseModel.Score { return this.evalPage.getScore(); }// getORScore(this.evalItems); }
 
     /*** IScoreProvider ***/
     provideData(allData: { [ctrlId: string]: Object; }): void {

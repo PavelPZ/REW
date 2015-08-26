@@ -438,11 +438,11 @@ var Utils;
     function toUtcTime(dt) { return new Date(dt.getTime() + localOffset); }
     Utils.toUtcTime = toUtcTime;
     function nowToInt() { return dateToInt(new Date()); }
-    Utils.nowToInt = nowToInt;
+    Utils.nowToInt = nowToInt; //milivteriny
     function nowToNum() { return dateToNum(new Date()); }
-    Utils.nowToNum = nowToNum;
+    Utils.nowToNum = nowToNum; //vteriny
     function nowToDay() { return dayToInt(new Date()); }
-    Utils.nowToDay = nowToDay;
+    Utils.nowToDay = nowToDay; //dny
     function formatDateLow(dt) { return Globalize.format(dt, 'd'); }
     Utils.formatDateLow = formatDateLow;
     function formatTimeLow(dt) { return Globalize.format(dt, ', H:m:s'); }

@@ -468,9 +468,10 @@ module Utils {
   var localOffset = new Date().getTimezoneOffset() * 60000;
   export function toUtcTime(dt: Date): Date { return new Date(dt.getTime() + localOffset); }
 
-  export function nowToInt(): number { return dateToInt(new Date()); }
-  export function nowToNum(): number { return dateToNum(new Date()); }
-  export function nowToDay(): number { return dayToInt(new Date()); }
+  
+  export function nowToInt(): number { return dateToInt(new Date()); } //milivteriny
+  export function nowToNum(): number { return dateToNum(new Date()); } //vteriny
+  export function nowToDay(): number { return dayToInt(new Date()); } //dny
   export function formatDateLow(dt: Date): string { return Globalize.format(dt, 'd'); }
   export function formatTimeLow(dt: Date): string { return Globalize.format(dt, ', H:m:s'); }
 

@@ -6,7 +6,7 @@ module blended {
 
   export interface IPersistNodeItem<T> { //persistentni udaj pro jednu variantu (jeden taskId). Kazde cviceni apod. se muze spustit vicekrat, aniz by se prepisovaly jeho user data.
     short: T;
-    long: {};
+    long: IExLong;
     modified: boolean;
   }
 
@@ -204,12 +204,12 @@ module blended {
                 if (isGramm)
                   resolve();
                 else {
-                  if (!!ctx.persistence) ctx.persistence.loadUserData(ctx.userid, ctx.companyid, ctx.productUrl, ctx.Url, (exData: IExLong) => {
+                  if (!!ctx.persistence) ctx.persistence.loadUserData(ctx.userid, ctx.companyid, ctx.productUrl, ctx.Url, (userLong: IExLong) => {
                     if (pg.evalPage && !pg.isOldEa) exNode.ms = pg.evalPage.maxScore;
                     //provazani produktu, stranky, modulu:
-                    if (!exData) exData = {}; pg.userData = exData;
+                    if (!userLong) userLong = {}; //<exNode> pg.result = <any>userLong;
                     pg.myNode = exNode;
-                    resolve(exData);
+                    resolve(userLong);
                   }); else
                     resolve();
                 }
@@ -232,7 +232,7 @@ module blended {
       maxInsertOrder = 0;
       fromCache(ctx: learnContext): IProductEx {
         var resIt = _.find(this.products, it => it.companyid == ctx.companyid && it.userid == ctx.userid && it.subuserid == ctx.subuserid &&
-          it.persistence == ctx.persistence && it.loc == ctx.loc && it.producturl == ctx.producturl && it.taskid == ctx.taskid);
+          it.persistence == ctx.persistence && it.loc == ctx.loc && it.producturl == ctx.producturl); // && it.taskid == ctx.taskid);
         if (resIt) resIt.insertOrder = this.maxInsertOrder++;
         return resIt ? resIt.data : null;
       }
@@ -243,8 +243,8 @@ module blended {
           this.products.splice(minIdx, 1);
         }
         this.products.push({
-          companyid: ctx.companyid, userid: ctx.userid, data: prod, loc: ctx.loc, producturl: ctx.producturl,
-          persistence: ctx.persistence, insertOrder: this.maxInsertOrder++, subuserid: ctx.subuserid, taskid: ctx.taskid,
+          companyid: ctx.companyid, userid: ctx.userid, loc: ctx.loc, producturl: ctx.producturl, persistence: ctx.persistence, subuserid: ctx.subuserid, 
+          data: prod, insertOrder: this.maxInsertOrder++, taskid: null,
         });
       }
     }

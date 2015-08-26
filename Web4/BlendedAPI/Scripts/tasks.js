@@ -180,7 +180,7 @@ var blended;
         pretestTaskController.prototype.moveForward = function (ud) {
             var actTestItem = (this.child);
             var actRepo = this.actRepo(ud.actLevel);
-            var childSummary = blended.exSummaryNode(this.child.dataNode, this.ctx.taskid);
+            var childSummary = blended.agregateChildShortInfos(this.child.dataNode, this.ctx.taskid);
             if (!childSummary.done || actTestItem.dataNode.url != actRepo.url)
                 throw '!childUser.done || actTestItem.dataNode.parent.url != actRepo.url';
             var score = blended.scorePercent(childSummary);

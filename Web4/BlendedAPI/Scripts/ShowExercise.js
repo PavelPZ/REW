@@ -42,7 +42,7 @@ var blended;
     blended.exItemProxy = exItemProxy;
     function scorePercent(sc) { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
     blended.scorePercent = scorePercent;
-    function exSummaryNode(node, taskId) {
+    function agregateChildShortInfos(node, taskId) {
         var res = $.extend({}, shortDefault);
         res.done = true;
         _.each(node.Items, function (nd) {
@@ -60,7 +60,7 @@ var blended;
         });
         return res;
     }
-    blended.exSummaryNode = exSummaryNode;
+    blended.agregateChildShortInfos = agregateChildShortInfos;
     var shortDefault = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0 };
     function setDate(dt1, dt2, min) { if (!dt1)
         return dt2; if (!dt2)
@@ -83,10 +83,47 @@ var blended;
         }
         exerciseService.prototype.display = function (el, attrs) { };
         exerciseService.prototype.destroy = function (el) { };
-        exerciseService.prototype.evaluate = function () { };
+        exerciseService.prototype.evaluate = function (task) {
+            var now = Utils.nowToNum();
+            var short = this.user.short;
+            var delta = Math.min(maxDelta, Math.round(now - task.startTime));
+            if (!short.elapsed)
+                short.elapsed = 0;
+            short.elapsed += delta;
+            short.end = Utils.dayToInt(new Date());
+            //pasivni stranka
+            if (this.page.isPassivePage()) {
+                this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
+                short.done = true;
+                return true;
+            }
+            debugger;
+            //aktivni stranka
+            this.page.provideData(this.user.long);
+            var score = this.page.getScore();
+            if (!score) {
+                debugger;
+                throw "!score";
+                short.done = true;
+                return true;
+            }
+            var exerciseOK = task.isTest ? true : (score == null || score.ms == 0 || (score.s / score.ms * 100) >= 75);
+            //if (!exerciseOK && !gui.alert(alerts.exTooManyErrors, true)) { this.userPending = false; return false; }//je hodne chyb a uzivatel chce cviceni znova
+            this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
+            if (!task.isTest)
+                this.page.acceptData(true, this.user.long);
+            short.done = true;
+            if (this.dataNode.ms != score.ms) {
+                debugger;
+                throw "this.maxScore != score.ms";
+            }
+            short.s = score.s;
+            return true;
+        };
         return exerciseService;
     })();
     blended.exerciseService = exerciseService;
+    var maxDelta = 10 * 60; //10 minut
     var exerciseTaskViewController = (function (_super) {
         __extends(exerciseTaskViewController, _super);
         function exerciseTaskViewController(state, resolves) {
@@ -94,10 +131,11 @@ var blended;
             _super.call(this, state);
             if (state.createMode != blended.createControllerModes.navigate)
                 return;
-            this.service = (resolves[0]);
+            this.service = (resolves[0]); //data cviceni
             this.user = this.service.user;
             if (state.$scope)
-                (state.$scope).ex = this.service;
+                (state.$scope).ex = this.service; //navazani services do scope
+            this.startTime = Utils.nowToNum();
             this.title = this.dataNode.title;
             this.modItems = _.map(this.parent.dataNode.Items, function (node, idx) {
                 return { user: blended.getPersistData(node, _this.ctx.taskid), modIdx: idx, title: node.title };
@@ -106,7 +144,7 @@ var blended;
         }
         exerciseTaskViewController.prototype.isDone = function () { return this.user.short.done; };
         exerciseTaskViewController.prototype.moveForward = function (ud) {
-            ud.done = true;
+            this.service.evaluate(this);
         };
         return exerciseTaskViewController;
     })(blended.taskController);

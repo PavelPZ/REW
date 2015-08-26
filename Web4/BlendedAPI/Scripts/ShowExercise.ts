@@ -32,7 +32,7 @@
 
   export function scorePercent(sc: IExShort) { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
 
-  export function exSummaryNode(node: CourseMeta.data, taskId: string): IExShort {
+  export function agregateChildShortInfos(node: CourseMeta.data, taskId: string): IExShort {
     var res: IExShort = $.extend({}, shortDefault);
     res.done = true;
     _.each(node.Items, nd => {
@@ -51,9 +51,8 @@
   var shortDefault: IExShort = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0 };
   function setDate(dt1: number, dt2: number, min: boolean): number { if (!dt1) return dt2; if (!dt2) return dt1; if (min) return dt2 > dt1 ? dt1 : dt2; else return dt2 < dt1 ? dt1 : dt2; }
 
-
+  //long persistent informace o cviceni
   export interface IExLong { [exId: string]: CourseModel.Result; }
-
 
   //***************** $scope.ex, je v cache
   export class exerciseService {
@@ -68,17 +67,48 @@
     display(el: ng.IAugmentedJQuery, attrs: ng.IAttributes) { }
     destroy(el: ng.IAugmentedJQuery) { }
 
-    evaluate() { }
+    evaluate(task: exerciseTaskViewController): boolean {
+      var now = Utils.nowToNum();
+      var short = this.user.short;
+      var delta = Math.min(maxDelta, Math.round(now - task.startTime));
+      if (!short.elapsed) short.elapsed = 0;
+      short.elapsed += delta;
+      short.end = Utils.dayToInt(new Date());
+
+      //pasivni stranka
+      if (this.page.isPassivePage()) {
+        this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
+        short.done = true;
+        return true;
+      }
+
+      debugger;
+      //aktivni stranka
+      this.page.provideData(this.user.long);
+      var score = this.page.getScore();
+      if (!score) { debugger; throw "!score"; short.done = true; return true; }
+
+      var exerciseOK = task.isTest ? true : (score == null || score.ms == 0 || (score.s / score.ms * 100) >= 75);
+      //if (!exerciseOK && !gui.alert(alerts.exTooManyErrors, true)) { this.userPending = false; return false; }//je hodne chyb a uzivatel chce cviceni znova
+      this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
+      if (!task.isTest) this.page.acceptData(true, this.user.long);
+
+      short.done = true;
+      if (this.dataNode.ms != score.ms) { debugger; throw "this.maxScore != score.ms"; }
+      short.s = score.s;
+      return true;
+    }
   }
+  var maxDelta = 10 * 60; //10 minut
 
   //***************** EXERCISE $scope.ts, vznika pri kazdem cviceni 
   export interface IExShort extends IPersistNodeUser { //course dato pro test
     done: boolean;
     ms: number;
     s: number;
-    elapsed: number;
-    beg: number; //datum zacatku
-    end: number; //datum konce, na datum se prevede pomoci intToDate(end * 1000000)
+    elapsed: number; //straveny cas ve vterinach
+    beg: number; //datum zacatku, ve dnech
+    end: number; //datum konce (ve dnech), na datum se prevede pomoci intToDate(end * 1000000)
   }
 
   export interface IExerciseStateData {
@@ -89,7 +119,10 @@
     ex: exerciseService;
   }
 
-  export class exerciseTaskViewController extends taskController { //task pro pruchod lekcemi
+  export class exerciseTaskViewController extends taskController implements IExerciseStateData { //task pro pruchod lekcemi
+
+    //IExerciseStateData
+    isTest: boolean;
 
     user: IPersistNodeItem<IExShort>;
     title: string;
@@ -105,9 +138,11 @@
     constructor(state: IStateService, resolves: Array<any>) {
       super(state);
       if (state.createMode != createControllerModes.navigate) return;
-      this.service = <exerciseService>(resolves[0])
+      this.service = <exerciseService>(resolves[0]); //data cviceni
       this.user = this.service.user;
-      if (state.$scope) (<IExerciseScope>(state.$scope)).ex = this.service;
+      if (state.$scope) (<IExerciseScope>(state.$scope)).ex = this.service; //navazani services do scope
+
+      this.startTime = Utils.nowToNum();
       this.title = this.dataNode.title;
       this.modItems = _.map(this.parent.dataNode.Items, (node, idx) => {
         return { user: blended.getPersistData<IExShort>(node, this.ctx.taskid), modIdx: idx, title: node.title };
@@ -116,7 +151,7 @@
     }
 
     moveForward(ud: IExShort) {
-      ud.done = true;
+      this.service.evaluate(this);
     }
   }
 }
