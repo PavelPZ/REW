@@ -1363,9 +1363,7 @@
     <TypeScriptCompile Include="BlendedAPI\vyzva\app.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Loader.ts" />
     <TypeScriptCompile Include="BlendedAPI\Controlers\exercise.ts" />
-    <None Include="BlendedAPI\Scripts\Tasks.ts_" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Scripts\Lib.ts" />
-    <None Include="BlendedAPI\vyzva\Scripts\Tasks.ts_" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Tasks.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\ViewParts\Toolbar\Toolbar.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\ViewParts\Toolbar\Empty.ts" />

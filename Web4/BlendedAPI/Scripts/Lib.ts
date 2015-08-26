@@ -21,24 +21,6 @@
   export function newGuid(): string { return (new Date().getTime() + (startGui++)).toString(); }
   var startGui = new Date().getTime();
 
-  //export class controller {
-  //  static $inject = ['$scope', '$state'];
-  //  constructor($scope: IControllerScope, public $state: angular.ui.IStateService) {
-  //    var params = <learnContext><any>($state.params);
-  //    finishContext(params);
-  //    $.extend(this, $scope, $state.current.data);
-  //    $scope.ts = this;
-  //    this.urlParams = params;
-  //  }
-  //  href(state: string, params?: {}): string {
-  //    return this.$state.href(state, params);
-  //  }
-  //  urlParams: {};
-  //}
-  //export interface IControllerScope {
-  //  ts: controller;
-  //}
-
   export var baseUrlRelToRoot = '..'; //jak se z root stranky dostat do rootu webu
 
   export interface learnContext {
@@ -53,7 +35,7 @@
     $q?: ng.IQService;
     $state?: angular.ui.IStateService;
     //produkt
-    product?: IProductEx;
+    //product?: IProductEx;
     finishProduct?: (prod: IProductEx) => void;
   }
   export function cloneAndModifyContext(ctx: learnContext, modify: (c: learnContext) => void = null): learnContext {

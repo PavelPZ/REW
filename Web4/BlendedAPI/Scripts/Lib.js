@@ -22,23 +22,6 @@ var blended;
     function newGuid() { return (new Date().getTime() + (startGui++)).toString(); }
     blended.newGuid = newGuid;
     var startGui = new Date().getTime();
-    //export class controller {
-    //  static $inject = ['$scope', '$state'];
-    //  constructor($scope: IControllerScope, public $state: angular.ui.IStateService) {
-    //    var params = <learnContext><any>($state.params);
-    //    finishContext(params);
-    //    $.extend(this, $scope, $state.current.data);
-    //    $scope.ts = this;
-    //    this.urlParams = params;
-    //  }
-    //  href(state: string, params?: {}): string {
-    //    return this.$state.href(state, params);
-    //  }
-    //  urlParams: {};
-    //}
-    //export interface IControllerScope {
-    //  ts: controller;
-    //}
     blended.baseUrlRelToRoot = '..'; //jak se z root stranky dostat do rootu webu
     function cloneAndModifyContext(ctx, modify) {
         if (modify === void 0) { modify = null; }

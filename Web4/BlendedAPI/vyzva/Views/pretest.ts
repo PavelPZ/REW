@@ -9,11 +9,4 @@
     }
   }
 
-  //export class pretestTaskController extends blended.pretestTaskController {
-  //  constructor(state: blended.IStateService) {
-  //    super(state); 
-  //  }
-  //}
-
-
 }

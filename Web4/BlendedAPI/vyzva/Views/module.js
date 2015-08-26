@@ -6,13 +6,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var vyzva;
 (function (vyzva) {
-    //export class moduleHomeController extends controller implements IToolbar, IToolbarRun {
-    //  constructor($scope: blended.IControllerScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
-    //    super($scope, $state, $rootTask);
-    //  }
-    //  tbTitle = 'Spustit lekci';
-    //  tbClick() { alert('click lesson'); }
-    //}
     var moduleViewController = (function (_super) {
         __extends(moduleViewController, _super);
         function moduleViewController(state) {
