@@ -30,44 +30,56 @@
     modIdx: number; //index v modulu
   }
 
-  export interface IExLong { }
+  export interface IExLong { [exId: string]: CourseModel.Result; }
 
 
   //***************** $scope.ex, je v cache
   export class exerciseService {
 
-    modIdx: number; //index v modulu
-
+    taskId: string;
     constructor(ctx: learnContext /*ctx v dobe vlozeni do cache*/, public mod: cachedModule, public dataNode: CourseMeta.data, public page: Course.Page, public userLong: IExLong) {
-      this.modIdx = _.indexOf(mod.dataNode.Items, dataNode);
+      this.taskId = ctx.taskid; if (!userLong) userLong = {};
     }
     display(el: ng.IAugmentedJQuery, attrs: ng.IAttributes) { }
     destroy(el: ng.IAugmentedJQuery) { }
 
-    //getPersistData(): IExShort { return getPersistData<IExShort>(this.dataNode, this.ctx.taskid); }
-    //setPersistData(modify: (data: IExShort) => void): IExShort { return setPersistData<IExShort>(this.dataNode, this.ctx.taskid, modify); }
+    getPersistData(): IExShort { return getPersistData<IExShort>(this.dataNode, this.taskId); }
+    setPersistData(modify: (data: IExShort) => void): IExShort { return setPersistData<IExShort>(this.dataNode, this.taskId, modify); }
+
+    evaluate() { }
+
   }
 
   //***************** EXERCISE $scope.ts, vznika pri kazdem cviceni 
   export interface IExShort extends IPersistNodeUser { //course dato pro test
+    ms: number;
+    s: number;
+    elapsed: number;
+    beg: number; //datum zacatku
+    end: number; //datum konce, na datum se prevede pomoci intToDate(end * 1000000)
   }
+
   export interface IExerciseStateData {
     isTest: boolean;
+  }
+
+  export interface IExerciseScope extends IControllerScope {
+    ex: exerciseService;
   }
 
   export class exerciseTaskViewController extends taskController { //task pro pruchod lekcemi
 
     title: string;
     modItems: Array<exItemProxy>; //info o vsech cvicenich modulu
-    modIdx: number; //index v modulu
+    modIdx: number; //self index v modulu
     breadcrumb: Array<breadcrumbItem>;
-    gotoHomeUrl() { Pager.gotoHomeUrl(); }
+    //gotoHomeUrl() { Pager.gotoHomeUrl(); }
+    startTime: number; //datum vstupu do stranky
 
     constructor(state: IStateService, public $loadedEx: exerciseService) {
       super(state);
-      //state.params. = loader.adjustEx(this.ctx).then()
+      if (state.$scope) (<IExerciseScope>(state.$scope)).ex = $loadedEx;
       this.title = this.dataNode.title;
-      if (!this.parent) return;
       this.modItems = _.map(this.parent.dataNode.Items, (node, idx) => {
         return { user: blended.getPersistData<IExShort>(node, this.ctx.taskid), modIdx: idx, title: node.title };
       });

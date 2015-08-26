@@ -47,10 +47,15 @@ var blended;
             this.dataNode = dataNode;
             this.page = page;
             this.userLong = userLong;
-            this.modIdx = _.indexOf(mod.dataNode.Items, dataNode);
+            this.taskId = ctx.taskid;
+            if (!userLong)
+                userLong = {};
         }
         exerciseService.prototype.display = function (el, attrs) { };
         exerciseService.prototype.destroy = function (el) { };
+        exerciseService.prototype.getPersistData = function () { return blended.getPersistData(this.dataNode, this.taskId); };
+        exerciseService.prototype.setPersistData = function (modify) { return blended.setPersistData(this.dataNode, this.taskId, modify); };
+        exerciseService.prototype.evaluate = function () { };
         return exerciseService;
     })();
     blended.exerciseService = exerciseService;
@@ -60,16 +65,14 @@ var blended;
             var _this = this;
             _super.call(this, state);
             this.$loadedEx = $loadedEx;
-            //state.params. = loader.adjustEx(this.ctx).then()
+            if (state.$scope)
+                (state.$scope).ex = $loadedEx;
             this.title = this.dataNode.title;
-            if (!this.parent)
-                return;
             this.modItems = _.map(this.parent.dataNode.Items, function (node, idx) {
                 return { user: blended.getPersistData(node, _this.ctx.taskid), modIdx: idx, title: node.title };
             });
             this.modIdx = _.indexOf(this.parent.dataNode.Items, this.dataNode);
         }
-        exerciseTaskViewController.prototype.gotoHomeUrl = function () { Pager.gotoHomeUrl(); };
         exerciseTaskViewController.prototype.initPersistData = function (ud) {
             _super.prototype.initPersistData.call(this, ud);
         };

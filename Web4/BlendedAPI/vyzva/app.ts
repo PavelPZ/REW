@@ -11,7 +11,6 @@
 
   export var loadEx = ['$stateParams', ($stateParams: blended.learnContext) => {
     blended.finishContext($stateParams);
-    $stateParams.finishProduct = finishHomeDataNode;
     return blended.loader.adjustEx($stateParams);
   }];
 

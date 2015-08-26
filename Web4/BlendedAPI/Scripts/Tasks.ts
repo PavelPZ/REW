@@ -78,6 +78,7 @@
     child: taskController;
     dataNode: CourseMeta.data;
     product: IProductEx;
+    user: IPersistNodeItem<IPersistNodeUser>;
 
     //********************** Virtualni procs
     //inicialni naplneni user dat  (pri jejich prvnim vytvoreni)

@@ -4,39 +4,40 @@
 
 module blended {
 
-  export interface IPersistNodeItem { //persistentni udaj pro jednu variantu (jeden taskId). Kazde cviceni apod. se muze spustit vicekrat, aniz by se prepisovaly jeho user data.
-    data: {};
+  export interface IPersistNodeItem<T> { //persistentni udaj pro jednu variantu (jeden taskId). Kazde cviceni apod. se muze spustit vicekrat, aniz by se prepisovaly jeho user data.
+    short: T;
+    long: {};
     modified: boolean;
   }
 
   export interface IPersistNodeUser { //user dato pro task obecne
+    done: boolean;
     //url: string;
     //history?: Array<IPersistHistoryItem>;
-    done: boolean;
     score?: number;
   }
   //export interface IPersistHistoryItem { date: number, url: string; taskId: string; }
 
   export interface IPersistNodeImpl {
-    userData: { [taskId: string]: IPersistNodeItem; } //dato pro jednotlive variatny
+    userData: { [taskId: string]: IPersistNodeItem<any>; } //dato pro jednotlive variatny
   }
 
   export function getPersistData<T>(dataNode: CourseMeta.data, taskid: string): T {
     if (!dataNode.userData) return null;
     var it = dataNode.userData[taskid];
-    return it ? <T>(it.data) : null;
+    return it ? <T>(it.short) : null;
   }
 
   export function setPersistData<T>(dataNode: CourseMeta.data, taskid: string, modify: (data: T) => void): T {
     var it = dataNode.userData ? dataNode.userData[taskid] : null;
     if (!it) {
-      it = { data: <any>{}, modified: true };
+      it = { short: <any>{}, modified: true };
       if (!dataNode.userData) dataNode.userData = {};
       dataNode.userData[taskid] = it;
     } else
       it.modified = true;
-    modify(<T>(it.data));
-    return <T>(it.data);
+    modify(<T>(it.short));
+    return <T>(it.short);
   }
 
 

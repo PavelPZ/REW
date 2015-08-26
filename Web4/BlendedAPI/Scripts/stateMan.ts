@@ -21,6 +21,7 @@ module blended {
     params: learnContext;
     parent: taskController;
     createForCheckUrl: createControllerCtx;
+    $scope?: IControllerScope;
     isWrongUrl?: boolean;
   }
 
@@ -52,7 +53,7 @@ module blended {
           //neni isWrongUrl, pokracuj
           var params = <learnContext><any>($state.params);
           params.$state = $state;
-          var ss: IStateService = { current: self, params: params, parent: parent, createForCheckUrl: createControllerCtx.navigate };
+          var ss: IStateService = { current: self, params: params, parent: parent, createForCheckUrl: createControllerCtx.navigate, $scope: $scope };
           var task = <controller>(new this.oldController(ss, resolves));
           $scope.ts = task;
         });

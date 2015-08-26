@@ -9,7 +9,6 @@ var vyzva;
         }];
     vyzva.loadEx = ['$stateParams', function ($stateParams) {
             blended.finishContext($stateParams);
-            $stateParams.finishProduct = vyzva.finishHomeDataNode;
             return blended.loader.adjustEx($stateParams);
         }];
     vyzva.stateNames = {}; //taskRoot: 'root', taskCheckTest: 'checktest', taskLesson: 'lesson', taskPretest: 'pretest', taskPretestItem: 'pretestitem' };

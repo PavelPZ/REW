@@ -33,7 +33,7 @@ var blended;
                     //neni isWrongUrl, pokracuj
                     var params = ($state.params);
                     params.$state = $state;
-                    var ss = { current: self, params: params, parent: parent, createForCheckUrl: createControllerCtx.navigate };
+                    var ss = { current: self, params: params, parent: parent, createForCheckUrl: createControllerCtx.navigate, $scope: $scope };
                     var task = (new _this.oldController(ss, resolves));
                     $scope.ts = task;
                 });

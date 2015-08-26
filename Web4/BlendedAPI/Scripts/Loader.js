@@ -4,21 +4,21 @@ var blended;
         if (!dataNode.userData)
             return null;
         var it = dataNode.userData[taskid];
-        return it ? (it.data) : null;
+        return it ? (it.short) : null;
     }
     blended.getPersistData = getPersistData;
     function setPersistData(dataNode, taskid, modify) {
         var it = dataNode.userData ? dataNode.userData[taskid] : null;
         if (!it) {
-            it = { data: {}, modified: true };
+            it = { short: {}, modified: true };
             if (!dataNode.userData)
                 dataNode.userData = {};
             dataNode.userData[taskid] = it;
         }
         else
             it.modified = true;
-        modify((it.data));
-        return (it.data);
+        modify((it.short));
+        return (it.short);
     }
     blended.setPersistData = setPersistData;
     //rozsireni interface o metody
