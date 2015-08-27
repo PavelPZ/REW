@@ -3,15 +3,23 @@
  
   //*************** RESOLVERs
   //adjust produkt
-  export var loadProduct = ['$stateParams', ($stateParams: blended.learnContext) => {
-    blended.finishContext($stateParams);
-    $stateParams.finishProduct = finishHomeDataNode;
-    return blended.loader.adjustProduct($stateParams);
+  export var loadProduct = ['$stateParams', (ctx: blended.learnContext) => {
+    blended.finishContext(ctx);
+    ctx.finishProduct = finishHomeDataNode;
+    return blended.loader.adjustProduct(ctx);
   }];
 
-  export var loadEx = ['$stateParams', ($stateParams: blended.learnContext) => {
-    blended.finishContext($stateParams);
-    return blended.loader.adjustEx($stateParams);
+  export var loadIntranetInfo = (bothData: boolean) => ['$stateParams', (ctx: blended.learnContext) => {
+    blended.finishContext(ctx);
+    var def = ctx.$q.defer<intranet.ILoadIntranetInfoResult>();
+    proxies.vyzva57services.loadCompanyData(ctx.companyid, true, bothData, res => {
+      if (!res) res = <any>{};
+      def.resolve({
+        learningData: intranet.enteredProductInfo(res.LearningData, ctx.lickeys, LMStatus.Cookie),
+        orderData: res.OrderData ? JSON.parse(res.OrderData) : null,
+      });
+    });
+    return def.promise;
   }];
 
   export interface IStateNames extends blended.IProductStates {
@@ -21,10 +29,23 @@
     lesson?: blended.state;
     pretestTask?: blended.state;
     lessonTask?: blended.state;
+    shoolManager?: blended.state;
+    langmasterManager?: blended.state;
   }
   export var stateNames: IStateNames = {}; //taskRoot: 'root', taskCheckTest: 'checktest', taskLesson: 'lesson', taskPretest: 'pretest', taskPretestItem: 'pretestitem' };
 
   export var initVyzvaApp = ['$rootScope', '$location', '$state', ($rootScope: angular.IRootScopeService, $location: angular.ILocationService, $state: angular.ui.IStateService) => {
+
+    //$rootScope.$on('$locationChangeStart', (event: angular.IAngularEvent, newUrl: string, oldUrl: string, newState, oldState) => {
+    //  if (location.hash == '#/pg/ajs/vyzva//def/1/1/1/2/!lm!blcourse!langmastermanager.product!/home') {
+    //    event.preventDefault();
+    //    setTimeout(() => location.hash = '#/pg/ajs/langmastermanager', 1);
+    //  } else if (location.hash == '#/pg/ajs/vyzva//def/1/1/1/2/!lm!blcourse!schoolmanager.product!/home') {
+    //    event.preventDefault();
+    //    setTimeout(() => location.hash = '#/pg/ajs/schoolmanager', 1);
+    //  }
+    //})
+
     //sance zrusit ladovani stranky
     //$rootScope.$on('$stateChangeStart', (e, toState, toParams, fromState, fromParams) => {
     //  blended.finishContext(toParams);
@@ -39,14 +60,43 @@
       controller: () => { Pager.clearHtml(); }, //vyhozeni old obsahu 
       template: "<div data-ui-view></div>",
       childs: [
+        new blended.state({
+          name: 'managers',
+          url: "/managers/:companyid/:loginid/:loc/:lickeys", //lickeys ve formatu <UserLicences.LicenceId>|<UserLicences.Counter>#<UserLicences.LicenceId>|<UserLicences.Counter>...
+          template: "<div data-ui-view></div>",
+          abstract: true,
+          childs: [
+            stateNames.langmasterManager = new blended.state({
+              name: 'langmastermanager',
+              url: "/langmastermanager",
+              templateUrl: pageTemplate,
+              data: getDataConfig('managerlangmaster', 'empty'),
+              controller: managerLANGMaster,
+              resolve: {
+                $intranetInfo: loadIntranetInfo(true),
+              },
+            }),
+            stateNames.shoolManager = new blended.state({
+              name: 'schoolmanager',
+              url: "/schoolmanager",
+              templateUrl: pageTemplate,
+              data: getDataConfig('managerschool', 'empty'),
+              controller: managerSchool,
+              resolve: {
+                $intranetInfo: loadIntranetInfo(true),
+              },
+            }),
+          ]
+        }),
         blended.prodStates.homeTask = stateNames.homeTask = new blended.state({
           name: 'vyzva',
-          url: "/vyzva/:persistence/:taskid/:companyid/:userid/:subuserid/:loc/:producturl",
+          url: "/vyzva/:persistence/:taskid/:companyid/:loginid/:userdataid/:loc/:producturl/:lickeys",
           dataNodeUrlParName: 'productUrl',
           controller: homeTaskController,
           abstract: true,
           resolve: {
-            $loadedProduct: vyzva.loadProduct,
+            $loadedProduct: loadProduct,
+            $intranetInfo: loadIntranetInfo(false),
           },
           template: "<div data-ui-view></div>",
           childs: [
@@ -90,7 +140,9 @@
                       dataNodeUrlParName: 'Url',
                       data: $.extend(getDataConfig('exercise', 'run'), blended.createStateData<blended.IExerciseStateData>({ isTest: true })),
                       resolve: {
-                        $loadedEx: vyzva.loadEx,
+                        //$loadedExAnUser: blended.exAndUser,
+                        $loadedEx: blended.loadEx,
+                        $loadedLongData: blended.loadLongData,
                       },
                       templateUrl: pageTemplate,
                     })

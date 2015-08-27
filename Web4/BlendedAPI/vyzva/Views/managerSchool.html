@@ -1,0 +1,114 @@
+﻿<h1>{{ts.order && ts.order.closed ? 'closed' : 'opened'}}</h1>
+<div data-ng-if="!ts.order.closed">
+  <div class="alert alert-info">
+    <h3>Objednavatel:</h3>
+  </div>
+  <form name="orderForm" novalidate>
+    <div class="col-sm-6">
+      <div class="form-group">
+
+        <label for="schoolName" class="control-label">Název školy</label>
+        <input class="form-control" name="schoolName" id="schoolName" placeholder="Název školy" ng-model="ts.order.schoolName" required>
+        <span style="color:red" ng-show="(orderForm.schoolName.$dirty || ts.showErrors) && orderForm.schoolName.$invalid">
+          <span ng-if="orderForm.schoolName.$error.required">{{::ts.msgRequired}}</span>
+        </span>
+        <br />
+
+        <label for="city" class="control-label">Město</label>
+        <input class="form-control" name="city" id="city" placeholder="Město" ng-model="ts.order.city" required>
+        <span style="color:red" ng-show="(orderForm.city.$dirty || ts.showErrors) && orderForm.city.$invalid">
+          <span ng-if="orderForm.city.$error.required">{{::ts.msgRequired}}</span>
+        </span>
+        <br />
+
+        <label for="psc" class="control-label">PSČ</label>
+        <input class="form-control" name="psc" id="psc" placeholder="PSČ" ng-model="ts.order.psc" required>
+        <span style="color:red" ng-show="(orderForm.psc.$dirty || ts.showErrors) && orderForm.psc.$invalid">
+          <span ng-if="orderForm.city.$error.required">{{::ts.msgRequired}}</span>
+        </span>
+        <br />
+
+        <label for="street" class="control-label">Ulice</label>
+        <input class="form-control" name="street" id="street" placeholder="Ulice" ng-model="ts.order.street" required>
+        <span style="color:red" ng-show="(orderForm.street.$dirty || ts.showErrors) && orderForm.street.$invalid">
+          <span ng-if="orderForm.street.$error.required">{{::ts.msgRequired}}</span>
+        </span>
+        <br />
+
+      </div>
+
+    </div>
+    <div class="col-sm-6">
+      <div class="form-group">
+        <label for="firstName" class="control-label">Jméno</label>
+        <input class="form-control" name="firstName" id="firstName" placeholder="Jméno" ng-model="ts.order.firstName" required>
+        <span style="color:red" ng-show="(orderForm.firstName.$dirty  || ts.showErrors)&& orderForm.firstName.$invalid">
+          <span ng-if="orderForm.firstName.$error.required">{{::ts.msgRequired}}</span>
+        </span>
+        <br />
+
+        <label for="lastName" class="control-label">Příjmení</label>
+        <input class="form-control" name="lastName" id="lastName" placeholder="Příjmení" ng-model="ts.lastName.street" required>
+        <span style="color:red" ng-show="(orderForm.lastName.$dirty || ts.showErrors) && orderForm.lastName.$invalid">
+          <span ng-if="orderForm.lastName.$error.required">{{::ts.msgRequired}}</span>
+        </span>
+        <br />
+
+        <label for="email" class="control-label">E-mail</label>
+        <input type="email" class="form-control" name="email" id="email" placeholder="e-mail" ng-model="ts.order.email" required>
+        <span style="color:red" ng-show="(orderForm.email.$dirty || ts.showErrors) && orderForm.email.$invalid">
+          <span ng-if="orderForm.email.$error.required">{{::ts.msgRequired}}</span>
+          <span ng-if="orderForm.email.$error.email">Špatný formát e-mailu</span>
+        </span>
+        <br />
+
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <h3>Přidat do objednávky:</h3>
+    <div class="alert alert-info">
+      <div class="row">
+        <div class="col-sm-6">
+          <h4 class="text-center">Šablona č. 4</h4>
+          <div class="col-sm-4" ng-repeat="btn in [1,2,5]">
+            <button class="btm btn-info" ng-click="ts.addItem(btn, false)">{{btn | courseid}}</button>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <h4 class="text-center">Šablona č. 3</h4>
+          <div class="col-sm-4" ng-repeat="btn in [1,2,5]">
+            <button class="btm btn-info" ng-disabled="ts.disabled(btn)" ng-click="ts.addItem(btn, true)">{{btn | courseid}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Kurz</th>
+          <th>Název studijní skupiny</th>
+          <th>Šablona</th>
+          <th>Počet (studnetů nebo učitelů)</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-ng-repeat="item in ts.order.groups">
+          <td ng-bind="item.line | courseid"></td>
+          <td><input class="form-control" ng-model="item.title" placeholder="titulek..." required /></td>
+          <td ng-bind="item.isPattern3 | sablonaid"></td>
+          <td><input class="form-control" ng-model="item.num" required /></td>
+          <td><button class="btn btn-sm btn-info" ng-click="ts.removeItem($index)">X</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+
+  <div class="clearfix"></div>
+  <br />
+  <button class="btm btn-success btn-lg" ng-click="ts.orderOK(orderForm.$invalid)">Další</button>
+</div>
+
+<div data-ng-if="ts.order.closed">
+  <h2>closed</h2>
+</div>

@@ -6,12 +6,10 @@
     <edmx:Diagrams>
       <Diagram DiagramId="f06000293a9c46988a069f6b355a1aef" Name="Diagram1">
         <EntityTypeShape EntityType="vyzva57Model.Company" Width="1.5" PointX="0.75" PointY="1.375" />
-        <EntityTypeShape EntityType="vyzva57Model.CourseData" Width="1.5" PointX="7.5" PointY="1" />
-        <EntityTypeShape EntityType="vyzva57Model.CourseUser" Width="1.5" PointX="5.25" PointY="1.375" />
-        <EntityTypeShape EntityType="vyzva57Model.StudyGrup" Width="1.5" PointX="3" PointY="1.125" />
-        <AssociationConnector Association="vyzva57Model.FK_dbo_StudyGrups_dbo_Companies_CompanyId" />
+        <EntityTypeShape EntityType="vyzva57Model.CourseData" Width="1.5" PointX="5.375" PointY="1" />
+        <EntityTypeShape EntityType="vyzva57Model.CourseUser" Width="1.5" PointX="3" PointY="1.375" />
+        <AssociationConnector Association="vyzva57Model.FK_dbo_CourseUsers_dbo_Companies_CompanyId" />
         <AssociationConnector Association="vyzva57Model.FK_dbo_CourseDatas_dbo_CourseUsers_CourseUserId" />
-        <AssociationConnector Association="vyzva57Model.FK_dbo_CourseUsers_dbo_StudyGrups_StudyGroupId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

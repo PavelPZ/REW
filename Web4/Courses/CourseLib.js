@@ -587,21 +587,6 @@ var CourseMeta;
         lib.info_continue = info_continue;
         function info_courseFinished() { return new CourseMeta.greenArrowInfo(CSLocalize('e06a4208d7c84c8ba97c1a700f00046c', 'Course completed!'), CourseMeta.actNode == CourseMeta.actCourseRoot, "info", "thumbs-up", CourseMeta.actNode == CourseMeta.actCourseRoot ? $.noop : function () { return CourseMeta.gui.gotoData(null); }); }
         lib.info_courseFinished = info_courseFinished;
-        function blendedDisplayEx(page, insertToHTMLPage) {
-            page.finishCreatePage({});
-            page.callInitProcs(Course.initPhase.beforeRender, function () {
-                //var html = JsRenderTemplateEngine.render("c_blended_body", page);
-                var html = JsRenderTemplateEngine.render("c_gen", page);
-                CourseMeta.actExPageControl = page;
-                insertToHTMLPage(html);
-                page.callInitProcs(Course.initPhase.afterRender, function () {
-                    page.callInitProcs(Course.initPhase.afterRender2, function () {
-                    });
-                });
-                //Pager.renderHtmlEx(true, '', page); //HTML rendering (kod, provedeny normalne za onUpdate)
-            });
-        }
-        lib.blendedDisplayEx = blendedDisplayEx;
         //vykresleni naladovaneho cviceni
         function displayEx(loadedEx, beforeUpdate, afterUpdate) {
             //TODO EVAL

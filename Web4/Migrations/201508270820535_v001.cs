@@ -11,35 +11,21 @@ namespace blendedData
                 "dbo.Companies",
                 c => new
                     {
-                        Id = c.Int(nullable: false),
+                        Id = c.Int(nullable: false, identity: true),
                         Data = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.StudyGrups",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        CompanyId = c.Int(nullable: false),
-                        Title = c.String(nullable: false),
-                        LineId = c.Short(nullable: false),
-                        IsPattern4 = c.Boolean(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Companies", t => t.CompanyId, cascadeDelete: true)
-                .Index(t => t.CompanyId);
-            
-            CreateTable(
                 "dbo.CourseUsers",
                 c => new
                     {
-                        Id = c.Int(nullable: false),
-                        StudyGroupId = c.Int(nullable: false),
+                        LicenceKey = c.String(nullable: false, maxLength: 10),
+                        CompanyId = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.StudyGrups", t => t.StudyGroupId, cascadeDelete: true)
-                .Index(t => t.StudyGroupId);
+                .PrimaryKey(t => t.LicenceKey)
+                .ForeignKey("dbo.Companies", t => t.CompanyId, cascadeDelete: true)
+                .Index(t => t.CompanyId);
             
             CreateTable(
                 "dbo.CourseDatas",
@@ -50,7 +36,7 @@ namespace blendedData
                         Key = c.String(nullable: false, maxLength: 240),
                         Data = c.String(nullable: false),
                         ShortData = c.String(),
-                        CourseUserId = c.Int(nullable: false),
+                        CourseUserId = c.String(nullable: false, maxLength: 10),
                         Date = c.Long(nullable: false),
                         Flags = c.Long(nullable: false),
                     })
@@ -64,17 +50,14 @@ namespace blendedData
         
         public override void Down()
         {
-            DropForeignKey("dbo.StudyGrups", "CompanyId", "dbo.Companies");
-            DropForeignKey("dbo.CourseUsers", "StudyGroupId", "dbo.StudyGrups");
+            DropForeignKey("dbo.CourseUsers", "CompanyId", "dbo.Companies");
             DropForeignKey("dbo.CourseDatas", "CourseUserId", "dbo.CourseUsers");
             DropIndex("dbo.CourseDatas", new[] { "CourseUserId" });
             DropIndex("dbo.CourseDatas", new[] { "Key" });
             DropIndex("dbo.CourseDatas", new[] { "TaskId" });
-            DropIndex("dbo.CourseUsers", new[] { "StudyGroupId" });
-            DropIndex("dbo.StudyGrups", new[] { "CompanyId" });
+            DropIndex("dbo.CourseUsers", new[] { "CompanyId" });
             DropTable("dbo.CourseDatas");
             DropTable("dbo.CourseUsers");
-            DropTable("dbo.StudyGrups");
             DropTable("dbo.Companies");
         }
     }

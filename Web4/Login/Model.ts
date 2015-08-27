@@ -67,6 +67,7 @@ module Login {
   //}
 
   export function finishMyData() {
+     //myData vznikaji v CSharp v NewData.My.Init. Kurzy jsou v myData.Companies.Courses. comp.companyProducts comp.companyProducts jsou LM Author produkty
     if (!myData || myData.finished) return;
     myData.finished = true;
     var res = myData;
@@ -78,12 +79,13 @@ module Login {
       } else {
         if ((comp.RoleEx.Role && LMComLib.CompRole.Publisher) == 0) return;
       }
-      _.each(comp.companyProducts, p => comp.Courses.push({
+      _.each(comp.companyProducts, p => comp.Courses.push({ //pridani LMAuthor produktuu
         Expired: -1,
         Archives: null,
         isAuthoredCourse: true,
         LicCount: 1,
-        ProductId: p.url
+        ProductId: p.url,
+        LicenceKeys: null,
       }));
     });
     //agreguj archivy testu a dosad isTest
@@ -108,6 +110,7 @@ module Login {
             Archives: [],
             LicCount: 0,
             isAuthoredCourse: isAuthoredCourse,
+            LicenceKeys: null,
           };
           _.each(prodGroup, it => {
             var parts = it.ProductId.split('|'); //productId je url|archiveId

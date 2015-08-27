@@ -65,7 +65,18 @@
       $rootScope.$on('$locationChangeStart', (event: angular.IAngularEvent, newUrl: string, oldUrl: string, newState, oldState) => {
         if (Pager.angularJS_OAuthLogin(location.hash, () => Pager.gotoHomeUrl())) event.preventDefault()
       })
-    }])
+    }]).filter('courseid', function () {
+      return (id: LMComLib.LineIds) => {
+        switch (id) {
+          case LMComLib.LineIds.English: return "Angličtina";
+          case LMComLib.LineIds.German: return "Francouzština";
+          case LMComLib.LineIds.French: return "Němčina";
+          default: return "???";
+        }
+      };
+    }).filter('sablonaid', function () {
+      return (id: boolean) => id ? "Šablona č.3" : "Šablona č.4"
+    });
   ;
 
   root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', ( //'$provide', (

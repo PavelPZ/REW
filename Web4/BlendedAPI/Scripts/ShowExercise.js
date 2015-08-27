@@ -6,29 +6,44 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var blended;
 (function (blended) {
+    blended.loadEx = ['$stateParams', function ($stateParams) {
+            blended.finishContext($stateParams);
+            return blended.loader.adjustEx($stateParams);
+        }];
+    blended.loadLongData = ['$stateParams', function (ctx) {
+            blended.finishContext(ctx);
+            var def = ctx.$q.defer();
+            proxies.blendedpersistence.getLongData(ctx.companyid, ctx.userdataid, ctx.productUrl, ctx.taskid, ctx.Url, function (long) {
+                var res = JSON.parse(long);
+                def.resolve(res);
+            });
+            return def.promise;
+        }];
+    //export var exAndUser = ['$stateParams', (ctx: blended.learnContext) => {
+    //  blended.finishContext(ctx);
+    //  var exPromise = blended.loader.adjustEx(ctx);
+    //  var def = ctx.$q.defer<blended.IExLong>();
+    //  proxies.blendedpersistence.getLongData(ctx.companyid, ctx.userdataid, ctx.productUrl, ctx.taskid, ctx.Url, long => {
+    //    def.resolve(long ? JSON.parse(long) : null);
+    //  });
+    //  var userPromise = def.promise;
+    //  return ctx.$q.all([exPromise, userPromise]);
+    //}];
     blended.showExerciseDirective2 = ['$stateParams', function ($stateParams) { return new showExerciseModel($stateParams); }];
     var showExerciseModel = (function () {
         function showExerciseModel($stateParams) {
             var _this = this;
             this.$stateParams = $stateParams;
             this.link = function (scope, el, attrs) {
-                scope.$on('$destroy', function () {
-                    if (_this.page.sndPage)
-                        _this.page.sndPage.htmlClearing();
-                    if (_this.page.sndPage)
-                        _this.page.sndPage.leave();
-                    ko.cleanNode(el[0]);
-                    el.html('');
-                });
-                blended.loader.adjustEx(_this.$stateParams).then(function (exserv) {
-                    _this.page = exserv.page;
-                    ko.cleanNode(el[0]);
-                    el.html('');
-                    CourseMeta.lib.blendedDisplayEx(_this.page, function (html) {
-                        el.html(html);
-                        ko.applyBindings({}, el[0]);
-                    });
-                });
+                scope.$on('$destroy', function (ev) { return _this.exerciseService.destroy(el); });
+                //nalezni exerciseService
+                var sc = scope;
+                while (sc && !sc['exerciseService'])
+                    sc = sc.$parent;
+                if (!sc)
+                    return;
+                _this.exerciseService = (sc['exerciseService']);
+                _this.exerciseService.display(el, $.noop);
             };
         }
         return showExerciseModel;
@@ -68,25 +83,63 @@ var blended;
         return dt2 > dt1 ? dt1 : dt2;
     else
         return dt2 < dt1 ? dt1 : dt2; }
-    //***************** $scope.ex, je v cache
     var exerciseService = (function () {
-        function exerciseService(ctx /*ctx v dobe vlozeni do cache*/, mod, dataNode, page, userLong) {
-            this.mod = mod;
-            this.dataNode = dataNode;
-            this.page = page;
-            this.userLong = userLong;
-            this.taskId = ctx.taskid;
-            if (!userLong)
-                userLong = {};
-            this.user = blended.getPersistWrapper(dataNode, this.taskId, function () { return $.extend({}, shortDefault); });
-            this.user.long = userLong;
+        function exerciseService(exercise, long, statusData, ctx, product) {
+            this.exercise = exercise;
+            this.statusData = statusData;
+            this.ctx = ctx;
+            this.product = product;
+            this.user = blended.getPersistWrapper(exercise.dataNode, ctx.taskid, function () { return $.extend({}, shortDefault); });
+            if (!long) {
+                long = {};
+                this.user.modified = true;
+            }
+            this.user.long = long;
+            this.startTime = Utils.nowToNum();
         }
-        exerciseService.prototype.display = function (el, attrs) { };
-        exerciseService.prototype.destroy = function (el) { };
-        exerciseService.prototype.evaluate = function (task) {
+        exerciseService.prototype.display = function (el, completed) {
+            var _this = this;
+            var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
+            Course.localize(pg, function (s) { return CourseMeta.localizeString(pg.url, s, _this.exercise.mod.loc); });
+            var isGramm = CourseMeta.isType(this.exercise.dataNode, CourseMeta.runtimeType.grammar);
+            if (!isGramm) {
+                if (pg.evalPage)
+                    this.exercise.dataNode.ms = pg.evalPage.maxScore;
+            }
+            var exImpl = (this.exercise.dataNode);
+            exImpl.page = pg;
+            exImpl.result = this.user.long;
+            pg.finishCreatePage((this.exercise.dataNode));
+            pg.callInitProcs(Course.initPhase.beforeRender, function () {
+                var html = JsRenderTemplateEngine.render("c_gen", pg);
+                CourseMeta.actExPageControl = pg; //knockout pro cviceni binduje CourseMeta.actExPageControl
+                ko.cleanNode(el[0]);
+                el.html('');
+                el.html(html);
+                ko.applyBindings({}, el[0]);
+                pg.callInitProcs(Course.initPhase.afterRender, function () {
+                    pg.callInitProcs(Course.initPhase.afterRender2, function () {
+                        completed(pg);
+                    });
+                });
+            });
+        };
+        exerciseService.prototype.destroy = function (el) {
+            if (this.page.sndPage)
+                this.page.sndPage.htmlClearing();
+            if (this.page.sndPage)
+                this.page.sndPage.leave();
+            ko.cleanNode(el[0]);
+            el.html('');
+            this.product.saveProduct(this.ctx, function () { });
+            delete (this.exercise.dataNode).result;
+            delete this.user.long;
+        };
+        exerciseService.prototype.evaluate = function () {
+            this.user.modified = true;
             var now = Utils.nowToNum();
             var short = this.user.short;
-            var delta = Math.min(maxDelta, Math.round(now - task.startTime));
+            var delta = Math.min(maxDelta, Math.round(now - this.startTime));
             if (!short.elapsed)
                 short.elapsed = 0;
             short.elapsed += delta;
@@ -97,9 +150,8 @@ var blended;
                 short.done = true;
                 return true;
             }
-            debugger;
             //aktivni stranka
-            this.page.provideData(this.user.long);
+            this.page.provideData();
             var score = this.page.getScore();
             if (!score) {
                 debugger;
@@ -107,13 +159,13 @@ var blended;
                 short.done = true;
                 return true;
             }
-            var exerciseOK = task.isTest ? true : (score == null || score.ms == 0 || (score.s / score.ms * 100) >= 75);
+            var exerciseOK = this.statusData.isTest ? true : (score == null || score.ms == 0 || (score.s / score.ms * 100) >= 75);
             //if (!exerciseOK && !gui.alert(alerts.exTooManyErrors, true)) { this.userPending = false; return false; }//je hodne chyb a uzivatel chce cviceni znova
             this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
-            if (!task.isTest)
-                this.page.acceptData(true, this.user.long);
+            if (!this.statusData.isTest)
+                this.page.acceptData(true);
             short.done = true;
-            if (this.dataNode.ms != score.ms) {
+            if (this.exercise.dataNode.ms != score.ms) {
                 debugger;
                 throw "this.maxScore != score.ms";
             }
@@ -131,20 +183,19 @@ var blended;
             _super.call(this, state);
             if (state.createMode != blended.createControllerModes.navigate)
                 return;
-            this.service = (resolves[0]); //data cviceni
-            this.user = this.service.user;
-            if (state.$scope)
-                (state.$scope).ex = this.service; //navazani services do scope
-            this.startTime = Utils.nowToNum();
+            this.exService = new exerciseService((resolves[0]), (resolves[1]), { isTest: this.isTest }, this.ctx, this.taskRoot().dataNode);
+            state.$scope['exerciseService'] = this.exService;
+            this.user = this.exService.user;
             this.title = this.dataNode.title;
             this.modItems = _.map(this.parent.dataNode.Items, function (node, idx) {
                 return { user: blended.getPersistData(node, _this.ctx.taskid), modIdx: idx, title: node.title };
             });
             this.modIdx = _.indexOf(this.parent.dataNode.Items, this.dataNode);
         }
-        exerciseTaskViewController.prototype.isDone = function () { return this.user.short.done; };
+        exerciseTaskViewController.prototype.gotoHomeUrl = function () { Pager.gotoHomeUrl(); };
+        exerciseTaskViewController.prototype.isDone = function () { return this.exService.user.short.done; };
         exerciseTaskViewController.prototype.moveForward = function (ud) {
-            this.service.evaluate(this);
+            this.exService.evaluate();
         };
         return exerciseTaskViewController;
     })(blended.taskController);

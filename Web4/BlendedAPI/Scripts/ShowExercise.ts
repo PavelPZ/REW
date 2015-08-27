@@ -1,27 +1,47 @@
 ﻿module blended {
 
+  export var loadEx = ['$stateParams', ($stateParams: blended.learnContext) => {
+    blended.finishContext($stateParams);
+    return blended.loader.adjustEx($stateParams);
+  }];
+
+  export var loadLongData = ['$stateParams', (ctx: blended.learnContext) => {
+    blended.finishContext(ctx);
+    var def = ctx.$q.defer<IExLong>();
+    proxies.blendedpersistence.getLongData(ctx.companyid, ctx.userdataid, ctx.productUrl, ctx.taskid, ctx.Url, long => {
+      var res = JSON.parse(long);
+      def.resolve(res);
+    });
+    return def.promise;
+  }];
+
+  //export var exAndUser = ['$stateParams', (ctx: blended.learnContext) => {
+  //  blended.finishContext(ctx);
+  //  var exPromise = blended.loader.adjustEx(ctx);
+  //  var def = ctx.$q.defer<blended.IExLong>();
+  //  proxies.blendedpersistence.getLongData(ctx.companyid, ctx.userdataid, ctx.productUrl, ctx.taskid, ctx.Url, long => {
+  //    def.resolve(long ? JSON.parse(long) : null);
+  //  });
+  //  var userPromise = def.promise;
+  //  return ctx.$q.all([exPromise, userPromise]);
+  //}];
+
   export var showExerciseDirective2 = ['$stateParams', ($stateParams: blended.learnContext) => new showExerciseModel($stateParams)];
 
   export class showExerciseModel {
     constructor(public $stateParams: blended.learnContext) { }
     link: (scope: ng.IScope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes) => void = (scope, el, attrs) => {
-      scope.$on('$destroy', () => {
-        if (this.page.sndPage) this.page.sndPage.htmlClearing();
-        if (this.page.sndPage) this.page.sndPage.leave();
-        ko.cleanNode(el[0]);
-        el.html('');
-      });
-      blended.loader.adjustEx(this.$stateParams).then(exserv => {
-        this.page = exserv.page;
-        ko.cleanNode(el[0]);
-        el.html('');
-        CourseMeta.lib.blendedDisplayEx(this.page, html => {
-          el.html(html);
-          ko.applyBindings({}, el[0]);
-        });
-      });
+
+      scope.$on('$destroy', (ev) => this.exerciseService.destroy(el));
+
+      //nalezni exerciseService
+      var sc = scope;
+      while (sc && !sc['exerciseService']) sc = sc.$parent;
+      if (!sc) return;
+      this.exerciseService = <exerciseService>(sc['exerciseService']);
+      this.exerciseService.display(el, $.noop);
     };
-    page: Course.Page;
+    exerciseService: exerciseService;
   }
 
   export class exItemProxy {
@@ -54,23 +74,71 @@
   //long persistent informace o cviceni
   export interface IExLong { [exId: string]: CourseModel.Result; }
 
-  //***************** $scope.ex, je v cache
+  export interface IPageTask {
+    isTest: boolean;
+    page: Course.Page;
+    startTime: number; //datum vstupu do stranky
+    user: IPersistNodeItem<IExShort>;
+  }
+
   export class exerciseService {
 
-    taskId: string;
+    page: Course.Page;
     user: IPersistNodeItem<IExShort>;
-    constructor(ctx: learnContext /*ctx v dobe vlozeni do cache*/, public mod: cachedModule, public dataNode: CourseMeta.data, public page: Course.Page, public userLong: IExLong) {
-      this.taskId = ctx.taskid; if (!userLong) userLong = {};
-      this.user = getPersistWrapper<IExShort>(dataNode, this.taskId, () => $.extend({}, shortDefault));
-      this.user.long = userLong;
-    }
-    display(el: ng.IAugmentedJQuery, attrs: ng.IAttributes) { }
-    destroy(el: ng.IAugmentedJQuery) { }
+    startTime: number; //datum vstupu do stranky
 
-    evaluate(task: exerciseTaskViewController): boolean {
+    constructor(public exercise: cacheExercise, long: IExLong, public statusData: IExerciseStateData, public ctx: learnContext, public product: IProductEx) {
+      this.user = getPersistWrapper<IExShort>(exercise.dataNode, ctx.taskid, () => $.extend({}, shortDefault));
+      if (!long) {
+        long = {}; this.user.modified = true;
+      }
+      this.user.long = long
+      this.startTime = Utils.nowToNum();
+    }
+
+    display(el: ng.IAugmentedJQuery, completed: (pg: Course.Page) => void) {
+      var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
+      Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, this.exercise.mod.loc));
+      var isGramm = CourseMeta.isType(this.exercise.dataNode, CourseMeta.runtimeType.grammar);
+      if (!isGramm) {
+        if (pg.evalPage) this.exercise.dataNode.ms = pg.evalPage.maxScore;
+      }
+
+      var exImpl = <CourseMeta.exImpl>(this.exercise.dataNode);
+      exImpl.page = pg; exImpl.result = this.user.long;
+
+      pg.finishCreatePage(<CourseMeta.exImpl>(this.exercise.dataNode));
+      pg.callInitProcs(Course.initPhase.beforeRender, () => { //inicializace kontrolek, 1
+        var html = JsRenderTemplateEngine.render("c_gen", pg);
+        CourseMeta.actExPageControl = pg; //knockout pro cviceni binduje CourseMeta.actExPageControl
+        ko.cleanNode(el[0]);
+        el.html('');
+        el.html(html);
+        ko.applyBindings({}, el[0]);
+        pg.callInitProcs(Course.initPhase.afterRender, () => {//inicializace kontrolek, 2
+          pg.callInitProcs(Course.initPhase.afterRender2, () => {
+            completed(pg);
+          });
+        });
+      });
+    }
+
+    destroy(el: ng.IAugmentedJQuery) {
+      if (this.page.sndPage) this.page.sndPage.htmlClearing();
+      if (this.page.sndPage) this.page.sndPage.leave();
+      ko.cleanNode(el[0]);
+      el.html('');
+
+      this.product.saveProduct(this.ctx, () => { });
+      delete (<CourseMeta.exImpl>(this.exercise.dataNode)).result;
+      delete this.user.long;
+    }
+
+    evaluate(): boolean {
+      this.user.modified = true;
       var now = Utils.nowToNum();
       var short = this.user.short;
-      var delta = Math.min(maxDelta, Math.round(now - task.startTime));
+      var delta = Math.min(maxDelta, Math.round(now - this.startTime));
       if (!short.elapsed) short.elapsed = 0;
       short.elapsed += delta;
       short.end = Utils.dayToInt(new Date());
@@ -82,19 +150,18 @@
         return true;
       }
 
-      debugger;
       //aktivni stranka
-      this.page.provideData(this.user.long);
+      this.page.provideData();
       var score = this.page.getScore();
       if (!score) { debugger; throw "!score"; short.done = true; return true; }
 
-      var exerciseOK = task.isTest ? true : (score == null || score.ms == 0 || (score.s / score.ms * 100) >= 75);
+      var exerciseOK = this.statusData.isTest ? true : (score == null || score.ms == 0 || (score.s / score.ms * 100) >= 75);
       //if (!exerciseOK && !gui.alert(alerts.exTooManyErrors, true)) { this.userPending = false; return false; }//je hodne chyb a uzivatel chce cviceni znova
       this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
-      if (!task.isTest) this.page.acceptData(true, this.user.long);
+      if (!this.statusData.isTest) this.page.acceptData(true);
 
       short.done = true;
-      if (this.dataNode.ms != score.ms) { debugger; throw "this.maxScore != score.ms"; }
+      if (this.exercise.dataNode.ms != score.ms) { debugger; throw "this.maxScore != score.ms"; }
       short.s = score.s;
       return true;
     }
@@ -115,34 +182,30 @@
     isTest: boolean;
   }
 
-  export interface IExerciseScope extends IControllerScope {
-    ex: exerciseService;
-  }
-
   export class exerciseTaskViewController extends taskController implements IExerciseStateData { //task pro pruchod lekcemi
+
+    exService: exerciseService;
 
     //IExerciseStateData
     isTest: boolean;
 
-    user: IPersistNodeItem<IExShort>;
     title: string;
     modItems: Array<exItemProxy>; //info o vsech cvicenich modulu
     modIdx: number; //self index v modulu
     breadcrumb: Array<breadcrumbItem>;
-    //gotoHomeUrl() { Pager.gotoHomeUrl(); }
-    startTime: number; //datum vstupu do stranky
-    service: exerciseService;
+    gotoHomeUrl() { Pager.gotoHomeUrl(); }
 
-    isDone(): boolean { return this.user.short.done; }
+    isDone(): boolean { return this.exService.user.short.done; }
 
     constructor(state: IStateService, resolves: Array<any>) {
       super(state);
       if (state.createMode != createControllerModes.navigate) return;
-      this.service = <exerciseService>(resolves[0]); //data cviceni
-      this.user = this.service.user;
-      if (state.$scope) (<IExerciseScope>(state.$scope)).ex = this.service; //navazani services do scope
 
-      this.startTime = Utils.nowToNum();
+      this.exService = new exerciseService(<cacheExercise>(resolves[0]), <blended.IExLong>(resolves[1]), { isTest: this.isTest }, this.ctx, this.taskRoot().dataNode);
+      state.$scope['exerciseService'] = this.exService;
+
+      this.user = this.exService.user;
+
       this.title = this.dataNode.title;
       this.modItems = _.map(this.parent.dataNode.Items, (node, idx) => {
         return { user: blended.getPersistData<IExShort>(node, this.ctx.taskid), modIdx: idx, title: node.title };
@@ -151,7 +214,7 @@
     }
 
     moveForward(ud: IExShort) {
-      this.service.evaluate(this);
+      this.exService.evaluate();
     }
   }
 }

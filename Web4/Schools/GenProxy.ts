@@ -53,6 +53,21 @@ module proxies {
 	  } 
    
   };
+  export class blendedpersistence {
+    static deleteDataKeys(companyid: number, courseuserid: number, producturl: string, taskid: string, urltaskids: {  url: string;  taskId: string;  }[], completed: () => void): void {
+		  invoke('blendedpersistencecontroller/deletedatakeys', 'post', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid }, JSON.stringify(urltaskids), completed);
+	  } 
+    static getShortProductDatas(companyid: number, courseuserid: number, producturl: string, completed: (res: {  url: string;  taskId: string;  shortData: string;  }[]) => void): void {
+		  invoke('blendedpersistencecontroller/getshortproductdatas', 'get', { companyid: companyid, courseuserid: courseuserid, producturl: producturl }, null, completed);
+	  } 
+    static getLongData(companyid: number, courseuserid: number, producturl: string, taskid: string, key: string, completed: (res: string) => void): void {
+		  invoke('blendedpersistencecontroller/getlongdata', 'get', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid, key: key }, null, completed);
+	  } 
+    static saveUserData(companyid: number, courseuserid: number, producturl: string, data: {  url: string;  taskId: string;  shortData: string;  longData: string;  }[], completed: () => void): void {
+		  invoke('blendedpersistencecontroller/saveuserdata', 'post', { companyid: companyid, courseuserid: courseuserid, producturl: producturl }, JSON.stringify(data), completed);
+	  } 
+   
+  };
   export class course {
     static deleteDataKeys(email: string, compid: string, productid: string, testkeyid: number, keys: Array<string>, completed: () => void): void {
 		  invoke('course/deletedatakeys', 'post', { email: email, compid: compid, productid: productid, testkeyid: testkeyid }, JSON.stringify(keys), completed);
@@ -150,20 +165,17 @@ module proxies {
    
   };
   export class vyzva57services {
-    static getCourseUserId(companyid: number, userid: number, producturl: string, completed: (res: number) => void): void {
-		  invoke('vyzva57services/getcourseuserid', 'get', { companyid: companyid, userid: userid, producturl: producturl }, null, completed);
+    static lmAdminCreateCompany(companyid: number, companydata: string, completed: () => void): void {
+		  invoke('vyzva57services/lmadmincreatecompany', 'post', { companyid: companyid }, JSON.stringify(companydata), completed);
 	  } 
-    static deleteDataKeys(companyid: number, courseuserid: number, producturl: string, taskid: string, urls: Array<string>, completed: () => void): void {
-		  invoke('vyzva57services/deletedatakeys', 'post', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid }, JSON.stringify(urls), completed);
+    static lmAdminCreateLicenceKeys(companyid: number, requestedkeys: {  line: LMComLib.LineIds;  num: number;  isPattern3: boolean;  keys: Array<string>;  }[], completed: (res: {  line: LMComLib.LineIds;  num: number;  isPattern3: boolean;  keys: Array<string>;  }[]) => void): void {
+		  invoke('vyzva57services/lmadmincreatelicencekeys', 'post', { companyid: companyid }, JSON.stringify(requestedkeys), completed);
 	  } 
-    static getShortProductDatas(companyid: number, courseuserid: number, producturl: string, taskid: string, completed: (res: {  key: string;  shortData: string;  flag: CourseModel.CourseDataFlag;  }[]) => void): void {
-		  invoke('vyzva57services/getshortproductdatas', 'get', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid }, null, completed);
+    static loadCompanyData(companyid: number, islearningdata: boolean, isorderdata: boolean, completed: (res: {  LearningData: string;  OrderData: string;  }) => void): void {
+		  invoke('vyzva57services/loadcompanydata', 'get', { companyid: companyid, islearningdata: islearningdata, isorderdata: isorderdata }, null, completed);
 	  } 
-    static getLongData(companyid: number, courseuserid: number, producturl: string, taskid: string, key: string, completed: (res: string) => void): void {
-		  invoke('vyzva57services/getlongdata', 'get', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid, key: key }, null, completed);
-	  } 
-    static saveUserData(companyid: number, courseuserid: number, producturl: string, data: {  taskid: string;  longData: string;  key: string;  shortData: string;  flag: CourseModel.CourseDataFlag;  }[], completed: () => void): void {
-		  invoke('vyzva57services/saveuserdata', 'post', { companyid: companyid, courseuserid: courseuserid, producturl: producturl }, JSON.stringify(data), completed);
+    static writeCompanyData(companyid: number, data: {  LearningData: string;  OrderData: string;  }, completed: () => void): void {
+		  invoke('vyzva57services/writecompanydata', 'post', { companyid: companyid }, JSON.stringify(data), completed);
 	  } 
    
   };

@@ -23,6 +23,11 @@ var vyzva;
         __extends(homeTaskController, _super);
         function homeTaskController(state, resolves) {
             _super.call(this, state, resolves);
+            //if (resolves[0].loader == 'schoolmanager') {
+            //  this.wrongUrlRedirect({ stateName: stateNames.shoolManager.name }); return;
+            //} else if (resolves[0].loader == 'langmastermanager') {
+            //  this.wrongUrlRedirect({ stateName: stateNames.langmasterManager.name }); return;
+            //}
             this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { startDate: Utils.nowToNum() }; });
         }
         //********** PRETEST item

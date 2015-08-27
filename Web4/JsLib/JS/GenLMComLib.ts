@@ -767,6 +767,7 @@ export interface MyCourse {
   ProductId: string;
   Expired: number;
   LicCount: number;
+  LicenceKeys: Array<string>;
 }
 export interface RpcResponse {
   errorText: string;

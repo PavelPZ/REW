@@ -440,22 +440,6 @@ module CourseMeta {
     export function info_continue(): greenArrowInfo { return new greenArrowInfo(CSLocalize('2882c6a2ef6343089ae90c898cac63f6', 'Continue'), false, "info", "reply",() => gui.gotoData(null)); }
     export function info_courseFinished(): greenArrowInfo { return new greenArrowInfo(CSLocalize('e06a4208d7c84c8ba97c1a700f00046c', 'Course completed!'), actNode == actCourseRoot, "info", "thumbs-up", actNode == actCourseRoot ? $.noop : () => gui.gotoData(null)); }
 
-    export function blendedDisplayEx(page: Course.Page, insertToHTMLPage: (html: string) => void) {
-      page.finishCreatePage(<any>{});
-      page.callInitProcs(Course.initPhase.beforeRender, () => { //inicializace kontrolek, 1
-        //var html = JsRenderTemplateEngine.render("c_blended_body", page);
-        var html = JsRenderTemplateEngine.render("c_gen", page);
-        actExPageControl = page;
-        insertToHTMLPage(html);
-        page.callInitProcs(Course.initPhase.afterRender, () => {//inicializace kontrolek, 2
-          page.callInitProcs(Course.initPhase.afterRender2, () => {
-          });
-        });
-        //Pager.renderHtmlEx(true, '', page); //HTML rendering (kod, provedeny normalne za onUpdate)
-      });
-
-    }
-
     //vykresleni naladovaneho cviceni
     export function displayEx(loadedEx: exImpl, beforeUpdate: (loadedEx: exImpl) => void, afterUpdate: (loadedEx: exImpl) => void) {
       //TODO EVAL

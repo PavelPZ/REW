@@ -165,10 +165,22 @@ var schoolMy;
                     //nove AngularJS produkty
                     if (dt.isAngularJS) {
                         var ctx = {
-                            producturl: blended.encodeUrl(pr.url), companyid: comp.data.Id, userid: LMStatus.Cookie.id,
-                            subuserid: LMStatus.Cookie.id, loc: Trados.actLang, taskid: 'def', persistence: null /*TODO*/
+                            producturl: blended.encodeUrl(pr.url), companyid: comp.data.Id, loginid: LMStatus.Cookie.id,
+                            userdataid: LMStatus.Cookie.id, loc: Trados.actLang, taskid: 'def', persistence: null,
+                            lickeys: crs.LicenceKeys.join('#')
                         };
-                        var hash = blended.root.href(vyzva.stateNames.home.name, ctx);
+                        var hash;
+                        switch (pr.url) {
+                            case '/lm/blcourse/langmastermanager.product/':
+                                hash = blended.root.href(vyzva.stateNames.langmasterManager.name, ctx);
+                                break;
+                            case '/lm/blcourse/schoolmanager.product/':
+                                hash = blended.root.href(vyzva.stateNames.shoolManager.name, ctx);
+                                break;
+                            default:
+                                hash = blended.root.href(vyzva.stateNames.home.name, ctx);
+                                break;
+                        }
                         Pager.navigateToHash(hash);
                         return;
                     } //window.location.hash = '/pg/ajs/vyzvaproduct/xxx'; return; }

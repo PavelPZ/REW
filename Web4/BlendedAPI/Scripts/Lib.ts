@@ -25,8 +25,8 @@
 
   export interface learnContext {
     //URL parametry
-    userid: number; subuserid: number; companyid: number; loc: LMComLib.Langs; persistence: CourseMeta.IPersistence;
-    producturl: string; taskid: string;
+    loginid: number; userdataid: number; companyid: number; loc: LMComLib.Langs; persistence: CourseMeta.IPersistence;
+    producturl: string; taskid: string; lickeys: string;
     pretesturl?: string; moduleurl?: string; url?: string; 
     //normalizovana url
     productUrl?: string; Url?: string; pretestUrl?: string; moduleUrl?: string; 

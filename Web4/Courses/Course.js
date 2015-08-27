@@ -214,7 +214,7 @@ var Course;
     Course.humanEvalControlImpl = humanEvalControlImpl;
     function idToElement(id) { return $('#' + id).first(); }
     Course.idToElement = idToElement;
-    function finishCreatePage(ex) { var res = ex.page; res.finishCreatePage(ex); return res; }
+    function finishCreatePage(exImpl) { var page = exImpl.page; page.finishCreatePage(exImpl); return page; }
     Course.finishCreatePage = finishCreatePage;
     var Page = (function (_super) {
         __extends(Page, _super);

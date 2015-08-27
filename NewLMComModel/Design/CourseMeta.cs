@@ -665,6 +665,8 @@ namespace CourseMeta {
           "/lm/blended/english/blended.product",
           "/lm/blended/german/blended.product",
           "/lm/blended/french/blended.product",
+          "/lm/blcourse/langmastermanager.product",
+          "/lm/blcourse/schoolmanager.product",
         };
         //var addInProds = Directory.EnumerateFiles(Machines.dataPath + @"xmlsource", "*.xml").Select(fn => data.readObject<data>(fn)).ToArray();
         var addInProds = addInProductUrls.Select(pr => Machines.rootDir + pr.Replace('/', '\\')).Select(fn => data.readObject<data>(fn)).ToArray();

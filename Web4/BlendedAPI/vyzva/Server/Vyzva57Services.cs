@@ -15,41 +15,49 @@ namespace blended {
   [RoutePrefix("Vyzva57Services")]
   public class Vyzva57ServicesController : ApiController {
 
-    //special
-    [Route("getCourseUserId"), HttpGet]
-    public int getCourseUserId(int companyid, long userid, string producturl) {
-      var db = NewData.Lib.CreateContext();
-      return db.CourseUsers.Where(cu => cu.CompanyUser.CompanyId == companyid && cu.CompanyUser.UserId == userid && cu.ProductId == producturl).Select(cu => cu.Id).FirstOrDefault();
+    [Route("lmAdminCreateCompany"), HttpPost]
+    public void lmAdminCreateCompany(int companyid, [FromBody]string companyData) {
+      var db = blendedData.Lib.CreateContext();
+      if (db.Companies.Any(c => c.Id == companyid)) return;
+      db.Companies.Add(new blendedData.Company { Id = companyid, LearningData = companyData });
+      blendedData.Lib.SaveChanges(db);
     }
-
-
-
-    //ala SCORM 
-    [Route("deleteDataKeys"), HttpPost]
-    public void deleteDataKeys(int companyid, int courseUserid, string producturl, string taskid, [FromBody]string[] urls) {
-    }
-
-    public class shortDataItem {
-      public string key; //key v ramci jedne skupiny informaci
-      public string shortData; //strucna data
-      public CourseModel.CourseDataFlag flag; //typ data
-    }
-    public class longDataItem : shortDataItem {
-      public string taskid; //skupina informaci
-      public string longData; //podrobna data
-    }
-    [Route("getShortProductDatas"), HttpGet]
-    public shortDataItem[] getShortProductDatas(int companyid, int courseUserid, string producturl, string taskid) {
+    [Route("lmAdminCreateLicenceKeys"), HttpPost]
+    public lmAdminCreateLicenceKey[] lmAdminCreateLicenceKeys(int companyid, [FromBody]lmAdminCreateLicenceKey[] requestedKeys) {
       return null;
     }
-
-    [Route("getLongData"), HttpGet]
-    public string getLongData(int companyid, int courseUserid, string producturl, string taskid, string key) {
-      return null;
+    public class lmAdminCreateLicenceKey {
+      public LMComLib.LineIds line; //no => school manager produkt
+      public int num;
+      public bool isPattern3;
+      public string[] keys; //ve formatu <licenceId>|<counter>
     }
 
-    [Route("saveUserData"), HttpPost]
-    public void saveUserData(int companyid, int courseUserid, string producturl, [FromBody] longDataItem[] data) {
+    //****** Company.Data se strukturou grup, spravcu, studentu apod.
+    [Route("loadCompanyData"), HttpGet]
+    public companyData loadCompanyData(int companyid, bool isLearningdata, bool isOrderData) {
+      var db = blendedData.Lib.CreateContext();
+      if (isLearningdata && !isOrderData)
+        return db.Companies.Where(c => c.Id == companyid).Select(c => new companyData { LearningData = c.LearningData }).FirstOrDefault();
+      else if (!isLearningdata && isOrderData)
+        return db.Companies.Where(c => c.Id == companyid).Select(c => new companyData { OrderData = c.OrderData }).FirstOrDefault();
+      else
+        return db.Companies.Where(c => c.Id == companyid).Select(c => new companyData { OrderData = c.OrderData, LearningData = c.LearningData }).FirstOrDefault();
     }
+
+    [Route("writeCompanyData"), HttpPost]
+    public void writeCompanyData(int companyid, [FromBody]companyData data) {
+      var db = blendedData.Lib.CreateContext();
+      var comp = db.Companies.First(c => c.Id == companyid);
+      if (data.LearningData!=null) comp.LearningData = data.LearningData;
+      if (data.OrderData != null) comp.LearningData = data.OrderData;
+      blendedData.Lib.SaveChanges(db);
+    }
+
+    public class companyData {
+      public string LearningData;
+      public string OrderData;
+    }
+
   }
 }

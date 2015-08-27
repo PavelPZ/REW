@@ -12,19 +12,14 @@ namespace blendedData {
     public virtual DbSet<Company> Companies { get; set; }
     public virtual DbSet<CourseData> CourseDatas { get; set; }
     public virtual DbSet<CourseUser> CourseUsers { get; set; }
-    public virtual DbSet<StudyGrup> StudyGrups { get; set; }
 
     protected override void OnModelCreating(DbModelBuilder modelBuilder) {
       modelBuilder.Entity<CourseUser>()
           .HasMany(e => e.CourseDatas)
           .WithRequired(e => e.CourseUser)
           .HasForeignKey(e => e.CourseUserId);
-      modelBuilder.Entity<StudyGrup>()
-          .HasMany(e => e.CourseUsers)
-          .WithRequired(e => e.StudyGrup)
-          .HasForeignKey(e => e.StudyGroupId);
       modelBuilder.Entity<Company>()
-          .HasMany(e => e.StudyGroups)
+          .HasMany(e => e.CourseUsers)
           .WithRequired(e => e.Company)
           .HasForeignKey(e => e.CompanyId);
     }

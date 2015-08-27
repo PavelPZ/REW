@@ -12,13 +12,13 @@ namespace blendedData {
     }
 
     [Key]
-    public int Id { get; set; }
+    [Required]
+    [StringLength(10)]
+    public string LicenceKey { get; set; }
 
-    public int CompanyUserId { get; set; } //NewData.CompanyUser.Id
+    public int CompanyId { get; set; }
 
-    public int StudyGroupId { get; set; }
-
-    public virtual StudyGrup StudyGrup { get; set; }
+    public virtual Company Company { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<CourseData> CourseDatas { get; set; }

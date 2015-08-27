@@ -206,7 +206,7 @@ module Course {
     getScore: () => CourseModel.Score; //spocti score celeho cviceni
   }
 
-  export function finishCreatePage(ex: CourseMeta.exImpl): Page { var res = ex.page; res.finishCreatePage(ex); return res; }
+  export function finishCreatePage(exImpl: CourseMeta.exImpl): Page { var page = exImpl.page; page.finishCreatePage(exImpl); return page; }
 
   export class Page extends tagImpl implements CourseModel.body, CourseMeta.IScoreProvider {
 
@@ -237,9 +237,10 @@ module Course {
 
     isPassivePage(): boolean { return this.isOldEa ? this.oldEaIsPassive : !this.evalPage || this.evalPage.maxScore == 0; }
 
+    result: CourseMeta.exImpl; //CourseMeta.IExUser;
+
     items: Array<tagImpl>; //all page controls
     tags: { [id: string]: tagImpl; } = {} //all named tags
-    result: CourseMeta.exImpl; //CourseMeta.IExUser;
 
     finishCreatePage(userData: CourseMeta.exImpl) {
       //finishCreatePage(userData: CourseMeta.IExUser) {
@@ -277,16 +278,16 @@ module Course {
     //blendedGetScore(): CourseModel.Score { return this.evalPage.getScore(); }// getORScore(this.evalItems); }
 
     /*** IScoreProvider ***/
-    provideData(allData: { [ctrlId: string]: Object; }): void {
+    provideData(allData?: { [ctrlId: string]: Object; }): void {
       //_.each(this.evalItems, ctrl => ctrl.provideData(allData[ctrl.id]));
       this.evalPage.provideData();
     }
-    acceptData(done: boolean, allData: { [ctrlId: string]: Object; }): void {
+    acceptData(done: boolean, allData?: { [ctrlId: string]: Object; }): void {
       this.evalPage.acceptData(done);
       //readonly a skip-eval kontrolky
       this.processReadOnlyEtc(done, false);
     }
-    resetData(allData: { [ctrlId: string]: Object; }): void {
+    resetData(allData?: { [ctrlId: string]: Object; }): void {
       this.evalPage.resetData();
     }
     getScore(): CourseModel.Score { return this.evalPage.getScore(); }// getORScore(this.evalItems); }

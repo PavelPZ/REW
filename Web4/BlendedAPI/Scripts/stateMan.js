@@ -26,6 +26,7 @@ var blended;
                     var parent = ($scope.$parent).ts;
                     //kontrola jestli nektery z parentu nenastavil isWrongUrl. Pokud ano, vrat fake controller
                     if (parent && parent.isWrongUrl) {
+                        parent.isWrongUrl = false;
                         $scope.ts = { isWrongUrl: true, parent: parent };
                         return;
                     }

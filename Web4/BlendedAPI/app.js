@@ -51,7 +51,19 @@ var blended;
                 if (Pager.angularJS_OAuthLogin(location.hash, function () { return Pager.gotoHomeUrl(); }))
                     event.preventDefault();
             });
-        }]);
+        }]).filter('courseid', function () {
+        return function (id) {
+            switch (id) {
+                case LMComLib.LineIds.English: return "Angličtina";
+                case LMComLib.LineIds.German: return "Francouzština";
+                case LMComLib.LineIds.French: return "Němčina";
+                default: return "???";
+            }
+        };
+    }).filter('sablonaid', function () {
+        return function (id) { return id ? "Šablona č.3" : "Šablona č.4"; };
+    });
+    ;
     blended.root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', function (//'$provide', (
             $stateProvider, $urlRouterProvider, $location, $urlMatcherFactoryProvider, $provide) {
             //routerLogging($provide);

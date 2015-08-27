@@ -41,6 +41,7 @@ module blended {
           var parent: taskController = (<any>($scope.$parent)).ts;
           //kontrola jestli nektery z parentu nenastavil isWrongUrl. Pokud ano, vrat fake controller
           if (parent && parent.isWrongUrl) {
+            parent.isWrongUrl = false;
             $scope.ts = <any>{ isWrongUrl: true, parent: parent }; return;
           }
           //neni isWrongUrl, pokracuj

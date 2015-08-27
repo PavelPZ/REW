@@ -8,18 +8,18 @@ namespace blendedData {
   public partial class Company {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
     public Company() {
-      StudyGroups = new HashSet<StudyGrup>();
+      CourseUsers = new HashSet<CourseUser>();
     }
 
 
     [Key]
     public int Id { get; set; }
 
-    public int AdminId { get; set; } //NewData.CompanyUserId administratora firmy
+    public string LearningData { get; set; } //JSON(vyzva.intranet.ICompanyData)
 
-    public string Data { get; set; }
+    public string OrderData { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-    public virtual ICollection<StudyGrup> StudyGroups { get; set; }
+    public virtual ICollection<CourseUser> CourseUsers { get; set; }
   }
 }

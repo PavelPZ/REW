@@ -53,6 +53,7 @@ module blended {
     nodeDir: { [id: string]: CourseMeta.data; }; //adresar nodes
     nodeList: Array<CourseMeta.data>; //seznam nodes
     moduleCache: loader.cacheOf<cachedModule>; //cache modulu (kapitol) s lokalizacemi cviceni a slovniky
+    //loader: string; //specialni produkty na managovani
   }
 
   //Misto externi knihovny ma metody pristupu k nodes primo produkt
@@ -60,6 +61,7 @@ module blended {
     findParent<TRes extends CourseMeta.data>(self: CourseMeta.data, cond: (it: CourseMeta.data) => boolean): TRes;
     find<TRes extends CourseMeta.data>(url: string): TRes;
     addExternalTaskNode(repo: CourseMeta.data);
+    saveProduct(ctx: learnContext, completed: () => void);
   }
 
   //rozsireni interface o metody
@@ -83,7 +85,27 @@ module blended {
       if (pe.nodeDir[repo.url]) return;
       pe.nodeDir[repo.url] = repo;
       pe.nodeList.push(repo);
+    },
+    saveProduct(ctx: learnContext, completed: () => void) {
+      var pe = <IProductEx>this;
+      var toSave: Array<ISaveData> = [];
+      _.each(pe.nodeList, nd => {
+        if (!nd.userData) return;
+        for (var p in nd.userData) {
+          var d = nd.userData[p]; if (!d.modified) return;
+          d.modified = false;
+          toSave.push({ url: nd.url, taskId: p, shortData: JSON.stringify(d.short), longData: d.long ? JSON.stringify(d.long) : null });
+        }
+      });
+      if (toSave.length == 0) { completed(); return; }
+      proxies.blendedpersistence.saveUserData(ctx.companyid, ctx.userdataid, ctx.productUrl, toSave, completed);
     }
+  }
+  interface ISaveData {
+    url: string;
+    taskId: string;
+    shortData: string;
+    longData: string;
   }
 
   export class cachedModule { //module z cache
@@ -94,7 +116,11 @@ module blended {
     }
     loc: { [id: string]: any; };
     dict: schools.DictItemRoot;
-    cacheOfPages = new loader.cacheOf<exerciseService>(30);
+    cacheOfPages = new loader.cacheOf<cacheExercise>(30);
+  }
+
+  export class cacheExercise {
+    constructor(public mod: cachedModule, public dataNode: CourseMeta.data, public pageJsonML: any[]) { }
   }
 
   export module loader {
@@ -129,10 +155,11 @@ module blended {
             var scan: (dt: CourseMeta.data) => void;
             scan = dt => {
               prod.nodeDir[dt.url] = dt; prod.nodeList.push(dt);
-              if (dt.other) dt.other = $.extend(dt, JSON.parse(dt.other));
+              if (dt.other) dt = $.extend(dt, JSON.parse(dt.other));
               _.each(dt.Items, it => { it.parent = dt; scan(it); });
             };
             scan(prod);
+            //if (prod.loader) { deferred.resolve(prod); return; } //specialni MANAGER produkty
             //lokalizace produktu
             _.each(prod.nodeList, dt => dt.title = CourseMeta.localizeString(dt.url, dt.title, loc));
             //finish instrukce
@@ -147,7 +174,7 @@ module blended {
             if (ctx.finishProduct) ctx.finishProduct(prod);
             productCache.toCache(ctx, prod);
             //user data
-            if (!!ctx.persistence) ctx.persistence.loadShortUserData(ctx.userid, ctx.companyid, ctx.productUrl, data => {
+            if (!!ctx.persistence) ctx.persistence.loadShortUserData(ctx.loginid, ctx.companyid, ctx.productUrl, data => {
               prod.persistData = data;
               //if (data) for (var p in data) { var dt = prod.nodeDir[p]; if (dt) dt.userData = data[p]; /*nektera data mohou patrit taskum*/ }
               deferred.resolve(prod);
@@ -178,9 +205,9 @@ module blended {
           });
       } finally { return deferred.promise; }
     }
-    export function adjustEx(ctx: learnContext): ng.IPromise<exerciseService> {
+    export function adjustEx(ctx: learnContext): ng.IPromise<cacheExercise> {
       ctx = finishContext(ctx);
-      var deferred = ctx.$q.defer<exerciseService>();
+      var deferred = ctx.$q.defer<cacheExercise>();
       try {
         adjustProduct(ctx).then(prod => {
           var exNode = prod.find<CourseMeta.data>(ctx.Url);
@@ -193,26 +220,25 @@ module blended {
             var href = baseUrlRelToRoot + ctx.Url + '.js';
             ctx.$http.get(href, { transformResponse: s => CourseMeta.jsonParse(s) }).then(
               (file: ng.IHttpPromiseCallbackArg<Array<any>>) => {
-                var pg = CourseMeta.extractEx(file.data);
-                Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, mod.loc));
-                var isGramm = CourseMeta.isType(exNode, CourseMeta.runtimeType.grammar);
-                var resolve = (exData?: IExLong) => {
-                  var exServ = new exerciseService(ctx, mod, exNode, pg, exData);
-                  mod.cacheOfPages.toCache(ctx.Url, ctx.taskid, exServ);
-                  deferred.resolve(exServ);
-                }
-                if (isGramm)
-                  resolve();
-                else {
-                  if (!!ctx.persistence) ctx.persistence.loadUserData(ctx.userid, ctx.companyid, ctx.productUrl, ctx.Url, (userLong: IExLong) => {
-                    if (pg.evalPage && !pg.isOldEa) exNode.ms = pg.evalPage.maxScore;
-                    //provazani produktu, stranky, modulu:
-                    if (!userLong) userLong = {}; //<exNode> pg.result = <any>userLong;
-                    pg.myNode = exNode;
-                    resolve(userLong);
-                  }); else
-                    resolve();
-                }
+                var exServ = new cacheExercise(mod, exNode, file.data);
+                mod.cacheOfPages.toCache(ctx.Url, ctx.taskid, exServ);
+                deferred.resolve(exServ);
+
+                //var pg = CourseMeta.extractEx(file.data);
+                //Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, mod.loc));
+                //var isGramm = CourseMeta.isType(exNode, CourseMeta.runtimeType.grammar);
+                //var callResolve = () => {
+                //  var exServ = new exerciseService(ctx, mod, exNode, pg);
+                //  mod.cacheOfPages.toCache(ctx.Url, ctx.taskid, exServ);
+                //  deferred.resolve(exServ);
+                //}
+                //if (isGramm)
+                //  callResolve();
+                //else {
+                //  if (pg.evalPage) exNode.ms = pg.evalPage.maxScore;
+                //  pg.myNode = exNode;
+                //  callResolve();
+                //}
               },
               errors => {
                 deferred.reject();
@@ -221,6 +247,12 @@ module blended {
         });
       } finally { return deferred.promise; }
     }
+
+    export function blendedDisplayEx(pg: Course.Page, insertToHTMLPage: (html: string) => void) {
+
+    }
+
+
 
     //*************** globalni CACHE produktu
     export interface productCacheItem extends learnContext { //prvek cache
@@ -231,8 +263,8 @@ module blended {
       products: Array<productCacheItem> = [];
       maxInsertOrder = 0;
       fromCache(ctx: learnContext): IProductEx {
-        var resIt = _.find(this.products, it => it.companyid == ctx.companyid && it.userid == ctx.userid && it.subuserid == ctx.subuserid &&
-          it.persistence == ctx.persistence && it.loc == ctx.loc && it.producturl == ctx.producturl); // && it.taskid == ctx.taskid);
+        var resIt = _.find(this.products, it => it.companyid == ctx.companyid && it.userdataid == ctx.userdataid &&
+          it.persistence == ctx.persistence && it.loc == ctx.loc && it.producturl == ctx.producturl); // && it.loginid == ctx.loginid && it.taskid == ctx.taskid);
         if (resIt) resIt.insertOrder = this.maxInsertOrder++;
         return resIt ? resIt.data : null;
       }
@@ -243,8 +275,8 @@ module blended {
           this.products.splice(minIdx, 1);
         }
         this.products.push({
-          companyid: ctx.companyid, userid: ctx.userid, loc: ctx.loc, producturl: ctx.producturl, persistence: ctx.persistence, subuserid: ctx.subuserid, 
-          data: prod, insertOrder: this.maxInsertOrder++, taskid: null,
+          companyid: ctx.companyid, loc: ctx.loc, producturl: ctx.producturl, persistence: ctx.persistence, userdataid: ctx.userdataid,
+          data: prod, insertOrder: this.maxInsertOrder++, taskid: null, loginid: -1, lickeys:null,
         });
       }
     }

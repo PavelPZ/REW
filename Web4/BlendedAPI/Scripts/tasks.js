@@ -9,6 +9,7 @@ var blended;
     var controller = (function () {
         function controller(state) {
             this.ctx = state.params;
+            this.$scope = state.$scope;
             blended.finishContext(this.ctx);
             $.extend(this, state.current.data);
             this.myState = state.current;

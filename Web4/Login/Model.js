@@ -57,6 +57,7 @@ var Login;
     //    (res: number) => completed(res));
     //}
     function finishMyData() {
+        //myData vznikaji v CSharp v NewData.My.Init. Kurzy jsou v myData.Companies.Courses. comp.companyProducts comp.companyProducts jsou LM Author produkty
         if (!Login.myData || Login.myData.finished)
             return;
         Login.myData.finished = true;
@@ -77,7 +78,8 @@ var Login;
                 Archives: null,
                 isAuthoredCourse: true,
                 LicCount: 1,
-                ProductId: p.url
+                ProductId: p.url,
+                LicenceKeys: null,
             }); });
         });
         //agreguj archivy testu a dosad isTest
@@ -105,6 +107,7 @@ var Login;
                         Archives: [],
                         LicCount: 0,
                         isAuthoredCourse: isAuthoredCourse,
+                        LicenceKeys: null,
                     };
                     _.each(prodGroup, function (it) {
                         var parts = it.ProductId.split('|'); //productId je url|archiveId

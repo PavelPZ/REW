@@ -5,9 +5,11 @@
     myState: state;
     parent: taskController;
     isWrongUrl: boolean;
+    $scope: IControllerScope;
 
     constructor(state: IStateService) {
       this.ctx = state.params;
+      this.$scope = state.$scope;
       finishContext(this.ctx);
       $.extend(this, state.current.data);
       this.myState = state.current;

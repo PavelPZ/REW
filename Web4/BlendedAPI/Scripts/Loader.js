@@ -63,6 +63,26 @@ var blended;
                 return;
             pe.nodeDir[repo.url] = repo;
             pe.nodeList.push(repo);
+        },
+        saveProduct: function (ctx, completed) {
+            var pe = this;
+            var toSave = [];
+            _.each(pe.nodeList, function (nd) {
+                if (!nd.userData)
+                    return;
+                for (var p in nd.userData) {
+                    var d = nd.userData[p];
+                    if (!d.modified)
+                        return;
+                    d.modified = false;
+                    toSave.push({ url: nd.url, taskId: p, shortData: JSON.stringify(d.short), longData: d.long ? JSON.stringify(d.long) : null });
+                }
+            });
+            if (toSave.length == 0) {
+                completed();
+                return;
+            }
+            proxies.blendedpersistence.saveUserData(ctx.companyid, ctx.userdataid, ctx.productUrl, toSave, completed);
         }
     };
     var cachedModule = (function () {
@@ -78,6 +98,15 @@ var blended;
         return cachedModule;
     })();
     blended.cachedModule = cachedModule;
+    var cacheExercise = (function () {
+        function cacheExercise(mod, dataNode, pageJsonML) {
+            this.mod = mod;
+            this.dataNode = dataNode;
+            this.pageJsonML = pageJsonML;
+        }
+        return cacheExercise;
+    })();
+    blended.cacheExercise = cacheExercise;
     var loader;
     (function (loader) {
         //help
@@ -117,10 +146,11 @@ var blended;
                         prod.nodeDir[dt.url] = dt;
                         prod.nodeList.push(dt);
                         if (dt.other)
-                            dt.other = $.extend(dt, JSON.parse(dt.other));
+                            dt = $.extend(dt, JSON.parse(dt.other));
                         _.each(dt.Items, function (it) { it.parent = dt; scan(it); });
                     };
                     scan(prod);
+                    //if (prod.loader) { deferred.resolve(prod); return; } //specialni MANAGER produkty
                     //lokalizace produktu
                     _.each(prod.nodeList, function (dt) { return dt.title = CourseMeta.localizeString(dt.url, dt.title, loc); });
                     //finish instrukce
@@ -143,7 +173,7 @@ var blended;
                     loader.productCache.toCache(ctx, prod);
                     //user data
                     if (!!ctx.persistence)
-                        ctx.persistence.loadShortUserData(ctx.userid, ctx.companyid, ctx.productUrl, function (data) {
+                        ctx.persistence.loadShortUserData(ctx.loginid, ctx.companyid, ctx.productUrl, function (data) {
                             prod.persistData = data;
                             //if (data) for (var p in data) { var dt = prod.nodeDir[p]; if (dt) dt.userData = data[p]; /*nektera data mohou patrit taskum*/ }
                             deferred.resolve(prod);
@@ -200,30 +230,24 @@ var blended;
                         }
                         var href = blended.baseUrlRelToRoot + ctx.Url + '.js';
                         ctx.$http.get(href, { transformResponse: function (s) { return CourseMeta.jsonParse(s); } }).then(function (file) {
-                            var pg = CourseMeta.extractEx(file.data);
-                            Course.localize(pg, function (s) { return CourseMeta.localizeString(pg.url, s, mod.loc); });
-                            var isGramm = CourseMeta.isType(exNode, CourseMeta.runtimeType.grammar);
-                            var resolve = function (exData) {
-                                var exServ = new blended.exerciseService(ctx, mod, exNode, pg, exData);
-                                mod.cacheOfPages.toCache(ctx.Url, ctx.taskid, exServ);
-                                deferred.resolve(exServ);
-                            };
-                            if (isGramm)
-                                resolve();
-                            else {
-                                if (!!ctx.persistence)
-                                    ctx.persistence.loadUserData(ctx.userid, ctx.companyid, ctx.productUrl, ctx.Url, function (userLong) {
-                                        if (pg.evalPage && !pg.isOldEa)
-                                            exNode.ms = pg.evalPage.maxScore;
-                                        //provazani produktu, stranky, modulu:
-                                        if (!userLong)
-                                            userLong = {}; //<exNode> pg.result = <any>userLong;
-                                        pg.myNode = exNode;
-                                        resolve(userLong);
-                                    });
-                                else
-                                    resolve();
-                            }
+                            var exServ = new cacheExercise(mod, exNode, file.data);
+                            mod.cacheOfPages.toCache(ctx.Url, ctx.taskid, exServ);
+                            deferred.resolve(exServ);
+                            //var pg = CourseMeta.extractEx(file.data);
+                            //Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, mod.loc));
+                            //var isGramm = CourseMeta.isType(exNode, CourseMeta.runtimeType.grammar);
+                            //var callResolve = () => {
+                            //  var exServ = new exerciseService(ctx, mod, exNode, pg);
+                            //  mod.cacheOfPages.toCache(ctx.Url, ctx.taskid, exServ);
+                            //  deferred.resolve(exServ);
+                            //}
+                            //if (isGramm)
+                            //  callResolve();
+                            //else {
+                            //  if (pg.evalPage) exNode.ms = pg.evalPage.maxScore;
+                            //  pg.myNode = exNode;
+                            //  callResolve();
+                            //}
                         }, function (errors) {
                             deferred.reject();
                         });
@@ -235,14 +259,17 @@ var blended;
             }
         }
         loader.adjustEx = adjustEx;
+        function blendedDisplayEx(pg, insertToHTMLPage) {
+        }
+        loader.blendedDisplayEx = blendedDisplayEx;
         var cacheOfProducts = (function () {
             function cacheOfProducts() {
                 this.products = [];
                 this.maxInsertOrder = 0;
             }
             cacheOfProducts.prototype.fromCache = function (ctx) {
-                var resIt = _.find(this.products, function (it) { return it.companyid == ctx.companyid && it.userid == ctx.userid && it.subuserid == ctx.subuserid &&
-                    it.persistence == ctx.persistence && it.loc == ctx.loc && it.producturl == ctx.producturl; }); // && it.taskid == ctx.taskid);
+                var resIt = _.find(this.products, function (it) { return it.companyid == ctx.companyid && it.userdataid == ctx.userdataid &&
+                    it.persistence == ctx.persistence && it.loc == ctx.loc && it.producturl == ctx.producturl; }); // && it.loginid == ctx.loginid && it.taskid == ctx.taskid);
                 if (resIt)
                     resIt.insertOrder = this.maxInsertOrder++;
                 return resIt ? resIt.data : null;
@@ -255,8 +282,8 @@ var blended;
                     this.products.splice(minIdx, 1);
                 }
                 this.products.push({
-                    companyid: ctx.companyid, userid: ctx.userid, loc: ctx.loc, producturl: ctx.producturl, persistence: ctx.persistence, subuserid: ctx.subuserid,
-                    data: prod, insertOrder: this.maxInsertOrder++, taskid: null,
+                    companyid: ctx.companyid, loc: ctx.loc, producturl: ctx.producturl, persistence: ctx.persistence, userdataid: ctx.userdataid,
+                    data: prod, insertOrder: this.maxInsertOrder++, taskid: null, loginid: -1, lickeys: null,
                 });
             };
             return cacheOfProducts;
