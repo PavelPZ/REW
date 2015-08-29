@@ -4,6 +4,11 @@
 @import "../../bs3/less/variables.less";
 
 .bl {
+
+  .oli-gapfill, .oli-drop-down {
+    width: 0;
+  }
+
   .topbar {
     background-color: black;
     height: 50px;
@@ -117,26 +122,32 @@
 
   .study-plan {
     > li {
-      position:relative;
-      padding-left:50px;
-      padding-right:120px;
-      h4 {margin-top:0px;}
+      position: relative;
+      padding-left: 50px;
+      padding-right: 120px;
+
+      h4 {
+        margin-top: 0px;
+      }
+
       .left-mark, .right-mark {
-        position:absolute; 
-        top:5px; 
+        position: absolute;
+        top: 5px;
       }
+
       .left-mark {
-        left:10px;
-        top:10px;
-        font-size:20px;
-        border:solid 1px lightgray;
-        border-radius:15px;
-        width:30px;
-        text-align:center;
+        left: 10px;
+        top: 10px;
+        font-size: 20px;
+        border: solid 1px lightgray;
+        border-radius: 15px;
+        width: 30px;
+        text-align: center;
       }
+
       .right-mark {
-        width:110px;
-        right:0px;
+        width: 110px;
+        right: 0px;
       }
     }
   }

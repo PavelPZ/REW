@@ -155,7 +155,7 @@ module blended {
             var scan: (dt: CourseMeta.data) => void;
             scan = dt => {
               prod.nodeDir[dt.url] = dt; prod.nodeList.push(dt);
-              if (dt.other) dt = $.extend(dt, JSON.parse(dt.other));
+              if (dt.other) dt = $.extend(dt, JSON.parse(dt.other.replace(/'/g,'"')));
               _.each(dt.Items, it => { it.parent = dt; scan(it); });
             };
             scan(prod);

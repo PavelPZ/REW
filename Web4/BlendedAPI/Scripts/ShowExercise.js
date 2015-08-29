@@ -19,16 +19,6 @@ var blended;
             });
             return def.promise;
         }];
-    //export var exAndUser = ['$stateParams', (ctx: blended.learnContext) => {
-    //  blended.finishContext(ctx);
-    //  var exPromise = blended.loader.adjustEx(ctx);
-    //  var def = ctx.$q.defer<blended.IExLong>();
-    //  proxies.blendedpersistence.getLongData(ctx.companyid, ctx.userdataid, ctx.productUrl, ctx.taskid, ctx.Url, long => {
-    //    def.resolve(long ? JSON.parse(long) : null);
-    //  });
-    //  var userPromise = def.promise;
-    //  return ctx.$q.all([exPromise, userPromise]);
-    //}];
     blended.rootModule
         .directive('showExercise', ['$stateParams', function ($stateParams) { return new showExerciseModel($stateParams); }]);
     //export var showExerciseDirective2 = ['$stateParams', ($stateParams: blended.learnContext) => new showExerciseModel($stateParams)];
@@ -101,6 +91,7 @@ var blended;
         }
         exerciseService.prototype.display = function (el, completed) {
             var _this = this;
+            el.addClass('contentHidden');
             var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
             Course.localize(pg, function (s) { return CourseMeta.localizeString(pg.url, s, _this.exercise.mod.loc); });
             var isGramm = CourseMeta.isType(this.exercise.dataNode, CourseMeta.runtimeType.grammar);
@@ -121,6 +112,8 @@ var blended;
                 ko.applyBindings({}, el[0]);
                 pg.callInitProcs(Course.initPhase.afterRender, function () {
                     pg.callInitProcs(Course.initPhase.afterRender2, function () {
+                        pg.acceptData(exImpl.done, exImpl.result);
+                        el.removeClass('contentHidden');
                         completed(pg);
                     });
                 });
@@ -185,7 +178,7 @@ var blended;
             _super.call(this, state);
             if (state.createMode != blended.createControllerModes.navigate)
                 return;
-            this.exService = new exerciseService((resolves[0]), (resolves[1]), { isTest: this.isTest }, this.ctx, this.taskRoot().dataNode);
+            this.exService = new exerciseService((resolves[0]), (resolves[1]), { isTest: this.state.exerciseIsTest }, this.ctx, this.taskRoot().dataNode);
             state.$scope['exerciseService'] = this.exService;
             this.user = this.exService.user;
             this.title = this.dataNode.title;

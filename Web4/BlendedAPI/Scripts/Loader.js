@@ -146,7 +146,7 @@ var blended;
                         prod.nodeDir[dt.url] = dt;
                         prod.nodeList.push(dt);
                         if (dt.other)
-                            dt = $.extend(dt, JSON.parse(dt.other));
+                            dt = $.extend(dt, JSON.parse(dt.other.replace(/'/g, '"')));
                         _.each(dt.Items, function (it) { it.parent = dt; scan(it); });
                     };
                     scan(prod);

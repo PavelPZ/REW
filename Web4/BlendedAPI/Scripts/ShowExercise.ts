@@ -15,16 +15,6 @@
     return def.promise;
   }];
 
-  //export var exAndUser = ['$stateParams', (ctx: blended.learnContext) => {
-  //  blended.finishContext(ctx);
-  //  var exPromise = blended.loader.adjustEx(ctx);
-  //  var def = ctx.$q.defer<blended.IExLong>();
-  //  proxies.blendedpersistence.getLongData(ctx.companyid, ctx.userdataid, ctx.productUrl, ctx.taskid, ctx.Url, long => {
-  //    def.resolve(long ? JSON.parse(long) : null);
-  //  });
-  //  var userPromise = def.promise;
-  //  return ctx.$q.all([exPromise, userPromise]);
-  //}];
   rootModule
     .directive('showExercise', ['$stateParams', ($stateParams: blended.learnContext) => new showExerciseModel($stateParams)])
   ;
@@ -99,6 +89,7 @@
     }
 
     display(el: ng.IAugmentedJQuery, completed: (pg: Course.Page) => void) {
+      el.addClass('contentHidden');
       var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
       Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, this.exercise.mod.loc));
       var isGramm = CourseMeta.isType(this.exercise.dataNode, CourseMeta.runtimeType.grammar);
@@ -119,6 +110,8 @@
         ko.applyBindings({}, el[0]);
         pg.callInitProcs(Course.initPhase.afterRender, () => {//inicializace kontrolek, 2
           pg.callInitProcs(Course.initPhase.afterRender2, () => {
+            pg.acceptData(exImpl.done, exImpl.result);
+            el.removeClass('contentHidden');
             completed(pg);
           });
         });
@@ -184,12 +177,9 @@
     isTest: boolean; //test nebo cviceni
   }
 
-  export class exerciseTaskViewController extends taskController implements IExerciseStateData { //task pro pruchod lekcemi
+  export class exerciseTaskViewController extends taskController { //task pro pruchod lekcemi
 
     exService: exerciseService;
-
-    //IExerciseStateData
-    isTest: boolean;
 
     title: string;
     modItems: Array<exItemProxy>; //info o vsech cvicenich modulu
@@ -202,7 +192,7 @@
       super(state);
       if (state.createMode != createControllerModes.navigate) return;
 
-      this.exService = new exerciseService(<cacheExercise>(resolves[0]), <blended.IExLong>(resolves[1]), { isTest: this.isTest }, this.ctx, this.taskRoot().dataNode);
+      this.exService = new exerciseService(<cacheExercise>(resolves[0]), <blended.IExLong>(resolves[1]), { isTest: this.state.exerciseIsTest }, this.ctx, this.taskRoot().dataNode);
       state.$scope['exerciseService'] = this.exService;
 
       this.user = this.exService.user;

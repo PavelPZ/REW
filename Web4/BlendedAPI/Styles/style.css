@@ -1,3 +1,7 @@
+.bl .oli-gapfill,
+.bl .oli-drop-down {
+  width: 0;
+}
 .bl .topbar {
   background-color: black;
   height: 50px;

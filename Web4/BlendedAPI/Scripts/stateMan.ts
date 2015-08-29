@@ -64,6 +64,7 @@ module blended {
     data: {}; //dalsi parametry state
     resolve: {}; //asynchronni parametry state
     oldController: any; //puvodni controller (ktery je nahrazen a pouzit zprostredkovane vyse)
+    exerciseIsTest: boolean; //pro cviceni
     
     //******* Inicializace: linearizace state tree na definict states
     initFromStateTree(provider: ng.ui.IStateProvider, root?: state) {
