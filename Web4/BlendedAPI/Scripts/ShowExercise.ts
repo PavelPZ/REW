@@ -79,7 +79,7 @@
     user: IPersistNodeItem<IExShort>;
     startTime: number; //datum vstupu do stranky
 
-    constructor(public exercise: cacheExercise, long: IExLong, public statusData: IExerciseStateData, public ctx: learnContext, public product: IProductEx) {
+    constructor(public exercise: cacheExercise, long: IExLong, public ctx: learnContext, public product: IProductEx) {
       this.user = getPersistWrapper<IExShort>(exercise.dataNode, ctx.taskid, () => $.extend({}, shortDefault));
       if (!long) {
         long = {}; this.user.modified = true;
@@ -129,7 +129,8 @@
       delete this.user.long;
     }
 
-    evaluate(): boolean {
+    evaluate(isTest:boolean, exerciseShowWarningPercent?: number): boolean {
+      if (this.user.short.done) return;
       this.user.modified = true;
       var now = Utils.nowToNum();
       var short = this.user.short;
@@ -145,15 +146,16 @@
         return true;
       }
 
+      if (typeof(exerciseShowWarningPercent)=='undefined') exerciseShowWarningPercent = 75;
       //aktivni stranka
       this.page.provideData();
       var score = this.page.getScore();
       if (!score) { debugger; throw "!score"; short.done = true; return true; }
 
-      var exerciseOK = this.statusData.isTest ? true : (score == null || score.ms == 0 || (score.s / score.ms * 100) >= 75);
+      var exerciseOK = isTest ? true : (score == null || score.ms == 0 || (score.s / score.ms * 100) >= exerciseShowWarningPercent);
       //if (!exerciseOK && !gui.alert(alerts.exTooManyErrors, true)) { this.userPending = false; return false; }//je hodne chyb a uzivatel chce cviceni znova
       this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
-      if (!this.statusData.isTest) this.page.acceptData(true);
+      if (!isTest) this.page.acceptData(true);
 
       short.done = true;
       if (this.exercise.dataNode.ms != score.ms) { debugger; throw "this.maxScore != score.ms"; }
@@ -192,7 +194,7 @@
       super(state);
       if (state.createMode != createControllerModes.navigate) return;
 
-      this.exService = new exerciseService(<cacheExercise>(resolves[0]), <blended.IExLong>(resolves[1]), { isTest: this.state.exerciseIsTest }, this.ctx, this.taskRoot().dataNode);
+      this.exService = new exerciseService(<cacheExercise>(resolves[0]), <blended.IExLong>(resolves[1]), this.ctx, this.taskRoot().dataNode);
       state.$scope['exerciseService'] = this.exService;
 
       this.user = this.exService.user;
@@ -205,7 +207,7 @@
     }
 
     moveForward(ud: IExShort) {
-      this.exService.evaluate();
+      this.exService.evaluate(this.state.exerciseIsTest, this.state.exerciseShowWarningPercent);
     }
   }
 }

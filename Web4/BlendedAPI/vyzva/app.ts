@@ -175,6 +175,8 @@
                       layoutContentId: 'exercise',
                       layoutToolbarType: 'toolbar/run',
                       exerciseIsTest: true,
+                      ommitTitle: true,
+                      ommitBreadCrumb:false,
                       resolve: {
                         $loadedEx: blended.loadEx,
                         $loadedLongData: blended.loadLongData,

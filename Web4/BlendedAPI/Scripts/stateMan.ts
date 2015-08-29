@@ -1,9 +1,13 @@
 ﻿module angular.ui {
   export interface IState {
     childs?: Array<blended.state>;
+    //DATA parametry
     dataNodeUrlParName?: string;
+    ommitTitle?: boolean; //neukazuje se titulek
+    ommitBreadCrumb?: boolean; //neukazuje se titulek
     moduleAlowCycleExercise?: boolean; //pro modul: dovol pomoci zelene sipky cyklovani cviceni
-    exerciseIsTest?: boolean; //pro cviceni
+    exerciseShowWarningPercent?: number; //exerciseIsTest=false => procenta, kdy se ukaze varovani
+    exerciseIsTest?: boolean; //pro cviceni: neukazovat vzhodnoceny stav
   }
 
 }
@@ -64,7 +68,10 @@ module blended {
     data: {}; //dalsi parametry state
     resolve: {}; //asynchronni parametry state
     oldController: any; //puvodni controller (ktery je nahrazen a pouzit zprostredkovane vyse)
-    exerciseIsTest: boolean; //pro cviceni
+
+    //ui-route state.data
+    exerciseIsTest: boolean;
+    exerciseShowWarningPercent: number;
     
     //******* Inicializace: linearizace state tree na definict states
     initFromStateTree(provider: ng.ui.IStateProvider, root?: state) {

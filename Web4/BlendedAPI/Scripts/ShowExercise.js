@@ -76,9 +76,8 @@ var blended;
     else
         return dt2 < dt1 ? dt1 : dt2; }
     var exerciseService = (function () {
-        function exerciseService(exercise, long, statusData, ctx, product) {
+        function exerciseService(exercise, long, ctx, product) {
             this.exercise = exercise;
-            this.statusData = statusData;
             this.ctx = ctx;
             this.product = product;
             this.user = blended.getPersistWrapper(exercise.dataNode, ctx.taskid, function () { return $.extend({}, shortDefault); });
@@ -130,7 +129,9 @@ var blended;
             delete (this.exercise.dataNode).result;
             delete this.user.long;
         };
-        exerciseService.prototype.evaluate = function () {
+        exerciseService.prototype.evaluate = function (isTest, exerciseShowWarningPercent) {
+            if (this.user.short.done)
+                return;
             this.user.modified = true;
             var now = Utils.nowToNum();
             var short = this.user.short;
@@ -145,6 +146,8 @@ var blended;
                 short.done = true;
                 return true;
             }
+            if (typeof (exerciseShowWarningPercent) == 'undefined')
+                exerciseShowWarningPercent = 75;
             //aktivni stranka
             this.page.provideData();
             var score = this.page.getScore();
@@ -154,10 +157,10 @@ var blended;
                 short.done = true;
                 return true;
             }
-            var exerciseOK = this.statusData.isTest ? true : (score == null || score.ms == 0 || (score.s / score.ms * 100) >= 75);
+            var exerciseOK = isTest ? true : (score == null || score.ms == 0 || (score.s / score.ms * 100) >= exerciseShowWarningPercent);
             //if (!exerciseOK && !gui.alert(alerts.exTooManyErrors, true)) { this.userPending = false; return false; }//je hodne chyb a uzivatel chce cviceni znova
             this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
-            if (!this.statusData.isTest)
+            if (!isTest)
                 this.page.acceptData(true);
             short.done = true;
             if (this.exercise.dataNode.ms != score.ms) {
@@ -178,7 +181,7 @@ var blended;
             _super.call(this, state);
             if (state.createMode != blended.createControllerModes.navigate)
                 return;
-            this.exService = new exerciseService((resolves[0]), (resolves[1]), { isTest: this.state.exerciseIsTest }, this.ctx, this.taskRoot().dataNode);
+            this.exService = new exerciseService((resolves[0]), (resolves[1]), this.ctx, this.taskRoot().dataNode);
             state.$scope['exerciseService'] = this.exService;
             this.user = this.exService.user;
             this.title = this.dataNode.title;
@@ -189,7 +192,7 @@ var blended;
         }
         exerciseTaskViewController.prototype.isDone = function () { return this.exService.user.short.done; };
         exerciseTaskViewController.prototype.moveForward = function (ud) {
-            this.exService.evaluate();
+            this.exService.evaluate(this.state.exerciseIsTest, this.state.exerciseShowWarningPercent);
         };
         return exerciseTaskViewController;
     })(blended.taskController);
