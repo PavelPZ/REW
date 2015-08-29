@@ -13,7 +13,7 @@ var blended;
     blended.loadLongData = ['$stateParams', function (ctx) {
             blended.finishContext(ctx);
             var def = ctx.$q.defer();
-            proxies.blendedpersistence.getLongData(ctx.companyid, ctx.userdataid, ctx.productUrl, ctx.taskid, ctx.Url, function (long) {
+            proxies.vyzva57services.getLongData(ctx.companyid, ctx.userdataid, ctx.productUrl, ctx.taskid, ctx.Url, function (long) {
                 var res = JSON.parse(long);
                 def.resolve(res);
             });
@@ -29,7 +29,9 @@ var blended;
     //  var userPromise = def.promise;
     //  return ctx.$q.all([exPromise, userPromise]);
     //}];
-    blended.showExerciseDirective2 = ['$stateParams', function ($stateParams) { return new showExerciseModel($stateParams); }];
+    blended.rootModule
+        .directive('showExercise', ['$stateParams', function ($stateParams) { return new showExerciseModel($stateParams); }]);
+    //export var showExerciseDirective2 = ['$stateParams', ($stateParams: blended.learnContext) => new showExerciseModel($stateParams)];
     var showExerciseModel = (function () {
         function showExerciseModel($stateParams) {
             var _this = this;
@@ -192,7 +194,6 @@ var blended;
             });
             this.modIdx = _.indexOf(this.parent.dataNode.Items, this.dataNode);
         }
-        exerciseTaskViewController.prototype.gotoHomeUrl = function () { Pager.gotoHomeUrl(); };
         exerciseTaskViewController.prototype.isDone = function () { return this.exService.user.short.done; };
         exerciseTaskViewController.prototype.moveForward = function (ud) {
             this.exService.evaluate();

@@ -59,10 +59,10 @@ namespace blendedData {
     static void init() {
       if (initialized) return;
       initialized = true;
-      Logger.Log(@"Lib.NewData.Container init: Start");
-      Database.SetInitializer<Vyzva57>(new initializer());
-      using (var context = new Vyzva57()) context.Database.Initialize(false);
-      Logger.Log(@"Lib.NewData.Container init: End");
+      //Logger.Log(@"Lib.NewData.Container init: Start");
+      //Database.SetInitializer<Vyzva57>(new initializer());
+      //using (var context = new Vyzva57()) context.Database.Initialize(false);
+      //Logger.Log(@"Lib.NewData.Container init: End");
     }
     static bool initialized;
 

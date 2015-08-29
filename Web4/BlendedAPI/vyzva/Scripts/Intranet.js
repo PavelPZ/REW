@@ -2,65 +2,83 @@ var vyzva;
 (function (vyzva) {
     var intranet;
     (function (intranet) {
-        function createCompany(groups) {
-            var admins = _.find(groups, function (g) { return g.line == LMComLib.LineIds.no; });
-            var adminKeys = !admins ? null : _.map(admins.keys, function (key) { return { keyStr: key }; });
-            var pattern3Count = 1;
-            var pattern4Count = 1;
-            var studyGroups = _.map(_.filter(groups, function (g) { return g.line != LMComLib.LineIds.no; }), function (grp) {
-                var lectorKeys = grp.keys.slice(0, 4);
-                var visitorKeys = grp.keys.slice(3, 7);
-                var studentKeys = grp.keys.slice(6);
-                var res = {
-                    line: grp.line,
-                    isPattern3: grp.isPattern3,
-                    title: grp.isPattern3 ? 'Skupina učitelů ' + (pattern3Count++).toString() : 'Skupina studentů ' + (pattern4Count++).toString(),
-                    lectorKeys: _.map(lectorKeys, function (key) { return { keyStr: key }; }),
-                    visitorsKeys: _.map(visitorKeys, function (key) { return { keyStr: key }; }),
-                    studentKeys: _.map(studentKeys, function (key) { return { keyStr: key }; }),
-                };
-                return res;
+        function lmAdminCreateLicenceKeys_request(groups) {
+            var res = [];
+            //school manager keys: 2 dalsi klice pro spravce (mimo prvniho spravce = self)
+            res.push({ line: LMComLib.LineIds.no, num: 2, keys: null });
+            //students keys: pro kazdou line a group a pocet
+            var lineGroups = _.groupBy(groups, function (g) { return g.line; });
+            _.each(lineGroups, function (lineGroup, line) {
+                var lg = { line: parseInt(line), num: Utils.sum(lineGroup, function (grp) { return grp.num + 6; } /*3 klice pro lektora, 3 pro visitora*/ /*3 klice pro lektora, 3 pro visitora*/), keys: null };
+                //lg.num += 3;
+                res.push(lg);
             });
-            return { adminKeys: adminKeys, studyGroups: studyGroups };
+            return res;
         }
-        intranet.createCompany = createCompany;
+        intranet.lmAdminCreateLicenceKeys_request = lmAdminCreateLicenceKeys_request;
+        function lmAdminCreateLicenceKeys_reponse(groups, respKeys) {
+            var useKey = function (line, num) {
+                //odeber NUM klicu pro line
+                var key = _.find(respKeys, function (k) { return k.line == line; });
+                var keyStrs = key.keys.slice(0, num);
+                if (keyStrs.length != num)
+                    throw 'keyStrs.length != num';
+                key.keys.splice(0, num);
+                //zkonvertuj lienceId|counter na encoded licence key
+                return _.map(keyStrs, function (keyStr) {
+                    var parts = keyStr.split('|');
+                    return { keyStr: keys.toString({ licId: parseInt(parts[0]), counter: parseInt(parts[1]) }) };
+                });
+            };
+            _.each(groups, function (grp) {
+                grp.studentKeys = useKey(grp.line, grp.num);
+                grp.visitorsKeys = useKey(grp.line, 3);
+                grp.lectorKeys = useKey(grp.line, 3);
+            });
+            var managerKeys = useKey(LMComLib.LineIds.no, 2);
+            return { studyGroups: groups, managerKeys: managerKeys };
+        }
+        intranet.lmAdminCreateLicenceKeys_reponse = lmAdminCreateLicenceKeys_reponse;
         //******************* zakladni info PO SPUSTENI PRODUKTU
         //informace o licencich a klicich k spustenemu produktu
-        function enteredProductInfo(json, prodKeyCodes /*platne licence k produktu, zakodovane do "<UserLicences.LicenceId>|<UserLicences.Counter>"*/, cookie) {
+        function enteredProductInfo(json, licenceKeysStr /*platne licencni klice k produktu*/, cookie) {
             if (_.isEmpty(json))
                 return null;
-            var prodKeyStrs = _.map(prodKeyCodes.split('#'), function (code) {
-                var parts = code.split('|');
-                var key = { licId: parseInt(parts[0]), counter: parseInt(parts[1]) };
-                return keys.toString(key);
-            });
-            var data = (JSON.parse(json));
-            var oldJson = JSON.stringify(data);
-            //this.oldJson = JSON.stringify(this.data);
+            var licenceKeys = licenceKeysStr.split('#');
+            var companyData = (JSON.parse(json));
+            var oldJson = JSON.stringify(companyData);
             //linearizace klicu
-            var keyList = [];
-            keyList.pushArray(_.map(data.adminKeys, function (compKey) { return { key: compKey, group: null, groupLector: false, visitor: false }; }));
-            _.each(data.studyGroups, function (grp) {
-                keyList.pushArray(_.map(grp.lectorKeys, function (compKey) { return { key: compKey, group: grp, groupLector: true, visitor: false }; }));
-                keyList.pushArray(_.map(grp.studentKeys, function (ak) { return { key: ak, group: grp, groupLector: false, visitor: false }; }));
-                keyList.pushArray(_.map(grp.visitorsKeys, function (ak) { return { key: ak, group: grp, groupLector: false, visitor: true }; }));
+            var alocList = [];
+            alocList.pushArray(_.map(companyData.managerKeys, function (alocKey) { return { key: alocKey, group: null, isLector: false, isVisitor: false, isStudent: false }; }));
+            _.each(companyData.studyGroups, function (grp) {
+                alocList.pushArray(_.map(grp.lectorKeys, function (alocKey) { return { key: alocKey, group: grp, isLector: true, isVisitor: false, isStudent: false }; }));
+                alocList.pushArray(_.map(grp.studentKeys, function (alocKey) { return { key: alocKey, group: grp, isLector: false, isVisitor: false, isStudent: true }; }));
+                alocList.pushArray(_.map(grp.visitorsKeys, function (alocKey) { return { key: alocKey, group: grp, isLector: false, isVisitor: true, isStudent: false }; }));
             });
-            //ev. doplneni udaju o uzivateli
-            var usedKeyInfo = null;
-            _.find(prodKeyStrs, function (prodKeyStr) {
-                usedKeyInfo = _.find(keyList, function (k) { return k.key.keyStr == prodKeyStr; });
-                if (!usedKeyInfo)
-                    return false;
-                usedKeyInfo.key.email = cookie.EMail || cookie.Login;
-                usedKeyInfo.key.firstName = cookie.FirstName;
-                usedKeyInfo.key.lastName = cookie.LastName;
-                usedKeyInfo.key.lmcomId = cookie.id;
-                return true;
+            ////student nebo visitor lmcomid => seznam lines. Pomaha zajistit jednoznacn
+            //var lmcomIdToLineDir: { [lmcomid: number]: Array<LMComLib.LineIds>; } = {};
+            //_.each(_.filter(alocList, l => l.isStudent || l.isVisitor), l => {
+            //  var lines = lmcomIdToLineDir[l.key.lmcomId];
+            //  if (!lines) lmcomIdToLineDir[l.key.lmcomId] = lines = [];
+            //  lines.push(l.group.line);
+            //});
+            //doplneni udaju do alokovaneho klice uzivatele. Alokovany klice se paruje s licencnim klicem
+            var alocatedKeyInfos = [];
+            _.each(licenceKeys, function (licenceKey) {
+                var alocatedKeyInfo = _.find(alocList, function (k) { return k.key.keyStr == licenceKey; });
+                if (!alocatedKeyInfo)
+                    return;
+                if (!alocatedKeyInfo)
+                    return;
+                alocatedKeyInfo.key.email = cookie.EMail || cookie.Login;
+                alocatedKeyInfo.key.firstName = cookie.FirstName;
+                alocatedKeyInfo.key.lastName = cookie.LastName;
+                alocatedKeyInfo.key.lmcomId = cookie.id;
+                alocatedKeyInfos.push(alocatedKeyInfo);
             });
-            var newJson = JSON.stringify(data);
-            var res = usedKeyInfo;
-            res.data = data;
-            res.jsonToSave = oldJson == newJson ? null : newJson;
+            //if (!usedKeyInfo) usedKeyInfo = { group: null, groupLector: false, key: null, visitor:true };
+            var newJson = JSON.stringify(companyData);
+            var res = { companyData: companyData, jsonToSave: oldJson == newJson ? null : newJson, alocatedKeyInfos: alocatedKeyInfos };
             return res;
         }
         intranet.enteredProductInfo = enteredProductInfo;

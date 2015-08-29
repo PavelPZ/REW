@@ -50,3 +50,70 @@
   font-size: 14px;
   font-weight: bold;
 }
+.bl .wizzard {
+  font-size: 110%;
+}
+.bl .wizzard .fa {
+  color: lightgray;
+  padding: 0 10px;
+}
+.bl .wizzard .wizzard-item {
+  display: inline;
+  padding: .2em .6em .3em;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border: 1px solid lightgray;
+  border-radius: .25em;
+  color: lightgray;
+  /*&.active {
+        color: #fff;
+        .bg-variant(@brand-primary);
+      }*/
+}
+.bl .wizzard .wizzard-item.done,
+.bl .wizzard .wizzard-item.active {
+  color: #fff;
+  background-color: #337ab7;
+}
+a.bl .wizzard .wizzard-item.done:hover,
+a.bl .wizzard .wizzard-item.active:hover {
+  background-color: #286090;
+}
+.bl h3 .flag-small {
+  height: 22px;
+}
+.bl .lm-tabs a:focus {
+  outline: none;
+}
+.bl .lm-tabs li.active * {
+  background-color: #337ab7 !important;
+  color: #ffffff !important;
+}
+.bl .study-plan > li {
+  position: relative;
+  padding-left: 50px;
+  padding-right: 120px;
+}
+.bl .study-plan > li h4 {
+  margin-top: 0px;
+}
+.bl .study-plan > li .left-mark,
+.bl .study-plan > li .right-mark {
+  position: absolute;
+  top: 5px;
+}
+.bl .study-plan > li .left-mark {
+  left: 10px;
+  top: 10px;
+  font-size: 20px;
+  border: solid 1px lightgray;
+  border-radius: 15px;
+  width: 30px;
+  text-align: center;
+}
+.bl .study-plan > li .right-mark {
+  width: 110px;
+  right: 0px;
+}

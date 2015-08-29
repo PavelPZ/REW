@@ -10,47 +10,78 @@ var vyzva;
     var homeViewController = (function (_super) {
         __extends(homeViewController, _super);
         function homeViewController(state) {
+            var _this = this;
             _super.call(this, state);
             this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb[1].active = true;
-            this.prt = this.parent.getPretestItemModel();
+            var prUd = blended.getPersistData(this.parent.dataNode.pretest, this.ctx.taskid);
+            this.learnPlan = [];
+            var someActive = false;
+            if (!prUd || !prUd.done)
+                this.pretestStatus = IHomeNodeStatus.active;
+            else {
+                this.pretestStatus = IHomeNodeStatus.done;
+                this.pretestLevel = prUd.targetLevel;
+                this.learnPlan.push(this.fromNode(this.parent.dataNode.entryTests[prUd.targetLevel], 2));
+                this.learnPlan.pushArray(_.map(this.parent.dataNode.lessons[prUd.targetLevel], function (nd, idx) { return _this.fromNode(nd, idx + 3); }));
+            }
+            _.each(this.learnPlan, function (pl) {
+                if (blended.moduleIsDone(pl.node, _this.ctx.taskid))
+                    pl.status = IHomeNodeStatus.done;
+                else if (!someActive) {
+                    someActive = true;
+                    pl.status = IHomeNodeStatus.active;
+                }
+            });
         }
+        homeViewController.prototype.fromNode = function (node, idx) { return { node: node, user: blended.getPersistData(node, this.ctx.taskid), task: this.parent, idx: idx }; };
+        homeViewController.prototype.gotoLector = function (groupId) {
+            this.navigate({ stateName: vyzva.stateNames.lectorHome.name, pars: { groupid: groupId } });
+        };
         return homeViewController;
     })(blended.taskViewController);
     vyzva.homeViewController = homeViewController;
+    (function (IHomeNodeStatus) {
+        IHomeNodeStatus[IHomeNodeStatus["no"] = 0] = "no";
+        IHomeNodeStatus[IHomeNodeStatus["done"] = 1] = "done";
+        IHomeNodeStatus[IHomeNodeStatus["active"] = 2] = "active";
+    })(vyzva.IHomeNodeStatus || (vyzva.IHomeNodeStatus = {}));
+    var IHomeNodeStatus = vyzva.IHomeNodeStatus;
+    blended.rootModule
+        .filter('vyzva$home$nodeclass', function () {
+        return function (id) {
+            switch (id) {
+                case IHomeNodeStatus.done: return "list-group-item-info";
+                case IHomeNodeStatus.active: return "list-group-item-success";
+                default:
+                    return "Angličtina";
+                    ;
+            }
+        };
+    })
+        .directive('vyzva$home$nodemarks', function () {
+        return {
+            scope: { status: '&status', index: '&index' },
+            templateUrl: 'vyzva$home$nodemarks.html'
+        };
+    });
     //****************** TASK
     var homeTaskController = (function (_super) {
         __extends(homeTaskController, _super);
         function homeTaskController(state, resolves) {
             _super.call(this, state, resolves);
-            //if (resolves[0].loader == 'schoolmanager') {
-            //  this.wrongUrlRedirect({ stateName: stateNames.shoolManager.name }); return;
-            //} else if (resolves[0].loader == 'langmastermanager') {
-            //  this.wrongUrlRedirect({ stateName: stateNames.langmasterManager.name }); return;
-            //}
             this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { startDate: Utils.nowToNum() }; });
+            //Intranet
+            this.companyData = (resolves[1]);
+            if (!this.companyData)
+                return;
+            var alocatedKeyInfos = this.companyData.alocatedKeyInfos;
+            this.lectorGroups = _.map(_.filter(alocatedKeyInfos, function (inf) { return inf.isLector; }), function (inf) { return inf.group; });
+            var studentGroups = _.map(_.filter(alocatedKeyInfos, function (inf) { return inf.isLector || inf.isVisitor; }), function (inf) { return inf.group; });
+            this.studentGroup = studentGroups.length > 0 ? studentGroups[0] : null;
+            this.isLector = this.lectorGroups.length > 0;
+            this.isStudent = !!this.studentGroup;
         }
-        //********** PRETEST item
-        homeTaskController.prototype.getPretestItemModel = function () {
-            var _this = this;
-            var prUd = blended.getPersistData(this.dataNode.pretest, this.ctx.taskid);
-            return {
-                run: function () {
-                    _this.child = new blended.pretestTaskController({
-                        params: blended.cloneAndModifyContext(_this.ctx, function (d) { return d.pretesturl = blended.encodeUrl(_this.dataNode.pretest.url); }),
-                        current: vyzva.stateNames.pretestTask,
-                        parent: _this,
-                        createMode: blended.createControllerModes.adjustChild
-                    });
-                    var url = _this.child.goCurrent();
-                    _this.navigate(url);
-                },
-                canRun: !prUd || !prUd.done,
-                btnTitle: !prUd ? 'Začněte spuštěním Rozřazovacího testu' : 'Dokončete Rozřazovací test',
-                resultLevel: prUd && prUd.done ? blended.levelIds[prUd.targetLevel] : '',
-                previewUrl: vyzva.stateNames.pretest.name,
-            };
-        };
         return homeTaskController;
     })(blended.homeTaskController);
     vyzva.homeTaskController = homeTaskController;

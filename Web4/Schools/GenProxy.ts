@@ -53,21 +53,6 @@ module proxies {
 	  } 
    
   };
-  export class blendedpersistence {
-    static deleteDataKeys(companyid: number, courseuserid: number, producturl: string, taskid: string, urltaskids: {  url: string;  taskId: string;  }[], completed: () => void): void {
-		  invoke('blendedpersistencecontroller/deletedatakeys', 'post', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid }, JSON.stringify(urltaskids), completed);
-	  } 
-    static getShortProductDatas(companyid: number, courseuserid: number, producturl: string, completed: (res: {  url: string;  taskId: string;  shortData: string;  }[]) => void): void {
-		  invoke('blendedpersistencecontroller/getshortproductdatas', 'get', { companyid: companyid, courseuserid: courseuserid, producturl: producturl }, null, completed);
-	  } 
-    static getLongData(companyid: number, courseuserid: number, producturl: string, taskid: string, key: string, completed: (res: string) => void): void {
-		  invoke('blendedpersistencecontroller/getlongdata', 'get', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid, key: key }, null, completed);
-	  } 
-    static saveUserData(companyid: number, courseuserid: number, producturl: string, data: {  url: string;  taskId: string;  shortData: string;  longData: string;  }[], completed: () => void): void {
-		  invoke('blendedpersistencecontroller/saveuserdata', 'post', { companyid: companyid, courseuserid: courseuserid, producturl: producturl }, JSON.stringify(data), completed);
-	  } 
-   
-  };
   export class course {
     static deleteDataKeys(email: string, compid: string, productid: string, testkeyid: number, keys: Array<string>, completed: () => void): void {
 		  invoke('course/deletedatakeys', 'post', { email: email, compid: compid, productid: productid, testkeyid: testkeyid }, JSON.stringify(keys), completed);
@@ -168,14 +153,26 @@ module proxies {
     static lmAdminCreateCompany(companyid: number, companydata: string, completed: () => void): void {
 		  invoke('vyzva57services/lmadmincreatecompany', 'post', { companyid: companyid }, JSON.stringify(companydata), completed);
 	  } 
-    static lmAdminCreateLicenceKeys(companyid: number, requestedkeys: {  line: LMComLib.LineIds;  num: number;  isPattern3: boolean;  keys: Array<string>;  }[], completed: (res: {  line: LMComLib.LineIds;  num: number;  isPattern3: boolean;  keys: Array<string>;  }[]) => void): void {
+    static lmAdminCreateLicenceKeys(companyid: number, requestedkeys: {  line: LMComLib.LineIds;  num: number;  keys: Array<string>;  }[], completed: (res: {  line: LMComLib.LineIds;  num: number;  keys: Array<string>;  }[]) => void): void {
 		  invoke('vyzva57services/lmadmincreatelicencekeys', 'post', { companyid: companyid }, JSON.stringify(requestedkeys), completed);
 	  } 
-    static loadCompanyData(companyid: number, islearningdata: boolean, isorderdata: boolean, completed: (res: {  LearningData: string;  OrderData: string;  }) => void): void {
-		  invoke('vyzva57services/loadcompanydata', 'get', { companyid: companyid, islearningdata: islearningdata, isorderdata: isorderdata }, null, completed);
+    static loadCompanyData(companyid: number, completed: (res: string) => void): void {
+		  invoke('vyzva57services/loadcompanydata', 'get', { companyid: companyid }, null, completed);
 	  } 
-    static writeCompanyData(companyid: number, data: {  LearningData: string;  OrderData: string;  }, completed: () => void): void {
+    static writeCompanyData(companyid: number, data: string, completed: () => void): void {
 		  invoke('vyzva57services/writecompanydata', 'post', { companyid: companyid }, JSON.stringify(data), completed);
+	  } 
+    static deleteDataKeys(companyid: number, lmcomid: number, producturl: string, urltaskids: {  url: string;  taskId: string;  }[], completed: () => void): void {
+		  invoke('vyzva57services/deletedatakeys', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, JSON.stringify(urltaskids), completed);
+	  } 
+    static getShortProductDatas(companyid: number, lmcomid: number, producturl: string, completed: (res: {  url: string;  taskId: string;  shortData: string;  }[]) => void): void {
+		  invoke('vyzva57services/getshortproductdatas', 'get', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, null, completed);
+	  } 
+    static getLongData(companyid: number, lmcomid: number, producturl: string, taskid: string, key: string, completed: (res: string) => void): void {
+		  invoke('vyzva57services/getlongdata', 'get', { companyid: companyid, lmcomid: lmcomid, producturl: producturl, taskid: taskid, key: key }, null, completed);
+	  } 
+    static saveUserData(companyid: number, lmcomid: number, producturl: string, data: {  url: string;  taskId: string;  shortData: string;  longData: string;  }[], completed: () => void): void {
+		  invoke('vyzva57services/saveuserdata', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, JSON.stringify(data), completed);
 	  } 
    
   };

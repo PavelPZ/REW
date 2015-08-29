@@ -1,83 +1,39 @@
-﻿<h1>{{ts.order && ts.order.closed ? 'closed' : 'opened'}}</h1>
-<div data-ng-if="!ts.order.closed">
-  <div class="alert alert-info">
-    <h3>Objednavatel:</h3>
+﻿<a href="#" ng-click="ts.debugDeletCompany()">del</a>
+<div ng-if="ts.wizzardStep<2">
+  TODO: vysvětlení
+  <br />
+  <br />
+  <div class="col-sm-12 wizzard">
+    <span class="wizzard-item" ng-class="{'active': ts.wizzardStep==0, 'done': ts.wizzardStep>0}">1. Založení studijních skupin</span>
+    <span class="fa fa-arrow-right"></span>
+    <span class="wizzard-item" ng-class="{'active': ts.wizzardStep==1, 'done': ts.wizzardStep>1, 'future': ts.wizzardStep<1}">2. Potvrzení</span>
+    <span class="fa fa-arrow-right"></span>
+    <span class="wizzard-item future">3. Licenční klíče pro lektory</span>
   </div>
-  <form name="orderForm" novalidate>
-    <div class="col-sm-6">
-      <div class="form-group">
-
-        <label for="schoolName" class="control-label">Název školy</label>
-        <input class="form-control" name="schoolName" id="schoolName" placeholder="Název školy" ng-model="ts.order.schoolName" required>
-        <span style="color:red" ng-show="(orderForm.schoolName.$dirty || ts.showErrors) && orderForm.schoolName.$invalid">
-          <span ng-if="orderForm.schoolName.$error.required">{{::ts.msgRequired}}</span>
-        </span>
-        <br />
-
-        <label for="city" class="control-label">Město</label>
-        <input class="form-control" name="city" id="city" placeholder="Město" ng-model="ts.order.city" required>
-        <span style="color:red" ng-show="(orderForm.city.$dirty || ts.showErrors) && orderForm.city.$invalid">
-          <span ng-if="orderForm.city.$error.required">{{::ts.msgRequired}}</span>
-        </span>
-        <br />
-
-        <label for="psc" class="control-label">PSČ</label>
-        <input class="form-control" name="psc" id="psc" placeholder="PSČ" ng-model="ts.order.psc" required>
-        <span style="color:red" ng-show="(orderForm.psc.$dirty || ts.showErrors) && orderForm.psc.$invalid">
-          <span ng-if="orderForm.city.$error.required">{{::ts.msgRequired}}</span>
-        </span>
-        <br />
-
-        <label for="street" class="control-label">Ulice</label>
-        <input class="form-control" name="street" id="street" placeholder="Ulice" ng-model="ts.order.street" required>
-        <span style="color:red" ng-show="(orderForm.street.$dirty || ts.showErrors) && orderForm.street.$invalid">
-          <span ng-if="orderForm.street.$error.required">{{::ts.msgRequired}}</span>
-        </span>
-        <br />
-
+  <div class="clearfix"></div>
+  <div data-ng-if="ts.wizzardStep<2">
+    <br />
+    <div class="alert alert-default" ng-if="ts.wizzardStep==0">
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <h4>Přidat studijní skupinu...</h4>
+        </div>
       </div>
-
-    </div>
-    <div class="col-sm-6">
-      <div class="form-group">
-        <label for="firstName" class="control-label">Jméno</label>
-        <input class="form-control" name="firstName" id="firstName" placeholder="Jméno" ng-model="ts.order.firstName" required>
-        <span style="color:red" ng-show="(orderForm.firstName.$dirty  || ts.showErrors)&& orderForm.firstName.$invalid">
-          <span ng-if="orderForm.firstName.$error.required">{{::ts.msgRequired}}</span>
-        </span>
-        <br />
-
-        <label for="lastName" class="control-label">Příjmení</label>
-        <input class="form-control" name="lastName" id="lastName" placeholder="Příjmení" ng-model="ts.lastName.street" required>
-        <span style="color:red" ng-show="(orderForm.lastName.$dirty || ts.showErrors) && orderForm.lastName.$invalid">
-          <span ng-if="orderForm.lastName.$error.required">{{::ts.msgRequired}}</span>
-        </span>
-        <br />
-
-        <label for="email" class="control-label">E-mail</label>
-        <input type="email" class="form-control" name="email" id="email" placeholder="e-mail" ng-model="ts.order.email" required>
-        <span style="color:red" ng-show="(orderForm.email.$dirty || ts.showErrors) && orderForm.email.$invalid">
-          <span ng-if="orderForm.email.$error.required">{{::ts.msgRequired}}</span>
-          <span ng-if="orderForm.email.$error.email">Špatný formát e-mailu</span>
-        </span>
-        <br />
-
-      </div>
-    </div>
-    <div class="clearfix"></div>
-    <h3>Přidat do objednávky:</h3>
-    <div class="alert alert-info">
       <div class="row">
         <div class="col-sm-6">
-          <h4 class="text-center">Šablona č. 4</h4>
-          <div class="col-sm-4" ng-repeat="btn in [1,2,5]">
-            <button class="btm btn-info" ng-click="ts.addItem(btn, false)">{{btn | courseid}}</button>
+          <h4 class="text-center">...studentů (dle šablony č. 4)</h4>
+          <div class="col-sm-4" ng-repeat="btn in [1,2,5]" style="padding:0;">
+            <button class="btm btn-info" ng-click="ts.addItem(btn, false)" style="white-space:nowrap">
+              <span class="flag-small" ng-class="btn | lineIdsFlag"></span> {{btn | lineIdsText}}
+            </button>
           </div>
         </div>
         <div class="col-sm-6">
-          <h4 class="text-center">Šablona č. 3</h4>
-          <div class="col-sm-4" ng-repeat="btn in [1,2,5]">
-            <button class="btm btn-info" ng-disabled="ts.disabled(btn)" ng-click="ts.addItem(btn, true)">{{btn | courseid}}</button>
+          <h4 class="text-center">...učitelů (dle šablony č. 3)</h4>
+          <div class="col-sm-4" ng-repeat="btn in [1,2,5]" style="padding:0;">
+            <button class="btm btn-info" ng-disabled="ts.disabled(btn)" ng-click="ts.addItem(btn, true)" style="white-space:nowrap">
+              <span class="flag-small" ng-class="btn | lineIdsFlag"></span> {{btn | lineIdsText}}
+            </button>
           </div>
         </div>
       </div>
@@ -93,22 +49,60 @@
         </tr>
       </thead>
       <tbody>
-        <tr data-ng-repeat="item in ts.order.groups">
-          <td ng-bind="item.line | courseid"></td>
-          <td><input class="form-control" ng-model="item.title" placeholder="titulek..." required /></td>
-          <td ng-bind="item.isPattern3 | sablonaid"></td>
-          <td><input class="form-control" ng-model="item.num" required /></td>
-          <td><button class="btn btn-sm btn-info" ng-click="ts.removeItem($index)">X</button></td>
+        <tr data-ng-repeat="item in ts.groups">
+          <td ng-bind="item.line | lineIdsText"></td>
+          <td><input class="form-control" ng-model="item.title" ng-readonly="ts.wizzardStep>0" placeholder="titulek..." /></td>
+          <td ng-bind="item.isPattern3 | vyzva$managerschool$sablonaid"></td>
+          <td><input class="form-control" ng-model="item.num" ng-readonly="ts.wizzardStep>0" /></td>
+          <td><button class="btn btn-sm btn-info" ng-if="ts.wizzardStep==0" ng-click="ts.removeItem($index)">X</button></td>
         </tr>
       </tbody>
     </table>
-  </form>
 
-  <div class="clearfix"></div>
+    <div class="clearfix"></div>
+    <br />
+    <button class="btm btn-default btn-lg" ng-if="ts.wizzardStep==1" ng-click="ts.wizzardClick(true)">Předchozí</button>
+    <button class="btm btn-success btn-lg" ng-click="ts.wizzardClick(false)">{{ts.nextTitle}}</button>
+  </div>
+
+</div>
+
+<div data-ng-if="ts.wizzardStep==2">
+  TODO: vysvětlení
   <br />
-  <button class="btm btn-success btn-lg" ng-click="ts.orderOK(orderForm.$invalid)">Další</button>
+  <br />
+  <h3>Školní administrátoři</h3>
+  <div vyzva$managerchool$usekeys items="::ts.company.managerKeys"></div>
+  <div ng-repeat="grp in ::ts.company.studyGroups">
+    <h4>
+      {{grp.title}}:
+      <span class="flag-small" ng-class="::grp.line | lineIdsFlag"></span>
+      {{::grp.line | lineIdsText}}
+      pro {{::grp.isPattern3 ? 'učitele (šablona č.3)' : 'studenty (šablona č.4)'}}
+    </h4>
+    <div vyzva$managerchool$usekeys items="::grp.lectorKeys"></div>
+  </div>
 </div>
 
-<div data-ng-if="ts.order.closed">
-  <h2>closed</h2>
-</div>
+<script type="text/ng-template" id="vyzva$managerschool$usekey.html">
+  <td>{{::item().keyStr}}</td>
+  <td>{{::item().firstName}}</td>
+  <td>{{::item().lastName}}</td>
+  <td>{{::item().email}}</td>
+</script>
+
+<script type="text/ng-template" id="vyzva$managerchool$usekeys.html">
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr class="active">
+        <th>Licenční klíč</th>
+        <th>Jméno</th>
+        <th>Příjmení</th>
+        <th>EMail</th>
+      </tr>
+    </thead>
+    <tr ng-repeat="usedKey in ::items()" vyzva$managerschool$usekey="" item="::usedKey"></tr>
+  </table>
+</script>
+
+

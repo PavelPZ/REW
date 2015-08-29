@@ -27,7 +27,8 @@ namespace Packager {
       StringBuilder sb = new StringBuilder();
       foreach (var f in Consts.getFiles(Consts.pathType.relUrl, basicUrl, files)) sb.AppendFormat(cssTmpl, f);
       return sb.ToString();
-    } const string cssTmpl = "  <link href='{0}' rel='stylesheet'/>\r\n";
+    }
+    const string cssTmpl = "  <link href='{0}' rel='stylesheet'/>\r\n";
 
     public static string writeJS(IEnumerable<IEnumerable<string>> files, string basicUrl = "schools") {
       StringBuilder sb = new StringBuilder();
@@ -47,7 +48,8 @@ namespace Packager {
         if (tp.Item1.StartsWith("!")) {
           var s = tp.Item1.Substring(1);
           sb.AppendLine(string.Format(htmlPageTmpl, s.Split(',')[0], s, tp.Item2));
-        } else
+        }
+        else
           sb.AppendLine(string.Format(htmlTmpl, tp.Item1, tp.Item2));
       }
       return sb.ToString();
@@ -99,7 +101,8 @@ namespace Packager {
       public file(string fn, byte[] srcData) : this(fn) { this._srcData = srcData; }
       public file(string fn, Func<byte[]> getSrcData) : this(fn) { this.getSrcData = getSrcData; }
       public string srcPath; //napr. q:\LMCom\rew\Downloads\Common\IIS nebo 
-      public byte[] srcData { get { return _srcData != null ? _srcData : (getSrcData != null ? _srcData = getSrcData() : null); } } byte[] _srcData;
+      public byte[] srcData { get { return _srcData != null ? _srcData : (getSrcData != null ? _srcData = getSrcData() : null); } }
+      byte[] _srcData;
       Func<byte[]> getSrcData;
       public string destDir; //napr. schools
       public string name; //napr. Index.html
@@ -497,28 +500,30 @@ namespace Packager {
     public static string[] angularJS = new string[] {
       "blendedapi/scripts/lib.js",
       "blendedapi/scripts/loader.js",
+      "blendedapi/scripts/directives.js",
       "blendedapi/scripts/tasks.js",
       "blendedapi/scripts/showexercise.js",
       "blendedapi/scripts/stateman.js",
-      //"blendedapi/scripts/tasksnew.js",
 
       "blendedapi/vyzva/scripts/lib.js",
       "blendedapi/vyzva/scripts/intranet.js",
-      //"blendedapi/vyzva/scripts/stateman.js",
-      //"blendedapi/vyzva/scripts/tasks.js",
+      "blendedapi/vyzva/scripts/directives.js",
 
-      "blendedapi/vyzva/viewparts/toolbar/empty.js",
-      "blendedapi/vyzva/viewparts/toolbar/module.js",
-      "blendedapi/vyzva/viewparts/toolbar/run.js",
-      "blendedapi/vyzva/viewparts/toolbar/toolbar.js",
+      "blendedapi/vyzva/views/toolbar/module.js",
+      "blendedapi/vyzva/views/toolbar/run.js",
 
       "blendedapi/vyzva/views/home/pretestitem.js",
+      "blendedapi/vyzva/views/home/lesson.js",
+
       "blendedapi/vyzva/views/managerlangmaster.js",
       "blendedapi/vyzva/views/managerschool.js",
       "blendedapi/vyzva/views/exercise.js",
       "blendedapi/vyzva/views/module.js",
       "blendedapi/vyzva/views/pretest.js",
+      "blendedapi/vyzva/views/lector.js",
       "blendedapi/vyzva/views/home.js",
+
+      "blendedapi/vyzva/views/lector/keys.js",
 
       "blendedapi/vyzva/app.js",
       "blendedapi/app.js",

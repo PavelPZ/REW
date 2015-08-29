@@ -12,9 +12,16 @@ namespace blendedData {
     }
 
     [Key]
+    public int Id { get; set; }
+
     [Required]
-    [StringLength(10)]
-    public string LicenceKey { get; set; }
+    [Index]
+    [StringLength(120)]
+    public string ProductUrl{ get; set; } //ProductUrl a LMComId je pro company v DB unikatni 
+
+    [Required]
+    [Index]
+    public Int64 LMComId { get; set; }
 
     public int CompanyId { get; set; }
 

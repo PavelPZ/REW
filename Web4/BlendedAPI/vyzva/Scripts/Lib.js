@@ -13,11 +13,11 @@ var vyzva;
         //});
     }
     vyzva.finishHomeDataNode = finishHomeDataNode;
-    function breadcrumbBase(ctrl) {
-        return [
-            { title: 'Moje Online jazykové kurzy a testy', url: '#' + Pager.getHomeUrl() },
-            { title: ctrl.taskRoot().dataNode.title, url: ctrl.href({ stateName: vyzva.stateNames.home.name, pars: ctrl.ctx }), active: false }
-        ];
+    function breadcrumbBase(ctrl, homeOnly) {
+        var res = [{ title: 'Moje Online jazykové kurzy a testy', url: '#' + Pager.getHomeUrl() }];
+        if (!homeOnly)
+            res.push({ title: ctrl.taskRoot().dataNode.title, url: ctrl.href({ stateName: vyzva.stateNames.home.name, pars: ctrl.ctx }), active: false });
+        return res;
     }
     vyzva.breadcrumbBase = breadcrumbBase;
 })(vyzva || (vyzva = {}));

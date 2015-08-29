@@ -8,7 +8,7 @@
   export var loadLongData = ['$stateParams', (ctx: blended.learnContext) => {
     blended.finishContext(ctx);
     var def = ctx.$q.defer<IExLong>();
-    proxies.blendedpersistence.getLongData(ctx.companyid, ctx.userdataid, ctx.productUrl, ctx.taskid, ctx.Url, long => {
+    proxies.vyzva57services.getLongData(ctx.companyid, ctx.userdataid, ctx.productUrl, ctx.taskid, ctx.Url, long => {
       var res = JSON.parse(long);
       def.resolve(res);
     });
@@ -25,8 +25,10 @@
   //  var userPromise = def.promise;
   //  return ctx.$q.all([exPromise, userPromise]);
   //}];
-
-  export var showExerciseDirective2 = ['$stateParams', ($stateParams: blended.learnContext) => new showExerciseModel($stateParams)];
+  rootModule
+    .directive('showExercise', ['$stateParams', ($stateParams: blended.learnContext) => new showExerciseModel($stateParams)])
+  ;
+  //export var showExerciseDirective2 = ['$stateParams', ($stateParams: blended.learnContext) => new showExerciseModel($stateParams)];
 
   export class showExerciseModel {
     constructor(public $stateParams: blended.learnContext) { }
@@ -179,7 +181,7 @@
   }
 
   export interface IExerciseStateData {
-    isTest: boolean;
+    isTest: boolean; //test nebo cviceni
   }
 
   export class exerciseTaskViewController extends taskController implements IExerciseStateData { //task pro pruchod lekcemi
@@ -193,7 +195,6 @@
     modItems: Array<exItemProxy>; //info o vsech cvicenich modulu
     modIdx: number; //self index v modulu
     breadcrumb: Array<breadcrumbItem>;
-    gotoHomeUrl() { Pager.gotoHomeUrl(); }
 
     isDone(): boolean { return this.exService.user.short.done; }
 

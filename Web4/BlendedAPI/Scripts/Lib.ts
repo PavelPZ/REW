@@ -6,7 +6,7 @@
 
   export interface breadcrumbItem {
     title: string;
-    url: string;
+    url?: string;
     active?: boolean;
   }
 
@@ -27,6 +27,10 @@
     //URL parametry
     loginid: number; userdataid: number; companyid: number; loc: LMComLib.Langs; persistence: CourseMeta.IPersistence;
     producturl: string; taskid: string; lickeys: string;
+    //pro intranet:
+    groupid?:string, //identifikace skupiny studentu
+    lectortab?: string, //tab na lector strance
+
     pretesturl?: string; moduleurl?: string; url?: string; 
     //normalizovana url
     productUrl?: string; Url?: string; pretestUrl?: string; moduleUrl?: string; 
@@ -38,6 +42,7 @@
     //product?: IProductEx;
     finishProduct?: (prod: IProductEx) => void;
   }
+
   export function cloneAndModifyContext(ctx: learnContext, modify: (c: learnContext) => void = null): learnContext {
     var res: learnContext = <learnContext>{}; $.extend(res, ctx);
     if (modify) {
@@ -56,19 +61,6 @@
     }
     return ctx;
   }
-
-  //export function getStateChain($state: angular.ui.IStateService): Array<angular.ui.IState> {
-  //  var res = [];
-  //  var stWrapper = <any>$state.$current;
-  //  while (stWrapper) {
-  //    res.push(stWrapper);
-  //    stWrapper = stWrapper.parent;
-  //  }
-  //  return res;
-  //}
-
-  
- 
 
   //************ LOGGING functions
   export function traceRoute() {
@@ -156,6 +148,5 @@
       });
     }
   };
-
 
 }

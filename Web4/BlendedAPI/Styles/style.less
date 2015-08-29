@@ -1,29 +1,35 @@
-﻿.bl {
+﻿@import "../../bs3/less/mixins/alerts.less";
+@import "../../bs3/less/mixins/gradients.less";
+@import "../../bs3/less/mixins/background-variant.less";
+@import "../../bs3/less/variables.less";
+
+.bl {
   .topbar {
-    background-color:black;
+    background-color: black;
     height: 50px;
+
     .lm-logo-black-small {
-      float:left;
+      float: left;
       background: url(img/lm-logo-black.png) no-repeat;
       margin-top: 10px;
       margin-left: 0;
       margin-right: 20px;
       width: 41px;
       height: 32px;
-      cursor:pointer;
+      cursor: pointer;
     }
 
     .btn {
-      margin-top:2px;
+      margin-top: 2px;
     }
-
   }
+
   .navbar-center {
     //display: table !important;
     height: 50px;
 
     .lm-logo-black-small {
-      float:left;
+      float: left;
       background: url(img/lm-logo-black.png) no-repeat;
       margin-top: 10px;
       margin-left: 0;
@@ -57,6 +63,80 @@
       &.contact {
         font-size: 14px;
         font-weight: bold;
+      }
+    }
+  }
+
+  .wizzard {
+    font-size: 110%;
+
+    .fa {
+      color: lightgray;
+      padding: 0 10px;
+    }
+
+    .wizzard-item {
+      display: inline;
+      padding: .2em .6em .3em;
+      line-height: 1;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: baseline;
+      border: 1px solid lightgray;
+      border-radius: .25em;
+      color: lightgray;
+
+      &.done, &.active {
+        //.bg-variant(@state-info-bg);
+        color: #fff;
+        .bg-variant(@brand-primary);
+      }
+      /*&.active {
+        color: #fff;
+        .bg-variant(@brand-primary);
+      }*/
+      &.future {
+      }
+    }
+  }
+
+  h3 .flag-small {
+    height: 22px;
+  }
+
+  .lm-tabs {
+    a:focus {
+      outline: none;
+    }
+
+    li.active * {
+      background-color: @panel-primary-heading-bg !important;
+      color: @panel-primary-text !important;
+    }
+  }
+
+  .study-plan {
+    > li {
+      position:relative;
+      padding-left:50px;
+      padding-right:120px;
+      h4 {margin-top:0px;}
+      .left-mark, .right-mark {
+        position:absolute; 
+        top:5px; 
+      }
+      .left-mark {
+        left:10px;
+        top:10px;
+        font-size:20px;
+        border:solid 1px lightgray;
+        border-radius:15px;
+        width:30px;
+        text-align:center;
+      }
+      .right-mark {
+        width:110px;
+        right:0px;
       }
     }
   }

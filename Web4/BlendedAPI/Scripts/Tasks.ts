@@ -2,18 +2,21 @@
 
   export class controller {
     ctx: learnContext;
-    myState: state;
-    parent: taskController;
+    state: state;
+    parent: controller;
     isWrongUrl: boolean;
     $scope: IControllerScope;
 
-    constructor(state: IStateService) {
-      this.ctx = state.params;
-      this.$scope = state.$scope;
+    title: string;
+    breadcrumb: Array<breadcrumbItem>;
+
+    constructor(stateService: IStateService) {
+      this.ctx = stateService.params;
+      this.$scope = stateService.$scope;
       finishContext(this.ctx);
-      $.extend(this, state.current.data);
-      this.myState = state.current;
-      this.parent = state.parent;
+      this.state = stateService.current;
+      if (this.$scope) this.$scope.state = this.state;
+      this.parent = stateService.parent;
     }
     href(url: IStateUrl): string {
       return this.ctx.$state.href(url.stateName, url.pars);
@@ -30,10 +33,10 @@
       while (t) { res.push(t); t = t.child; }
       return res;
     }
-    taskRoot(): homeTaskController {
+    taskRoot<T extends homeTaskController>(): T {
       var t = this;
-      while (t.myState.name != prodStates.homeTask.name) t = t.parent;
-      return <homeTaskController>t;
+      while (t.state.name != prodStates.homeTask.name) t = t.parent;
+      return <T>t;
     }
 
     wrongUrlRedirect(url: IStateUrl) {
@@ -42,7 +45,7 @@
       setTimeout(this.navigate(url), 1);
     }
   }
-  export interface IControllerScope extends ng.IScope { ts: controller; } //$scope pro vsechny controllers
+  export interface IControllerScope extends ng.IScope { ts: controller; state: state; } //$scope pro vsechny controllers
 
   //******* TASK VIEW - predchudce vsech controllers, co maji vizualni podobu (html stranku)
   export class taskViewController extends controller {
@@ -50,9 +53,7 @@
       super(state);
       this.title = this.parent.dataNode.title;
     }
-    title: string;
-    breadcrumb: Array<breadcrumbItem>;
-    gotoHomeUrl() { Pager.gotoHomeUrl(); }
+    parent: taskController;
   }
 
   //******* TASK (predchudce vse abstraktnich controllers (mimo cviceni), reprezentujicich TASK). Task umi obslouzit zelenou sipku apod.
@@ -62,6 +63,7 @@
     child: taskController; //child TASK v hiearchii STATES
     dataNode: CourseMeta.data; //sitemap produkt node
     user: IPersistNodeItem<IPersistNodeUser>; //user persistence, odpovidajici taskId
+    parent: taskController;
 
     //********************** Virtualni procs
     //dodelej task list do green stavu
@@ -97,7 +99,7 @@
       var t = this;
       while (t) {
         t.adjustChild();
-        if (!t.child) return { stateName: t.myState.name, pars: t.ctx };
+        if (!t.child) return { stateName: t.state.name, pars: t.ctx };
         t = t.child;
       }
     }
@@ -243,6 +245,10 @@
     actChildIdx: number;
   }
 
+  export function moduleIsDone(nd: CourseMeta.data, taskId: string): boolean {
+    return !_.find(nd.Items, it => { var itUd = blended.getPersistData<IExShort>(it, taskId); return (!itUd || !itUd.done); });
+  }
+
   export class moduleTaskController extends taskController implements IModuleStateData { //task pro pruchod lekcemi (repository je seznam cviceni)
 
     user: IPersistNodeItem<IModuleUser>;
@@ -255,7 +261,7 @@
       this.user = getPersistWrapper<IModuleUser>(this.dataNode, this.ctx.taskid, () => { return { done: false, actChildIdx: 0 }; });
     }
 
-    isDone(): boolean { return !_.find(this.dataNode.Items, it => { var itUd = blended.getPersistData<IExShort>(it, this.ctx.taskid); return (!itUd || !itUd.done); }); }
+    isDone(): boolean { return moduleIsDone(this.dataNode, this.ctx.taskid); }
 
     adjustChild() {
       if (this.child) return;

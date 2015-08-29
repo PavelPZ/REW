@@ -4,9 +4,9 @@
     app: ng.IModule;
     $oldActState: angular.ui.IStateService;
 
-    constructor(name: string, modules: Array<string>) {
+    constructor() {
       var self = this;
-      this.app = angular.module(name, modules);
+      this.app = rootModule;
     }
 
     href(stateName: string, params?: Object, options?: angular.ui.IHrefOptions): string {
@@ -50,10 +50,10 @@
   }
   export var prodStates: IProductStates = {};
 
-  export var root = new Module('appRoot', ['ngLocale', 'ngResource', 'ui.router']);
-  root.app
-  //.directive('showExercise', blended.showExerciseDirective)
-    .directive('showExercise', blended.showExerciseDirective2)
+  export var root = new Module();
+
+  rootModule
+    //.directive('showExercise', blended.showExerciseDirective2)
     .directive('lmInclude', () => {
       return {
         restrict: 'A',
@@ -65,18 +65,7 @@
       $rootScope.$on('$locationChangeStart', (event: angular.IAngularEvent, newUrl: string, oldUrl: string, newState, oldState) => {
         if (Pager.angularJS_OAuthLogin(location.hash, () => Pager.gotoHomeUrl())) event.preventDefault()
       })
-    }]).filter('courseid', function () {
-      return (id: LMComLib.LineIds) => {
-        switch (id) {
-          case LMComLib.LineIds.English: return "Angličtina";
-          case LMComLib.LineIds.German: return "Francouzština";
-          case LMComLib.LineIds.French: return "Němčina";
-          default: return "???";
-        }
-      };
-    }).filter('sablonaid', function () {
-      return (id: boolean) => id ? "Šablona č.3" : "Šablona č.4"
-    });
+    }])
   ;
 
   root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', ( //'$provide', (

@@ -18,7 +18,7 @@ var vyzva;
             this.pageUrls = this.ctx.productUrl + '|' + this.ctx.moduleUrl + '|' + this.ctx.Url;
         }
         pretestExercise.prototype.tbClick = function () {
-            var pretest = _.find(this.taskList(), function (t) { return t.myState.name == vyzva.stateNames.pretestTask.name; });
+            var pretest = _.find(this.taskList(), function (t) { return t.state.name == vyzva.stateNames.pretestTask.name; });
             if (pretest == null)
                 throw 'pretest==null';
             var url = pretest.goAhead();

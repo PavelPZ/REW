@@ -25,7 +25,7 @@ namespace blendedData {
 
     public string ShortData { get; set; }
 
-    public string CourseUserId { get; set; }
+    public int CourseUserId { get; set; }
 
     public long Date { get; set; }
 

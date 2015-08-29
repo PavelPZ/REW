@@ -437,10 +437,10 @@ var CourseMeta;
             return prod && CourseMeta.isType(prod, CourseMeta.runtimeType.test);
         }
         lib.isTest = isTest;
-        function isAngularJS(prod) {
+        function isVyzvaProduct(prod) {
             return prod && CourseMeta.isType(prod, CourseMeta.runtimeType.productNew);
         }
-        lib.isAngularJS = isAngularJS;
+        lib.isVyzvaProduct = isVyzvaProduct;
         function keyTitle(prod, Days) {
             return prod.title + ' / ' + (CourseMeta.lib.isTest(prod) ? 'test' : 'days: ' + Days.toString());
         }

@@ -47,15 +47,6 @@ var blended;
         return ctx;
     }
     blended.finishContext = finishContext;
-    //export function getStateChain($state: angular.ui.IStateService): Array<angular.ui.IState> {
-    //  var res = [];
-    //  var stWrapper = <any>$state.$current;
-    //  while (stWrapper) {
-    //    res.push(stWrapper);
-    //    stWrapper = stWrapper.parent;
-    //  }
-    //  return res;
-    //}
     //************ LOGGING functions
     function traceRoute() {
         // Credits: Adam's answer in http://stackoverflow.com/a/20786262/69362

@@ -2,6 +2,8 @@
   export interface IState {
     childs?: Array<blended.state>;
     dataNodeUrlParName?: string;
+    moduleAlowCycleExercise?: boolean; //pro modul: dovol pomoci zelene sipky cyklovani cviceni
+    exerciseIsTest?: boolean; //pro cviceni
   }
 
 }

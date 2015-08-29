@@ -1,5 +1,38 @@
-﻿<a ui-sref="pg.ajs.vyzva.pretest.home({pretesturl:'!lm!blcourse!english!pretests!'})">Pretest</a><br />
-<a ui-sref="pg.ajs.vyzvaproduct.module({url:'url', mode:'course'})">Module</a><br />
-<a ui-sref="pg.ajs.vyzvaproduct.exercise({tasktype:'task', url:'url', mode:'course'})">Exercise</a><br />
+﻿<div class="logo-panel panel-primary" ng-if="::ts.parent.isLector">
+  <div class="panel-heading">
+    <h4>Studijní skupiny lektora</h4>
+  </div>
+  <div class="list-group">
+    <!--<a href="#" class="list-group-item" ng-repeat="group in ts.parent.lectorGroups" ng-click="gotoLector(group.groupId)" xui-sref="pg.ajs.vyzva.lector({groupid:group.groupId})">{{::group.title}}</a>-->
+    <a href="#" class="list-group-item" ng-repeat="group in ts.parent.lectorGroups" ng-click="ts.gotoLector(group.groupId)" >{{::group.title}}</a>
+  </div>
+</div>
 
-<div data-ng-include="::ts.dataPretestItem"></div>
+<div class="logo-panel panel-primary" ng-if="::ts.parent.isStudent">
+  <div class="panel-heading">
+    <h3>
+      <span ng-if="ts.pretestStatus==2">Rozřazovací test</span>
+      <b ng-if="ts.pretestStatus==1">Kurz úrovně {{ts.pretestLevel | levelText}}</b>
+    </h3>
+  </div>
+  <ul class="list-group study-plan">
+    <li class="list-group-item" ng-class="::ts.pretestStatus | vyzva$home$nodeclass">
+      <div vyzva$home$nodemarks status="::ts.pretestStatus" index="1"></div>
+      <div vyzva$home$pretest ts="::ts.parent"></div>
+    </li>
+    <li class="list-group-item" ng-repeat="node in ::ts.learnPlan" ng-class="::node.status | vyzva$home$nodeclass">
+      <div vyzva$home$nodemarks status="::node.status" index="::node.idx"></div>
+      <div vyzva$home$item ts="::node"></div>
+    </li>
+  </ul>
+</div>
+
+<script type="text/ng-template" id="vyzva$home$nodemarks.html">
+  <div class="left-mark">
+    {{index()}}
+  </div>
+  <div class="right-mark">
+    <button class="btn btn-info" ng-if="status()==1">Výsledky <i class="fa fa-eye"></i></button>
+    <button class="btn btn-success" ng-if="status()==2">Spustit <i class="fa fa-play"></i></button>
+  </div>
+</script>

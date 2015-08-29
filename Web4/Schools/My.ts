@@ -137,18 +137,24 @@ module schoolMy {
         //isPublIndiv: crs==null,
         expired: crs.Expired <= 0 ? new Date() : Utils.intToDate(crs.Expired),
         line: pr.line, title: pr.title, prodId: pr.url, isTest: CourseMeta.lib.isTest(pr),
-        isAngularJS: CourseMeta.lib.isAngularJS(pr),
+        isVyzvaProduct: CourseMeta.lib.isVyzvaProduct(pr),
         data: crs,
         myCompany: comp,
         gotoUrl: (dt: courseLink) => {
 
           //nove AngularJS produkty
-          if (dt.isAngularJS) {
+          if (dt.isVyzvaProduct) {
+
+            var licenceKeysStr: Array<string> = _.map(crs.LicenceKeys, licenceKey => {
+              var parts = licenceKey.split('|');
+              var key: keys.Key = { licId: parseInt(parts[0]), counter: parseInt(parts[1]) };
+              return keys.toString(key);
+            });
 
             var ctx: blended.learnContext = {
               producturl: blended.encodeUrl(pr.url), companyid: comp.data.Id, loginid: LMStatus.Cookie.id,
-              userdataid: LMStatus.Cookie.id, loc: Trados.actLang, taskid: 'def', persistence: null, /*TODO*/
-              lickeys: crs.LicenceKeys.join('#')
+              userdataid: LMStatus.Cookie.id, loc: Trados.actLang, taskid: '', persistence: null, /*TODO*/
+              lickeys: licenceKeysStr.join('#')
             };
             var hash: string;
             switch (pr.url) {
@@ -201,7 +207,7 @@ module schoolMy {
     prodId: string;
     expired: Date;
     isTest: boolean;
-    isAngularJS: boolean; //nova verze
+    isVyzvaProduct: boolean; //nova verze
     line: LMComLib.LineIds;
     gotoUrl: (data: courseLink) => void;
     gotoArchive: (data: courseLink) => void;

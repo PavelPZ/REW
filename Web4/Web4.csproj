@@ -204,6 +204,10 @@
     <Content Include="Admin\HumanEvalManager.html" />
     <Content Include="Admin\HumanEval.html" />
     <Content Include="Admin\UserResults.html" />
+    <Content Include="App_Data\vyzva57.mdf" />
+    <Content Include="App_Data\vyzva57_log.ldf">
+      <DependentUpon>vyzva57.mdf</DependentUpon>
+    </Content>
     <Content Include="AuthorWeb\dialogs\dlg-edit-inline.html" />
     <Content Include="AuthorWeb\dialogs\dlg-enum-value.html" />
     <Content Include="AuthorWeb\dialogs\dlg-prop-name.html" />
@@ -255,12 +259,12 @@
     <None Include="BlendedAPI\Styles\style.less" />
     <Content Include="BlendedAPI\Styles\img\lm-logo-black.png" />
     <Content Include="BlendedAPI\views\exercise.html" />
+    <Content Include="BlendedAPI\vyzva\Views\home\lesson.html" />
+    <Content Include="BlendedAPI\vyzva\Views\lector.html" />
+    <Content Include="BlendedAPI\vyzva\Views\lector\levels.html" />
     <Content Include="BlendedAPI\vyzva\Views\managerSchool.html" />
-    <Content Include="BlendedAPI\vyzva\Views\managerLangmaster.html" />
-    <Content Include="BlendedAPI\vyzva\ViewParts\Toolbar\Toolbar.html" />
-    <Content Include="BlendedAPI\vyzva\ViewParts\Toolbar\Empty.html" />
-    <Content Include="BlendedAPI\vyzva\ViewParts\Toolbar\Run.html" />
-    <Content Include="BlendedAPI\vyzva\ViewParts\Toolbar\Module.html" />
+    <Content Include="BlendedAPI\vyzva\Views\toolbar\Run.html" />
+    <Content Include="BlendedAPI\vyzva\Views\toolbar\Module.html" />
     <Content Include="BlendedAPI\vyzva\Views\module.html" />
     <Content Include="BlendedAPI\vyzva\Views\pretest.html" />
     <Content Include="BlendedAPI\vyzva\Views\exercise.html" />
@@ -1359,23 +1363,25 @@
     <TypeScriptCompile Include="Author\vsNet.ts" />
     <TypeScriptCompile Include="BlendedAPI\oldBoot.ts" />
     <TypeScriptCompile Include="BlendedAPI\app.ts" />
+    <TypeScriptCompile Include="BlendedAPI\Scripts\directives.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Lib.ts" />
     <None Include="BlendedAPI\Scripts\Persistence.ts_" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\ShowExercise.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\stateMan.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\app.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Loader.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Scripts\directives.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Scripts\Intranet.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Scripts\Lib.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Tasks.ts" />
-    <TypeScriptCompile Include="BlendedAPI\vyzva\ViewParts\Toolbar\Toolbar.ts" />
-    <TypeScriptCompile Include="BlendedAPI\vyzva\ViewParts\Toolbar\Empty.ts" />
-    <TypeScriptCompile Include="BlendedAPI\vyzva\ViewParts\Toolbar\Run.ts" />
-    <TypeScriptCompile Include="BlendedAPI\vyzva\ViewParts\Toolbar\Module.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\toolbar\Run.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\toolbar\Module.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\home\lesson.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\lector\levels.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\managerSchool.ts" />
-    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\managerLangmaster.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\module.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\exercise.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\lector.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\pretest.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\home.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\home\pretestItem.ts" />
@@ -1403,11 +1409,8 @@
     <Content Include="Schools\Design\lmConsole.aspx" />
     <Content Include="Schools\Design\QueryBuilder.aspx" />
     <Content Include="Schools\Design\sitemap.xml" />
-    <EmbeddedResource Include="Migrations\201508270820535_v001.resx">
-      <DependentUpon>201508270820535_v001.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508271135234_v002.resx">
-      <DependentUpon>201508271135234_v002.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201508291827345_v001.resx">
+      <DependentUpon>201508291827345_v001.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -2470,13 +2473,9 @@
     <Compile Include="links.aspx.designer.cs">
       <DependentUpon>links.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201508270820535_v001.cs" />
-    <Compile Include="Migrations\201508270820535_v001.Designer.cs">
-      <DependentUpon>201508270820535_v001.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508271135234_v002.cs" />
-    <Compile Include="Migrations\201508271135234_v002.Designer.cs">
-      <DependentUpon>201508271135234_v002.cs</DependentUpon>
+    <Compile Include="Migrations\201508291827345_v001.cs" />
+    <Compile Include="Migrations\201508291827345_v001.Designer.cs">
+      <DependentUpon>201508291827345_v001.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="mp3Uploader.ashx.cs">

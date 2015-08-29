@@ -128,6 +128,12 @@ var bowser;
 })(bowser || (bowser = {}));
 var Utils;
 (function (Utils) {
+    function sum(list, getNumber) {
+        var res = 0;
+        _.each(list, function (item) { return res += getNumber(item); });
+        return res;
+    }
+    Utils.sum = sum;
     function getObjectClassName(obj) {
         if (obj && obj.constructor && obj.constructor.toString()) {
             /*

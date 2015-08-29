@@ -14,7 +14,7 @@
       this.pageUrls = this.ctx.productUrl + '|' + this.ctx.moduleUrl + '|' + this.ctx.Url;
     }
     tbClick() {
-      var pretest = _.find(this.taskList(), t => t.myState.name == stateNames.pretestTask.name);
+      var pretest = _.find(this.taskList(), t => t.state.name == stateNames.pretestTask.name);
       if (pretest == null) throw 'pretest==null';
       var url = pretest.goAhead();
       if (url == null) url = { stateName: stateNames.home.name, pars: this.ctx };

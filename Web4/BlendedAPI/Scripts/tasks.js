@@ -7,13 +7,14 @@ var __extends = (this && this.__extends) || function (d, b) {
 var blended;
 (function (blended) {
     var controller = (function () {
-        function controller(state) {
-            this.ctx = state.params;
-            this.$scope = state.$scope;
+        function controller(stateService) {
+            this.ctx = stateService.params;
+            this.$scope = stateService.$scope;
             blended.finishContext(this.ctx);
-            $.extend(this, state.current.data);
-            this.myState = state.current;
-            this.parent = state.parent;
+            this.state = stateService.current;
+            if (this.$scope)
+                this.$scope.state = this.state;
+            this.parent = stateService.parent;
         }
         controller.prototype.href = function (url) {
             return this.ctx.$state.href(url.stateName, url.pars);
@@ -33,7 +34,7 @@ var blended;
         };
         controller.prototype.taskRoot = function () {
             var t = this;
-            while (t.myState.name != blended.prodStates.homeTask.name)
+            while (t.state.name != blended.prodStates.homeTask.name)
                 t = t.parent;
             return t;
         };
@@ -53,7 +54,6 @@ var blended;
             _super.call(this, state);
             this.title = this.parent.dataNode.title;
         }
-        taskViewController.prototype.gotoHomeUrl = function () { Pager.gotoHomeUrl(); };
         return taskViewController;
     })(controller);
     blended.taskViewController = taskViewController;
@@ -94,7 +94,7 @@ var blended;
             while (t) {
                 t.adjustChild();
                 if (!t.child)
-                    return { stateName: t.myState.name, pars: t.ctx };
+                    return { stateName: t.state.name, pars: t.ctx };
                 t = t.child;
             }
         };
@@ -226,16 +226,17 @@ var blended;
         return pretestTaskController;
     })(taskController);
     blended.pretestTaskController = pretestTaskController;
+    function moduleIsDone(nd, taskId) {
+        return !_.find(nd.Items, function (it) { var itUd = blended.getPersistData(it, taskId); return (!itUd || !itUd.done); });
+    }
+    blended.moduleIsDone = moduleIsDone;
     var moduleTaskController = (function (_super) {
         __extends(moduleTaskController, _super);
         function moduleTaskController(state) {
             _super.call(this, state);
             this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { done: false, actChildIdx: 0 }; });
         }
-        moduleTaskController.prototype.isDone = function () {
-            var _this = this;
-            return !_.find(this.dataNode.Items, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (!itUd || !itUd.done); });
-        };
+        moduleTaskController.prototype.isDone = function () { return moduleIsDone(this.dataNode, this.ctx.taskid); };
         moduleTaskController.prototype.adjustChild = function () {
             var _this = this;
             if (this.child)

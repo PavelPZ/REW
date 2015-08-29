@@ -158,16 +158,21 @@ var schoolMy;
                 //isPublIndiv: crs==null,
                 expired: crs.Expired <= 0 ? new Date() : Utils.intToDate(crs.Expired),
                 line: pr.line, title: pr.title, prodId: pr.url, isTest: CourseMeta.lib.isTest(pr),
-                isAngularJS: CourseMeta.lib.isAngularJS(pr),
+                isVyzvaProduct: CourseMeta.lib.isVyzvaProduct(pr),
                 data: crs,
                 myCompany: comp,
                 gotoUrl: function (dt) {
                     //nove AngularJS produkty
-                    if (dt.isAngularJS) {
+                    if (dt.isVyzvaProduct) {
+                        var licenceKeysStr = _.map(crs.LicenceKeys, function (licenceKey) {
+                            var parts = licenceKey.split('|');
+                            var key = { licId: parseInt(parts[0]), counter: parseInt(parts[1]) };
+                            return keys.toString(key);
+                        });
                         var ctx = {
                             producturl: blended.encodeUrl(pr.url), companyid: comp.data.Id, loginid: LMStatus.Cookie.id,
-                            userdataid: LMStatus.Cookie.id, loc: Trados.actLang, taskid: 'def', persistence: null,
-                            lickeys: crs.LicenceKeys.join('#')
+                            userdataid: LMStatus.Cookie.id, loc: Trados.actLang, taskid: '', persistence: null,
+                            lickeys: licenceKeysStr.join('#')
                         };
                         var hash;
                         switch (pr.url) {

@@ -336,7 +336,7 @@ module CourseMeta {
       return prod && CourseMeta.isType(prod, CourseMeta.runtimeType.test);
     }
 
-    export function isAngularJS(prod: CourseMeta.data): boolean {
+    export function isVyzvaProduct(prod: CourseMeta.data): boolean {
       return prod && CourseMeta.isType(prod, CourseMeta.runtimeType.productNew);
     }
 

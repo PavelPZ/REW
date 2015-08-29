@@ -1,5 +1,6 @@
 ﻿module vyzva {
 
+  var vyzvaRoot = blended.baseUrlRelToRoot + '/blendedapi/vyzva/';
  
   //*************** RESOLVERs
   //adjust produkt
@@ -9,28 +10,32 @@
     return blended.loader.adjustProduct(ctx);
   }];
 
-  export var loadIntranetInfo = (bothData: boolean) => ['$stateParams', (ctx: blended.learnContext) => {
+  export var loadIntranetInfo = () => ['$stateParams', (ctx: blended.learnContext) => {
     blended.finishContext(ctx);
-    var def = ctx.$q.defer<intranet.ILoadIntranetInfoResult>();
-    proxies.vyzva57services.loadCompanyData(ctx.companyid, true, bothData, res => {
-      if (!res) res = <any>{};
-      def.resolve({
-        learningData: intranet.enteredProductInfo(res.LearningData, ctx.lickeys, LMStatus.Cookie),
-        orderData: res.OrderData ? JSON.parse(res.OrderData) : null,
-      });
+    var def = ctx.$q.defer<intranet.IAlocatedKeyRoot>();
+    proxies.vyzva57services.loadCompanyData(ctx.companyid, res => {
+      if (!res) { def.resolve(null); return; }
+      var compInfo = intranet.enteredProductInfo(res, ctx.lickeys, LMStatus.Cookie);
+      if (compInfo && compInfo.jsonToSave) {
+        proxies.vyzva57services.writeCompanyData(ctx.companyid, compInfo.jsonToSave, () => def.resolve(compInfo));
+      } else
+        def.resolve(compInfo);
     });
     return def.promise;
   }];
 
   export interface IStateNames extends blended.IProductStates {
-    root?: blended.state;
-    pretest?: blended.state;
-    lessonExercise?: blended.state;
-    lesson?: blended.state;
-    pretestTask?: blended.state;
-    lessonTask?: blended.state;
-    shoolManager?: blended.state;
-    langmasterManager?: blended.state;
+    root?: state;
+    pretest?: state;
+    lessonExercise?: state;
+    lesson?: state;
+    pretestTask?: state;
+    lector?: state;
+    lectorHome?: state;
+    lessonTask?: state;
+    shoolManager?: state;
+    langmasterManager?: state;
+    lectorTask?: state;
   }
   export var stateNames: IStateNames = {}; //taskRoot: 'root', taskCheckTest: 'checktest', taskLesson: 'lesson', taskPretest: 'pretest', taskPretestItem: 'pretestitem' };
 
@@ -49,67 +54,96 @@
     //sance zrusit ladovani stranky
     //$rootScope.$on('$stateChangeStart', (e, toState, toParams, fromState, fromParams) => {
     //  blended.finishContext(toParams);
-    //  blended.state.onRouteChangeStart(e, toState, toParams, $location, $state);
+    //  state.onRouteChangeStart(e, toState, toParams, $location, $state);
     //});
   }];
+
+  //rozsireni ui-route a blended STATE 
+  export interface IState extends angular.ui.IState {
+    layoutContentId?: string; //template stranky
+    layoutToolbarType?: string; //typ toolbaru (nazev souboru v toolbar adresari)
+    lectorTabId?: string;
+  }
+  export class state extends blended.state { constructor(st: IState) { super(st); } }
+
+  blended.rootModule
+    .filter('vyzva$state$viewpath', () => (id: string) => vyzvaRoot + 'views/' + id + '.html')
+  ;
+
+  var pageTemplate = vyzvaRoot + 'views/_pageTemplate.html';
+
   export function initVyzvaStates(params: blended.createStatePars) {
-    stateNames.root = new blended.state({
+    stateNames.root = new state({
       name: 'pg.ajs',
       url: '/ajs',
       abstract: true,
       controller: () => { Pager.clearHtml(); }, //vyhozeni old obsahu 
       template: "<div data-ui-view></div>",
       childs: [
-        new blended.state({
+        new state({
           name: 'managers',
-          url: "/managers/:companyid/:loginid/:loc/:lickeys", //lickeys ve formatu <UserLicences.LicenceId>|<UserLicences.Counter>#<UserLicences.LicenceId>|<UserLicences.Counter>...
+          url: "/vyzva/managers/:companyid/:loginid/:lickeys",
           template: "<div data-ui-view></div>",
           abstract: true,
           childs: [
-            stateNames.langmasterManager = new blended.state({
-              name: 'langmastermanager',
-              url: "/langmastermanager",
-              templateUrl: pageTemplate,
-              data: getDataConfig('managerlangmaster', 'empty'),
-              controller: managerLANGMaster,
-              resolve: {
-                $intranetInfo: loadIntranetInfo(true),
-              },
-            }),
-            stateNames.shoolManager = new blended.state({
+            stateNames.shoolManager = new state({
               name: 'schoolmanager',
               url: "/schoolmanager",
               templateUrl: pageTemplate,
-              data: getDataConfig('managerschool', 'empty'),
+              layoutContentId: 'managerschool',
               controller: managerSchool,
               resolve: {
-                $intranetInfo: loadIntranetInfo(true),
+                $intranetInfo: loadIntranetInfo(),
               },
             }),
           ]
         }),
-        blended.prodStates.homeTask = stateNames.homeTask = new blended.state({
+        blended.prodStates.homeTask = stateNames.homeTask = new state({
           name: 'vyzva',
-          url: "/vyzva/:persistence/:taskid/:companyid/:loginid/:userdataid/:loc/:producturl/:lickeys",
+          //lickeys ve formatu <UserLicences.LicenceId>|<UserLicences.Counter>#<UserLicences.LicenceId>|<UserLicences.Counter>...
+          url: "/vyzva/:companyid/:loginid/:userdataid/:persistence/:loc/:lickeys/:producturl/:taskid",
           dataNodeUrlParName: 'productUrl',
           controller: homeTaskController,
           abstract: true,
           resolve: {
             $loadedProduct: loadProduct,
-            $intranetInfo: loadIntranetInfo(false),
+            $intranetInfo: loadIntranetInfo(),
           },
           template: "<div data-ui-view></div>",
           childs: [
-            blended.prodStates.home = stateNames.home = new blended.state({
+            blended.prodStates.home = stateNames.home = new state({
               name: 'home',
               url: "/home",
               controller: homeViewController,
-              data: $.extend(getDataConfig('home', 'empty'), {
-                dataPretestItem: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/home/pretestItem.html',
-              }),
+              layoutContentId: 'home',
               templateUrl: pageTemplate,
             }),
-            stateNames.pretestTask = new blended.state({
+            stateNames.lector = new state({
+              name: 'lector',
+              url: "/lector/:groupid",
+              controller: lectorController,
+              abstract: true,
+              template: "<div data-ui-view></div>",
+              childs: [
+                stateNames.lectorHome = new state({
+                  name: 'home',
+                  url: "/home",
+                  controller: lectorViewController,
+                  layoutContentId: 'lector',
+                  lectorTabId: 'home',
+                  templateUrl: pageTemplate,
+                }),
+                new state({
+                  name: 'a1',
+                  url: "/a1",
+                  controller: lectorLevelController,
+                  layoutContentId: 'lectorLevel',
+                  lectorTabId: '???',
+                  templateUrl: pageTemplate,
+                }),
+              ]
+            }),
+            stateNames.pretestTask = new state({
               name: 'pretest',
               url: '/pretest/:pretesturl',
               controller: blended.pretestTaskController,
@@ -117,30 +151,31 @@
               abstract: true,
               template: "<div data-ui-view></div>",
               childs: [
-                stateNames.pretest = new blended.state({
+                stateNames.pretest = new state({
                   name: 'home',
                   url: "/home",
-                  data: getDataConfig('pretest', 'empty'),
+                  layoutContentId: 'pretest',
                   controller: pretestViewController,
                   templateUrl: pageTemplate,
                 }),
-                blended.prodStates.pretestModule = new blended.state({
+                blended.prodStates.pretestModule = new state({
                   name: 'test',
                   url: '/test/:moduleurl',
                   controller: blended.moduleTaskController,
                   dataNodeUrlParName: 'moduleUrl',
-                  data: blended.createStateData<blended.IModuleStateData>({ alowCycleExercise: false }),
+                  moduleAlowCycleExercise: false,
                   abstract: true,
                   template: "<div data-ui-view></div>",
                   childs: [
-                    blended.prodStates.pretestExercise = stateNames.pretestExercise = new blended.state({
+                    blended.prodStates.pretestExercise = stateNames.pretestExercise = new state({
                       name: 'ex',
                       url: '/ex/:url',
                       controller: pretestExercise,
                       dataNodeUrlParName: 'Url',
-                      data: $.extend(getDataConfig('exercise', 'run'), blended.createStateData<blended.IExerciseStateData>({ isTest: true })),
+                      layoutContentId: 'exercise',
+                      layoutToolbarType: 'toolbar/run',
+                      exerciseIsTest: true,
                       resolve: {
-                        //$loadedExAnUser: blended.exAndUser,
                         $loadedEx: blended.loadEx,
                         $loadedLongData: blended.loadLongData,
                       },
@@ -150,7 +185,7 @@
                 }),
               ]
             }),
-            stateNames.lessonTask = new blended.state({
+            stateNames.lessonTask = new state({
               name: 'lesson',
               url: '/lesson/:moduleurl',
               controller: moduleTaskController,
@@ -158,19 +193,21 @@
               abstract: true,
               template: "<div data-ui-view></div>",
               childs: [
-                stateNames.lesson = new blended.state({
+                stateNames.lesson = new state({
                   name: 'home',
                   url: '/home',
-                  data: getDataConfig('module', 'run'),
+                  layoutContentId: 'module',
+                  layoutToolbarType: 'toolbar/run',
                   controller: moduleViewController,
                   templateUrl: pageTemplate,
                 }),
-                stateNames.lessonExercise = new blended.state({
+                stateNames.lessonExercise = new state({
                   name: 'ex',
                   url: '/ex/:url',
                   controller: lessonExercise,
                   dataNodeUrlParName: 'Url',
-                  data: getDataConfig('exercise', 'run'),
+                  layoutContentId: 'exercise',
+                  layoutToolbarType: 'toolbar/run',
                   templateUrl: pageTemplate,
                 })
               ]
@@ -181,21 +218,6 @@
     });
     stateNames.root.initFromStateTree(params.$stateProvider);
   }
-
-  interface IDataConfig {
-    dataTemplate: string;
-    dataToolbar: string;
-    dataToolbarType: string;
-  }
-
-  function getDataConfig(page: string, toolbar: string): IDataConfig {
-    return {
-      dataTemplate: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/' + page + '.html',
-      dataToolbar: blended.baseUrlRelToRoot + '/blendedapi/vyzva/ViewParts/Toolbar/toolbar.html',
-      dataToolbarType: blended.baseUrlRelToRoot + '/blendedapi/vyzva/ViewParts/Toolbar/' + toolbar + '.html',
-    };
-  }
-  var pageTemplate = blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/_pageTemplate.html';
 
 }
   

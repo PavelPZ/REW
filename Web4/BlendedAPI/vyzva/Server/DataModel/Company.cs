@@ -13,11 +13,12 @@ namespace blendedData {
 
 
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public int Id { get; set; }
 
     public string LearningData { get; set; } //JSON(vyzva.intranet.ICompanyData)
 
-    public string OrderData { get; set; }
+    //public string OrderData { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
     public virtual ICollection<CourseUser> CourseUsers { get; set; }

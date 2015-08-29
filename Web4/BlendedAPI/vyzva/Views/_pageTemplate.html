@@ -1,9 +1,21 @@
-﻿<div data-ng-if="::ts">
-  <div data-ng-include="::ts.dataToolbar"></div>
-  <div class="container-fluid">
-    <div class="container">
-      <h1>{{::ts.title}}</h1>
-      <div data-ng-include="::ts.dataTemplate"></div>
-    </div>
+﻿<div class="container-fluid topbar">
+  <div class="container">
+    <div class="content lm-logo-black-small" ng-controller="gotoHomeUrl" ng-click="gotoHomeUrl()"></div>
+    <div data-ng-include="::state.layoutToolbarType | vyzva$state$viewpath"></div>
+  </div>
+</div>
+<div class="container" ng-if="::!!ts.breadcrumb && ts.breadcrumb.length>0">
+  <ol class="breadcrumb">
+    <li data-ng-repeat="item in ::ts.breadcrumb" data-ng-class="::{'active': item.active}">
+      <a data-ng-if="::!item.active" data-ng-href="{{::item.url}}">{{::item.title}}</a>
+      <span data-ng-if="::item.active">{{::item.title}}</span>
+    </li>
+  </ol>
+</div>
+
+<div class="container-fluid">
+  <div class="container">
+    <h1>{{::ts.title}}</h1>
+    <div data-ng-include="::state.layoutContentId | vyzva$state$viewpath"></div>
   </div>
 </div>

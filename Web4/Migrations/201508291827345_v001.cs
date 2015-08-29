@@ -11,8 +11,8 @@ namespace blendedData
                 "dbo.Companies",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
-                        Data = c.String(),
+                        Id = c.Int(nullable: false),
+                        LearningData = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -20,11 +20,15 @@ namespace blendedData
                 "dbo.CourseUsers",
                 c => new
                     {
-                        LicenceKey = c.String(nullable: false, maxLength: 10),
+                        Id = c.Int(nullable: false, identity: true),
+                        ProductUrl = c.String(nullable: false, maxLength: 120),
+                        LMComId = c.Long(nullable: false),
                         CompanyId = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.LicenceKey)
+                .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Companies", t => t.CompanyId, cascadeDelete: true)
+                .Index(t => t.ProductUrl)
+                .Index(t => t.LMComId)
                 .Index(t => t.CompanyId);
             
             CreateTable(
@@ -36,7 +40,7 @@ namespace blendedData
                         Key = c.String(nullable: false, maxLength: 240),
                         Data = c.String(nullable: false),
                         ShortData = c.String(),
-                        CourseUserId = c.String(nullable: false, maxLength: 10),
+                        CourseUserId = c.Int(nullable: false),
                         Date = c.Long(nullable: false),
                         Flags = c.Long(nullable: false),
                     })
@@ -56,6 +60,8 @@ namespace blendedData
             DropIndex("dbo.CourseDatas", new[] { "Key" });
             DropIndex("dbo.CourseDatas", new[] { "TaskId" });
             DropIndex("dbo.CourseUsers", new[] { "CompanyId" });
+            DropIndex("dbo.CourseUsers", new[] { "LMComId" });
+            DropIndex("dbo.CourseUsers", new[] { "ProductUrl" });
             DropTable("dbo.CourseDatas");
             DropTable("dbo.CourseUsers");
             DropTable("dbo.Companies");

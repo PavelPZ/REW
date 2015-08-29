@@ -82,7 +82,7 @@ var blended;
                 completed();
                 return;
             }
-            proxies.blendedpersistence.saveUserData(ctx.companyid, ctx.userdataid, ctx.productUrl, toSave, completed);
+            proxies.vyzva57services.saveUserData(ctx.companyid, ctx.userdataid, ctx.productUrl, toSave, completed);
         }
     };
     var cachedModule = (function () {

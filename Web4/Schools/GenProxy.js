@@ -66,25 +66,6 @@ var proxies;
     })();
     proxies.adminlicence = adminlicence;
     ;
-    var blendedpersistence = (function () {
-        function blendedpersistence() {
-        }
-        blendedpersistence.deleteDataKeys = function (companyid, courseuserid, producturl, taskid, urltaskids, completed) {
-            invoke('blendedpersistencecontroller/deletedatakeys', 'post', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid }, JSON.stringify(urltaskids), completed);
-        };
-        blendedpersistence.getShortProductDatas = function (companyid, courseuserid, producturl, completed) {
-            invoke('blendedpersistencecontroller/getshortproductdatas', 'get', { companyid: companyid, courseuserid: courseuserid, producturl: producturl }, null, completed);
-        };
-        blendedpersistence.getLongData = function (companyid, courseuserid, producturl, taskid, key, completed) {
-            invoke('blendedpersistencecontroller/getlongdata', 'get', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid, key: key }, null, completed);
-        };
-        blendedpersistence.saveUserData = function (companyid, courseuserid, producturl, data, completed) {
-            invoke('blendedpersistencecontroller/saveuserdata', 'post', { companyid: companyid, courseuserid: courseuserid, producturl: producturl }, JSON.stringify(data), completed);
-        };
-        return blendedpersistence;
-    })();
-    proxies.blendedpersistence = blendedpersistence;
-    ;
     var course = (function () {
         function course() {
         }
@@ -218,11 +199,23 @@ var proxies;
         vyzva57services.lmAdminCreateLicenceKeys = function (companyid, requestedkeys, completed) {
             invoke('vyzva57services/lmadmincreatelicencekeys', 'post', { companyid: companyid }, JSON.stringify(requestedkeys), completed);
         };
-        vyzva57services.loadCompanyData = function (companyid, islearningdata, isorderdata, completed) {
-            invoke('vyzva57services/loadcompanydata', 'get', { companyid: companyid, islearningdata: islearningdata, isorderdata: isorderdata }, null, completed);
+        vyzva57services.loadCompanyData = function (companyid, completed) {
+            invoke('vyzva57services/loadcompanydata', 'get', { companyid: companyid }, null, completed);
         };
         vyzva57services.writeCompanyData = function (companyid, data, completed) {
             invoke('vyzva57services/writecompanydata', 'post', { companyid: companyid }, JSON.stringify(data), completed);
+        };
+        vyzva57services.deleteDataKeys = function (companyid, lmcomid, producturl, urltaskids, completed) {
+            invoke('vyzva57services/deletedatakeys', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, JSON.stringify(urltaskids), completed);
+        };
+        vyzva57services.getShortProductDatas = function (companyid, lmcomid, producturl, completed) {
+            invoke('vyzva57services/getshortproductdatas', 'get', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, null, completed);
+        };
+        vyzva57services.getLongData = function (companyid, lmcomid, producturl, taskid, key, completed) {
+            invoke('vyzva57services/getlongdata', 'get', { companyid: companyid, lmcomid: lmcomid, producturl: producturl, taskid: taskid, key: key }, null, completed);
+        };
+        vyzva57services.saveUserData = function (companyid, lmcomid, producturl, data, completed) {
+            invoke('vyzva57services/saveuserdata', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, JSON.stringify(data), completed);
         };
         return vyzva57services;
     })();
