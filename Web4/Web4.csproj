@@ -259,6 +259,8 @@
     <None Include="BlendedAPI\Styles\style.less" />
     <Content Include="BlendedAPI\Styles\img\lm-logo-black.png" />
     <Content Include="BlendedAPI\views\exercise.html" />
+    <Content Include="BlendedAPI\vyzva\Views\exercise\moduleMap.html" />
+    <Content Include="BlendedAPI\vyzva\Views\exercise\instruction.html" />
     <Content Include="BlendedAPI\vyzva\Views\home\lesson.html" />
     <Content Include="BlendedAPI\vyzva\Views\lector.html" />
     <Content Include="BlendedAPI\vyzva\Views\lector\levels.html" />
@@ -1374,6 +1376,8 @@
     <TypeScriptCompile Include="BlendedAPI\vyzva\Scripts\Intranet.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Scripts\Lib.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Tasks.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\exercise\moduleMap.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\exercise\instruction.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\toolbar\Run.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\toolbar\Module.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\home\lesson.ts" />

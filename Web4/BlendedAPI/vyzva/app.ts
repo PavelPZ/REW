@@ -1,6 +1,6 @@
 ﻿module vyzva {
 
-  var vyzvaRoot = blended.baseUrlRelToRoot + '/blendedapi/vyzva/';
+  export var vyzvaRoot = blended.baseUrlRelToRoot + '/blendedapi/vyzva/';
  
   //*************** RESOLVERs
   //adjust produkt
@@ -174,9 +174,9 @@
                       dataNodeUrlParName: 'Url',
                       layoutContentId: 'exercise',
                       layoutToolbarType: 'toolbar/run',
-                      exerciseIsTest: true,
                       ommitTitle: true,
-                      ommitBreadCrumb:false,
+                      exerciseIsTest: true,
+                      exerciseOmitModuleMap: true,
                       resolve: {
                         $loadedEx: blended.loadEx,
                         $loadedLongData: blended.loadLongData,

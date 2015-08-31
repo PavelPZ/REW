@@ -23,6 +23,7 @@
     }
 
     navigate(url: IStateUrl) {
+      if (!url) return;
       var hash = this.href(url);
       setTimeout(() => window.location.hash = hash, 1);
     }
@@ -56,6 +57,13 @@
     parent: taskController;
   }
 
+
+  export enum moveForwardResult {
+    toParent /*neumi se posunout dopredu, musi se volat moveForward parenta*/,
+    selfAdjustChild /*posunuto dopredu, nutno spocitat goCurrent a skocit na jiny task*/,
+    selfInnner /*posun osetren v ramci zmeny stavu aktualniho tasku (bez nutnosti navigace na jiny task)*/
+  }
+
   //******* TASK (predchudce vse abstraktnich controllers (mimo cviceni), reprezentujicich TASK). Task umi obslouzit zelenou sipku apod.
   export class taskController extends controller {
 
@@ -64,14 +72,6 @@
     dataNode: CourseMeta.data; //sitemap produkt node
     user: IPersistNodeItem<IPersistNodeUser>; //user persistence, odpovidajici taskId
     parent: taskController;
-
-    //********************** Virtualni procs
-    //dodelej task list do green stavu
-    adjustChild() { }
-    //posun stavu dal
-    moveForward(ud: IPersistNodeUser) { throw 'notimplemented'; }
-    //done priznak
-    isDone():boolean { throw 'notimplemented'; }
 
     //********************* 
     constructor(state: IStateService, resolves?: Array<any>) {
@@ -95,29 +95,56 @@
       this.user = getPersistWrapper<IPersistNodeUser>(this.dataNode, this.ctx.taskid);
     }
 
+    //********************** GREEN MANAGEMENT
+    // Zelena sipka je prirazena nejakemu ACT_TASK (Pretest nebo Lesson ve VYZVA aplikaci apod.)
+    // Zelena sipka neni videt, musi se skocit do tasku pomoci ACT_TASK.goCurrent
+    // Pak je videt a pri kliku na sipku se vola ACT_TASK.goAhead 
+    // Vrati-li ACT_TASK.goAhead null, skoci se na home produktu
+
+    // **** goCurrent
+    // PARENT na zaklade USER dat svych childu urcuje, ktery z nich je narade (pomoci funkce PARENT.adjustChild)
+    // skace se na posledni child, co vrati adjustChild() null
+
+    //Fake dodelavka TASKLIST (pridanim taskuu s 'createMode=createControllerModes.adjustChild') tak, aby posledni v rade byl task, na ktery se skace.
+    //Sance parent tasku prenest zodpovednost na child.
+    //Klicove je do childUrl tasku doplnit spravny task.ctx, aby v goCurrent fungovalo 'return { stateName: t.state.name, pars: t.ctx }'
+    adjustChild(): taskController { return null; }
+
+    //posun stavu dal
+    moveForward(): moveForwardResult { throw 'notimplemented'; }
+
+    //priznak pro 'if (t.taskControllerSignature)' test, ze tento objekt je task.
+    taskControllerSignature() { }
+
+    //nevirtualni funkce: dobuduje TASKLIST umele vytvorenymi tasks (pomoci adjust Child) a vrati URL posledniho child v TASKLIST.
     goCurrent(): IStateUrl {
       var t = this;
       while (t) {
-        t.adjustChild();
-        if (!t.child) return { stateName: t.state.name, pars: t.ctx };
-        t = t.child;
+        var newt = t.adjustChild();
+        if (!newt) return { stateName: t.state.name, pars: t.ctx };
+        t = newt;
       }
     }
 
-    //posun zelenou sipkou. Child Musi byt adjusted (goCurrent -> goAhead -> goAhead...)
     goAhead(): IStateUrl {
-      var ud = this.user.short;
-      if (this.isDone()) return null
-      if (this.child) { //vyresi posun child?...
-        var childUrl = this.child.goAhead();
-        if (childUrl) return childUrl;  //... ano, posun udelal child
-        this.log('doMoveForward, child finished'); //... ne musim jej udelat sam
-      } else {
-        this.log('doMoveForward');
+      //seznam od childs k this
+      var taskList: Array<taskController> = [];
+      var act = this; while (act) {
+        if (!act.taskControllerSignature) break;
+        taskList.push(act);
+        act = act.child;
       }
-      this.moveForward(ud); //posun stav dopredu
-      if (this.isDone()) return null;
-      return this.goCurrent();
+      //najdi prvni task, co se umi posunout dopredu
+      for (var i = taskList.length - 1; i >= 0; i--) {
+        var act = taskList[i];
+        switch (act.moveForward()) {
+          case moveForwardResult.selfInnner: return null;
+          case moveForwardResult.toParent: break;
+          case moveForwardResult.selfAdjustChild: return act.goCurrent();
+        }
+      }
+      //ani jeden z parentu move nevyresil => jdi na home produktu
+      return { stateName: prodStates.home.name, pars: this.ctx }
     }
 
     log(msg: string) {
@@ -140,10 +167,10 @@
     //pro A2: pod toto skore ma uroven A1
     //pro B1: pod toto skore ma uroven A2
     //pro B2: pod toto skore ma uroven B1
-    minScore: number; 
+    min: number; 
     // pro A2: nad toto skore se spousti B1
     // pro B1: nad toto skore se spousti B2
-    maxScore: number;
+    max: number;
     level: levelIds;
   }
 
@@ -170,8 +197,6 @@
     dataNode: IPretestRepository;
     user: IPersistNodeItem<IPretestUser>;
 
-    isDone(): boolean { return this.user.short.done; }
-
     checkCommingUrl() {
       var ud = this.user.short;
       if (!ud) return { stateName: prodStates.home.name, pars: this.ctx }; //pretest jeste nezacal => goto product home
@@ -186,10 +211,9 @@
       return null;
     }
 
-    adjustChild() {
-      if (this.child) return;
+    adjustChild(): taskController {
       var ud = this.user.short;
-      if (ud.done) return;
+      if (ud.done) return null;
       var actModule = this.actRepo(ud.actLevel); if (!actModule) throw '!actModule';
       var state: IStateService = {
         params: cloneAndModifyContext(this.ctx, d => d.moduleurl = encodeUrl(actModule.url)),
@@ -197,10 +221,11 @@
         current: prodStates.pretestModule,
         createMode: createControllerModes.adjustChild
       };
-      this.child = new moduleTaskController(state);
+      return new moduleTaskController(state);
     }
 
-    moveForward(ud: IPretestUser) {
+    moveForward(): moveForwardResult {
+      var ud = this.user.short;
       var actTestItem = <exerciseTaskViewController>(this.child);
       var actRepo = this.actRepo(ud.actLevel);
       var childSummary = agregateChildShortInfos(this.child.dataNode, this.ctx.taskid);
@@ -208,29 +233,30 @@
       var score = scorePercent(childSummary);
 
       if (actRepo.level == levelIds.A1) {
-        this.finishPretest(ud, levelIds.A1);
+        return this.finishPretest(ud, levelIds.A1);
       } else if (actRepo.level == levelIds.A2) {
-        if (score >= actRepo.minScore && score < actRepo.maxScore) this.finishPretest(ud, levelIds.A2);
-        else if (score < actRepo.minScore) this.newTestItem(ud, levelIds.A1);
-        else this.newTestItem(ud, levelIds.B1);
+        if (score >= actRepo.min && score < actRepo.max) return this.finishPretest(ud, levelIds.A2);
+        else if (score < actRepo.min) return this.newTestItem(ud, levelIds.A1);
+        else return this.newTestItem(ud, levelIds.B1);
       } else if (actRepo.level == levelIds.B1) {
-        if (score >= actRepo.minScore && score < actRepo.maxScore) this.finishPretest(ud, levelIds.B1);
-        else if (score < actRepo.minScore) this.finishPretest(ud, levelIds.A2);
-        else this.newTestItem(ud, levelIds.B2);
+        if (score >= actRepo.min && score < actRepo.max) return this.finishPretest(ud, levelIds.B1);
+        else if (score < actRepo.min) return this.finishPretest(ud, levelIds.A2);
+        else return this.newTestItem(ud, levelIds.B2);
       } else if (actRepo.level == levelIds.B2) {
-        if (score < actRepo.minScore) this.finishPretest(ud, levelIds.B1);
-        else this.finishPretest(ud, levelIds.B2);
+        if (score < actRepo.min) return this.finishPretest(ud, levelIds.B1);
+        else return this.finishPretest(ud, levelIds.B2);
       }
+      throw 'not implemented';
     }
 
-    newTestItem(ud: IPretestUser, lev: levelIds) {
-      this.child = null;
+    newTestItem(ud: IPretestUser, lev: levelIds): moveForwardResult {
       ud.actLevel = lev;
       ud.urls.push(this.actRepo(lev).url);
+      return moveForwardResult.selfAdjustChild;
     }
-    finishPretest(ud: IPretestUser, lev: levelIds) {
-      this.child = null;
+    finishPretest(ud: IPretestUser, lev: levelIds): moveForwardResult {
       ud.done = true; ud.targetLevel = lev; delete ud.actLevel;
+      return moveForwardResult.toParent;
     }
     actRepo(lev: levelIds): IPretestItemRepository { return _.find(this.dataNode.Items, l => l.level == lev); }
 
@@ -261,10 +287,7 @@
       this.user = getPersistWrapper<IModuleUser>(this.dataNode, this.ctx.taskid, () => { return { done: false, actChildIdx: 0 }; });
     }
 
-    isDone(): boolean { return moduleIsDone(this.dataNode, this.ctx.taskid); }
-
-    adjustChild() {
-      if (this.child) return;
+    adjustChild(): taskController {
       var ud = this.user.short;
       var exNode: CourseMeta.data;
       if (!this.alowCycleExercise) {
@@ -272,23 +295,26 @@
       } else {
         exNode = this.dataNode.Items[ud.actChildIdx];
       }
-      if (!exNode) return;
+      if (!exNode) throw 'something wrong';
       var state: IStateService = {
         params: cloneAndModifyContext(this.ctx, d => d.url = encodeUrl(exNode.url)),
         parent: this,
         current: prodStates.pretestExercise,
         createMode: createControllerModes.adjustChild
       };
-      this.child = new vyzva.pretestExercise(state,null);
+      return new vyzva.pretestExercise(state, null);
     }
 
-    moveForward(ud: IModuleUser) {
+    moveForward(): moveForwardResult {
       var ud = this.user.short;
       if (this.alowCycleExercise) {
-        ud.actChildIdx = ud.actChildIdx == this.dataNode.Items.length - 1 ? 0 : ud.actChildIdx + 1;
+        ud.actChildIdx == this.dataNode.Items.length - 1 ? 0 : ud.actChildIdx + 1;
         this.user.modified = true;
+        return moveForwardResult.selfAdjustChild;
+      } else {
+        var exNode = _.find(this.dataNode.Items, it => { var itUd = blended.getPersistData<IExShort>(it, this.ctx.taskid); return (!itUd || !itUd.done); });
+        return exNode ? moveForwardResult.selfAdjustChild : moveForwardResult.toParent;
       }
-      this.child = null;
     }
 
   }

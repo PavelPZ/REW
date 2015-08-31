@@ -36,12 +36,6 @@
     exerciseService: exerciseService;
   }
 
-  export class exItemProxy {
-    title: string; //titulek
-    user: IExShort; //short data
-    modIdx: number; //index v modulu
-  }
-
   export function scorePercent(sc: IExShort) { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
 
   export function agregateChildShortInfos(node: CourseMeta.data, taskId: string): IExShort {
@@ -78,6 +72,7 @@
     page: Course.Page;
     user: IPersistNodeItem<IExShort>;
     startTime: number; //datum vstupu do stranky
+    instructionData: IInstructionData;
 
     constructor(public exercise: cacheExercise, long: IExLong, public ctx: learnContext, public product: IProductEx) {
       this.user = getPersistWrapper<IExShort>(exercise.dataNode, ctx.taskid, () => $.extend({}, shortDefault));
@@ -86,10 +81,12 @@
       }
       this.user.long = long
       this.startTime = Utils.nowToNum();
+
     }
 
     display(el: ng.IAugmentedJQuery, completed: (pg: Course.Page) => void) {
       el.addClass('contentHidden');
+
       var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
       Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, this.exercise.mod.loc));
       var isGramm = CourseMeta.isType(this.exercise.dataNode, CourseMeta.runtimeType.grammar);
@@ -97,10 +94,16 @@
         if (pg.evalPage) this.exercise.dataNode.ms = pg.evalPage.maxScore;
       }
 
+      //instrukce
+      var instrs = this.product.instructions;
+      var instrBody = _.map(pg.instrs, instrUrl => instrs[instrUrl]);
+      this.instructionData = { title: pg.instrTitle, body: instrBody.join('') };
+
       var exImpl = <CourseMeta.exImpl>(this.exercise.dataNode);
       exImpl.page = pg; exImpl.result = this.user.long;
 
       pg.finishCreatePage(<CourseMeta.exImpl>(this.exercise.dataNode));
+
       pg.callInitProcs(Course.initPhase.beforeRender, () => { //inicializace kontrolek, 1
         var html = JsRenderTemplateEngine.render("c_gen", pg);
         CourseMeta.actExPageControl = pg; //knockout pro cviceni binduje CourseMeta.actExPageControl
@@ -129,8 +132,8 @@
       delete this.user.long;
     }
 
-    evaluate(isTest:boolean, exerciseShowWarningPercent?: number): boolean {
-      if (this.user.short.done) return;
+    evaluate(isTest: boolean, exerciseShowWarningPercent?: number): boolean {
+      if (this.user.short.done) return false;
       this.user.modified = true;
       var now = Utils.nowToNum();
       var short = this.user.short;
@@ -146,14 +149,14 @@
         return true;
       }
 
-      if (typeof(exerciseShowWarningPercent)=='undefined') exerciseShowWarningPercent = 75;
+      if (typeof (exerciseShowWarningPercent) == 'undefined') exerciseShowWarningPercent = 75;
       //aktivni stranka
       this.page.provideData();
       var score = this.page.getScore();
       if (!score) { debugger; throw "!score"; short.done = true; return true; }
 
       var exerciseOK = isTest ? true : (score == null || score.ms == 0 || (score.s / score.ms * 100) >= exerciseShowWarningPercent);
-      //if (!exerciseOK && !gui.alert(alerts.exTooManyErrors, true)) { this.userPending = false; return false; }//je hodne chyb a uzivatel chce cviceni znova
+      //if (!exerciseOK /*&& !gui.alert(alerts.exTooManyErrors, true)*/) return false; //je hodne chyb a uzivatel chce cviceni znova
       this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
       if (!isTest) this.page.acceptData(true);
 
@@ -175,8 +178,15 @@
     end: number; //datum konce (ve dnech), na datum se prevede pomoci intToDate(end * 1000000)
   }
 
-  export interface IExerciseStateData {
-    isTest: boolean; //test nebo cviceni
+  //export interface IExerciseStateData {
+  //  isTest: boolean; //test nebo cviceni
+  //}
+
+  export class exItemProxy {
+    title: string; //titulek
+    user: IExShort; //short data
+    idx: number; //index v modulu
+    active: boolean; //item pro aktivni cviceni
   }
 
   export class exerciseTaskViewController extends taskController { //task pro pruchod lekcemi
@@ -188,7 +198,7 @@
     modIdx: number; //self index v modulu
     breadcrumb: Array<breadcrumbItem>;
 
-    isDone(): boolean { return this.exService.user.short.done; }
+    justEvaluated: boolean; //nepersistentni stavova promenna, ridici zobrazeni cviceni po vyhodnoceni
 
     constructor(state: IStateService, resolves: Array<any>) {
       super(state);
@@ -200,14 +210,36 @@
       this.user = this.exService.user;
 
       this.title = this.dataNode.title;
-      this.modItems = _.map(this.parent.dataNode.Items, (node, idx) => {
-        return { user: blended.getPersistData<IExShort>(node, this.ctx.taskid), modIdx: idx, title: node.title };
-      });
       this.modIdx = _.indexOf(this.parent.dataNode.Items, this.dataNode);
+      this.modItems = _.map(this.parent.dataNode.Items, (node, idx) => {
+        return { user: blended.getPersistData<IExShort>(node, this.ctx.taskid), idx: idx, title: node.title, active: idx == this.modIdx };
+      });
+
     }
 
-    moveForward(ud: IExShort) {
-      this.exService.evaluate(this.state.exerciseIsTest, this.state.exerciseShowWarningPercent);
+    //osetreni zelene sipky
+    moveForward(): moveForwardResult {
+      if (this.justEvaluated) { delete this.justEvaluated; return moveForwardResult.toParent; }
+      this.justEvaluated = this.exService.evaluate(this.state.exerciseIsTest, this.state.exerciseShowWarningPercent);
+      return this.justEvaluated && !this.state.exerciseIsTest ? moveForwardResult.selfInnner : moveForwardResult.toParent;
     }
+    //provede reset cviceni, napr. v panelu s instrukci
+    resetExercise() { alert('reset'); } 
+    //skok na jine cviceni, napr. v module map panelu 
+    selectExercise(idx: number) {
+      if (idx == this.modIdx) return;
+      var exNode = this.dataNode.parent.Items[idx];
+      var ctx = cloneAndModifyContext(this.ctx, c => c.url = encodeUrl(exNode.url));
+      this.navigate({ stateName: this.state.name, pars: ctx });
+    }
+
+    //wrapper kolem selectOtherExercise, aby sla funkce vlozit jako atribut do direktivy, napr:
+    //V nadrazenem html: <div selectexercise="::ts.selectOtherExerciseWrapper()">
+    //V direktiv kodu: scope = { selectExercise:'&selectexercise' };
+    //V direktiv html: ng-click="selectExercise()(it.idx)
+    selectExerciseWrapper() { var self = this; return idx => self.selectExercise(idx); }
+    resetExerciseWrapper() { var self = this; return () => self.resetExercise(); }
   }
+
+  export interface IInstructionData { title: string; body: string; }
 }

@@ -6,7 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var vyzva;
 (function (vyzva) {
-    var vyzvaRoot = blended.baseUrlRelToRoot + '/blendedapi/vyzva/';
+    vyzva.vyzvaRoot = blended.baseUrlRelToRoot + '/blendedapi/vyzva/';
     //*************** RESOLVERs
     //adjust produkt
     vyzva.loadProduct = ['$stateParams', function (ctx) {
@@ -57,8 +57,8 @@ var vyzva;
     })(blended.state);
     vyzva.state = state;
     blended.rootModule
-        .filter('vyzva$state$viewpath', function () { return function (id) { return vyzvaRoot + 'views/' + id + '.html'; }; });
-    var pageTemplate = vyzvaRoot + 'views/_pageTemplate.html';
+        .filter('vyzva$state$viewpath', function () { return function (id) { return vyzva.vyzvaRoot + 'views/' + id + '.html'; }; });
+    var pageTemplate = vyzva.vyzvaRoot + 'views/_pageTemplate.html';
     function initVyzvaStates(params) {
         vyzva.stateNames.root = new state({
             name: 'pg.ajs',
@@ -161,9 +161,9 @@ var vyzva;
                                             dataNodeUrlParName: 'Url',
                                             layoutContentId: 'exercise',
                                             layoutToolbarType: 'toolbar/run',
-                                            exerciseIsTest: true,
                                             ommitTitle: true,
-                                            ommitBreadCrumb: false,
+                                            exerciseIsTest: true,
+                                            exerciseOmitModuleMap: true,
                                             resolve: {
                                                 $loadedEx: blended.loadEx,
                                                 $loadedLongData: blended.loadLongData,

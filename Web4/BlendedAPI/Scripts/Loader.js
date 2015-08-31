@@ -110,14 +110,14 @@ var blended;
     var loader;
     (function (loader) {
         //help
-        var _adjustProduct = CourseMeta.lib.adjustProduct;
-        var _adjustMod = CourseMeta.lib.adjustMod;
-        var _loadLocalizedProductAndInstrs = CourseMeta.loadLocalizedProductAndInstrs;
-        var _finishInstr = CourseMeta.finishInstr;
-        //slovnik pro modul
-        var _dict;
-        var _dictItem;
-        var _dictItemRoot;
+        //var _adjustProduct = CourseMeta.lib.adjustProduct;
+        //var _adjustMod = CourseMeta.lib.adjustMod;
+        //var _loadLocalizedProductAndInstrs = CourseMeta.loadLocalizedProductAndInstrs;
+        //var _finishInstr = CourseMeta.finishInstr;
+        ////slovnik pro modul
+        //var _dict: schools.Dict;
+        //var _dictItem: schools.DictItem;
+        //var _dictItemRoot: schools.DictItemRoot;
         //baseUrlRelToRoot: relativni adresa rootu Web4 aplikace vyhledem k aktualni HTML strance
         function adjustProduct(ctx) {
             try {

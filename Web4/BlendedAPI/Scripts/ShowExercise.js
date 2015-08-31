@@ -41,12 +41,6 @@ var blended;
         return showExerciseModel;
     })();
     blended.showExerciseModel = showExerciseModel;
-    var exItemProxy = (function () {
-        function exItemProxy() {
-        }
-        return exItemProxy;
-    })();
-    blended.exItemProxy = exItemProxy;
     function scorePercent(sc) { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
     blended.scorePercent = scorePercent;
     function agregateChildShortInfos(node, taskId) {
@@ -98,6 +92,10 @@ var blended;
                 if (pg.evalPage)
                     this.exercise.dataNode.ms = pg.evalPage.maxScore;
             }
+            //instrukce
+            var instrs = this.product.instructions;
+            var instrBody = _.map(pg.instrs, function (instrUrl) { return instrs[instrUrl]; });
+            this.instructionData = { title: pg.instrTitle, body: instrBody.join('') };
             var exImpl = (this.exercise.dataNode);
             exImpl.page = pg;
             exImpl.result = this.user.long;
@@ -131,7 +129,7 @@ var blended;
         };
         exerciseService.prototype.evaluate = function (isTest, exerciseShowWarningPercent) {
             if (this.user.short.done)
-                return;
+                return false;
             this.user.modified = true;
             var now = Utils.nowToNum();
             var short = this.user.short;
@@ -158,7 +156,7 @@ var blended;
                 return true;
             }
             var exerciseOK = isTest ? true : (score == null || score.ms == 0 || (score.s / score.ms * 100) >= exerciseShowWarningPercent);
-            //if (!exerciseOK && !gui.alert(alerts.exTooManyErrors, true)) { this.userPending = false; return false; }//je hodne chyb a uzivatel chce cviceni znova
+            //if (!exerciseOK /*&& !gui.alert(alerts.exTooManyErrors, true)*/) return false; //je hodne chyb a uzivatel chce cviceni znova
             this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
             if (!isTest)
                 this.page.acceptData(true);
@@ -174,6 +172,15 @@ var blended;
     })();
     blended.exerciseService = exerciseService;
     var maxDelta = 10 * 60; //10 minut
+    //export interface IExerciseStateData {
+    //  isTest: boolean; //test nebo cviceni
+    //}
+    var exItemProxy = (function () {
+        function exItemProxy() {
+        }
+        return exItemProxy;
+    })();
+    blended.exItemProxy = exItemProxy;
     var exerciseTaskViewController = (function (_super) {
         __extends(exerciseTaskViewController, _super);
         function exerciseTaskViewController(state, resolves) {
@@ -185,15 +192,36 @@ var blended;
             state.$scope['exerciseService'] = this.exService;
             this.user = this.exService.user;
             this.title = this.dataNode.title;
-            this.modItems = _.map(this.parent.dataNode.Items, function (node, idx) {
-                return { user: blended.getPersistData(node, _this.ctx.taskid), modIdx: idx, title: node.title };
-            });
             this.modIdx = _.indexOf(this.parent.dataNode.Items, this.dataNode);
+            this.modItems = _.map(this.parent.dataNode.Items, function (node, idx) {
+                return { user: blended.getPersistData(node, _this.ctx.taskid), idx: idx, title: node.title, active: idx == _this.modIdx };
+            });
         }
-        exerciseTaskViewController.prototype.isDone = function () { return this.exService.user.short.done; };
-        exerciseTaskViewController.prototype.moveForward = function (ud) {
-            this.exService.evaluate(this.state.exerciseIsTest, this.state.exerciseShowWarningPercent);
+        //osetreni zelene sipky
+        exerciseTaskViewController.prototype.moveForward = function () {
+            if (this.justEvaluated) {
+                delete this.justEvaluated;
+                return blended.moveForwardResult.toParent;
+            }
+            this.justEvaluated = this.exService.evaluate(this.state.exerciseIsTest, this.state.exerciseShowWarningPercent);
+            return this.justEvaluated && !this.state.exerciseIsTest ? blended.moveForwardResult.selfInnner : blended.moveForwardResult.toParent;
         };
+        //provede reset cviceni, napr. v panelu s instrukci
+        exerciseTaskViewController.prototype.resetExercise = function () { alert('reset'); };
+        //skok na jine cviceni, napr. v module map panelu 
+        exerciseTaskViewController.prototype.selectExercise = function (idx) {
+            if (idx == this.modIdx)
+                return;
+            var exNode = this.dataNode.parent.Items[idx];
+            var ctx = blended.cloneAndModifyContext(this.ctx, function (c) { return c.url = blended.encodeUrl(exNode.url); });
+            this.navigate({ stateName: this.state.name, pars: ctx });
+        };
+        //wrapper kolem selectOtherExercise, aby sla funkce vlozit jako atribut do direktivy, napr:
+        //V nadrazenem html: <div selectexercise="::ts.selectOtherExerciseWrapper()">
+        //V direktiv kodu: scope = { selectExercise:'&selectexercise' };
+        //V direktiv html: ng-click="selectExercise()(it.idx)
+        exerciseTaskViewController.prototype.selectExerciseWrapper = function () { var self = this; return function (idx) { return self.selectExercise(idx); }; };
+        exerciseTaskViewController.prototype.resetExerciseWrapper = function () { var self = this; return function () { return self.resetExercise(); }; };
         return exerciseTaskViewController;
     })(blended.taskController);
     blended.exerciseTaskViewController = exerciseTaskViewController;

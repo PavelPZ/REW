@@ -2,7 +2,7 @@
 
   export class pretestExercise extends blended.exerciseTaskViewController implements IToolbarRun {
 
-    pageUrls: string;
+    //pageUrls: string;
 
     constructor(state: blended.IStateService, resolves: Array<any>) {
       super(state, resolves);
@@ -11,14 +11,14 @@
       this.breadcrumb.push({ title: this.title, url: null, active: true });
       this.tbTitle = 'Pokračovat';
       
-      this.pageUrls = this.ctx.productUrl + '|' + this.ctx.moduleUrl + '|' + this.ctx.Url;
+      //this.pageUrls = this.ctx.productUrl + '|' + this.ctx.moduleUrl + '|' + this.ctx.Url;
     }
     tbClick() {
       var pretest = _.find(this.taskList(), t => t.state.name == stateNames.pretestTask.name);
       if (pretest == null) throw 'pretest==null';
-      var url = pretest.goAhead();
-      if (url == null) url = { stateName: stateNames.home.name, pars: this.ctx };
-      this.navigate(url);
+      //var url = pretest.goAhead2(); if (url == blended.stayOnPageUrl) return;
+      //if (url == null) url = { stateName: stateNames.home.name, pars: this.ctx };
+      this.navigate(pretest.goAhead());
     }
     tbTitle: string;
   }

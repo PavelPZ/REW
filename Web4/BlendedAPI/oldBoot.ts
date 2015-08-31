@@ -1,6 +1,6 @@
 ﻿module blended {
 
-  export var rootModule = angular.module('appRoot', ['ngLocale', 'ngResource', 'ui.router']);
+  export var rootModule = angular.module('appRoot', [/*'ngLocale', 'ngResource',*/ 'ui.router', 'ngAnimate', 'ui.bootstrap']);
 
   export interface createStatePars {
     $stateProvider: angular.ui.IStateProvider;

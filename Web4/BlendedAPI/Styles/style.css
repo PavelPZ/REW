@@ -121,3 +121,149 @@ a.bl .wizzard .wizzard-item.active:hover {
   width: 110px;
   right: 0px;
 }
+.bl .module-map-items {
+  margin-top: 10px;
+  margin-left: 1px;
+}
+.bl .module-map-item {
+  margin-left: -1px !important;
+  border-radius: 0 !important;
+  width: 34px;
+  padding-left: 0;
+  padding-right: 0;
+  color: #337ab7;
+  text-decoration: underline;
+}
+.bl .module-map-item.done {
+  color: #ffffff;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+.bl .module-map-item.done:hover,
+.bl .module-map-item.done:focus,
+.bl .module-map-item.done.focus,
+.bl .module-map-item.done:active,
+.bl .module-map-item.done.active,
+.open > .dropdown-toggle.bl .module-map-item.done {
+  color: #ffffff;
+  background-color: #3d8b3d;
+  border-color: #1f471f;
+}
+.bl .module-map-item.done:active,
+.bl .module-map-item.done.active,
+.open > .dropdown-toggle.bl .module-map-item.done {
+  background-image: none;
+}
+.bl .module-map-item.done.disabled,
+.bl .module-map-item.done[disabled],
+fieldset[disabled] .bl .module-map-item.done,
+.bl .module-map-item.done.disabled:hover,
+.bl .module-map-item.done[disabled]:hover,
+fieldset[disabled] .bl .module-map-item.done:hover,
+.bl .module-map-item.done.disabled:focus,
+.bl .module-map-item.done[disabled]:focus,
+fieldset[disabled] .bl .module-map-item.done:focus,
+.bl .module-map-item.done.disabled.focus,
+.bl .module-map-item.done[disabled].focus,
+fieldset[disabled] .bl .module-map-item.done.focus,
+.bl .module-map-item.done.disabled:active,
+.bl .module-map-item.done[disabled]:active,
+fieldset[disabled] .bl .module-map-item.done:active,
+.bl .module-map-item.done.disabled.active,
+.bl .module-map-item.done[disabled].active,
+fieldset[disabled] .bl .module-map-item.done.active {
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+.bl .module-map-item.done .badge {
+  color: #5cb85c;
+  background-color: #ffffff;
+}
+.bl .module-map-item.active {
+  color: #ffffff;
+  background-color: #f0ad4e;
+  border-color: #eea236;
+}
+.bl .module-map-item.active:hover,
+.bl .module-map-item.active:focus,
+.bl .module-map-item.active.focus,
+.bl .module-map-item.active:active,
+.bl .module-map-item.active.active,
+.open > .dropdown-toggle.bl .module-map-item.active {
+  color: #ffffff;
+  background-color: #df8a13;
+  border-color: #85530b;
+}
+.bl .module-map-item.active:active,
+.bl .module-map-item.active.active,
+.open > .dropdown-toggle.bl .module-map-item.active {
+  background-image: none;
+}
+.bl .module-map-item.active.disabled,
+.bl .module-map-item.active[disabled],
+fieldset[disabled] .bl .module-map-item.active,
+.bl .module-map-item.active.disabled:hover,
+.bl .module-map-item.active[disabled]:hover,
+fieldset[disabled] .bl .module-map-item.active:hover,
+.bl .module-map-item.active.disabled:focus,
+.bl .module-map-item.active[disabled]:focus,
+fieldset[disabled] .bl .module-map-item.active:focus,
+.bl .module-map-item.active.disabled.focus,
+.bl .module-map-item.active[disabled].focus,
+fieldset[disabled] .bl .module-map-item.active.focus,
+.bl .module-map-item.active.disabled:active,
+.bl .module-map-item.active[disabled]:active,
+fieldset[disabled] .bl .module-map-item.active:active,
+.bl .module-map-item.active.disabled.active,
+.bl .module-map-item.active[disabled].active,
+fieldset[disabled] .bl .module-map-item.active.active {
+  background-color: #f0ad4e;
+  border-color: #eea236;
+}
+.bl .module-map-item.active .badge {
+  color: #f0ad4e;
+  background-color: #ffffff;
+}
+.bl .instruction {
+  background-color: #dff0d8;
+  border: 1px solid #d6e9c6;
+  border-radius: 4px;
+  padding-left: 15px;
+}
+.bl .instruction .header {
+  position: relative;
+  cursor: pointer;
+}
+.bl .instruction .header.header-done {
+  height: 34px;
+}
+.bl .instruction .header .more {
+  position: absolute;
+  top: 3px;
+  right: 10px;
+  color: #337ab7;
+}
+.bl .instruction .header .reset-btn {
+  margin: 2px 0;
+  position: absolute;
+  right: 3px;
+}
+.bl .instruction .body {
+  color: #3c763d;
+}
+.bl .instruction .body h1 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.bl .instruction .body .btn-link {
+  text-align: left;
+  text-decoration: none;
+  white-space: normal;
+  font-weight: bold;
+  font-size: 16px;
+}
+.bl .instruction .body ol {
+  margin: 0 0 10px 25px;
+}

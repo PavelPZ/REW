@@ -1,6 +1,7 @@
 ﻿@import "../../bs3/less/mixins/alerts.less";
 @import "../../bs3/less/mixins/gradients.less";
 @import "../../bs3/less/mixins/background-variant.less";
+@import "../../bs3/less/mixins/buttons.less";
 @import "../../bs3/less/variables.less";
 
 .bl {
@@ -148,6 +149,81 @@
       .right-mark {
         width: 110px;
         right: 0px;
+      }
+    }
+  }
+  //
+  .module-map-items {
+    margin-top: 10px;
+    margin-left: 1px;
+  }
+
+  .module-map-item {
+    margin-left: -1px !important;
+    border-radius: 0 !important;
+    width: 34px;
+    padding-left: 0;
+    padding-right: 0;
+    color: @link-color;
+    text-decoration: underline;
+
+    &.done {
+      .button-variant(@btn-success-color; @btn-success-bg; @btn-success-border);
+    }
+
+    &.active {
+      .button-variant(@btn-warning-color; @btn-warning-bg; @btn-warning-border);
+    }
+  }
+
+  .instruction {
+    background-color: @alert-success-bg;
+    border: 1px solid @alert-success-border;
+    border-radius: @alert-border-radius;
+    padding-left: 15px;
+
+    .header {
+      position: relative;
+      cursor: pointer;
+
+      &.header-done {
+        height: 34px;
+      }
+
+      .more {
+        position: absolute;
+        top: 3px;
+        right: 10px;
+        color: @link-color;
+      }
+
+      .reset-btn {
+        margin: 2px 0;
+        position: absolute;
+        right: 3px;
+      }
+    }
+
+    .body {
+      color: @alert-success-text;
+
+      h1 {
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+
+      .btn-link {
+        text-align: left;
+        text-decoration: none;
+        white-space: normal;
+        font-weight: bold;
+        font-size: 16px;
+      }
+
+      ol {
+        margin: 0 0 10px 25px;
       }
     }
   }

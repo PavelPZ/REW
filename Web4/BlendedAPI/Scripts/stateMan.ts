@@ -8,6 +8,7 @@
     moduleAlowCycleExercise?: boolean; //pro modul: dovol pomoci zelene sipky cyklovani cviceni
     exerciseShowWarningPercent?: number; //exerciseIsTest=false => procenta, kdy se ukaze varovani
     exerciseIsTest?: boolean; //pro cviceni: neukazovat vzhodnoceny stav
+    exerciseOmitModuleMap?: boolean; //neukazuje moduleMap
   }
 
 }

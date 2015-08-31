@@ -126,14 +126,14 @@ module blended {
   export module loader {
 
     //help
-    var _adjustProduct = CourseMeta.lib.adjustProduct;
-    var _adjustMod = CourseMeta.lib.adjustMod;
-    var _loadLocalizedProductAndInstrs = CourseMeta.loadLocalizedProductAndInstrs;
-    var _finishInstr = CourseMeta.finishInstr;
-    //slovnik pro modul
-    var _dict: schools.Dict;
-    var _dictItem: schools.DictItem;
-    var _dictItemRoot: schools.DictItemRoot;
+    //var _adjustProduct = CourseMeta.lib.adjustProduct;
+    //var _adjustMod = CourseMeta.lib.adjustMod;
+    //var _loadLocalizedProductAndInstrs = CourseMeta.loadLocalizedProductAndInstrs;
+    //var _finishInstr = CourseMeta.finishInstr;
+    ////slovnik pro modul
+    //var _dict: schools.Dict;
+    //var _dictItem: schools.DictItem;
+    //var _dictItemRoot: schools.DictItemRoot;
 
     //baseUrlRelToRoot: relativni adresa rootu Web4 aplikace vyhledem k aktualni HTML strance
     export function adjustProduct(ctx: learnContext): ng.IPromise<IProductEx> {

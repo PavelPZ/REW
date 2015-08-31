@@ -65,12 +65,13 @@ namespace NewData.Design.Templates
     .ng-hide, .alert.advertise {
       display: none !important;
      }
+     .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
   </style>
   <![endif]-->
   <!--[if (gt IE 8)|!(IE)]><!-->
   <script type='text/javascript' src='../jslib/scripts/jquery2");
             
-            #line 31 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 32 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(min));
             
             #line default
@@ -79,7 +80,7 @@ namespace NewData.Design.Templates
                     "4.2/angular.js\" type=\"text/javascript\"></script>\r\n  <!--<![endif]-->\r\n  <script " +
                     "type=\'text/javascript\' src=\'../jslib/scripts/underscore");
             
-            #line 34 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 35 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(min));
             
             #line default
@@ -88,12 +89,13 @@ namespace NewData.Design.Templates
   <script type='text/javascript' src='../jslib/js/lmconsoleinit.js'></script>
 
   <script src=""https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-route.js"" type=""text/javascript""></script>
-  <script src=""https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-resource.js"" type=""text/javascript""></script>
+  <script src=""https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-animate.js"" type=""text/javascript""></script>
   <script src=""https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"" type=""text/javascript""></script>
+  <script src=""https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.3/ui-bootstrap-tpls.js"" type=""text/javascript""></script>
 
   <link href=""../font-awesome/lm/externals");
             
-            #line 41 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 43 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(themeId));
             
             #line default
@@ -102,14 +104,14 @@ namespace NewData.Design.Templates
                     "/ea/ea.css\" />\r\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"../blendedapi/sty" +
                     "les/style.css\" />\r\n  <link href=\"../jslib/css/lm");
             
-            #line 44 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 46 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(themeId));
             
             #line default
             #line hidden
             this.Write(".css\" rel=\"stylesheet\"/>\r\n\r\n");
             
-            #line 46 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 48 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
 
   WriteLine(RewApp.writeCfg(cfg));
   WriteLine(MainPage.writeCss(RewApp.publisherSkinCss(cfg)));
@@ -118,7 +120,7 @@ namespace NewData.Design.Templates
             #line default
             #line hidden
             
-            #line 50 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 52 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
 
   if (cfg.version == versions.minified) {
 
@@ -134,7 +136,7 @@ namespace NewData.Design.Templates
   }
 ");
             
-            #line 60 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 62 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
 
     if (cfg.licenceConfig.domain != null) WriteLine(string.Format("  if (window.location.host.toLowerCase().indexOf('{0}') < 0) {{ alert('Wrong domain: {0}'); isOk = false; }}", cfg.licenceConfig.domain.ToLower()));
     if (cfg.licenceConfig.intExpiration > 0) WriteLine("  if (new Date().getTime() > {0}) {{ alert('Trial version expired at {1}'); isOk = false; }}", cfg.licenceConfig.intExpiration, cfg.licenceConfig.expiration.ToString("yyyy-MM-dd"));
