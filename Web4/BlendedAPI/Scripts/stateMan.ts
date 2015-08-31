@@ -3,7 +3,6 @@
     childs?: Array<blended.state>;
     //DATA parametry
     dataNodeUrlParName?: string;
-    ommitTitle?: boolean; //neukazuje se titulek
     ommitBreadCrumb?: boolean; //neukazuje se titulek
     moduleAlowCycleExercise?: boolean; //pro modul: dovol pomoci zelene sipky cyklovani cviceni
     exerciseShowWarningPercent?: number; //exerciseIsTest=false => procenta, kdy se ukaze varovani

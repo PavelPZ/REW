@@ -263,7 +263,8 @@
     <Content Include="BlendedAPI\vyzva\Views\exercise\instruction.html" />
     <Content Include="BlendedAPI\vyzva\Views\home\lesson.html" />
     <Content Include="BlendedAPI\vyzva\Views\lector.html" />
-    <Content Include="BlendedAPI\vyzva\Views\lector\levels.html" />
+    <Content Include="BlendedAPI\vyzva\Views\lector\_tabs.html" />
+    <Content Include="BlendedAPI\vyzva\Views\lector\eval.html" />
     <Content Include="BlendedAPI\vyzva\Views\managerSchool.html" />
     <Content Include="BlendedAPI\vyzva\Views\toolbar\Run.html" />
     <Content Include="BlendedAPI\vyzva\Views\toolbar\Module.html" />
@@ -1378,10 +1379,11 @@
     <TypeScriptCompile Include="BlendedAPI\Scripts\Tasks.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\exercise\moduleMap.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\exercise\instruction.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\lector\_tabs.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\toolbar\Run.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\toolbar\Module.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\home\lesson.ts" />
-    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\lector\levels.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\lector\eval.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\managerSchool.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\module.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\exercise.ts" />

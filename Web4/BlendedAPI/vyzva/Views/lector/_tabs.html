@@ -1,0 +1,7 @@
+﻿<tabset type="pills">
+  <tab ng-repeat="it in ::tabs" heading="{{::it.shortTitle}}" select="navigate(it.idx)" active="::it.idx==actIdx()"></tab>
+</tabset>
+<div class="container lm-tabs-header">
+  <h3>{{::tabs[actIdx()].shortTitle || tabs[actIdx()].longTitle}}</h3>
+</div>
+

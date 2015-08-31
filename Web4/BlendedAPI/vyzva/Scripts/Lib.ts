@@ -1,5 +1,9 @@
 ﻿module vyzva {
 
+  export enum pageTitlePlace {
+    header, page, none
+  }
+
   export function finishHomeDataNode(prod: IBlendedCourseRepository) {
     if (prod.pretest) return;
     var clonedLessons = _.map(_.range(0, 4), idx => <any>(_.clone(prod.Items[idx].Items))); //pro kazdou level kopie napr. </lm/blcourse/english/a1/>.Items

@@ -1,4 +1,13 @@
-﻿module vyzva {
+﻿module angular.ui {
+//rozsireni ui-route a blended STATE 
+  export interface IState {
+    layoutContentId?: string; //template stranky
+    layoutToolbarType?: string; //typ toolbaru (nazev souboru v toolbar adresari)
+    pageTitlePlace?: vyzva.pageTitlePlace;
+  }
+}
+
+module vyzva {
 
   export var vyzvaRoot = blended.baseUrlRelToRoot + '/blendedapi/vyzva/';
  
@@ -32,6 +41,7 @@
     pretestTask?: state;
     lector?: state;
     lectorHome?: state;
+    lectorEval?: state;
     lessonTask?: state;
     shoolManager?: state;
     langmasterManager?: state;
@@ -58,13 +68,10 @@
     //});
   }];
 
-  //rozsireni ui-route a blended STATE 
-  export interface IState extends angular.ui.IState {
-    layoutContentId?: string; //template stranky
-    layoutToolbarType?: string; //typ toolbaru (nazev souboru v toolbar adresari)
-    lectorTabId?: string;
+  export class state extends blended.state {
+    constructor(st: angular.ui.IState) { super(st); }
+    pageTitlePlace: vyzva.pageTitlePlace;
   }
-  export class state extends blended.state { constructor(st: IState) { super(st); } }
 
   blended.rootModule
     .filter('vyzva$state$viewpath', () => (id: string) => vyzvaRoot + 'views/' + id + '.html')
@@ -130,15 +137,13 @@
                   url: "/home",
                   controller: lectorViewController,
                   layoutContentId: 'lector',
-                  lectorTabId: 'home',
                   templateUrl: pageTemplate,
                 }),
-                new state({
-                  name: 'a1',
-                  url: "/a1",
-                  controller: lectorLevelController,
-                  layoutContentId: 'lectorLevel',
-                  lectorTabId: '???',
+                stateNames.lectorEval = new state({
+                  name: 'eval',
+                  url: "/eval",
+                  controller: lectorEvalController,
+                  layoutContentId: 'lector/eval',
                   templateUrl: pageTemplate,
                 }),
               ]
@@ -174,7 +179,7 @@
                       dataNodeUrlParName: 'Url',
                       layoutContentId: 'exercise',
                       layoutToolbarType: 'toolbar/run',
-                      ommitTitle: true,
+                      pageTitlePlace: pageTitlePlace.none,
                       exerciseIsTest: true,
                       exerciseOmitModuleMap: true,
                       resolve: {

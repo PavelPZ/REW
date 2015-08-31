@@ -8,7 +8,7 @@
       super(state, resolves);
       if (state.createMode != blended.createControllerModes.navigate) return;
       this.breadcrumb = breadcrumbBase(this);
-      this.breadcrumb.push({ title: this.title, url: null, active: true });
+      this.breadcrumb.push({ title: 'Rozřazovací test', url: null, active: true });
       this.tbTitle = 'Pokračovat';
       
       //this.pageUrls = this.ctx.productUrl + '|' + this.ctx.moduleUrl + '|' + this.ctx.Url;
@@ -21,6 +21,7 @@
       this.navigate(pretest.goAhead());
     }
     tbTitle: string;
+    state: state;
   }
 
   export class lessonExercise extends blended.exerciseTaskViewController {

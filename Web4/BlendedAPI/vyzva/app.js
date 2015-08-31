@@ -117,15 +117,13 @@ var vyzva;
                                     url: "/home",
                                     controller: vyzva.lectorViewController,
                                     layoutContentId: 'lector',
-                                    lectorTabId: 'home',
                                     templateUrl: pageTemplate,
                                 }),
-                                new state({
-                                    name: 'a1',
-                                    url: "/a1",
-                                    controller: vyzva.lectorLevelController,
-                                    layoutContentId: 'lectorLevel',
-                                    lectorTabId: '???',
+                                vyzva.stateNames.lectorEval = new state({
+                                    name: 'eval',
+                                    url: "/eval",
+                                    controller: vyzva.lectorEvalController,
+                                    layoutContentId: 'lector/eval',
                                     templateUrl: pageTemplate,
                                 }),
                             ]
@@ -161,7 +159,7 @@ var vyzva;
                                             dataNodeUrlParName: 'Url',
                                             layoutContentId: 'exercise',
                                             layoutToolbarType: 'toolbar/run',
-                                            ommitTitle: true,
+                                            pageTitlePlace: vyzva.pageTitlePlace.none,
                                             exerciseIsTest: true,
                                             exerciseOmitModuleMap: true,
                                             resolve: {

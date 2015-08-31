@@ -1,6 +1,49 @@
-.bl .oli-gapfill,
-.bl .oli-drop-down {
-  width: 0;
+.bl {
+  /*.navbar-center {
+    //display: table !important;
+    height: 50px;
+
+    .lm-logo-black-small {
+      float: left;
+      background: url(img/lm-logo-black.png) no-repeat;
+      margin-top: 10px;
+      margin-left: 0;
+      width: 41px;
+      height: 32px;
+    }
+
+    .content {
+      display: table-cell;
+      vertical-align: middle;
+
+      &.lm-logo {
+        padding-right: 20px;
+        border-right: 1px solid lightgray;
+
+        > a {
+          display: block;
+          background: url(img/lm-logo.png) no-repeat;
+          width: 195px;
+          height: 41px;
+        }
+      }
+
+      &.slogan {
+        padding-top: 5px;
+        color: lightgray;
+        font-size: 14px;
+        font-weight: bold;
+      }
+
+      &.contact {
+        font-size: 14px;
+        font-weight: bold;
+      }
+    }
+  }*/
+}
+.bl .breadcrumb {
+  margin-bottom: 0;
 }
 .bl .topbar {
   background-color: black;
@@ -16,43 +59,18 @@
   height: 32px;
   cursor: pointer;
 }
+.bl .topbar .topbar-include {
+  float: left;
+}
 .bl .topbar .btn {
   margin-top: 2px;
 }
-.bl .navbar-center {
-  height: 50px;
-}
-.bl .navbar-center .lm-logo-black-small {
+.bl .topbar .topbar-title {
   float: left;
-  background: url(img/lm-logo-black.png) no-repeat;
-  margin-top: 10px;
-  margin-left: 0;
-  width: 41px;
-  height: 32px;
-}
-.bl .navbar-center .content {
-  display: table-cell;
-  vertical-align: middle;
-}
-.bl .navbar-center .content.lm-logo {
-  padding-right: 20px;
-  border-right: 1px solid lightgray;
-}
-.bl .navbar-center .content.lm-logo > a {
-  display: block;
-  background: url(img/lm-logo.png) no-repeat;
-  width: 195px;
-  height: 41px;
-}
-.bl .navbar-center .content.slogan {
-  padding-top: 5px;
+  margin-left: 10px;
   color: lightgray;
-  font-size: 14px;
-  font-weight: bold;
-}
-.bl .navbar-center .content.contact {
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 24px;
+  margin-top: 8px;
 }
 .bl .wizzard {
   font-size: 110%;
@@ -71,10 +89,6 @@
   border: 1px solid lightgray;
   border-radius: .25em;
   color: lightgray;
-  /*&.active {
-        color: #fff;
-        .bg-variant(@brand-primary);
-      }*/
 }
 .bl .wizzard .wizzard-item.done,
 .bl .wizzard .wizzard-item.active {
@@ -238,9 +252,9 @@ fieldset[disabled] .bl .module-map-item.active.active {
   height: 34px;
 }
 .bl .instruction .header .more {
-  position: absolute;
-  top: 3px;
-  right: 10px;
+  /*position: absolute;
+        top: 3px;
+        right: 10px;*/
   color: #337ab7;
 }
 .bl .instruction .header .reset-btn {
@@ -250,6 +264,7 @@ fieldset[disabled] .bl .module-map-item.active.active {
 }
 .bl .instruction .body {
   color: #3c763d;
+  padding-top: 10px;
 }
 .bl .instruction .body h1 {
   font-size: 16px;
@@ -266,4 +281,12 @@ fieldset[disabled] .bl .module-map-item.active.active {
 }
 .bl .instruction .body ol {
   margin: 0 0 10px 25px;
+}
+.bl .lm-tabs-header {
+  margin-top: -1px;
+  background-color: #337ab7;
+  color: #ffffff !important;
+}
+.bl .lm-tabs-header h3 {
+  margin-top: 10px;
 }

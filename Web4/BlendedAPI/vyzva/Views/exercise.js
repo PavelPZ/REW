@@ -14,7 +14,7 @@ var vyzva;
             if (state.createMode != blended.createControllerModes.navigate)
                 return;
             this.breadcrumb = vyzva.breadcrumbBase(this);
-            this.breadcrumb.push({ title: this.title, url: null, active: true });
+            this.breadcrumb.push({ title: 'Rozřazovací test', url: null, active: true });
             this.tbTitle = 'Pokračovat';
             //this.pageUrls = this.ctx.productUrl + '|' + this.ctx.moduleUrl + '|' + this.ctx.Url;
         }

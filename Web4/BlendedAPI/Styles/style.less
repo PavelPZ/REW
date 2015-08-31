@@ -6,8 +6,8 @@
 
 .bl {
 
-  .oli-gapfill, .oli-drop-down {
-    width: 0;
+  .breadcrumb {
+    margin-bottom: 0;
   }
 
   .topbar {
@@ -25,12 +25,22 @@
       cursor: pointer;
     }
 
+    .topbar-include {
+      float: left;
+    }
     .btn {
       margin-top: 2px;
     }
+    .topbar-title {
+      float: left;
+      margin-left:10px;
+      color:lightgray;
+      font-size:@font-size-h3;
+      margin-top:8px;
+    }
   }
 
-  .navbar-center {
+  /*.navbar-center {
     //display: table !important;
     height: 50px;
 
@@ -71,7 +81,7 @@
         font-weight: bold;
       }
     }
-  }
+  }*/
 
   .wizzard {
     font-size: 110%;
@@ -93,14 +103,9 @@
       color: lightgray;
 
       &.done, &.active {
-        //.bg-variant(@state-info-bg);
         color: #fff;
         .bg-variant(@brand-primary);
       }
-      /*&.active {
-        color: #fff;
-        .bg-variant(@brand-primary);
-      }*/
       &.future {
       }
     }
@@ -191,9 +196,9 @@
       }
 
       .more {
-        position: absolute;
+        /*position: absolute;
         top: 3px;
-        right: 10px;
+        right: 10px;*/
         color: @link-color;
       }
 
@@ -206,6 +211,7 @@
 
     .body {
       color: @alert-success-text;
+      padding-top:10px;
 
       h1 {
         font-size: 16px;
@@ -227,4 +233,15 @@
       }
     }
   }
+
+  .lm-tabs-header {
+    margin-top: -1px;
+    background-color: @panel-primary-heading-bg;
+    color: @panel-primary-text !important;
+
+    h3 {
+      margin-top: 10px;
+    }
+  }
+
 }

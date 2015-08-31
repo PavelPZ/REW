@@ -11,7 +11,7 @@
   <div ng-click="isCollapsed = !isCollapsed" class="header h4">
     <span class="fa fa-info-circle fa-lg"></span>&nbsp;&nbsp;
     {{::data().title}}
-    <span class="fa fa-ellipsis-h fa-lg"></span>&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="more fa fa-ellipsis-h fa-lg"></span>
   </div>
   <div collapse="isCollapsed" class="body" ng-bind-html="::data().body | rawhtml"></div>
 </div>

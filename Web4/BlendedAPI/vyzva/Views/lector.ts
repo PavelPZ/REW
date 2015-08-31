@@ -11,25 +11,24 @@
   }
 
   export class lectorViewBase extends blended.controller {
+    constructor(state: blended.IStateService) {
+      super(state);
+      this.title = 'Studijní skupina ' + this.parent.lectorGroup.title;
+      this.breadcrumb = this.breadcrumbBase(); this.breadcrumb[this.breadcrumb.length - 1].active = true;
+    }
     breadcrumbBase(): Array<blended.breadcrumbItem> {
       var res = vyzva.breadcrumbBase(this);
       res.push({ title: this.title, url: this.href({ stateName: stateNames.lectorHome.name, pars: this.ctx }) });
       return res;
     }
+    parent: lectorController;
   }
 
   export class lectorViewController extends lectorViewBase {
     constructor(state: blended.IStateService) {
       super(state);
-      this.title = 'Studijní skupina ' + this.parent.lectorGroup.title;
-      this.breadcrumb = this.breadcrumbBase(); this.breadcrumb[this.breadcrumb.length - 1].active = false;
+      this.breadcrumb[this.breadcrumb.length - 1].active = true;
     }
-    parent: lectorController;
   }
-
-  export var lectorTabs = {
-    home: 'home',
-
-  };
 
 }

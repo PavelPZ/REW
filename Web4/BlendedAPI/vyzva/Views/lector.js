@@ -19,8 +19,11 @@ var vyzva;
     vyzva.lectorController = lectorController;
     var lectorViewBase = (function (_super) {
         __extends(lectorViewBase, _super);
-        function lectorViewBase() {
-            _super.apply(this, arguments);
+        function lectorViewBase(state) {
+            _super.call(this, state);
+            this.title = 'Studijní skupina ' + this.parent.lectorGroup.title;
+            this.breadcrumb = this.breadcrumbBase();
+            this.breadcrumb[this.breadcrumb.length - 1].active = true;
         }
         lectorViewBase.prototype.breadcrumbBase = function () {
             var res = vyzva.breadcrumbBase(this);
@@ -34,14 +37,9 @@ var vyzva;
         __extends(lectorViewController, _super);
         function lectorViewController(state) {
             _super.call(this, state);
-            this.title = 'Studijní skupina ' + this.parent.lectorGroup.title;
-            this.breadcrumb = this.breadcrumbBase();
-            this.breadcrumb[this.breadcrumb.length - 1].active = false;
+            this.breadcrumb[this.breadcrumb.length - 1].active = true;
         }
         return lectorViewController;
     })(lectorViewBase);
     vyzva.lectorViewController = lectorViewController;
-    vyzva.lectorTabs = {
-        home: 'home',
-    };
 })(vyzva || (vyzva = {}));

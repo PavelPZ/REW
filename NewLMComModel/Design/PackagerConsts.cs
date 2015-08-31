@@ -512,12 +512,6 @@ namespace Packager {
       "blendedapi/vyzva/views/toolbar/module.js",
       "blendedapi/vyzva/views/toolbar/run.js",
 
-      "blendedapi/vyzva/views/home/pretestitem.js",
-      "blendedapi/vyzva/views/home/lesson.js",
-
-      "blendedapi/vyzva/views/exercise/instruction.js",
-      "blendedapi/vyzva/views/exercise/modulemap.js",
-
       "blendedapi/vyzva/views/managerlangmaster.js",
       "blendedapi/vyzva/views/managerschool.js",
       "blendedapi/vyzva/views/exercise.js",
@@ -526,7 +520,14 @@ namespace Packager {
       "blendedapi/vyzva/views/lector.js",
       "blendedapi/vyzva/views/home.js",
 
-      "blendedapi/vyzva/views/lector/keys.js",
+      "blendedapi/vyzva/views/home/pretestitem.js",
+      "blendedapi/vyzva/views/home/lesson.js",
+
+      "blendedapi/vyzva/views/exercise/instruction.js",
+      "blendedapi/vyzva/views/exercise/modulemap.js",
+
+      "blendedapi/vyzva/views/lector/eval.js",
+      "blendedapi/vyzva/views/lector/_tabs.js",
 
       "blendedapi/vyzva/app.js",
       "blendedapi/app.js",

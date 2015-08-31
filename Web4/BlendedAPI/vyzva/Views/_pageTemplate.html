@@ -1,7 +1,8 @@
 ﻿<div class="container-fluid topbar">
   <div class="container">
-    <div class="content lm-logo-black-small" ng-controller="gotoHomeUrl" ng-click="gotoHomeUrl()"></div>
-    <div data-ng-include="::state.layoutToolbarType | vyzva$state$viewpath"></div>
+    <div class="lm-logo-black-small" ng-controller="gotoHomeUrl" ng-click="gotoHomeUrl()"></div>
+    <div class="topbar-include" data-ng-include="::state.layoutToolbarType | vyzva$state$viewpath"></div>
+    <div ng-if="::!state.pageTitlePlace" class="topbar-title">{{::ts.title}}</div>
   </div>
 </div>
 <div class="container" ng-if="::!state.ommitBreadCrumb && !!ts.breadcrumb && ts.breadcrumb.length>0">
@@ -15,7 +16,7 @@
 
 <div class="container-fluid">
   <div class="container">
-    <h1 ng-if="::!state.ommitTitle">{{::ts.title}}</h1>
+    <h1 ng-if="::state.pageTitlePlace==1">{{::ts.title}}</h1>
     <div data-ng-include="::state.layoutContentId | vyzva$state$viewpath"></div>
   </div>
 </div>
