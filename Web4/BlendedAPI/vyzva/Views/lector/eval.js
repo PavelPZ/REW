@@ -10,8 +10,9 @@ var vyzva;
         __extends(lectorEvalController, _super);
         function lectorEvalController(state) {
             _super.call(this, state);
+            this.tabIdx = 1;
             this.breadcrumb = this.breadcrumbBase();
-            this.breadcrumb.push({ title: 'xxx', active: true });
+            this.breadcrumb.push({ title: vyzva.getLectorTabs()[this.tabIdx].shortTitle, active: true });
         }
         return lectorEvalController;
     })(vyzva.lectorViewBase);

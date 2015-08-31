@@ -6,10 +6,7 @@ var vyzva;
         function lectorTabs() {
             var _this = this;
             this.link = function (scope, el) {
-                _this.tabs = tabs || [
-                    { idx: 0, stateName: vyzva.stateNames.lectorHome.name, shortTitle: 'Studenti' },
-                    { idx: 1, stateName: vyzva.stateNames.lectorEval.name, shortTitle: 'Vyhodnocení testů' },
-                ];
+                _this.tabs = getLectorTabs();
                 _this.ts = (scope.ts());
                 _this.actIdx = (scope.actIdx());
                 scope.tabs = _this.tabs;
@@ -28,4 +25,11 @@ var vyzva;
     })();
     vyzva.lectorTabs = lectorTabs;
     var tabs;
+    function getLectorTabs() {
+        return tabs || [
+            { idx: 0, stateName: vyzva.stateNames.lectorHome.name, shortTitle: 'Studenti' },
+            { idx: 1, stateName: vyzva.stateNames.lectorEval.name, shortTitle: 'Vyhodnocení testů' }
+        ];
+    }
+    vyzva.getLectorTabs = getLectorTabs;
 })(vyzva || (vyzva = {}));

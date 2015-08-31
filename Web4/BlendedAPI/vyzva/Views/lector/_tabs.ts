@@ -5,10 +5,7 @@
 
   export class lectorTabs{
     link = (scope, el: ng.IAugmentedJQuery) => {
-      this.tabs = tabs || [
-        { idx: 0, stateName: stateNames.lectorHome.name, shortTitle: 'Studenti' },
-        { idx: 1, stateName: stateNames.lectorEval.name, shortTitle: 'Vyhodnocení testů' },
-      ];
+      this.tabs = getLectorTabs();
       this.ts = <blended.controller>(scope.ts());
       this.actIdx = <number>(scope.actIdx());
       scope.tabs = this.tabs;
@@ -34,5 +31,11 @@
   }
 
   var tabs: Array<ITabModel>;
+  export function getLectorTabs(): Array<ITabModel> {
+    return tabs || [
+      { idx: 0, stateName: stateNames.lectorHome.name, shortTitle: 'Studenti' },
+      { idx: 1, stateName: stateNames.lectorEval.name, shortTitle: 'Vyhodnocení testů' }
+    ];
+  }
 
 }

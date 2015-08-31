@@ -22,8 +22,6 @@ var vyzva;
             var pretest = _.find(this.taskList(), function (t) { return t.state.name == vyzva.stateNames.pretestTask.name; });
             if (pretest == null)
                 throw 'pretest==null';
-            //var url = pretest.goAhead2(); if (url == blended.stayOnPageUrl) return;
-            //if (url == null) url = { stateName: stateNames.home.name, pars: this.ctx };
             this.navigate(pretest.goAhead());
         };
         return pretestExercise;

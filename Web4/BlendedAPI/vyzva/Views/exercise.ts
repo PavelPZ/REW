@@ -16,8 +16,6 @@
     tbClick() {
       var pretest = _.find(this.taskList(), t => t.state.name == stateNames.pretestTask.name);
       if (pretest == null) throw 'pretest==null';
-      //var url = pretest.goAhead2(); if (url == blended.stayOnPageUrl) return;
-      //if (url == null) url = { stateName: stateNames.home.name, pars: this.ctx };
       this.navigate(pretest.goAhead());
     }
     tbTitle: string;

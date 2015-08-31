@@ -22,12 +22,14 @@
       return res;
     }
     parent: lectorController;
+    tabIdx: number;
   }
 
   export class lectorViewController extends lectorViewBase {
     constructor(state: blended.IStateService) {
       super(state);
       this.breadcrumb[this.breadcrumb.length - 1].active = true;
+      this.tabIdx = 0;
     }
   }
 

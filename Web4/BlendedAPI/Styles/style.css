@@ -45,6 +45,10 @@
 .bl .breadcrumb {
   margin-bottom: 0;
 }
+.bl .nav-pills > li > a {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
 .bl .topbar {
   background-color: black;
   height: 50px;
@@ -282,11 +286,14 @@ fieldset[disabled] .bl .module-map-item.active.active {
 .bl .instruction .body ol {
   margin: 0 0 10px 25px;
 }
+.bl .lm-tabs {
+  margin-top: 15px;
+}
 .bl .lm-tabs-header {
   margin-top: -1px;
   background-color: #337ab7;
   color: #ffffff !important;
 }
 .bl .lm-tabs-header h3 {
-  margin-top: 10px;
+  margin: 16px 0;
 }

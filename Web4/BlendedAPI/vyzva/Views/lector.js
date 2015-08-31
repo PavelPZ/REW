@@ -38,6 +38,7 @@ var vyzva;
         function lectorViewController(state) {
             _super.call(this, state);
             this.breadcrumb[this.breadcrumb.length - 1].active = true;
+            this.tabIdx = 0;
         }
         return lectorViewController;
     })(lectorViewBase);
