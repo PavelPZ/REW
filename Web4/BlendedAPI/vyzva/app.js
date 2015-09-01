@@ -43,10 +43,12 @@ var vyzva;
             //  }
             //})
             //sance zrusit ladovani stranky
-            //$rootScope.$on('$stateChangeStart', (e, toState, toParams, fromState, fromParams) => {
-            //  blended.finishContext(toParams);
-            //  state.onRouteChangeStart(e, toState, toParams, $location, $state);
-            //});
+            $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
+                blended.finishContext(fromParams);
+                var prod = blended.loader.productCache.fromCache(fromParams);
+                if (prod)
+                    prod.saveProduct(fromParams, $.noop);
+            });
         }];
     var state = (function (_super) {
         __extends(state, _super);
@@ -88,7 +90,7 @@ var vyzva;
                 blended.prodStates.homeTask = vyzva.stateNames.homeTask = new state({
                     name: 'vyzva',
                     //lickeys ve formatu <UserLicences.LicenceId>|<UserLicences.Counter>#<UserLicences.LicenceId>|<UserLicences.Counter>...
-                    url: "/vyzva/:companyid/:loginid/:userdataid/:persistence/:loc/:lickeys/:producturl/:taskid",
+                    url: "/vyzva/:companyid/:loginid/:persistence/:loc/:lickeys/:producturl/:taskid?:onbehalfof&returnurl",
                     dataNodeUrlParName: 'productUrl',
                     controller: vyzva.homeTaskController,
                     abstract: true,

@@ -13,7 +13,6 @@
     constructor(stateService: IStateService) {
       this.ctx = stateService.params;
       this.$scope = stateService.$scope;
-      finishContext(this.ctx);
       this.state = stateService.current;
       if (this.$scope) this.$scope.state = this.state;
       this.parent = stateService.parent;
@@ -27,6 +26,11 @@
       var hash = this.href(url);
       setTimeout(() => window.location.hash = hash, 1);
     }
+    navigateWrapper(): (stateName:string ) => void { //kvui moznosti dat jako parametr diraktivy
+      var self = this;
+      return stateName => self.navigate({ stateName: stateName, pars:self.ctx});
+    }
+
 
     taskList(): Array<taskController> {
       var t: taskController = this.taskRoot();
@@ -46,7 +50,7 @@
       setTimeout(this.navigate(url), 1);
     }
   }
-  export interface IControllerScope extends ng.IScope { ts: controller; state: state; } //$scope pro vsechny controllers
+  export interface IControllerScope extends ng.IScope { ts: controller; state: state; api: () => Object; /*globalni api*/} //$scope pro vsechny controllers
 
   //******* TASK VIEW - predchudce vsech controllers, co maji vizualni podobu (html stranku)
   export class taskViewController extends controller {
@@ -72,6 +76,7 @@
     dataNode: CourseMeta.data; //sitemap produkt node
     user: IPersistNodeItem<IPersistNodeUser>; //user persistence, odpovidajici taskId
     parent: taskController;
+    isProductHome: boolean;
 
     //********************* 
     constructor(state: IStateService, resolves?: Array<any>) {
@@ -124,6 +129,10 @@
         if (!newt) return { stateName: t.state.name, pars: t.ctx };
         t = newt;
       }
+    }
+
+    navigateAhead() {
+      this.navigate(this.goAhead());
     }
 
     goAhead(): IStateUrl {
@@ -228,8 +237,9 @@
       var ud = this.user.short;
       var actTestItem = <exerciseTaskViewController>(this.child);
       var actRepo = this.actRepo(ud.actLevel);
-      var childSummary = agregateChildShortInfos(this.child.dataNode, this.ctx.taskid);
-      if (!childSummary.done || actTestItem.dataNode.url != actRepo.url) throw '!childUser.done || actTestItem.dataNode.parent.url != actRepo.url';
+      if (actTestItem.dataNode != actRepo) throw 'actTestItem.dataNode != actRepo';
+      var childSummary = agregateChildShortInfos(this.child.dataNode, this.ctx.taskid, actTestItem.state.moduleAlowFinishWhenUndone /*do vyhodnoceni zahrn i nehotova cviceni*/);
+      if (!childSummary.done) throw '!childUser.done';
       var score = scorePercent(childSummary);
 
       if (actRepo.level == levelIds.A1) {
@@ -250,11 +260,13 @@
     }
 
     newTestItem(ud: IPretestUser, lev: levelIds): moveForwardResult {
+      this.user.modified = true;
       ud.actLevel = lev;
       ud.urls.push(this.actRepo(lev).url);
       return moveForwardResult.selfAdjustChild;
     }
     finishPretest(ud: IPretestUser, lev: levelIds): moveForwardResult {
+      this.user.modified = true;
       ud.done = true; ud.targetLevel = lev; delete ud.actLevel;
       return moveForwardResult.toParent;
     }
@@ -263,24 +275,22 @@
   }
 
   //****************** linearni kurz nebo test
-  export interface IModuleStateData {
-    alowCycleExercise: boolean; //dovol pomoci zelene sipky cyklovani cviceni
-  }
 
   export interface IModuleUser extends IPersistNodeUser { //course dato pro test
     actChildIdx: number;
+    //na TRUE nastaveno pri nasilnem ukonceni testu tlacitkem FINISH test 
+    //(protoze kdyz nejsou vyhodnocena vsechna cviceni,  //tak by se nepoznalo, zdali je modul ukoncen nebo ne)
+    //neni jeste implementovano
+    done: boolean; 
   }
 
   export function moduleIsDone(nd: CourseMeta.data, taskId: string): boolean {
     return !_.find(nd.Items, it => { var itUd = blended.getPersistData<IExShort>(it, taskId); return (!itUd || !itUd.done); });
   }
 
-  export class moduleTaskController extends taskController implements IModuleStateData { //task pro pruchod lekcemi (repository je seznam cviceni)
+  export class moduleTaskController extends taskController { //task pro pruchod lekcemi (repository je seznam cviceni)
 
     user: IPersistNodeItem<IModuleUser>;
-    //IModuleStateData
-    alowCycleExercise: boolean; //dovol pomoci zelene sipky cyklovani cviceni
-
 
     constructor(state: IStateService) {
       super(state);
@@ -290,7 +300,7 @@
     adjustChild(): taskController {
       var ud = this.user.short;
       var exNode: CourseMeta.data;
-      if (!this.alowCycleExercise) {
+      if (!this.state.moduleAlowCycleExercise) {
         exNode = _.find(this.dataNode.Items, it => { var itUd = blended.getPersistData<IExShort>(it, this.ctx.taskid); return (!itUd || !itUd.done); });
       } else {
         exNode = this.dataNode.Items[ud.actChildIdx];
@@ -307,7 +317,8 @@
 
     moveForward(): moveForwardResult {
       var ud = this.user.short;
-      if (this.alowCycleExercise) {
+      if (ud.done) return moveForwardResult.toParent; //modul explicitne ukoncen (napr. tlacitkem Finish u testu).
+      if (this.state.moduleAlowCycleExercise) {
         ud.actChildIdx == this.dataNode.Items.length - 1 ? 0 : ud.actChildIdx + 1;
         this.user.modified = true;
         return moveForwardResult.selfAdjustChild;

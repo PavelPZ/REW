@@ -8,7 +8,7 @@
   export var loadLongData = ['$stateParams', (ctx: blended.learnContext) => {
     blended.finishContext(ctx);
     var def = ctx.$q.defer<IExLong>();
-    proxies.vyzva57services.getLongData(ctx.companyid, ctx.userdataid, ctx.productUrl, ctx.taskid, ctx.Url, long => {
+    proxies.vyzva57services.getLongData(ctx.companyid, ctx.userDataId(), ctx.productUrl, ctx.taskid, ctx.Url, long => {
       var res = JSON.parse(long);
       def.resolve(res);
     });
@@ -38,16 +38,21 @@
 
   export function scorePercent(sc: IExShort) { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
 
-  export function agregateChildShortInfos(node: CourseMeta.data, taskId: string): IExShort {
+  export function agregateChildShortInfos(node: CourseMeta.data, taskId: string, moduleAlowFinishWhenUndone:boolean): IExShort {
     var res: IExShort = $.extend({}, shortDefault);
     res.done = true;
     _.each(node.Items, nd => {
       var us = getPersistWrapper<IExShort>(nd, taskId);
-      res.done = res.done && (us ? us.short.done : false);
-      if (nd.ms) { //skore
-        res.ms += nd.ms; res.s += us ? us.short.s : 0;
+      var done = us && us.short.done;
+      res.done = res.done && done;
+      if (nd.ms) { //aktivni cviceni (se skore)
+        if (done) { //hotove cviceni, zapocitej vzdy
+          res.ms += nd.ms; res.s += us.short.s;
+        } else if (moduleAlowFinishWhenUndone) { //nehotove cviceni, zapocitej pouze kdyz je includeUndone (napr. pro test)
+          res.ms += nd.ms;
+        }
       }
-      if (us) {
+      if (us) { //elapsed, beg a end zapocitej vzdy
         res.beg = setDate(res.beg, us.short.beg, true); res.end = setDate(res.end, us.short.end, false);
         res.elapsed += us.short.elapsed;
       }
@@ -74,7 +79,7 @@
     startTime: number; //datum vstupu do stranky
     instructionData: IInstructionData;
 
-    constructor(public exercise: cacheExercise, long: IExLong, public ctx: learnContext, public product: IProductEx) {
+    constructor(public exercise: cacheExercise, long: IExLong, public ctx: learnContext, public product: IProductEx, public exerciseIsTest: boolean) {
       this.user = getPersistWrapper<IExShort>(exercise.dataNode, ctx.taskid, () => $.extend({}, shortDefault));
       if (!long) {
         long = {}; this.user.modified = true;
@@ -113,7 +118,8 @@
         ko.applyBindings({}, el[0]);
         pg.callInitProcs(Course.initPhase.afterRender, () => {//inicializace kontrolek, 2
           pg.callInitProcs(Course.initPhase.afterRender2, () => {
-            pg.acceptData(exImpl.done, exImpl.result);
+            if (this.exerciseIsTest && this.user.short.done) this.user.short.done = false; //test cviceni nesmi byt videt vyhodnocene
+            pg.acceptData(this.user.short.done, exImpl.result);
             el.removeClass('contentHidden');
             completed(pg);
           });
@@ -122,14 +128,22 @@
     }
 
     destroy(el: ng.IAugmentedJQuery) {
-      if (this.page.sndPage) this.page.sndPage.htmlClearing();
-      if (this.page.sndPage) this.page.sndPage.leave();
-      ko.cleanNode(el[0]);
-      el.html('');
-
-      this.product.saveProduct(this.ctx, () => { });
-      delete (<CourseMeta.exImpl>(this.exercise.dataNode)).result;
-      delete this.user.long;
+      if (!this.user.short.done) {
+        if (this.exerciseIsTest) {
+          el.addClass('contentHidden');
+          this.evaluate(true);
+        } else
+          this.page.provideData(); //prevzeti poslednich dat z kontrolek cviceni
+      }
+      this.product.saveProduct(this.ctx, () => { //ulozeni vysledku do DB
+        //uklid
+        if (this.page.sndPage) this.page.sndPage.htmlClearing();
+        if (this.page.sndPage) this.page.sndPage.leave();
+        ko.cleanNode(el[0]);
+        el.html('');
+        delete (<CourseMeta.exImpl>(this.exercise.dataNode)).result;
+        delete this.user.long;
+      });
     }
 
     evaluate(isTest: boolean, exerciseShowWarningPercent?: number): boolean {
@@ -204,7 +218,7 @@
       super(state);
       if (state.createMode != createControllerModes.navigate) return;
 
-      this.exService = new exerciseService(<cacheExercise>(resolves[0]), <blended.IExLong>(resolves[1]), this.ctx, this.taskRoot().dataNode);
+      this.exService = new exerciseService(<cacheExercise>(resolves[0]), <blended.IExLong>(resolves[1]), this.ctx, this.taskRoot().dataNode, this.state.exerciseIsTest);
       state.$scope['exerciseService'] = this.exService;
 
       this.user = this.exService.user;

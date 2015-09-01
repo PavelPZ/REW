@@ -4,30 +4,27 @@ var vyzva;
         .directive('vyzva$lector$tabs', function () { return new lectorTabs(); });
     var lectorTabs = (function () {
         function lectorTabs() {
-            var _this = this;
             this.link = function (scope, el) {
-                _this.tabs = getLectorTabs();
-                _this.ts = (scope.ts());
-                _this.actIdx = (scope.actIdx());
-                scope.tabs = _this.tabs;
-                scope.navigate = function (idx) { return _this.navigate(idx); };
+                scope.tabs = getLectorTabs();
+                scope.navigate = function (idx) {
+                    var actIdx = (scope.actIdx());
+                    if (idx == actIdx)
+                        return;
+                    var doNavigate = (scope.doNavigate());
+                    var tab = getLectorTabs()[idx];
+                    doNavigate(tab.stateName);
+                };
             };
             this.templateUrl = vyzva.vyzvaRoot + 'views/lector/_tabs.html';
-            this.scope = { ts: '&ts', actIdx: '&actIdx', longTitle: '&longTitle' };
+            this.scope = { doNavigate: '&doNavigate', actIdx: '&actIdx', longTitle: '&longTitle' };
         }
-        lectorTabs.prototype.navigate = function (idx) {
-            if (idx == this.actIdx)
-                return;
-            var tab = this.tabs[idx];
-            this.ts.navigate({ stateName: tab.stateName, pars: this.ts.ctx });
-        };
         return lectorTabs;
     })();
     vyzva.lectorTabs = lectorTabs;
     var tabs;
     function getLectorTabs() {
         return tabs || [
-            { idx: 0, stateName: vyzva.stateNames.lectorHome.name, shortTitle: 'Studenti' },
+            { idx: 0, stateName: vyzva.stateNames.lectorHome.name, shortTitle: 'Seznam studentů' },
             { idx: 1, stateName: vyzva.stateNames.lectorEval.name, shortTitle: 'Vyhodnocení testů' }
         ];
     }

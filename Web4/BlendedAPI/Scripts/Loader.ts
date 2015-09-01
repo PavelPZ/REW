@@ -49,7 +49,7 @@ module blended {
 
   export interface IProductEx extends CourseMeta.product, IProductAddIn { //rozsireni CourseMeta.product o novou persistenci
     instructions: { [id: string]: string; }; //pool s instrukcemi
-    persistData: { [url: string]: any; }; //short user data pro cely produkt
+    //persistData: { [url: string]: any; }; //short user data pro cely produkt
     nodeDir: { [id: string]: CourseMeta.data; }; //adresar nodes
     nodeList: Array<CourseMeta.data>; //seznam nodes
     moduleCache: loader.cacheOf<cachedModule>; //cache modulu (kapitol) s lokalizacemi cviceni a slovniky
@@ -98,7 +98,7 @@ module blended {
         }
       });
       if (toSave.length == 0) { completed(); return; }
-      proxies.vyzva57services.saveUserData(ctx.companyid, ctx.userdataid, ctx.productUrl, toSave, completed);
+      proxies.vyzva57services.saveUserData(ctx.companyid, ctx.userDataId(), ctx.productUrl, toSave, completed);
     }
   }
   interface ISaveData {
@@ -159,7 +159,6 @@ module blended {
               _.each(dt.Items, it => { it.parent = dt; scan(it); });
             };
             scan(prod);
-            //if (prod.loader) { deferred.resolve(prod); return; } //specialni MANAGER produkty
             //lokalizace produktu
             _.each(prod.nodeList, dt => dt.title = CourseMeta.localizeString(dt.url, dt.title, loc));
             //finish instrukce
@@ -174,13 +173,25 @@ module blended {
             if (ctx.finishProduct) ctx.finishProduct(prod);
             productCache.toCache(ctx, prod);
             //user data
-            if (!!ctx.persistence) ctx.persistence.loadShortUserData(ctx.loginid, ctx.companyid, ctx.productUrl, data => {
-              prod.persistData = data;
-              //if (data) for (var p in data) { var dt = prod.nodeDir[p]; if (dt) dt.userData = data[p]; /*nektera data mohou patrit taskum*/ }
+            proxies.vyzva57services.getShortProductDatas(ctx.companyid, ctx.loginid, ctx.productUrl, res => {
+              _.each(res, it => {
+                var node = prod.nodeDir[it.url]; if (!node) debugger/*something wrong*/;
+                if (!node.userData) node.userData = {};
+                var taskData = node.userData[it.taskId];
+                var shortLong: IPersistNodeItem<any> = { modified: false, long: null, short: JSON.parse(it.shortData)}; 
+                if (!taskData) node.userData[it.taskId] = shortLong;
+                else debugger; /*something wrong*/
+              });
+              //_.each(res, r => )
+              //prod.persistData = null; //JSON.parse(res);
               deferred.resolve(prod);
-            }); else {
-              deferred.resolve(prod);
-            }
+            });
+            //if (!!ctx.persistence) ctx.persistence.loadShortUserData(ctx.loginid, ctx.companyid, ctx.productUrl, data => {
+            //  prod.persistData = data;
+            //  deferred.resolve(prod);
+            //}); else {
+            //  deferred.resolve(prod);
+            //}
           },
           errors => {
             deferred.reject();
@@ -223,22 +234,6 @@ module blended {
                 var exServ = new cacheExercise(mod, exNode, file.data);
                 mod.cacheOfPages.toCache(ctx.Url, ctx.taskid, exServ);
                 deferred.resolve(exServ);
-
-                //var pg = CourseMeta.extractEx(file.data);
-                //Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, mod.loc));
-                //var isGramm = CourseMeta.isType(exNode, CourseMeta.runtimeType.grammar);
-                //var callResolve = () => {
-                //  var exServ = new exerciseService(ctx, mod, exNode, pg);
-                //  mod.cacheOfPages.toCache(ctx.Url, ctx.taskid, exServ);
-                //  deferred.resolve(exServ);
-                //}
-                //if (isGramm)
-                //  callResolve();
-                //else {
-                //  if (pg.evalPage) exNode.ms = pg.evalPage.maxScore;
-                //  pg.myNode = exNode;
-                //  callResolve();
-                //}
               },
               errors => {
                 deferred.reject();
@@ -263,7 +258,7 @@ module blended {
       products: Array<productCacheItem> = [];
       maxInsertOrder = 0;
       fromCache(ctx: learnContext): IProductEx {
-        var resIt = _.find(this.products, it => it.companyid == ctx.companyid && it.userdataid == ctx.userdataid &&
+        var resIt = _.find(this.products, it => it.companyid == ctx.companyid && it.onbehalfof == ctx.onbehalfof &&
           it.persistence == ctx.persistence && it.loc == ctx.loc && it.producturl == ctx.producturl); // && it.loginid == ctx.loginid && it.taskid == ctx.taskid);
         if (resIt) resIt.insertOrder = this.maxInsertOrder++;
         return resIt ? resIt.data : null;
@@ -275,7 +270,7 @@ module blended {
           this.products.splice(minIdx, 1);
         }
         this.products.push({
-          companyid: ctx.companyid, loc: ctx.loc, producturl: ctx.producturl, persistence: ctx.persistence, userdataid: ctx.userdataid,
+          companyid: ctx.companyid, loc: ctx.loc, producturl: ctx.producturl, persistence: ctx.persistence, onbehalfof: ctx.onbehalfof,
           data: prod, insertOrder: this.maxInsertOrder++, taskid: null, loginid: -1, lickeys:null,
         });
       }

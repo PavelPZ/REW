@@ -16,10 +16,19 @@
     //});
   }
 
-  export function breadcrumbBase(ctrl: blended.controller, homeOnly?:boolean): Array<blended.breadcrumbItem> {
-    var res = [ { title: 'Moje Online jazykové kurzy a testy', url: '#' + Pager.getHomeUrl() } ];
+  export function breadcrumbBase(ctrl: blended.controller, homeOnly?: boolean): Array<blended.breadcrumbItem> {
+    var res = [{ title: 'Moje Online jazykové kurzy a testy', url: '#' + Pager.getHomeUrl() }];
     if (!homeOnly) res.push({ title: ctrl.taskRoot().dataNode.title, url: ctrl.href({ stateName: stateNames.home.name, pars: ctrl.ctx }), active: false });
     return res;
   }
+
+  export class globalApi {
+    constructor(public $scope: blended.IControllerScope, public $state: angular.ui.IStateService, public ctx: blended.learnContext) {
+    }
+    navigateWebHome() { Pager.gotoHomeUrl(); }
+    navigateReturnUrl() { location.href = this.ctx.returnurl; }
+  }
+
+  blended.globalApi = globalApi;
 
 }

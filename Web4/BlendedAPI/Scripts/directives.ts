@@ -1,8 +1,9 @@
 ﻿module blended {
   blended.rootModule
-    .controller('gotoHomeUrl', ($scope) => {
-      $scope.gotoHomeUrl = () => Pager.gotoHomeUrl();
-    })
+    //.controller('blended$lib', ['$scope', '$stateParams', /*'$rootScope',*/ ($scope, $stateParams: learnContext/*, $rootScope: angular.IRootScopeService*/) => {
+    //  $scope.navigateWebHome = () => Pager.gotoHomeUrl();
+    //  $scope.navigateReturnUrl = () => location.href = $stateParams.returnurl;
+    //}])
     .filter('lineIdsText', () => {
       return (id: LMComLib.LineIds) => {
         switch (id) {

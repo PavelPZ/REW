@@ -25,12 +25,43 @@
     tabIdx: number;
   }
 
+  //***************************** LECTOR HOME
+
+  export interface lectorViewItem {
+    key: intranet.IAlocatedKey;
+  }
+
   export class lectorViewController extends lectorViewBase {
     constructor(state: blended.IStateService) {
       super(state);
       this.breadcrumb[this.breadcrumb.length - 1].active = true;
       this.tabIdx = 0;
+      this.students = _.map(this.parent.lectorGroup.studentKeys, k => { return { key: k } });
+    }
+    students: Array<lectorViewItem>;
+    gotoStudentResult(student: lectorViewItem) {
+      var ctx = blended.cloneAndModifyContext(this.ctx, c => {
+        c.onbehalfof = student.key.lmcomId;
+        c.returnurl = this.href({ stateName: stateNames.lectorHome.name, pars: this.ctx })
+      });
+      this.navigate({ stateName: stateNames.home.name, pars: ctx });
     }
   }
+
+  blended.rootModule
+    .directive('vyzva$lector$user', () => {
+      return {
+        scope: { student: '&student', ts: '&ts' },
+        templateUrl: 'vyzva$lector$user.html'
+      }
+    })
+    .directive('vyzva$lector$users', () => {
+      return {
+        scope: { students: '&students', ts: '&ts' },
+        templateUrl: 'vyzva$lector$users.html'
+      }
+    })
+  ;
+
 
 }

@@ -1,4 +1,4 @@
-﻿<div class="logo-panel panel-primary" ng-if="::ts.parent.isLector">
+﻿<div class="panel panel-primary lm-top-margin" ng-if="::ts.parent.isLector">
   <div class="panel-heading">
     <h4>Studijní skupiny lektora</h4>
   </div>
@@ -8,7 +8,7 @@
   </div>
 </div>
 
-<div class="logo-panel panel-primary" ng-if="::ts.parent.isStudent">
+<div class="panel panel-primary lm-top-margin" ng-if="::ts.parent.isStudent">
   <div class="panel-heading">
     <h3>
       <span ng-if="ts.pretestStatus==2">Rozřazovací test</span>
@@ -17,12 +17,12 @@
   </div>
   <ul class="list-group study-plan">
     <li class="list-group-item" ng-class="::ts.pretestStatus | vyzva$home$nodeclass">
-      <div vyzva$home$nodemarks status="::ts.pretestStatus" index="1"></div>
-      <div vyzva$home$pretest ts="::ts.parent"></div>
+      <div vyzva$home$nodemarks status="::ts.pretestStatus" api="::api()" index="1"></div>
+      <div vyzva$home$pretest ts="::ts.parent" api="::api()"></div>
     </li>
     <li class="list-group-item" ng-repeat="node in ::ts.learnPlan" ng-class="::node.status | vyzva$home$nodeclass">
-      <div vyzva$home$nodemarks status="::node.status" index="::node.idx"></div>
-      <div vyzva$home$item ts="::node"></div>
+      <div vyzva$home$nodemarks status="::node.status" api="::api()" index="::node.idx"></div>
+      <div vyzva$home$item ts="::node" api="::api()"></div>
     </li>
   </ul>
 </div>
@@ -33,6 +33,6 @@
   </div>
   <div class="right-mark">
     <button class="btn btn-info" ng-if="status()==1">Výsledky <i class="fa fa-eye"></i></button>
-    <button class="btn btn-success" ng-if="status()==2">Spustit <i class="fa fa-play"></i></button>
+    <button class="btn btn-success" ng-disabled="api().ctx.onbehalfof" ng-if="status()==2">Spustit <i class="fa fa-play"></i></button>
   </div>
 </script>

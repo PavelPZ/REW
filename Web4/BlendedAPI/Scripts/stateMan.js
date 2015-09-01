@@ -7,6 +7,8 @@ var blended;
         createControllerModes[createControllerModes["navigate"] = 1] = "navigate"; //controller, vytvoreny by ui-route
     })(blended.createControllerModes || (blended.createControllerModes = {}));
     var createControllerModes = blended.createControllerModes;
+    blended.globalApi;
+    //export var globalApi: Function;
     //zaregistrovany stav (v app.ts)
     var state = (function () {
         function state(st) {
@@ -32,10 +34,15 @@ var blended;
                     }
                     //neni isWrongUrl, pokracuj
                     var params = ($state.params);
+                    blended.finishContext(params);
                     params.$state = $state;
                     var ss = { current: self, params: params, parent: parent, createMode: createControllerModes.navigate, $scope: $scope };
                     var task = (new _this.oldController(ss, resolves));
                     $scope.ts = task;
+                    if (blended.globalApi) {
+                        var api = new blended.globalApi($scope, $state, params);
+                        $scope.api = function () { return api; };
+                    }
                 });
                 st.controller = services;
             }

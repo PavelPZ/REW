@@ -136,6 +136,7 @@
     <Content Include="app\Pages\demosound-lang-level.html" />
     <Content Include="app\Pages\demosound-lang.html" />
     <Content Include="app\Pages\demosound.html" />
+    <Content Include="app\Pages\index - Copy.html" />
     <Content Include="app\Pages\statistics.html" />
     <Content Include="app\Pages\vyzva57.html" />
     <Content Include="app\Pages\contact.html" />

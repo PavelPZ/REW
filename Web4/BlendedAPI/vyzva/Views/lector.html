@@ -1,1 +1,23 @@
-﻿<div vyzva$lector$tabs act-idx="ts.tabIdx" ts="ts"></div>
+﻿<div vyzva$lector$tabs act-idx="ts.tabIdx" do-navigate="ts.navigateWrapper()"></div>
+
+<div vyzva$lector$users students="::ts.students" ts="::ts"></div>
+
+<script type="text/ng-template" id="vyzva$lector$user.html">
+  <td><b>{{::student().key.firstName}} {{::student().key.lastName}} <span ng-if="student().key.email">(<a href="mailto:{{::student().key.email}}">{{::student().key.email}}</a>)</span></b></td>
+  <td>{{::student().key.keyStr}}</td>
+  <td><button ng-if="::student().key.lmcomId" class="btn btn-success btn-sm" ng-click="::ts().gotoStudentResult(student())">Výsledky <i class="fa fa-hand-o-right"></i></button>&nbsp;</td>
+</script>
+
+<script type="text/ng-template" id="vyzva$lector$users.html">
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr class="active">
+        <th>Jméno, příjmení, email</th>
+        <th>Licenční klíč</th>
+        <th>Výsledky</th>
+      </tr>
+    </thead>
+    <tr ng-repeat="student in ::students()" vyzva$lector$user="" student="::student" ts="::ts()"></tr>
+  </table>
+</script>
+

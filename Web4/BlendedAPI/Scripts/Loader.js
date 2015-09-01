@@ -82,7 +82,7 @@ var blended;
                 completed();
                 return;
             }
-            proxies.vyzva57services.saveUserData(ctx.companyid, ctx.userdataid, ctx.productUrl, toSave, completed);
+            proxies.vyzva57services.saveUserData(ctx.companyid, ctx.userDataId(), ctx.productUrl, toSave, completed);
         }
     };
     var cachedModule = (function () {
@@ -150,7 +150,6 @@ var blended;
                         _.each(dt.Items, function (it) { it.parent = dt; scan(it); });
                     };
                     scan(prod);
-                    //if (prod.loader) { deferred.resolve(prod); return; } //specialni MANAGER produkty
                     //lokalizace produktu
                     _.each(prod.nodeList, function (dt) { return dt.title = CourseMeta.localizeString(dt.url, dt.title, loc); });
                     //finish instrukce
@@ -172,15 +171,30 @@ var blended;
                         ctx.finishProduct(prod);
                     loader.productCache.toCache(ctx, prod);
                     //user data
-                    if (!!ctx.persistence)
-                        ctx.persistence.loadShortUserData(ctx.loginid, ctx.companyid, ctx.productUrl, function (data) {
-                            prod.persistData = data;
-                            //if (data) for (var p in data) { var dt = prod.nodeDir[p]; if (dt) dt.userData = data[p]; /*nektera data mohou patrit taskum*/ }
-                            deferred.resolve(prod);
+                    proxies.vyzva57services.getShortProductDatas(ctx.companyid, ctx.loginid, ctx.productUrl, function (res) {
+                        _.each(res, function (it) {
+                            var node = prod.nodeDir[it.url];
+                            if (!node)
+                                debugger;
+                            if (!node.userData)
+                                node.userData = {};
+                            var taskData = node.userData[it.taskId];
+                            var shortLong = { modified: false, long: null, short: JSON.parse(it.shortData) };
+                            if (!taskData)
+                                node.userData[it.taskId] = shortLong;
+                            else
+                                debugger; /*something wrong*/
                         });
-                    else {
+                        //_.each(res, r => )
+                        //prod.persistData = null; //JSON.parse(res);
                         deferred.resolve(prod);
-                    }
+                    });
+                    //if (!!ctx.persistence) ctx.persistence.loadShortUserData(ctx.loginid, ctx.companyid, ctx.productUrl, data => {
+                    //  prod.persistData = data;
+                    //  deferred.resolve(prod);
+                    //}); else {
+                    //  deferred.resolve(prod);
+                    //}
                 }, function (errors) {
                     deferred.reject();
                 });
@@ -233,21 +247,6 @@ var blended;
                             var exServ = new cacheExercise(mod, exNode, file.data);
                             mod.cacheOfPages.toCache(ctx.Url, ctx.taskid, exServ);
                             deferred.resolve(exServ);
-                            //var pg = CourseMeta.extractEx(file.data);
-                            //Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, mod.loc));
-                            //var isGramm = CourseMeta.isType(exNode, CourseMeta.runtimeType.grammar);
-                            //var callResolve = () => {
-                            //  var exServ = new exerciseService(ctx, mod, exNode, pg);
-                            //  mod.cacheOfPages.toCache(ctx.Url, ctx.taskid, exServ);
-                            //  deferred.resolve(exServ);
-                            //}
-                            //if (isGramm)
-                            //  callResolve();
-                            //else {
-                            //  if (pg.evalPage) exNode.ms = pg.evalPage.maxScore;
-                            //  pg.myNode = exNode;
-                            //  callResolve();
-                            //}
                         }, function (errors) {
                             deferred.reject();
                         });
@@ -268,7 +267,7 @@ var blended;
                 this.maxInsertOrder = 0;
             }
             cacheOfProducts.prototype.fromCache = function (ctx) {
-                var resIt = _.find(this.products, function (it) { return it.companyid == ctx.companyid && it.userdataid == ctx.userdataid &&
+                var resIt = _.find(this.products, function (it) { return it.companyid == ctx.companyid && it.onbehalfof == ctx.onbehalfof &&
                     it.persistence == ctx.persistence && it.loc == ctx.loc && it.producturl == ctx.producturl; }); // && it.loginid == ctx.loginid && it.taskid == ctx.taskid);
                 if (resIt)
                     resIt.insertOrder = this.maxInsertOrder++;
@@ -282,7 +281,7 @@ var blended;
                     this.products.splice(minIdx, 1);
                 }
                 this.products.push({
-                    companyid: ctx.companyid, loc: ctx.loc, producturl: ctx.producturl, persistence: ctx.persistence, userdataid: ctx.userdataid,
+                    companyid: ctx.companyid, loc: ctx.loc, producturl: ctx.producturl, persistence: ctx.persistence, onbehalfof: ctx.onbehalfof,
                     data: prod, insertOrder: this.maxInsertOrder++, taskid: null, loginid: -1, lickeys: null,
                 });
             };

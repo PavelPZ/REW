@@ -53,15 +53,13 @@ var vyzva;
             switch (id) {
                 case IHomeNodeStatus.done: return "list-group-item-info";
                 case IHomeNodeStatus.active: return "list-group-item-success";
-                default:
-                    return "Angličtina";
-                    ;
+                default: return "Angličtina";
             }
         };
     })
         .directive('vyzva$home$nodemarks', function () {
         return {
-            scope: { status: '&status', index: '&index' },
+            scope: { status: '&status', index: '&index', api: '&api' },
             templateUrl: 'vyzva$home$nodemarks.html'
         };
     });
@@ -78,9 +76,9 @@ var vyzva;
             var alocatedKeyInfos = this.companyData.alocatedKeyInfos;
             this.lectorGroups = _.map(_.filter(alocatedKeyInfos, function (inf) { return inf.isLector; }), function (inf) { return inf.group; });
             var studentGroups = _.map(_.filter(alocatedKeyInfos, function (inf) { return inf.isLector || inf.isVisitor; }), function (inf) { return inf.group; });
-            this.studentGroup = studentGroups.length > 0 ? studentGroups[0] : null;
-            this.isLector = this.lectorGroups.length > 0;
-            this.isStudent = !!this.studentGroup;
+            //this.studentGroup = studentGroups.length > 0 ? studentGroups[0] : null;
+            this.isLector = !this.ctx.onbehalfof && this.lectorGroups.length > 0;
+            this.isStudent = studentGroups.length > 0;
         }
         return homeTaskController;
     })(blended.homeTaskController);

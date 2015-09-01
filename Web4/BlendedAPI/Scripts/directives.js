@@ -1,9 +1,6 @@
 var blended;
 (function (blended) {
     blended.rootModule
-        .controller('gotoHomeUrl', function ($scope) {
-        $scope.gotoHomeUrl = function () { return Pager.gotoHomeUrl(); };
-    })
         .filter('lineIdsText', function () {
         return function (id) {
             switch (id) {

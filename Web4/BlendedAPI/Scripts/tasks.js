@@ -10,7 +10,6 @@ var blended;
         function controller(stateService) {
             this.ctx = stateService.params;
             this.$scope = stateService.$scope;
-            blended.finishContext(this.ctx);
             this.state = stateService.current;
             if (this.$scope)
                 this.$scope.state = this.state;
@@ -24,6 +23,10 @@ var blended;
                 return;
             var hash = this.href(url);
             setTimeout(function () { return window.location.hash = hash; }, 1);
+        };
+        controller.prototype.navigateWrapper = function () {
+            var self = this;
+            return function (stateName) { return self.navigate({ stateName: stateName, pars: self.ctx }); };
         };
         controller.prototype.taskList = function () {
             var t = this.taskRoot();
@@ -116,6 +119,9 @@ var blended;
                 t = newt;
             }
         };
+        taskController.prototype.navigateAhead = function () {
+            this.navigate(this.goAhead());
+        };
         taskController.prototype.goAhead = function () {
             //seznam od childs k this
             var taskList = [];
@@ -200,9 +206,11 @@ var blended;
             var ud = this.user.short;
             var actTestItem = (this.child);
             var actRepo = this.actRepo(ud.actLevel);
-            var childSummary = blended.agregateChildShortInfos(this.child.dataNode, this.ctx.taskid);
-            if (!childSummary.done || actTestItem.dataNode.url != actRepo.url)
-                throw '!childUser.done || actTestItem.dataNode.parent.url != actRepo.url';
+            if (actTestItem.dataNode != actRepo)
+                throw 'actTestItem.dataNode != actRepo';
+            var childSummary = blended.agregateChildShortInfos(this.child.dataNode, this.ctx.taskid, actTestItem.state.moduleAlowFinishWhenUndone /*do vyhodnoceni zahrn i nehotova cviceni*/);
+            if (!childSummary.done)
+                throw '!childUser.done';
             var score = blended.scorePercent(childSummary);
             if (actRepo.level == blended.levelIds.A1) {
                 return this.finishPretest(ud, blended.levelIds.A1);
@@ -232,11 +240,13 @@ var blended;
             throw 'not implemented';
         };
         pretestTaskController.prototype.newTestItem = function (ud, lev) {
+            this.user.modified = true;
             ud.actLevel = lev;
             ud.urls.push(this.actRepo(lev).url);
             return moveForwardResult.selfAdjustChild;
         };
         pretestTaskController.prototype.finishPretest = function (ud, lev) {
+            this.user.modified = true;
             ud.done = true;
             ud.targetLevel = lev;
             delete ud.actLevel;
@@ -260,7 +270,7 @@ var blended;
             var _this = this;
             var ud = this.user.short;
             var exNode;
-            if (!this.alowCycleExercise) {
+            if (!this.state.moduleAlowCycleExercise) {
                 exNode = _.find(this.dataNode.Items, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (!itUd || !itUd.done); });
             }
             else {
@@ -279,7 +289,9 @@ var blended;
         moduleTaskController.prototype.moveForward = function () {
             var _this = this;
             var ud = this.user.short;
-            if (this.alowCycleExercise) {
+            if (ud.done)
+                return moveForwardResult.toParent; //modul explicitne ukoncen (napr. tlacitkem Finish u testu).
+            if (this.state.moduleAlowCycleExercise) {
                 ud.actChildIdx == this.dataNode.Items.length - 1 ? 0 : ud.actChildIdx + 1;
                 this.user.modified = true;
                 return moveForwardResult.selfAdjustChild;

@@ -25,7 +25,7 @@
       scope.previewUrl = stateNames.pretest.name;
     }
     templateUrl = blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/home/pretestItem.html';
-    scope = { ts: '&ts' };
+    scope = { ts: '&ts', api:'&api'};
   }
 
 }

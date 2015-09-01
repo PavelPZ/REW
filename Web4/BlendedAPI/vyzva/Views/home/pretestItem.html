@@ -1,6 +1,6 @@
 ﻿<div data-ng-if="::canRun">
   <p>
-    <button class="btn btn-success btn-lg" data-ng-click="run()">{{::btnTitle}}</button>
+    <button class="btn btn-success btn-lg" ng-disabled="api().ctx.onbehalfof" data-ng-click="run()">{{::btnTitle}}</button>
   </p>
   Rozřazovací určí vaši jazykovou úroveň (A1, A2, B1 nabo B2), na základě které se zvolí odpovídající pokračování vašeho kurzu.
 </div>

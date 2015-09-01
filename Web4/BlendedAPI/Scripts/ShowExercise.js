@@ -13,7 +13,7 @@ var blended;
     blended.loadLongData = ['$stateParams', function (ctx) {
             blended.finishContext(ctx);
             var def = ctx.$q.defer();
-            proxies.vyzva57services.getLongData(ctx.companyid, ctx.userdataid, ctx.productUrl, ctx.taskid, ctx.Url, function (long) {
+            proxies.vyzva57services.getLongData(ctx.companyid, ctx.userDataId(), ctx.productUrl, ctx.taskid, ctx.Url, function (long) {
                 var res = JSON.parse(long);
                 def.resolve(res);
             });
@@ -43,15 +43,21 @@ var blended;
     blended.showExerciseModel = showExerciseModel;
     function scorePercent(sc) { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
     blended.scorePercent = scorePercent;
-    function agregateChildShortInfos(node, taskId) {
+    function agregateChildShortInfos(node, taskId, moduleAlowFinishWhenUndone) {
         var res = $.extend({}, shortDefault);
         res.done = true;
         _.each(node.Items, function (nd) {
             var us = blended.getPersistWrapper(nd, taskId);
-            res.done = res.done && (us ? us.short.done : false);
+            var done = us && us.short.done;
+            res.done = res.done && done;
             if (nd.ms) {
-                res.ms += nd.ms;
-                res.s += us ? us.short.s : 0;
+                if (done) {
+                    res.ms += nd.ms;
+                    res.s += us.short.s;
+                }
+                else if (moduleAlowFinishWhenUndone) {
+                    res.ms += nd.ms;
+                }
             }
             if (us) {
                 res.beg = setDate(res.beg, us.short.beg, true);
@@ -70,10 +76,11 @@ var blended;
     else
         return dt2 < dt1 ? dt1 : dt2; }
     var exerciseService = (function () {
-        function exerciseService(exercise, long, ctx, product) {
+        function exerciseService(exercise, long, ctx, product, exerciseIsTest) {
             this.exercise = exercise;
             this.ctx = ctx;
             this.product = product;
+            this.exerciseIsTest = exerciseIsTest;
             this.user = blended.getPersistWrapper(exercise.dataNode, ctx.taskid, function () { return $.extend({}, shortDefault); });
             if (!long) {
                 long = {};
@@ -109,7 +116,9 @@ var blended;
                 ko.applyBindings({}, el[0]);
                 pg.callInitProcs(Course.initPhase.afterRender, function () {
                     pg.callInitProcs(Course.initPhase.afterRender2, function () {
-                        pg.acceptData(exImpl.done, exImpl.result);
+                        if (_this.exerciseIsTest && _this.user.short.done)
+                            _this.user.short.done = false; //test cviceni nesmi byt videt vyhodnocene
+                        pg.acceptData(_this.user.short.done, exImpl.result);
                         el.removeClass('contentHidden');
                         completed(pg);
                     });
@@ -117,15 +126,26 @@ var blended;
             });
         };
         exerciseService.prototype.destroy = function (el) {
-            if (this.page.sndPage)
-                this.page.sndPage.htmlClearing();
-            if (this.page.sndPage)
-                this.page.sndPage.leave();
-            ko.cleanNode(el[0]);
-            el.html('');
-            this.product.saveProduct(this.ctx, function () { });
-            delete (this.exercise.dataNode).result;
-            delete this.user.long;
+            var _this = this;
+            if (!this.user.short.done) {
+                if (this.exerciseIsTest) {
+                    el.addClass('contentHidden');
+                    this.evaluate(true);
+                }
+                else
+                    this.page.provideData(); //prevzeti poslednich dat z kontrolek cviceni
+            }
+            this.product.saveProduct(this.ctx, function () {
+                //uklid
+                if (_this.page.sndPage)
+                    _this.page.sndPage.htmlClearing();
+                if (_this.page.sndPage)
+                    _this.page.sndPage.leave();
+                ko.cleanNode(el[0]);
+                el.html('');
+                delete (_this.exercise.dataNode).result;
+                delete _this.user.long;
+            });
         };
         exerciseService.prototype.evaluate = function (isTest, exerciseShowWarningPercent) {
             if (this.user.short.done)
@@ -188,7 +208,7 @@ var blended;
             _super.call(this, state);
             if (state.createMode != blended.createControllerModes.navigate)
                 return;
-            this.exService = new exerciseService((resolves[0]), (resolves[1]), this.ctx, this.taskRoot().dataNode);
+            this.exService = new exerciseService((resolves[0]), (resolves[1]), this.ctx, this.taskRoot().dataNode, this.state.exerciseIsTest);
             state.$scope['exerciseService'] = this.exService;
             this.user = this.exService.user;
             this.title = this.dataNode.title;

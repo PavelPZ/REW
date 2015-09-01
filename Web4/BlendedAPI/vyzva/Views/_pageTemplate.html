@@ -1,7 +1,10 @@
 ﻿<div class="container-fluid topbar">
   <div class="container">
-    <div class="lm-logo-black-small" ng-controller="gotoHomeUrl" ng-click="gotoHomeUrl()"></div>
-    <div class="topbar-include" data-ng-include="::state.layoutToolbarType | vyzva$state$viewpath"></div>
+    <div ng-if="::!api().ctx.onbehalfof" class="lm-logo-black-small" ng-click="api().navigateWebHome()">{{api.ctx.onbehalfof}}</div>
+    <div ng-if="::api().ctx.onbehalfof" class="onbehav-go-back" ng-click="::api().navigateReturnUrl()"><i class="fa fa-arrow-circle-o-left"></i></div>
+    <div ng-if="::api().ctx.onbehalfof" class="onbehav-right-part-name">Pavel<br />Zika</div>
+    <div ng-if="::api().ctx.onbehalfof" class="onbehav-right-part-at"><i class="fa fa-at"></i></div>
+    <div data-ng-include="::state.layoutToolbarType | vyzva$state$viewpath" class="topbar-include"></div>
     <div ng-if="::!state.pageTitlePlace" class="topbar-title">{{::ts.title}}</div>
   </div>
 </div>

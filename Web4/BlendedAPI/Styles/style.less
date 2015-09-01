@@ -11,13 +11,24 @@
   }
 
   .nav-pills > li > a {
-    border-bottom-left-radius:0;
-    border-bottom-right-radius:0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .panel-heading {
+    h3 {
+      margin: 10px 0;
+    }
+  }
+
+  .lm-top-margin {
+    margin-top: 20px;
   }
 
   .topbar {
     background-color: black;
     height: 50px;
+    position: relative;
 
     .lm-logo-black-small {
       float: left;
@@ -33,18 +44,47 @@
     .topbar-include {
       float: left;
     }
+
     .btn {
       margin-top: 2px;
     }
+
     .topbar-title {
       float: left;
-      margin-left:10px;
-      color:lightgray;
-      font-size:@font-size-h3;
-      margin-top:8px;
+      margin-left: 10px;
+      color: lightgray;
+      font-size: @font-size-h3;
+      margin-top: 8px;
+    }
+
+    .onbehav-go-back {
+      float: left;
+      margin-right: 10px;
+      cursor: pointer;
+
+      .fa {
+        font-size: 50px;
+        color: white;
+      }
+    }
+
+    .onbehav-right-part-name {
+      float: right;
+      font-size: 16px;
+      font-weight: bold;
+      color: lightgoldenrodyellow;
+      margin-right: 10px;
+      padding-top: 8px;
+      line-height: 18px;
+    }
+
+    .onbehav-right-part-at {
+      float: right;
+      font-size: 36px;
+      color: lightgoldenrodyellow;
+      margin-right: 15px;
     }
   }
-
   /*.navbar-center {
     //display: table !important;
     height: 50px;
@@ -87,7 +127,6 @@
       }
     }
   }*/
-
   .wizzard {
     font-size: 110%;
 
@@ -111,6 +150,7 @@
         color: #fff;
         .bg-variant(@brand-primary);
       }
+
       &.future {
       }
     }
@@ -216,7 +256,7 @@
 
     .body {
       color: @alert-success-text;
-      padding-top:10px;
+      padding-top: 10px;
 
       h1 {
         font-size: 16px;
@@ -239,17 +279,14 @@
     }
   }
 
-  .lm-tabs {
-    margin-top: 15px;
-  }
   .lm-tabs-header {
     margin-top: -1px;
     background-color: @panel-primary-heading-bg;
     color: @panel-primary-text !important;
 
     h3 {
-      margin: 16px 0;
+      margin-top: 0px;
+      padding: 16px;
     }
   }
-
 }

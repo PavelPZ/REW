@@ -39,8 +39,30 @@ var vyzva;
             _super.call(this, state);
             this.breadcrumb[this.breadcrumb.length - 1].active = true;
             this.tabIdx = 0;
+            this.students = _.map(this.parent.lectorGroup.studentKeys, function (k) { return { key: k }; });
         }
+        lectorViewController.prototype.gotoStudentResult = function (student) {
+            var _this = this;
+            var ctx = blended.cloneAndModifyContext(this.ctx, function (c) {
+                c.onbehalfof = student.key.lmcomId;
+                c.returnurl = _this.href({ stateName: vyzva.stateNames.lectorHome.name, pars: _this.ctx });
+            });
+            this.navigate({ stateName: vyzva.stateNames.home.name, pars: ctx });
+        };
         return lectorViewController;
     })(lectorViewBase);
     vyzva.lectorViewController = lectorViewController;
+    blended.rootModule
+        .directive('vyzva$lector$user', function () {
+        return {
+            scope: { student: '&student', ts: '&ts' },
+            templateUrl: 'vyzva$lector$user.html'
+        };
+    })
+        .directive('vyzva$lector$users', function () {
+        return {
+            scope: { students: '&students', ts: '&ts' },
+            templateUrl: 'vyzva$lector$users.html'
+        };
+    });
 })(vyzva || (vyzva = {}));

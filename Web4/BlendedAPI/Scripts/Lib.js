@@ -39,6 +39,15 @@ var blended;
         ctx.Url = decodeUrl(ctx.url);
         ctx.pretestUrl = decodeUrl(ctx.pretesturl);
         ctx.moduleUrl = decodeUrl(ctx.moduleurl);
+        ctx.userDataId = function () { return ctx.onbehalfof || ctx.loginid; };
+        if (_.isString(ctx.onbehalfof))
+            ctx.onbehalfof = parseInt((ctx.onbehalfof));
+        if (_.isString(ctx.loginid))
+            ctx.loginid = parseInt((ctx.loginid));
+        if (_.isString(ctx.companyid))
+            ctx.companyid = parseInt((ctx.companyid));
+        if (_.isString(ctx.loc))
+            ctx.loc = parseInt((ctx.loc));
         if (!ctx.$http) {
             var inj = angular.injector(['ng']);
             ctx.$http = (inj.get('$http'));

@@ -51,13 +51,13 @@
         switch (id) {
           case IHomeNodeStatus.done: return "list-group-item-info";
           case IHomeNodeStatus.active: return "list-group-item-success";
-          default: return "Angličtina";;
+          default: return "Angličtina";
         }
       };
     })
     .directive('vyzva$home$nodemarks', () => {
       return {
-        scope: { status: '&status', index: '&index' },
+        scope: { status: '&status', index: '&index', api: '&api' },
         templateUrl: 'vyzva$home$nodemarks.html'
       }
     })
@@ -75,9 +75,9 @@
       var alocatedKeyInfos = this.companyData.alocatedKeyInfos;
       this.lectorGroups = _.map(_.filter(alocatedKeyInfos, inf => inf.isLector), inf => inf.group);
       var studentGroups = _.map(_.filter(alocatedKeyInfos, inf => inf.isLector || inf.isVisitor), inf => inf.group);
-      this.studentGroup = studentGroups.length > 0 ? studentGroups[0] : null;
-      this.isLector = this.lectorGroups.length > 0;
-      this.isStudent = !!this.studentGroup;
+      //this.studentGroup = studentGroups.length > 0 ? studentGroups[0] : null;
+      this.isLector = !this.ctx.onbehalfof && this.lectorGroups.length > 0;
+      this.isStudent = studentGroups.length > 0;
     }
 
     dataNode: IBlendedCourseRepository;
@@ -85,9 +85,9 @@
     //intranet
     companyData: intranet.IAlocatedKeyRoot;
     lectorGroups: Array<intranet.IStudyGroup>; //skupiny, spravovane lektorem
-    studentGroup: intranet.IStudyGroup; //skupina, ke ktere nalezim
+    //studentGroup: intranet.IStudyGroup; //skupina, ke ktere nalezim
     isLector: boolean; //jsem lektor
-    isStudent: boolean; //jsem student
+    isStudent: boolean; //jsem student nebo vizitor
   }
 
   export interface IBlendedCourseRepository extends blended.IProductEx {

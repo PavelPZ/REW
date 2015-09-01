@@ -24,7 +24,7 @@ var vyzva;
                 scope.previewUrl = vyzva.stateNames.pretest.name;
             };
             this.templateUrl = blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/home/pretestItem.html';
-            this.scope = { ts: '&ts' };
+            this.scope = { ts: '&ts', api: '&api' };
         }
         return homePretest;
     })();

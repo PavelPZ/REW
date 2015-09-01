@@ -25,8 +25,10 @@
 
   export interface learnContext {
     //URL parametry
-    loginid: number; userdataid: number; companyid: number; loc: LMComLib.Langs; persistence: CourseMeta.IPersistence;
+    loginid: number; /*userdataid: number;*/ companyid: number; loc: LMComLib.Langs; persistence: string;
     producturl: string; taskid: string; lickeys: string;
+    onbehalfof?: number; //id studenta, jehoz data vyuzivam
+    returnurl?: string; //return url pro back tlacitko
     //pro intranet:
     groupid?:string, //identifikace skupiny studentu
     lectortab?: string, //tab na lector strance
@@ -41,6 +43,7 @@
     //produkt
     //product?: IProductEx;
     finishProduct?: (prod: IProductEx) => void;
+    userDataId?: () => number;
   }
 
   export function cloneAndModifyContext(ctx: learnContext, modify: (c: learnContext) => void = null): learnContext {
@@ -54,6 +57,12 @@
   export function finishContext(ctx: learnContext): learnContext {
     ctx.productUrl = decodeUrl(ctx.producturl); ctx.Url = decodeUrl(ctx.url);
     ctx.pretestUrl = decodeUrl(ctx.pretesturl); ctx.moduleUrl = decodeUrl(ctx.moduleurl);
+    ctx.userDataId = () => ctx.onbehalfof || ctx.loginid;
+    if (_.isString(ctx.onbehalfof)) ctx.onbehalfof = parseInt(<any>(ctx.onbehalfof));
+    if (_.isString(ctx.loginid)) ctx.loginid = parseInt(<any>(ctx.loginid));
+    if (_.isString(ctx.companyid)) ctx.companyid = parseInt(<any>(ctx.companyid));
+    if (_.isString(ctx.loc)) ctx.loc = parseInt(<any>(ctx.loc));
+
     if (!ctx.$http) {
       var inj = angular.injector(['ng']);
       ctx.$http = <ng.IHttpService>(inj.get('$http'));

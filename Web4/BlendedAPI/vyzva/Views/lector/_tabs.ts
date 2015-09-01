@@ -5,22 +5,17 @@
 
   export class lectorTabs{
     link = (scope, el: ng.IAugmentedJQuery) => {
-      this.tabs = getLectorTabs();
-      this.ts = <blended.controller>(scope.ts());
-      this.actIdx = <number>(scope.actIdx());
-      scope.tabs = this.tabs;
-      scope.navigate = idx => this.navigate(idx);
+      scope.tabs = getLectorTabs();
+      scope.navigate = (idx: number) => {
+        var actIdx = <number>(scope.actIdx());
+        if (idx == actIdx) return;
+        var doNavigate = <any>(scope.doNavigate());
+        var tab = getLectorTabs()[idx];
+        doNavigate(tab.stateName);
+      }
     };
     templateUrl = vyzvaRoot + 'views/lector/_tabs.html';
-    scope = { ts: '&ts', actIdx: '&actIdx', longTitle: '&longTitle' };
-    ts: blended.controller;
-    actIdx: number;
-    tabs: Array<ITabModel>;
-    navigate(idx: number) {
-      if (idx == this.actIdx) return;
-      var tab = this.tabs[idx];
-      this.ts.navigate({ stateName: tab.stateName, pars: this.ts.ctx });
-    }
+    scope = { doNavigate: '&doNavigate', actIdx: '&actIdx', longTitle: '&longTitle' };
   }
 
   export interface ITabModel {
@@ -33,7 +28,7 @@
   var tabs: Array<ITabModel>;
   export function getLectorTabs(): Array<ITabModel> {
     return tabs || [
-      { idx: 0, stateName: stateNames.lectorHome.name, shortTitle: 'Studenti' },
+      { idx: 0, stateName: stateNames.lectorHome.name, shortTitle: 'Seznam studentů' },
       { idx: 1, stateName: stateNames.lectorEval.name, shortTitle: 'Vyhodnocení testů' }
     ];
   }

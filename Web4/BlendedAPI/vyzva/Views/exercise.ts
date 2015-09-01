@@ -16,7 +16,7 @@
     tbClick() {
       var pretest = _.find(this.taskList(), t => t.state.name == stateNames.pretestTask.name);
       if (pretest == null) throw 'pretest==null';
-      this.navigate(pretest.goAhead());
+      pretest.navigateAhead();
     }
     tbTitle: string;
     state: state;

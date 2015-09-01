@@ -49,9 +49,16 @@
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
+.bl .panel-heading h3 {
+  margin: 10px 0;
+}
+.bl .lm-top-margin {
+  margin-top: 20px;
+}
 .bl .topbar {
   background-color: black;
   height: 50px;
+  position: relative;
 }
 .bl .topbar .lm-logo-black-small {
   float: left;
@@ -75,6 +82,30 @@
   color: lightgray;
   font-size: 24px;
   margin-top: 8px;
+}
+.bl .topbar .onbehav-go-back {
+  float: left;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.bl .topbar .onbehav-go-back .fa {
+  font-size: 50px;
+  color: white;
+}
+.bl .topbar .onbehav-right-part-name {
+  float: right;
+  font-size: 16px;
+  font-weight: bold;
+  color: lightgoldenrodyellow;
+  margin-right: 10px;
+  padding-top: 8px;
+  line-height: 18px;
+}
+.bl .topbar .onbehav-right-part-at {
+  float: right;
+  font-size: 36px;
+  color: lightgoldenrodyellow;
+  margin-right: 15px;
 }
 .bl .wizzard {
   font-size: 110%;
@@ -286,14 +317,12 @@ fieldset[disabled] .bl .module-map-item.active.active {
 .bl .instruction .body ol {
   margin: 0 0 10px 25px;
 }
-.bl .lm-tabs {
-  margin-top: 15px;
-}
 .bl .lm-tabs-header {
   margin-top: -1px;
   background-color: #337ab7;
   color: #ffffff !important;
 }
 .bl .lm-tabs-header h3 {
-  margin: 16px 0;
+  margin-top: 0px;
+  padding: 16px;
 }

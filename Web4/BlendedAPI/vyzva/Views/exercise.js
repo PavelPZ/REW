@@ -22,7 +22,7 @@ var vyzva;
             var pretest = _.find(this.taskList(), function (t) { return t.state.name == vyzva.stateNames.pretestTask.name; });
             if (pretest == null)
                 throw 'pretest==null';
-            this.navigate(pretest.goAhead());
+            pretest.navigateAhead();
         };
         return pretestExercise;
     })(blended.exerciseTaskViewController);

@@ -10,8 +10,8 @@ namespace blendedData {
     [Key]
     public int Id { get; set; }
 
-    [Required]
-    [StringLength(240)]
+    //[Required]
+    [StringLength(32)]
     [Index]
     public string TaskId { get; set; }
 
@@ -20,16 +20,16 @@ namespace blendedData {
     [Index]
     public string Key { get; set; }
 
-    [Required]
+    //[Required]
     public string Data { get; set; }
 
     public string ShortData { get; set; }
 
     public int CourseUserId { get; set; }
 
-    public long Date { get; set; }
+    //public long Date { get; set; }
 
-    public long Flags { get; set; }
+    //public long Flags { get; set; }
 
     public virtual CourseUser CourseUser { get; set; }
   }
