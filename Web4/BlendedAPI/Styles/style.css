@@ -55,6 +55,10 @@
 .bl .lm-top-margin {
   margin-top: 20px;
 }
+.bl .more {
+  position: absolute;
+  cursor: pointer;
+}
 .bl .topbar {
   background-color: black;
   height: 50px;
@@ -159,11 +163,11 @@ a.bl .wizzard .wizzard-item.active:hover {
 }
 .bl .study-plan > li .left-mark {
   left: 10px;
-  top: 10px;
-  font-size: 20px;
-  border: solid 1px lightgray;
-  border-radius: 15px;
-  width: 30px;
+  top: 8px;
+  font-size: 24px;
+  /*border: solid 1px lightgray;
+        border-radius: 15px;*/
+  width: 38px;
   text-align: center;
 }
 .bl .study-plan > li .right-mark {
@@ -286,16 +290,14 @@ fieldset[disabled] .bl .module-map-item.active.active {
 .bl .instruction .header.header-done {
   height: 34px;
 }
-.bl .instruction .header .more {
-  /*position: absolute;
-        top: 3px;
-        right: 10px;*/
-  color: #337ab7;
-}
 .bl .instruction .header .reset-btn {
   margin: 2px 0;
   position: absolute;
   right: 3px;
+}
+.bl .instruction .header .more {
+  top: 3px;
+  right: 10px;
 }
 .bl .instruction .body {
   color: #3c763d;
@@ -325,4 +327,12 @@ fieldset[disabled] .bl .module-map-item.active.active {
 .bl .lm-tabs-header h3 {
   margin-top: 0px;
   padding: 16px;
+}
+.bl .home-course .panel-heading {
+  position: relative;
+}
+.bl .home-course .panel-heading .more {
+  top: 24px;
+  right: 18px;
+  font-size: 24px;
 }

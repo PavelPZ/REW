@@ -5,63 +5,101 @@
   export class homeViewController extends blended.taskViewController {
 
     parent: homeTaskController;
-    pretestStatus: IHomeNodeStatus;
+    //pretestStatus: IHomeLessonStatus;
     pretestLevel: number;
-    learnPlan: Array<ILearnPlanLesson>; //seznam modulu vyuky
+    learnPlan: Array<IHomeLesson>; //seznam modulu vyuky
+    pretestLevels: Array<blended.levelIds>; //levels info pro hotovy pretest
 
     constructor(state: blended.IStateService) {
       super(state);
       this.breadcrumb = breadcrumbBase(this); this.breadcrumb[1].active = true;
-      var prUd = blended.getPersistData<blended.IPretestUser>(this.parent.dataNode.pretest, this.ctx.taskid);
-      this.learnPlan = [];
-      var someActive = false;
-      if (!prUd || !prUd.done)
-        this.pretestStatus = IHomeNodeStatus.active;
-      else {
-        this.pretestStatus = IHomeNodeStatus.done;
-        this.pretestLevel = prUd.targetLevel;
-        this.learnPlan.push(this.fromNode(this.parent.dataNode.entryTests[prUd.targetLevel], 2));
-        this.learnPlan.pushArray(_.map(this.parent.dataNode.lessons[prUd.targetLevel], (nd, idx) => this.fromNode(nd, idx + 3)));
+      var pretestItem: IHomeLesson;
+
+      var fromNode = (node: CourseMeta.data, idx: number): IHomeLesson => {
+        var res: IHomeLesson = {
+          node: node,
+          user: null, //blended.getPersistData<blended.IPersistNodeUser>(node, this.ctx.taskid),
+          homeTask: this.parent,
+          idx: idx,
+          lessonType: idx == 0 ? IHomeLessonType.pretest : (node.url.indexOf('/test') > 0 ? IHomeLessonType.test : IHomeLessonType.lesson),
+        };
+        if (idx == 0) { }
+        else { }
+        res.status = !res.user ? IHomeLessonStatus.no : ((<any>(res.user)).done ? IHomeLessonStatus.done : IHomeLessonStatus.entered);
+        return res;
       }
-      _.each(this.learnPlan, pl => {
-        if (blended.moduleIsDone(pl.node, this.ctx.taskid)) pl.status = IHomeNodeStatus.done;
-        else if (!someActive) { someActive = true; pl.status = IHomeNodeStatus.active; }
+
+      this.learnPlan = [pretestItem = fromNode(this.parent.dataNode.pretest, 0)];
+      var pretestUser = <blended.IPretestUser>(pretestItem.user);
+
+      if (pretestUser && pretestUser.done) {
+        this.pretestLevels = pretestUser.history;
+        pretestItem.status = IHomeLessonStatus.done;
+        this.pretestLevel = pretestUser.targetLevel;
+        this.learnPlan.push(fromNode(this.parent.dataNode.entryTests[this.pretestLevel], 1));
+        this.learnPlan.pushArray(_.map(this.parent.dataNode.lessons[this.pretestLevel], (nd, idx) => fromNode(nd, idx + 2)));
+      }
+      //prvni nehotovy node je aktivni
+      _.find(this.learnPlan, pl => {
+        if (pl.status == IHomeLessonStatus.done) return false;
+        pl.active = true; return true;
       });
     }
-    fromNode(node: CourseMeta.data, idx: number): ILearnPlanLesson { return { node: node, user: blended.getPersistData<blended.IPersistNodeUser>(node, this.ctx.taskid), task: this.parent, idx: idx }; }
+
+    navigateLesson(lesson: IHomeLesson) {
+      var service: blended.IStateService = {
+        params: lesson.lessonType == IHomeLessonType.pretest ?
+          blended.cloneAndModifyContext(this.ctx, d => d.pretesturl = blended.encodeUrl(this.parent.dataNode.pretest.url)) :
+          blended.cloneAndModifyContext(this.ctx, d => d.moduleurl = blended.encodeUrl(lesson.node.url)),
+        current: lesson.lessonType == IHomeLessonType.pretest ?
+          stateNames.pretestTask :
+          (lesson.lessonType == IHomeLessonType.test ? stateNames.moduleTestTask : stateNames.moduleLessonTask),
+        parent: this.parent,
+        createMode: blended.createControllerModes.adjustChild
+      };
+
+      this.parent.child = lesson.lessonType == IHomeLessonType.pretest ?
+        new blended.pretestTaskController(service) :
+        new moduleTaskController(service);
+
+      var url = this.parent.child.goCurrent();
+      this.navigate(url);
+    };
+
+    navigatePretestLevel(lev: blended.levelIds) {
+      var service: blended.IStateService = {
+        params: blended.cloneAndModifyContext(this.ctx, d => { var mod = this.parent.dataNode.pretest.Items[lev];  d.moduleurl = blended.encodeUrl(mod.url); }),
+        current: stateNames.pretestPreview,
+        parent: this.parent,
+        createMode: blended.createControllerModes.adjustChild
+      }
+      this.parent.child = new moduleTaskController(service);
+
+      var url = this.parent.child.goCurrent();
+      this.navigate(url);
+    }
 
     gotoLector(groupId: number) {
       this.navigate({ stateName: stateNames.lectorHome.name, pars: <any>{ groupid: groupId } });
     }
 
+    debugClearProduct() {
+      proxies.vyzva57services.debugClearProduct(this.ctx.companyid, this.ctx.onbehalfof || this.ctx.loginid, this.ctx.productUrl, () => location.reload());
+    }
+
   }
 
-  export interface ILearnPlanLesson {
+  export interface IHomeLesson {
     node: CourseMeta.data;
     user: blended.IPersistNodeUser;
-    task: homeTaskController;
+    homeTask?: homeTaskController;
     idx: number;
-    status?: IHomeNodeStatus;
+    active?: boolean;
+    lessonType: IHomeLessonType;
+    status?: IHomeLessonStatus;
   }
-  export enum IHomeNodeStatus { no, done, active }
-
-  blended.rootModule
-    .filter('vyzva$home$nodeclass', () => {
-      return (id: IHomeNodeStatus) => {
-        switch (id) {
-          case IHomeNodeStatus.done: return "list-group-item-info";
-          case IHomeNodeStatus.active: return "list-group-item-success";
-          default: return "Angličtina";
-        }
-      };
-    })
-    .directive('vyzva$home$nodemarks', () => {
-      return {
-        scope: { status: '&status', index: '&index', api: '&api' },
-        templateUrl: 'vyzva$home$nodemarks.html'
-      }
-    })
-  ;
+  export enum IHomeLessonStatus { no, entered, done }
+  export enum IHomeLessonType { pretest, lesson, test }
 
   //****************** TASK
   export class homeTaskController extends blended.homeTaskController {
@@ -85,7 +123,6 @@
     //intranet
     companyData: intranet.IAlocatedKeyRoot;
     lectorGroups: Array<intranet.IStudyGroup>; //skupiny, spravovane lektorem
-    //studentGroup: intranet.IStudyGroup; //skupina, ke ktere nalezim
     isLector: boolean; //jsem lektor
     isStudent: boolean; //jsem student nebo vizitor
   }
@@ -99,5 +136,26 @@
   export interface IBlendedCourseUser extends blended.IPersistNodeUser { //user dato pro ICourseRepository
     startDate: number; //datum zacatku prvni etapy
   }
+
+  blended.rootModule
+    .filter('vyzva$home$nodeclass', () => {
+      return (lesson: IHomeLesson) => {
+        if (lesson.active) return "list-group-item-success";
+        switch (lesson.status) {
+          case IHomeLessonStatus.done: return "list-group-item-info";
+          default: return "";
+        }
+      };
+    })
+    .filter('vyzva$home$iconclass', () => {
+      return (lesson: IHomeLesson) => {
+        if (lesson.active) return "fa-hand-o-right";
+        switch (lesson.status) {
+          case IHomeLessonStatus.done: return "fa-check";
+          default: return "";
+        }
+      };
+    })
+  ;
 
 }

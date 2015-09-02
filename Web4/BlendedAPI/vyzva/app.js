@@ -34,13 +34,6 @@ var vyzva;
     vyzva.stateNames = {}; //taskRoot: 'root', taskCheckTest: 'checktest', taskLesson: 'lesson', taskPretest: 'pretest', taskPretestItem: 'pretestitem' };
     vyzva.initVyzvaApp = ['$rootScope', '$location', '$state', function ($rootScope, $location, $state) {
             //$rootScope.$on('$locationChangeStart', (event: angular.IAngularEvent, newUrl: string, oldUrl: string, newState, oldState) => {
-            //  if (location.hash == '#/pg/ajs/vyzva//def/1/1/1/2/!lm!blcourse!langmastermanager.product!/home') {
-            //    event.preventDefault();
-            //    setTimeout(() => location.hash = '#/pg/ajs/langmastermanager', 1);
-            //  } else if (location.hash == '#/pg/ajs/vyzva//def/1/1/1/2/!lm!blcourse!schoolmanager.product!/home') {
-            //    event.preventDefault();
-            //    setTimeout(() => location.hash = '#/pg/ajs/schoolmanager', 1);
-            //  }
             //})
             //sance zrusit ladovani stranky
             $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
@@ -135,6 +128,7 @@ var vyzva;
                             url: '/pretest/:pretesturl',
                             controller: blended.pretestTaskController,
                             dataNodeUrlParName: 'pretestUrl',
+                            isGreenArrowRoot: true,
                             abstract: true,
                             template: "<div data-ui-view></div>",
                             childs: [
@@ -150,7 +144,6 @@ var vyzva;
                                     url: '/test/:moduleurl',
                                     controller: blended.moduleTaskController,
                                     dataNodeUrlParName: 'moduleUrl',
-                                    moduleAlowCycleExercise: false,
                                     abstract: true,
                                     template: "<div data-ui-view></div>",
                                     childs: [
@@ -174,29 +167,75 @@ var vyzva;
                                 }),
                             ]
                         }),
-                        vyzva.stateNames.lessonTask = new state({
+                        vyzva.stateNames.pretestPreview = new state({
+                            name: 'testview',
+                            url: '/testview/:moduleurl',
+                            controller: vyzva.moduleTaskController,
+                            dataNodeUrlParName: 'moduleUrl',
+                            isGreenArrowRoot: true,
+                            abstract: true,
+                            template: "<div data-ui-view></div>",
+                            childs: [
+                                new state({
+                                    name: 'ex',
+                                    url: '/:url',
+                                    controller: vyzva.lessonTest,
+                                    exerciseIsTest: true,
+                                    dataNodeUrlParName: 'Url',
+                                    layoutContentId: 'exercise',
+                                    resolve: {
+                                        $loadedEx: blended.loadEx,
+                                        $loadedLongData: blended.loadLongData,
+                                    },
+                                    templateUrl: pageTemplate,
+                                })
+                            ]
+                        }),
+                        vyzva.stateNames.moduleLessonTask = new state({
                             name: 'lesson',
                             url: '/lesson/:moduleurl',
                             controller: vyzva.moduleTaskController,
                             dataNodeUrlParName: 'moduleUrl',
+                            isGreenArrowRoot: true,
                             abstract: true,
                             template: "<div data-ui-view></div>",
                             childs: [
-                                vyzva.stateNames.lesson = new state({
-                                    name: 'home',
-                                    url: '/home',
-                                    layoutContentId: 'module',
-                                    layoutToolbarType: 'toolbar/run',
-                                    controller: vyzva.moduleViewController,
-                                    templateUrl: pageTemplate,
-                                }),
-                                vyzva.stateNames.lessonExercise = new state({
+                                new state({
                                     name: 'ex',
-                                    url: '/ex/:url',
+                                    url: '/:url',
                                     controller: vyzva.lessonExercise,
                                     dataNodeUrlParName: 'Url',
                                     layoutContentId: 'exercise',
                                     layoutToolbarType: 'toolbar/run',
+                                    resolve: {
+                                        $loadedEx: blended.loadEx,
+                                        $loadedLongData: blended.loadLongData,
+                                    },
+                                    templateUrl: pageTemplate,
+                                }),
+                            ]
+                        }),
+                        vyzva.stateNames.moduleTestTask = new state({
+                            name: 'test',
+                            url: '/test/:moduleurl',
+                            controller: vyzva.moduleTaskController,
+                            dataNodeUrlParName: 'moduleUrl',
+                            isGreenArrowRoot: true,
+                            abstract: true,
+                            template: "<div data-ui-view></div>",
+                            childs: [
+                                new state({
+                                    name: 'ex',
+                                    url: '/:url',
+                                    controller: vyzva.lessonTest,
+                                    exerciseIsTest: true,
+                                    dataNodeUrlParName: 'Url',
+                                    layoutContentId: 'exercise',
+                                    layoutToolbarType: 'toolbar/run',
+                                    resolve: {
+                                        $loadedEx: blended.loadEx,
+                                        $loadedLongData: blended.loadLongData,
+                                    },
                                     templateUrl: pageTemplate,
                                 })
                             ]

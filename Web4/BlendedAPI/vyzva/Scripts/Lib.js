@@ -34,6 +34,10 @@ var vyzva;
         }
         globalApi.prototype.navigateWebHome = function () { Pager.gotoHomeUrl(); };
         globalApi.prototype.navigateReturnUrl = function () { location.href = this.ctx.returnurl; };
+        globalApi.prototype.navigate = function (stateName, pars) {
+            var _this = this;
+            setTimeout(function () { return _this.$state.go(stateName, pars); }, 1);
+        };
         return globalApi;
     })();
     vyzva.globalApi = globalApi;

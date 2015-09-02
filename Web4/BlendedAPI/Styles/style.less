@@ -25,6 +25,11 @@
     margin-top: 20px;
   }
 
+  .more {
+    position: absolute;
+    cursor: pointer;
+  }
+
   .topbar {
     background-color: black;
     height: 50px;
@@ -188,11 +193,11 @@
 
       .left-mark {
         left: 10px;
-        top: 10px;
-        font-size: 20px;
-        border: solid 1px lightgray;
-        border-radius: 15px;
-        width: 30px;
+        top: 8px;
+        font-size: 24px;
+        /*border: solid 1px lightgray;
+        border-radius: 15px;*/
+        width: 38px;
         text-align: center;
       }
 
@@ -240,17 +245,15 @@
         height: 34px;
       }
 
-      .more {
-        /*position: absolute;
-        top: 3px;
-        right: 10px;*/
-        color: @link-color;
-      }
-
       .reset-btn {
         margin: 2px 0;
         position: absolute;
         right: 3px;
+      }
+
+      .more {
+        top: 3px;
+        right: 10px;
       }
     }
 
@@ -287,6 +290,18 @@
     h3 {
       margin-top: 0px;
       padding: 16px;
+    }
+  }
+
+  .home-course {
+    .panel-heading {
+      position: relative;
+
+      .more {
+        top: 24px;
+        right: 18px;
+        font-size: 24px;
+      }
     }
   }
 }

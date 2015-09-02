@@ -27,6 +27,7 @@
     }
     navigateWebHome() { Pager.gotoHomeUrl(); }
     navigateReturnUrl() { location.href = this.ctx.returnurl; }
+    navigate(stateName: string, pars: blended.learnContext) { setTimeout(() => this.$state.go(stateName, pars), 1); }
   }
 
   blended.globalApi = globalApi;

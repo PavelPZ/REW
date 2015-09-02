@@ -180,18 +180,10 @@ module blended {
                 var taskData = node.userData[it.taskId];
                 var shortLong: IPersistNodeItem<any> = { modified: false, long: null, short: JSON.parse(it.shortData)}; 
                 if (!taskData) node.userData[it.taskId] = shortLong;
-                else debugger; /*something wrong*/
+                //else debugger; /*something wrong*/
               });
-              //_.each(res, r => )
-              //prod.persistData = null; //JSON.parse(res);
               deferred.resolve(prod);
             });
-            //if (!!ctx.persistence) ctx.persistence.loadShortUserData(ctx.loginid, ctx.companyid, ctx.productUrl, data => {
-            //  prod.persistData = data;
-            //  deferred.resolve(prod);
-            //}); else {
-            //  deferred.resolve(prod);
-            //}
           },
           errors => {
             deferred.reject();
@@ -243,12 +235,6 @@ module blended {
       } finally { return deferred.promise; }
     }
 
-    export function blendedDisplayEx(pg: Course.Page, insertToHTMLPage: (html: string) => void) {
-
-    }
-
-
-
     //*************** globalni CACHE produktu
     export interface productCacheItem extends learnContext { //prvek cache
       data: IProductEx;
@@ -258,8 +244,8 @@ module blended {
       products: Array<productCacheItem> = [];
       maxInsertOrder = 0;
       fromCache(ctx: learnContext): IProductEx {
-        var resIt = _.find(this.products, it => it.companyid == ctx.companyid && it.onbehalfof == ctx.onbehalfof &&
-          it.persistence == ctx.persistence && it.loc == ctx.loc && it.producturl == ctx.producturl); // && it.loginid == ctx.loginid && it.taskid == ctx.taskid);
+        var resIt = _.find(this.products, it => it.companyid == ctx.companyid && it.onbehalfof == ctx.onbehalfof || ctx.loginid &&
+          it.loc == ctx.loc && it.producturl == ctx.producturl);
         if (resIt) resIt.insertOrder = this.maxInsertOrder++;
         return resIt ? resIt.data : null;
       }
@@ -270,8 +256,8 @@ module blended {
           this.products.splice(minIdx, 1);
         }
         this.products.push({
-          companyid: ctx.companyid, loc: ctx.loc, producturl: ctx.producturl, persistence: ctx.persistence, onbehalfof: ctx.onbehalfof,
-          data: prod, insertOrder: this.maxInsertOrder++, taskid: null, loginid: -1, lickeys:null,
+          companyid: ctx.companyid, loc: ctx.loc, producturl: ctx.producturl, onbehalfof: ctx.onbehalfof || ctx.loginid,
+          data: prod, insertOrder: this.maxInsertOrder++, taskid: null, loginid: -1, lickeys: null, persistence: null
         });
       }
     }

@@ -165,11 +165,14 @@ module proxies {
     static deleteDataKeys(companyid: number, lmcomid: number, producturl: string, urltaskids: {  url: string;  taskId: string;  }[], completed: () => void): void {
 		  invoke('vyzva57services/deletedatakeys', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, JSON.stringify(urltaskids), completed);
 	  } 
-    static getShortProductDatas(companyid: number, lmcomid: number, producturl: string, completed: (res: {  url: string;  taskId: string;  shortData: string;  }[]) => void): void {
+    static getShortProductDatas(companyid: number, lmcomid: number, producturl: string, completed: (res: {  shortData: string;  taskId: string;  url: string;  }[]) => void): void {
 		  invoke('vyzva57services/getshortproductdatas', 'get', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, null, completed);
 	  } 
     static getLongData(companyid: number, lmcomid: number, producturl: string, taskid: string, key: string, completed: (res: string) => void): void {
 		  invoke('vyzva57services/getlongdata', 'get', { companyid: companyid, lmcomid: lmcomid, producturl: producturl, taskid: taskid, key: key }, null, completed);
+	  } 
+    static debugClearProduct(companyid: number, lmcomid: number, producturl: string, completed: () => void): void {
+		  invoke('vyzva57services/debugclearproduct', 'get', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, null, completed);
 	  } 
     static saveUserData(companyid: number, lmcomid: number, producturl: string, data: {  url: string;  taskId: string;  shortData: string;  longData: string;  }[], completed: () => void): void {
 		  invoke('vyzva57services/saveuserdata', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, JSON.stringify(data), completed);

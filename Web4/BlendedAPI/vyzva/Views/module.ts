@@ -8,7 +8,7 @@
     }
   }
 
-  export class moduleTaskController extends blended.pretestTaskController {
+  export class moduleTaskController extends blended.moduleTaskController {
     constructor(state: blended.IStateService) {
       super(state); 
     }

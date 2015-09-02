@@ -162,11 +162,10 @@ var blended;
     var pretestTaskController = (function (_super) {
         __extends(pretestTaskController, _super);
         function pretestTaskController(state) {
-            var _this = this;
             _super.call(this, state);
             //sance prerusit navigaci
             this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () {
-                return { actLevel: blended.levelIds.A2, urls: [_this.actRepo(blended.levelIds.A2).url], targetLevel: -1, done: false };
+                return { actLevel: blended.levelIds.A2, history: [blended.levelIds.A2], targetLevel: -1, done: false };
             });
             if (state.createMode != blended.createControllerModes.navigate)
                 return;
@@ -208,7 +207,7 @@ var blended;
             var actRepo = this.actRepo(ud.actLevel);
             if (actTestItem.dataNode != actRepo)
                 throw 'actTestItem.dataNode != actRepo';
-            var childSummary = blended.agregateChildShortInfos(this.child.dataNode, this.ctx.taskid, actTestItem.state.moduleAlowFinishWhenUndone /*do vyhodnoceni zahrn i nehotova cviceni*/);
+            var childSummary = blended.agregateShortFromNodes(this.child.dataNode, this.ctx.taskid, actTestItem.state.moduleAlowFinishWhenUndone /*do vyhodnoceni zahrn i nehotova cviceni*/);
             if (!childSummary.done)
                 throw '!childUser.done';
             var score = blended.scorePercent(childSummary);
@@ -242,7 +241,7 @@ var blended;
         pretestTaskController.prototype.newTestItem = function (ud, lev) {
             this.user.modified = true;
             ud.actLevel = lev;
-            ud.urls.push(this.actRepo(lev).url);
+            ud.history.push(lev);
             return moveForwardResult.selfAdjustChild;
         };
         pretestTaskController.prototype.finishPretest = function (ud, lev) {
@@ -260,45 +259,56 @@ var blended;
         return !_.find(nd.Items, function (it) { var itUd = blended.getPersistData(it, taskId); return (!itUd || !itUd.done); });
     }
     blended.moduleIsDone = moduleIsDone;
+    function isEx(nd) { return CourseMeta.isType(nd, CourseMeta.runtimeType.ex); }
+    blended.isEx = isEx;
     var moduleTaskController = (function (_super) {
         __extends(moduleTaskController, _super);
         function moduleTaskController(state) {
             _super.call(this, state);
             this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { done: false, actChildIdx: 0 }; });
+            this.exercises = _.filter(this.dataNode.Items, function (it) { return isEx(it); });
         }
+        moduleTaskController.prototype.onExerciseLoaded = function (idx) {
+            var ud = this.user.short;
+            if (ud.done) {
+                ud.actChildIdx = idx;
+                this.user.modified = true;
+            }
+        };
         moduleTaskController.prototype.adjustChild = function () {
             var _this = this;
             var ud = this.user.short;
-            var exNode;
-            if (!this.state.moduleAlowCycleExercise) {
-                exNode = _.find(this.dataNode.Items, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (!itUd || !itUd.done); });
+            var exNode = ud.done ? this.exercises[ud.actChildIdx] : _.find(this.exercises, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (!itUd || !itUd.done); });
+            if (!exNode) {
+                debugger;
+                ud.done = true;
+                this.user.modified = true;
             }
-            else {
-                exNode = this.dataNode.Items[ud.actChildIdx];
-            }
-            if (!exNode)
-                throw 'something wrong';
+            var moduleExerciseState = _.find(this.state.childs, function (ch) { return !ch.noModuleExercise; });
             var state = {
                 params: blended.cloneAndModifyContext(this.ctx, function (d) { return d.url = blended.encodeUrl(exNode.url); }),
                 parent: this,
-                current: blended.prodStates.pretestExercise,
+                current: moduleExerciseState,
                 createMode: blended.createControllerModes.adjustChild
             };
-            return new vyzva.pretestExercise(state, null);
+            return new moduleExerciseState.oldController(state, null);
         };
         moduleTaskController.prototype.moveForward = function () {
             var _this = this;
             var ud = this.user.short;
-            if (ud.done)
-                return moveForwardResult.toParent; //modul explicitne ukoncen (napr. tlacitkem Finish u testu).
-            if (this.state.moduleAlowCycleExercise) {
-                ud.actChildIdx == this.dataNode.Items.length - 1 ? 0 : ud.actChildIdx + 1;
+            if (ud.done) {
+                ud.actChildIdx = ud.actChildIdx == this.exercises.length - 1 ? 0 : ud.actChildIdx + 1;
                 this.user.modified = true;
                 return moveForwardResult.selfAdjustChild;
             }
             else {
-                var exNode = _.find(this.dataNode.Items, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (!itUd || !itUd.done); });
-                return exNode ? moveForwardResult.selfAdjustChild : moveForwardResult.toParent;
+                var exNode = _.find(this.exercises, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (!itUd || !itUd.done); });
+                if (!ud.done && !exNode) {
+                    ud.done = true;
+                    this.user.modified = true;
+                    return moveForwardResult.toParent;
+                }
+                return moveForwardResult.selfAdjustChild;
             }
         };
         return moduleTaskController;

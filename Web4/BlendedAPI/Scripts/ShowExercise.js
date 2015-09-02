@@ -43,10 +43,32 @@ var blended;
     blended.showExerciseModel = showExerciseModel;
     function scorePercent(sc) { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
     blended.scorePercent = scorePercent;
-    function agregateChildShortInfos(node, taskId, moduleAlowFinishWhenUndone) {
+    function agregateShorts(shorts) {
+        var res = $.extend({}, shortDefault);
+        res.done = true;
+        _.each(shorts, function (short) {
+            if (!short)
+                return;
+            var done = short.done;
+            res.done = res.done && done;
+            if (done) {
+                res.ms += short.ms;
+                res.s += short.s;
+            }
+            //elapsed, beg a end
+            res.beg = setDate(res.beg, short.beg, true);
+            res.end = setDate(res.end, short.end, false);
+            res.elapsed += short.elapsed;
+        });
+        return res;
+    }
+    blended.agregateShorts = agregateShorts;
+    function agregateShortFromNodes(node, taskId, moduleAlowFinishWhenUndone) {
         var res = $.extend({}, shortDefault);
         res.done = true;
         _.each(node.Items, function (nd) {
+            if (!blended.isEx(nd))
+                return;
             var us = blended.getPersistWrapper(nd, taskId);
             var done = us && us.short.done;
             res.done = res.done && done;
@@ -67,7 +89,7 @@ var blended;
         });
         return res;
     }
-    blended.agregateChildShortInfos = agregateChildShortInfos;
+    blended.agregateShortFromNodes = agregateShortFromNodes;
     var shortDefault = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0 };
     function setDate(dt1, dt2, min) { if (!dt1)
         return dt2; if (!dt2)
@@ -76,11 +98,12 @@ var blended;
     else
         return dt2 < dt1 ? dt1 : dt2; }
     var exerciseService = (function () {
-        function exerciseService(exercise, long, ctx, product, exerciseIsTest) {
+        function exerciseService(exercise, long, ctx, product, exerciseIsTest, moduleUser) {
             this.exercise = exercise;
             this.ctx = ctx;
             this.product = product;
             this.exerciseIsTest = exerciseIsTest;
+            this.moduleUser = moduleUser;
             this.user = blended.getPersistWrapper(exercise.dataNode, ctx.taskid, function () { return $.extend({}, shortDefault); });
             if (!long) {
                 long = {};
@@ -90,8 +113,8 @@ var blended;
             this.startTime = Utils.nowToNum();
         }
         exerciseService.prototype.display = function (el, completed) {
+            //el.addClass('contentHidden');
             var _this = this;
-            el.addClass('contentHidden');
             var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
             Course.localize(pg, function (s) { return CourseMeta.localizeString(pg.url, s, _this.exercise.mod.loc); });
             var isGramm = CourseMeta.isType(this.exercise.dataNode, CourseMeta.runtimeType.grammar);
@@ -116,10 +139,11 @@ var blended;
                 ko.applyBindings({}, el[0]);
                 pg.callInitProcs(Course.initPhase.afterRender, function () {
                     pg.callInitProcs(Course.initPhase.afterRender2, function () {
-                        if (_this.exerciseIsTest && _this.user.short.done)
-                            _this.user.short.done = false; //test cviceni nesmi byt videt vyhodnocene
+                        if (_this.exerciseIsTest && _this.user.short.done && !_this.moduleUser.done) {
+                            _this.user.short.done = false; //test cviceni nesmi byt (pro nedokonceny test) videt vyhodnocene
+                        }
                         pg.acceptData(_this.user.short.done, exImpl.result);
-                        el.removeClass('contentHidden');
+                        //el.removeClass('contentHidden');
                         completed(pg);
                     });
                 });
@@ -129,7 +153,7 @@ var blended;
             var _this = this;
             if (!this.user.short.done) {
                 if (this.exerciseIsTest) {
-                    el.addClass('contentHidden');
+                    //el.addClass('contentHidden');
                     this.evaluate(true);
                 }
                 else
@@ -192,15 +216,6 @@ var blended;
     })();
     blended.exerciseService = exerciseService;
     var maxDelta = 10 * 60; //10 minut
-    //export interface IExerciseStateData {
-    //  isTest: boolean; //test nebo cviceni
-    //}
-    var exItemProxy = (function () {
-        function exItemProxy() {
-        }
-        return exItemProxy;
-    })();
-    blended.exItemProxy = exItemProxy;
     var exerciseTaskViewController = (function (_super) {
         __extends(exerciseTaskViewController, _super);
         function exerciseTaskViewController(state, resolves) {
@@ -208,12 +223,13 @@ var blended;
             _super.call(this, state);
             if (state.createMode != blended.createControllerModes.navigate)
                 return;
-            this.exService = new exerciseService((resolves[0]), (resolves[1]), this.ctx, this.taskRoot().dataNode, this.state.exerciseIsTest);
+            this.exService = new exerciseService((resolves[0]), (resolves[1]), this.ctx, this.taskRoot().dataNode, this.state.exerciseIsTest, this.parent.user.short);
             state.$scope['exerciseService'] = this.exService;
             this.user = this.exService.user;
             this.title = this.dataNode.title;
-            this.modIdx = _.indexOf(this.parent.dataNode.Items, this.dataNode);
-            this.modItems = _.map(this.parent.dataNode.Items, function (node, idx) {
+            this.modIdx = _.indexOf(this.parent.exercises, this.dataNode);
+            this.parent.onExerciseLoaded(this.modIdx);
+            this.modItems = _.map(this.parent.exercises, function (node, idx) {
                 return { user: blended.getPersistData(node, _this.ctx.taskid), idx: idx, title: node.title, active: idx == _this.modIdx };
             });
         }
@@ -232,9 +248,15 @@ var blended;
         exerciseTaskViewController.prototype.selectExercise = function (idx) {
             if (idx == this.modIdx)
                 return;
-            var exNode = this.dataNode.parent.Items[idx];
+            var exNode = this.parent.exercises[idx];
             var ctx = blended.cloneAndModifyContext(this.ctx, function (c) { return c.url = blended.encodeUrl(exNode.url); });
             this.navigate({ stateName: this.state.name, pars: ctx });
+        };
+        exerciseTaskViewController.prototype.greenClick = function () {
+            var st = this;
+            while (!st.state.isGreenArrowRoot)
+                st = st.parent;
+            st.navigateAhead();
         };
         //wrapper kolem selectOtherExercise, aby sla funkce vlozit jako atribut do direktivy, napr:
         //V nadrazenem html: <div selectexercise="::ts.selectOtherExerciseWrapper()">

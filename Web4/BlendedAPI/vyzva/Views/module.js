@@ -22,6 +22,6 @@ var vyzva;
             _super.call(this, state);
         }
         return moduleTaskController;
-    })(blended.pretestTaskController);
+    })(blended.moduleTaskController);
     vyzva.moduleTaskController = moduleTaskController;
 })(vyzva || (vyzva = {}));

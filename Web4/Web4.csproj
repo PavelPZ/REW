@@ -261,7 +261,6 @@
     <Content Include="BlendedAPI\views\exercise.html" />
     <Content Include="BlendedAPI\vyzva\Views\exercise\moduleMap.html" />
     <Content Include="BlendedAPI\vyzva\Views\exercise\instruction.html" />
-    <Content Include="BlendedAPI\vyzva\Views\home\lesson.html" />
     <Content Include="BlendedAPI\vyzva\Views\lector.html" />
     <Content Include="BlendedAPI\vyzva\Views\lector\_tabs.html" />
     <Content Include="BlendedAPI\vyzva\Views\lector\eval.html" />
@@ -271,7 +270,6 @@
     <Content Include="BlendedAPI\vyzva\Views\module.html" />
     <Content Include="BlendedAPI\vyzva\Views\pretest.html" />
     <Content Include="BlendedAPI\vyzva\Views\exercise.html" />
-    <Content Include="BlendedAPI\vyzva\Views\home\pretestItem.html" />
     <Content Include="BlendedAPI\vyzva\Views\_pageTemplate.html" />
     <Content Include="BlendedAPI\vyzva\Views\home.html" />
     <Content Include="JsLib\css\flag-mid.css" />

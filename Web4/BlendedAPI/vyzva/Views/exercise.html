@@ -1,13 +1,42 @@
-﻿<div vyzva$exercise$modulemap class="module-map-items" 
-     ng-if="::!state.exerciseOmitModuleMap" 
-     items="::ts.modItems" 
-     select-exercise="::ts.selectExerciseWrapper()" >
-</div>
-<div vyzva$exercise$instruction 
-     user="::ts.user" 
-     do-reset="::ts.resetExerciseWrapper()" 
-     instruction-data="::exerciseService.instructionData" 
-     state="::state">
-</div>
+﻿<div ng-if="::!state.exerciseOmitModuleMap" ng-include="'vyzva$exercise$modulemap.html'"></div>
+
+<div ng-include="'vyzva$exercise$instruction.html'"></div>
+
 <div class="new-ea" data-show-exercise=""></div>
 
+<script type="text/ng-template" id="vyzva$exercise$instruction.html">
+  <div class="instruction" ng-controller="collapsable" ng-if="ts.user.short.done && !ts.state.exerciseIsTest">
+    <div class="header header-done">
+      <div class="btn btn-default btn-sm reset-btn" ng-click="::ts.resetExercise()">
+        <span class="fa fa-recycle"></span>
+        Reset
+      </div>
+      <span class="h4 fa fa-check text-success"></span>&nbsp;&nbsp;<span class="h4">splněno</span>
+    </div>
+  </div>
+  <div class="instruction" ng-controller="collapsable" ng-if="!ts.user.short.done || ts.state.exerciseIsTest">
+    <div ng-click="isCollapsed = !isCollapsed" class="header h4">
+      <span class="fa fa-info-circle fa-lg"></span>&nbsp;&nbsp;
+      {{::exerciseService.instructionData.title}}
+      <div class="more fa fa-bars fa-lg"></div>
+    </div>
+    <div collapse="isCollapsed" class="body" ng-bind-html="::exerciseService.instructionData.body | rawhtml"></div>
+  </div>
+</script>
+
+
+<script type="text/ng-template" id="vyzva$exercise$modulemap.html">
+  <span ng-repeat="it in ::ts.modItems" class="btn btn-default module-map-item" ng-class="::{done: it.user.done, active:it.active}" ng-click="::ts.selectExercise(it.idx)">{{::it.idx+1}}</span>
+</script>
+
+<!--<div vyzva$exercise$modulemap class="module-map-items"
+     ng-if="::!state.exerciseOmitModuleMap"
+     items="::ts.modItems"
+     select-exercise="::ts.selectExerciseWrapper()" >
+</div>-->
+<!--<div vyzva$exercise$instruction
+     user="::ts.user"
+     do-reset="::ts.resetExerciseWrapper()"
+     instruction-data="::exerciseService.instructionData"
+     state="::state">
+</div>-->

@@ -214,6 +214,9 @@ var proxies;
         vyzva57services.getLongData = function (companyid, lmcomid, producturl, taskid, key, completed) {
             invoke('vyzva57services/getlongdata', 'get', { companyid: companyid, lmcomid: lmcomid, producturl: producturl, taskid: taskid, key: key }, null, completed);
         };
+        vyzva57services.debugClearProduct = function (companyid, lmcomid, producturl, completed) {
+            invoke('vyzva57services/debugclearproduct', 'get', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, null, completed);
+        };
         vyzva57services.saveUserData = function (companyid, lmcomid, producturl, data, completed) {
             invoke('vyzva57services/saveuserdata', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, JSON.stringify(data), completed);
         };

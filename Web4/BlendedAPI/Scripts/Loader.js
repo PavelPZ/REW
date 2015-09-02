@@ -182,19 +182,10 @@ var blended;
                             var shortLong = { modified: false, long: null, short: JSON.parse(it.shortData) };
                             if (!taskData)
                                 node.userData[it.taskId] = shortLong;
-                            else
-                                debugger; /*something wrong*/
+                            //else debugger; /*something wrong*/
                         });
-                        //_.each(res, r => )
-                        //prod.persistData = null; //JSON.parse(res);
                         deferred.resolve(prod);
                     });
-                    //if (!!ctx.persistence) ctx.persistence.loadShortUserData(ctx.loginid, ctx.companyid, ctx.productUrl, data => {
-                    //  prod.persistData = data;
-                    //  deferred.resolve(prod);
-                    //}); else {
-                    //  deferred.resolve(prod);
-                    //}
                 }, function (errors) {
                     deferred.reject();
                 });
@@ -258,17 +249,14 @@ var blended;
             }
         }
         loader.adjustEx = adjustEx;
-        function blendedDisplayEx(pg, insertToHTMLPage) {
-        }
-        loader.blendedDisplayEx = blendedDisplayEx;
         var cacheOfProducts = (function () {
             function cacheOfProducts() {
                 this.products = [];
                 this.maxInsertOrder = 0;
             }
             cacheOfProducts.prototype.fromCache = function (ctx) {
-                var resIt = _.find(this.products, function (it) { return it.companyid == ctx.companyid && it.onbehalfof == ctx.onbehalfof &&
-                    it.persistence == ctx.persistence && it.loc == ctx.loc && it.producturl == ctx.producturl; }); // && it.loginid == ctx.loginid && it.taskid == ctx.taskid);
+                var resIt = _.find(this.products, function (it) { return it.companyid == ctx.companyid && it.onbehalfof == ctx.onbehalfof || ctx.loginid &&
+                    it.loc == ctx.loc && it.producturl == ctx.producturl; });
                 if (resIt)
                     resIt.insertOrder = this.maxInsertOrder++;
                 return resIt ? resIt.data : null;
@@ -281,8 +269,8 @@ var blended;
                     this.products.splice(minIdx, 1);
                 }
                 this.products.push({
-                    companyid: ctx.companyid, loc: ctx.loc, producturl: ctx.producturl, persistence: ctx.persistence, onbehalfof: ctx.onbehalfof,
-                    data: prod, insertOrder: this.maxInsertOrder++, taskid: null, loginid: -1, lickeys: null,
+                    companyid: ctx.companyid, loc: ctx.loc, producturl: ctx.producturl, onbehalfof: ctx.onbehalfof || ctx.loginid,
+                    data: prod, insertOrder: this.maxInsertOrder++, taskid: null, loginid: -1, lickeys: null, persistence: null
                 });
             };
             return cacheOfProducts;

@@ -50,7 +50,6 @@ namespace blended {
       { LineIds.French, "/lm/prods_lm_blcourse_french/" },
     };
 
-    //****** Company.Data se strukturou grup, spravcu, studentu apod.
     [Route("loadCompanyData"), HttpGet]
     public string loadCompanyData(int companyid) {
       var db = blendedData.Lib.CreateContext();
@@ -92,6 +91,15 @@ namespace blended {
     public string getLongData(int companyid, long lmcomId, string productUrl, string taskid, string key) {
       var db = blendedData.Lib.CreateContext();
       return db.CourseDatas.Where(cd => cd.CourseUser.CompanyId == companyid && cd.CourseUser.LMComId == lmcomId && cd.CourseUser.ProductUrl == productUrl && cd.Key == key).Select(cd => cd.Data).FirstOrDefault();
+    }
+
+    [Route("debugClearProduct"), HttpGet]
+    public void debugClearProduct(int companyid, long lmcomId, string productUrl) {
+      var db = blendedData.Lib.CreateContext();
+      var cu = db.CourseUsers.Where(cd => cd.CompanyId == companyid && cd.LMComId == lmcomId && cd.ProductUrl == productUrl).FirstOrDefault();
+      if (cu == null) return;
+      db.CourseUsers.Remove(cu);
+      db.SaveChanges();
     }
 
     public class ISaveData {

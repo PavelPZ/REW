@@ -14,55 +14,89 @@ var vyzva;
             _super.call(this, state);
             this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb[1].active = true;
-            var prUd = blended.getPersistData(this.parent.dataNode.pretest, this.ctx.taskid);
-            this.learnPlan = [];
-            var someActive = false;
-            if (!prUd || !prUd.done)
-                this.pretestStatus = IHomeNodeStatus.active;
-            else {
-                this.pretestStatus = IHomeNodeStatus.done;
-                this.pretestLevel = prUd.targetLevel;
-                this.learnPlan.push(this.fromNode(this.parent.dataNode.entryTests[prUd.targetLevel], 2));
-                this.learnPlan.pushArray(_.map(this.parent.dataNode.lessons[prUd.targetLevel], function (nd, idx) { return _this.fromNode(nd, idx + 3); }));
+            var pretestItem;
+            var fromNode = function (node, idx) {
+                var res = {
+                    node: node,
+                    user: null,
+                    homeTask: _this.parent,
+                    idx: idx,
+                    lessonType: idx == 0 ? IHomeLessonType.pretest : (node.url.indexOf('/test') > 0 ? IHomeLessonType.test : IHomeLessonType.lesson),
+                };
+                if (idx == 0) { }
+                else { }
+                res.status = !res.user ? IHomeLessonStatus.no : ((res.user).done ? IHomeLessonStatus.done : IHomeLessonStatus.entered);
+                return res;
+            };
+            this.learnPlan = [pretestItem = fromNode(this.parent.dataNode.pretest, 0)];
+            var pretestUser = (pretestItem.user);
+            if (pretestUser && pretestUser.done) {
+                this.pretestLevels = pretestUser.history;
+                pretestItem.status = IHomeLessonStatus.done;
+                this.pretestLevel = pretestUser.targetLevel;
+                this.learnPlan.push(fromNode(this.parent.dataNode.entryTests[this.pretestLevel], 1));
+                this.learnPlan.pushArray(_.map(this.parent.dataNode.lessons[this.pretestLevel], function (nd, idx) { return fromNode(nd, idx + 2); }));
             }
-            _.each(this.learnPlan, function (pl) {
-                if (blended.moduleIsDone(pl.node, _this.ctx.taskid))
-                    pl.status = IHomeNodeStatus.done;
-                else if (!someActive) {
-                    someActive = true;
-                    pl.status = IHomeNodeStatus.active;
-                }
+            //prvni nehotovy node je aktivni
+            _.find(this.learnPlan, function (pl) {
+                if (pl.status == IHomeLessonStatus.done)
+                    return false;
+                pl.active = true;
+                return true;
             });
         }
-        homeViewController.prototype.fromNode = function (node, idx) { return { node: node, user: blended.getPersistData(node, this.ctx.taskid), task: this.parent, idx: idx }; };
+        homeViewController.prototype.navigateLesson = function (lesson) {
+            var _this = this;
+            var service = {
+                params: lesson.lessonType == IHomeLessonType.pretest ?
+                    blended.cloneAndModifyContext(this.ctx, function (d) { return d.pretesturl = blended.encodeUrl(_this.parent.dataNode.pretest.url); }) :
+                    blended.cloneAndModifyContext(this.ctx, function (d) { return d.moduleurl = blended.encodeUrl(lesson.node.url); }),
+                current: lesson.lessonType == IHomeLessonType.pretest ?
+                    vyzva.stateNames.pretestTask :
+                    (lesson.lessonType == IHomeLessonType.test ? vyzva.stateNames.moduleTestTask : vyzva.stateNames.moduleLessonTask),
+                parent: this.parent,
+                createMode: blended.createControllerModes.adjustChild
+            };
+            this.parent.child = lesson.lessonType == IHomeLessonType.pretest ?
+                new blended.pretestTaskController(service) :
+                new vyzva.moduleTaskController(service);
+            var url = this.parent.child.goCurrent();
+            this.navigate(url);
+        };
+        ;
+        homeViewController.prototype.navigatePretestLevel = function (lev) {
+            var _this = this;
+            var service = {
+                params: blended.cloneAndModifyContext(this.ctx, function (d) { var mod = _this.parent.dataNode.pretest.Items[lev]; d.moduleurl = blended.encodeUrl(mod.url); }),
+                current: vyzva.stateNames.pretestPreview,
+                parent: this.parent,
+                createMode: blended.createControllerModes.adjustChild
+            };
+            this.parent.child = new vyzva.moduleTaskController(service);
+            var url = this.parent.child.goCurrent();
+            this.navigate(url);
+        };
         homeViewController.prototype.gotoLector = function (groupId) {
             this.navigate({ stateName: vyzva.stateNames.lectorHome.name, pars: { groupid: groupId } });
+        };
+        homeViewController.prototype.debugClearProduct = function () {
+            proxies.vyzva57services.debugClearProduct(this.ctx.companyid, this.ctx.onbehalfof || this.ctx.loginid, this.ctx.productUrl, function () { return location.reload(); });
         };
         return homeViewController;
     })(blended.taskViewController);
     vyzva.homeViewController = homeViewController;
-    (function (IHomeNodeStatus) {
-        IHomeNodeStatus[IHomeNodeStatus["no"] = 0] = "no";
-        IHomeNodeStatus[IHomeNodeStatus["done"] = 1] = "done";
-        IHomeNodeStatus[IHomeNodeStatus["active"] = 2] = "active";
-    })(vyzva.IHomeNodeStatus || (vyzva.IHomeNodeStatus = {}));
-    var IHomeNodeStatus = vyzva.IHomeNodeStatus;
-    blended.rootModule
-        .filter('vyzva$home$nodeclass', function () {
-        return function (id) {
-            switch (id) {
-                case IHomeNodeStatus.done: return "list-group-item-info";
-                case IHomeNodeStatus.active: return "list-group-item-success";
-                default: return "Angličtina";
-            }
-        };
-    })
-        .directive('vyzva$home$nodemarks', function () {
-        return {
-            scope: { status: '&status', index: '&index', api: '&api' },
-            templateUrl: 'vyzva$home$nodemarks.html'
-        };
-    });
+    (function (IHomeLessonStatus) {
+        IHomeLessonStatus[IHomeLessonStatus["no"] = 0] = "no";
+        IHomeLessonStatus[IHomeLessonStatus["entered"] = 1] = "entered";
+        IHomeLessonStatus[IHomeLessonStatus["done"] = 2] = "done";
+    })(vyzva.IHomeLessonStatus || (vyzva.IHomeLessonStatus = {}));
+    var IHomeLessonStatus = vyzva.IHomeLessonStatus;
+    (function (IHomeLessonType) {
+        IHomeLessonType[IHomeLessonType["pretest"] = 0] = "pretest";
+        IHomeLessonType[IHomeLessonType["lesson"] = 1] = "lesson";
+        IHomeLessonType[IHomeLessonType["test"] = 2] = "test";
+    })(vyzva.IHomeLessonType || (vyzva.IHomeLessonType = {}));
+    var IHomeLessonType = vyzva.IHomeLessonType;
     //****************** TASK
     var homeTaskController = (function (_super) {
         __extends(homeTaskController, _super);
@@ -83,4 +117,25 @@ var vyzva;
         return homeTaskController;
     })(blended.homeTaskController);
     vyzva.homeTaskController = homeTaskController;
+    blended.rootModule
+        .filter('vyzva$home$nodeclass', function () {
+        return function (lesson) {
+            if (lesson.active)
+                return "list-group-item-success";
+            switch (lesson.status) {
+                case IHomeLessonStatus.done: return "list-group-item-info";
+                default: return "";
+            }
+        };
+    })
+        .filter('vyzva$home$iconclass', function () {
+        return function (lesson) {
+            if (lesson.active)
+                return "fa-hand-o-right";
+            switch (lesson.status) {
+                case IHomeLessonStatus.done: return "fa-check";
+                default: return "";
+            }
+        };
+    });
 })(vyzva || (vyzva = {}));

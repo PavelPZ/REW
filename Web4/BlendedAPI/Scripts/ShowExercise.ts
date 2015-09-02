@@ -38,17 +38,34 @@
 
   export function scorePercent(sc: IExShort) { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
 
-  export function agregateChildShortInfos(node: CourseMeta.data, taskId: string, moduleAlowFinishWhenUndone:boolean): IExShort {
+  export function agregateShorts(shorts: Array<IExShort>): IExShort {
+    var res: IExShort = $.extend({}, shortDefault);
+    res.done = true;
+    _.each(shorts, short => {
+      if (!short) return;
+      var done = short.done;
+      res.done = res.done && done;
+      if (done) { //zapocitej hotove cviceni
+        res.ms += short.ms; res.s += short.s;
+      }
+      //elapsed, beg a end
+      res.beg = setDate(res.beg, short.beg, true); res.end = setDate(res.end, short.end, false);
+      res.elapsed += short.elapsed;
+    });
+    return res;
+  }
+  export function agregateShortFromNodes(node: CourseMeta.data, taskId: string, moduleAlowFinishWhenUndone: boolean): IExShort {
     var res: IExShort = $.extend({}, shortDefault);
     res.done = true;
     _.each(node.Items, nd => {
+      if (!isEx(nd)) return;
       var us = getPersistWrapper<IExShort>(nd, taskId);
       var done = us && us.short.done;
       res.done = res.done && done;
       if (nd.ms) { //aktivni cviceni (se skore)
         if (done) { //hotove cviceni, zapocitej vzdy
           res.ms += nd.ms; res.s += us.short.s;
-        } else if (moduleAlowFinishWhenUndone) { //nehotove cviceni, zapocitej pouze kdyz je includeUndone (napr. pro test)
+        } else if (moduleAlowFinishWhenUndone) { //nehotove cviceni, zapocitej pouze kdyz je moduleAlowFinishWhenUndone (napr. pro test)
           res.ms += nd.ms;
         }
       }
@@ -79,7 +96,7 @@
     startTime: number; //datum vstupu do stranky
     instructionData: IInstructionData;
 
-    constructor(public exercise: cacheExercise, long: IExLong, public ctx: learnContext, public product: IProductEx, public exerciseIsTest: boolean) {
+    constructor(public exercise: cacheExercise, long: IExLong, public ctx: learnContext, public product: IProductEx, public exerciseIsTest: boolean, public moduleUser: IModuleUser) {
       this.user = getPersistWrapper<IExShort>(exercise.dataNode, ctx.taskid, () => $.extend({}, shortDefault));
       if (!long) {
         long = {}; this.user.modified = true;
@@ -90,7 +107,7 @@
     }
 
     display(el: ng.IAugmentedJQuery, completed: (pg: Course.Page) => void) {
-      el.addClass('contentHidden');
+      //el.addClass('contentHidden');
 
       var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
       Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, this.exercise.mod.loc));
@@ -118,9 +135,11 @@
         ko.applyBindings({}, el[0]);
         pg.callInitProcs(Course.initPhase.afterRender, () => {//inicializace kontrolek, 2
           pg.callInitProcs(Course.initPhase.afterRender2, () => {
-            if (this.exerciseIsTest && this.user.short.done) this.user.short.done = false; //test cviceni nesmi byt videt vyhodnocene
+            if (this.exerciseIsTest && this.user.short.done && !this.moduleUser.done) {
+              this.user.short.done = false; //test cviceni nesmi byt (pro nedokonceny test) videt vyhodnocene
+            }
             pg.acceptData(this.user.short.done, exImpl.result);
-            el.removeClass('contentHidden');
+            //el.removeClass('contentHidden');
             completed(pg);
           });
         });
@@ -130,7 +149,7 @@
     destroy(el: ng.IAugmentedJQuery) {
       if (!this.user.short.done) {
         if (this.exerciseIsTest) {
-          el.addClass('contentHidden');
+          //el.addClass('contentHidden');
           this.evaluate(true);
         } else
           this.page.provideData(); //prevzeti poslednich dat z kontrolek cviceni
@@ -192,15 +211,17 @@
     end: number; //datum konce (ve dnech), na datum se prevede pomoci intToDate(end * 1000000)
   }
 
-  //export interface IExerciseStateData {
-  //  isTest: boolean; //test nebo cviceni
-  //}
-
-  export class exItemProxy {
+  export interface IExItemProxy {
     title: string; //titulek
     user: IExShort; //short data
     idx: number; //index v modulu
     active: boolean; //item pro aktivni cviceni
+  }
+
+  export interface IExModuleProxy {
+    exercises: Array<IExItemProxy>;
+    done: boolean;
+    userShort: IExShort;
   }
 
   export class exerciseTaskViewController extends taskController { //task pro pruchod lekcemi
@@ -208,9 +229,10 @@
     exService: exerciseService;
 
     title: string;
-    modItems: Array<exItemProxy>; //info o vsech cvicenich modulu
+    modItems: Array<IExItemProxy>; //info o vsech cvicenich modulu
     modIdx: number; //self index v modulu
     breadcrumb: Array<breadcrumbItem>;
+    parent: moduleTaskController;
 
     justEvaluated: boolean; //nepersistentni stavova promenna, ridici zobrazeni cviceni po vyhodnoceni
 
@@ -218,14 +240,21 @@
       super(state);
       if (state.createMode != createControllerModes.navigate) return;
 
-      this.exService = new exerciseService(<cacheExercise>(resolves[0]), <blended.IExLong>(resolves[1]), this.ctx, this.taskRoot().dataNode, this.state.exerciseIsTest);
+      this.exService = new exerciseService(
+        <cacheExercise>(resolves[0]),
+        <blended.IExLong>(resolves[1]),
+        this.ctx,
+        this.taskRoot().dataNode,
+        this.state.exerciseIsTest,
+        this.parent.user.short);
       state.$scope['exerciseService'] = this.exService;
 
       this.user = this.exService.user;
 
       this.title = this.dataNode.title;
-      this.modIdx = _.indexOf(this.parent.dataNode.Items, this.dataNode);
-      this.modItems = _.map(this.parent.dataNode.Items, (node, idx) => {
+      this.modIdx = _.indexOf(this.parent.exercises, this.dataNode);
+      this.parent.onExerciseLoaded(this.modIdx);
+      this.modItems = _.map(this.parent.exercises, (node, idx) => {
         return { user: blended.getPersistData<IExShort>(node, this.ctx.taskid), idx: idx, title: node.title, active: idx == this.modIdx };
       });
 
@@ -242,9 +271,15 @@
     //skok na jine cviceni, napr. v module map panelu 
     selectExercise(idx: number) {
       if (idx == this.modIdx) return;
-      var exNode = this.dataNode.parent.Items[idx];
+      var exNode = this.parent.exercises[idx];
       var ctx = cloneAndModifyContext(this.ctx, c => c.url = encodeUrl(exNode.url));
       this.navigate({ stateName: this.state.name, pars: ctx });
+    }
+
+    greenClick() {
+      var st: taskController = this;
+      while (!st.state.isGreenArrowRoot) st = st.parent;
+      st.navigateAhead();
     }
 
     //wrapper kolem selectOtherExercise, aby sla funkce vlozit jako atribut do direktivy, napr:

@@ -1,5 +1,5 @@
 ﻿module angular.ui {
-//rozsireni ui-route a blended STATE 
+  //rozsireni ui-route a blended STATE 
   export interface IState {
     layoutContentId?: string; //template stranky
     layoutToolbarType?: string; //typ toolbaru (nazev souboru v toolbar adresari)
@@ -36,13 +36,16 @@ module vyzva {
   export interface IStateNames extends blended.IProductStates {
     root?: state;
     pretest?: state;
-    lessonExercise?: state;
+    pretestPreview?: state;
+    homeLessonEx?: state;
+    homeLessonTest?: state;
     lesson?: state;
     pretestTask?: state;
     lector?: state;
     lectorHome?: state;
     lectorEval?: state;
-    lessonTask?: state;
+    moduleLessonTask?: state;
+    moduleTestTask?: state;
     shoolManager?: state;
     langmasterManager?: state;
     lectorTask?: state;
@@ -52,13 +55,6 @@ module vyzva {
   export var initVyzvaApp = ['$rootScope', '$location', '$state', ($rootScope: angular.IRootScopeService, $location: angular.ILocationService, $state: angular.ui.IStateService) => {
 
     //$rootScope.$on('$locationChangeStart', (event: angular.IAngularEvent, newUrl: string, oldUrl: string, newState, oldState) => {
-    //  if (location.hash == '#/pg/ajs/vyzva//def/1/1/1/2/!lm!blcourse!langmastermanager.product!/home') {
-    //    event.preventDefault();
-    //    setTimeout(() => location.hash = '#/pg/ajs/langmastermanager', 1);
-    //  } else if (location.hash == '#/pg/ajs/vyzva//def/1/1/1/2/!lm!blcourse!schoolmanager.product!/home') {
-    //    event.preventDefault();
-    //    setTimeout(() => location.hash = '#/pg/ajs/schoolmanager', 1);
-    //  }
     //})
 
     //sance zrusit ladovani stranky
@@ -154,6 +150,7 @@ module vyzva {
               url: '/pretest/:pretesturl',
               controller: blended.pretestTaskController,
               dataNodeUrlParName: 'pretestUrl',
+              isGreenArrowRoot:true,
               abstract: true,
               template: "<div data-ui-view></div>",
               childs: [
@@ -169,7 +166,6 @@ module vyzva {
                   url: '/test/:moduleurl',
                   controller: blended.moduleTaskController,
                   dataNodeUrlParName: 'moduleUrl',
-                  moduleAlowCycleExercise: false,
                   abstract: true,
                   template: "<div data-ui-view></div>",
                   childs: [
@@ -193,29 +189,75 @@ module vyzva {
                 }),
               ]
             }),
-            stateNames.lessonTask = new state({
+            stateNames.pretestPreview = new state({
+              name: 'testview',
+              url: '/testview/:moduleurl',
+              controller: moduleTaskController,
+              dataNodeUrlParName: 'moduleUrl',
+              isGreenArrowRoot: true,
+              abstract: true,
+              template: "<div data-ui-view></div>",
+              childs: [
+                new state({
+                  name: 'ex',
+                  url: '/:url',
+                  controller: lessonTest,
+                  exerciseIsTest: true,
+                  dataNodeUrlParName: 'Url',
+                  layoutContentId: 'exercise',
+                  resolve: {
+                    $loadedEx: blended.loadEx,
+                    $loadedLongData: blended.loadLongData,
+                  },
+                  templateUrl: pageTemplate,
+                })
+              ]
+            }),
+            stateNames.moduleLessonTask = new state({
               name: 'lesson',
               url: '/lesson/:moduleurl',
               controller: moduleTaskController,
               dataNodeUrlParName: 'moduleUrl',
+              isGreenArrowRoot: true,
               abstract: true,
               template: "<div data-ui-view></div>",
               childs: [
-                stateNames.lesson = new state({
-                  name: 'home',
-                  url: '/home',
-                  layoutContentId: 'module',
-                  layoutToolbarType: 'toolbar/run',
-                  controller: moduleViewController,
-                  templateUrl: pageTemplate,
-                }),
-                stateNames.lessonExercise = new state({
+                new state({
                   name: 'ex',
-                  url: '/ex/:url',
+                  url: '/:url',
                   controller: lessonExercise,
                   dataNodeUrlParName: 'Url',
                   layoutContentId: 'exercise',
                   layoutToolbarType: 'toolbar/run',
+                  resolve: {
+                    $loadedEx: blended.loadEx,
+                    $loadedLongData: blended.loadLongData,
+                  },
+                  templateUrl: pageTemplate,
+                }),
+              ]
+            }),
+            stateNames.moduleTestTask = new state({
+              name: 'test',
+              url: '/test/:moduleurl',
+              controller: moduleTaskController,
+              dataNodeUrlParName: 'moduleUrl',
+              isGreenArrowRoot: true,
+              abstract: true,
+              template: "<div data-ui-view></div>",
+              childs: [
+                new state({
+                  name: 'ex',
+                  url: '/:url',
+                  controller: lessonTest,
+                  exerciseIsTest: true,
+                  dataNodeUrlParName: 'Url',
+                  layoutContentId: 'exercise',
+                  layoutToolbarType: 'toolbar/run',
+                  resolve: {
+                    $loadedEx: blended.loadEx,
+                    $loadedLongData: blended.loadLongData,
+                  },
                   templateUrl: pageTemplate,
                 })
               ]

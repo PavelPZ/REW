@@ -9,6 +9,8 @@
     exerciseShowWarningPercent?: number; //exerciseIsTest=false => procenta, kdy se ukaze varovani
     exerciseIsTest?: boolean; //pro cviceni: neukazovat vzhodnoceny stav
     exerciseOmitModuleMap?: boolean; //neukazuje moduleMap
+    isGreenArrowRoot?: boolean; //task, co se stara o posun zelenou sipkou (cviceni hleda v parentech tento task, na ktery vola goAhead)
+    noModuleExercise?: boolean; //task v module.childs, ktery je cvicenim modulu
   }
 
 }
@@ -52,13 +54,16 @@ module blended {
     dataNodeUrlParName: string; //jmeno atributu v learnContext. learnContext[dataNodeUrlParName] urcuje URL v produkt sitemap
     data: {}; //dalsi parametry state
     resolve: {}; //asynchronni parametry state
-    oldController: any; //puvodni controller (ktery je nahrazen a pouzit zprostredkovane vyse)
+    oldController: taskControllerType; //puvodni controller (ktery je nahrazen a pouzit zprostredkovane vyse)
+    //controller: taskControllerType;
 
     //ui-route state.data
     exerciseIsTest: boolean;
     exerciseShowWarningPercent: number;
     moduleAlowCycleExercise: boolean;
     moduleAlowFinishWhenUndone: boolean; //existuje tlacitko FINISH. Zatim nenaprogramovano.
+    isGreenArrowRoot: boolean;
+    noModuleExercise: boolean;
     
     constructor(st: angular.ui.IState) {
       this.oldController = <any>(st.controller); var self = this;

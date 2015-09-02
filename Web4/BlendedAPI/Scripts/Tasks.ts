@@ -26,9 +26,9 @@
       var hash = this.href(url);
       setTimeout(() => window.location.hash = hash, 1);
     }
-    navigateWrapper(): (stateName:string ) => void { //kvui moznosti dat jako parametr diraktivy
+    navigateWrapper(): (stateName: string) => void { //kvui moznosti dat jako parametr diraktivy
       var self = this;
-      return stateName => self.navigate({ stateName: stateName, pars:self.ctx});
+      return stateName => self.navigate({ stateName: stateName, pars: self.ctx });
     }
 
 
@@ -50,7 +50,7 @@
       setTimeout(this.navigate(url), 1);
     }
   }
-  export interface IControllerScope extends ng.IScope { ts: controller; state: state; api: () => Object; /*globalni api*/} //$scope pro vsechny controllers
+  export interface IControllerScope extends ng.IScope { ts: controller; state: state; api: () => Object; /*globalni api*/ } //$scope pro vsechny controllers
 
   //******* TASK VIEW - predchudce vsech controllers, co maji vizualni podobu (html stranku)
   export class taskViewController extends controller {
@@ -68,6 +68,9 @@
     selfInnner /*posun osetren v ramci zmeny stavu aktualniho tasku (bez nutnosti navigace na jiny task)*/
   }
 
+  export interface taskControllerType {
+    new (state: IStateService, resolves?: Array<any>);
+  }
   //******* TASK (predchudce vse abstraktnich controllers (mimo cviceni), reprezentujicich TASK). Task umi obslouzit zelenou sipku apod.
   export class taskController extends controller {
 
@@ -185,7 +188,7 @@
 
   export interface IPretestUser extends IPersistNodeUser { //course dato pro IPretestRepository
     done: boolean;
-    urls: Array<string>;
+    history: Array<levelIds>;
     actLevel: levelIds; //aktualne probirany pretest
     targetLevel: levelIds; //vysledek pretestu pro done=true
   }
@@ -197,7 +200,7 @@
       super(state);
       //sance prerusit navigaci
       this.user = getPersistWrapper<IPretestUser>(this.dataNode, this.ctx.taskid, () => {
-        return { actLevel: levelIds.A2, urls: [this.actRepo(levelIds.A2).url], targetLevel: -1, done: false };
+        return { actLevel: levelIds.A2, history: [levelIds.A2], targetLevel: -1, done: false };
       });
       if (state.createMode != createControllerModes.navigate) return;
       this.wrongUrlRedirect(this.checkCommingUrl());
@@ -238,7 +241,7 @@
       var actTestItem = <exerciseTaskViewController>(this.child);
       var actRepo = this.actRepo(ud.actLevel);
       if (actTestItem.dataNode != actRepo) throw 'actTestItem.dataNode != actRepo';
-      var childSummary = agregateChildShortInfos(this.child.dataNode, this.ctx.taskid, actTestItem.state.moduleAlowFinishWhenUndone /*do vyhodnoceni zahrn i nehotova cviceni*/);
+      var childSummary = agregateShortFromNodes(this.child.dataNode, this.ctx.taskid, actTestItem.state.moduleAlowFinishWhenUndone /*do vyhodnoceni zahrn i nehotova cviceni*/);
       if (!childSummary.done) throw '!childUser.done';
       var score = scorePercent(childSummary);
 
@@ -262,7 +265,7 @@
     newTestItem(ud: IPretestUser, lev: levelIds): moveForwardResult {
       this.user.modified = true;
       ud.actLevel = lev;
-      ud.urls.push(this.actRepo(lev).url);
+      ud.history.push(lev);
       return moveForwardResult.selfAdjustChild;
     }
     finishPretest(ud: IPretestUser, lev: levelIds): moveForwardResult {
@@ -279,52 +282,61 @@
   export interface IModuleUser extends IPersistNodeUser { //course dato pro test
     actChildIdx: number;
     //na TRUE nastaveno pri nasilnem ukonceni testu tlacitkem FINISH test 
-    //(protoze kdyz nejsou vyhodnocena vsechna cviceni,  //tak by se nepoznalo, zdali je modul ukoncen nebo ne)
+    //(protoze kdyz nejsou vyhodnocena vsechna cviceni, tak by se nepoznalo, zdali je modul ukoncen nebo ne)
     //neni jeste implementovano
-    done: boolean; 
+    done: boolean;
   }
 
   export function moduleIsDone(nd: CourseMeta.data, taskId: string): boolean {
     return !_.find(nd.Items, it => { var itUd = blended.getPersistData<IExShort>(it, taskId); return (!itUd || !itUd.done); });
   }
 
+  export function isEx(nd: CourseMeta.data) { return CourseMeta.isType(nd, CourseMeta.runtimeType.ex); }
+
   export class moduleTaskController extends taskController { //task pro pruchod lekcemi (repository je seznam cviceni)
 
     user: IPersistNodeItem<IModuleUser>;
+    exercises: Array<CourseMeta.data>;
 
     constructor(state: IStateService) {
       super(state);
       this.user = getPersistWrapper<IModuleUser>(this.dataNode, this.ctx.taskid, () => { return { done: false, actChildIdx: 0 }; });
+      this.exercises = _.filter(this.dataNode.Items, it => isEx(it));
+    }
+
+    onExerciseLoaded(idx: number) {
+      var ud = this.user.short;
+      if (ud.done) { ud.actChildIdx = idx; this.user.modified = true; }
     }
 
     adjustChild(): taskController {
       var ud = this.user.short;
-      var exNode: CourseMeta.data;
-      if (!this.state.moduleAlowCycleExercise) {
-        exNode = _.find(this.dataNode.Items, it => { var itUd = blended.getPersistData<IExShort>(it, this.ctx.taskid); return (!itUd || !itUd.done); });
-      } else {
-        exNode = this.dataNode.Items[ud.actChildIdx];
-      }
-      if (!exNode) throw 'something wrong';
+      var exNode = ud.done ? this.exercises[ud.actChildIdx] : _.find(this.exercises, it => { var itUd = blended.getPersistData<IExShort>(it, this.ctx.taskid); return (!itUd || !itUd.done); });
+      if (!exNode) { debugger; ud.done = true; this.user.modified = true; }
+
+      var moduleExerciseState = _.find(this.state.childs, ch => !ch.noModuleExercise);
       var state: IStateService = {
         params: cloneAndModifyContext(this.ctx, d => d.url = encodeUrl(exNode.url)),
         parent: this,
-        current: prodStates.pretestExercise,
+        current: moduleExerciseState,
         createMode: createControllerModes.adjustChild
       };
-      return new vyzva.pretestExercise(state, null);
+      return new moduleExerciseState.oldController(state, null);
     }
 
     moveForward(): moveForwardResult {
       var ud = this.user.short;
-      if (ud.done) return moveForwardResult.toParent; //modul explicitne ukoncen (napr. tlacitkem Finish u testu).
-      if (this.state.moduleAlowCycleExercise) {
-        ud.actChildIdx == this.dataNode.Items.length - 1 ? 0 : ud.actChildIdx + 1;
+      if (ud.done) {
+        ud.actChildIdx = ud.actChildIdx == this.exercises.length - 1 ? 0 : ud.actChildIdx + 1;
         this.user.modified = true;
         return moveForwardResult.selfAdjustChild;
       } else {
-        var exNode = _.find(this.dataNode.Items, it => { var itUd = blended.getPersistData<IExShort>(it, this.ctx.taskid); return (!itUd || !itUd.done); });
-        return exNode ? moveForwardResult.selfAdjustChild : moveForwardResult.toParent;
+        var exNode = _.find(this.exercises, it => { var itUd = blended.getPersistData<IExShort>(it, this.ctx.taskid); return (!itUd || !itUd.done); });
+        if (!ud.done && !exNode) { //cerstve hotovo
+          ud.done = true; this.user.modified = true;
+          return moveForwardResult.toParent;
+        }
+        return moveForwardResult.selfAdjustChild;
       }
     }
 
