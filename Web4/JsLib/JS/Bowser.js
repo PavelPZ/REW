@@ -458,7 +458,7 @@ var Utils;
     Utils.dateToNum = dateToNum;
     function numToDate(num) { return new Date(num * 1000); }
     Utils.numToDate = numToDate;
-    function formatDate(sec) { return formatTimeLow(numToDate(sec)); }
+    function formatDate(sec) { return formatDateLow(numToDate(sec)); }
     Utils.formatDate = formatDate;
     function formatDateTime(sec) { return formatDate(sec) + formatTimeLow(numToDate(sec)); }
     Utils.formatDateTime = formatDateTime;

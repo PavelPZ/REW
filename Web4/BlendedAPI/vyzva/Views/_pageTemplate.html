@@ -8,13 +8,14 @@
     <div ng-if="::!state.pageTitlePlace" class="topbar-title">{{::ts.title}}</div>
   </div>
 </div>
-<div class="container" ng-if="::!state.ommitBreadCrumb && !!ts.breadcrumb && ts.breadcrumb.length>0">
-  <ol class="breadcrumb">
+<div class="container" >
+  <div data-ng-include="vyzva$common$breadcrumb.html"></div>
+  <!--<ol class="breadcrumb">
     <li data-ng-repeat="item in ::ts.breadcrumb" data-ng-class="::{'active': item.active}">
       <a data-ng-if="::!item.active" data-ng-href="{{::item.url}}">{{::item.title}}</a>
       <span data-ng-if="::item.active">{{::item.title}}</span>
     </li>
-  </ol>
+  </ol>-->
 </div>
 
 <div class="container-fluid">
@@ -23,3 +24,13 @@
     <div data-ng-include="::state.layoutContentId | vyzva$state$viewpath"></div>
   </div>
 </div>
+
+<script type="text/ng-template" id="vyzva$common$breadcrumb.html">
+  XXX
+  <ol class="breadcrumb" ng-if="::!state.ommitBreadCrumb && !!ts.breadcrumb && ts.breadcrumb.length>0">
+    <li data-ng-repeat="item in ::ts.breadcrumb" data-ng-class="::{'active': item.active}">
+      <a data-ng-if="::!item.active" data-ng-href="{{::item.url}}">{{::item.title}}</a>
+      <span data-ng-if="::item.active">{{::item.title}}</span>
+    </li>
+  </ol>
+</script>

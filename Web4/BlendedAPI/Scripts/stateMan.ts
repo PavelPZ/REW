@@ -11,11 +11,15 @@
     exerciseOmitModuleMap?: boolean; //neukazuje moduleMap
     isGreenArrowRoot?: boolean; //task, co se stara o posun zelenou sipkou (cviceni hleda v parentech tento task, na ktery vola goAhead)
     noModuleExercise?: boolean; //task v module.childs, ktery je cvicenim modulu
+
+    moduleType?: blended.moduleServiceType;
   }
 
 }
 
 module blended {
+
+  export enum moduleServiceType { lesson, test, pretest }
 
   export function createStateData<T>(data: T): T { return data; }
 
@@ -64,6 +68,7 @@ module blended {
     moduleAlowFinishWhenUndone: boolean; //existuje tlacitko FINISH. Zatim nenaprogramovano.
     isGreenArrowRoot: boolean;
     noModuleExercise: boolean;
+    moduleType: blended.moduleServiceType;
     
     constructor(st: angular.ui.IState) {
       this.oldController = <any>(st.controller); var self = this;

@@ -297,6 +297,7 @@
 
     user: IPersistNodeItem<IModuleUser>;
     exercises: Array<CourseMeta.data>;
+    congratulation: boolean; //priznak, ze modul byl prave preveden do stavu DONE a ukazuje se congratulation dialog
 
     constructor(state: IStateService) {
       super(state);
@@ -325,6 +326,7 @@
     }
 
     moveForward(): moveForwardResult {
+      if (this.congratulation) { delete this.congratulation; return moveForwardResult.toParent; }
       var ud = this.user.short;
       if (ud.done) {
         ud.actChildIdx = ud.actChildIdx == this.exercises.length - 1 ? 0 : ud.actChildIdx + 1;
@@ -335,6 +337,7 @@
         if (!ud.done && !exNode) { //cerstve hotovo
           ud.done = true; this.user.modified = true;
           return moveForwardResult.toParent;
+          //this.congratulation = true; return moveForwardResult.selfInnner;
         }
         return moveForwardResult.selfAdjustChild;
       }

@@ -92,9 +92,11 @@ module blended {
       _.each(pe.nodeList, nd => {
         if (!nd.userData) return;
         for (var p in nd.userData) {
-          var d = nd.userData[p]; if (!d.modified) return;
-          d.modified = false;
-          toSave.push({ url: nd.url, taskId: p, shortData: JSON.stringify(d.short), longData: d.long ? JSON.stringify(d.long) : null });
+          try {
+            var d = nd.userData[p]; if (!d.modified) return;
+            d.modified = false;
+            toSave.push({ url: nd.url, taskId: p, shortData: JSON.stringify(d.short), longData: d.long ? JSON.stringify(d.long) : null });
+          } finally { delete p.long; }
         }
       });
       if (toSave.length == 0) { completed(); return; }

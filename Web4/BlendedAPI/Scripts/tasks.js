@@ -295,6 +295,10 @@ var blended;
         };
         moduleTaskController.prototype.moveForward = function () {
             var _this = this;
+            if (this.congratulation) {
+                delete this.congratulation;
+                return moveForwardResult.toParent;
+            }
             var ud = this.user.short;
             if (ud.done) {
                 ud.actChildIdx = ud.actChildIdx == this.exercises.length - 1 ? 0 : ud.actChildIdx + 1;

@@ -484,7 +484,7 @@ module Utils {
   //vteriny
   export function dateToNum(dt: Date): number { return Math.floor(dateToInt(dt) / 1000); }
   export function numToDate(num: number): Date { return new Date(num * 1000); }
-  export function formatDate(sec: number) { return formatTimeLow(numToDate(sec)); }
+  export function formatDate(sec: number) { return formatDateLow(numToDate(sec)); }
   export function formatDateTime(sec: number) { return formatDate(sec) + formatTimeLow(numToDate(sec)); }
 
   //miliseconds

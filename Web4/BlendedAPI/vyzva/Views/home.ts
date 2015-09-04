@@ -5,7 +5,6 @@
   export class homeViewController extends blended.taskViewController {
 
     parent: homeTaskController;
-    //pretestStatus: IHomeLessonStatus;
     pretestLevel: number;
     learnPlan: Array<IHomeLesson>; //seznam modulu vyuky
     pretestLevels: Array<blended.levelIds>; //levels info pro hotovy pretest
@@ -14,27 +13,30 @@
       super(state);
       this.breadcrumb = breadcrumbBase(this); this.breadcrumb[1].active = true;
       var pretestItem: IHomeLesson;
+      var pretestUser: blended.IPretestUser;
 
       var fromNode = (node: CourseMeta.data, idx: number): IHomeLesson => {
         var res: IHomeLesson = {
           node: node,
-          user: null, //blended.getPersistData<blended.IPersistNodeUser>(node, this.ctx.taskid),
+          user: null,
           homeTask: this.parent,
           idx: idx,
           lessonType: idx == 0 ? IHomeLessonType.pretest : (node.url.indexOf('/test') > 0 ? IHomeLessonType.test : IHomeLessonType.lesson),
         };
-        if (idx == 0) { }
-        else { }
-        res.status = !res.user ? IHomeLessonStatus.no : ((<any>(res.user)).done ? IHomeLessonStatus.done : IHomeLessonStatus.entered);
+        var nodeUser = blended.getPersistData<blended.IPersistNodeUser>(this.parent.dataNode.pretest, this.ctx.taskid);
+        if (idx == 0) {
+          pretestUser = <blended.IPretestUser>nodeUser;
+          res.user = <any>{ done: pretestUser ? pretestUser.done : false};
+        } else
+          res.user = nodeUser ? blended.agregateShortFromNodes(res.node, this.ctx.taskid, false) : null;
+        res.status = !res.user ? IHomeLessonStatus.no : (res.user.done ? IHomeLessonStatus.done : IHomeLessonStatus.entered);
         return res;
       }
 
       this.learnPlan = [pretestItem = fromNode(this.parent.dataNode.pretest, 0)];
-      var pretestUser = <blended.IPretestUser>(pretestItem.user);
 
       if (pretestUser && pretestUser.done) {
         this.pretestLevels = pretestUser.history;
-        pretestItem.status = IHomeLessonStatus.done;
         this.pretestLevel = pretestUser.targetLevel;
         this.learnPlan.push(fromNode(this.parent.dataNode.entryTests[this.pretestLevel], 1));
         this.learnPlan.pushArray(_.map(this.parent.dataNode.lessons[this.pretestLevel], (nd, idx) => fromNode(nd, idx + 2)));
@@ -91,7 +93,7 @@
 
   export interface IHomeLesson {
     node: CourseMeta.data;
-    user: blended.IPersistNodeUser;
+    user: blended.IExShort; //blended.IPersistNodeUser;
     homeTask?: homeTaskController;
     idx: number;
     active?: boolean;

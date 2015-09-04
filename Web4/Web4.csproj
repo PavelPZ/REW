@@ -1367,7 +1367,8 @@
     <TypeScriptCompile Include="BlendedAPI\Scripts\directives.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Lib.ts" />
     <None Include="BlendedAPI\Scripts\Persistence.ts_" />
-    <TypeScriptCompile Include="BlendedAPI\Scripts\ShowExercise.ts" />
+    <TypeScriptCompile Include="BlendedAPI\Scripts\Module.ts" />
+    <TypeScriptCompile Include="BlendedAPI\Scripts\exercise.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\stateMan.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\app.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Loader.ts" />

@@ -145,6 +145,7 @@ var vyzva;
                                     controller: blended.moduleTaskController,
                                     dataNodeUrlParName: 'moduleUrl',
                                     abstract: true,
+                                    moduleType: blended.moduleServiceType.pretest,
                                     template: "<div data-ui-view></div>",
                                     childs: [
                                         blended.prodStates.pretestExercise = vyzva.stateNames.pretestExercise = new state({
@@ -197,6 +198,7 @@ var vyzva;
                             controller: vyzva.moduleTaskController,
                             dataNodeUrlParName: 'moduleUrl',
                             isGreenArrowRoot: true,
+                            moduleType: blended.moduleServiceType.lesson,
                             abstract: true,
                             template: "<div data-ui-view></div>",
                             childs: [
@@ -223,6 +225,7 @@ var vyzva;
                             isGreenArrowRoot: true,
                             abstract: true,
                             template: "<div data-ui-view></div>",
+                            moduleType: blended.moduleServiceType.test,
                             childs: [
                                 new state({
                                     name: 'ex',

@@ -36,23 +36,27 @@ var blended;
         .directive('showExercise', ['$stateParams', function ($stateParams) { return new showExerciseModel($stateParams); }]);
     function scorePercent(sc) { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
     blended.scorePercent = scorePercent;
+    function scoreText(sc) { var pr = scorePercent(sc); return pr < 0 ? '' : pr.toString() + '%'; }
+    blended.scoreText = scoreText;
     function agregateShorts(shorts) {
         var res = $.extend({}, shortDefault);
         res.done = true;
         _.each(shorts, function (short) {
-            if (!short)
+            if (!short) {
+                res.done = false;
                 return;
+            }
             var done = short.done;
             res.done = res.done && done;
-            res.count += short.count;
+            res.count += short.count || 1;
             if (done) {
-                res.ms += short.ms;
-                res.s += short.s;
+                res.ms += short.ms || 0;
+                res.s += short.s || 0;
             }
             //elapsed, beg a end
             res.beg = setDate(res.beg, short.beg, true);
             res.end = setDate(res.end, short.end, false);
-            res.elapsed += short.elapsed;
+            res.elapsed += short.elapsed || 0;
         });
         return res;
     }
@@ -80,18 +84,27 @@ var blended;
                 res.beg = setDate(res.beg, us.short.beg, true);
                 res.end = setDate(res.end, us.short.end, false);
                 res.elapsed += us.short.elapsed;
+                res.sumPlay += us.short.sumPlay;
+                res.sumPlayRecord += us.short.sumPlayRecord;
+                res.sumRecord += us.short.sumRecord;
             }
         });
         return res;
     }
     blended.agregateShortFromNodes = agregateShortFromNodes;
-    var shortDefault = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0, count: 0 };
+    var shortDefault = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0, count: 0, sumPlay: 0, sumPlayRecord: 0, sumRecord: 0 };
     function setDate(dt1, dt2, min) { if (!dt1)
         return dt2; if (!dt2)
         return dt1; if (min)
         return dt2 > dt1 ? dt1 : dt2;
     else
         return dt2 < dt1 ? dt1 : dt2; }
+    (function (exDoneStatus) {
+        exDoneStatus[exDoneStatus["no"] = 0] = "no";
+        exDoneStatus[exDoneStatus["passive"] = 1] = "passive";
+        exDoneStatus[exDoneStatus["active"] = 2] = "active";
+    })(blended.exDoneStatus || (blended.exDoneStatus = {}));
+    var exDoneStatus = blended.exDoneStatus;
     var exerciseService = (function () {
         function exerciseService(exercise, long, controller) {
             this.exercise = exercise;
@@ -99,7 +112,7 @@ var blended;
             this.product = controller.taskRoot().dataNode,
                 this.exerciseIsTest = controller.state.exerciseIsTest;
             this.moduleUser = controller.parent.user.short;
-            this.user = blended.getPersistWrapper(exercise.dataNode, this.ctx.taskid, function () { return $.extend({}, shortDefault); });
+            this.user = blended.getPersistWrapper(exercise.dataNode, this.ctx.taskid, function () { var res = $.extend({}, shortDefault); res.ms = exercise.dataNode.ms; return res; });
             if (!long) {
                 long = {};
                 this.user.modified = true;
@@ -111,9 +124,12 @@ var blended;
             this.greenArrowRoot = controller;
             while (!this.greenArrowRoot.state.isGreenArrowRoot)
                 this.greenArrowRoot = this.greenArrowRoot.parent;
-            //module services
-            this.mod = new blended.moduleService(controller.dataNode, this.ctx, this, controller);
+            this.refresh();
         }
+        exerciseService.prototype.refresh = function () {
+            this.doneStatus = this.user && this.user.short && this.user.short.done ? (this.user.short.ms ? exDoneStatus.active : exDoneStatus.passive) : exDoneStatus.no;
+            this.score = this.doneStatus == exDoneStatus.active ? this.user.short.s / this.user.short.ms * 100 : -1;
+        };
         exerciseService.prototype.onDisplay = function (el, completed) {
             //el.addClass('contentHidden');
             var _this = this;
@@ -159,6 +175,8 @@ var blended;
             if (!short.elapsed)
                 short.elapsed = 0;
             short.elapsed += delta;
+            short.end = Utils.nowToNum();
+            this.user.modified = true;
             if (!this.user.short.done) {
                 if (this.exerciseIsTest) {
                     //el.addClass('contentHidden');
@@ -184,11 +202,11 @@ var blended;
                 return false;
             this.user.modified = true;
             var short = this.user.short;
-            short.end = Utils.dayToInt(new Date());
             //pasivni stranka
             if (this.page.isPassivePage()) {
                 this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
                 short.done = true;
+                this.refresh();
                 return true;
             }
             if (typeof (exerciseShowWarningPercent) == 'undefined')
@@ -213,6 +231,7 @@ var blended;
                 throw "this.maxScore != score.ms";
             }
             short.s = score.s;
+            this.refresh();
             return true;
         };
         return exerciseService;
@@ -226,6 +245,7 @@ var blended;
     })(blended.evaluateResult || (blended.evaluateResult = {}));
     var evaluateResult = blended.evaluateResult;
     var maxDelta = 10 * 60; //10 minut
+    //***************** EXERCISE controller
     var exerciseTaskViewController = (function (_super) {
         __extends(exerciseTaskViewController, _super);
         function exerciseTaskViewController(state, resolves) {
@@ -233,15 +253,12 @@ var blended;
             if (state.createMode != blended.createControllerModes.navigate)
                 return;
             this.exService = new exerciseService((resolves[0]), (resolves[1]), this);
+            this.modService = new blended.moduleService(this.parent.dataNode, this.exService, this.parent.state.moduleType, this);
             state.$scope['exService'] = this.exService;
-            state.$scope['modService'] = this.exService.mod;
+            state.$scope['modService'] = this.modService;
             this.user = this.exService.user;
             this.title = this.dataNode.title;
-            //this.modIdx = _.indexOf(this.parent.exercises, this.dataNode);
             this.parent.onExerciseLoaded(this.exService.modIdx); //zmena actChildIdx v persistentnich datech modulu
-            //this.modItems = _.map(this.parent.exercises, (node, idx) => {
-            //  return { user: blended.getPersistData<IExShort>(node, this.ctx.taskid), idx: idx, title: node.title, active: idx == this.modIdx };
-            //});
         }
         //osetreni zelene sipky
         exerciseTaskViewController.prototype.moveForward = function () {

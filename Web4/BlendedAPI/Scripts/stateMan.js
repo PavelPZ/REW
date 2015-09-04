@@ -1,5 +1,11 @@
 var blended;
 (function (blended) {
+    (function (moduleServiceType) {
+        moduleServiceType[moduleServiceType["lesson"] = 0] = "lesson";
+        moduleServiceType[moduleServiceType["test"] = 1] = "test";
+        moduleServiceType[moduleServiceType["pretest"] = 2] = "pretest";
+    })(blended.moduleServiceType || (blended.moduleServiceType = {}));
+    var moduleServiceType = blended.moduleServiceType;
     function createStateData(data) { return data; }
     blended.createStateData = createStateData;
     (function (createControllerModes) {

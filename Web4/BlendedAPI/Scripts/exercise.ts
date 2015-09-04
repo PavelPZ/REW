@@ -1,5 +1,18 @@
 ﻿module blended {
 
+  export interface IExShort extends IPersistNodeUser { //course dato pro test
+    done: boolean;
+    ms: number;
+    s: number;
+    elapsed: number; //straveny cas ve vterinach
+    beg: number; //datum zacatku, ve dnech
+    end: number; //datum konce (ve dnech), na datum se prevede pomoci intToDate(end * 1000000)
+    count?: number; //pro agregaci: pocet zahrnutych cviceni
+    sumPlay?: number; //prehrany nas zvuk (sec)
+    sumRecord?: number; //nahrany zvuk  (sec)
+    sumPlayRecord?: number; //prehrano nahravek (sec)
+  }
+
   export var loadEx = ['$stateParams', ($stateParams: blended.learnContext) => {
     blended.finishContext($stateParams);
     return blended.loader.adjustEx($stateParams);
@@ -15,42 +28,36 @@
     return def.promise;
   }];
 
+  export class showExerciseModel {
+    constructor(public $stateParams: blended.learnContext) { }
+    link: (scope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes) => void = (scope, el, attrs) => {
+      var exService: exerciseService = scope.exService()
+      scope.$on('$destroy', (ev) => exService.onDestroy(el));
+      exService.onDisplay(el, $.noop);
+    };
+    scope = { exService: '&exService' }
+  }
   rootModule
     .directive('showExercise', ['$stateParams', ($stateParams: blended.learnContext) => new showExerciseModel($stateParams)])
   ;
-  //export var showExerciseDirective2 = ['$stateParams', ($stateParams: blended.learnContext) => new showExerciseModel($stateParams)];
-
-  export class showExerciseModel {
-    constructor(public $stateParams: blended.learnContext) { }
-    link: (scope: ng.IScope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes) => void = (scope, el, attrs) => {
-
-      scope.$on('$destroy', (ev) => this.exerciseService.destroy(el));
-
-      //nalezni exerciseService
-      var sc = scope;
-      while (sc && !sc['exerciseService']) sc = sc.$parent;
-      if (!sc) return;
-      this.exerciseService = <exerciseService>(sc['exerciseService']);
-      this.exerciseService.display(el, $.noop);
-    };
-    exerciseService: exerciseService;
-  }
 
   export function scorePercent(sc: IExShort) { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
+  export function scoreText(sc: IExShort) { var pr = scorePercent(sc); return pr < 0 ? '' : pr.toString() + '%'; }
 
   export function agregateShorts(shorts: Array<IExShort>): IExShort {
     var res: IExShort = $.extend({}, shortDefault);
     res.done = true;
     _.each(shorts, short => {
-      if (!short) return;
+      if (!short) { res.done = false; return; }
       var done = short.done;
       res.done = res.done && done;
+      res.count += short.count || 1;
       if (done) { //zapocitej hotove cviceni
-        res.ms += short.ms; res.s += short.s;
+        res.ms += short.ms || 0; res.s += short.s || 0;
       }
       //elapsed, beg a end
       res.beg = setDate(res.beg, short.beg, true); res.end = setDate(res.end, short.end, false);
-      res.elapsed += short.elapsed;
+      res.elapsed += short.elapsed || 0;
     });
     return res;
   }
@@ -59,6 +66,7 @@
     res.done = true;
     _.each(node.Items, nd => {
       if (!isEx(nd)) return;
+      res.count++;
       var us = getPersistWrapper<IExShort>(nd, taskId);
       var done = us && us.short.done;
       res.done = res.done && done;
@@ -72,22 +80,20 @@
       if (us) { //elapsed, beg a end zapocitej vzdy
         res.beg = setDate(res.beg, us.short.beg, true); res.end = setDate(res.end, us.short.end, false);
         res.elapsed += us.short.elapsed;
+        res.sumPlay += us.short.sumPlay; res.sumPlayRecord += us.short.sumPlayRecord; res.sumRecord += us.short.sumRecord;
       }
     })
     return res;
   }
-  var shortDefault: IExShort = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0 };
+  var shortDefault: IExShort = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0, count: 0, sumPlay: 0, sumPlayRecord: 0, sumRecord: 0 };
   function setDate(dt1: number, dt2: number, min: boolean): number { if (!dt1) return dt2; if (!dt2) return dt1; if (min) return dt2 > dt1 ? dt1 : dt2; else return dt2 < dt1 ? dt1 : dt2; }
 
   //long persistent informace o cviceni
   export interface IExLong { [exId: string]: CourseModel.Result; }
 
-  export interface IPageTask {
-    isTest: boolean;
-    page: Course.Page;
-    startTime: number; //datum vstupu do stranky
-    user: IPersistNodeItem<IExShort>;
-  }
+  export interface IInstructionData { title: string; body: string; }
+
+  export enum exDoneStatus { no, passive, active }
 
   export class exerciseService {
 
@@ -95,18 +101,38 @@
     user: IPersistNodeItem<IExShort>;
     startTime: number; //datum vstupu do stranky
     instructionData: IInstructionData;
+    exercise: cacheExercise;
+    ctx: learnContext;
+    product: IProductEx;
+    exerciseIsTest: boolean;
+    moduleUser: IModuleUser; //short data modulu
+    greenArrowRoot: taskController; //manager zelene sipky
+    modIdx: number; //index cviceni v modulu
+    //model
+    doneStatus: exDoneStatus;
+    score: number;
 
-    constructor(public exercise: cacheExercise, long: IExLong, public ctx: learnContext, public product: IProductEx, public exerciseIsTest: boolean, public moduleUser: IModuleUser) {
-      this.user = getPersistWrapper<IExShort>(exercise.dataNode, ctx.taskid, () => $.extend({}, shortDefault));
-      if (!long) {
-        long = {}; this.user.modified = true;
-      }
+
+    constructor(exercise: cacheExercise, long: IExLong, controller: exerciseTaskViewController) {
+      this.exercise = exercise;
+      this.ctx = controller.ctx; this.product = controller.taskRoot().dataNode,
+      this.exerciseIsTest = controller.state.exerciseIsTest; this.moduleUser = controller.parent.user.short;
+      this.user = getPersistWrapper<IExShort>(exercise.dataNode, this.ctx.taskid, () => { var res: IExShort = $.extend({}, shortDefault); res.ms = exercise.dataNode.ms; return res; });
+      if (!long) { long = {}; this.user.modified = true; }
       this.user.long = long
       this.startTime = Utils.nowToNum();
-
+      this.modIdx = _.indexOf(controller.parent.exercises, controller.dataNode);
+      //greenArrowRoot
+      this.greenArrowRoot = controller; while (!this.greenArrowRoot.state.isGreenArrowRoot) this.greenArrowRoot = this.greenArrowRoot.parent;
+      this.refresh();
     }
 
-    display(el: ng.IAugmentedJQuery, completed: (pg: Course.Page) => void) {
+    refresh() {
+      this.doneStatus = this.user && this.user.short && this.user.short.done ? (this.user.short.ms ? exDoneStatus.active : exDoneStatus.passive) : exDoneStatus.no;
+      this.score = this.doneStatus == exDoneStatus.active ? this.user.short.s / this.user.short.ms * 100 : -1;
+    }
+
+    onDisplay(el: ng.IAugmentedJQuery, completed: (pg: Course.Page) => void) {
       //el.addClass('contentHidden');
 
       var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
@@ -146,7 +172,16 @@
       });
     }
 
-    destroy(el: ng.IAugmentedJQuery) {
+    onDestroy(el: ng.IAugmentedJQuery) {
+      //elapsed
+      var now = Utils.nowToNum();
+      var delta = Math.min(maxDelta, Math.round(now - this.startTime));
+      var short = this.user.short;
+      if (!short.elapsed) short.elapsed = 0;
+      short.elapsed += delta;
+      short.end = Utils.nowToNum();
+      this.user.modified = true;
+
       if (!this.user.short.done) {
         if (this.exerciseIsTest) {
           //el.addClass('contentHidden');
@@ -154,31 +189,27 @@
         } else
           this.page.provideData(); //prevzeti poslednich dat z kontrolek cviceni
       }
-      this.product.saveProduct(this.ctx, () => { //ulozeni vysledku do DB
-        //uklid
-        if (this.page.sndPage) this.page.sndPage.htmlClearing();
-        if (this.page.sndPage) this.page.sndPage.leave();
-        ko.cleanNode(el[0]);
-        el.html('');
-        delete (<CourseMeta.exImpl>(this.exercise.dataNode)).result;
-        delete this.user.long;
-      });
+      //this.product.saveProduct(this.ctx, () => { //ulozeni vysledku do DB
+      //uklid
+      if (this.page.sndPage) this.page.sndPage.htmlClearing();
+      if (this.page.sndPage) this.page.sndPage.leave();
+      ko.cleanNode(el[0]);
+      el.html('');
+      delete (<CourseMeta.exImpl>(this.exercise.dataNode)).result;
+      delete this.user.long;
+      //});
     }
 
     evaluate(isTest: boolean, exerciseShowWarningPercent?: number): boolean {
       if (this.user.short.done) return false;
       this.user.modified = true;
-      var now = Utils.nowToNum();
       var short = this.user.short;
-      var delta = Math.min(maxDelta, Math.round(now - this.startTime));
-      if (!short.elapsed) short.elapsed = 0;
-      short.elapsed += delta;
-      short.end = Utils.dayToInt(new Date());
 
       //pasivni stranka
       if (this.page.isPassivePage()) {
         this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
         short.done = true;
+        this.refresh();
         return true;
       }
 
@@ -196,41 +227,26 @@
       short.done = true;
       if (this.exercise.dataNode.ms != score.ms) { debugger; throw "this.maxScore != score.ms"; }
       short.s = score.s;
+      this.refresh();
       return true;
     }
   }
+  export enum evaluateResult {
+    wrongScore, //uzivatel chce cviceni delat znova kvuli spatnemu skore
+    passiveEvaluated, //vyhodnoceno pasivni cviceni
+    activeEvaluated, //vyhodnoceno aktivni cviceni
+    other, //cokoliv jineho
+  }
   var maxDelta = 10 * 60; //10 minut
 
-  //***************** EXERCISE $scope.ts, vznika pri kazdem cviceni 
-  export interface IExShort extends IPersistNodeUser { //course dato pro test
-    done: boolean;
-    ms: number;
-    s: number;
-    elapsed: number; //straveny cas ve vterinach
-    beg: number; //datum zacatku, ve dnech
-    end: number; //datum konce (ve dnech), na datum se prevede pomoci intToDate(end * 1000000)
-  }
-
-  export interface IExItemProxy {
-    title: string; //titulek
-    user: IExShort; //short data
-    idx: number; //index v modulu
-    active: boolean; //item pro aktivni cviceni
-  }
-
-  export interface IExModuleProxy {
-    exercises: Array<IExItemProxy>;
-    done: boolean;
-    userShort: IExShort;
-  }
+  //***************** EXERCISE controller
 
   export class exerciseTaskViewController extends taskController { //task pro pruchod lekcemi
 
     exService: exerciseService;
+    modService: moduleService;
 
     title: string;
-    modItems: Array<IExItemProxy>; //info o vsech cvicenich modulu
-    modIdx: number; //self index v modulu
     breadcrumb: Array<breadcrumbItem>;
     parent: moduleTaskController;
 
@@ -240,23 +256,16 @@
       super(state);
       if (state.createMode != createControllerModes.navigate) return;
 
-      this.exService = new exerciseService(
-        <cacheExercise>(resolves[0]),
-        <blended.IExLong>(resolves[1]),
-        this.ctx,
-        this.taskRoot().dataNode,
-        this.state.exerciseIsTest,
-        this.parent.user.short);
-      state.$scope['exerciseService'] = this.exService;
+      this.exService = new exerciseService(<cacheExercise>(resolves[0]), <blended.IExLong>(resolves[1]), this);
+      this.modService = new moduleService(this.parent.dataNode, this.exService, this.parent.state.moduleType, this);
+
+      state.$scope['exService'] = this.exService;
+      state.$scope['modService'] = this.modService;
 
       this.user = this.exService.user;
 
       this.title = this.dataNode.title;
-      this.modIdx = _.indexOf(this.parent.exercises, this.dataNode);
-      this.parent.onExerciseLoaded(this.modIdx);
-      this.modItems = _.map(this.parent.exercises, (node, idx) => {
-        return { user: blended.getPersistData<IExShort>(node, this.ctx.taskid), idx: idx, title: node.title, active: idx == this.modIdx };
-      });
+      this.parent.onExerciseLoaded(this.exService.modIdx); //zmena actChildIdx v persistentnich datech modulu
 
     }
 
@@ -267,28 +276,12 @@
       return this.justEvaluated && !this.state.exerciseIsTest ? moveForwardResult.selfInnner : moveForwardResult.toParent;
     }
     //provede reset cviceni, napr. v panelu s instrukci
-    resetExercise() { alert('reset'); } 
-    //skok na jine cviceni, napr. v module map panelu 
-    selectExercise(idx: number) {
-      if (idx == this.modIdx) return;
-      var exNode = this.parent.exercises[idx];
-      var ctx = cloneAndModifyContext(this.ctx, c => c.url = encodeUrl(exNode.url));
-      this.navigate({ stateName: this.state.name, pars: ctx });
-    }
+    resetExercise() { alert('reset'); }
 
     greenClick() {
-      var st: taskController = this;
-      while (!st.state.isGreenArrowRoot) st = st.parent;
-      st.navigateAhead();
+      this.exService.greenArrowRoot.navigateAhead();
     }
 
-    //wrapper kolem selectOtherExercise, aby sla funkce vlozit jako atribut do direktivy, napr:
-    //V nadrazenem html: <div selectexercise="::ts.selectOtherExerciseWrapper()">
-    //V direktiv kodu: scope = { selectExercise:'&selectexercise' };
-    //V direktiv html: ng-click="selectExercise()(it.idx)
-    selectExerciseWrapper() { var self = this; return idx => self.selectExercise(idx); }
-    resetExerciseWrapper() { var self = this; return () => self.resetExercise(); }
   }
 
-  export interface IInstructionData { title: string; body: string; }
 }

@@ -1,42 +1,85 @@
-﻿<div ng-if="::!state.exerciseOmitModuleMap" ng-include="'vyzva$exercise$modulemap.html'"></div>
+﻿<!--<div ng-if="::!state.exerciseOmitModuleMap" ng-include="'vyzva$exercise$modulemap.html'"></div>-->
+<div class="lm-bottom-margin-lg" ng-include="'vyzva$exercise$modulepanel.html'"></div>
+<div class="instruction" ng-include="'vyzva$exercise$instruction.html'"></div>
+<div class="new-ea" data-show-exercise="" ex-service="::exService"></div>
 
-<div ng-include="'vyzva$exercise$instruction.html'"></div>
-
-<div class="new-ea" data-show-exercise=""></div>
 
 <script type="text/ng-template" id="vyzva$exercise$instruction.html">
-  <div class="instruction" ng-controller="collapsable" ng-if="ts.user.short.done && !ts.state.exerciseIsTest">
-    <div class="header header-done">
-      <div class="btn btn-default btn-sm reset-btn" ng-click="::ts.resetExercise()">
+  <div ng-controller="collapsable" ng-if="exService.doneStatus">
+    <div class="header h4 xheader-done" ng-click="isCollapsed = !isCollapsed">
+      <div class="more fa fa-bars"></div>
+      <!--<div class="btn btn-default btn-sm reset-btn" ng-click="::ts.resetExercise()">
         <span class="fa fa-recycle"></span>
-        Reset
-      </div>
-      <span class="h4 fa fa-check text-success"></span>&nbsp;&nbsp;<span class="h4">splněno</span>
+        Znova
+      </div>-->
+      <span class="fa fa-check xtext-success"></span>
+      Splněno<span ng-if="exService.score>=0">, skore: <span vyzva$exmodule$scoreprogress value="{{exService.score}}"></span></span>
+      ue
+      <!--<span vyzva$exmodule$emptytest nobr="true" label="První interakce" value="{{exService.user.short.beg | vyzva$exmodule$sec}}"></span>
+      <span vyzva$exmodule$emptytest nobr="true" label="Poslední interakce" value="{{exService.user.short.end | vyzva$exmodule$sec}}"></span>
+      <span vyzva$exmodule$emptytest nobr="true" label="Strávený čas" value="{{exService.user.short.elapsed | vyzva$exmodule$time}}"></span>-->
+    </div>
+    <div collapse="isCollapsed">
+      asd fa sdf asdf
     </div>
   </div>
-  <div class="instruction" ng-controller="collapsable" ng-if="!ts.user.short.done || ts.state.exerciseIsTest">
+  <div ng-controller="collapsable" ng-if="!exService.doneStatus">
     <div ng-click="isCollapsed = !isCollapsed" class="header h4">
-      <span class="fa fa-info-circle fa-lg"></span>&nbsp;&nbsp;
-      {{::exerciseService.instructionData.title}}
-      <div class="more fa fa-bars fa-lg"></div>
+      <span class="fa fa-info-circle"></span>
+      {{::exService.instructionData.title}}
+      <div class="more fa fa-bars"></div>
     </div>
-    <div collapse="isCollapsed" class="body" ng-bind-html="::exerciseService.instructionData.body | rawhtml"></div>
+    <div collapse="isCollapsed" class="body" ng-bind-html="::exService.instructionData.body | rawhtml"></div>
   </div>
 </script>
 
-
-<script type="text/ng-template" id="vyzva$exercise$modulemap.html">
-  <span ng-repeat="it in ::ts.modItems" class="btn btn-default module-map-item" ng-class="::{done: it.user.done, active:it.active}" ng-click="::ts.selectExercise(it.idx)">{{::it.idx+1}}</span>
+<script type="text/ng-template" id="vyzva$exercise$modulepanel.html">
+  <div ng-if="::modService.exShowPanel" ng-controller="collapsable" class="ex-module" ng-class="{expanded: !isCollapsed}">
+    <div class="header">
+      <div ng-repeat="it in ::modService.exercises" class="ex-item"
+           ng-class="{warning:it.background==1, success: it.background==2, 'no-clickable': modService.exNoclickable}"
+           ng-click="modService.exNoclickable ? null : modService.navigateExercise(it.idx)">
+        <span ng-if="it.content==1" class="fa fa-check"></span>
+        <span ng-if="it.content==2" class="fa fa-arrow-down xfa-folder-open-o"></span>
+        <span ng-if="it.content==3" class="xfa xfa-folder-o">{{it.idx+1}}.</span>
+        <span ng-if="it.content==4" ng-style="it.percent | vyzva$exmodule$percentheight : 34" class="progress-red">{{it.percent}}%</span>
+        <span ng-if="it.content==4">{{it.percent}}%</span>
+      </div>
+      <div class="more fa fa-bars" ng-click="isCollapsed = !isCollapsed"></div>
+    </div>
+    <div collapse="isCollapsed" class="body">
+      <h4>{{::modService.node.title}}, výsledky:</h4>
+      <div class="row">
+        <div class="col-sm-3">
+          <span ng-if="modService.score>=0">Skóre: <span vyzva$exmodule$scoreprogress value="{{modService.score}}"></span><br /></span>
+          <span vyzva$exmodule$emptytest label="Počet cvičení" value="{{modService.user.count}}"></span>
+        </div>
+        <div class="col-sm-5">
+          <span vyzva$exmodule$emptytest label="První interakce" value="{{modService.user.beg | vyzva$exmodule$sec}}"></span>
+          <span vyzva$exmodule$emptytest label="Poslední interakce" value="{{modService.user.end | vyzva$exmodule$sec}}"></span>
+          <span vyzva$exmodule$emptytest label="Strávený čas" value="{{modService.user.elapsed | vyzva$exmodule$time}}"></span>
+        </div>
+        <div class="col-sm-4">
+          <span vyzva$exmodule$emptytest label="Přehráno zvuku" value="{{modService.user.sumPlay | vyzva$exmodule$time}}"></span>
+          <span vyzva$exmodule$emptytest label="Vlastní nahrávky" value="{{modService.user.sumRecord | vyzva$exmodule$time}}"></span>
+          <span vyzva$exmodule$emptytest label="Přehráno nahrávek" value="{{modService.user.sumPlayRecord | vyzva$exmodule$time}}"></span>
+        </div>
+      </div>
+    </div>
+  </div>
 </script>
 
-<!--<div vyzva$exercise$modulemap class="module-map-items"
-     ng-if="::!state.exerciseOmitModuleMap"
-     items="::ts.modItems"
-     select-exercise="::ts.selectExerciseWrapper()" >
-</div>-->
-<!--<div vyzva$exercise$instruction
-     user="::ts.user"
-     do-reset="::ts.resetExerciseWrapper()"
-     instruction-data="::exerciseService.instructionData"
-     state="::state">
-</div>-->
+<!--<script type="text/ng-template" id="vyzva$exercise$modulemap.html">
+  <span ng-repeat="it in ::modService.exercises" class="btn btn-default module-map-item" ng-class="::{done: it.user.done, active:it.active}" ng-click="::mod.navigateExercise(it.idx)">{{::it.idx+1}}</span>
+</script>-->
+
+<script type="text/ng-template" id="vyzva$exercise$congratulation.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Gratulujeme</h3>
+  </div>
+  <div class="modal-body">
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+  </div>
+</script>

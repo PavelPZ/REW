@@ -153,7 +153,7 @@ module schoolMy {
 
             var ctx: blended.learnContext = {
               producturl: blended.encodeUrl(pr.url), companyid: comp.data.Id, loginid: LMStatus.Cookie.id,
-              /*userdataid: LMStatus.Cookie.id,*/ loc: Trados.actLang, taskid: '', persistence: null, /*TODO*/
+              /*userdataid: LMStatus.Cookie.id,*/ loc: LMComLib.Langs.cs_cz /*Trados.actLang*/, taskid: '', persistence: null, /*TODO*/
               lickeys: licenceKeysStr.join('#')
             };
             var hash: string;

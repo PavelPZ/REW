@@ -171,7 +171,7 @@ var schoolMy;
                         });
                         var ctx = {
                             producturl: blended.encodeUrl(pr.url), companyid: comp.data.Id, loginid: LMStatus.Cookie.id,
-                            /*userdataid: LMStatus.Cookie.id,*/ loc: Trados.actLang, taskid: '', persistence: null,
+                            /*userdataid: LMStatus.Cookie.id,*/ loc: LMComLib.Langs.cs_cz /*Trados.actLang*/, taskid: '', persistence: null,
                             lickeys: licenceKeysStr.join('#')
                         };
                         var hash;

@@ -15,6 +15,7 @@ var vyzva;
             this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb[1].active = true;
             var pretestItem;
+            var pretestUser;
             var fromNode = function (node, idx) {
                 var res = {
                     node: node,
@@ -23,16 +24,19 @@ var vyzva;
                     idx: idx,
                     lessonType: idx == 0 ? IHomeLessonType.pretest : (node.url.indexOf('/test') > 0 ? IHomeLessonType.test : IHomeLessonType.lesson),
                 };
-                if (idx == 0) { }
-                else { }
-                res.status = !res.user ? IHomeLessonStatus.no : ((res.user).done ? IHomeLessonStatus.done : IHomeLessonStatus.entered);
+                var nodeUser = blended.getPersistData(_this.parent.dataNode.pretest, _this.ctx.taskid);
+                if (idx == 0) {
+                    pretestUser = nodeUser;
+                    res.user = { done: pretestUser ? pretestUser.done : false };
+                }
+                else
+                    res.user = nodeUser ? blended.agregateShortFromNodes(res.node, _this.ctx.taskid, false) : null;
+                res.status = !res.user ? IHomeLessonStatus.no : (res.user.done ? IHomeLessonStatus.done : IHomeLessonStatus.entered);
                 return res;
             };
             this.learnPlan = [pretestItem = fromNode(this.parent.dataNode.pretest, 0)];
-            var pretestUser = (pretestItem.user);
             if (pretestUser && pretestUser.done) {
                 this.pretestLevels = pretestUser.history;
-                pretestItem.status = IHomeLessonStatus.done;
                 this.pretestLevel = pretestUser.targetLevel;
                 this.learnPlan.push(fromNode(this.parent.dataNode.entryTests[this.pretestLevel], 1));
                 this.learnPlan.pushArray(_.map(this.parent.dataNode.lessons[this.pretestLevel], function (nd, idx) { return fromNode(nd, idx + 2); }));
