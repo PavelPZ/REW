@@ -39,13 +39,6 @@
   <div class="left-mark"><i class="fa" ng-class="::lesson | vyzva$home$doneicon"></i></div>
 </script>
 
-<!--<script type="text/ng-template" id="vyzva$home$rightbutton.html">
-  <div class="right-mark" ng-click="::ts.navigateLesson(lesson)">
-    <button class="btn btn-info" ng-if="::lesson.status>1">Výsledky <i class="fa fa-eye"></i></button>
-    <button class="btn btn-info" ng-disabled="api().ctx.onbehalfof" ng-if="::lesson.status<=1">Spustit <i class="fa fa-play"></i></button>
-  </div>
-</script>-->
-
 <script type="text/ng-template" id="vyzva$home$lesson.html">
   <div ng-include="'vyzva$home$leftmark.html'"></div>
   <button class="btn btn-info right-mark" ng-if="::lesson.rightButtonType==2">Výsledky <i class="fa fa-eye"></i></button>
@@ -61,13 +54,6 @@
     {{::lesson.node.title}}
   </h4>
 </script>
-
-<!--<script type="text/ng-template" id="vyzva$home$test.html">
-  <div ng-include="'vyzva$home$leftmark.html'"></div>
-  <h4 ng-click="::ts.navigateLesson(lesson)">
-    <i class="fa fa-line-chart"></i> {{::lesson.node.title}}
-  </h4>
-</script>-->
 
 <script type="text/ng-template" id="vyzva$home$pretest.html">
   <div ng-include="'vyzva$home$leftmark.html'"></div>

@@ -14,7 +14,7 @@ var vyzva;
                 return;
             this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb.push({ title: 'Rozřazovací test', url: null, active: true });
-            this.tbTitle = 'Pokračovat';
+            this.tbTitle = 'Pokračovat v testu';
         }
         pretestExercise.prototype.tbClick = function () { this.greenClick(); };
         pretestExercise.prototype.tbBackClick = function () { this.navigate({ stateName: vyzva.stateNames.home.name, pars: this.ctx }); };
@@ -29,7 +29,7 @@ var vyzva;
                 return;
             this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb.push({ title: this.title, url: null, active: true });
-            this.tbTitle = 'Pokračovat';
+            this.tbTitle = 'Pokračovat v testu';
         }
         lessonExercise.prototype.tbClick = function () { this.greenClick(); };
         lessonExercise.prototype.tbBackClick = function () { this.navigate({ stateName: vyzva.stateNames.home.name, pars: this.ctx }); };
@@ -44,7 +44,7 @@ var vyzva;
                 return;
             this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb.push({ title: this.title, url: null, active: true });
-            this.tbTitle = 'Pokračovat';
+            this.tbTitle = 'Pokračovat v lekci';
         }
         lessonTest.prototype.tbClick = function () { this.greenClick(); };
         lessonTest.prototype.tbBackClick = function () { this.navigate({ stateName: vyzva.stateNames.home.name, pars: this.ctx }); };

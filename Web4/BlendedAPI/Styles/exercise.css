@@ -27,7 +27,7 @@
   width: 36px;
   height: 36px;
   font-size: 12px;
-  border: solid 1px #dddddd;
+  border: solid 1px black;
   background-color: #f5f5f5;
   cursor: pointer;
   line-height: 36px;
@@ -35,12 +35,10 @@
 }
 .bl .topbar-exercise .ex-item.success {
   background-color: #5cb85c;
-  border-color: #4cae4c;
   color: white;
 }
 .bl .topbar-exercise .ex-item.warning {
   background-color: #f0ad4e;
-  border-color: #eea236;
   color: white;
 }
 .bl .topbar-exercise .ex-item .progress-red {

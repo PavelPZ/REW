@@ -2,7 +2,7 @@
 
   export interface IHomeLesson {
     node: CourseMeta.data;
-    user: blended.IExShort; //blended.IPersistNodeUser;
+    user: blended.IExShort; 
     homeTask?: homeTaskController;
     idx: number;
     active?: boolean;
@@ -23,6 +23,8 @@
     pretestLevel: number;
     learnPlan: Array<IHomeLesson>; //seznam modulu vyuky
     pretestLevels: Array<blended.levelIds>; //levels info pro hotovy pretest
+
+    user: blended.IExShort; //kompletni vysledky studia
 
     constructor(state: blended.IStateService) {
       super(state);

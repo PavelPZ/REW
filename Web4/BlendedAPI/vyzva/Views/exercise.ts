@@ -7,7 +7,7 @@
       if (state.createMode != blended.createControllerModes.navigate) return;
       this.breadcrumb = breadcrumbBase(this);
       this.breadcrumb.push({ title: 'Rozřazovací test', url: null, active: true });
-      this.tbTitle = 'Pokračovat';
+      this.tbTitle = 'Pokračovat v testu';
     }
     tbClick() { this.greenClick(); }
     tbBackClick() { this.navigate({ stateName: stateNames.home.name, pars: this.ctx }) }
@@ -20,7 +20,7 @@
       if (state.createMode != blended.createControllerModes.navigate) return;
       this.breadcrumb = breadcrumbBase(this);
       this.breadcrumb.push({ title: this.title, url: null, active: true });
-      this.tbTitle = 'Pokračovat';
+      this.tbTitle = 'Pokračovat v testu';
     }
     tbClick() { this.greenClick(); }
     tbBackClick() { this.navigate({ stateName: stateNames.home.name, pars: this.ctx }) }
@@ -34,7 +34,7 @@
       if (state.createMode != blended.createControllerModes.navigate) return;
       this.breadcrumb = breadcrumbBase(this);
       this.breadcrumb.push({ title: this.title, url: null, active: true });
-      this.tbTitle = 'Pokračovat';
+      this.tbTitle = 'Pokračovat v lekci';
     }
     tbClick() { this.greenClick(); }
     tbBackClick() { this.navigate({ stateName: stateNames.home.name, pars: this.ctx }) }
