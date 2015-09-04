@@ -1,47 +1,3 @@
-.bl {
-  /*.navbar-center {
-    //display: table !important;
-    height: 50px;
-
-    .lm-logo-black-small {
-      float: left;
-      background: url(img/lm-logo-black.png) no-repeat;
-      margin-top: 10px;
-      margin-left: 0;
-      width: 41px;
-      height: 32px;
-    }
-
-    .content {
-      display: table-cell;
-      vertical-align: middle;
-
-      &.lm-logo {
-        padding-right: 20px;
-        border-right: 1px solid lightgray;
-
-        > a {
-          display: block;
-          background: url(img/lm-logo.png) no-repeat;
-          width: 195px;
-          height: 41px;
-        }
-      }
-
-      &.slogan {
-        padding-top: 5px;
-        color: lightgray;
-        font-size: 14px;
-        font-weight: bold;
-      }
-
-      &.contact {
-        font-size: 14px;
-        font-weight: bold;
-      }
-    }
-  }*/
-}
 .bl .container-fluid {
   padding: 0;
 }
@@ -66,62 +22,6 @@
 }
 .bl .lm-top-margin-lg {
   margin-top: 40px;
-}
-.bl .more {
-  position: absolute;
-  cursor: pointer;
-}
-.bl .topbar {
-  background-color: black;
-  height: 50px;
-  position: relative;
-}
-.bl .topbar .lm-logo-black-small {
-  float: left;
-  background: url(img/lm-logo-black.png) no-repeat;
-  margin-top: 10px;
-  margin-left: 0;
-  margin-right: 20px;
-  width: 41px;
-  height: 32px;
-  cursor: pointer;
-}
-.bl .topbar .topbar-include {
-  float: left;
-}
-.bl .topbar .btn {
-  margin-top: 2px;
-}
-.bl .topbar .topbar-title {
-  float: left;
-  margin-left: 10px;
-  color: lightgray;
-  font-size: 24px;
-  margin-top: 8px;
-}
-.bl .topbar .onbehav-go-back {
-  float: left;
-  margin-right: 10px;
-  cursor: pointer;
-}
-.bl .topbar .onbehav-go-back .fa {
-  font-size: 50px;
-  color: white;
-}
-.bl .topbar .onbehav-right-part-name {
-  float: right;
-  font-size: 16px;
-  font-weight: bold;
-  color: lightgoldenrodyellow;
-  margin-right: 10px;
-  padding-top: 8px;
-  line-height: 18px;
-}
-.bl .topbar .onbehav-right-part-at {
-  float: right;
-  font-size: 36px;
-  color: lightgoldenrodyellow;
-  margin-right: 15px;
 }
 .bl .wizzard {
   font-size: 110%;
@@ -186,206 +86,6 @@ a.bl .wizzard .wizzard-item.active:hover {
   width: 110px;
   right: 0px;
 }
-.bl .module-map-items {
-  margin-top: 10px;
-  margin-left: 1px;
-}
-.bl .module-map-item {
-  margin-left: -1px !important;
-  border-radius: 0 !important;
-  width: 34px;
-  padding-left: 0;
-  padding-right: 0;
-  color: #337ab7;
-  text-decoration: underline;
-}
-.bl .module-map-item.done {
-  color: #ffffff;
-  background-color: #5cb85c;
-  border-color: #4cae4c;
-}
-.bl .module-map-item.done:hover,
-.bl .module-map-item.done:focus,
-.bl .module-map-item.done.focus,
-.bl .module-map-item.done:active,
-.bl .module-map-item.done.active,
-.open > .dropdown-toggle.bl .module-map-item.done {
-  color: #ffffff;
-  background-color: #3d8b3d;
-  border-color: #1f471f;
-}
-.bl .module-map-item.done:active,
-.bl .module-map-item.done.active,
-.open > .dropdown-toggle.bl .module-map-item.done {
-  background-image: none;
-}
-.bl .module-map-item.done.disabled,
-.bl .module-map-item.done[disabled],
-fieldset[disabled] .bl .module-map-item.done,
-.bl .module-map-item.done.disabled:hover,
-.bl .module-map-item.done[disabled]:hover,
-fieldset[disabled] .bl .module-map-item.done:hover,
-.bl .module-map-item.done.disabled:focus,
-.bl .module-map-item.done[disabled]:focus,
-fieldset[disabled] .bl .module-map-item.done:focus,
-.bl .module-map-item.done.disabled.focus,
-.bl .module-map-item.done[disabled].focus,
-fieldset[disabled] .bl .module-map-item.done.focus,
-.bl .module-map-item.done.disabled:active,
-.bl .module-map-item.done[disabled]:active,
-fieldset[disabled] .bl .module-map-item.done:active,
-.bl .module-map-item.done.disabled.active,
-.bl .module-map-item.done[disabled].active,
-fieldset[disabled] .bl .module-map-item.done.active {
-  background-color: #5cb85c;
-  border-color: #4cae4c;
-}
-.bl .module-map-item.done .badge {
-  color: #5cb85c;
-  background-color: #ffffff;
-}
-.bl .module-map-item.active {
-  color: #ffffff;
-  background-color: #f0ad4e;
-  border-color: #eea236;
-}
-.bl .module-map-item.active:hover,
-.bl .module-map-item.active:focus,
-.bl .module-map-item.active.focus,
-.bl .module-map-item.active:active,
-.bl .module-map-item.active.active,
-.open > .dropdown-toggle.bl .module-map-item.active {
-  color: #ffffff;
-  background-color: #df8a13;
-  border-color: #85530b;
-}
-.bl .module-map-item.active:active,
-.bl .module-map-item.active.active,
-.open > .dropdown-toggle.bl .module-map-item.active {
-  background-image: none;
-}
-.bl .module-map-item.active.disabled,
-.bl .module-map-item.active[disabled],
-fieldset[disabled] .bl .module-map-item.active,
-.bl .module-map-item.active.disabled:hover,
-.bl .module-map-item.active[disabled]:hover,
-fieldset[disabled] .bl .module-map-item.active:hover,
-.bl .module-map-item.active.disabled:focus,
-.bl .module-map-item.active[disabled]:focus,
-fieldset[disabled] .bl .module-map-item.active:focus,
-.bl .module-map-item.active.disabled.focus,
-.bl .module-map-item.active[disabled].focus,
-fieldset[disabled] .bl .module-map-item.active.focus,
-.bl .module-map-item.active.disabled:active,
-.bl .module-map-item.active[disabled]:active,
-fieldset[disabled] .bl .module-map-item.active:active,
-.bl .module-map-item.active.disabled.active,
-.bl .module-map-item.active[disabled].active,
-fieldset[disabled] .bl .module-map-item.active.active {
-  background-color: #f0ad4e;
-  border-color: #eea236;
-}
-.bl .module-map-item.active .badge {
-  color: #f0ad4e;
-  background-color: #ffffff;
-}
-.bl .ex-module {
-  background-color: #f5f5f5;
-}
-.bl .ex-module .header {
-  position: relative;
-  padding-right: 30px;
-}
-.bl .ex-module .header .more {
-  top: 7px;
-  right: 10px;
-  font-size: 20px;
-}
-.bl .ex-module.expanded .header {
-  border-bottom: 0;
-}
-.bl .ex-module .body {
-  padding: 0 10px;
-  padding-bottom: 10px;
-}
-.bl .ex-module .body h4 {
-  margin-top: 10px;
-}
-.bl .ex-module .ex-item {
-  display: inline-block;
-  position: relative;
-  width: 36px;
-  height: 36px;
-  font-size: 12px;
-  border: solid 1px transparent;
-  cursor: pointer;
-  line-height: 36px;
-  text-align: center;
-}
-.bl .ex-module .ex-item.success {
-  background-color: #5cb85c;
-  border-color: #4cae4c;
-  color: white;
-}
-.bl .ex-module .ex-item.warning {
-  background-color: #f0ad4e;
-  border-color: #eea236;
-  color: white;
-}
-.bl .ex-module .ex-item .progress-red {
-  position: absolute;
-  background-color: #ff6022;
-  left: 0;
-  right: 0;
-  top: 0;
-}
-.bl .ex-module .no-clickable.ex-item {
-  cursor: default;
-}
-.bl .instruction {
-  /*background-color: @alert-success-bg;
-    border: 1px solid @alert-success-border;*/
-  background-color: #f5f5f5;
-  border: 1px solid #dddddd;
-  border-radius: 4px;
-  padding-left: 15px;
-}
-.bl .instruction .header {
-  position: relative;
-  cursor: pointer;
-}
-.bl .instruction .header.header-done {
-  height: 34px;
-}
-.bl .instruction .header .reset-btn {
-  margin: 2px 0;
-  position: absolute;
-  right: 3px;
-}
-.bl .instruction .header .more {
-  top: 1px;
-  right: 10px;
-  font-size: 20px;
-}
-.bl .instruction .body {
-  padding-top: 10px;
-}
-.bl .instruction .body h1 {
-  font-size: 16px;
-  font-weight: bold;
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-.bl .instruction .body .btn-link {
-  text-align: left;
-  text-decoration: none;
-  white-space: normal;
-  font-weight: bold;
-  font-size: 16px;
-}
-.bl .instruction .body ol {
-  margin: 0 0 10px 25px;
-}
 .bl .score-bar {
   display: inline-block;
   position: relative;
@@ -427,7 +127,156 @@ fieldset[disabled] .bl .module-map-item.active.active {
   position: relative;
 }
 .bl .home-course .panel-heading .more {
+  position: absolute;
+  cursor: pointer;
   top: 24px;
   right: 18px;
   font-size: 24px;
+}
+.bl .topbar {
+  background-color: black;
+  height: 50px;
+  position: relative;
+}
+.bl .topbar .lm-logo-black-small {
+  background: url(img/lm-logo-black.png) no-repeat;
+  margin-top: 10px;
+  margin-left: 0;
+  margin-right: 20px;
+  width: 41px;
+  height: 32px;
+  cursor: pointer;
+}
+.bl .topbar .topbar-title {
+  margin-left: 10px;
+  color: lightgray;
+  font-size: 24px;
+  margin-top: 8px;
+}
+.bl .topbar .onbehav-go-back {
+  margin-right: 10px;
+  cursor: pointer;
+}
+.bl .topbar .onbehav-go-back .fa {
+  font-size: 50px;
+  color: white;
+}
+.bl .topbar .onbehav-right-part-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: lightgoldenrodyellow;
+  margin-right: 10px;
+  padding-top: 8px;
+  line-height: 18px;
+}
+.bl .topbar .onbehav-right-part-at {
+  font-size: 36px;
+  color: lightgoldenrodyellow;
+  margin-right: 15px;
+}
+.bl .topbar-exercise {
+  height: auto;
+}
+.bl .topbar-exercise .btn-finish {
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 6px;
+  background-color: #f5f5f5;
+}
+.bl .topbar-exercise .ex-items {
+  margin-top: 5px;
+}
+.bl .topbar-exercise .lm-logo-black-small {
+  margin-top: 8px;
+  margin-right: 10px;
+}
+.bl .topbar-exercise .more {
+  color: white;
+  font-size: 20px;
+  margin-top: 12px;
+  margin-right: 12px;
+  cursor: pointer;
+}
+.bl .topbar-exercise .ex-item {
+  display: inline-block;
+  position: relative;
+  width: 36px;
+  height: 36px;
+  font-size: 12px;
+  border: solid 1px #dddddd;
+  background-color: #f5f5f5;
+  cursor: pointer;
+  line-height: 36px;
+  text-align: center;
+}
+.bl .topbar-exercise .ex-item.success {
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+  color: white;
+}
+.bl .topbar-exercise .ex-item.warning {
+  background-color: #f0ad4e;
+  border-color: #eea236;
+  color: white;
+}
+.bl .topbar-exercise .ex-item .progress-red {
+  position: absolute;
+  background-color: #ff6022;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+.bl .topbar-exercise .more-body-module {
+  background-color: #f5f5f5;
+  padding-bottom: 20px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+.bl .instruction {
+  /*background-color: @alert-success-bg;
+    border: 1px solid @alert-success-border;*/
+  background-color: #f5f5f5;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  padding-left: 15px;
+}
+.bl .instruction .header {
+  position: relative;
+  cursor: pointer;
+}
+.bl .instruction .header h4 {
+  margin: 0;
+}
+.bl .instruction .header.header-done {
+  height: 34px;
+}
+.bl .instruction .header .reset-btn {
+  margin: 2px 0;
+  position: absolute;
+  right: 3px;
+}
+.bl .instruction .header .more {
+  position: absolute;
+  cursor: pointer;
+  top: 1px;
+  right: 10px;
+  font-size: 20px;
+}
+.bl .instruction .more-body-exercise h1 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.bl .instruction .more-body-exercise .btn-link {
+  text-align: left;
+  text-decoration: none;
+  white-space: normal;
+  font-weight: bold;
+  font-size: 16px;
+}
+.bl .instruction .more-body-exercise ol {
+  margin: 0 0 10px 25px;
 }

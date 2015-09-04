@@ -1,6 +1,7 @@
 ﻿module angular.ui {
   //rozsireni ui-route a blended STATE 
   export interface IState {
+    layoutSpecial?: boolean; //specialni layout bey vyuziti _pageTemplate.html (cviceni). Veskery viditelny obsah je v 
     layoutContentId?: string; //template stranky
     layoutToolbarType?: string; //typ toolbaru (nazev souboru v toolbar adresari)
     pageTitlePlace?: vyzva.pageTitlePlace;
@@ -175,8 +176,9 @@ module vyzva {
                       url: '/ex/:url',
                       controller: pretestExercise,
                       dataNodeUrlParName: 'Url',
+                      layoutSpecial:true,
                       layoutContentId: 'exercise',
-                      layoutToolbarType: 'toolbar/run',
+                      //layoutToolbarType: 'toolbar/run',
                       pageTitlePlace: pageTitlePlace.none,
                       exerciseIsTest: true,
                       exerciseOmitModuleMap: true,
@@ -205,6 +207,7 @@ module vyzva {
                   controller: lessonTest,
                   exerciseIsTest: true,
                   dataNodeUrlParName: 'Url',
+                  layoutSpecial: true,
                   layoutContentId: 'exercise',
                   resolve: {
                     $loadedEx: blended.loadEx,
@@ -229,8 +232,9 @@ module vyzva {
                   url: '/:url',
                   controller: lessonExercise,
                   dataNodeUrlParName: 'Url',
+                  layoutSpecial: true,
                   layoutContentId: 'exercise',
-                  layoutToolbarType: 'toolbar/run',
+                  //layoutToolbarType: 'toolbar/run',
                   resolve: {
                     $loadedEx: blended.loadEx,
                     $loadedLongData: blended.loadLongData,
@@ -255,8 +259,9 @@ module vyzva {
                   controller: lessonTest,
                   exerciseIsTest: true,
                   dataNodeUrlParName: 'Url',
+                  layoutSpecial: true,
                   layoutContentId: 'exercise',
-                  layoutToolbarType: 'toolbar/run',
+                  //layoutToolbarType: 'toolbar/run',
                   resolve: {
                     $loadedEx: blended.loadEx,
                     $loadedLongData: blended.loadLongData,

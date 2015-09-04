@@ -257,7 +257,11 @@
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.theme.css" />
     <Content Include="BlendedAPI\Doc.txt" />
     <None Include="BlendedAPI\Styles\style.less" />
+    <None Include="BlendedAPI\Styles\exercise.less" />
     <Content Include="BlendedAPI\Styles\img\lm-logo-black.png" />
+    <None Include="BlendedAPI\Styles\other.less" />
+    <None Include="BlendedAPI\Styles\topbar.less" />
+    <Content Include="BlendedAPI\Styles\trash.css" />
     <Content Include="BlendedAPI\views\exercise.html" />
     <Content Include="BlendedAPI\vyzva\Views\exercise\moduleMap.html" />
     <Content Include="BlendedAPI\vyzva\Views\exercise\instruction.html" />

@@ -1,0 +1,67 @@
+﻿  .topbar-exercise {
+    //background-color: @panel-default-heading-bg;
+    .more-module {
+      cursor: pointer;
+      font-size: 20px;
+      color: white;
+      margin-top: 10px;
+      margin-right: 10px;
+    }
+
+    .header {
+      //border: 1px solid @panel-default-border;
+      //border-radius: @alert-border-radius;
+      /*position: relative;
+      padding-right: 30px;*/
+      .ex-item {
+        display: inline-block;
+        position: relative;
+        width: 36px;
+        height: 36px;
+        font-size: 12px;
+        border: solid 1px transparent; // @panel-default-border;
+        cursor: pointer;
+        line-height: 36px;
+        text-align: center;
+
+        &.success {
+          background-color: @btn-success-bg;
+          border-color: @btn-success-border;
+          color: white;
+        }
+
+        &.warning {
+          background-color: @btn-warning-bg;
+          border-color: @btn-warning-border;
+          color: white;
+        }
+
+        .progress-red {
+          position: absolute;
+          background-color: @oli-red;
+          left: 0;
+          right: 0;
+          top: 0;
+        }
+      }
+    }
+    /*&.expanded .header {
+      border-bottom: 0;
+    }*/
+    .body {
+      //border: 1px solid @panel-default-border;
+      //border-radius: @alert-border-radius;
+      //border-top: 0;
+      //.border-top-radius(0);
+      padding: 0 10px;
+      padding-bottom: 10px;
+
+      h4 {
+        margin-top: 10px;
+      }
+    }
+
+    .no-clickable.ex-item {
+      cursor: default;
+    }
+  }

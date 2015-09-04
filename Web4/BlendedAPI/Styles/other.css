@@ -1,0 +1,135 @@
+.bl .container-fluid {
+  padding: 0;
+}
+.bl .breadcrumb {
+  margin-bottom: 0;
+}
+.bl .nav-pills > li > a {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.bl .panel-heading h3 {
+  margin: 10px 0;
+}
+.bl .lm-top-margin {
+  margin-top: 20px;
+}
+.bl .lm-bottom-margin {
+  margin-bottom: 20px;
+}
+.bl .lm-bottom-margin-lg {
+  margin-bottom: 30px;
+}
+.bl .lm-top-margin-lg {
+  margin-top: 40px;
+}
+.bl .wizzard {
+  font-size: 110%;
+}
+.bl .wizzard .fa {
+  color: lightgray;
+  padding: 0 10px;
+}
+.bl .wizzard .wizzard-item {
+  display: inline;
+  padding: .2em .6em .3em;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border: 1px solid lightgray;
+  border-radius: .25em;
+  color: lightgray;
+}
+.bl .wizzard .wizzard-item.done,
+.bl .wizzard .wizzard-item.active {
+  color: #fff;
+  background-color: #337ab7;
+}
+a.bl .wizzard .wizzard-item.done:hover,
+a.bl .wizzard .wizzard-item.active:hover {
+  background-color: #286090;
+}
+.bl h3 .flag-small {
+  height: 22px;
+}
+.bl .lm-tabs a:focus {
+  outline: none;
+}
+.bl .lm-tabs li.active * {
+  background-color: #337ab7 !important;
+  color: #ffffff !important;
+}
+.bl .study-plan > li {
+  position: relative;
+  padding-left: 50px;
+  padding-right: 120px;
+}
+.bl .study-plan > li h4 {
+  margin-top: 0px;
+}
+.bl .study-plan > li .left-mark,
+.bl .study-plan > li .right-mark {
+  position: absolute;
+  top: 5px;
+}
+.bl .study-plan > li .left-mark {
+  left: 10px;
+  top: 8px;
+  font-size: 24px;
+  /*border: solid 1px lightgray;
+        border-radius: 15px;*/
+  width: 38px;
+  text-align: center;
+}
+.bl .study-plan > li .right-mark {
+  width: 110px;
+  right: 0px;
+}
+.bl .score-bar {
+  display: inline-block;
+  position: relative;
+  background-color: #5cb85c;
+  width: 50px;
+  height: 20px;
+  vertical-align: top;
+}
+.bl .score-bar .progress-red {
+  position: absolute;
+  background-color: #ff6022;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+}
+.bl .score-bar .score-text {
+  position: absolute;
+  text-align: center;
+  color: white;
+  right: 0;
+  font-size: 14px;
+  line-height: 20px;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 20;
+}
+.bl .lm-tabs-header {
+  margin-top: -1px;
+  background-color: #337ab7;
+  color: #ffffff !important;
+}
+.bl .lm-tabs-header h3 {
+  margin-top: 0px;
+  padding: 16px;
+}
+.bl .home-course .panel-heading {
+  position: relative;
+}
+.bl .home-course .panel-heading .more {
+  position: absolute;
+  cursor: pointer;
+  top: 24px;
+  right: 18px;
+  font-size: 24px;
+}

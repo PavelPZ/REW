@@ -1,36 +1,37 @@
-﻿<div class="container-fluid topbar">
-  <div class="container">
-    <div ng-if="::!api().ctx.onbehalfof" class="lm-logo-black-small" ng-click="api().navigateWebHome()">{{api.ctx.onbehalfof}}</div>
-    <div ng-if="::api().ctx.onbehalfof" class="onbehav-go-back" ng-click="::api().navigateReturnUrl()"><i class="fa fa-arrow-circle-o-left"></i></div>
-    <div ng-if="::api().ctx.onbehalfof" class="onbehav-right-part-name">Pavel<br />Zika</div>
-    <div ng-if="::api().ctx.onbehalfof" class="onbehav-right-part-at"><i class="fa fa-at"></i></div>
-    <div data-ng-include="::state.layoutToolbarType | vyzva$state$viewpath" class="topbar-include"></div>
-    <div ng-if="::!state.pageTitlePlace" class="topbar-title">{{::ts.title}}</div>
-  </div>
-</div>
-<div class="container" >
-  <div data-ng-include="vyzva$common$breadcrumb.html"></div>
-  <!--<ol class="breadcrumb">
-    <li data-ng-repeat="item in ::ts.breadcrumb" data-ng-class="::{'active': item.active}">
-      <a data-ng-if="::!item.active" data-ng-href="{{::item.url}}">{{::item.title}}</a>
-      <span data-ng-if="::item.active">{{::item.title}}</span>
-    </li>
-  </ol>-->
-</div>
+﻿<div ng-if="!state.layoutSpecial" ng-include="'vyzva$common$layout.html'"></div>
+<div ng-if="state.layoutSpecial" ng-include="::state.layoutContentId | vyzva$state$viewpath"></div>
 
-<div class="container-fluid">
+<script type="text/ng-template" id="vyzva$common$layout.html">
+  <div class="container-fluid topbar">
+    <div class="container">
+      <div class="pull-left" ng-include="'vyzva$common$topbarinnerleft.html'"></div>
+      <!--<div data-ng-include="::state.layoutToolbarType | vyzva$state$viewpath" class="topbar-include"></div>-->
+      <div class="pull-left topbar-title" ng-if="::!state.pageTitlePlace">{{::ts.title}}</div>
+      <div ng-include="'vyzva$common$topbarinnerright.html'"></div>
+    </div>
+  </div>
   <div class="container">
+    <div ng-include="'vyzva$common$breadcrumb.html'"></div>
     <h1 ng-if="::state.pageTitlePlace==1">{{::ts.title}}</h1>
     <div data-ng-include="::state.layoutContentId | vyzva$state$viewpath"></div>
   </div>
-</div>
+</script>
 
 <script type="text/ng-template" id="vyzva$common$breadcrumb.html">
-  XXX
   <ol class="breadcrumb" ng-if="::!state.ommitBreadCrumb && !!ts.breadcrumb && ts.breadcrumb.length>0">
     <li data-ng-repeat="item in ::ts.breadcrumb" data-ng-class="::{'active': item.active}">
       <a data-ng-if="::!item.active" data-ng-href="{{::item.url}}">{{::item.title}}</a>
       <span data-ng-if="::item.active">{{::item.title}}</span>
     </li>
   </ol>
+</script>
+
+<script type="text/ng-template" id="vyzva$common$topbarinnerleft.html">
+  <div ng-if="::!ts.ctx.onbehalfof" class="lm-logo-black-small" ng-click="api().navigateWebHome()"></div>
+  <div ng-if="::ts.ctx.onbehalfof" class="onbehav-go-back" ng-click="::api().navigateReturnUrl()"><i class="fa fa-arrow-circle-o-left"></i></div>
+</script>
+
+<script type="text/ng-template" id="vyzva$common$topbarinnerright.html">
+  <div ng-if="::ts.ctx.onbehalfof" class="pull-right onbehav-right-part-name">Pavel<br />Zika</div>
+  <div ng-if="::ts.ctx.onbehalfof" class="pull-right onbehav-right-part-at"><i class="fa fa-at"></i></div>
 </script>
