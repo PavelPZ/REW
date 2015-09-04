@@ -9,16 +9,20 @@
 
 <div ng-click="::ts.debugClearProduct()">del</div>
 
-<div class="panel panel-primary lm-top-margin home-course" ng-if="::ts.parent.isStudent" ng-controller="collapsable">
-  <div class="panel-heading" ng-click="isCollapsed = !isCollapsed">
+<div class="panel panel-primary lm-top-margin home-course" ng-if="::ts.parent.isStudent" ng-controller="collapsable as homecollapsable" >
+  <div class="panel-heading" ng-click="homecollapsable.isCollapsed = !homecollapsable.isCollapsed">
     <h3>
       <span ng-if="ts.learnPlan[0].status<=1">Rozřazovací test</span>
       <b ng-if="ts.learnPlan[0].status>1">Kurz úrovně {{::ts.pretestLevel | levelText}}</b>
     </h3>
     <div ng-if="ts.learnPlan[0].status>1" class="more fa fa-bars fa-lg"></div>
   </div>
-  <div collapse="isCollapsed">
+  <div collapse="homecollapsable.isCollapsed" class="position-relative">
+    <div class="clearfix"></div>
+    <div class="close-panel fa fa-times" ng-click="homecollapsable.isCollapsed = !homecollapsable.isCollapsed"></div>
     <h1>XXXXX</h1>
+    <h1>XXXXX</h1>
+    <p>adsasd fas dfsad fa sdf</p>
   </div>
   <ul class="study-plan list-group">
     <li class="list-group-item" ng-repeat="lesson in ::ts.learnPlan"

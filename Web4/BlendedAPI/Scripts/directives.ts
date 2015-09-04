@@ -21,7 +21,8 @@
       };
     })
     .filter('levelText', () => (id: number) => ['A1', 'A2', 'B1', 'B2'][id])
-    .controller('collapsable', $scope => $scope.isCollapsed = true)
+    //.controller('collapsable', $scope =>  $scope.isCollapsed = true)
+    .controller('collapsable', function () { this.isCollapsed = true; })
     .filter("rawhtml", ['$sce', $sce => htmlCode => $sce.trustAsHtml(htmlCode)])
   ;
 }

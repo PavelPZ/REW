@@ -98,6 +98,17 @@ a.bl .wizzard .wizzard-item.active:hover {
   margin-top: 0px;
   padding: 16px;
 }
+.bl .close-panel {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 24px;
+  color: lightgray;
+  cursor: pointer;
+}
+.bl .position-relative {
+  position: relative;
+}
 .bl .topbar {
   background-color: black;
   height: 50px;

@@ -22,6 +22,6 @@ var blended;
         };
     })
         .filter('levelText', function () { return function (id) { return ['A1', 'A2', 'B1', 'B2'][id]; }; })
-        .controller('collapsable', function ($scope) { return $scope.isCollapsed = true; })
+        .controller('collapsable', function () { this.isCollapsed = true; })
         .filter("rawhtml", ['$sce', function ($sce) { return function (htmlCode) { return $sce.trustAsHtml(htmlCode); }; }]);
 })(blended || (blended = {}));
