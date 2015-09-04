@@ -6,8 +6,24 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var blended;
 (function (blended) {
+    blended.taskContextAs = {
+        product: 'productParent',
+        pretest: 'pretestParent',
+        module: 'moduleParent',
+        ex: 'exParent',
+    };
+    function extendTaskContext($scope, task) {
+        for (var p in blended.taskContextAs) {
+            var propName = blended.taskContextAs[p];
+            task[propName] = $scope[propName];
+        }
+        debugger;
+    }
+    blended.extendTaskContext = extendTaskContext;
     var controller = (function () {
         function controller(stateService) {
+            if (stateService.$scope)
+                extendTaskContext(stateService.$scope, this);
             this.ctx = stateService.params;
             this.$scope = stateService.$scope;
             this.state = stateService.current;

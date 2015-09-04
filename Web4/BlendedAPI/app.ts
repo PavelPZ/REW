@@ -53,7 +53,7 @@
   export var root = new Module();
 
   rootModule
-    //.directive('showExercise', blended.showExerciseDirective2)
+  //.directive('showExercise', blended.showExerciseDirective2)
     .directive('lmInclude', () => {
       return {
         restrict: 'A',
@@ -129,6 +129,7 @@
     //log vsech validnich routes
     _.each(debugAllRoutes, r => Logger.trace("Pager", 'Define:' + r));
   }]);
+
 
   //dokumentace pro dostupne services
   export function servicesDocumentation() {

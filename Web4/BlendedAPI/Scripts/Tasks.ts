@@ -1,16 +1,44 @@
 ﻿module blended {
 
-  export class controller {
+  //vyjimecne parent tasks
+  export interface ITaskContext {
+    productParent: pretestTaskController;
+    pretestParent: pretestTaskController;
+    moduleParent: moduleTaskController;
+    exParent: exerciseTaskViewController;
+  }
+  export var taskContextAs = {
+    product: 'productParent',
+    pretest: 'pretestParent',
+    module: 'moduleParent',
+    ex: 'exParent',
+  };
+  export function extendTaskContext($scope, task: controller) {
+    for (var p in taskContextAs) {
+      var propName = taskContextAs[p];
+      task[propName] = $scope[propName];
+    }
+    debugger;
+  }
+
+  export class controller implements ITaskContext {
     ctx: learnContext;
     state: state;
     parent: controller;
     isWrongUrl: boolean;
     $scope: IControllerScope;
 
+    //ITaskContext
+    productParent: pretestTaskController;
+    pretestParent: pretestTaskController;
+    moduleParent: moduleTaskController;
+    exParent: exerciseTaskViewController;
+
     title: string;
     breadcrumb: Array<breadcrumbItem>;
 
     constructor(stateService: IStateService) {
+      if (stateService.$scope) extendTaskContext(stateService.$scope, this);
       this.ctx = stateService.params;
       this.$scope = stateService.$scope;
       this.state = stateService.current;

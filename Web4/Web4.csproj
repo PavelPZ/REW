@@ -1444,6 +1444,7 @@
     <Content Include="Schools\Design\ExtractWords.aspx" />
     <None Include="Statistics\Default.ascx_" />
     <None Include="Statistics\Toc.ascx_" />
+    <Content Include="Temp\angular\index.html" />
     <Content Include="Temp\file1.js" />
     <Content Include="Temp\GoogleLogin.html" />
     <Content Include="Temp\HtmlPage1.html" />
@@ -1489,6 +1490,7 @@
     <TypeScriptCompile Include="JsLib\JSD\HtmlAudio\waa.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\jquery-ui.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\lib-lm.d.ts" />
+    <TypeScriptCompile Include="Temp\angular\test.ts" />
     <TypeScriptCompile Include="Temp\mediumJS\ts\Base.ts" />
     <TypeScriptCompile Include="Temp\mediumJS\ts\Cache.ts" />
     <TypeScriptCompile Include="Temp\mediumJS\ts\Cursor.ts" />
