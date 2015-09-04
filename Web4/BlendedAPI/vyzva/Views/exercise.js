@@ -16,12 +16,8 @@ var vyzva;
             this.breadcrumb.push({ title: 'Rozřazovací test', url: null, active: true });
             this.tbTitle = 'Pokračovat';
         }
-        pretestExercise.prototype.tbClick = function () {
-            this.greenClick();
-            //var pretest = _.find(this.taskList(), t => t.state.name == stateNames.pretestTask.name);
-            //if (pretest == null) throw 'pretest==null';
-            //pretest.navigateAhead();
-        };
+        pretestExercise.prototype.tbClick = function () { this.greenClick(); };
+        pretestExercise.prototype.tbBackClick = function () { this.navigate({ stateName: vyzva.stateNames.home.name, pars: this.ctx }); };
         return pretestExercise;
     })(blended.exerciseTaskViewController);
     vyzva.pretestExercise = pretestExercise;
@@ -35,9 +31,8 @@ var vyzva;
             this.breadcrumb.push({ title: this.title, url: null, active: true });
             this.tbTitle = 'Pokračovat';
         }
-        lessonExercise.prototype.tbClick = function () {
-            this.greenClick();
-        };
+        lessonExercise.prototype.tbClick = function () { this.greenClick(); };
+        lessonExercise.prototype.tbBackClick = function () { this.navigate({ stateName: vyzva.stateNames.home.name, pars: this.ctx }); };
         return lessonExercise;
     })(blended.exerciseTaskViewController);
     vyzva.lessonExercise = lessonExercise;
@@ -52,6 +47,7 @@ var vyzva;
             this.tbTitle = 'Pokračovat';
         }
         lessonTest.prototype.tbClick = function () { this.greenClick(); };
+        lessonTest.prototype.tbBackClick = function () { this.navigate({ stateName: vyzva.stateNames.home.name, pars: this.ctx }); };
         return lessonTest;
     })(blended.exerciseTaskViewController);
     vyzva.lessonTest = lessonTest;

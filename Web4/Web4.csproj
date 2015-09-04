@@ -258,6 +258,7 @@
     <Content Include="BlendedAPI\Doc.txt" />
     <None Include="BlendedAPI\Styles\style.less" />
     <None Include="BlendedAPI\Styles\exercise.less" />
+    <None Include="BlendedAPI\Styles\home.less" />
     <Content Include="BlendedAPI\Styles\img\lm-logo-black.png" />
     <None Include="BlendedAPI\Styles\other.less" />
     <None Include="BlendedAPI\Styles\topbar.less" />

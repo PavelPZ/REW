@@ -8,7 +8,8 @@
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
-.bl .panel-heading h3 {
+.bl .panel-heading h3,
+.bl .panel-heading h4 {
   margin: 10px 0;
 }
 .bl .lm-top-margin {
@@ -60,32 +61,6 @@ a.bl .wizzard .wizzard-item.active:hover {
   background-color: #337ab7 !important;
   color: #ffffff !important;
 }
-.bl .study-plan > li {
-  position: relative;
-  padding-left: 50px;
-  padding-right: 120px;
-}
-.bl .study-plan > li h4 {
-  margin-top: 0px;
-}
-.bl .study-plan > li .left-mark,
-.bl .study-plan > li .right-mark {
-  position: absolute;
-  top: 5px;
-}
-.bl .study-plan > li .left-mark {
-  left: 10px;
-  top: 8px;
-  font-size: 24px;
-  /*border: solid 1px lightgray;
-        border-radius: 15px;*/
-  width: 38px;
-  text-align: center;
-}
-.bl .study-plan > li .right-mark {
-  width: 110px;
-  right: 0px;
-}
 .bl .score-bar {
   display: inline-block;
   position: relative;
@@ -122,14 +97,4 @@ a.bl .wizzard .wizzard-item.active:hover {
 .bl .lm-tabs-header h3 {
   margin-top: 0px;
   padding: 16px;
-}
-.bl .home-course .panel-heading {
-  position: relative;
-}
-.bl .home-course .panel-heading .more {
-  position: absolute;
-  cursor: pointer;
-  top: 24px;
-  right: 18px;
-  font-size: 24px;
 }

@@ -1,0 +1,69 @@
+﻿@import "../../bs3/less/mixins/alerts.less";
+@import "../../bs3/less/mixins/gradients.less";
+@import "../../bs3/less/mixins/list-group.less";
+@import "../../bs3/less/mixins/background-variant.less";
+@import "../../bs3/less/mixins/border-radius.less";
+@import "../../bs3/less/mixins/buttons.less";
+@import "../../bs3/less/variables.less";
+
+.bl {
+  .list-group-item-variant(success-primary; @btn-success-bg; @btn-success-color);
+
+  .btn-succes-info {
+    .button-variant(@state-success-text; @state-success-bg; @btn-success-bg);
+  }
+
+  .study-plan {
+    > li {
+      position: relative;
+      padding-left: 60px;
+      padding-right: 120px;
+
+      h4 {
+        margin: 8px 0;
+      }
+
+      .left-mark, .right-mark {
+        position: absolute;
+      }
+
+      .left-mark {
+        left: 0;
+        top: 10px;
+        font-size: 24px;
+        width: 50px;
+        text-align: center;
+        border-right: solid 1px transparent;
+      }
+
+      .right-mark {
+        top: 10px;
+        //width: 110px;
+        right: 10px;
+      }
+    }
+
+    .list-group-item-success-primary .left-mark {
+      border-right-color: @state-success-bg;
+    }
+
+    .list-group-item-success .left-mark {
+      border-right-color: darken(@state-success-bg, 25);
+    }
+  }
+
+
+  .home-course {
+    .panel-heading {
+      position: relative;
+
+      .more {
+        position: absolute;
+        cursor: pointer;
+        top: 24px;
+        right: 18px;
+        font-size: 24px;
+      }
+    }
+  }
+}

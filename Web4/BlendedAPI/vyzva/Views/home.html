@@ -1,43 +1,69 @@
-﻿<div class="panel panel-primary lm-top-margin" ng-if="::ts.parent.isLector">
+﻿<div class="panel panel-default lm-top-margin" ng-if="::ts.parent.isLector">
   <div class="panel-heading">
     <h4>Studijní skupiny lektora</h4>
   </div>
   <div class="list-group">
-    <!--<a href="#" class="list-group-item" ng-repeat="group in ts.parent.lectorGroups" ng-click="gotoLector(group.groupId)" xui-sref="pg.ajs.vyzva.lector({groupid:group.groupId})">{{::group.title}}</a>-->
-    <a href="#" class="list-group-item" ng-repeat="group in ts.parent.lectorGroups" ng-click="ts.gotoLector(group.groupId)">{{::group.title}}</a>
+    <a href="#" class="list-group-item" ng-repeat="group in ts.parent.lectorGroups" ng-click="ts.gotoLector(group.groupId)"><h4>{{::group.title}}</h4></a>
   </div>
 </div>
 
 <div ng-click="::ts.debugClearProduct()">del</div>
-<div class="panel panel-primary lm-top-margin home-course" ng-if="::ts.parent.isStudent">
-  <div class="panel-heading">
+
+<div class="panel panel-primary lm-top-margin home-course" ng-if="::ts.parent.isStudent" ng-controller="collapsable">
+  <div class="panel-heading" ng-click="isCollapsed = !isCollapsed">
     <h3>
       <span ng-if="ts.learnPlan[0].status<=1">Rozřazovací test</span>
       <b ng-if="ts.learnPlan[0].status>1">Kurz úrovně {{::ts.pretestLevel | levelText}}</b>
     </h3>
-    <span ng-if="ts.learnPlan[0].status>1" class="more fa fa-bars fa-lg"></span>
+    <div ng-if="ts.learnPlan[0].status>1" class="more fa fa-bars fa-lg"></div>
   </div>
-  <ul class="list-group study-plan">
-    <li class="list-group-item" ng-repeat="lesson in ::ts.learnPlan" ng-class="::lesson | vyzva$home$nodeclass">
-      <div ng-if="::lesson.lessonType==0" ng-include="'vyzva$home$pretest.html'"></div>
-      <div ng-if="::lesson.lessonType==1" ng-include="'vyzva$home$lesson.html'"></div>
-      <div ng-if="::lesson.lessonType==2" ng-include="'vyzva$home$test.html'"></div>
+  <div collapse="isCollapsed">
+    <h1>XXXXX</h1>
+  </div>
+  <ul class="study-plan list-group">
+    <li class="list-group-item" ng-repeat="lesson in ::ts.learnPlan"
+        ng-style="::{cursor: lesson.rightButtonType ? 'pointer' : 'default'}"
+        ng-click="::lesson.rightButtonType && ts.navigateLesson(lesson)"
+        ng-class="::lesson | vyzva$home$nodeclass">
+      <div ng-if="::!lesson.lessonType" ng-include="'vyzva$home$pretest.html'"></div>
+      <div ng-if="::lesson.lessonType" ng-include="'vyzva$home$lesson.html'"></div>
     </li>
   </ul>
 </div>
 
 <script type="text/ng-template" id="vyzva$home$leftmark.html">
-  <div class="left-mark">
-    <i class="fa" ng-class="::lesson | vyzva$home$iconclass"></i>
-  </div>
+  <div class="left-mark"><i class="fa" ng-class="::lesson | vyzva$home$doneicon"></i></div>
 </script>
 
-<script type="text/ng-template" id="vyzva$home$rightbutton.html">
+<!--<script type="text/ng-template" id="vyzva$home$rightbutton.html">
   <div class="right-mark" ng-click="::ts.navigateLesson(lesson)">
-    <button class="btn btn-info" ng-if="lesson.status>1">Výsledky <i class="fa fa-eye"></i></button>
-    <button class="btn btn-success" ng-disabled="api().ctx.onbehalfof" ng-if="lesson.status<=1">Spustit <i class="fa fa-play"></i></button>
+    <button class="btn btn-info" ng-if="::lesson.status>1">Výsledky <i class="fa fa-eye"></i></button>
+    <button class="btn btn-info" ng-disabled="api().ctx.onbehalfof" ng-if="::lesson.status<=1">Spustit <i class="fa fa-play"></i></button>
   </div>
+</script>-->
+
+<script type="text/ng-template" id="vyzva$home$lesson.html">
+  <div ng-include="'vyzva$home$leftmark.html'"></div>
+  <button class="btn btn-info right-mark" ng-if="::lesson.rightButtonType==2">Výsledky <i class="fa fa-eye"></i></button>
+  <button class="btn right-mark"
+          ng-class="::{'btn-success': !lesson.active, 'btn-succes-info': lesson.active}"
+          ng-if="::lesson.rightButtonType==1"
+          ng-disabled="api().ctx.onbehalfof">
+    Spustit <i class="fa fa-play"></i>
+  </button>
+  <h4>
+    <span ng-if="::lesson.lessonType==1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <span ng-if="::lesson.lessonType==2"><i class="fa fa-line-chart"></i></span>
+    {{::lesson.node.title}}
+  </h4>
 </script>
+
+<!--<script type="text/ng-template" id="vyzva$home$test.html">
+  <div ng-include="'vyzva$home$leftmark.html'"></div>
+  <h4 ng-click="::ts.navigateLesson(lesson)">
+    <i class="fa fa-line-chart"></i> {{::lesson.node.title}}
+  </h4>
+</script>-->
 
 <script type="text/ng-template" id="vyzva$home$pretest.html">
   <div ng-include="'vyzva$home$leftmark.html'"></div>
@@ -50,19 +76,10 @@
     Test určí vaši jazykovou úroveň (A1, A2, B1 nabo B2), na základě které se zvolí odpovídající pokračování vašeho kurzu.
   </div>
   <div data-ng-if="::lesson.status>=2">
-    <h4>Test dokončen: vaše jazyková úroveň je {{::ts.pretestLevel | levelText}}</h4>
+    <h4><i class="fa fa-line-chart"></i> Test dokončen: vaše jazyková úroveň je {{::ts.pretestLevel | levelText}}</h4>
     <div class="btn-group right-mark">
       <button type="button" ng-repeat="level in ::ts.pretestLevels" class="btn btn-info btn-sm" ng-click="::ts.navigatePretestLevel(level)">{{level | levelText}} <i class="fa fa-eye"></i></button>
     </div>
   </div>
 </script>
 
-<script type="text/ng-template" id="vyzva$home$lesson.html">
-  <div ng-include="'vyzva$home$leftmark.html'"></div>
-  <h4 ng-click="::ts.navigateLesson(lesson)">L: {{::lesson.node.title}}</h4>
-</script>
-
-<script type="text/ng-template" id="vyzva$home$test.html">
-  <div ng-include="'vyzva$home$leftmark.html'"></div>
-  <h4 ng-click="::ts.navigateLesson(lesson)">T: {{::lesson.node.title}}</h4>
-</script>

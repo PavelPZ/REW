@@ -8,7 +8,8 @@
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
-.bl .panel-heading h3 {
+.bl .panel-heading h3,
+.bl .panel-heading h4 {
   margin: 10px 0;
 }
 .bl .lm-top-margin {
@@ -60,32 +61,6 @@ a.bl .wizzard .wizzard-item.active:hover {
   background-color: #337ab7 !important;
   color: #ffffff !important;
 }
-.bl .study-plan > li {
-  position: relative;
-  padding-left: 50px;
-  padding-right: 120px;
-}
-.bl .study-plan > li h4 {
-  margin-top: 0px;
-}
-.bl .study-plan > li .left-mark,
-.bl .study-plan > li .right-mark {
-  position: absolute;
-  top: 5px;
-}
-.bl .study-plan > li .left-mark {
-  left: 10px;
-  top: 8px;
-  font-size: 24px;
-  /*border: solid 1px lightgray;
-        border-radius: 15px;*/
-  width: 38px;
-  text-align: center;
-}
-.bl .study-plan > li .right-mark {
-  width: 110px;
-  right: 0px;
-}
 .bl .score-bar {
   display: inline-block;
   position: relative;
@@ -122,16 +97,6 @@ a.bl .wizzard .wizzard-item.active:hover {
 .bl .lm-tabs-header h3 {
   margin-top: 0px;
   padding: 16px;
-}
-.bl .home-course .panel-heading {
-  position: relative;
-}
-.bl .home-course .panel-heading .more {
-  position: absolute;
-  cursor: pointer;
-  top: 24px;
-  right: 18px;
-  font-size: 24px;
 }
 .bl .topbar {
   background-color: black;
@@ -174,12 +139,119 @@ a.bl .wizzard .wizzard-item.active:hover {
   color: lightgoldenrodyellow;
   margin-right: 15px;
 }
+.bl .list-group-item-success-primary {
+  color: #ffffff;
+  background-color: #5cb85c;
+}
+a.bl .list-group-item-success-primary {
+  color: #ffffff;
+}
+a.bl .list-group-item-success-primary .list-group-item-heading {
+  color: inherit;
+}
+a.bl .list-group-item-success-primary:hover,
+a.bl .list-group-item-success-primary:focus {
+  color: #ffffff;
+  background-color: #4cae4c;
+}
+a.bl .list-group-item-success-primary.active,
+a.bl .list-group-item-success-primary.active:hover,
+a.bl .list-group-item-success-primary.active:focus {
+  color: #fff;
+  background-color: #ffffff;
+  border-color: #ffffff;
+}
+.bl .btn-succes-info {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #5cb85c;
+}
+.bl .btn-succes-info:hover,
+.bl .btn-succes-info:focus,
+.bl .btn-succes-info.focus,
+.bl .btn-succes-info:active,
+.bl .btn-succes-info.active,
+.open > .dropdown-toggle.bl .btn-succes-info {
+  color: #3c763d;
+  background-color: #b2dba1;
+  border-color: #275927;
+}
+.bl .btn-succes-info:active,
+.bl .btn-succes-info.active,
+.open > .dropdown-toggle.bl .btn-succes-info {
+  background-image: none;
+}
+.bl .btn-succes-info.disabled,
+.bl .btn-succes-info[disabled],
+fieldset[disabled] .bl .btn-succes-info,
+.bl .btn-succes-info.disabled:hover,
+.bl .btn-succes-info[disabled]:hover,
+fieldset[disabled] .bl .btn-succes-info:hover,
+.bl .btn-succes-info.disabled:focus,
+.bl .btn-succes-info[disabled]:focus,
+fieldset[disabled] .bl .btn-succes-info:focus,
+.bl .btn-succes-info.disabled.focus,
+.bl .btn-succes-info[disabled].focus,
+fieldset[disabled] .bl .btn-succes-info.focus,
+.bl .btn-succes-info.disabled:active,
+.bl .btn-succes-info[disabled]:active,
+fieldset[disabled] .bl .btn-succes-info:active,
+.bl .btn-succes-info.disabled.active,
+.bl .btn-succes-info[disabled].active,
+fieldset[disabled] .bl .btn-succes-info.active {
+  background-color: #dff0d8;
+  border-color: #5cb85c;
+}
+.bl .btn-succes-info .badge {
+  color: #dff0d8;
+  background-color: #3c763d;
+}
+.bl .study-plan > li {
+  position: relative;
+  padding-left: 60px;
+  padding-right: 120px;
+}
+.bl .study-plan > li h4 {
+  margin: 8px 0;
+}
+.bl .study-plan > li .left-mark,
+.bl .study-plan > li .right-mark {
+  position: absolute;
+}
+.bl .study-plan > li .left-mark {
+  left: 0;
+  top: 10px;
+  font-size: 24px;
+  width: 50px;
+  text-align: center;
+  border-right: solid 1px transparent;
+}
+.bl .study-plan > li .right-mark {
+  top: 10px;
+  right: 10px;
+}
+.bl .study-plan .list-group-item-success-primary .left-mark {
+  border-right-color: #dff0d8;
+}
+.bl .study-plan .list-group-item-success .left-mark {
+  border-right-color: #93cd7c;
+}
+.bl .home-course .panel-heading {
+  position: relative;
+}
+.bl .home-course .panel-heading .more {
+  position: absolute;
+  cursor: pointer;
+  top: 24px;
+  right: 18px;
+  font-size: 24px;
+}
 .bl .topbar-exercise {
   height: auto;
 }
 .bl .topbar-exercise .btn-finish {
   margin-left: 5px;
-  margin-right: 5px;
+  margin-right: 15px;
   margin-top: 6px;
   background-color: #f5f5f5;
 }
@@ -263,6 +335,9 @@ a.bl .wizzard .wizzard-item.active:hover {
   top: 1px;
   right: 10px;
   font-size: 20px;
+}
+.bl .instruction .more-body-exercise {
+  padding-bottom: 10px;
 }
 .bl .instruction .more-body-exercise h1 {
   font-size: 16px;

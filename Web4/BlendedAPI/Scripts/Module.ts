@@ -28,6 +28,7 @@
     exShowPanel: boolean;
     exNoclickable: boolean;
     score: number;
+    moduleDone: boolean;
 
     constructor(node: CourseMeta.data, actEx: exerciseService, type: moduleServiceType, controller: controller) {
       this.node = node; this.actEx = actEx; this.controller = controller; this.type = type;
@@ -47,13 +48,13 @@
         };
       });
       this.user = agregateShorts(_.map(this.exercises, e => e.user));
-      var moduleDone = this.user && this.user.done;
-      this.exNoclickable = this.type == moduleServiceType.test && !moduleDone;
+      this.moduleDone = this.user && this.user.done;
+      this.exNoclickable = this.type == moduleServiceType.test && !this.moduleDone;
       _.each(this.exercises, ex => {
         //active item: stejny pro vsechny pripady
         if (ex.active) { ex.content = exItemContent.folderOpen; ex.background = exItemBackground.warning; return; }
         //nehotovy test
-        if (this.type == moduleServiceType.test && !moduleDone) {
+        if (this.type == moduleServiceType.test && !this.moduleDone) {
           ex.content = ex.user ? exItemContent.check : exItemContent.folder;
           return;
         }

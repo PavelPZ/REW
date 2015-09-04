@@ -36,8 +36,8 @@ var blended;
                 };
             });
             this.user = blended.agregateShorts(_.map(this.exercises, function (e) { return e.user; }));
-            var moduleDone = this.user && this.user.done;
-            this.exNoclickable = this.type == blended.moduleServiceType.test && !moduleDone;
+            this.moduleDone = this.user && this.user.done;
+            this.exNoclickable = this.type == blended.moduleServiceType.test && !this.moduleDone;
             _.each(this.exercises, function (ex) {
                 //active item: stejny pro vsechny pripady
                 if (ex.active) {
@@ -46,7 +46,7 @@ var blended;
                     return;
                 }
                 //nehotovy test
-                if (_this.type == blended.moduleServiceType.test && !moduleDone) {
+                if (_this.type == blended.moduleServiceType.test && !_this.moduleDone) {
                     ex.content = ex.user ? exItemContent.check : exItemContent.folder;
                     return;
                 }

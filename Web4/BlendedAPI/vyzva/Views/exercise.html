@@ -3,49 +3,14 @@
   <div class="container-fluid">
     <div class="container">
       <div class="pull-left" ng-include="'vyzva$common$topbarinnerleft.html'"></div>
-      <button class="pull-left btn btn-success btn-lg" data-ng-click="::ts.tbClick()">{{::ts.tbTitle}} <i class="fa fa-hand-o-right"></i></button>
-      <button class="btn-finish pull-left btn btn-default">Ukončit <i class="fa fa-level-up"></i></button>
+      <button class="pull-left btn btn-success btn-lg" ng-if="::!modService.moduleDone" ng-click="::ts.tbClick()">{{::ts.tbTitle}} <i class="fa fa-hand-o-right"></i></button>
+      <button class="btn-finish pull-left btn btn-default" ng-click="::ts.tbBackClick()">Zpět <i class="fa fa-level-up"></i></button>
       <div class="pull-right more fa fa-bars" ng-click="isCollapsed = !isCollapsed"></div>
       <div class="pull-right" ng-include="'vyzva$common$topbarinnerright.html'"></div>
-      <!--<div class="clearfix"></div>
-      <div>-->
-      <div class="ex-items">
-        <div ng-if="::modService.exShowPanel" ng-repeat="it in ::modService.exercises" class="ex-item"
-             ng-class="{warning:it.background==1, success: it.background==2, 'no-clickable': modService.exNoclickable}"
-             ng-click="modService.exNoclickable ? null : modService.navigateExercise(it.idx)">
-          <span ng-if="it.content==1" class="fa fa-check"></span>
-          <span ng-if="it.content==2" class="fa fa-arrow-down xfa-folder-open-o"></span>
-          <span ng-if="it.content==3" class="xfa xfa-folder-o">{{it.idx+1}}.</span>
-          <span ng-if="it.content==4" ng-style="it.percent | vyzva$exmodule$percentheight : 34" class="progress-red">{{it.percent}}%</span>
-          <span ng-if="it.content==4">{{it.percent}}%</span>
-        </div>
-      </div>
-      <!--</div>-->
-      <!--<div class="xpull-left" style="display:inline-block;" ng-include="'vyzva$exercise$modulepanel.html'"></div>-->
+      <div class="ex-items" ng-include="'vyzva$exercise$moduleheader.html'"></div>
     </div>
   </div>
-  <div class="container-fluid" style="background-color:white;">
-    <div collapse="isCollapsed" class="container more-body-module">
-      <h4>{{::modService.node.title}}, výsledky:</h4>
-      <hr />
-      <div class="row">
-        <div class="col-sm-3">
-          <span ng-if="modService.score>=0">Skóre: <span vyzva$exmodule$scoreprogress value="{{modService.score}}"></span><br /></span>
-          <span vyzva$exmodule$emptytest label="Počet cvičení" value="{{modService.user.count}}"></span>
-        </div>
-        <div class="col-sm-5">
-          <span vyzva$exmodule$emptytest label="První interakce" value="{{modService.user.beg | vyzva$exmodule$sec}}"></span>
-          <span vyzva$exmodule$emptytest label="Poslední interakce" value="{{modService.user.end | vyzva$exmodule$sec}}"></span>
-          <span vyzva$exmodule$emptytest label="Strávený čas" value="{{modService.user.elapsed | vyzva$exmodule$time}}"></span>
-        </div>
-        <div class="col-sm-4">
-          <span vyzva$exmodule$emptytest label="Přehráno zvuku" value="{{modService.user.sumPlay | vyzva$exmodule$time}}"></span>
-          <span vyzva$exmodule$emptytest label="Vlastní nahrávky" value="{{modService.user.sumRecord | vyzva$exmodule$time}}"></span>
-          <span vyzva$exmodule$emptytest label="Přehráno nahrávek" value="{{modService.user.sumPlayRecord | vyzva$exmodule$time}}"></span>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="container-fluid" style="background-color:white;" ng-include="'vyzva$exercise$modulemore.html'"></div>
 </div>
 <div class="container lm-top-margin-lg">
   <div class="instruction" ng-include="'vyzva$exercise$instruction.html'"></div>
@@ -53,39 +18,38 @@
 </div>
 
 <!--***************** INCLUDES -->
-<script type="text/ng-template" id="vyzva$exercise$modulepanel.html">
-  <!--<div ng-if="::modService.exShowPanel" class="ex-module" ng-class="{expanded: !isCollapsed}">
-    <div class="header">
-      <div ng-repeat="it in ::modService.exercises" class="ex-item"
-           ng-class="{warning:it.background==1, success: it.background==2, 'no-clickable': modService.exNoclickable}"
-           ng-click="modService.exNoclickable ? null : modService.navigateExercise(it.idx)">
-        <span ng-if="it.content==1" class="fa fa-check"></span>
-        <span ng-if="it.content==2" class="fa fa-arrow-down xfa-folder-open-o"></span>
-        <span ng-if="it.content==3" class="xfa xfa-folder-o">{{it.idx+1}}.</span>
-        <span ng-if="it.content==4" ng-style="it.percent | vyzva$exmodule$percentheight : 34" class="progress-red">{{it.percent}}%</span>
-        <span ng-if="it.content==4">{{it.percent}}%</span>
+<script type="text/ng-template" id="vyzva$exercise$moduleheader.html">
+  <div ng-if="::modService.exShowPanel" ng-repeat="it in ::modService.exercises" class="ex-item"
+       ng-class="{warning:it.background==1, success: it.background==2, 'no-clickable': modService.exNoclickable}"
+       ng-click="modService.exNoclickable ? null : modService.navigateExercise(it.idx)">
+    <span ng-if="it.content==1" class="fa fa-check"></span>
+    <span ng-if="it.content==2" class="fa fa-arrow-down xfa-folder-open-o"></span>
+    <span ng-if="it.content==3" class="xfa xfa-folder-o">{{it.idx+1}}.</span>
+    <span ng-if="it.content==4" ng-style="it.percent | vyzva$exmodule$percentheight : 34" class="progress-red">{{it.percent}}%</span>
+    <span ng-if="it.content==4">{{it.percent}}%</span>
+  </div>
+</script>
+
+<script type="text/ng-template" id="vyzva$exercise$modulemore.html">
+  <div collapse="isCollapsed" class="container more-body-module">
+    <h4>{{::modService.node.title}}, podrobné informace:</h4>
+    <div class="row">
+      <div class="col-sm-3">
+        <span ng-if="modService.score>=0">Skóre: <span vyzva$exmodule$scoreprogress value="{{modService.score}}"></span><br /></span>
+        <span vyzva$exmodule$emptytest label="Počet cvičení" value="{{modService.exercises.length}}"></span>
       </div>
-    </div>-->
-    <!--<div collapse="isCollapsed" class="body">
-      <h4>{{::modService.node.title}}, výsledky:</h4>
-      <div class="row">
-        <div class="col-sm-3">
-          <span ng-if="modService.score>=0">Skóre: <span vyzva$exmodule$scoreprogress value="{{modService.score}}"></span><br /></span>
-          <span vyzva$exmodule$emptytest label="Počet cvičení" value="{{modService.user.count}}"></span>
-        </div>
-        <div class="col-sm-5">
-          <span vyzva$exmodule$emptytest label="První interakce" value="{{modService.user.beg | vyzva$exmodule$sec}}"></span>
-          <span vyzva$exmodule$emptytest label="Poslední interakce" value="{{modService.user.end | vyzva$exmodule$sec}}"></span>
-          <span vyzva$exmodule$emptytest label="Strávený čas" value="{{modService.user.elapsed | vyzva$exmodule$time}}"></span>
-        </div>
-        <div class="col-sm-4">
-          <span vyzva$exmodule$emptytest label="Přehráno zvuku" value="{{modService.user.sumPlay | vyzva$exmodule$time}}"></span>
-          <span vyzva$exmodule$emptytest label="Vlastní nahrávky" value="{{modService.user.sumRecord | vyzva$exmodule$time}}"></span>
-          <span vyzva$exmodule$emptytest label="Přehráno nahrávek" value="{{modService.user.sumPlayRecord | vyzva$exmodule$time}}"></span>
-        </div>
+      <div class="col-sm-5">
+        <span vyzva$exmodule$emptytest label="První interakce" value="{{modService.user.beg | vyzva$exmodule$sec}}"></span>
+        <span vyzva$exmodule$emptytest label="Poslední interakce" value="{{modService.user.end | vyzva$exmodule$sec}}"></span>
+        <span vyzva$exmodule$emptytest label="Strávený čas" value="{{modService.user.elapsed | vyzva$exmodule$time}}"></span>
       </div>
-    </div>-->
-  <!--</div>-->
+      <div class="col-sm-4">
+        <span vyzva$exmodule$emptytest label="Přehráno zvuku" value="{{modService.user.sumPlay | vyzva$exmodule$time}}"></span>
+        <span vyzva$exmodule$emptytest label="Vlastní nahrávky" value="{{modService.user.sumRecord | vyzva$exmodule$time}}"></span>
+        <span vyzva$exmodule$emptytest label="Přehráno nahrávek" value="{{modService.user.sumPlayRecord | vyzva$exmodule$time}}"></span>
+      </div>
+    </div>
+  </div>
 </script>
 
 <script type="text/ng-template" id="vyzva$exercise$instruction.html">
@@ -94,9 +58,19 @@
       <div class="more fa fa-bars"></div>
       <span class="fa fa-check"></span>
       Splněno<span ng-if="exService.score>=0">, skore: <span vyzva$exmodule$scoreprogress value="{{exService.score}}"></span></span>
-      <!--<span vyzva$exmodule$emptytest nobr="true" label="První interakce" value="{{exService.user.short.beg | vyzva$exmodule$sec}}"></span>
-      <span vyzva$exmodule$emptytest nobr="true" label="Poslední interakce" value="{{exService.user.short.end | vyzva$exmodule$sec}}"></span>
-      <span vyzva$exmodule$emptytest nobr="true" label="Strávený čas" value="{{exService.user.short.elapsed | vyzva$exmodule$time}}"></span>-->
+    </div>
+    <div collapse="isCollapsed" class="more-body-exercise">
+      <hr />
+      <h4>{{::ts.title}}, podrobné informace:</h4>
+      <div class="row">
+        <div class="col-sm-5">
+          <span vyzva$exmodule$emptytest label="První interakce" value="{{exService.user.short.beg | vyzva$exmodule$sec}}"></span>
+          <span vyzva$exmodule$emptytest label="Poslední interakce" value="{{exService.user.short.end | vyzva$exmodule$sec}}"></span>
+          <span vyzva$exmodule$emptytest label="Strávený čas" value="{{exService.user.short.elapsed | vyzva$exmodule$time}}"></span>
+        </div>
+        <div class="col-sm-5">
+        </div>
+      </div>
     </div>
   </div>
   <div ng-controller="collapsable" ng-if="!exService.doneStatus">
@@ -105,7 +79,7 @@
       {{::exService.instructionData.title}}
       <div class="more fa fa-bars"></div>
     </div>
-    <div collapse="isCollapsed" class="more-body-exercise" >
+    <div collapse="isCollapsed" class="more-body-exercise">
       <hr />
       <div ng-bind-html="::exService.instructionData.body | rawhtml"></div>
     </div>
