@@ -4,18 +4,17 @@
     <div class="container">
       <div class="pull-left" ng-include="'vyzva$common$topbarinnerleft.html'"></div>
       <button class="pull-left btn btn-success btn-lg" ng-if="::!modService.moduleDone" ng-click="::ts.tbClick()">{{::ts.tbTitle}} <i class="fa fa-hand-o-right"></i></button>
+      <div class="pull-left module-finished" ng-if="::modService.moduleDone"><i class="fa fa-checked"></i> {{::ts.tbDoneTitle}}</div>
       <button class="btn-finish pull-left btn btn-default" ng-click="::ts.tbBackClick()">Zpět na kurz <i class="fa fa-level-up"></i></button>
       <div class="pull-left topbar-title" ng-if="::!state.pageTitlePlace">{{::modService.node.title}}</div>
       <div class="pull-right more fa fa-bars" ng-click="modulecollapsable.isCollapsed = !modulecollapsable.isCollapsed"></div>
       <div class="pull-right" ng-include="'vyzva$common$topbarinnerright.html'"></div>
       <div class="clearfix"></div>
-      <span style="color:white">Cvičení testu:</span>
       <div class="clearfix"></div>
       <div class="ex-items" ng-include="'vyzva$exercise$moduleheader.html'"></div>
     </div>
   </div>
   <div class="container-fluid" style="background-color:white;" ng-include="'vyzva$exercise$modulemore.html'"></div>
-  <!--<div class="container-fluid" style="background-color:white;" noscopeinclude nginclude="'vyzva$exercise$modulemore.html'"></div>-->
 </div>
 <div class="container lm-top-margin-lg">
   <div class="instruction" ng-include="'vyzva$exercise$instruction.html'"></div>
@@ -24,14 +23,13 @@
 
 <!--***************** INCLUDES -->
 <script type="text/ng-template" id="vyzva$exercise$moduleheader.html">
-  <!--<span style="color:white;">Obsah testu: </span>-->
   <div ng-if="::modService.exShowPanel" ng-repeat="it in ::modService.exercises" class="ex-item"
-       ng-class="{warning:it.background==1, success: it.background==2, 'no-clickable': modService.exNoclickable}"
+       ng-class="{warning:it.background==1, success: it.background==2, 'no-clickable': modService.exNoclickable, active: it.active}"
        ng-click="modService.exNoclickable ? null : modService.navigateExercise(it.idx)">
     <span ng-if="it.content==1" class="fa fa-check"></span>
-    <span ng-if="it.content==2" class="fa fa-arrow-down xfa-folder-open-o"></span>
-    <span ng-if="it.content==3" class="xfa xfa-folder-o">{{it.idx+1}}.</span>
-    <span ng-if="it.content==4" ng-style="it.percent | vyzva$exmodule$percentheight : 34" class="progress-red">{{it.percent}}%</span>
+    <span ng-if="it.content==2">{{it.idx+1}}.</span>
+    <span ng-if="it.content==3" xclass="fa fa-folder-o">{{it.idx+1}}.</span>
+    <span ng-if="it.content==4" ng-style="it.percent | vyzva$exmodule$percentheight : 28" class="progress-red">{{it.percent}}%</span>
     <span ng-if="it.content==4">{{it.percent}}%</span>
   </div>
 </script>
@@ -65,7 +63,7 @@
     <div class="header h4" ng-click="excollapsed.isCollapsed = !excollapsed.isCollapsed">
       <div class="more fa fa-bars"></div>
       <span class="fa fa-check"></span>
-      Cvičení splněno<span ng-if="exService.score>=0">, skore: <span vyzva$exmodule$scoreprogress value="{{exService.score}}"></span></span>
+      Cvičení dokončeno<span ng-if="exService.score>=0">, skore: <span vyzva$exmodule$scoreprogress value="{{exService.score}}"></span></span>
     </div>
     <div collapse="excollapsed.isCollapsed" class="more-body-exercise position-relative">
       <div class="close-panel fa fa-times" ng-click="excollapsed.isCollapsed = !excollapsed.isCollapsed"></div>
