@@ -61,7 +61,7 @@
     });
     return res;
   }
-  export function agregateShortFromNodes(node: CourseMeta.data, taskId: string, moduleAlowFinishWhenUndone: boolean): IExShort {
+  export function agregateShortFromNodes(node: CourseMeta.data, taskId: string, moduleAlowFinishWhenUndone?: boolean /*do vyhodnoceni zahrn i nehotova cviceni*/): IExShort {
     var res: IExShort = $.extend({}, shortDefault);
     res.done = true;
     _.each(node.Items, nd => {

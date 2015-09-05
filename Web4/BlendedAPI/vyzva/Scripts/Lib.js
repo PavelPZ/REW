@@ -1,11 +1,8 @@
 var vyzva;
 (function (vyzva) {
-    (function (pageTitlePlace) {
-        pageTitlePlace[pageTitlePlace["header"] = 0] = "header";
-        pageTitlePlace[pageTitlePlace["page"] = 1] = "page";
-        pageTitlePlace[pageTitlePlace["none"] = 2] = "none";
-    })(vyzva.pageTitlePlace || (vyzva.pageTitlePlace = {}));
-    var pageTitlePlace = vyzva.pageTitlePlace;
+    //export enum pageTitlePlace {
+    //  header, page, none
+    //}
     function finishHomeDataNode(prod) {
         if (prod.pretest)
             return;

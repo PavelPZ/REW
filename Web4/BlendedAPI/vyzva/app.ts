@@ -1,10 +1,10 @@
 ﻿module angular.ui {
   //rozsireni ui-route a blended STATE 
   export interface IState {
-    layoutSpecial?: boolean; //specialni layout bey vyuziti _pageTemplate.html (cviceni). Veskery viditelny obsah je v 
+    layoutSpecial?: boolean; //specialni layout bez vyuziti _pageTemplate.html (cviceni). Veskery viditelny obsah je v layoutContentId strance. Pouzije se napr. pro cviceni
     layoutContentId?: string; //template stranky
-    layoutToolbarType?: string; //typ toolbaru (nazev souboru v toolbar adresari)
-    pageTitlePlace?: vyzva.pageTitlePlace;
+    //layoutToolbarType?: string; //typ toolbaru (nazev souboru v toolbar adresari)
+    ignorePageTitle?: boolean;
   }
 }
 
@@ -68,7 +68,7 @@ module vyzva {
 
   export class state extends blended.state {
     constructor(st: angular.ui.IState) { super(st); }
-    pageTitlePlace: vyzva.pageTitlePlace;
+    ignorePageTitle: boolean;
   }
 
   blended.rootModule
@@ -154,7 +154,7 @@ module vyzva {
               controller: blended.pretestTaskController,
               controllerAs: blended.taskContextAs.pretest,
               dataNodeUrlParName: 'pretestUrl',
-              isGreenArrowRoot:true,
+              //isGreenArrowRoot:true,
               abstract: true,
               template: "<div data-ui-view></div>",
               childs: [
@@ -184,9 +184,9 @@ module vyzva {
                       layoutSpecial:true,
                       layoutContentId: 'exercise',
                       //layoutToolbarType: 'toolbar/run',
-                      pageTitlePlace: pageTitlePlace.none,
+                      ignorePageTitle: true,
                       //exerciseIsTest: true,
-                      exerciseOmitModuleMap: true,
+                      //exerciseOmitModuleMap: true,
                       resolve: {
                         $loadedEx: blended.loadEx,
                         $loadedLongData: blended.loadLongData,
@@ -204,7 +204,7 @@ module vyzva {
               controllerAs: blended.taskContextAs.module,
               dataNodeUrlParName: 'moduleUrl',
               moduleType: blended.moduleServiceType.pretest,
-              isGreenArrowRoot: true,
+              //isGreenArrowRoot: true,
               abstract: true,
               template: "<div data-ui-view></div>",
               childs: [
@@ -231,7 +231,7 @@ module vyzva {
               controller: moduleTaskController,
               controllerAs: blended.taskContextAs.module,
               dataNodeUrlParName: 'moduleUrl',
-              isGreenArrowRoot: true,
+              //isGreenArrowRoot: true,
               moduleType: blended.moduleServiceType.lesson,
               abstract: true,
               template: "<div data-ui-view></div>",
@@ -259,7 +259,7 @@ module vyzva {
               controller: moduleTaskController,
               controllerAs: blended.taskContextAs.module,
               dataNodeUrlParName: 'moduleUrl',
-              isGreenArrowRoot: true,
+              //isGreenArrowRoot: true,
               abstract: true,
               template: "<div data-ui-view></div>",
               moduleType: blended.moduleServiceType.test,

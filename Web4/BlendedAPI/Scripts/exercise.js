@@ -61,7 +61,7 @@ var blended;
         return res;
     }
     blended.agregateShorts = agregateShorts;
-    function agregateShortFromNodes(node, taskId, moduleAlowFinishWhenUndone) {
+    function agregateShortFromNodes(node, taskId, moduleAlowFinishWhenUndone /*do vyhodnoceni zahrn i nehotova cviceni*/) {
         var res = $.extend({}, shortDefault);
         res.done = true;
         _.each(node.Items, function (nd) {

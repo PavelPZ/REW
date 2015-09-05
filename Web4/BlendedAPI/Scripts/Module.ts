@@ -149,9 +149,7 @@
         return moveForwardResult.selfAdjustChild;
       }
     }
-
   }
-
 
   blended.rootModule
     .filter('vyzva$exmodule$percentheight', () => (per: number, maxHeight: number) => { return { height: ((100 - per) * maxHeight / 100).toString() + 'px' }; })

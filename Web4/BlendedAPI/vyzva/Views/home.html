@@ -1,15 +1,15 @@
-﻿<div class="panel panel-default lm-top-margin" ng-if="::ts.parent.isLector">
+﻿<div class="panel panel-default lm-top-margin" ng-if="::ts.myTask.isLector">
   <div class="panel-heading">
     <h4>Studijní skupiny lektora</h4>
   </div>
   <div class="list-group">
-    <a href="#" class="list-group-item" ng-repeat="group in ts.parent.lectorGroups" ng-click="ts.gotoLector(group.groupId)"><h4>{{::group.title}}</h4></a>
+    <a href="#" class="list-group-item" ng-repeat="group in ts.myTask.lectorGroups" ng-click="ts.gotoLector(group.groupId)"><h4>{{::group.title}}</h4></a>
   </div>
 </div>
 
 <div ng-click="::ts.debugClearProduct()">del</div>
 
-<div class="panel panel-primary lm-top-margin home-course" ng-if="::ts.parent.isStudent" ng-controller="collapsable as homecollapsable" >
+<div class="panel panel-primary lm-top-margin home-course" ng-if="::ts.myTask.isStudent" ng-controller="collapsable as homecollapsable" >
   <div class="panel-heading" ng-click="homecollapsable.isCollapsed = !homecollapsable.isCollapsed">
     <h3>
       <span ng-if="ts.learnPlan[0].status<=1">Rozřazovací test</span>

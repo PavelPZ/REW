@@ -1,4 +1,5 @@
-﻿Pretest a test:
+﻿Doplnit detailni skore u produktu pro home.more tlacitko
+Pretest a test:
 - pri pruchodu je videt More tlacitku modulu
 - problikavaji vysledky cviceni
 

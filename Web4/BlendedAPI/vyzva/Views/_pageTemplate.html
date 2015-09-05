@@ -5,20 +5,19 @@
   <div class="container-fluid topbar">
     <div class="container">
       <div class="pull-left" ng-include="'vyzva$common$topbarinnerleft.html'"></div>
-      <!--<div data-ng-include="::state.layoutToolbarType | vyzva$state$viewpath" class="topbar-include"></div>-->
-      <div class="pull-left topbar-title" ng-if="::!state.pageTitlePlace">{{::ts.title}}</div>
+      <div class="pull-left topbar-title" ng-if="::!state.ignorePageTitle">{{::ts.title}}</div>
       <div ng-include="'vyzva$common$topbarinnerright.html'"></div>
     </div>
   </div>
   <div class="container">
     <div ng-include="'vyzva$common$breadcrumb.html'"></div>
-    <h1 ng-if="::state.pageTitlePlace==1">{{::ts.title}}</h1>
+    <!--<h1 ng-if="::state.pageTitlePlace==1">{{::ts.title}}</h1>-->
     <div data-ng-include="::state.layoutContentId | vyzva$state$viewpath"></div>
   </div>
 </script>
 
 <script type="text/ng-template" id="vyzva$common$breadcrumb.html">
-  <ol class="breadcrumb" ng-if="::!state.ommitBreadCrumb && !!ts.breadcrumb && ts.breadcrumb.length>0">
+  <ol class="breadcrumb" ng-if="::!!ts.breadcrumb && ts.breadcrumb.length>0">
     <li data-ng-repeat="item in ::ts.breadcrumb" data-ng-class="::{'active': item.active}">
       <a data-ng-if="::!item.active" data-ng-href="{{::item.url}}">{{::item.title}}</a>
       <span data-ng-if="::item.active">{{::item.title}}</span>

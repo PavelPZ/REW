@@ -3,14 +3,14 @@
     childs?: Array<blended.state>;
     //DATA parametry
     dataNodeUrlParName?: string;
-    ommitBreadCrumb?: boolean; //neukazuje se titulek
-    moduleAlowCycleExercise?: boolean; //pro modul: dovol pomoci zelene sipky cyklovani cviceni
-    moduleAlowFinishWhenUndone?:boolean; //pro modul: dovol jej oznacit jako DONE pomoci FINISH tlacitka i kdyz nejsou vsechna cviceni hotova. Zatim nenaprogramovano.
+    //ommitBreadCrumb?: boolean; //neukazuje se titulek
+    //moduleAlowCycleExercise?: boolean; //pro modul: dovol pomoci zelene sipky cyklovani cviceni
+    //moduleAlowFinishWhenUndone?:boolean; //pro modul: dovol jej oznacit jako DONE pomoci FINISH tlacitka i kdyz nejsou vsechna cviceni hotova. Zatim nenaprogramovano.
     exerciseShowWarningPercent?: number; //exerciseIsTest=false => procenta, kdy se ukaze varovani
     //exerciseIsTest?: boolean; //pro cviceni: neukazovat vzhodnoceny stav
-    exerciseOmitModuleMap?: boolean; //neukazuje moduleMap
-    isGreenArrowRoot?: boolean; //task, co se stara o posun zelenou sipkou (cviceni hleda v parentech tento task, na ktery vola goAhead)
-    noModuleExercise?: boolean; //task v module.childs, ktery je cvicenim modulu
+    //exerciseOmitModuleMap?: boolean; //neukazuje moduleMap
+    //isGreenArrowRoot?: boolean; //task, co se stara o posun zelenou sipkou (cviceni hleda v parentech tento task, na ktery vola goAhead)
+    noModuleExercise?: boolean; //state-module.childs, ktery je cvicenim modulu. Toto state-exercise.controller se pouzije pri vytvoreni URL cviceni v adjustChild
 
     moduleType?: blended.moduleServiceType;
   }
@@ -65,9 +65,9 @@ module blended {
     //ui-route state.data
     //exerciseIsTest: boolean;
     exerciseShowWarningPercent: number;
-    moduleAlowCycleExercise: boolean;
-    moduleAlowFinishWhenUndone: boolean; //existuje tlacitko FINISH. Zatim nenaprogramovano.
-    isGreenArrowRoot: boolean;
+    //moduleAlowCycleExercise: boolean;
+    //moduleAlowFinishWhenUndone: boolean; //existuje tlacitko FINISH. Zatim nenaprogramovano.
+    //isGreenArrowRoot: boolean;
     noModuleExercise: boolean;
     moduleType: blended.moduleServiceType;
     

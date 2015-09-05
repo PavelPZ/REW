@@ -262,7 +262,7 @@ var blended;
             var actRepo = this.actRepo(ud.actLevel);
             if (actTestItem.dataNode != actRepo)
                 throw 'actTestItem.dataNode != actRepo';
-            var childSummary = blended.agregateShortFromNodes(actTestItem.dataNode, this.ctx.taskid, actTestItem.state.moduleAlowFinishWhenUndone /*do vyhodnoceni zahrn i nehotova cviceni*/);
+            var childSummary = blended.agregateShortFromNodes(actTestItem.dataNode, this.ctx.taskid);
             if (!childSummary.done)
                 throw '!childUser.done';
             var score = blended.scorePercent(childSummary);
