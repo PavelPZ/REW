@@ -27,9 +27,11 @@ var vyzva;
     //****************** VIEW
     var homeViewController = (function (_super) {
         __extends(homeViewController, _super);
-        function homeViewController(state) {
+        function homeViewController($scope, $state) {
             var _this = this;
-            _super.call(this, state);
+            _super.call(this, $scope, $state);
+            //constructor(state: blended.IStateService) {
+            //super(state);
             this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb[1].active = true;
             var pretestItem;
@@ -39,11 +41,11 @@ var vyzva;
                 var res = {
                     node: node,
                     user: null,
-                    homeTask: _this.parent,
+                    homeTask: _this.myTask,
                     idx: idx,
                     lessonType: idx == 0 ? homeLessonTypes.pretest : (node.url.indexOf('/test') > 0 ? homeLessonTypes.test : homeLessonTypes.lesson),
                 };
-                var nodeUser = blended.getPersistData(_this.parent.dataNode.pretest, _this.ctx.taskid);
+                var nodeUser = blended.getPersistData(_this.myTask.dataNode.pretest, _this.ctx.taskid);
                 if (idx == 0) {
                     pretestUser = nodeUser;
                     res.user = { done: pretestUser ? pretestUser.done : false };
@@ -58,12 +60,12 @@ var vyzva;
                     firstNotDoneCheckTestIdx = idx;
                 return res;
             };
-            this.learnPlan = [pretestItem = fromNode(this.parent.dataNode.pretest, 0)];
+            this.learnPlan = [pretestItem = fromNode(this.myTask.dataNode.pretest, 0)];
             if (pretestUser && pretestUser.done) {
                 this.pretestLevels = pretestUser.history;
                 this.pretestLevel = pretestUser.targetLevel;
-                this.learnPlan.push(fromNode(this.parent.dataNode.entryTests[this.pretestLevel], 1));
-                this.learnPlan.pushArray(_.map(this.parent.dataNode.lessons[this.pretestLevel], function (nd, idx) { return fromNode(nd, idx + 2); }));
+                this.learnPlan.push(fromNode(this.myTask.dataNode.entryTests[this.pretestLevel], 1));
+                this.learnPlan.pushArray(_.map(this.myTask.dataNode.lessons[this.pretestLevel], function (nd, idx) { return fromNode(nd, idx + 2); }));
             }
             //rightButtonType management: vsechna cviceni za firstNotDoneCheckTestIdx dej rightButtonTypes=no
             for (var i = firstNotDoneCheckTestIdx + 1; i < this.learnPlan.length; i++)
@@ -80,32 +82,38 @@ var vyzva;
             var _this = this;
             var service = {
                 params: lesson.lessonType == homeLessonTypes.pretest ?
-                    blended.cloneAndModifyContext(this.ctx, function (d) { return d.pretesturl = blended.encodeUrl(_this.parent.dataNode.pretest.url); }) :
+                    blended.cloneAndModifyContext(this.ctx, function (d) { return d.pretesturl = blended.encodeUrl(_this.myTask.dataNode.pretest.url); }) :
                     blended.cloneAndModifyContext(this.ctx, function (d) { return d.moduleurl = blended.encodeUrl(lesson.node.url); }),
                 current: lesson.lessonType == homeLessonTypes.pretest ?
                     vyzva.stateNames.pretestTask :
                     (lesson.lessonType == homeLessonTypes.test ? vyzva.stateNames.moduleTestTask : vyzva.stateNames.moduleLessonTask),
-                parent: this.parent,
+                parent: this.myTask,
                 createMode: blended.createControllerModes.adjustChild
             };
-            this.parent.child = lesson.lessonType == homeLessonTypes.pretest ?
+            var nextTask = lesson.lessonType == homeLessonTypes.pretest ?
                 new blended.pretestTaskController(service) :
                 new vyzva.moduleTaskController(service);
-            var url = this.parent.child.goCurrent();
+            var url = nextTask.goCurrent();
             this.navigate(url);
+            //this.myTask.child = lesson.lessonType == homeLessonTypes.pretest ?
+            //  new blended.pretestTaskController(service) :
+            //  new moduleTaskController(service);
+            //var url = this.myTask.child.goCurrent();
         };
         ;
         homeViewController.prototype.navigatePretestLevel = function (lev) {
             var _this = this;
             var service = {
-                params: blended.cloneAndModifyContext(this.ctx, function (d) { var mod = _this.parent.dataNode.pretest.Items[lev]; d.moduleurl = blended.encodeUrl(mod.url); }),
+                params: blended.cloneAndModifyContext(this.ctx, function (d) { var mod = _this.myTask.dataNode.pretest.Items[lev]; d.moduleurl = blended.encodeUrl(mod.url); }),
                 current: vyzva.stateNames.pretestPreview,
-                parent: this.parent,
+                parent: this.myTask,
                 createMode: blended.createControllerModes.adjustChild
             };
-            this.parent.child = new vyzva.moduleTaskController(service);
-            var url = this.parent.child.goCurrent();
+            var nextTask = new vyzva.moduleTaskController(service);
+            var url = nextTask.goCurrent();
             this.navigate(url);
+            //this.myTask.child = new moduleTaskController(service);
+            //var url = this.myTask.child.goCurrent();
         };
         homeViewController.prototype.gotoLector = function (groupId) {
             this.navigate({ stateName: vyzva.stateNames.lectorHome.name, pars: { groupid: groupId } });
@@ -119,11 +127,14 @@ var vyzva;
     //****************** TASK
     var homeTaskController = (function (_super) {
         __extends(homeTaskController, _super);
-        function homeTaskController(state, resolves) {
-            _super.call(this, state, resolves);
+        function homeTaskController($scope, $state, product, intranetInfo) {
+            _super.call(this, $scope, $state, product);
+            //constructor(state: blended.IStateService, resolves: Array<any>) {
+            //  super(state, resolves);
+            this.productParent = this;
             this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { startDate: Utils.nowToNum() }; });
             //Intranet
-            this.companyData = (resolves[1]);
+            this.companyData = intranetInfo;
             if (!this.companyData)
                 return;
             var alocatedKeyInfos = this.companyData.alocatedKeyInfos;
@@ -133,6 +144,7 @@ var vyzva;
             this.isLector = !this.ctx.onbehalfof && this.lectorGroups.length > 0;
             this.isStudent = studentGroups.length > 0;
         }
+        homeTaskController.$inject = ['$scope', '$state', '$loadedProduct', '$intranetInfo'];
         return homeTaskController;
     })(blended.homeTaskController);
     vyzva.homeTaskController = homeTaskController;

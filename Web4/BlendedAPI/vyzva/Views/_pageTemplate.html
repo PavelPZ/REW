@@ -27,8 +27,8 @@
 </script>
 
 <script type="text/ng-template" id="vyzva$common$topbarinnerleft.html">
-  <div ng-if="::!ts.ctx.onbehalfof" class="lm-logo-black-small" ng-click="api().navigateWebHome()"></div>
-  <div ng-if="::ts.ctx.onbehalfof" class="onbehav-go-back" ng-click="::api().navigateReturnUrl()"><i class="fa fa-arrow-circle-o-left"></i></div>
+  <div ng-if="::!ts.ctx.onbehalfof" class="lm-logo-black-small" ng-click="ts.navigateWebHome()"></div>
+  <div ng-if="::ts.ctx.onbehalfof" class="onbehav-go-back" ng-click="::ts.navigateReturnUrl()"><i class="fa fa-arrow-circle-o-left"></i></div>
 </script>
 
 <script type="text/ng-template" id="vyzva$common$topbarinnerright.html">

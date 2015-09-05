@@ -7,7 +7,7 @@
     moduleAlowCycleExercise?: boolean; //pro modul: dovol pomoci zelene sipky cyklovani cviceni
     moduleAlowFinishWhenUndone?:boolean; //pro modul: dovol jej oznacit jako DONE pomoci FINISH tlacitka i kdyz nejsou vsechna cviceni hotova. Zatim nenaprogramovano.
     exerciseShowWarningPercent?: number; //exerciseIsTest=false => procenta, kdy se ukaze varovani
-    exerciseIsTest?: boolean; //pro cviceni: neukazovat vzhodnoceny stav
+    //exerciseIsTest?: boolean; //pro cviceni: neukazovat vzhodnoceny stav
     exerciseOmitModuleMap?: boolean; //neukazuje moduleMap
     isGreenArrowRoot?: boolean; //task, co se stara o posun zelenou sipkou (cviceni hleda v parentech tento task, na ktery vola goAhead)
     noModuleExercise?: boolean; //task v module.childs, ktery je cvicenim modulu
@@ -59,10 +59,11 @@ module blended {
     data: {}; //dalsi parametry state
     resolve: {}; //asynchronni parametry state
     oldController: taskControllerType; //puvodni controller (ktery je nahrazen a pouzit zprostredkovane vyse)
+    controller: taskControllerType; //puvodni controller (ktery je nahrazen a pouzit zprostredkovane vyse)
     //controller: taskControllerType;
 
     //ui-route state.data
-    exerciseIsTest: boolean;
+    //exerciseIsTest: boolean;
     exerciseShowWarningPercent: number;
     moduleAlowCycleExercise: boolean;
     moduleAlowFinishWhenUndone: boolean; //existuje tlacitko FINISH. Zatim nenaprogramovano.
@@ -71,31 +72,31 @@ module blended {
     moduleType: blended.moduleServiceType;
     
     constructor(st: angular.ui.IState) {
-      this.oldController = <any>(st.controller); var self = this;
-      if (this.oldController) {
-        var services: Array<any> = ['$scope', '$state' ];
-        if (st.resolve) for (var p in st.resolve) services.push(p);
-        services.push(($scope: IControllerScope, $state: angular.ui.IStateService, ...resolves: Array<Object>) => {
-          var parent: taskController = (<any>($scope.$parent)).ts;
-          //kontrola jestli nektery z parentu nenastavil isWrongUrl. Pokud ano, vrat fake controller
-          if (parent && parent.isWrongUrl) {
-            parent.isWrongUrl = false;
-            $scope.ts = <any>{ isWrongUrl: true, parent: parent }; return;
-          }
-          //neni isWrongUrl, pokracuj
-          var params = <learnContext><any>($state.params);
-          finishContext(params);
-          params.$state = $state;
-          var ss: IStateService = { current: self, params: params, parent: parent, createMode: createControllerModes.navigate, $scope: $scope };
-          var task = <controller>(new this.oldController(ss, resolves));
-          $scope.ts = task;
-          if (globalApi) {
-            var api = new globalApi($scope, $state, params);
-            $scope.api = () => api;
-          }
-        });
-        st.controller = <any>services;
-      }
+      //this.oldController = <any>(st.controller); var self = this;
+      //if (this.oldController) {
+      //  var services: Array<any> = ['$scope', '$state' ];
+      //  if (st.resolve) for (var p in st.resolve) services.push(p);
+      //  services.push(($scope: IControllerScope, $state: angular.ui.IStateService, ...resolves: Array<Object>) => {
+      //    var parent: taskController = (<any>($scope.$parent)).ts;
+      //    //kontrola jestli nektery z parentu nenastavil isWrongUrl. Pokud ano, vrat fake controller
+      //    if (parent && parent.isWrongUrl) {
+      //      parent.isWrongUrl = false;
+      //      $scope.ts = <any>{ isWrongUrl: true, parent: parent }; return;
+      //    }
+      //    //neni isWrongUrl, pokracuj
+      //    var params = <learnContext><any>($state.params);
+      //    finishContext(params);
+      //    params.$state = $state;
+      //    var ss: IStateService = { current: self, params: params, parent: parent, createMode: createControllerModes.navigate, $scope: $scope };
+      //    var task = <controller>(new this.oldController(ss, resolves));
+      //    $scope.ts = task;
+      //    if (globalApi) {
+      //      var api = new globalApi($scope, $state, params);
+      //      $scope.api = () => api;
+      //    }
+      //  });
+      //  st.controller = <any>services;
+      //}
       $.extend(this, st);
     }
     //******* Inicializace: linearizace state tree na definict states

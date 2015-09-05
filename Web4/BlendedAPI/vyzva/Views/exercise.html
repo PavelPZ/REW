@@ -5,7 +5,7 @@
       <div class="pull-left" ng-include="'vyzva$common$topbarinnerleft.html'"></div>
       <button class="pull-left btn btn-success btn-lg" ng-if="::!modService.moduleDone" ng-click="::ts.tbClick()">{{::ts.tbTitle}} <i class="fa fa-hand-o-right"></i></button>
       <div class="pull-left module-finished" ng-if="::modService.moduleDone"><i class="fa fa-checked"></i> {{::ts.tbDoneTitle}}</div>
-      <button class="btn-finish pull-left btn btn-default" ng-click="::ts.tbBackClick()">Zpět na kurz <i class="fa fa-level-up"></i></button>
+      <button class="btn-finish pull-left btn btn-default" ng-click="::ts.tbNavigateProductHome()">Zpět na kurz <i class="fa fa-level-up"></i></button>
       <div class="pull-left topbar-title" ng-if="::!state.pageTitlePlace">{{::modService.node.title}}</div>
       <div class="pull-right more fa fa-bars" ng-click="modulecollapsable.isCollapsed = !modulecollapsable.isCollapsed"></div>
       <div class="pull-right" ng-include="'vyzva$common$topbarinnerright.html'"></div>

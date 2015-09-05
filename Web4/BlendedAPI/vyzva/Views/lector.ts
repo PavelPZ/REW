@@ -1,19 +1,20 @@
 ﻿namespace vyzva {
 
   export class lectorController extends blended.controller {
-    constructor(state: blended.IStateService) {
-      super(state);
-      var lectorGroups = (<homeTaskController>(this.taskRoot())).lectorGroups;
+    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService) {
+      super($scope, $state);
+      var lectorGroups = this.productParent.lectorGroups;
       var gid = parseInt(this.ctx.groupid);
       this.lectorGroup = _.find(lectorGroups, grp => grp.groupId == gid);
     }
     lectorGroup: intranet.IStudyGroup; //aktualni skupina
+    productParent: homeTaskController;
   }
 
   export class lectorViewBase extends blended.controller {
-    constructor(state: blended.IStateService) {
-      super(state);
-      this.title = 'Studijní skupina ' + this.parent.lectorGroup.title;
+    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService) {
+      super($scope, $state);
+      this.title = 'Studijní skupina ' + this.lectorParent.lectorGroup.title;
       this.breadcrumb = this.breadcrumbBase(); this.breadcrumb[this.breadcrumb.length - 1].active = true;
     }
     breadcrumbBase(): Array<blended.breadcrumbItem> {
@@ -21,7 +22,7 @@
       res.push({ title: this.title, url: this.href({ stateName: stateNames.lectorHome.name, pars: this.ctx }) });
       return res;
     }
-    parent: lectorController;
+    //myTask: lectorController;
     tabIdx: number;
   }
 
@@ -32,11 +33,11 @@
   }
 
   export class lectorViewController extends lectorViewBase {
-    constructor(state: blended.IStateService) {
-      super(state);
+    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService) {
+      super($scope, $state);
       this.breadcrumb[this.breadcrumb.length - 1].active = true;
       this.tabIdx = 0;
-      this.students = _.map(this.parent.lectorGroup.studentKeys, k => { return { key: k } });
+      this.students = _.map(this.lectorParent.lectorGroup.studentKeys, k => { return { key: k } });
     }
     students: Array<lectorViewItem>;
     gotoStudentResult(student: lectorViewItem) {

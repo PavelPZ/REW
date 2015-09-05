@@ -2,53 +2,79 @@
 
   //vyjimecne parent tasks
   export interface ITaskContext {
-    productParent: pretestTaskController;
+    productParent: homeTaskController;
     pretestParent: pretestTaskController;
     moduleParent: moduleTaskController;
     exParent: exerciseTaskViewController;
+    lectorParent: vyzva.lectorController;
   }
   export var taskContextAs = {
     product: 'productParent',
     pretest: 'pretestParent',
     module: 'moduleParent',
     ex: 'exParent',
+    lector: 'lectorParent',
   };
   export function extendTaskContext($scope, task: controller) {
     for (var p in taskContextAs) {
-      var propName = taskContextAs[p];
-      task[propName] = $scope[propName];
+      var propName = taskContextAs[p]; var value = $scope[propName];
+      if (value) task[propName] = $scope[propName];
     }
-    debugger;
   }
 
   export class controller implements ITaskContext {
     ctx: learnContext;
     state: state;
-    parent: controller;
+    //parent: controller;
     isWrongUrl: boolean;
     $scope: IControllerScope;
 
+    isFakeCreate: boolean; //vytvoreni pri moveForward (nikoliv pres URL adresu) - kvuli vypoctu nasledujici stranky pro zelenou sipky 
+
     //ITaskContext
-    productParent: pretestTaskController;
+    productParent: homeTaskController;
     pretestParent: pretestTaskController;
     moduleParent: moduleTaskController;
     exParent: exerciseTaskViewController;
+    lectorParent: vyzva.lectorController;
 
+    //pro (neabstraktni) view controllery
     title: string;
     breadcrumb: Array<breadcrumbItem>;
 
-    constructor(stateService: IStateService) {
-      if (stateService.$scope) extendTaskContext(stateService.$scope, this);
-      this.ctx = stateService.params;
-      this.$scope = stateService.$scope;
-      this.state = stateService.current;
-      if (this.$scope) this.$scope.state = this.state;
-      this.parent = stateService.parent;
+    constructor($scope: ng.IScope | IStateService, $state?: angular.ui.IStateService) {
+      var stateService = this.getStateService($scope);
+      if (stateService) {
+        this.isFakeCreate = true;
+        this.ctx = stateService.params; finishContext(this.ctx);
+        //this.parent = stateService.parent;
+        this.state = stateService.current;
+        extendTaskContext(stateService.parent, this);
+        return;
+      }
+      this.$scope = <IControllerScope>$scope;
+      extendTaskContext(this.$scope, this);
+      this.ctx = <learnContext><any>$state.params; finishContext(this.ctx);
+      this.ctx.$state = $state;
+      this.$scope['ts'] = this;
+      var st = $state.current;
+      var constr = this.constructor;
+      while (st) {
+        if (st.controller == constr) {
+          this.state = <state>st;
+          break;
+        }
+        st = st.parent;
+      }
+      this.$scope.state = this.state;
+      //this.parent = this.$scope.$parent['ts'];
     }
+    static $inject = ['$scope', '$state'];
+    getStateService($scope: ng.IScope | IStateService): IStateService { return !!$scope['current'] ? <IStateService>$scope : null; }
+
     href(url: IStateUrl): string {
       return this.ctx.$state.href(url.stateName, url.pars);
     }
-
     navigate(url: IStateUrl) {
       if (!url) return;
       var hash = this.href(url);
@@ -59,18 +85,20 @@
       return stateName => self.navigate({ stateName: stateName, pars: self.ctx });
     }
 
+    navigateWebHome() { Pager.gotoHomeUrl(); }
+    navigateReturnUrl() { location.href = this.ctx.returnurl; }
 
-    taskList(): Array<taskController> {
-      var t: taskController = this.taskRoot();
-      var res: Array<taskController> = [];
-      while (t) { res.push(t); t = t.child; }
-      return res;
-    }
-    taskRoot<T extends homeTaskController>(): T {
-      var t = this;
-      while (t.state.name != prodStates.homeTask.name) t = t.parent;
-      return <T>t;
-    }
+    //taskList(): Array<taskController> {
+    //  var t: taskController = this.taskRoot();
+    //  var res: Array<taskController> = [];
+    //  while (t) { res.push(t); t = t.child; }
+    //  return res;
+    //}
+    //taskRoot<T extends homeTaskController>(): T {
+    //  var t = this;
+    //  while (t.state.name != prodStates.homeTask.name) t = t.parent;
+    //  return <T>t;
+    //}
 
     wrongUrlRedirect(url: IStateUrl) {
       if (!url) return;
@@ -82,11 +110,15 @@
 
   //******* TASK VIEW - predchudce vsech controllers, co maji vizualni podobu (html stranku)
   export class taskViewController extends controller {
-    constructor(state: IStateService) {
-      super(state);
-      this.title = this.parent.dataNode.title;
+    constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
+      super($scope, $state);
+      this.myTask = this.isFakeCreate ? (<blended.IStateService>$scope).parent : (<ng.IScope>$scope).$parent['ts'];
+      //constructor(state: IStateService) {
+      //  super(state);
+      this.title = this.myTask.dataNode.title;
     }
-    parent: taskController;
+    myTask: taskController;
+    //parent: taskController;
   }
 
 
@@ -96,39 +128,36 @@
     selfInnner /*posun osetren v ramci zmeny stavu aktualniho tasku (bez nutnosti navigace na jiny task)*/
   }
 
-  export interface taskControllerType {
-    new (state: IStateService, resolves?: Array<any>);
-  }
+  //typ pro konstruktor tasku
+  export interface taskControllerType { new (state: IStateService, resolves?: Array<any>); }
+
   //******* TASK (predchudce vse abstraktnich controllers (mimo cviceni), reprezentujicich TASK). Task umi obslouzit zelenou sipku apod.
   export class taskController extends controller {
 
     //********************** FIELDS
-    child: taskController; //child TASK v hiearchii STATES
+    //child: taskController; //child TASK v hiearchii STATES
     dataNode: CourseMeta.data; //sitemap produkt node
     user: IPersistNodeItem<IPersistNodeUser>; //user persistence, odpovidajici taskId
-    parent: taskController;
-    isProductHome: boolean;
+    //parent: taskController;
+    //isProductHome: boolean;
 
     //********************* 
-    constructor(state: IStateService, resolves?: Array<any>) {
-      super(state);
+    constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
+      super($scope, $state);
+      //constructor(state: IStateService, resolves?: Array<any>) {
+      //    super(state);
 
-      if (!state.current.dataNodeUrlParName) return;
+      if (!this.state.dataNodeUrlParName) return;
 
       //provaz parent - child
-      var paretScope = this.parent = state.parent; if (paretScope) paretScope.child = this;
+      //if (this.parent) this.parent.child = this;
+      //var parentTask = this.parent = (<ng.IScope>$scope).$parent['ts']; if (parentTask) parentTask.child = this;
 
       //dataNode
-      var taskoot = this.taskRoot();
-      if (taskoot == this) {
-        this.dataNode = <blended.IProductEx>(resolves[0]);
-      } else {
-        this.dataNode = this.taskRoot().dataNode.nodeDir[this.ctx[state.current.dataNodeUrlParName]];
+      if (this.productParent) { //null je pouze pro home, user se vytvori v home konstructoru
+        this.dataNode = this.productParent.dataNode.nodeDir[this.ctx[this.state.dataNodeUrlParName]];
+        this.user = getPersistWrapper<IPersistNodeUser>(this.dataNode, this.ctx.taskid);
       }
-      if (!this.dataNode) throw '!this.dataNode';
-
-      //user data
-      this.user = getPersistWrapper<IPersistNodeUser>(this.dataNode, this.ctx.taskid);
     }
 
     //********************** GREEN MANAGEMENT
@@ -147,7 +176,7 @@
     adjustChild(): taskController { return null; }
 
     //posun stavu dal
-    moveForward(): moveForwardResult { throw 'notimplemented'; }
+    moveForward(sender: exerciseTaskViewController): moveForwardResult { throw 'notimplemented'; }
 
     //priznak pro 'if (t.taskControllerSignature)' test, ze tento objekt je task.
     taskControllerSignature() { }
@@ -162,29 +191,42 @@
       }
     }
 
-    navigateAhead() {
-      this.navigate(this.goAhead());
+    navigateAhead(sender: exerciseTaskViewController) {
+      this.navigate(this.goAhead(sender));
     }
 
-    goAhead(): IStateUrl {
-      //seznam od childs k this
-      var taskList: Array<taskController> = [];
-      var act = this; while (act) {
-        if (!act.taskControllerSignature) break;
-        taskList.push(act);
-        act = act.child;
-      }
-      //najdi prvni task, co se umi posunout dopredu
-      for (var i = taskList.length - 1; i >= 0; i--) {
-        var act = taskList[i];
-        switch (act.moveForward()) {
+    goAhead(sender: exerciseTaskViewController): IStateUrl {
+      var task: taskController = sender;
+      while (true) {
+        switch (task.moveForward(sender)) {
           case moveForwardResult.selfInnner: return null;
-          case moveForwardResult.toParent: break;
-          case moveForwardResult.selfAdjustChild: return act.goCurrent();
+          case moveForwardResult.toParent:
+            if (task == task.exParent) { task = task.moduleParent; continue; }
+            if (task == task.moduleParent && task.pretestParent) { task = task.pretestParent; continue; }
+            return { stateName: prodStates.home.name, pars: this.ctx }
+          case moveForwardResult.selfAdjustChild: return task.goCurrent();
         }
       }
-      //ani jeden z parentu move nevyresil => jdi na home produktu
-      return { stateName: prodStates.home.name, pars: this.ctx }
+      
+
+      //seznam od childs k this
+      //var taskList: Array<taskController> = [];
+      //var act = this; while (act) {
+      //  if (!act.taskControllerSignature) break;
+      //  taskList.push(act);
+      //  act = act.child;
+      //}
+      ////najdi prvni task, co se umi posunout dopredu: jdi od spodu nahoru
+      //for (var i = taskList.length - 1; i >= 0; i--) {
+      //  var act = taskList[i];
+      //  switch (act.moveForward()) {
+      //    case moveForwardResult.selfInnner: return null;
+      //    case moveForwardResult.toParent: break;
+      //    case moveForwardResult.selfAdjustChild: return act.goCurrent();
+      //  }
+      //}
+      ////ani jeden z parentu move nevyresil => jdi na home produktu
+      //return { stateName: prodStates.home.name, pars: this.ctx }
     }
 
     log(msg: string) {
@@ -195,6 +237,10 @@
 
   //****************** PRODUCT HOME
   export class homeTaskController extends taskController { //task pro pruchod testem
+    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, product: IProductEx) {
+      super($scope, $state);
+      this.dataNode = product;
+    }
     dataNode: IProductEx;
   }
 
@@ -224,18 +270,21 @@
 
   export class pretestTaskController extends taskController { //task pro pruchod testem
 
-    constructor(state: IStateService) {
-      super(state);
+    dataNode: IPretestRepository;
+    user: IPersistNodeItem<IPretestUser>;
+
+    constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
+      super($scope, $state);
+      //constructor(state: IStateService) {
+      //  super(state);
+      this.pretestParent = this;
       //sance prerusit navigaci
       this.user = getPersistWrapper<IPretestUser>(this.dataNode, this.ctx.taskid, () => {
         return { actLevel: levelIds.A2, history: [levelIds.A2], targetLevel: -1, done: false };
       });
-      if (state.createMode != createControllerModes.navigate) return;
+      if (this.isFakeCreate) return;
       this.wrongUrlRedirect(this.checkCommingUrl());
     }
-
-    dataNode: IPretestRepository;
-    user: IPersistNodeItem<IPretestUser>;
 
     checkCommingUrl() {
       var ud = this.user.short;
@@ -243,7 +292,7 @@
       if (ud.done) return null; //done pretest: vse je povoleno
       var dataNode = <IPretestRepository>this.dataNode;
       var actModule = dataNode.Items[ud.actLevel];
-      var actEx = this.taskRoot().dataNode.nodeDir[this.ctx.Url];
+      var actEx = this.productParent.dataNode.nodeDir[this.ctx.Url];
       if (actModule.url != actEx.parent.url) { //cviceni neni v aktalnim modulu
         var pars = cloneAndModifyContext(this.ctx, c => c.moduleurl = encodeUrl(actModule.url));
         return { stateName: prodStates.home.name, pars: pars }; //v URL je adresa jineho nez aktivniho modulu (asi pomoci back) => jdi na prvni cviceni aktualniho modulu
@@ -264,12 +313,12 @@
       return new moduleTaskController(state);
     }
 
-    moveForward(): moveForwardResult {
+    moveForward(sender: exerciseTaskViewController): moveForwardResult {
       var ud = this.user.short;
-      var actTestItem = <exerciseTaskViewController>(this.child);
+      var actTestItem = sender.moduleParent; // <exerciseTaskViewController>(this.child);
       var actRepo = this.actRepo(ud.actLevel);
       if (actTestItem.dataNode != actRepo) throw 'actTestItem.dataNode != actRepo';
-      var childSummary = agregateShortFromNodes(this.child.dataNode, this.ctx.taskid, actTestItem.state.moduleAlowFinishWhenUndone /*do vyhodnoceni zahrn i nehotova cviceni*/);
+      var childSummary = agregateShortFromNodes(actTestItem.dataNode, this.ctx.taskid, actTestItem.state.moduleAlowFinishWhenUndone /*do vyhodnoceni zahrn i nehotova cviceni*/);
       if (!childSummary.done) throw '!childUser.done';
       var score = scorePercent(childSummary);
 
@@ -302,74 +351,6 @@
       return moveForwardResult.toParent;
     }
     actRepo(lev: levelIds): IPretestItemRepository { return _.find(this.dataNode.Items, l => l.level == lev); }
-
-  }
-
-  //****************** linearni kurz nebo test
-
-  export interface IModuleUser extends IPersistNodeUser { //course dato pro test
-    actChildIdx: number;
-    //na TRUE nastaveno pri nasilnem ukonceni testu tlacitkem FINISH test 
-    //(protoze kdyz nejsou vyhodnocena vsechna cviceni, tak by se nepoznalo, zdali je modul ukoncen nebo ne)
-    //neni jeste implementovano
-    done: boolean;
-  }
-
-  export function moduleIsDone(nd: CourseMeta.data, taskId: string): boolean {
-    return !_.find(nd.Items, it => { var itUd = blended.getPersistData<IExShort>(it, taskId); return (!itUd || !itUd.done); });
-  }
-
-  export function isEx(nd: CourseMeta.data) { return CourseMeta.isType(nd, CourseMeta.runtimeType.ex); }
-
-  export class moduleTaskController extends taskController { //task pro pruchod lekcemi (repository je seznam cviceni)
-
-    user: IPersistNodeItem<IModuleUser>;
-    exercises: Array<CourseMeta.data>;
-    congratulation: boolean; //priznak, ze modul byl prave preveden do stavu DONE a ukazuje se congratulation dialog
-
-    constructor(state: IStateService) {
-      super(state);
-      this.user = getPersistWrapper<IModuleUser>(this.dataNode, this.ctx.taskid, () => { return { done: false, actChildIdx: 0 }; });
-      this.exercises = _.filter(this.dataNode.Items, it => isEx(it));
-    }
-
-    onExerciseLoaded(idx: number) {
-      var ud = this.user.short;
-      if (ud.done) { ud.actChildIdx = idx; this.user.modified = true; }
-    }
-
-    adjustChild(): taskController {
-      var ud = this.user.short;
-      var exNode = ud.done ? this.exercises[ud.actChildIdx] : _.find(this.exercises, it => { var itUd = blended.getPersistData<IExShort>(it, this.ctx.taskid); return (!itUd || !itUd.done); });
-      if (!exNode) { debugger; ud.done = true; this.user.modified = true; }
-
-      var moduleExerciseState = _.find(this.state.childs, ch => !ch.noModuleExercise);
-      var state: IStateService = {
-        params: cloneAndModifyContext(this.ctx, d => d.url = encodeUrl(exNode.url)),
-        parent: this,
-        current: moduleExerciseState,
-        createMode: createControllerModes.adjustChild
-      };
-      return new moduleExerciseState.oldController(state, null);
-    }
-
-    moveForward(): moveForwardResult {
-      if (this.congratulation) { delete this.congratulation; return moveForwardResult.toParent; }
-      var ud = this.user.short;
-      if (ud.done) {
-        ud.actChildIdx = ud.actChildIdx == this.exercises.length - 1 ? 0 : ud.actChildIdx + 1;
-        this.user.modified = true;
-        return moveForwardResult.selfAdjustChild;
-      } else {
-        var exNode = _.find(this.exercises, it => { var itUd = blended.getPersistData<IExShort>(it, this.ctx.taskid); return (!itUd || !itUd.done); });
-        if (!ud.done && !exNode) { //cerstve hotovo
-          ud.done = true; this.user.modified = true;
-          return moveForwardResult.toParent;
-          //this.congratulation = true; return moveForwardResult.selfInnner;
-        }
-        return moveForwardResult.selfAdjustChild;
-      }
-    }
 
   }
 

@@ -18,40 +18,31 @@ var blended;
     //zaregistrovany stav (v app.ts)
     var state = (function () {
         function state(st) {
-            var _this = this;
-            this.oldController = (st.controller);
-            var self = this;
-            if (this.oldController) {
-                var services = ['$scope', '$state'];
-                if (st.resolve)
-                    for (var p in st.resolve)
-                        services.push(p);
-                services.push(function ($scope, $state) {
-                    var resolves = [];
-                    for (var _i = 2; _i < arguments.length; _i++) {
-                        resolves[_i - 2] = arguments[_i];
-                    }
-                    var parent = ($scope.$parent).ts;
-                    //kontrola jestli nektery z parentu nenastavil isWrongUrl. Pokud ano, vrat fake controller
-                    if (parent && parent.isWrongUrl) {
-                        parent.isWrongUrl = false;
-                        $scope.ts = { isWrongUrl: true, parent: parent };
-                        return;
-                    }
-                    //neni isWrongUrl, pokracuj
-                    var params = ($state.params);
-                    blended.finishContext(params);
-                    params.$state = $state;
-                    var ss = { current: self, params: params, parent: parent, createMode: createControllerModes.navigate, $scope: $scope };
-                    var task = (new _this.oldController(ss, resolves));
-                    $scope.ts = task;
-                    if (blended.globalApi) {
-                        var api = new blended.globalApi($scope, $state, params);
-                        $scope.api = function () { return api; };
-                    }
-                });
-                st.controller = services;
-            }
+            //this.oldController = <any>(st.controller); var self = this;
+            //if (this.oldController) {
+            //  var services: Array<any> = ['$scope', '$state' ];
+            //  if (st.resolve) for (var p in st.resolve) services.push(p);
+            //  services.push(($scope: IControllerScope, $state: angular.ui.IStateService, ...resolves: Array<Object>) => {
+            //    var parent: taskController = (<any>($scope.$parent)).ts;
+            //    //kontrola jestli nektery z parentu nenastavil isWrongUrl. Pokud ano, vrat fake controller
+            //    if (parent && parent.isWrongUrl) {
+            //      parent.isWrongUrl = false;
+            //      $scope.ts = <any>{ isWrongUrl: true, parent: parent }; return;
+            //    }
+            //    //neni isWrongUrl, pokracuj
+            //    var params = <learnContext><any>($state.params);
+            //    finishContext(params);
+            //    params.$state = $state;
+            //    var ss: IStateService = { current: self, params: params, parent: parent, createMode: createControllerModes.navigate, $scope: $scope };
+            //    var task = <controller>(new this.oldController(ss, resolves));
+            //    $scope.ts = task;
+            //    if (globalApi) {
+            //      var api = new globalApi($scope, $state, params);
+            //      $scope.api = () => api;
+            //    }
+            //  });
+            //  st.controller = <any>services;
+            //}
             $.extend(this, st);
         }
         //******* Inicializace: linearizace state tree na definict states

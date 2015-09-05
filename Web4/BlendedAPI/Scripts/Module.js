@@ -1,3 +1,9 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
 var blended;
 (function (blended) {
     (function (exItemBackground) {
@@ -27,7 +33,7 @@ var blended;
         moduleService.prototype.resetExercise = function () { alert('reset'); };
         moduleService.prototype.refresh = function () {
             var _this = this;
-            this.exercises = _.map(_.filter(this.node.Items, function (it) { return blended.isEx(it); }), function (node, idx) {
+            this.exercises = _.map(_.filter(this.node.Items, function (it) { return isEx(it); }), function (node, idx) {
                 return {
                     user: blended.getPersistData(node, _this.controller.ctx.taskid),
                     idx: idx,
@@ -76,6 +82,73 @@ var blended;
         return moduleService;
     })();
     blended.moduleService = moduleService;
+    function moduleIsDone(nd, taskId) {
+        return !_.find(nd.Items, function (it) { var itUd = blended.getPersistData(it, taskId); return (!itUd || !itUd.done); });
+    }
+    blended.moduleIsDone = moduleIsDone;
+    function isEx(nd) { return CourseMeta.isType(nd, CourseMeta.runtimeType.ex); }
+    blended.isEx = isEx;
+    var moduleTaskController = (function (_super) {
+        __extends(moduleTaskController, _super);
+        function moduleTaskController($scope, $state) {
+            _super.call(this, $scope, $state);
+            //constructor(state: IStateService) {
+            //  super(state);
+            this.moduleParent = this;
+            this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { done: false, actChildIdx: 0 }; });
+            this.exercises = _.filter(this.dataNode.Items, function (it) { return isEx(it); });
+        }
+        moduleTaskController.prototype.onExerciseLoaded = function (idx) {
+            var ud = this.user.short;
+            if (ud.done) {
+                ud.actChildIdx = idx;
+                this.user.modified = true;
+            }
+        };
+        moduleTaskController.prototype.adjustChild = function () {
+            var _this = this;
+            var ud = this.user.short;
+            var exNode = ud.done ? this.exercises[ud.actChildIdx] : _.find(this.exercises, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (!itUd || !itUd.done); });
+            if (!exNode) {
+                debugger;
+                ud.done = true;
+                this.user.modified = true;
+            }
+            var moduleExerciseState = _.find(this.state.childs, function (ch) { return !ch.noModuleExercise; });
+            var state = {
+                params: blended.cloneAndModifyContext(this.ctx, function (d) { return d.url = blended.encodeUrl(exNode.url); }),
+                parent: this,
+                current: moduleExerciseState,
+                createMode: blended.createControllerModes.adjustChild
+            };
+            //return new moduleExerciseState.oldController(state, null);
+            return new moduleExerciseState.controller(state, null);
+        };
+        moduleTaskController.prototype.moveForward = function (sender) {
+            var _this = this;
+            if (this.congratulation) {
+                delete this.congratulation;
+                return blended.moveForwardResult.toParent;
+            }
+            var ud = this.user.short;
+            if (ud.done) {
+                ud.actChildIdx = ud.actChildIdx == this.exercises.length - 1 ? 0 : ud.actChildIdx + 1;
+                this.user.modified = true;
+                return blended.moveForwardResult.selfAdjustChild;
+            }
+            else {
+                var exNode = _.find(this.exercises, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (!itUd || !itUd.done); });
+                if (!ud.done && !exNode) {
+                    ud.done = true;
+                    this.user.modified = true;
+                    return blended.moveForwardResult.toParent;
+                }
+                return blended.moveForwardResult.selfAdjustChild;
+            }
+        };
+        return moduleTaskController;
+    })(blended.taskController);
+    blended.moduleTaskController = moduleTaskController;
     blended.rootModule
         .filter('vyzva$exmodule$percentheight', function () { return function (per, maxHeight) { return { height: ((100 - per) * maxHeight / 100).toString() + 'px' }; }; })
         .filter('vyzva$exmodule$percentwidth', function () { return function (per, maxWidth) { return { width: ((100 - per) * maxWidth / 100).toString() + 'px' }; }; })

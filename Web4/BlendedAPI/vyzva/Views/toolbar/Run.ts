@@ -12,7 +12,7 @@
 
   export interface IToolbarRun {
     tbClick();
-    tbBackClick();
+    tbNavigateProductHome();
     tbTitle: string;
     tbDoneTitle: string;
   }

@@ -19,15 +19,17 @@
   //****************** VIEW
   export class homeViewController extends blended.taskViewController {
 
-    parent: homeTaskController;
+    myTask: homeTaskController;
     pretestLevel: number;
     learnPlan: Array<IHomeLesson>; //seznam modulu vyuky
     pretestLevels: Array<blended.levelIds>; //levels info pro hotovy pretest
 
     user: blended.IExShort; //kompletni vysledky studia
 
-    constructor(state: blended.IStateService) {
-      super(state);
+    constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
+      super($scope, $state);
+    //constructor(state: blended.IStateService) {
+      //super(state);
       this.breadcrumb = breadcrumbBase(this); this.breadcrumb[1].active = true;
       var pretestItem: IHomeLesson;
       var pretestUser: blended.IPretestUser;
@@ -37,11 +39,11 @@
         var res: IHomeLesson = {
           node: node,
           user: null,
-          homeTask: this.parent,
+          homeTask: this.myTask,
           idx: idx,
           lessonType: idx == 0 ? homeLessonTypes.pretest : (node.url.indexOf('/test') > 0 ? homeLessonTypes.test : homeLessonTypes.lesson),
         };
-        var nodeUser = blended.getPersistData<blended.IPersistNodeUser>(this.parent.dataNode.pretest, this.ctx.taskid);
+        var nodeUser = blended.getPersistData<blended.IPersistNodeUser>(this.myTask.dataNode.pretest, this.ctx.taskid);
         if (idx == 0) {
           pretestUser = <blended.IPretestUser>nodeUser;
           res.user = <any>{ done: pretestUser ? pretestUser.done : false };
@@ -55,13 +57,13 @@
         return res;
       }
 
-      this.learnPlan = [pretestItem = fromNode(this.parent.dataNode.pretest, 0)];
+      this.learnPlan = [pretestItem = fromNode(this.myTask.dataNode.pretest, 0)];
 
       if (pretestUser && pretestUser.done) {
         this.pretestLevels = pretestUser.history;
         this.pretestLevel = pretestUser.targetLevel;
-        this.learnPlan.push(fromNode(this.parent.dataNode.entryTests[this.pretestLevel], 1));
-        this.learnPlan.pushArray(_.map(this.parent.dataNode.lessons[this.pretestLevel], (nd, idx) => fromNode(nd, idx + 2)));
+        this.learnPlan.push(fromNode(this.myTask.dataNode.entryTests[this.pretestLevel], 1));
+        this.learnPlan.pushArray(_.map(this.myTask.dataNode.lessons[this.pretestLevel], (nd, idx) => fromNode(nd, idx + 2)));
       }
       //rightButtonType management: vsechna cviceni za firstNotDoneCheckTestIdx dej rightButtonTypes=no
       for (var i = firstNotDoneCheckTestIdx + 1; i < this.learnPlan.length; i++) this.learnPlan[i].rightButtonType = rightButtonTypes.no;
@@ -76,34 +78,41 @@
     navigateLesson(lesson: IHomeLesson) {
       var service: blended.IStateService = {
         params: lesson.lessonType == homeLessonTypes.pretest ?
-          blended.cloneAndModifyContext(this.ctx, d => d.pretesturl = blended.encodeUrl(this.parent.dataNode.pretest.url)) :
+          blended.cloneAndModifyContext(this.ctx, d => d.pretesturl = blended.encodeUrl(this.myTask.dataNode.pretest.url)) :
           blended.cloneAndModifyContext(this.ctx, d => d.moduleurl = blended.encodeUrl(lesson.node.url)),
         current: lesson.lessonType == homeLessonTypes.pretest ?
           stateNames.pretestTask :
           (lesson.lessonType == homeLessonTypes.test ? stateNames.moduleTestTask : stateNames.moduleLessonTask),
-        parent: this.parent,
+        parent: this.myTask,
         createMode: blended.createControllerModes.adjustChild
       };
 
-      this.parent.child = lesson.lessonType == homeLessonTypes.pretest ?
+
+      var nextTask = lesson.lessonType == homeLessonTypes.pretest ?
         new blended.pretestTaskController(service) :
         new moduleTaskController(service);
-
-      var url = this.parent.child.goCurrent();
+      var url = nextTask.goCurrent();
       this.navigate(url);
+
+      //this.myTask.child = lesson.lessonType == homeLessonTypes.pretest ?
+      //  new blended.pretestTaskController(service) :
+      //  new moduleTaskController(service);
+      //var url = this.myTask.child.goCurrent();
+
     };
 
     navigatePretestLevel(lev: blended.levelIds) {
       var service: blended.IStateService = {
-        params: blended.cloneAndModifyContext(this.ctx, d => { var mod = this.parent.dataNode.pretest.Items[lev]; d.moduleurl = blended.encodeUrl(mod.url); }),
+        params: blended.cloneAndModifyContext(this.ctx, d => { var mod = this.myTask.dataNode.pretest.Items[lev]; d.moduleurl = blended.encodeUrl(mod.url); }),
         current: stateNames.pretestPreview,
-        parent: this.parent,
+        parent: this.myTask,
         createMode: blended.createControllerModes.adjustChild
       }
-      this.parent.child = new moduleTaskController(service);
-
-      var url = this.parent.child.goCurrent();
+      var nextTask = new moduleTaskController(service);
+      var url = nextTask.goCurrent();
       this.navigate(url);
+      //this.myTask.child = new moduleTaskController(service);
+      //var url = this.myTask.child.goCurrent();
     }
 
     gotoLector(groupId: number) {
@@ -119,11 +128,14 @@
   //****************** TASK
   export class homeTaskController extends blended.homeTaskController {
 
-    constructor(state: blended.IStateService, resolves: Array<any>) {
-      super(state, resolves);
+    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, product: IBlendedCourseRepository, intranetInfo: intranet.IAlocatedKeyRoot) {
+      super($scope, $state, product);
+    //constructor(state: blended.IStateService, resolves: Array<any>) {
+    //  super(state, resolves);
+      this.productParent = this;
       this.user = blended.getPersistWrapper<IBlendedCourseUser>(this.dataNode, this.ctx.taskid, () => { return { startDate: Utils.nowToNum() }; });
       //Intranet
-      this.companyData = <intranet.IAlocatedKeyRoot>(resolves[1]);
+      this.companyData = intranetInfo;
       if (!this.companyData) return;
       var alocatedKeyInfos = this.companyData.alocatedKeyInfos;
       this.lectorGroups = _.map(_.filter(alocatedKeyInfos, inf => inf.isLector), inf => inf.group);
@@ -132,6 +144,7 @@
       this.isLector = !this.ctx.onbehalfof && this.lectorGroups.length > 0;
       this.isStudent = studentGroups.length > 0;
     }
+    static $inject = ['$scope', '$state', '$loadedProduct', '$intranetInfo'];
 
     dataNode: IBlendedCourseRepository;
 

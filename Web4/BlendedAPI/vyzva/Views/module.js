@@ -8,8 +8,8 @@ var vyzva;
 (function (vyzva) {
     var moduleViewController = (function (_super) {
         __extends(moduleViewController, _super);
-        function moduleViewController(state) {
-            _super.call(this, state);
+        function moduleViewController($scope, $state) {
+            _super.call(this, $scope, $state);
             this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb.push({ title: this.title, url: null, active: true });
         }
@@ -18,8 +18,8 @@ var vyzva;
     vyzva.moduleViewController = moduleViewController;
     var moduleTaskController = (function (_super) {
         __extends(moduleTaskController, _super);
-        function moduleTaskController(state) {
-            _super.call(this, state);
+        function moduleTaskController($scope, $state) {
+            _super.call(this, $scope, $state);
         }
         return moduleTaskController;
     })(blended.moduleTaskController);

@@ -1,9 +1,9 @@
 ﻿module vyzva {
   export class managerSchool extends blended.controller {
-    constructor(state: blended.IStateService, resolves: Array<any>) {
-      super(state);
+    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, intranetInfo: intranet.IAlocatedKeyRoot) {
+      super($scope, $state);
       //this.taskRoot<homeTaskController>().companyData;
-      var intranetInfo = <intranet.IAlocatedKeyRoot>resolves[0];
+      //var intranetInfo = <intranet.IAlocatedKeyRoot>resolves[0];
       this.company = intranetInfo ? intranetInfo.companyData : null;
       this.breadcrumb = breadcrumbBase(this, true);
       this.breadcrumb.push({ title: this.title = 'Studijní skupiny a licenční klíče', active: true });
@@ -11,6 +11,7 @@
       this.wizzardStep = 0;
       this.adjustWizzardButtons();
     }
+    static $inject = ['$scope', '$state', '$intranetInfo'];
 
     //*************************************************************
     //                     CREATE SCHOOL

@@ -8,49 +8,49 @@ var vyzva;
 (function (vyzva) {
     var pretestExercise = (function (_super) {
         __extends(pretestExercise, _super);
-        function pretestExercise(state, resolves) {
-            _super.call(this, state, resolves);
-            if (state.createMode != blended.createControllerModes.navigate)
+        function pretestExercise($scope, $state, $loadedEx, $loadedLongData) {
+            _super.call(this, $scope, $state, $loadedEx, $loadedLongData);
+            if (this.isFakeCreate)
                 return;
             this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb.push({ title: 'Rozřazovací test', url: null, active: true });
             this.tbTitle = 'Pokračovat v testu';
             this.tbDoneTitle = 'Test dokončen';
         }
-        pretestExercise.prototype.tbClick = function () { this.greenClick(); };
-        pretestExercise.prototype.tbBackClick = function () { this.navigate({ stateName: vyzva.stateNames.home.name, pars: this.ctx }); };
+        pretestExercise.prototype.tbClick = function () { this.greenClick(this); };
+        pretestExercise.prototype.tbNavigateProductHome = function () { this.navigate({ stateName: vyzva.stateNames.home.name, pars: this.ctx }); };
         return pretestExercise;
     })(blended.exerciseTaskViewController);
     vyzva.pretestExercise = pretestExercise;
     var lessonExercise = (function (_super) {
         __extends(lessonExercise, _super);
-        function lessonExercise(state, resolves) {
-            _super.call(this, state, resolves);
-            if (state.createMode != blended.createControllerModes.navigate)
+        function lessonExercise($scope, $state, $loadedEx, $loadedLongData) {
+            _super.call(this, $scope, $state, $loadedEx, $loadedLongData);
+            if (this.isFakeCreate)
                 return;
             this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb.push({ title: this.title, url: null, active: true });
             this.tbTitle = 'Pokračovat v lekci';
             this.tbDoneTitle = 'Lekce dokončena';
         }
-        lessonExercise.prototype.tbClick = function () { this.greenClick(); };
-        lessonExercise.prototype.tbBackClick = function () { this.navigate({ stateName: vyzva.stateNames.home.name, pars: this.ctx }); };
+        lessonExercise.prototype.tbClick = function () { this.greenClick(this); };
+        lessonExercise.prototype.tbNavigateProductHome = function () { this.navigate({ stateName: vyzva.stateNames.home.name, pars: this.ctx }); };
         return lessonExercise;
     })(blended.exerciseTaskViewController);
     vyzva.lessonExercise = lessonExercise;
     var lessonTest = (function (_super) {
         __extends(lessonTest, _super);
-        function lessonTest(state, resolves) {
-            _super.call(this, state, resolves);
-            if (state.createMode != blended.createControllerModes.navigate)
+        function lessonTest($scope, $state, $loadedEx, $loadedLongData) {
+            _super.call(this, $scope, $state, $loadedEx, $loadedLongData);
+            if (this.isFakeCreate)
                 return;
             this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb.push({ title: this.title, url: null, active: true });
             this.tbTitle = 'Pokračovat v testu';
             this.tbDoneTitle = 'Test dokončen';
         }
-        lessonTest.prototype.tbClick = function () { this.greenClick(); };
-        lessonTest.prototype.tbBackClick = function () { this.navigate({ stateName: vyzva.stateNames.home.name, pars: this.ctx }); };
+        lessonTest.prototype.tbClick = function () { this.greenClick(this); };
+        lessonTest.prototype.tbNavigateProductHome = function () { this.navigate({ stateName: vyzva.stateNames.home.name, pars: this.ctx }); };
         return lessonTest;
     })(blended.exerciseTaskViewController);
     vyzva.lessonTest = lessonTest;

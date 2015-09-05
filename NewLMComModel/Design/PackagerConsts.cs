@@ -515,7 +515,7 @@ namespace Packager {
 
       "blendedapi/vyzva/views/managerlangmaster.js",
       "blendedapi/vyzva/views/managerschool.js",
-      "blendedapi/vyzva/views/exercise.js",
+      "blendedapi/vyzva/views/exercise.js", //***
       "blendedapi/vyzva/views/module.js",
       "blendedapi/vyzva/views/pretest.js",
       "blendedapi/vyzva/views/lector.js",

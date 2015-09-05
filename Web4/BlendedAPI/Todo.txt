@@ -1,0 +1,14 @@
+﻿Pretest a test:
+- pri pruchodu je videt More tlacitku modulu
+- problikavaji vysledky cviceni
+
+Lesson exercise:
+- i pasivni cviceni maji vyhodnoceny stav, nepreskakuji se
+- cviceni pouze s Recorderem - nechape se jako aktivni ale jen pasivni.
+- modalni dialogy na ukonceni modulu
+
+onBehav mode: 
+- aby nebyla dostupna zelena sipka a dalsi omezeni
+
+vyhodit stateNames.pretestPreview stav, prohlizeni pretestu v normalnim runtime stavu
+

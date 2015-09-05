@@ -115,15 +115,19 @@
 
     constructor(exercise: cacheExercise, long: IExLong, controller: exerciseTaskViewController) {
       this.exercise = exercise;
-      this.ctx = controller.ctx; this.product = controller.taskRoot().dataNode,
-      this.exerciseIsTest = controller.state.exerciseIsTest; this.moduleUser = controller.parent.user.short;
+      this.ctx = controller.ctx; this.product = controller.productParent.dataNode;
+      //this.exerciseIsTest = controller.state.exerciseIsTest; this.moduleUser = controller.parent.user.short;
+      this.exerciseIsTest = controller.moduleParent.state.moduleType != blended.moduleServiceType.lesson;
+      this.moduleUser = controller.moduleParent.user.short;
       this.user = getPersistWrapper<IExShort>(exercise.dataNode, this.ctx.taskid, () => { var res: IExShort = $.extend({}, shortDefault); res.ms = exercise.dataNode.ms; return res; });
       if (!long) { long = {}; this.user.modified = true; }
       this.user.long = long
       this.startTime = Utils.nowToNum();
-      this.modIdx = _.indexOf(controller.parent.exercises, controller.dataNode);
+      this.modIdx = _.indexOf(controller.moduleParent.exercises, controller.dataNode);
       //greenArrowRoot
-      this.greenArrowRoot = controller; while (!this.greenArrowRoot.state.isGreenArrowRoot) this.greenArrowRoot = this.greenArrowRoot.parent;
+      this.greenArrowRoot = controller.pretestParent ? controller.pretestParent : controller.moduleParent;
+      //this.greenArrowRoot = controller;
+      //while (!this.greenArrowRoot.state.isGreenArrowRoot) this.greenArrowRoot = this.greenArrowRoot.parent;
       this.refresh();
     }
 
@@ -248,38 +252,42 @@
 
     title: string;
     breadcrumb: Array<breadcrumbItem>;
-    parent: moduleTaskController;
+    //parent: moduleTaskController;
 
     justEvaluated: boolean; //nepersistentni stavova promenna, ridici zobrazeni cviceni po vyhodnoceni
 
-    constructor(state: IStateService, resolves: Array<any>) {
-      super(state);
-      if (state.createMode != createControllerModes.navigate) return;
+    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, $loadedEx: cacheExercise, $loadedLongData: IExLong) {
+      super($scope, $state);
+    //constructor(state: IStateService, resolves: Array<any>) {
+    //  super(state);
+      this.exParent = this;
+      if (this.isFakeCreate) return;
 
-      this.exService = new exerciseService(<cacheExercise>(resolves[0]), <blended.IExLong>(resolves[1]), this);
-      this.modService = new moduleService(this.parent.dataNode, this.exService, this.parent.state.moduleType, this);
+      this.exService = new exerciseService($loadedEx, $loadedLongData, this);
+      this.modService = new moduleService(this.moduleParent.dataNode, this.exService, this.moduleParent.state.moduleType, this);
 
-      state.$scope['exService'] = this.exService;
-      state.$scope['modService'] = this.modService;
+      $scope['exService'] = this.exService;
+      $scope['modService'] = this.modService;
 
       this.user = this.exService.user;
 
       this.title = this.dataNode.title;
-      this.parent.onExerciseLoaded(this.exService.modIdx); //zmena actChildIdx v persistentnich datech modulu
+      this.moduleParent.onExerciseLoaded(this.exService.modIdx); //zmena actChildIdx v persistentnich datech modulu
 
     }
+    static $inject = ['$scope', '$state', '$loadedEx', '$loadedLongData'];
 
     //osetreni zelene sipky
-    moveForward(): moveForwardResult {
+    moveForward(sender: exerciseTaskViewController): moveForwardResult {
       if (this.justEvaluated) { delete this.justEvaluated; return moveForwardResult.toParent; }
-      this.justEvaluated = this.exService.evaluate(this.state.exerciseIsTest, this.state.exerciseShowWarningPercent);
-      return this.justEvaluated && !this.state.exerciseIsTest ? moveForwardResult.selfInnner : moveForwardResult.toParent;
+      this.justEvaluated = this.exService.evaluate(this.moduleParent.state.moduleType != blended.moduleServiceType.lesson, this.state.exerciseShowWarningPercent);
+      return this.justEvaluated && (this.moduleParent.state.moduleType == blended.moduleServiceType.lesson) ? moveForwardResult.selfInnner : moveForwardResult.toParent;
     }
     //provede reset cviceni, napr. v panelu s instrukci
     resetExercise() { alert('reset'); }
 
-    greenClick() {
-      this.exService.greenArrowRoot.navigateAhead();
+    greenClick(sender: exerciseTaskViewController) {
+      this.exService.greenArrowRoot.navigateAhead(this);
     }
 
   }

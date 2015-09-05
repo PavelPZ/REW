@@ -8,12 +8,12 @@ var vyzva;
 (function (vyzva) {
     var managerSchool = (function (_super) {
         __extends(managerSchool, _super);
-        function managerSchool(state, resolves) {
-            _super.call(this, state);
+        function managerSchool($scope, $state, intranetInfo) {
+            _super.call(this, $scope, $state);
             this.groupNameCounter = 0;
             this.groups = [];
             //this.taskRoot<homeTaskController>().companyData;
-            var intranetInfo = resolves[0];
+            //var intranetInfo = <intranet.IAlocatedKeyRoot>resolves[0];
             this.company = intranetInfo ? intranetInfo.companyData : null;
             this.breadcrumb = vyzva.breadcrumbBase(this, true);
             this.breadcrumb.push({ title: this.title = 'Studijní skupiny a licenční klíče', active: true });
@@ -82,6 +82,7 @@ var vyzva;
         managerSchool.prototype.debugDeletCompany = function () {
             proxies.vyzva57services.writeCompanyData(this.ctx.companyid, null, $.noop);
         };
+        managerSchool.$inject = ['$scope', '$state', '$intranetInfo'];
         managerSchool.groupIdCounter = 1;
         return managerSchool;
     })(blended.controller);

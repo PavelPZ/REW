@@ -8,9 +8,9 @@ var vyzva;
 (function (vyzva) {
     var lectorController = (function (_super) {
         __extends(lectorController, _super);
-        function lectorController(state) {
-            _super.call(this, state);
-            var lectorGroups = (this.taskRoot()).lectorGroups;
+        function lectorController($scope, $state) {
+            _super.call(this, $scope, $state);
+            var lectorGroups = this.productParent.lectorGroups;
             var gid = parseInt(this.ctx.groupid);
             this.lectorGroup = _.find(lectorGroups, function (grp) { return grp.groupId == gid; });
         }
@@ -19,9 +19,9 @@ var vyzva;
     vyzva.lectorController = lectorController;
     var lectorViewBase = (function (_super) {
         __extends(lectorViewBase, _super);
-        function lectorViewBase(state) {
-            _super.call(this, state);
-            this.title = 'Studijní skupina ' + this.parent.lectorGroup.title;
+        function lectorViewBase($scope, $state) {
+            _super.call(this, $scope, $state);
+            this.title = 'Studijní skupina ' + this.lectorParent.lectorGroup.title;
             this.breadcrumb = this.breadcrumbBase();
             this.breadcrumb[this.breadcrumb.length - 1].active = true;
         }
@@ -35,11 +35,11 @@ var vyzva;
     vyzva.lectorViewBase = lectorViewBase;
     var lectorViewController = (function (_super) {
         __extends(lectorViewController, _super);
-        function lectorViewController(state) {
-            _super.call(this, state);
+        function lectorViewController($scope, $state) {
+            _super.call(this, $scope, $state);
             this.breadcrumb[this.breadcrumb.length - 1].active = true;
             this.tabIdx = 0;
-            this.students = _.map(this.parent.lectorGroup.studentKeys, function (k) { return { key: k }; });
+            this.students = _.map(this.lectorParent.lectorGroup.studentKeys, function (k) { return { key: k }; });
         }
         lectorViewController.prototype.gotoStudentResult = function (student) {
             var _this = this;

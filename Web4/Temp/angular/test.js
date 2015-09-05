@@ -1,9 +1,10 @@
 var test;
 (function (test) {
     test.rootModule = angular.module('testApp', ['ui.router', 'ngAnimate', 'ui.bootstrap']);
+    var st1, st2;
     test.rootModule.config(['$stateProvider', function ($stateProvider) {
             $stateProvider
-                .state({
+                .state(st1 = {
                 name: 'test',
                 url: '/test',
                 //templateUrl: 'test.html',
@@ -13,15 +14,16 @@ var test;
                     $ctrl1Resolve: function () { return '$ctrl1Resolve'; },
                 }
             })
-                .state({
+                .state(st2 = {
                 name: 'test.home',
                 url: '/home',
-                //templateUrl: 'test.html',
-                template: '<ui-view/>',
+                templateUrl: 'test.html',
+                //template: '<ui-view/>',
                 controller: ctrl2, controllerAs: 'ctrl2as',
                 resolve: {
                     $ctrl2Resolve: function () { return '$ctrl2Resolve'; },
-                }
+                },
+                parent: st1
             })
                 .state({
                 name: 'test.home.page',
@@ -37,38 +39,55 @@ var test;
             });
         }]);
     var ctrl1 = (function () {
-        function ctrl1($scope, $ctrl1Resolve) {
+        function ctrl1($scope, $state, $ctrl1Resolve) {
             this.$ctrl1Resolve = $ctrl1Resolve;
             $scope.scopeProp1 = 'scopeProp1';
             $scope.scopeClick1 = function () { return alert('scopeClick1'); };
             this.prop1 = 'ctrl1.prop1';
+            var st = $state.current;
+            var constr = this.constructor;
+            while (st) {
+                if (st.controller == constr) {
+                    debugger;
+                    break;
+                }
+                st = st.parent;
+            }
         }
         ctrl1.prototype.clickAs1 = function () { alert('ctrl1.clickAs1'); };
         return ctrl1;
     })();
     test.ctrl1 = ctrl1;
     var ctrl2 = (function () {
-        function ctrl2($scope, $ctrl1Resolve, $ctrl2Resolve) {
+        function ctrl2($scope, $state, $ctrl1Resolve, $ctrl2Resolve) {
             this.$ctrl1Resolve = $ctrl1Resolve;
             this.$ctrl2Resolve = $ctrl2Resolve;
             $scope.scopeProp2 = 'scopeProp2';
             $scope.scopeClick2 = function () { return alert('scopeClick2'); };
             this.prop2 = 'ctrl2.prop2';
             this.ctrl1as = $scope.ctrl1as;
+            var st = $state.current;
+            var constr = this.constructor;
+            while (st) {
+                if (st.controller == constr) {
+                    debugger;
+                    break;
+                }
+                st = st.parent;
+            }
         }
         ctrl2.prototype.clickAs2 = function () { alert('ctrl2.clickAs2'); };
         return ctrl2;
     })();
     test.ctrl2 = ctrl2;
     var ctrl3 = (function () {
-        function ctrl3($scope) {
+        function ctrl3($scope, $state) {
         }
         return ctrl3;
     })();
     test.ctrl3 = ctrl3;
     var ctrl4 = (function () {
-        function ctrl4($scope) {
-            debugger;
+        function ctrl4($scope, $state) {
         }
         return ctrl4;
     })();

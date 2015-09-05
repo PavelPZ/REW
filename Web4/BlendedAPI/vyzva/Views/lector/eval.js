@@ -8,8 +8,8 @@ var vyzva;
 (function (vyzva) {
     var lectorEvalController = (function (_super) {
         __extends(lectorEvalController, _super);
-        function lectorEvalController(state) {
-            _super.call(this, state);
+        function lectorEvalController($scope, $state) {
+            _super.call(this, $scope, $state);
             this.tabIdx = 1;
             this.breadcrumb = this.breadcrumbBase();
             this.breadcrumb.push({ title: vyzva.getLectorTabs()[this.tabIdx].shortTitle, active: true });

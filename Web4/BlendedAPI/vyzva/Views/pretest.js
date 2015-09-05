@@ -8,8 +8,8 @@ var vyzva;
 (function (vyzva) {
     var pretestViewController = (function (_super) {
         __extends(pretestViewController, _super);
-        function pretestViewController(state) {
-            _super.call(this, state);
+        function pretestViewController($scope, $state) {
+            _super.call(this, $scope, $state);
             this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb.push({ title: this.title, url: null, active: true });
         }

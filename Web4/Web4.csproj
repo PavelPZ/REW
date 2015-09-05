@@ -263,6 +263,7 @@
     <None Include="BlendedAPI\Styles\other.less" />
     <None Include="BlendedAPI\Styles\topbar.less" />
     <Content Include="BlendedAPI\Styles\trash.css" />
+    <Content Include="BlendedAPI\Todo.txt" />
     <Content Include="BlendedAPI\views\exercise.html" />
     <Content Include="BlendedAPI\vyzva\Views\exercise\moduleMap.html" />
     <Content Include="BlendedAPI\vyzva\Views\exercise\instruction.html" />
