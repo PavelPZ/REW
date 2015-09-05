@@ -15,11 +15,24 @@
       .state({
         name: 'test.home',
         url: '/home',
-        templateUrl: 'test.html',
+        //templateUrl: 'test.html',
+        template: '<ui-view/>',
         controller: ctrl2, controllerAs: 'ctrl2as',
         resolve: {
           $ctrl2Resolve: () => '$ctrl2Resolve',
         }
+      })
+      .state({
+        name: 'test.home.page',
+        url: '/page',
+        template: '<ui-view/>',
+        controller: ctrl3, controllerAs: 'ctrl3as',
+      })
+      .state({
+        name: 'test.home.page.home',
+        url: '/home',
+        controller: ctrl4, controllerAs: 'ctrl4as',
+        templateUrl: 'test2.html',
       })
     ;
   }]);
@@ -45,6 +58,17 @@
     prop2: string;
     ctrl1as: ctrl1;
     clickAs2() { alert('ctrl2.clickAs2'); }
+  }
+
+  export class ctrl3 {
+    constructor($scope) {
+    }
+  }
+
+  export class ctrl4 {
+    constructor($scope) {
+      debugger;
+    }
   }
 
   //rootModule.controller('ctrl1', $scope => new ctrl1($scope));

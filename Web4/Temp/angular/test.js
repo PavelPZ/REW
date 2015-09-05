@@ -16,11 +16,24 @@ var test;
                 .state({
                 name: 'test.home',
                 url: '/home',
-                templateUrl: 'test.html',
+                //templateUrl: 'test.html',
+                template: '<ui-view/>',
                 controller: ctrl2, controllerAs: 'ctrl2as',
                 resolve: {
                     $ctrl2Resolve: function () { return '$ctrl2Resolve'; },
                 }
+            })
+                .state({
+                name: 'test.home.page',
+                url: '/page',
+                template: '<ui-view/>',
+                controller: ctrl3, controllerAs: 'ctrl3as',
+            })
+                .state({
+                name: 'test.home.page.home',
+                url: '/home',
+                controller: ctrl4, controllerAs: 'ctrl4as',
+                templateUrl: 'test2.html',
             });
         }]);
     var ctrl1 = (function () {
@@ -47,4 +60,17 @@ var test;
         return ctrl2;
     })();
     test.ctrl2 = ctrl2;
+    var ctrl3 = (function () {
+        function ctrl3($scope) {
+        }
+        return ctrl3;
+    })();
+    test.ctrl3 = ctrl3;
+    var ctrl4 = (function () {
+        function ctrl4($scope) {
+            debugger;
+        }
+        return ctrl4;
+    })();
+    test.ctrl4 = ctrl4;
 })(test || (test = {}));
