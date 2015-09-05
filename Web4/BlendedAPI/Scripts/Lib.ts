@@ -31,7 +31,7 @@
     returnurl?: string; //return url pro back tlacitko
     //pro intranet:
     groupid?:string, //identifikace skupiny studentu
-    lectortab?: string, //tab na lector strance
+    //lectortab?: string, //tab na lector strance
 
     pretesturl?: string; moduleurl?: string; url?: string; 
     //normalizovana url
@@ -39,7 +39,7 @@
     //services
     $http?: ng.IHttpService,
     $q?: ng.IQService;
-    $state?: angular.ui.IStateService;
+    //$state?: angular.ui.IStateService;
     //produkt
     //product?: IProductEx;
     finishProduct?: (prod: IProductEx) => void;

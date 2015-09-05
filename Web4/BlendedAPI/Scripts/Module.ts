@@ -126,7 +126,7 @@
         params: cloneAndModifyContext(this.ctx, d => d.url = encodeUrl(exNode.url)),
         parent: this,
         current: moduleExerciseState,
-        createMode: createControllerModes.adjustChild
+        //createMode: createControllerModes.adjustChild
       };
       //return new moduleExerciseState.oldController(state, null);
       return new moduleExerciseState.controller(state, null);

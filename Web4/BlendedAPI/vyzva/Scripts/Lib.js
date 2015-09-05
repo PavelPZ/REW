@@ -23,20 +23,4 @@ var vyzva;
         return res;
     }
     vyzva.breadcrumbBase = breadcrumbBase;
-    var globalApi = (function () {
-        function globalApi($scope, $state, ctx) {
-            this.$scope = $scope;
-            this.$state = $state;
-            this.ctx = ctx;
-        }
-        globalApi.prototype.navigateWebHome = function () { Pager.gotoHomeUrl(); };
-        globalApi.prototype.navigateReturnUrl = function () { location.href = this.ctx.returnurl; };
-        globalApi.prototype.navigate = function (stateName, pars) {
-            var _this = this;
-            setTimeout(function () { return _this.$state.go(stateName, pars); }, 1);
-        };
-        return globalApi;
-    })();
-    vyzva.globalApi = globalApi;
-    blended.globalApi = globalApi;
 })(vyzva || (vyzva = {}));

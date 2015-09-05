@@ -119,7 +119,6 @@ var blended;
                 params: blended.cloneAndModifyContext(this.ctx, function (d) { return d.url = blended.encodeUrl(exNode.url); }),
                 parent: this,
                 current: moduleExerciseState,
-                createMode: blended.createControllerModes.adjustChild
             };
             //return new moduleExerciseState.oldController(state, null);
             return new moduleExerciseState.controller(state, null);

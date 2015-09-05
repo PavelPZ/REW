@@ -35,10 +35,11 @@ var blended;
                 return;
             }
             this.$scope = $scope;
+            this.$state = $state;
             extendTaskContext(this.$scope, this);
             this.ctx = $state.params;
             blended.finishContext(this.ctx);
-            this.ctx.$state = $state;
+            //this.ctx.$state = $state;
             this.$scope['ts'] = this;
             var st = $state.current;
             var constr = this.constructor;
@@ -54,7 +55,7 @@ var blended;
         }
         controller.prototype.getStateService = function ($scope) { return !!$scope['current'] ? $scope : null; };
         controller.prototype.href = function (url) {
-            return this.ctx.$state.href(url.stateName, url.pars);
+            return this.$state.href(url.stateName, url.pars);
         };
         controller.prototype.navigate = function (url) {
             if (!url)
@@ -252,7 +253,6 @@ var blended;
                 params: blended.cloneAndModifyContext(this.ctx, function (d) { return d.moduleurl = blended.encodeUrl(actModule.url); }),
                 parent: this,
                 current: blended.prodStates.pretestModule,
-                createMode: blended.createControllerModes.adjustChild
             };
             return new blended.moduleTaskController(state);
         };

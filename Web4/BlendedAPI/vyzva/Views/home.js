@@ -88,7 +88,6 @@ var vyzva;
                     vyzva.stateNames.pretestTask :
                     (lesson.lessonType == homeLessonTypes.test ? vyzva.stateNames.moduleTestTask : vyzva.stateNames.moduleLessonTask),
                 parent: this.myTask,
-                createMode: blended.createControllerModes.adjustChild
             };
             var nextTask = lesson.lessonType == homeLessonTypes.pretest ?
                 new blended.pretestTaskController(service) :
@@ -107,7 +106,6 @@ var vyzva;
                 params: blended.cloneAndModifyContext(this.ctx, function (d) { var mod = _this.myTask.dataNode.pretest.Items[lev]; d.moduleurl = blended.encodeUrl(mod.url); }),
                 current: vyzva.stateNames.pretestPreview,
                 parent: this.myTask,
-                createMode: blended.createControllerModes.adjustChild
             };
             var nextTask = new vyzva.moduleTaskController(service);
             var url = nextTask.goCurrent();

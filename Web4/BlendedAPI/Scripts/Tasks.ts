@@ -25,6 +25,7 @@
   export class controller implements ITaskContext {
     ctx: learnContext;
     state: state;
+    $state: angular.ui.IStateService;
     //parent: controller;
     isWrongUrl: boolean;
     $scope: IControllerScope;
@@ -53,9 +54,10 @@
         return;
       }
       this.$scope = <IControllerScope>$scope;
+      this.$state = $state;
       extendTaskContext(this.$scope, this);
       this.ctx = <learnContext><any>$state.params; finishContext(this.ctx);
-      this.ctx.$state = $state;
+      //this.ctx.$state = $state;
       this.$scope['ts'] = this;
       var st = $state.current;
       var constr = this.constructor;
@@ -73,7 +75,7 @@
     getStateService($scope: ng.IScope | IStateService): IStateService { return !!$scope['current'] ? <IStateService>$scope : null; }
 
     href(url: IStateUrl): string {
-      return this.ctx.$state.href(url.stateName, url.pars);
+      return this.$state.href(url.stateName, url.pars);
     }
     navigate(url: IStateUrl) {
       if (!url) return;
@@ -308,7 +310,7 @@
         params: cloneAndModifyContext(this.ctx, d => d.moduleurl = encodeUrl(actModule.url)),
         parent: this,
         current: prodStates.pretestModule,
-        createMode: createControllerModes.adjustChild
+        //createMode: createControllerModes.adjustChild
       };
       return new moduleTaskController(state);
     }

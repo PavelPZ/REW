@@ -8,12 +8,9 @@ var blended;
     var moduleServiceType = blended.moduleServiceType;
     function createStateData(data) { return data; }
     blended.createStateData = createStateData;
-    (function (createControllerModes) {
-        createControllerModes[createControllerModes["adjustChild"] = 0] = "adjustChild";
-        createControllerModes[createControllerModes["navigate"] = 1] = "navigate"; //controller, vytvoreny by ui-route
-    })(blended.createControllerModes || (blended.createControllerModes = {}));
-    var createControllerModes = blended.createControllerModes;
-    blended.globalApi;
+    //export var globalApi: {
+    //  new ($scope: IControllerScope, $state: angular.ui.IStateService, ctx: learnContext): Object;
+    //};
     //export var globalApi: Function;
     //zaregistrovany stav (v app.ts)
     var state = (function () {

@@ -23,19 +23,19 @@ module blended {
 
   export function createStateData<T>(data: T): T { return data; }
 
-  export enum createControllerModes {
-    adjustChild, //dake controller vytvoreny pro ziskani aktualni URL
-    navigate //controller, vytvoreny by ui-route
-  }
+  //export enum createControllerModes {
+  //  adjustChild, //dake controller vytvoreny pro ziskani aktualni URL
+  //  navigate //controller, vytvoreny by ui-route
+  //}
 
   //parametr CONTROLLER konstructoru
   export interface IStateService {
     current: state; //ui-route state
     params: learnContext; //query parametters
     parent: taskController; //parent $scope.ts
-    createMode: createControllerModes; 
-    $scope?: IControllerScope; //$scope
-    isWrongUrl?: boolean; //priznak nevalidni URL. Preskakuje se vytvareni dalsic CONTROLLERs
+    //createMode: createControllerModes; 
+    //$scope?: IControllerScope; //$scope
+    //isWrongUrl?: boolean; //priznak nevalidni URL. Preskakuje se vytvareni dalsic CONTROLLERs
   }
 
   export interface IStateUrl { //parametr pro navigaci pomoci state services
@@ -43,9 +43,9 @@ module blended {
     pars?: learnContext;
   }
 
-  export var globalApi: {
-    new ($scope: IControllerScope, $state: angular.ui.IStateService, ctx: learnContext): Object;
-  };
+  //export var globalApi: {
+  //  new ($scope: IControllerScope, $state: angular.ui.IStateService, ctx: learnContext): Object;
+  //};
 
   //export var globalApi: Function;
 
@@ -58,7 +58,7 @@ module blended {
     dataNodeUrlParName: string; //jmeno atributu v learnContext. learnContext[dataNodeUrlParName] urcuje URL v produkt sitemap
     data: {}; //dalsi parametry state
     resolve: {}; //asynchronni parametry state
-    oldController: taskControllerType; //puvodni controller (ktery je nahrazen a pouzit zprostredkovane vyse)
+    //oldController: taskControllerType; //puvodni controller (ktery je nahrazen a pouzit zprostredkovane vyse)
     controller: taskControllerType; //puvodni controller (ktery je nahrazen a pouzit zprostredkovane vyse)
     //controller: taskControllerType;
 

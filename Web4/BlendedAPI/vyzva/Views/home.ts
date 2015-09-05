@@ -84,7 +84,7 @@
           stateNames.pretestTask :
           (lesson.lessonType == homeLessonTypes.test ? stateNames.moduleTestTask : stateNames.moduleLessonTask),
         parent: this.myTask,
-        createMode: blended.createControllerModes.adjustChild
+        //createMode: blended.createControllerModes.adjustChild
       };
 
 
@@ -106,7 +106,7 @@
         params: blended.cloneAndModifyContext(this.ctx, d => { var mod = this.myTask.dataNode.pretest.Items[lev]; d.moduleurl = blended.encodeUrl(mod.url); }),
         current: stateNames.pretestPreview,
         parent: this.myTask,
-        createMode: blended.createControllerModes.adjustChild
+        //createMode: blended.createControllerModes.adjustChild
       }
       var nextTask = new moduleTaskController(service);
       var url = nextTask.goCurrent();
