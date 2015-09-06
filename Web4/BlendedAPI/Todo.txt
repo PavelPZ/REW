@@ -1,9 +1,6 @@
-﻿Home:
-- doplnit detailni skore u produktu pro home.more tlacitko
-- obecne: zavest pocet hotovych cviceni do skore
+﻿- modalni dialogy na ukonceni modulu
 
-Exercise
-- neaktualizuji se detail module informace pro cerstve vyhodnocene cviceni
+- kdyz se prerusi test tak posledni nevyplnene cviceni je Done
 
 Vylepsit layout managerske stranky
 
@@ -13,5 +10,4 @@ Lesson exercise:
 - reset cviceni, reset lekce
 - modalni dialogy na ukonceni modulu
 
-vyhodit stateNames.pretestPreview stav, pretest prohlizet v normalnim runtime stavu
 

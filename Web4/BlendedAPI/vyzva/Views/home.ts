@@ -111,6 +111,7 @@
       var service: blended.IStateService = {
         params: blended.cloneAndModifyContext(this.ctx, d => { var mod = this.myTask.dataNode.pretest.Items[lev]; d.moduleurl = blended.encodeUrl(mod.url); }),
         current: stateNames.pretestPreview,
+        //current: blended.prodStates.pretestModule,
         parent: this.myTask,
         //createMode: blended.createControllerModes.adjustChild
       }

@@ -21,8 +21,7 @@
     lessonType: moduleServiceType;
     exercises: Array<IExItemProxy>; //info o vsech cvicenich modulu
     onbehalfof: boolean;
-    score: number;
-    constructor(node: CourseMeta.data, type: moduleServiceType, controller: controller, forHome:boolean) {
+    constructor(node: CourseMeta.data, type: moduleServiceType, controller: controller, forHome: boolean) {
       this.node = node; this.controller = controller; this.lessonType = type;
       this.onbehalfof = controller.ctx.onbehalfof > 0;
       if (forHome) this.refresh(0);
@@ -36,24 +35,28 @@
           active: idx == actExIdx
         };
       });
-      this.user = agregateShorts(_.map(this.exercises, e => e.user));
-      this.score = scorePercent(this.user);
+      this.user = agregateShortFromNodes(this.node, this.controller.ctx.taskid);
     }
   }
 
   export class moduleService extends moduleServiceLow {
 
-    actEx: exerciseService;
+    exService: exerciseService;
     //stavy
     exShowPanel: boolean;
     exNoclickable: boolean;
     moduleDone: boolean;
-
-    constructor(node: CourseMeta.data, actEx: exerciseService, type: moduleServiceType, controller: controller) {
+    constructor(node: CourseMeta.data, exService: exerciseService, type: moduleServiceType, controller: exerciseTaskViewController) {
       super(node, type, controller, false);
-      this.actEx = actEx; 
-      this.refresh(this.actEx.modIdx);
+      this.exService = exService;
+      this.refresh(this.exService.modIdx);
       this.exShowPanel = this.user.done || this.lessonType != moduleServiceType.pretest;
+    }
+
+    showResult(): boolean {
+      var res = this.exService.user && this.exService.user.short && this.exService.user.short.done &&
+        (this.lessonType == blended.moduleServiceType.lesson || this.moduleDone);
+      return res;
     }
 
     resetExercise() { alert('reset'); }
@@ -85,7 +88,7 @@
 
     //skok na jine cviceni, napr. v module map panelu 
     navigateExercise(idx: number) {
-      if (idx == this.actEx.modIdx) return;
+      if (idx == this.exService.modIdx) return;
       var exNode = this.exercises[idx].node;
       var ctx = cloneAndModifyContext(this.controller.ctx, c => c.url = encodeUrl(exNode.url));
       this.controller.navigate({ stateName: this.controller.state.name, pars: ctx });

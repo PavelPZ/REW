@@ -121,6 +121,7 @@ var vyzva;
             var service = {
                 params: blended.cloneAndModifyContext(this.ctx, function (d) { var mod = _this.myTask.dataNode.pretest.Items[lev]; d.moduleurl = blended.encodeUrl(mod.url); }),
                 current: vyzva.stateNames.pretestPreview,
+                //current: blended.prodStates.pretestModule,
                 parent: this.myTask,
             };
             var nextTask = new vyzva.moduleTaskController(service);

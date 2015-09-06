@@ -24,18 +24,20 @@
   export var loadLongData = ['$stateParams', (ctx: blended.learnContext) => {
     blended.finishContext(ctx);
     var def = ctx.$q.defer<IExLong>();
-    proxies.vyzva57services.getLongData(ctx.companyid, ctx.userDataId(), ctx.productUrl, ctx.taskid, ctx.Url, long => {
-      var res = JSON.parse(long);
-      def.resolve(res);
-    });
-    return def.promise;
+    try {
+      proxies.vyzva57services.getLongData(ctx.companyid, ctx.userDataId(), ctx.productUrl, ctx.taskid, ctx.Url, long => {
+        var res = JSON.parse(long);
+        def.resolve(res);
+      });
+    } finally { return def.promise; }
   }];
 
   export class showExerciseModel {
     constructor(public $stateParams: blended.learnContext) { }
     link: (scope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes) => void = (scope, el, attrs) => {
       var exService: exerciseService = scope.exService()
-      scope.$on('$destroy', (ev) => exService.onDestroy(el));
+      //scope.$on('$destroy', ev => exService.onDestroy(el));
+      scope.$on('onStateChangeSuccess', ev => exService.onDestroy(el));
       exService.onDisplay(el, $.noop);
     };
     scope = { exService: '&exService' }
@@ -119,12 +121,10 @@
     greenArrowRoot: taskController; //manager zelene sipky
     modIdx: number; //index cviceni v modulu
     //model
-    doneStatus: exDoneStatus;
-    score: number;
+    confirmWrongScoreDialog: () => ng.IPromise<boolean>;
 
-
-    constructor(exercise: cacheExercise, long: IExLong, controller: exerciseTaskViewController) {
-      this.exercise = exercise;
+    constructor(exercise: cacheExercise, long: IExLong, controller: exerciseTaskViewController, modIdx: number, confirmWrongScoreDialog: () => ng.IPromise<boolean>) {
+      this.exercise = exercise; this.modIdx = modIdx; this.confirmWrongScoreDialog = confirmWrongScoreDialog;
       this.ctx = controller.ctx; this.product = controller.productParent.dataNode;
       //this.exerciseIsTest = controller.state.exerciseIsTest; this.moduleUser = controller.parent.user.short;
       this.exerciseIsTest = controller.moduleParent.state.moduleType != blended.moduleServiceType.lesson;
@@ -133,18 +133,18 @@
       if (!long) { long = {}; this.user.modified = true; }
       this.user.long = long
       this.startTime = Utils.nowToNum();
-      this.modIdx = _.indexOf(controller.moduleParent.exercises, controller.dataNode);
       //greenArrowRoot
       this.greenArrowRoot = controller.pretestParent ? controller.pretestParent : controller.moduleParent;
-      //this.greenArrowRoot = controller;
-      //while (!this.greenArrowRoot.state.isGreenArrowRoot) this.greenArrowRoot = this.greenArrowRoot.parent;
-      this.refresh();
+      //this.refresh();
     }
 
-    refresh() {
-      this.doneStatus = this.user && this.user.short && this.user.short.done ? (this.user.short.ms ? exDoneStatus.active : exDoneStatus.passive) : exDoneStatus.no;
-      this.score = this.doneStatus == exDoneStatus.active ? this.user.short.s / this.user.short.ms * 100 : -1;
+    score(): number {
+      return blended.scorePercent(this.user.short);
     }
+    //refresh() {
+    //  //this.doneStatus = this.user && this.user.short && this.user.short.done ? (this.user.short.ms ? exDoneStatus.active : exDoneStatus.passive) : exDoneStatus.no;
+    //  //this.score = this.doneStatus == exDoneStatus.active ? this.user.short.s / this.user.short.ms * 100 : -1;
+    //}
 
     onDisplay(el: ng.IAugmentedJQuery, completed: (pg: Course.Page) => void) {
       //el.addClass('contentHidden');
@@ -197,11 +197,11 @@
       this.user.modified = true;
 
       if (!this.user.short.done) {
-        if (this.exerciseIsTest) {
-          //el.addClass('contentHidden');
-          this.evaluate(true);
-        } else
-          this.page.provideData(); //prevzeti poslednich dat z kontrolek cviceni
+        //if (this.exerciseIsTest) {
+        //  //el.addClass('contentHidden');
+        //  //this.evaluate(true);
+        //} else
+        this.page.provideData(); //prevzeti poslednich dat z kontrolek cviceni
       }
       //this.product.saveProduct(this.ctx, () => { //ulozeni vysledku do DB
       //uklid
@@ -210,46 +210,58 @@
       ko.cleanNode(el[0]);
       el.html('');
       delete (<CourseMeta.exImpl>(this.exercise.dataNode)).result;
-      delete this.user.long;
       //});
     }
 
-    evaluate(isTest: boolean, exerciseShowWarningPercent?: number): boolean {
-      if (this.user.short.done) return false;
+    //vrati budto promise (=cekani na wrongScore confirmation dialog) nebo showResult (ukazat vysledek vyhodnoceni  - pro aktivni cviceni ano, pro pasivni a test ne)
+    evaluate(isTest: boolean, exerciseShowWarningPercent: number = 75): IEvaluateResult {
+      if (this.user.short.done) { return { showResult: false }; }
       this.user.modified = true;
       var short = this.user.short;
 
       //pasivni stranka
       if (this.page.isPassivePage()) {
-        this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
+        this.page.processReadOnlyEtc(true, true);
         short.done = true;
-        this.refresh();
-        return true;
+        return { showResult: false };
       }
 
-      if (typeof (exerciseShowWarningPercent) == 'undefined') exerciseShowWarningPercent = 75;
       //aktivni stranka
-      this.page.provideData();
-      var score = this.page.getScore();
-      if (!score) { debugger; throw "!score"; short.done = true; return true; }
+      this.page.provideData(); //prevzeti vysledku z kontrolek
+      var score = this.page.getScore(); //vypocet score
+      if (!score) { debugger; short.done = true; return null; }
 
-      var exerciseOK = isTest ? true : (score == null || score.ms == 0 || (score.s / score.ms * 100) >= exerciseShowWarningPercent);
-      //if (!exerciseOK /*&& !gui.alert(alerts.exTooManyErrors, true)*/) return false; //je hodne chyb a uzivatel chce cviceni znova
-      this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
-      if (!isTest) this.page.acceptData(true);
+      var afterConfirmScore = () => {
+        this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
+        if (!isTest) this.page.acceptData(true);
 
-      short.done = true;
-      if (this.exercise.dataNode.ms != score.ms) { debugger; throw "this.maxScore != score.ms"; }
-      short.s = score.s;
-      this.refresh();
-      return true;
+        short.done = true;
+        if (this.exercise.dataNode.ms != score.ms) { debugger; def.reject("this.maxScore != score.ms"); return null; }
+        short.s = score.s;
+        //short.score = blended.scorePercent(short);
+      };
+
+      var exerciseOK = isTest || !this.confirmWrongScoreDialog ? true : (score == null || score.ms == 0 || (score.s / score.ms * 100) >= exerciseShowWarningPercent);
+      if (!exerciseOK) { //ukazat wrongResult confirmation dialog
+        var def = this.ctx.$q.defer<boolean>();
+        try {
+          this.confirmWrongScoreDialog().then(ok => {
+            if (!ok) { def.resolve(false); return; }
+            afterConfirmScore();
+            def.resolve(true);
+          });
+        } finally {
+          return { confirmWrongScore: def.promise };
+        }
+      } else {
+        afterConfirmScore();
+        return { showResult: !isTest };
+      }
     }
   }
-  export enum evaluateResult {
-    wrongScore, //uzivatel chce cviceni delat znova kvuli spatnemu skore
-    passiveEvaluated, //vyhodnoceno pasivni cviceni
-    activeEvaluated, //vyhodnoceno aktivni cviceni
-    other, //cokoliv jineho
+  export interface IEvaluateResult {
+    confirmWrongScore?: ng.IPromise<boolean>;
+    showResult?: boolean;
   }
   var maxDelta = 10 * 60; //10 minut
 
@@ -259,21 +271,21 @@
 
     exService: exerciseService;
     modService: moduleService;
+    $modal: angular.ui.bootstrap.IModalService;
 
     title: string;
     breadcrumb: Array<breadcrumbItem>;
     //parent: moduleTaskController;
 
-    justEvaluated: boolean; //nepersistentni stavova promenna, ridici zobrazeni cviceni po vyhodnoceni
+    //showResultAfterEval: boolean; //nepersistentni stavova promenna - je zobrazen vysledek po vyhodnoceni. V nasledujicim moveForward
 
-    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, $loadedEx: cacheExercise, $loadedLongData: IExLong) {
+    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, $loadedEx: cacheExercise, $loadedLongData: IExLong, $modal: angular.ui.bootstrap.IModalService) {
       super($scope, $state);
-      //constructor(state: IStateService, resolves: Array<any>) {
-      //  super(state);
       this.exParent = this;
       if (this.isFakeCreate) return;
 
-      this.exService = new exerciseService($loadedEx, $loadedLongData, this);
+      var modIdx = _.indexOf(this.moduleParent.exercises, this.dataNode);
+      this.exService = new exerciseService($loadedEx, $loadedLongData, this, modIdx, () => this.fakeModal());
       this.modService = new moduleService(this.moduleParent.dataNode, this.exService, this.moduleParent.state.moduleType, this);
 
       $scope['exService'] = this.exService;
@@ -282,21 +294,42 @@
       this.user = this.exService.user;
 
       this.title = this.dataNode.title;
-      this.moduleParent.onExerciseLoaded(this.exService.modIdx); //zmena actChildIdx v persistentnich datech modulu
+      this.moduleParent.onExerciseLoaded(modIdx); //zmena actChildIdx v persistentnich datech modulu
 
     }
-    static $inject = ['$scope', '$state', '$loadedEx', '$loadedLongData'];
+    static $inject = ['$scope', '$state', '$loadedEx', '$loadedLongData', '$modal'];
+
+    fakeModal(): ng.IPromise<boolean> {
+      var def = this.ctx.$q.defer<boolean>();
+      setTimeout(() => {
+        def.resolve(confirm('XXX'));
+      }, 1000);
+      return def.promise;
+    }
+
 
     //osetreni zelene sipky
     moveForward(sender: exerciseTaskViewController): moveForwardResult {
-      if (this.justEvaluated) { delete this.justEvaluated; return moveForwardResult.toParent; }
-      this.justEvaluated = this.exService.evaluate(this.moduleParent.state.moduleType != blended.moduleServiceType.lesson, this.state.exerciseShowWarningPercent);
-      return this.justEvaluated && (this.moduleParent.state.moduleType == blended.moduleServiceType.lesson) ? moveForwardResult.selfInnner : moveForwardResult.toParent;
+      //if (this.showResultAfterEval) { delete this.showResultAfterEval; return moveForwardResult.toParent; }
+      var res = this.exService.evaluate(this.moduleParent.state.moduleType != blended.moduleServiceType.lesson, this.state.exerciseShowWarningPercent);
+      if (!res.confirmWrongScore) { //neni potreba wrongScore confirmation dialog
+        //this.showResultAfterEval = res.showResult; //
+        return res.showResult ? moveForwardResult.selfInnner : moveForwardResult.toParent;
+      }
+
+      res.confirmWrongScore.then(okScore => {
+        if (!okScore) return;
+        //this.showResultAfterEval = true;
+        this.$scope.$apply();
+        //this.greenClick();
+      });
+      return moveForwardResult.selfInnner;
+      //return this.justEvaluated && this.moduleParent.state.moduleType == blended.moduleServiceType.lesson ? moveForwardResult.selfInnner : moveForwardResult.toParent;
     }
     //provede reset cviceni, napr. v panelu s instrukci
     resetExercise() { alert('reset'); }
 
-    greenClick(sender: exerciseTaskViewController) {
+    greenClick() {
       this.exService.greenArrowRoot.navigateAhead(this);
     }
 

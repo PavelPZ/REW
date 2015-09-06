@@ -11,20 +11,21 @@
       <div class="pull-right" ng-include="'vyzva$common$topbarinnerright.html'"></div>
       <div class="clearfix"></div>
       <div class="clearfix"></div>
-      <div class="ex-items" ng-include="'vyzva$exercise$moduleheader.html'"></div>
+      <div class="ex-items" ng-include="'vyzva$exercise$moduleheaderitem.html'"></div>
     </div>
   </div>
-  <div class="container-fluid" style="background-color:white;" ng-include="'vyzva$exercise$modulemore.html'"></div>
+  <div class="container-fluid" style="background-color:white;" ng-include="'vyzva$exercise$modulemorepanel.html'"></div>
 </div>
 <div class="container lm-top-margin-lg">
   <div class="instruction" ng-include="'vyzva$exercise$instruction.html'"></div>
   <div class="new-ea lm-top-margin" data-show-exercise="" ex-service="::exService"></div>
 </div>
 
-<!--***************** INCLUDES -->
-<script type="text/ng-template" id="vyzva$exercise$moduleheader.html">
+<!--***************** MODULE HEADER ITEM -->
+<script type="text/ng-template" id="vyzva$exercise$moduleheaderitem.html">
   <div ng-if="::modService.exShowPanel" ng-repeat="it in ::modService.exercises" class="ex-item"
        ng-class="{warning:it.background==1, success: it.background==2, 'no-clickable': modService.exNoclickable, active: it.active}"
+       ng-style="{cursor: modService.exNoclickable ? 'default' : 'pointer'}"
        ng-click="modService.exNoclickable ? null : modService.navigateExercise(it.idx)">
     <span ng-if="it.content==1" class="fa fa-check"></span>
     <span ng-if="it.content==2 || it.content==3">{{it.idx+1}}.</span>
@@ -34,7 +35,8 @@
   </div>
 </script>
 
-<script type="text/ng-template" id="vyzva$exercise$modulemore.html">
+<!--***************** MOULE MORE PANEL -->
+<script type="text/ng-template" id="vyzva$exercise$modulemorepanel.html">
   <div collapse="modulecollapsable.isCollapsed" class="container ">
     <div class="more-body-module position-relative">
       <div class="close-panel fa fa-times" ng-click="modulecollapsable.isCollapsed = !modulecollapsable.isCollapsed"></div>
@@ -44,29 +46,38 @@
   </div>
 </script>
 
+<!--***************** INSTRUCTION -->
 <script type="text/ng-template" id="vyzva$exercise$instruction.html">
-  <div ng-controller="collapsable as excollapsed" ng-if="exService.doneStatus && !(exService.exerciseIsTest && !modService.moduleDone)">
+  {{modService.showInstruction}}
+  <div ng-controller="collapsable as excollapsed" ng-if="modService.showResult()">
     <div class="header h4" ng-click="excollapsed.isCollapsed = !excollapsed.isCollapsed">
       <div class="more fa fa-bars"></div>
       <span class="fa fa-check"></span>
-      Cvičení dokončeno<span ng-if="exService.score>=0">, skore: <span vyzva$exmodule$scoreprogress value="{{exService.score}}"></span></span>
+      Cvičení "{{::ts.title}}" dokončeno: <span ng-if="exService.score()>=0"> skore <span vyzva$exmodule$scoreprogress value="{{exService.score()}}"></span></span>
     </div>
     <div collapse="excollapsed.isCollapsed" class="more-body-exercise position-relative">
       <div class="close-panel fa fa-times" ng-click="excollapsed.isCollapsed = !excollapsed.isCollapsed"></div>
-      <hr />
-      <h4>{{::ts.title}}, podrobné informace:</h4>
       <div class="row">
         <div class="col-sm-5">
-          <span vyzva$exmodule$emptytest label="První interakce" value="{{exService.user.short.beg | vyzva$exmodule$sec}}"></span>
-          <span vyzva$exmodule$emptytest label="Poslední interakce" value="{{exService.user.short.end | vyzva$exmodule$sec}}"></span>
-          <span vyzva$exmodule$emptytest label="Strávený čas" value="{{exService.user.short.elapsed | vyzva$exmodule$time}}"></span>
-        </div>
-        <div class="col-sm-5">
+          <table class="table">
+            <tr>
+              <td>První interakce:</td>
+              <td><b>{{(exService.user.short.beg | vyzva$exmodule$sec) || '-'}}</b></td>
+            </tr>
+            <tr>
+              <td>Poslední interakce:</td>
+              <td><b>{{(exService.user.short.end | vyzva$exmodule$sec) || '-'}}</b></td>
+            </tr>
+            <tr>
+              <td>Strávený čas:</td>
+              <td><b>{{(exService.user.short.elapsed | vyzva$exmodule$time) || '-'}}</b></td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>
   </div>
-  <div ng-controller="collapsable as excollapsed" ng-if="!exService.doneStatus">
+  <div ng-controller="collapsable as excollapsed" ng-if="!modService.showResult()">
     <div ng-click="excollapsed.isCollapsed = !excollapsed.isCollapsed" class="header h4">
       <!--<span class="fa fa-question-circle"></span>-->
       {{::exService.instructionData.title}}
@@ -87,6 +98,17 @@
   <div class="modal-body">
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+    <button class="btn btn-primary" type="button" ng-click="::ts.tbClick()">OK</button>
+  </div>
+</script>
+
+<script type="text/ng-template" id="vyzva$exercise$wrongscore.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Wrong score</h3>
+  </div>
+  <div class="modal-body">
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="::ts.tbClick()">OK</button>
   </div>
 </script>

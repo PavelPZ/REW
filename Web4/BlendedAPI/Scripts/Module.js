@@ -39,20 +39,24 @@ var blended;
                     active: idx == actExIdx
                 };
             });
-            this.user = blended.agregateShorts(_.map(this.exercises, function (e) { return e.user; }));
-            this.score = blended.scorePercent(this.user);
+            this.user = blended.agregateShortFromNodes(this.node, this.controller.ctx.taskid);
         };
         return moduleServiceLow;
     })();
     blended.moduleServiceLow = moduleServiceLow;
     var moduleService = (function (_super) {
         __extends(moduleService, _super);
-        function moduleService(node, actEx, type, controller) {
+        function moduleService(node, exService, type, controller) {
             _super.call(this, node, type, controller, false);
-            this.actEx = actEx;
-            this.refresh(this.actEx.modIdx);
+            this.exService = exService;
+            this.refresh(this.exService.modIdx);
             this.exShowPanel = this.user.done || this.lessonType != blended.moduleServiceType.pretest;
         }
+        moduleService.prototype.showResult = function () {
+            var res = this.exService.user && this.exService.user.short && this.exService.user.short.done &&
+                (this.lessonType == blended.moduleServiceType.lesson || this.moduleDone);
+            return res;
+        };
         moduleService.prototype.resetExercise = function () { alert('reset'); };
         moduleService.prototype.refresh = function (actExIdx) {
             var _this = this;
@@ -88,7 +92,7 @@ var blended;
         };
         //skok na jine cviceni, napr. v module map panelu 
         moduleService.prototype.navigateExercise = function (idx) {
-            if (idx == this.actEx.modIdx)
+            if (idx == this.exService.modIdx)
                 return;
             var exNode = this.exercises[idx].node;
             var ctx = blended.cloneAndModifyContext(this.controller.ctx, function (c) { return c.url = blended.encodeUrl(exNode.url); });

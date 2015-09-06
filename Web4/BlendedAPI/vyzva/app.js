@@ -36,8 +36,9 @@ var vyzva;
             //$rootScope.$on('$locationChangeStart', (event: angular.IAngularEvent, newUrl: string, oldUrl: string, newState, oldState) => {
             //})
             //sance zrusit ladovani stranky
-            $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
-                blended.finishContext(fromParams);
+            //$rootScope.$on('$stateChangeStart', (e, toState, toParams, fromState, fromParams) => {
+            $rootScope.$on('$stateChangeSuccess', function (e, toState, toParams, fromState, fromParams) {
+                $rootScope.$broadcast('onStateChangeSuccess'); //sance pred ulozenim produktu naplnit data. Vyuzije pro volani exerciseService.onDestroy
                 var prod = blended.loader.productCache.fromCache(fromParams);
                 if (prod)
                     prod.saveProduct(fromParams, $.noop);

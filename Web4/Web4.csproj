@@ -262,7 +262,6 @@
     <Content Include="BlendedAPI\Styles\img\lm-logo-black.png" />
     <None Include="BlendedAPI\Styles\other.less" />
     <None Include="BlendedAPI\Styles\topbar.less" />
-    <Content Include="BlendedAPI\Styles\trash.css" />
     <Content Include="BlendedAPI\Todo.txt" />
     <Content Include="BlendedAPI\views\exercise.html" />
     <Content Include="BlendedAPI\vyzva\Views\exercise\moduleMap.html" />
@@ -1372,7 +1371,6 @@
     <TypeScriptCompile Include="BlendedAPI\app.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\directives.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Lib.ts" />
-    <None Include="BlendedAPI\Scripts\Persistence.ts_" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Module.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\exercise.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\stateMan.ts" />
@@ -1486,6 +1484,7 @@
     <TypeScriptCompile Include="JsLib\JSD\angularjs\angular-resource.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\angularjs\angular-route.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\angularjs\angular-sanitize.d.ts" />
+    <TypeScriptCompile Include="JsLib\JSD\angularjs\angular-ui-bootstrap.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\angularjs\angular-ui-router.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\HtmlAudio\waa.d.ts" />
