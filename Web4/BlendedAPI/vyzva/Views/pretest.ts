@@ -1,6 +1,5 @@
 ﻿namespace vyzva {
 
-
   export class pretestViewController extends blended.taskViewController {
     constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
       super($scope, $state);

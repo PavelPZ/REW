@@ -36,10 +36,12 @@ var blended;
         .directive('showExercise', ['$stateParams', function ($stateParams) { return new showExerciseModel($stateParams); }]);
     function scorePercent(sc) { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
     blended.scorePercent = scorePercent;
+    function donesPercent(sc) { return sc.count == 0 ? -1 : Math.round((sc.dones || 0) / sc.count * 100); }
+    blended.donesPercent = donesPercent;
     function scoreText(sc) { var pr = scorePercent(sc); return pr < 0 ? '' : pr.toString() + '%'; }
     blended.scoreText = scoreText;
     function agregateShorts(shorts) {
-        var res = $.extend({}, shortDefault);
+        var res = $.extend({}, blended.shortDefault);
         res.done = true;
         _.each(shorts, function (short) {
             if (!short) {
@@ -49,6 +51,7 @@ var blended;
             var done = short.done;
             res.done = res.done && done;
             res.count += short.count || 1;
+            res.dones += (short.dones ? short.dones : (short.done ? 1 : 0));
             if (done) {
                 res.ms += short.ms || 0;
                 res.s += short.s || 0;
@@ -58,11 +61,13 @@ var blended;
             res.end = setDate(res.end, short.end, false);
             res.elapsed += short.elapsed || 0;
         });
+        res.score = blended.scorePercent(res);
+        res.finished = blended.donesPercent(res);
         return res;
     }
     blended.agregateShorts = agregateShorts;
     function agregateShortFromNodes(node, taskId, moduleAlowFinishWhenUndone /*do vyhodnoceni zahrn i nehotova cviceni*/) {
-        var res = $.extend({}, shortDefault);
+        var res = $.extend({}, blended.shortDefault);
         res.done = true;
         _.each(node.Items, function (nd) {
             if (!blended.isEx(nd))
@@ -70,6 +75,8 @@ var blended;
             res.count++;
             var us = blended.getPersistWrapper(nd, taskId);
             var done = us && us.short.done;
+            if (done)
+                res.dones += (us.short.dones ? us.short.dones : (us.short.done ? 1 : 0));
             res.done = res.done && done;
             if (nd.ms) {
                 if (done) {
@@ -89,10 +96,12 @@ var blended;
                 res.sumRecord += us.short.sumRecord;
             }
         });
+        res.score = blended.scorePercent(res);
+        res.finished = blended.donesPercent(res);
         return res;
     }
     blended.agregateShortFromNodes = agregateShortFromNodes;
-    var shortDefault = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0, count: 0, sumPlay: 0, sumPlayRecord: 0, sumRecord: 0 };
+    blended.shortDefault = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0, count: 0, dones: 0, sumPlay: 0, sumPlayRecord: 0, sumRecord: 0 };
     function setDate(dt1, dt2, min) { if (!dt1)
         return dt2; if (!dt2)
         return dt1; if (min)
@@ -113,7 +122,7 @@ var blended;
             //this.exerciseIsTest = controller.state.exerciseIsTest; this.moduleUser = controller.parent.user.short;
             this.exerciseIsTest = controller.moduleParent.state.moduleType != blended.moduleServiceType.lesson;
             this.moduleUser = controller.moduleParent.user.short;
-            this.user = blended.getPersistWrapper(exercise.dataNode, this.ctx.taskid, function () { var res = $.extend({}, shortDefault); res.ms = exercise.dataNode.ms; return res; });
+            this.user = blended.getPersistWrapper(exercise.dataNode, this.ctx.taskid, function () { var res = $.extend({}, blended.shortDefault); res.ms = exercise.dataNode.ms; return res; });
             if (!long) {
                 long = {};
                 this.user.modified = true;

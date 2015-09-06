@@ -1,15 +1,17 @@
-﻿Doplnit detailni skore u produktu pro home.more tlacitko
-Pretest a test:
-- pri pruchodu je videt More tlacitku modulu
-- problikavaji vysledky cviceni
+﻿Home:
+- doplnit detailni skore u produktu pro home.more tlacitko
+- obecne: zavest pocet hotovych cviceni do skore
+
+Exercise
+- neaktualizuji se detail module informace pro cerstve vyhodnocene cviceni
+
+Vylepsit layout managerske stranky
 
 Lesson exercise:
 - i pasivni cviceni maji vyhodnoceny stav, nepreskakuji se
 - cviceni pouze s Recorderem - nechape se jako aktivni ale jen pasivni.
+- reset cviceni, reset lekce
 - modalni dialogy na ukonceni modulu
 
-onBehav mode: 
-- aby nebyla dostupna zelena sipka a dalsi omezeni
-
-vyhodit stateNames.pretestPreview stav, prohlizeni pretestu v normalnim runtime stavu
+vyhodit stateNames.pretestPreview stav, pretest prohlizet v normalnim runtime stavu
 

@@ -35,3 +35,36 @@
   <div ng-if="::ts.ctx.onbehalfof" class="pull-right onbehav-right-part-at"><i class="fa fa-at"></i></div>
 </script>
 
+<script type="text/ng-template" id="vyzva$common$summary.html">
+  <table class="table">
+    <tr>
+      <td>Skóre:</td>
+      <td><span ng-if="user().score>=0"><span vyzva$exmodule$scoreprogress value="{{user().score}}"></span></span></td>
+      <td>První interakce:</td>
+      <td><b>{{(user().beg | vyzva$exmodule$sec) || '-'}}</b></td>
+      <td>Přehráno zvuku:</td>
+      <td><b>{{(user().sumPlay | vyzva$exmodule$time) || '-'}}</b></td>
+    </tr>
+    <tr>
+      <td>Dokončeno:</td>
+      <td><span vyzva$exmodule$scoreprogress value="{{user().finished}}" colors="score-bar learn-progress"></span></td>
+      <td>Poslední interakce:</td>
+      <td><b>{{(user().end | vyzva$exmodule$sec) || '-'}}</b></td>
+      <td>Vlastní nahrávky</td>
+      <td><b>{{(user().sumRecord | vyzva$exmodule$time) || '-'}}</b></td>
+    </tr>
+    <tr>
+      <td>Počet cvičení</td>
+      <td><b>{{user().count}}</b></td>
+      <td>Strávený čas</td>
+      <td><b>{{(user().elapsed | vyzva$exmodule$time) || '-'}}</b></td>
+      <td>Přehráno nahrávek</td>
+      <td><b>{{(user().sumPlayRecord | vyzva$exmodule$time) || '-'}}</b></td>
+    </tr>
+    <tr>
+      <td>Dokončených cvičení</td>
+      <td><b>{{user().dones}}</b></td>
+      <td colspan="4">&nbsp;</td>
+    </tr>
+  </table>
+</script>

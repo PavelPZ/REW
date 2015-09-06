@@ -212,6 +212,13 @@ var blended;
         return homeTaskController;
     })(taskController);
     blended.homeTaskController = homeTaskController;
+    function pretestScore(dataNode, user, taskId) {
+        if (!user || !user.done)
+            return null;
+        var users = _.map(user.history, function (l) { return blended.agregateShortFromNodes(dataNode.Items[l], taskId); });
+        return blended.agregateShorts(users);
+    }
+    blended.pretestScore = pretestScore;
     var pretestTaskController = (function (_super) {
         __extends(pretestTaskController, _super);
         function pretestTaskController($scope, $state) {

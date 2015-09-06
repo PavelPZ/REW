@@ -3,11 +3,11 @@
   <div class="container-fluid">
     <div class="container">
       <div class="pull-left" ng-include="'vyzva$common$topbarinnerleft.html'"></div>
-      <button class="pull-left btn btn-success btn-lg" ng-if="::!modService.moduleDone" ng-click="::ts.tbClick()">{{::ts.tbTitle}} <i class="fa fa-hand-o-right"></i></button>
+      <button class="pull-left btn btn-success btn-lg" ng-disabled="modService.onbehalfof" ng-if="::!modService.moduleDone" ng-click="::ts.tbClick()">{{::ts.tbTitle}} <i class="fa fa-hand-o-right"></i></button>
       <div class="pull-left module-finished" ng-if="::modService.moduleDone"><i class="fa fa-checked"></i> {{::ts.tbDoneTitle}}</div>
       <button class="btn-finish pull-left btn btn-default" ng-click="::ts.tbNavigateProductHome()">Zpět na kurz <i class="fa fa-level-up"></i></button>
       <div class="pull-left topbar-title" ng-if="::!state.ignorePageTitle">{{::modService.node.title}}</div>
-      <div class="pull-right more fa fa-bars" ng-click="modulecollapsable.isCollapsed = !modulecollapsable.isCollapsed"></div>
+      <div class="pull-right more fa fa-bars" ng-if="::!(exService.exerciseIsTest && !modService.moduleDone)" ng-click="modulecollapsable.isCollapsed = !modulecollapsable.isCollapsed"></div>
       <div class="pull-right" ng-include="'vyzva$common$topbarinnerright.html'"></div>
       <div class="clearfix"></div>
       <div class="clearfix"></div>
@@ -27,39 +27,25 @@
        ng-class="{warning:it.background==1, success: it.background==2, 'no-clickable': modService.exNoclickable, active: it.active}"
        ng-click="modService.exNoclickable ? null : modService.navigateExercise(it.idx)">
     <span ng-if="it.content==1" class="fa fa-check"></span>
-    <span ng-if="it.content==2">{{it.idx+1}}.</span>
-    <span ng-if="it.content==3" xclass="fa fa-folder-o">{{it.idx+1}}.</span>
+    <span ng-if="it.content==2 || it.content==3">{{it.idx+1}}.</span>
+    <!--<span ng-if="it.content==3">{{it.idx+1}}.</span>-->
     <span ng-if="it.content==4" ng-style="it.percent | vyzva$exmodule$percentheight : 28" class="progress-red">{{it.percent}}%</span>
     <span ng-if="it.content==4">{{it.percent}}%</span>
   </div>
 </script>
 
 <script type="text/ng-template" id="vyzva$exercise$modulemore.html">
-  <!--<h1>{{ascollapsable.isCollapsed}}</h1>-->
-  <div collapse="modulecollapsable.isCollapsed" class="container more-body-module position-relative">
-    <div class="close-panel fa fa-times" ng-click="modulecollapsable.isCollapsed = !modulecollapsable.isCollapsed"></div>
-    <h4>{{::modService.node.title}}, podrobné informace:</h4>
-    <div class="row">
-      <div class="col-sm-3">
-        <span ng-if="modService.score>=0">Skóre: <span vyzva$exmodule$scoreprogress value="{{modService.score}}"></span><br /></span>
-        <span vyzva$exmodule$emptytest label="Počet cvičení" value="{{modService.exercises.length}}"></span>
-      </div>
-      <div class="col-sm-5">
-        <span vyzva$exmodule$emptytest label="První interakce" value="{{modService.user.beg | vyzva$exmodule$sec}}"></span>
-        <span vyzva$exmodule$emptytest label="Poslední interakce" value="{{modService.user.end | vyzva$exmodule$sec}}"></span>
-        <span vyzva$exmodule$emptytest label="Strávený čas" value="{{modService.user.elapsed | vyzva$exmodule$time}}"></span>
-      </div>
-      <div class="col-sm-4">
-        <span vyzva$exmodule$emptytest label="Přehráno zvuku" value="{{modService.user.sumPlay | vyzva$exmodule$time}}"></span>
-        <span vyzva$exmodule$emptytest label="Vlastní nahrávky" value="{{modService.user.sumRecord | vyzva$exmodule$time}}"></span>
-        <span vyzva$exmodule$emptytest label="Přehráno nahrávek" value="{{modService.user.sumPlayRecord | vyzva$exmodule$time}}"></span>
-      </div>
+  <div collapse="modulecollapsable.isCollapsed" class="container ">
+    <div class="more-body-module position-relative">
+      <div class="close-panel fa fa-times" ng-click="modulecollapsable.isCollapsed = !modulecollapsable.isCollapsed"></div>
+      <h4>{{::modService.node.title}}, podrobné informace:</h4>
+      <div vyzva$common$summary user="modService.user"></div>
     </div>
   </div>
 </script>
 
 <script type="text/ng-template" id="vyzva$exercise$instruction.html">
-  <div ng-controller="collapsable as excollapsed" ng-if="exService.doneStatus">
+  <div ng-controller="collapsable as excollapsed" ng-if="exService.doneStatus && !(exService.exerciseIsTest && !modService.moduleDone)">
     <div class="header h4" ng-click="excollapsed.isCollapsed = !excollapsed.isCollapsed">
       <div class="more fa fa-bars"></div>
       <span class="fa fa-check"></span>

@@ -7,10 +7,17 @@
 @import "../../bs3/less/variables.less";
 
 .bl {
+
+  @oli-red: #ff6022;
+
   .list-group-item-variant(success-primary; @btn-success-bg; @btn-success-color);
 
   .btn-succes-info {
     .button-variant(@state-success-text; @state-success-bg; @btn-success-bg);
+  }
+
+  .home-more-panel {
+    padding:10px;
   }
 
   .study-plan {
@@ -23,23 +30,44 @@
         margin: 8px 0;
       }
 
-      .left-mark, .right-mark {
+      .left-mark, .right-mark, .percent-mark {
         position: absolute;
+        text-align: center;
       }
 
       .left-mark {
         left: 0;
         top: 10px;
-        font-size: 24px;
         width: 50px;
-        text-align: center;
         border-right: solid 1px transparent;
+        font-size: 24px;
       }
 
       .right-mark {
         top: 10px;
-        //width: 110px;
         right: 10px;
+      }
+
+      .percent-mark {
+        padding-left:5px;
+        .progress-bar {
+          position: relative;
+          width: 38px;
+          height: 32px;
+          font-size: 12px;
+          background-color: @btn-success-bg;
+          border-radius: @alert-border-radius;
+          line-height: 34px;
+
+          .progress-red {
+            position: absolute;
+            background-color: @oli-red;
+            border-radius: @alert-border-radius;
+            left: 0;
+            right: 0;
+            top: 0;
+          }
+        }
       }
     }
 

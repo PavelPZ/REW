@@ -4,10 +4,13 @@
     done: boolean;
     ms: number;
     s: number;
+    score?: number; //pro agregaci: -1 nebo pomer s/ms
     elapsed: number; //straveny cas ve vterinach
     beg: number; //datum zacatku, ve dnech
     end: number; //datum konce (ve dnech), na datum se prevede pomoci intToDate(end * 1000000)
     count?: number; //pro agregaci: pocet zahrnutych cviceni
+    dones?: number; //pro agregaci: hotovych cviceni
+    finished?: number; //pro agregaci: procento hotovych cviceni
     sumPlay?: number; //prehrany nas zvuk (sec)
     sumRecord?: number; //nahrany zvuk  (sec)
     sumPlayRecord?: number; //prehrano nahravek (sec)
@@ -42,6 +45,7 @@
   ;
 
   export function scorePercent(sc: IExShort) { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
+  export function donesPercent(sc: IExShort) { return sc.count == 0 ? -1 : Math.round((sc.dones || 0) / sc.count * 100); }
   export function scoreText(sc: IExShort) { var pr = scorePercent(sc); return pr < 0 ? '' : pr.toString() + '%'; }
 
   export function agregateShorts(shorts: Array<IExShort>): IExShort {
@@ -52,6 +56,7 @@
       var done = short.done;
       res.done = res.done && done;
       res.count += short.count || 1;
+      res.dones += (short.dones ? short.dones : (short.done ? 1 : 0));
       if (done) { //zapocitej hotove cviceni
         res.ms += short.ms || 0; res.s += short.s || 0;
       }
@@ -59,6 +64,8 @@
       res.beg = setDate(res.beg, short.beg, true); res.end = setDate(res.end, short.end, false);
       res.elapsed += short.elapsed || 0;
     });
+    res.score = blended.scorePercent(res);
+    res.finished = blended.donesPercent(res);
     return res;
   }
   export function agregateShortFromNodes(node: CourseMeta.data, taskId: string, moduleAlowFinishWhenUndone?: boolean /*do vyhodnoceni zahrn i nehotova cviceni*/): IExShort {
@@ -69,6 +76,7 @@
       res.count++;
       var us = getPersistWrapper<IExShort>(nd, taskId);
       var done = us && us.short.done;
+      if (done) res.dones += (us.short.dones ? us.short.dones : (us.short.done ? 1 : 0));
       res.done = res.done && done;
       if (nd.ms) { //aktivni cviceni (se skore)
         if (done) { //hotove cviceni, zapocitej vzdy
@@ -83,9 +91,11 @@
         res.sumPlay += us.short.sumPlay; res.sumPlayRecord += us.short.sumPlayRecord; res.sumRecord += us.short.sumRecord;
       }
     })
+    res.score = blended.scorePercent(res);
+    res.finished = blended.donesPercent(res);
     return res;
   }
-  var shortDefault: IExShort = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0, count: 0, sumPlay: 0, sumPlayRecord: 0, sumRecord: 0 };
+  export var shortDefault: IExShort = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0, count: 0, dones: 0, sumPlay: 0, sumPlayRecord: 0, sumRecord: 0 };
   function setDate(dt1: number, dt2: number, min: boolean): number { if (!dt1) return dt2; if (!dt2) return dt1; if (min) return dt2 > dt1 ? dt1 : dt2; else return dt2 < dt1 ? dt1 : dt2; }
 
   //long persistent informace o cviceni
@@ -258,8 +268,8 @@
 
     constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, $loadedEx: cacheExercise, $loadedLongData: IExLong) {
       super($scope, $state);
-    //constructor(state: IStateService, resolves: Array<any>) {
-    //  super(state);
+      //constructor(state: IStateService, resolves: Array<any>) {
+      //  super(state);
       this.exParent = this;
       if (this.isFakeCreate) return;
 

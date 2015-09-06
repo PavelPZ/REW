@@ -20,30 +20,45 @@ var blended;
         exItemContent[exItemContent["progressBar"] = 4] = "progressBar";
     })(blended.exItemContent || (blended.exItemContent = {}));
     var exItemContent = blended.exItemContent;
-    var moduleService = (function () {
-        function moduleService(node, actEx, type, controller) {
+    var moduleServiceLow = (function () {
+        function moduleServiceLow(node, type, controller, forHome) {
             this.node = node;
-            this.actEx = actEx;
             this.controller = controller;
-            this.type = type;
+            this.lessonType = type;
             this.onbehalfof = controller.ctx.onbehalfof > 0;
-            this.refresh();
-            this.exShowPanel = this.user.done || this.type != blended.moduleServiceType.pretest;
+            if (forHome)
+                this.refresh(0);
         }
-        moduleService.prototype.resetExercise = function () { alert('reset'); };
-        moduleService.prototype.refresh = function () {
+        moduleServiceLow.prototype.refresh = function (actExIdx) {
             var _this = this;
             this.exercises = _.map(_.filter(this.node.Items, function (it) { return isEx(it); }), function (node, idx) {
                 return {
                     user: blended.getPersistData(node, _this.controller.ctx.taskid),
                     idx: idx,
                     node: node,
-                    active: idx == _this.actEx.modIdx
+                    active: idx == actExIdx
                 };
             });
             this.user = blended.agregateShorts(_.map(this.exercises, function (e) { return e.user; }));
+            this.score = blended.scorePercent(this.user);
+        };
+        return moduleServiceLow;
+    })();
+    blended.moduleServiceLow = moduleServiceLow;
+    var moduleService = (function (_super) {
+        __extends(moduleService, _super);
+        function moduleService(node, actEx, type, controller) {
+            _super.call(this, node, type, controller, false);
+            this.actEx = actEx;
+            this.refresh(this.actEx.modIdx);
+            this.exShowPanel = this.user.done || this.lessonType != blended.moduleServiceType.pretest;
+        }
+        moduleService.prototype.resetExercise = function () { alert('reset'); };
+        moduleService.prototype.refresh = function (actExIdx) {
+            var _this = this;
+            _super.prototype.refresh.call(this, actExIdx);
             this.moduleDone = this.user && this.user.done;
-            this.exNoclickable = this.type == blended.moduleServiceType.test && !this.moduleDone;
+            this.exNoclickable = this.lessonType == blended.moduleServiceType.test && !this.moduleDone;
             _.each(this.exercises, function (ex) {
                 //active item: stejny pro vsechny pripady
                 if (ex.active) {
@@ -51,13 +66,14 @@ var blended;
                     ex.background = exItemBackground.warning;
                     return;
                 }
+                var exDone = ex.user && ex.user.done;
                 //nehotovy test
-                if (_this.type == blended.moduleServiceType.test && !_this.moduleDone) {
-                    ex.content = ex.user ? exItemContent.check : exItemContent.folder;
+                if (_this.lessonType == blended.moduleServiceType.test && !_this.moduleDone) {
+                    ex.content = exDone ? exItemContent.check : exItemContent.folder;
                     return;
                 }
                 //vse ostatni: nehotova lekce, hotovy test i pretest
-                if (!ex.user || !ex.user.done)
+                if (!exDone)
                     ex.content = exItemContent.folder;
                 else if (ex.user.ms) {
                     ex.content = exItemContent.progressBar;
@@ -69,7 +85,6 @@ var blended;
                     ex.content = exItemContent.check;
                 }
             });
-            this.score = blended.scorePercent(this.user);
         };
         //skok na jine cviceni, napr. v module map panelu 
         moduleService.prototype.navigateExercise = function (idx) {
@@ -80,7 +95,7 @@ var blended;
             this.controller.navigate({ stateName: this.controller.state.name, pars: ctx });
         };
         return moduleService;
-    })();
+    })(moduleServiceLow);
     blended.moduleService = moduleService;
     function moduleIsDone(nd, taskId) {
         return !_.find(nd.Items, function (it) { var itUd = blended.getPersistData(it, taskId); return (!itUd || !itUd.done); });
@@ -162,8 +177,8 @@ var blended;
     })
         .directive('vyzva$exmodule$scoreprogress', function () {
         return {
-            scope: { value: '@value' },
-            template: '<div class="score-bar"><div class="score-text">{{value}}%</div><div class="progress-red" ng-style="value | vyzva$exmodule$percentwidth : 50"></div></div>'
+            scope: { value: '@value', colors: '@colors' },
+            template: '<div ng-class="colors ? colors: \'score-bar\'"><div class="score-text">{{value}}%</div><div class="progress-red" ng-style="value | vyzva$exmodule$percentwidth : 50"></div></div>'
         };
     });
 })(blended || (blended = {}));

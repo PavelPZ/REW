@@ -12,89 +12,105 @@ var vyzva;
         homeLessonStates[homeLessonStates["done"] = 2] = "done";
     })(vyzva.homeLessonStates || (vyzva.homeLessonStates = {}));
     var homeLessonStates = vyzva.homeLessonStates;
-    (function (homeLessonTypes) {
-        homeLessonTypes[homeLessonTypes["pretest"] = 0] = "pretest";
-        homeLessonTypes[homeLessonTypes["lesson"] = 1] = "lesson";
-        homeLessonTypes[homeLessonTypes["test"] = 2] = "test";
-    })(vyzva.homeLessonTypes || (vyzva.homeLessonTypes = {}));
-    var homeLessonTypes = vyzva.homeLessonTypes;
     (function (rightButtonTypes) {
         rightButtonTypes[rightButtonTypes["no"] = 0] = "no";
         rightButtonTypes[rightButtonTypes["run"] = 1] = "run";
         rightButtonTypes[rightButtonTypes["preview"] = 2] = "preview";
     })(vyzva.rightButtonTypes || (vyzva.rightButtonTypes = {}));
     var rightButtonTypes = vyzva.rightButtonTypes;
+    (function (leftMarkTypes) {
+        leftMarkTypes[leftMarkTypes["no"] = 0] = "no";
+        leftMarkTypes[leftMarkTypes["active"] = 1] = "active";
+        leftMarkTypes[leftMarkTypes["pretestLevel"] = 2] = "pretestLevel";
+        leftMarkTypes[leftMarkTypes["progress"] = 3] = "progress";
+    })(vyzva.leftMarkTypes || (vyzva.leftMarkTypes = {}));
+    var leftMarkTypes = vyzva.leftMarkTypes;
     //****************** VIEW
+    var homeLesson = (function (_super) {
+        __extends(homeLesson, _super);
+        function homeLesson() {
+            _super.apply(this, arguments);
+        }
+        return homeLesson;
+    })(blended.moduleServiceLow);
+    vyzva.homeLesson = homeLesson;
     var homeViewController = (function (_super) {
         __extends(homeViewController, _super);
         function homeViewController($scope, $state) {
             var _this = this;
             _super.call(this, $scope, $state);
-            //constructor(state: blended.IStateService) {
-            //super(state);
             this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb[1].active = true;
             var pretestItem;
             var pretestUser;
             var firstNotDoneCheckTestIdx; //index prvnio nehotoveho kontrolniho testu
             var fromNode = function (node, idx) {
-                var res = {
-                    node: node,
-                    user: null,
-                    homeTask: _this.myTask,
-                    idx: idx,
-                    lessonType: idx == 0 ? homeLessonTypes.pretest : (node.url.indexOf('/test') > 0 ? homeLessonTypes.test : homeLessonTypes.lesson),
-                };
-                var nodeUser = blended.getPersistData(_this.myTask.dataNode.pretest, _this.ctx.taskid);
+                var res = new homeLesson(node, idx == 0 ? blended.moduleServiceType.pretest : (node.url.indexOf('/test') > 0 ? blended.moduleServiceType.test : blended.moduleServiceType.lesson), _this, true);
+                res.idx = idx;
+                var nodeUser = blended.getPersistData(node, _this.ctx.taskid);
                 if (idx == 0) {
-                    pretestUser = nodeUser;
-                    res.user = { done: pretestUser ? pretestUser.done : false };
+                    res.user = blended.pretestScore((node), nodeUser, _this.ctx.taskid);
+                    pretestUser = res.user = $.extend(res.user, nodeUser);
                 }
-                else
-                    res.user = nodeUser ? blended.agregateShortFromNodes(res.node, _this.ctx.taskid, false) : null;
+                else {
+                    res.user = blended.agregateShortFromNodes(res.node, _this.ctx.taskid, false);
+                }
                 res.status = !res.user ? homeLessonStates.no : (res.user.done ? homeLessonStates.done : homeLessonStates.entered);
+                //lesson nejde spustit
+                res.cannotRun = _this.ctx.onbehalfof && res.lessonType != blended.moduleServiceType.lesson && res.status != homeLessonStates.done;
                 //rightButtonType management: vsechny nehotove dej RUN a ev. nastav index prvniho nehotoveho check testu
-                if (res.lessonType != homeLessonTypes.pretest)
+                if (res.lessonType != blended.moduleServiceType.pretest)
                     res.rightButtonType = res.status == homeLessonStates.done ? rightButtonTypes.preview : rightButtonTypes.run;
-                if (!firstNotDoneCheckTestIdx && res.lessonType == homeLessonTypes.test && res.status != homeLessonStates.done)
+                if (!firstNotDoneCheckTestIdx && res.lessonType == blended.moduleServiceType.test && res.status != homeLessonStates.done)
                     firstNotDoneCheckTestIdx = idx;
+                //left mark
+                if (res.user && res.user.done)
+                    res.leftMarkType = res.lessonType == blended.moduleServiceType.pretest ? leftMarkTypes.pretestLevel : leftMarkTypes.progress;
                 return res;
             };
-            this.learnPlan = [pretestItem = fromNode(this.myTask.dataNode.pretest, 0)];
+            this.lessons = [pretestItem = fromNode(this.myTask.dataNode.pretest, 0)];
             if (pretestUser && pretestUser.done) {
                 this.pretestLevels = pretestUser.history;
                 this.pretestLevel = pretestUser.targetLevel;
-                this.learnPlan.push(fromNode(this.myTask.dataNode.entryTests[this.pretestLevel], 1));
-                this.learnPlan.pushArray(_.map(this.myTask.dataNode.lessons[this.pretestLevel], function (nd, idx) { return fromNode(nd, idx + 2); }));
+                this.lessons.push(fromNode(this.myTask.dataNode.entryTests[this.pretestLevel], 1));
+                this.lessons.pushArray(_.map(this.myTask.dataNode.lessons[this.pretestLevel], function (nd, idx) { return fromNode(nd, idx + 2); }));
             }
             //rightButtonType management: vsechna cviceni za firstNotDoneCheckTestIdx dej rightButtonTypes=no
-            for (var i = firstNotDoneCheckTestIdx + 1; i < this.learnPlan.length; i++)
-                this.learnPlan[i].rightButtonType = rightButtonTypes.no;
+            for (var i = firstNotDoneCheckTestIdx + 1; i < this.lessons.length; i++)
+                this.lessons[i].rightButtonType = rightButtonTypes.no;
             //prvni nehotovy node je aktivni
-            _.find(this.learnPlan, function (pl) {
+            _.find(this.lessons, function (pl) {
                 if (pl.status == homeLessonStates.done)
                     return false;
                 pl.active = true;
+                pl.leftMarkType = leftMarkTypes.active;
                 return true;
             });
+            //skore za cely kurz
+            //var users = _.map(_.filter(this.lessons, l => /*l.status == homeLessonStates.done &&*/ l.lessonType != blended.moduleServiceType.pretest), l=> l.user);
+            var users = _.map(this.lessons, function (l) { return l.user; });
+            this.user = blended.agregateShorts(users);
+            //this.score = blended.scorePercent(this.user);
         }
         homeViewController.prototype.navigateLesson = function (lesson) {
             var _this = this;
+            if (lesson.cannotRun)
+                return;
             var service = {
-                params: lesson.lessonType == homeLessonTypes.pretest ?
+                params: lesson.lessonType == blended.moduleServiceType.pretest ?
                     blended.cloneAndModifyContext(this.ctx, function (d) { return d.pretesturl = blended.encodeUrl(_this.myTask.dataNode.pretest.url); }) :
                     blended.cloneAndModifyContext(this.ctx, function (d) { return d.moduleurl = blended.encodeUrl(lesson.node.url); }),
-                current: lesson.lessonType == homeLessonTypes.pretest ?
+                current: lesson.lessonType == blended.moduleServiceType.pretest ?
                     vyzva.stateNames.pretestTask :
-                    (lesson.lessonType == homeLessonTypes.test ? vyzva.stateNames.moduleTestTask : vyzva.stateNames.moduleLessonTask),
+                    (lesson.lessonType == blended.moduleServiceType.test ? vyzva.stateNames.moduleTestTask : vyzva.stateNames.moduleLessonTask),
                 parent: this.myTask,
             };
-            var nextTask = lesson.lessonType == homeLessonTypes.pretest ?
+            var nextTask = lesson.lessonType == blended.moduleServiceType.pretest ?
                 new blended.pretestTaskController(service) :
                 new vyzva.moduleTaskController(service);
             var url = nextTask.goCurrent();
             this.navigate(url);
-            //this.myTask.child = lesson.lessonType == homeLessonTypes.pretest ?
+            //this.myTask.child = lesson.lessonType == blended.moduleServiceType.pretest ?
             //  new blended.pretestTaskController(service) :
             //  new moduleTaskController(service);
             //var url = this.myTask.child.goCurrent();
@@ -149,20 +165,16 @@ var vyzva;
     blended.rootModule
         .filter('vyzva$home$nodeclass', function () {
         return function (lesson) {
-            if (lesson.active && lesson.lessonType != homeLessonTypes.pretest)
+            if (lesson.active && lesson.lessonType != blended.moduleServiceType.pretest)
                 return "list-group-item-success-primary";
-            else if (lesson.status == homeLessonStates.done || (lesson.active && lesson.lessonType == homeLessonTypes.pretest))
+            else if (lesson.status == homeLessonStates.done || (lesson.active && lesson.lessonType == blended.moduleServiceType.pretest))
                 return "list-group-item-success";
         };
     })
-        .filter('vyzva$home$doneicon', function () {
-        return function (lesson) {
-            if (lesson.active)
-                return "fa-hand-o-right";
-            switch (lesson.status) {
-                case homeLessonStates.done: return "fa-check";
-                default: return "";
-            }
+        .directive('vyzva$common$summary', function () {
+        return {
+            scope: { user: '&user' },
+            templateUrl: 'vyzva$common$summary.html'
         };
     });
 })(vyzva || (vyzva = {}));

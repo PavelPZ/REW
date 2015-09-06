@@ -269,6 +269,11 @@
     targetLevel: levelIds; //vysledek pretestu pro done=true
   }
 
+  export function pretestScore(dataNode: IPretestRepository, user: IPretestUser, taskId:string): IExShort {
+    if (!user || !user.done) return null;
+    var users = _.map(user.history, l => agregateShortFromNodes(dataNode.Items[l], taskId));
+    return agregateShorts(users);
+  }
 
   export class pretestTaskController extends taskController { //task pro pruchod testem
 

@@ -12,21 +12,20 @@
 <div class="panel panel-primary lm-top-margin home-course" ng-if="::ts.myTask.isStudent" ng-controller="collapsable as homecollapsable" >
   <div class="panel-heading" ng-click="homecollapsable.isCollapsed = !homecollapsable.isCollapsed">
     <h3>
-      <span ng-if="ts.learnPlan[0].status<=1">Rozřazovací test</span>
-      <b ng-if="ts.learnPlan[0].status>1">Kurz úrovně {{::ts.pretestLevel | levelText}}</b>
+      <span ng-if="ts.lessons[0].status<=1">Rozřazovací test</span>
+      <b ng-if="ts.lessons[0].status>1">Kurz úrovně {{::ts.pretestLevel | levelText}}</b>
     </h3>
-    <div ng-if="ts.learnPlan[0].status>1" class="more fa fa-bars fa-lg"></div>
+    <div ng-if="ts.lessons[0].status>1" class="more fa fa-bars fa-lg"></div>
   </div>
-  <div collapse="homecollapsable.isCollapsed" class="position-relative">
+  <div collapse="homecollapsable.isCollapsed" class="position-relative home-more-panel">
     <div class="clearfix"></div>
     <div class="close-panel fa fa-times" ng-click="homecollapsable.isCollapsed = !homecollapsable.isCollapsed"></div>
-    <h1>XXXXX</h1>
-    <h1>XXXXX</h1>
-    <p>adsasd fas dfsad fa sdf</p>
+    <h4>{{::ts.title}}, podrobné informace:</h4>
+    <div vyzva$common$summary user="ts.user"></div>
   </div>
   <ul class="study-plan list-group">
-    <li class="list-group-item" ng-repeat="lesson in ::ts.learnPlan"
-        ng-style="::{cursor: lesson.rightButtonType ? 'pointer' : 'default'}"
+    <li class="list-group-item" ng-repeat="lesson in ::ts.lessons"
+        ng-style="::{cursor: lesson.rightButtonType && !lesson.cannotRun ? 'pointer' : 'default'}"
         ng-click="::lesson.rightButtonType && ts.navigateLesson(lesson)"
         ng-class="::lesson | vyzva$home$nodeclass">
       <div ng-if="::!lesson.lessonType" ng-include="'vyzva$home$pretest.html'"></div>
@@ -35,17 +34,13 @@
   </ul>
 </div>
 
-<script type="text/ng-template" id="vyzva$home$leftmark.html">
-  <div class="left-mark"><i class="fa" ng-class="::lesson | vyzva$home$doneicon"></i></div>
-</script>
-
 <script type="text/ng-template" id="vyzva$home$lesson.html">
   <div ng-include="'vyzva$home$leftmark.html'"></div>
   <button class="btn btn-info right-mark" ng-if="::lesson.rightButtonType==2">Výsledky <i class="fa fa-eye"></i></button>
   <button class="btn right-mark"
           ng-class="::{'btn-success': !lesson.active, 'btn-succes-info': lesson.active}"
           ng-if="::lesson.rightButtonType==1"
-          ng-disabled="api().ctx.onbehalfof">
+          ng-disabled="::lesson.cannotRun">
     Spustit <i class="fa fa-play"></i>
   </button>
   <h4>
@@ -59,7 +54,7 @@
   <div ng-include="'vyzva$home$leftmark.html'"></div>
   <div data-ng-if="::lesson.status<2">
     <p>
-      <button class="btn btn-success btn-lg" ng-disabled="api().ctx.onbehalfof" data-ng-click="::ts.navigateLesson(lesson)">
+      <button class="btn btn-success btn-lg" ng-disabled="::lesson.cannotRun" data-ng-click="::ts.navigateLesson(lesson)">
         {{::lesson.status==0 ? 'Začněte spuštěním testu' : 'Dokončete test'}}
       </button>
     </p>
@@ -73,3 +68,13 @@
   </div>
 </script>
 
+<script type="text/ng-template" id="vyzva$home$leftmark.html">
+  <div ng-if="::lesson.leftMarkType==1" class="left-mark icon"><i class="fa fa-hand-o-right"></i></div>
+  <div ng-if="::lesson.leftMarkType==2" class="left-mark level">{{::ts.pretestLevel | levelText}}</div>
+  <div ng-if="::lesson.leftMarkType==3" class="left-mark percent-mark">
+    <div class="progress-bar">
+      <span ng-style="::lesson.user.score | vyzva$exmodule$percentheight : 32" class="progress-red">{{::lesson.user.score}}%</span>
+      <span>{{::lesson.user.score}}%</span>
+    </div>
+  </div>
+</script>

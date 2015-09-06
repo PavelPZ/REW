@@ -89,6 +89,12 @@ a.bl .wizzard .wizzard-item.active:hover {
   bottom: 0;
   z-index: 20;
 }
+.bl .score-bar.learn-progress {
+  background-color: #5bc0de;
+}
+.bl .score-bar.learn-progress .progress-red {
+  background-color: gray;
+}
 .bl .lm-tabs-header {
   margin-top: -1px;
   background-color: #337ab7;

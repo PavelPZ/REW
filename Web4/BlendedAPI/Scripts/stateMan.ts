@@ -19,7 +19,7 @@
 
 module blended {
 
-  export enum moduleServiceType { lesson, test, pretest }
+  export enum moduleServiceType { pretest, lesson, test }
 
   export function createStateData<T>(data: T): T { return data; }
 

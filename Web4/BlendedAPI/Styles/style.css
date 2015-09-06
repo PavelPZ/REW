@@ -89,6 +89,12 @@ a.bl .wizzard .wizzard-item.active:hover {
   bottom: 0;
   z-index: 20;
 }
+.bl .score-bar.learn-progress {
+  background-color: #5bc0de;
+}
+.bl .score-bar.learn-progress .progress-red {
+  background-color: gray;
+}
 .bl .lm-tabs-header {
   margin-top: -1px;
   background-color: #337ab7;
@@ -217,6 +223,9 @@ fieldset[disabled] .bl .btn-succes-info.active {
   color: #dff0d8;
   background-color: #3c763d;
 }
+.bl .home-more-panel {
+  padding: 10px;
+}
 .bl .study-plan > li {
   position: relative;
   padding-left: 60px;
@@ -226,20 +235,41 @@ fieldset[disabled] .bl .btn-succes-info.active {
   margin: 8px 0;
 }
 .bl .study-plan > li .left-mark,
-.bl .study-plan > li .right-mark {
+.bl .study-plan > li .right-mark,
+.bl .study-plan > li .percent-mark {
   position: absolute;
+  text-align: center;
 }
 .bl .study-plan > li .left-mark {
   left: 0;
   top: 10px;
-  font-size: 24px;
   width: 50px;
-  text-align: center;
   border-right: solid 1px transparent;
+  font-size: 24px;
 }
 .bl .study-plan > li .right-mark {
   top: 10px;
   right: 10px;
+}
+.bl .study-plan > li .percent-mark {
+  padding-left: 5px;
+}
+.bl .study-plan > li .percent-mark .progress-bar {
+  position: relative;
+  width: 38px;
+  height: 32px;
+  font-size: 12px;
+  background-color: #5cb85c;
+  border-radius: 4px;
+  line-height: 34px;
+}
+.bl .study-plan > li .percent-mark .progress-bar .progress-red {
+  position: absolute;
+  background-color: #ff6022;
+  border-radius: 4px;
+  left: 0;
+  right: 0;
+  top: 0;
 }
 .bl .study-plan .list-group-item-success-primary .left-mark {
   border-right-color: #dff0d8;
@@ -327,6 +357,7 @@ fieldset[disabled] .bl .btn-succes-info.active {
 }
 .bl .topbar-exercise .more-body-module {
   background-color: #f5f5f5;
+  padding: 0 15px;
   padding-bottom: 20px;
   border: 1px solid #dddddd;
   border-radius: 4px;
