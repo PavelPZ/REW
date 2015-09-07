@@ -91,6 +91,7 @@
   </div>
 </script>
 
+<!--***************** MODAL DIALOGS -->
 <script type="text/ng-template" id="vyzva$exercise$congratulation.html">
   <div class="modal-header">
     <h3 class="modal-title">Gratulujeme</h3>
@@ -98,7 +99,7 @@
   <div class="modal-body">
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="::ts.tbClick()">OK</button>
+    <button class="btn btn-primary" type="button" lm-enter-key="::$close()" ng-click="::$close()">OK</button>
   </div>
 </script>
 
@@ -109,6 +110,7 @@
   <div class="modal-body">
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="::ts.tbClick()">OK</button>
+    <button class="btn btn-primary" type="button" lm-enter-key="::$close()" ng-click="::$close()">OK</button>
+    <button class="btn btn-default" type="button" ng-click="::$dismiss()">Cancel</button>
   </div>
 </script>

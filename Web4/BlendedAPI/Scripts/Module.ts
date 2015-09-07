@@ -98,9 +98,6 @@
 
   export interface IModuleUser extends IPersistNodeUser { //course dato pro test
     actChildIdx: number;
-    //na TRUE nastaveno pri nasilnem ukonceni testu tlacitkem FINISH test 
-    //(protoze kdyz nejsou vyhodnocena vsechna cviceni, tak by se nepoznalo, zdali je modul ukoncen nebo ne)
-    //neni jeste implementovano
     done: boolean;
   }
 
@@ -118,8 +115,6 @@
 
     constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
       super($scope, $state);
-      //constructor(state: IStateService) {
-      //  super(state);
       this.moduleParent = this;
       this.user = getPersistWrapper<IModuleUser>(this.dataNode, this.ctx.taskid, () => { return { done: false, actChildIdx: 0 }; });
       this.exercises = _.filter(this.dataNode.Items, it => isEx(it));
@@ -140,9 +135,7 @@
         params: cloneAndModifyContext(this.ctx, d => d.url = encodeUrl(exNode.url)),
         parent: this,
         current: moduleExerciseState,
-        //createMode: createControllerModes.adjustChild
       };
-      //return new moduleExerciseState.oldController(state, null);
       return new moduleExerciseState.controller(state, null);
     }
 
@@ -155,9 +148,15 @@
         return moveForwardResult.selfAdjustChild;
       } else {
         var exNode = _.find(this.exercises, it => { var itUd = blended.getPersistData<IExShort>(it, this.ctx.taskid); return (!itUd || !itUd.done); });
-        if (!ud.done && !exNode) { //cerstve hotovo
+        if (!ud.done && !exNode) { //cerstve ukonceny modul, mozno zobrazit dialog s gratulaci
           ud.done = true; this.user.modified = true;
-          return moveForwardResult.toParent;
+          sender.congratulationDialog().then(
+            () => sender.greenClick(),
+            () => sender.greenClick()
+          );
+          this.congratulation = true;
+          return moveForwardResult.selfInnner;
+          //return moveForwardResult.toParent;
           //this.congratulation = true; return moveForwardResult.selfInnner;
         }
         return moveForwardResult.selfAdjustChild;

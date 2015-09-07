@@ -1,7 +1,5 @@
 ﻿- modalni dialogy na ukonceni modulu
 
-- kdyz se prerusi test tak posledni nevyplnene cviceni je Done
-
 Vylepsit layout managerske stranky
 
 Lesson exercise:

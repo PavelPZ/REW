@@ -1,9 +1,45 @@
 var test;
 (function (test) {
+    var modalTest = (function () {
+        function modalTest($scope, $modal) {
+            this.$scope = $scope;
+            this.$modal = $modal;
+            $scope.modalTest = this;
+        }
+        modalTest.prototype.action = function () {
+            this.open().then(function (ok) { return alert(ok ? 'ok' : 'cancel'); }, function () { return alert('cancel'); });
+        };
+        modalTest.prototype.open = function () {
+            var instance = this.$modal.open({
+                templateUrl: 'modaldialog.html',
+            });
+            return instance.result;
+        };
+        return modalTest;
+    })();
+    test.modalTest = modalTest;
+    var modalWindow = (function () {
+        function modalWindow($scope, $modalInstance) {
+            this.$scope = $scope;
+            this.$modalInstance = $modalInstance;
+            //debugger;
+            $scope.ok = function () { return $modalInstance.close(); };
+            $scope.cancel = function () { return $modalInstance.dismiss(); };
+        }
+        return modalWindow;
+    })();
+    test.modalWindow = modalWindow;
     test.rootModule = angular.module('testApp', ['ui.router', 'ngAnimate', 'ui.bootstrap']);
     var st1, st2;
     test.rootModule.config(['$stateProvider', function ($stateProvider) {
             $stateProvider
+                .state({
+                name: 'modal',
+                url: '/modal',
+                //templateUrl: 'test.html',
+                templateUrl: 'modaltest.html',
+                controller: modalTest,
+            })
                 .state(st1 = {
                 name: 'test',
                 url: '/test',

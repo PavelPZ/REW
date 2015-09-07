@@ -1,8 +1,41 @@
 ﻿module test {
+
+  export class modalTest {
+    constructor(public $scope, public $modal: angular.ui.bootstrap.IModalService) {
+      $scope.modalTest = this;
+    }
+    action() {
+      this.open().then(
+        ok => alert(ok ? 'ok' : 'cancel'),
+        () => alert('cancel'));
+    }
+    open(): ng.IPromise<boolean> {
+      var instance = this.$modal.open({
+        templateUrl: 'modaldialog.html',
+        //controller: modalWindow,
+      });
+      return instance.result;
+    }
+  }
+  export class modalWindow {
+    constructor(public $scope, public $modalInstance: angular.ui.bootstrap.IModalServiceInstance) {
+      //debugger;
+      $scope.ok = () => $modalInstance.close();
+      $scope.cancel = () => $modalInstance.dismiss();
+    }
+  }
+
   export var rootModule = angular.module('testApp', [/*'ngLocale', 'ngResource',*/ 'ui.router', 'ngAnimate', 'ui.bootstrap']);
   var st1, st2;
   rootModule.config(['$stateProvider', ($stateProvider: angular.ui.IStateProvider) => {
     $stateProvider
+      .state({
+        name: 'modal',
+        url: '/modal',
+        //templateUrl: 'test.html',
+        templateUrl: 'modaltest.html',
+        controller: modalTest, 
+      })
       .state(st1 = {
         name: 'test',
         url: '/test',

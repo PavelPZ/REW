@@ -111,8 +111,6 @@ var blended;
         __extends(moduleTaskController, _super);
         function moduleTaskController($scope, $state) {
             _super.call(this, $scope, $state);
-            //constructor(state: IStateService) {
-            //  super(state);
             this.moduleParent = this;
             this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { done: false, actChildIdx: 0 }; });
             this.exercises = _.filter(this.dataNode.Items, function (it) { return isEx(it); });
@@ -139,7 +137,6 @@ var blended;
                 parent: this,
                 current: moduleExerciseState,
             };
-            //return new moduleExerciseState.oldController(state, null);
             return new moduleExerciseState.controller(state, null);
         };
         moduleTaskController.prototype.moveForward = function (sender) {
@@ -159,7 +156,9 @@ var blended;
                 if (!ud.done && !exNode) {
                     ud.done = true;
                     this.user.modified = true;
-                    return blended.moveForwardResult.toParent;
+                    sender.congratulationDialog().then(function () { return sender.greenClick(); }, function () { return sender.greenClick(); });
+                    this.congratulation = true;
+                    return blended.moveForwardResult.selfInnner;
                 }
                 return blended.moveForwardResult.selfAdjustChild;
             }

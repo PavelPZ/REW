@@ -6,6 +6,36 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var vyzva;
 (function (vyzva) {
+    var moduleTaskController = (function (_super) {
+        __extends(moduleTaskController, _super);
+        function moduleTaskController() {
+            _super.apply(this, arguments);
+        }
+        return moduleTaskController;
+    })(blended.moduleTaskController);
+    vyzva.moduleTaskController = moduleTaskController;
+    var exerciseViewLow = (function (_super) {
+        __extends(exerciseViewLow, _super);
+        function exerciseViewLow($scope, $state, $loadedEx, $loadedLongData, $modal) {
+            _super.call(this, $scope, $state, $loadedEx, $loadedLongData);
+            this.$modal = $modal;
+        }
+        exerciseViewLow.prototype.tbClick = function () { this.greenClick(); };
+        exerciseViewLow.prototype.tbNavigateProductHome = function () { this.navigate({ stateName: vyzva.stateNames.home.name, pars: this.ctx }); };
+        exerciseViewLow.prototype.confirmWrongScoreDialog = function () {
+            return this.$modal.open({
+                templateUrl: 'vyzva$exercise$wrongscore.html',
+            }).result;
+        };
+        exerciseViewLow.prototype.congratulationDialog = function () {
+            return this.$modal.open({
+                templateUrl: 'vyzva$exercise$congratulation.html',
+            }).result;
+        };
+        exerciseViewLow.$inject = ['$scope', '$state', '$loadedEx', '$loadedLongData', '$modal'];
+        return exerciseViewLow;
+    })(blended.exerciseTaskViewController);
+    vyzva.exerciseViewLow = exerciseViewLow;
     var pretestExercise = (function (_super) {
         __extends(pretestExercise, _super);
         function pretestExercise($scope, $state, $loadedEx, $loadedLongData, $modal) {
@@ -17,10 +47,8 @@ var vyzva;
             this.tbTitle = 'Pokračovat v testu';
             this.tbDoneTitle = 'Test dokončen';
         }
-        pretestExercise.prototype.tbClick = function () { this.greenClick(); };
-        pretestExercise.prototype.tbNavigateProductHome = function () { this.navigate({ stateName: vyzva.stateNames.home.name, pars: this.ctx }); };
         return pretestExercise;
-    })(blended.exerciseTaskViewController);
+    })(exerciseViewLow);
     vyzva.pretestExercise = pretestExercise;
     var lessonExercise = (function (_super) {
         __extends(lessonExercise, _super);
@@ -33,10 +61,8 @@ var vyzva;
             this.tbTitle = 'Pokračovat v lekci';
             this.tbDoneTitle = 'Lekce dokončena';
         }
-        lessonExercise.prototype.tbClick = function () { this.greenClick(); };
-        lessonExercise.prototype.tbNavigateProductHome = function () { this.navigate({ stateName: vyzva.stateNames.home.name, pars: this.ctx }); };
         return lessonExercise;
-    })(blended.exerciseTaskViewController);
+    })(exerciseViewLow);
     vyzva.lessonExercise = lessonExercise;
     var lessonTest = (function (_super) {
         __extends(lessonTest, _super);
@@ -49,9 +75,7 @@ var vyzva;
             this.tbTitle = 'Pokračovat v testu';
             this.tbDoneTitle = 'Test dokončen';
         }
-        lessonTest.prototype.tbClick = function () { this.greenClick(); };
-        lessonTest.prototype.tbNavigateProductHome = function () { this.navigate({ stateName: vyzva.stateNames.home.name, pars: this.ctx }); };
         return lessonTest;
-    })(blended.exerciseTaskViewController);
+    })(exerciseViewLow);
     vyzva.lessonTest = lessonTest;
 })(vyzva || (vyzva = {}));

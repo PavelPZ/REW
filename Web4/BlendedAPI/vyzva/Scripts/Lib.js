@@ -1,8 +1,5 @@
 var vyzva;
 (function (vyzva) {
-    //export enum pageTitlePlace {
-    //  header, page, none
-    //}
     function finishHomeDataNode(prod) {
         if (prod.pretest)
             return;
@@ -11,9 +8,6 @@ var vyzva;
         prod.pretest = (prod.find('/lm/blcourse/' + LMComLib.LineIds[prod.line].toLowerCase() + '/pretests/'));
         prod.entryTests = firstEntryTests;
         prod.lessons = clonedLessons;
-        //_.each(<any>(prod.pretest.Items), (it: CourseMeta.data) => {
-        //  if (it.other) $.extend(it, JSON.parse(it.other));
-        //});
     }
     vyzva.finishHomeDataNode = finishHomeDataNode;
     function breadcrumbBase(ctrl, homeOnly) {

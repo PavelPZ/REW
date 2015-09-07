@@ -1,6 +1,34 @@
 ﻿namespace vyzva {
 
-  export class pretestExercise extends blended.exerciseTaskViewController implements IToolbarRun {
+  export class moduleTaskController extends blended.moduleTaskController {
+    //constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService) {
+    //  super($scope, $state);
+    //}
+    //static $inject = ['$scope', '$state', '$modal'];
+  }
+
+  export class exerciseViewLow extends blended.exerciseTaskViewController implements IToolbarRun {
+    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, $loadedEx: blended.cacheExercise, $loadedLongData: blended.IExLong, public $modal: angular.ui.bootstrap.IModalService) {
+      super($scope, $state, $loadedEx, $loadedLongData);
+    }
+    tbClick() { this.greenClick(); }
+    tbNavigateProductHome() { this.navigate({ stateName: stateNames.home.name, pars: this.ctx }) }
+    tbTitle: string;
+    tbDoneTitle: string;
+    confirmWrongScoreDialog(): ng.IPromise<any> {
+      return this.$modal.open({
+        templateUrl: 'vyzva$exercise$wrongscore.html',
+      }).result;
+    }
+    congratulationDialog(): ng.IPromise<any> {
+      return this.$modal.open({
+        templateUrl: 'vyzva$exercise$congratulation.html',
+      }).result;
+    }
+    static $inject = ['$scope', '$state', '$loadedEx', '$loadedLongData', '$modal'];
+  }
+
+  export class pretestExercise extends exerciseViewLow {
 
     constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, $loadedEx: blended.cacheExercise, $loadedLongData: blended.IExLong, $modal: angular.ui.bootstrap.IModalService) {
       super($scope, $state, $loadedEx, $loadedLongData, $modal);
@@ -10,13 +38,9 @@
       this.tbTitle = 'Pokračovat v testu';
       this.tbDoneTitle = 'Test dokončen';
     }
-    tbClick() { this.greenClick(); }
-    tbNavigateProductHome() { this.navigate({ stateName: stateNames.home.name, pars: this.ctx }) }
-    tbTitle: string;
-    tbDoneTitle: string;
   }
 
-  export class lessonExercise extends blended.exerciseTaskViewController implements IToolbarRun {
+  export class lessonExercise extends exerciseViewLow {
     constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, $loadedEx: blended.cacheExercise, $loadedLongData: blended.IExLong, $modal: angular.ui.bootstrap.IModalService) {
       super($scope, $state, $loadedEx, $loadedLongData, $modal);
       if (this.isFakeCreate) return;
@@ -25,14 +49,10 @@
       this.tbTitle = 'Pokračovat v lekci';
       this.tbDoneTitle = 'Lekce dokončena';
     }
-    tbClick() { this.greenClick(); }
-    tbNavigateProductHome() { this.navigate({ stateName: stateNames.home.name, pars: this.ctx }) }
-    tbTitle: string;
-    tbDoneTitle: string;
     state: state;
   }
 
-  export class lessonTest extends blended.exerciseTaskViewController implements IToolbarRun {
+  export class lessonTest extends exerciseViewLow {
     constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, $loadedEx: blended.cacheExercise, $loadedLongData: blended.IExLong, $modal: angular.ui.bootstrap.IModalService) {
       super($scope, $state, $loadedEx, $loadedLongData, $modal);
       if (this.isFakeCreate) return;
@@ -41,10 +61,6 @@
       this.tbTitle = 'Pokračovat v testu';
       this.tbDoneTitle = 'Test dokončen';
     }
-    tbClick() { this.greenClick(); }
-    tbNavigateProductHome() { this.navigate({ stateName: stateNames.home.name, pars: this.ctx }) }
-    tbTitle: string;
-    tbDoneTitle: string;
     state: state;
   }
 

@@ -180,8 +180,12 @@ var anim;
     }
     anim.toggleMenuLow = toggleMenuLow;
     $(document).on('click', '[data-toggle=menu], [data-toggle=menu] *', toggleMenuLow);
+    //zabrani odchyceni KEY events pro angularjs GUI
+    anim.inAngularjsGui = false;
     //uzavri menu
     $(document).on('keydown', '*', function (ev) {
+        if (anim.inAngularjsGui)
+            return true;
         stopAnim();
         if (ev.keyCode != 27)
             return;

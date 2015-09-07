@@ -1,17 +1,12 @@
-﻿namespace vyzva {
+﻿//namespace vyzva {
 
-  export class moduleViewController extends blended.taskViewController {
-    constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
-      super($scope, $state);
-      this.breadcrumb = breadcrumbBase(this);
-      this.breadcrumb.push({ title: this.title, url: null, active: true });
-    }
-  }
+//  //export class moduleViewController extends blended.taskViewController {
+//  //  constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
+//  //    super($scope, $state);
+//  //    this.breadcrumb = breadcrumbBase(this);
+//  //    this.breadcrumb.push({ title: this.title, url: null, active: true });
+//  //  }
+//  //}
 
-  export class moduleTaskController extends blended.moduleTaskController {
-    constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
-      super($scope, $state);
-    }
-  }
-
-}
+  
+//}

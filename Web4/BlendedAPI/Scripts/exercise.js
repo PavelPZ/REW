@@ -6,6 +6,13 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var blended;
 (function (blended) {
+    (function (exDoneStatus) {
+        exDoneStatus[exDoneStatus["no"] = 0] = "no";
+        exDoneStatus[exDoneStatus["passive"] = 1] = "passive";
+        exDoneStatus[exDoneStatus["active"] = 2] = "active";
+    })(blended.exDoneStatus || (blended.exDoneStatus = {}));
+    var exDoneStatus = blended.exDoneStatus;
+    //********************* RESOLVES
     blended.loadEx = ['$stateParams', function ($stateParams) {
             blended.finishContext($stateParams);
             return blended.loader.adjustEx($stateParams);
@@ -23,6 +30,73 @@ var blended;
                 return def.promise;
             }
         }];
+    //***************** EXERCISE controller
+    var exerciseTaskViewController = (function (_super) {
+        __extends(exerciseTaskViewController, _super);
+        //parent: moduleTaskController;
+        //showResultAfterEval: boolean; //nepersistentni stavova promenna - je zobrazen vysledek po vyhodnoceni. V nasledujicim moveForward
+        function exerciseTaskViewController($scope, $state, $loadedEx, $loadedLongData) {
+            _super.call(this, $scope, $state);
+            this.exParent = this;
+            if (this.isFakeCreate)
+                return;
+            var modIdx = _.indexOf(this.moduleParent.exercises, this.dataNode);
+            this.exService = new exerciseService($loadedEx, $loadedLongData, this, modIdx); //, () => this.confirmWrongScoreDialog());
+            this.modService = new blended.moduleService(this.moduleParent.dataNode, this.exService, this.moduleParent.state.moduleType, this);
+            $scope['exService'] = this.exService;
+            $scope['modService'] = this.modService;
+            this.user = this.exService.user;
+            this.title = this.dataNode.title;
+            this.moduleParent.onExerciseLoaded(modIdx); //zmena actChildIdx v persistentnich datech modulu
+        }
+        exerciseTaskViewController.prototype.confirmWrongScoreDialog = function () {
+            var def = this.ctx.$q.defer();
+            setTimeout(function () {
+                if (confirm('Špatné skore, pokračovat?'))
+                    def.resolve();
+                else
+                    def.reject();
+            }, 1000);
+            return def.promise;
+        };
+        exerciseTaskViewController.prototype.congratulationDialog = function () {
+            var def = this.ctx.$q.defer();
+            setTimeout(function () {
+                alert('Gratulace');
+                def.resolve();
+                ;
+            }, 1000);
+            return def.promise;
+        };
+        //osetreni zelene sipky
+        exerciseTaskViewController.prototype.moveForward = function (sender) {
+            var _this = this;
+            //if (this.showResultAfterEval) { delete this.showResultAfterEval; return moveForwardResult.toParent; }
+            var res = this.exService.evaluate(this.moduleParent.state.moduleType != blended.moduleServiceType.lesson, this.state.exerciseShowWarningPercent);
+            if (!res.confirmWrongScore) {
+                //this.showResultAfterEval = res.showResult; //
+                return res.showResult ? blended.moveForwardResult.selfInnner : blended.moveForwardResult.toParent;
+            }
+            res.confirmWrongScore.then(function (okScore) {
+                if (!okScore)
+                    return;
+                //this.showResultAfterEval = true;
+                _this.$scope.$apply();
+                //this.greenClick();
+            });
+            return blended.moveForwardResult.selfInnner;
+            //return this.justEvaluated && this.moduleParent.state.moduleType == blended.moduleServiceType.lesson ? moveForwardResult.selfInnner : moveForwardResult.toParent;
+        };
+        //provede reset cviceni, napr. v panelu s instrukci
+        exerciseTaskViewController.prototype.resetExercise = function () { alert('reset'); };
+        exerciseTaskViewController.prototype.greenClick = function () {
+            this.exService.greenArrowRoot.navigateAhead(this);
+        };
+        exerciseTaskViewController.$inject = ['$scope', '$state', '$loadedEx', '$loadedLongData'];
+        return exerciseTaskViewController;
+    })(blended.taskController);
+    blended.exerciseTaskViewController = exerciseTaskViewController;
+    //********************* SHOW EXERCISES DIRECTIVE
     var showExerciseModel = (function () {
         function showExerciseModel($stateParams) {
             this.$stateParams = $stateParams;
@@ -39,91 +113,12 @@ var blended;
     blended.showExerciseModel = showExerciseModel;
     blended.rootModule
         .directive('showExercise', ['$stateParams', function ($stateParams) { return new showExerciseModel($stateParams); }]);
-    function scorePercent(sc) { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
-    blended.scorePercent = scorePercent;
-    function donesPercent(sc) { return sc.count == 0 ? -1 : Math.round((sc.dones || 0) / sc.count * 100); }
-    blended.donesPercent = donesPercent;
-    function scoreText(sc) { var pr = scorePercent(sc); return pr < 0 ? '' : pr.toString() + '%'; }
-    blended.scoreText = scoreText;
-    function agregateShorts(shorts) {
-        var res = $.extend({}, blended.shortDefault);
-        res.done = true;
-        _.each(shorts, function (short) {
-            if (!short) {
-                res.done = false;
-                return;
-            }
-            var done = short.done;
-            res.done = res.done && done;
-            res.count += short.count || 1;
-            res.dones += (short.dones ? short.dones : (short.done ? 1 : 0));
-            if (done) {
-                res.ms += short.ms || 0;
-                res.s += short.s || 0;
-            }
-            //elapsed, beg a end
-            res.beg = setDate(res.beg, short.beg, true);
-            res.end = setDate(res.end, short.end, false);
-            res.elapsed += short.elapsed || 0;
-        });
-        res.score = blended.scorePercent(res);
-        res.finished = blended.donesPercent(res);
-        return res;
-    }
-    blended.agregateShorts = agregateShorts;
-    function agregateShortFromNodes(node, taskId, moduleAlowFinishWhenUndone /*do vyhodnoceni zahrn i nehotova cviceni*/) {
-        var res = $.extend({}, blended.shortDefault);
-        res.done = true;
-        _.each(node.Items, function (nd) {
-            if (!blended.isEx(nd))
-                return;
-            res.count++;
-            var us = blended.getPersistWrapper(nd, taskId);
-            var done = us && us.short.done;
-            if (done)
-                res.dones += (us.short.dones ? us.short.dones : (us.short.done ? 1 : 0));
-            res.done = res.done && done;
-            if (nd.ms) {
-                if (done) {
-                    res.ms += nd.ms;
-                    res.s += us.short.s;
-                }
-                else if (moduleAlowFinishWhenUndone) {
-                    res.ms += nd.ms;
-                }
-            }
-            if (us) {
-                res.beg = setDate(res.beg, us.short.beg, true);
-                res.end = setDate(res.end, us.short.end, false);
-                res.elapsed += us.short.elapsed;
-                res.sumPlay += us.short.sumPlay;
-                res.sumPlayRecord += us.short.sumPlayRecord;
-                res.sumRecord += us.short.sumRecord;
-            }
-        });
-        res.score = blended.scorePercent(res);
-        res.finished = blended.donesPercent(res);
-        return res;
-    }
-    blended.agregateShortFromNodes = agregateShortFromNodes;
-    blended.shortDefault = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0, count: 0, dones: 0, sumPlay: 0, sumPlayRecord: 0, sumRecord: 0 };
-    function setDate(dt1, dt2, min) { if (!dt1)
-        return dt2; if (!dt2)
-        return dt1; if (min)
-        return dt2 > dt1 ? dt1 : dt2;
-    else
-        return dt2 < dt1 ? dt1 : dt2; }
-    (function (exDoneStatus) {
-        exDoneStatus[exDoneStatus["no"] = 0] = "no";
-        exDoneStatus[exDoneStatus["passive"] = 1] = "passive";
-        exDoneStatus[exDoneStatus["active"] = 2] = "active";
-    })(blended.exDoneStatus || (blended.exDoneStatus = {}));
-    var exDoneStatus = blended.exDoneStatus;
+    //********************* EXERCISE SERVICE
     var exerciseService = (function () {
-        function exerciseService(exercise, long, controller, modIdx, confirmWrongScoreDialog) {
+        function exerciseService(exercise, long, controller, modIdx) {
             this.exercise = exercise;
             this.modIdx = modIdx;
-            this.confirmWrongScoreDialog = confirmWrongScoreDialog;
+            this.confirmWrongScoreDialog = function () { return controller.confirmWrongScoreDialog(); };
             this.ctx = controller.ctx;
             this.product = controller.productParent.dataNode;
             //this.exerciseIsTest = controller.state.exerciseIsTest; this.moduleUser = controller.parent.user.short;
@@ -143,12 +138,7 @@ var blended;
         exerciseService.prototype.score = function () {
             return blended.scorePercent(this.user.short);
         };
-        //refresh() {
-        //  //this.doneStatus = this.user && this.user.short && this.user.short.done ? (this.user.short.ms ? exDoneStatus.active : exDoneStatus.passive) : exDoneStatus.no;
-        //  //this.score = this.doneStatus == exDoneStatus.active ? this.user.short.s / this.user.short.ms * 100 : -1;
-        //}
         exerciseService.prototype.onDisplay = function (el, completed) {
-            //el.addClass('contentHidden');
             var _this = this;
             var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
             Course.localize(pg, function (s) { return CourseMeta.localizeString(pg.url, s, _this.exercise.mod.loc); });
@@ -175,10 +165,10 @@ var blended;
                 pg.callInitProcs(Course.initPhase.afterRender, function () {
                     pg.callInitProcs(Course.initPhase.afterRender2, function () {
                         if (_this.exerciseIsTest && _this.user.short.done && !_this.moduleUser.done) {
-                            _this.user.short.done = false; //test cviceni nesmi byt (pro nedokonceny test) videt vyhodnocene
+                            //test cviceni nesmi byt (pro nedokonceny test) videt ve vyhodnocenem stavu. Do vyhodnoceneho stav se vrati dalsim klikem na zelenou sipku.
+                            _this.user.short.done = false;
                         }
                         pg.acceptData(_this.user.short.done, exImpl.result);
-                        //el.removeClass('contentHidden');
                         completed(pg);
                     });
                 });
@@ -194,14 +184,8 @@ var blended;
             short.elapsed += delta;
             short.end = Utils.nowToNum();
             this.user.modified = true;
-            if (!this.user.short.done) {
-                //if (this.exerciseIsTest) {
-                //  //el.addClass('contentHidden');
-                //  //this.evaluate(true);
-                //} else
+            if (!this.user.short.done)
                 this.page.provideData(); //prevzeti poslednich dat z kontrolek cviceni
-            }
-            //this.product.saveProduct(this.ctx, () => { //ulozeni vysledku do DB
             //uklid
             if (this.page.sndPage)
                 this.page.sndPage.htmlClearing();
@@ -210,9 +194,9 @@ var blended;
             ko.cleanNode(el[0]);
             el.html('');
             delete (this.exercise.dataNode).result;
-            //});
         };
-        //vrati budto promise (=cekani na wrongScore confirmation dialog) nebo showResult (ukazat vysledek vyhodnoceni  - pro aktivni cviceni ano, pro pasivni a test ne)
+        //vrati budto promise v IEvaluateResult.confirmWrongScore (= aktivni pod 75% = cekani na wrongScore confirmation dialog) 
+        // nebo IEvaluateResult.showResult (ukazat vysledek vyhodnoceni: pro aktivni nad 75% cviceni ano, pro pasivni a test ne)
         exerciseService.prototype.evaluate = function (isTest, exerciseShowWarningPercent) {
             var _this = this;
             if (exerciseShowWarningPercent === void 0) { exerciseShowWarningPercent = 75; }
@@ -252,13 +236,11 @@ var blended;
             if (!exerciseOK) {
                 var def = this.ctx.$q.defer();
                 try {
-                    this.confirmWrongScoreDialog().then(function (ok) {
-                        if (!ok) {
-                            def.resolve(false);
-                            return;
-                        }
+                    this.confirmWrongScoreDialog().then(function () {
                         afterConfirmScore();
                         def.resolve(true);
+                    }, function () {
+                        def.resolve(false);
                     });
                 }
                 finally {
@@ -274,59 +256,4 @@ var blended;
     })();
     blended.exerciseService = exerciseService;
     var maxDelta = 10 * 60; //10 minut
-    //***************** EXERCISE controller
-    var exerciseTaskViewController = (function (_super) {
-        __extends(exerciseTaskViewController, _super);
-        //parent: moduleTaskController;
-        //showResultAfterEval: boolean; //nepersistentni stavova promenna - je zobrazen vysledek po vyhodnoceni. V nasledujicim moveForward
-        function exerciseTaskViewController($scope, $state, $loadedEx, $loadedLongData, $modal) {
-            var _this = this;
-            _super.call(this, $scope, $state);
-            this.exParent = this;
-            if (this.isFakeCreate)
-                return;
-            var modIdx = _.indexOf(this.moduleParent.exercises, this.dataNode);
-            this.exService = new exerciseService($loadedEx, $loadedLongData, this, modIdx, function () { return _this.fakeModal(); });
-            this.modService = new blended.moduleService(this.moduleParent.dataNode, this.exService, this.moduleParent.state.moduleType, this);
-            $scope['exService'] = this.exService;
-            $scope['modService'] = this.modService;
-            this.user = this.exService.user;
-            this.title = this.dataNode.title;
-            this.moduleParent.onExerciseLoaded(modIdx); //zmena actChildIdx v persistentnich datech modulu
-        }
-        exerciseTaskViewController.prototype.fakeModal = function () {
-            var def = this.ctx.$q.defer();
-            setTimeout(function () {
-                def.resolve(confirm('XXX'));
-            }, 1000);
-            return def.promise;
-        };
-        //osetreni zelene sipky
-        exerciseTaskViewController.prototype.moveForward = function (sender) {
-            var _this = this;
-            //if (this.showResultAfterEval) { delete this.showResultAfterEval; return moveForwardResult.toParent; }
-            var res = this.exService.evaluate(this.moduleParent.state.moduleType != blended.moduleServiceType.lesson, this.state.exerciseShowWarningPercent);
-            if (!res.confirmWrongScore) {
-                //this.showResultAfterEval = res.showResult; //
-                return res.showResult ? blended.moveForwardResult.selfInnner : blended.moveForwardResult.toParent;
-            }
-            res.confirmWrongScore.then(function (okScore) {
-                if (!okScore)
-                    return;
-                //this.showResultAfterEval = true;
-                _this.$scope.$apply();
-                //this.greenClick();
-            });
-            return blended.moveForwardResult.selfInnner;
-            //return this.justEvaluated && this.moduleParent.state.moduleType == blended.moduleServiceType.lesson ? moveForwardResult.selfInnner : moveForwardResult.toParent;
-        };
-        //provede reset cviceni, napr. v panelu s instrukci
-        exerciseTaskViewController.prototype.resetExercise = function () { alert('reset'); };
-        exerciseTaskViewController.prototype.greenClick = function () {
-            this.exService.greenArrowRoot.navigateAhead(this);
-        };
-        exerciseTaskViewController.$inject = ['$scope', '$state', '$loadedEx', '$loadedLongData', '$modal'];
-        return exerciseTaskViewController;
-    })(blended.taskController);
-    blended.exerciseTaskViewController = exerciseTaskViewController;
 })(blended || (blended = {}));

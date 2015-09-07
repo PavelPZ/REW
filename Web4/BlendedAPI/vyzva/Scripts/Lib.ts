@@ -1,9 +1,5 @@
 ﻿module vyzva {
 
-  //export enum pageTitlePlace {
-  //  header, page, none
-  //}
-
   export function finishHomeDataNode(prod: IBlendedCourseRepository) {
     if (prod.pretest) return;
     var clonedLessons = _.map(_.range(0, 4), idx => <any>(_.clone(prod.Items[idx].Items))); //pro kazdou level kopie napr. </lm/blcourse/english/a1/>.Items
@@ -11,9 +7,6 @@
     prod.pretest = <any>(prod.find('/lm/blcourse/' + LMComLib.LineIds[prod.line].toLowerCase() + '/pretests/'));
     prod.entryTests = firstEntryTests;
     prod.lessons = clonedLessons;
-    //_.each(<any>(prod.pretest.Items), (it: CourseMeta.data) => {
-    //  if (it.other) $.extend(it, JSON.parse(it.other));
-    //});
   }
 
   export function breadcrumbBase(ctrl: blended.controller, homeOnly?: boolean): Array<blended.breadcrumbItem> {
@@ -21,15 +14,5 @@
     if (!homeOnly) res.push({ title: ctrl.productParent.dataNode.title, url: ctrl.href({ stateName: stateNames.home.name, pars: ctrl.ctx }), active: false });
     return res;
   }
-
-  //export class globalApi {
-  //  constructor(public $scope: blended.IControllerScope, public $state: angular.ui.IStateService, public ctx: blended.learnContext) {
-  //  }
-  //  navigateWebHome() { Pager.gotoHomeUrl(); }
-  //  navigateReturnUrl() { location.href = this.ctx.returnurl; }
-  //  navigate(stateName: string, pars: blended.learnContext) { setTimeout(() => this.$state.go(stateName, pars), 1); }
-  //}
-
-  //blended.globalApi = globalApi;
 
 }

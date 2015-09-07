@@ -62,6 +62,8 @@ var vyzva;
             abstract: true,
             controller: function () { Pager.clearHtml(); },
             template: "<div data-ui-view></div>",
+            onEnter: function () { return anim.inAngularjsGui = true; },
+            onExit: function () { return anim.inAngularjsGui = false; },
             childs: [
                 new state({
                     name: 'managers',
@@ -146,7 +148,7 @@ var vyzva;
                                 blended.prodStates.pretestModule = new state({
                                     name: 'test',
                                     url: '/test/:moduleurl',
-                                    controller: blended.moduleTaskController,
+                                    controller: vyzva.moduleTaskController,
                                     controllerAs: blended.taskContextAs.module,
                                     dataNodeUrlParName: 'moduleUrl',
                                     abstract: true,

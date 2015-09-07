@@ -56,74 +56,78 @@ var blended;
         return ctx;
     }
     blended.finishContext = finishContext;
-    //************ LOGGING functions
-    function traceRoute() {
-        // Credits: Adam's answer in http://stackoverflow.com/a/20786262/69362
-        var $rootScope = angular.element(document.querySelectorAll("[ui-view]")[0]).injector().get('$rootScope');
-        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-            console.log('$stateChangeStart to ' + toState.to + '- fired when the transition begins. toState,toParams : \n', toState, toParams);
+    function scorePercent(sc) { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
+    blended.scorePercent = scorePercent;
+    function donesPercent(sc) { return sc.count == 0 ? -1 : Math.round((sc.dones || 0) / sc.count * 100); }
+    blended.donesPercent = donesPercent;
+    function scoreText(sc) { var pr = scorePercent(sc); return pr < 0 ? '' : pr.toString() + '%'; }
+    blended.scoreText = scoreText;
+    function agregateShorts(shorts) {
+        var res = $.extend({}, blended.shortDefault);
+        res.done = true;
+        _.each(shorts, function (short) {
+            if (!short) {
+                res.done = false;
+                return;
+            }
+            var done = short.done;
+            res.done = res.done && done;
+            res.count += short.count || 1;
+            res.dones += (short.dones ? short.dones : (short.done ? 1 : 0));
+            if (done) {
+                res.ms += short.ms || 0;
+                res.s += short.s || 0;
+            }
+            //elapsed, beg a end
+            res.beg = setDate(res.beg, short.beg, true);
+            res.end = setDate(res.end, short.end, false);
+            res.elapsed += short.elapsed || 0;
         });
-        $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams) {
-            console.log('$stateChangeError - fired when an error occurs during transition.');
-            console.log(arguments);
-        });
-        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-            console.log('$stateChangeSuccess to ' + toState.name + '- fired once the state transition is complete.');
-        });
-        $rootScope.$on('$viewContentLoaded', function (event) {
-            console.log('$viewContentLoaded - fired after dom rendered', event);
-        });
-        $rootScope.$on('$stateNotFound', function (event, unfoundState, fromState, fromParams) {
-            console.log('$stateNotFound ' + unfoundState.to + '  - fired when a state cannot be found by its name.');
-            console.log(unfoundState, fromState, fromParams);
-        });
+        res.score = blended.scorePercent(res);
+        res.finished = blended.donesPercent(res);
+        return res;
     }
-    blended.traceRoute = traceRoute;
-    https: function routerLogging($provide) {
-        $provide.decorator('$rootScope', ['$delegate', function ($delegate) {
-                wrapMethod($delegate, '$broadcast', function (method, args) {
-                    if (isNonSystemEvent(args[0]))
-                        logCall('$broadcast', args);
-                    return method.apply(this, args);
-                });
-                wrapMethod($delegate, '$emit', function (method, args) {
-                    if (isNonSystemEvent(args[0]))
-                        logCall('$emit', args);
-                    return method.apply(this, args);
-                });
-                return $delegate;
-                function isNonSystemEvent(eventName) {
-                    return eventName && eventName[0] && eventName[0] !== '$';
+    blended.agregateShorts = agregateShorts;
+    function agregateShortFromNodes(node, taskId, moduleAlowFinishWhenUndone /*do vyhodnoceni zahrn i nehotova cviceni*/) {
+        var res = $.extend({}, blended.shortDefault);
+        res.done = true;
+        _.each(node.Items, function (nd) {
+            if (!blended.isEx(nd))
+                return;
+            res.count++;
+            var us = blended.getPersistWrapper(nd, taskId);
+            var done = us && us.short.done;
+            if (done)
+                res.dones += (us.short.dones ? us.short.dones : (us.short.done ? 1 : 0));
+            res.done = res.done && done;
+            if (nd.ms) {
+                if (done) {
+                    res.ms += nd.ms;
+                    res.s += us.short.s;
                 }
-            }]);
-        $provide.decorator('$state', ['$delegate', function ($delegate) {
-                wrapMethod($delegate, 'go', function (method, args) {
-                    logCall('$state.go', args);
-                    return method.apply(this, args);
-                });
-                return $delegate;
-            }]);
-        function wrapMethod(obj, methodName, wrapper) {
-            var original = obj[methodName];
-            obj[methodName] = function () {
-                var args = Array.prototype.slice.call(arguments, 0);
-                return wrapper.call(this, original, args);
-            };
-        }
-        function logCall(funcName, args) {
-            var prettyArgs = args.map(function (a) { return repr(a); })
-                .join(', ');
-            console.log(funcName + '(' + prettyArgs + ')');
-        }
-        function repr(obj) {
-            return JSON.stringify(obj, function (k, v) {
-                if (k !== '' && v instanceof Object)
-                    return '[Obj]';
-                else
-                    return v;
-            });
-        }
+                else if (moduleAlowFinishWhenUndone) {
+                    res.ms += nd.ms;
+                }
+            }
+            if (us) {
+                res.beg = setDate(res.beg, us.short.beg, true);
+                res.end = setDate(res.end, us.short.end, false);
+                res.elapsed += us.short.elapsed;
+                res.sumPlay += us.short.sumPlay;
+                res.sumPlayRecord += us.short.sumPlayRecord;
+                res.sumRecord += us.short.sumRecord;
+            }
+        });
+        res.score = blended.scorePercent(res);
+        res.finished = blended.donesPercent(res);
+        return res;
     }
-    blended.routerLogging = routerLogging;
-    ;
+    blended.agregateShortFromNodes = agregateShortFromNodes;
+    blended.shortDefault = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0, count: 0, dones: 0, sumPlay: 0, sumPlayRecord: 0, sumRecord: 0 };
+    function setDate(dt1, dt2, min) { if (!dt1)
+        return dt2; if (!dt2)
+        return dt1; if (min)
+        return dt2 > dt1 ? dt1 : dt2;
+    else
+        return dt2 < dt1 ? dt1 : dt2; }
 })(blended || (blended = {}));
