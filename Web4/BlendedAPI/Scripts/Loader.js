@@ -118,15 +118,17 @@ var blended;
         function adjustProduct(ctx) {
             try {
                 var deferred = ctx.$q.defer();
-                var prod = loader.productCache.fromCache(ctx);
-                if (prod) {
-                    deferred.resolve(prod);
+                var fromCache = loader.productCache.fromCache(ctx, deferred);
+                if (fromCache.prod) {
+                    deferred.resolve(fromCache.prod);
                     return;
-                }
+                } //produkt je jiz nacten, resolve.
+                if (!fromCache.startReading)
+                    return; //produkt se zacal nacitat jiz drive, pouze se deferred ulozi do seznamu deferreds.
                 var href = ctx.productUrl.substr(0, ctx.productUrl.length - 1);
                 var promises = _.map([href + '.js', href + '.' + LMComLib.Langs[ctx.loc] + '.js', href + '_instrs.js'], function (url) { return ctx.$http.get(blended.baseUrlRelToRoot + url, { transformResponse: function (s) { return CourseMeta.jsonParse(s); } }); });
                 ctx.$q.all(promises).then(function (files) {
-                    prod = files[0].data;
+                    var prod = files[0].data;
                     prod.url = ctx.productUrl;
                     prod.instructions = {};
                     prod.nodeDir = {};
@@ -165,7 +167,7 @@ var blended;
                     //cache
                     if (ctx.finishProduct)
                         ctx.finishProduct(prod);
-                    loader.productCache.toCache(ctx, prod);
+                    //productCache.toCache(ctx, prod);
                     //user data
                     proxies.vyzva57services.getShortProductDatas(ctx.companyid, ctx.loginid, ctx.productUrl, function (res) {
                         _.each(res, function (it) {
@@ -180,7 +182,9 @@ var blended;
                                 node.userData[it.taskId] = shortLong;
                             //else debugger; /*something wrong*/
                         });
-                        deferred.resolve(prod);
+                        //product nacten, resolve vsechny cekajici deferreds
+                        loader.productCache.resolveDefereds(fromCache.startReading, prod);
+                        //deferred.resolve(prod);
                     });
                 }, function (errors) {
                     deferred.reject();
@@ -250,24 +254,42 @@ var blended;
                 this.products = [];
                 this.maxInsertOrder = 0;
             }
-            cacheOfProducts.prototype.fromCache = function (ctx) {
+            //data != null => ihned vrat. Jinak startReading!=null => spust nacitani, jinak ukonci.
+            cacheOfProducts.prototype.fromCache = function (ctx, defered) {
                 var resIt = _.find(this.products, function (it) { return it.companyid == ctx.companyid && it.onbehalfof == ctx.onbehalfof || ctx.loginid &&
                     it.loc == ctx.loc && it.producturl == ctx.producturl; });
-                if (resIt)
-                    resIt.insertOrder = this.maxInsertOrder++;
-                return resIt ? resIt.data : null;
+                var justCreated = false;
+                if (!resIt) {
+                    resIt = this.toCache(ctx); //vytvor polozku v cache
+                    resIt.defereds = [];
+                    justCreated = true;
+                }
+                ;
+                if (resIt.data)
+                    return { prod: resIt.data };
+                resIt.defereds.push(defered);
+                resIt.insertOrder = this.maxInsertOrder++; //naposledy pouzity produkt (kvuli vyhazovani z cache)
+                return { startReading: justCreated ? resIt : null };
             };
-            cacheOfProducts.prototype.toCache = function (ctx, prod) {
+            cacheOfProducts.prototype.toCache = function (ctx) {
                 if (this.products.length >= 3) {
                     var minIdx = 99999;
                     for (var i = 0; i < this.products.length; i++)
                         minIdx = Math.min(this.products[i].insertOrder, minIdx);
                     this.products.splice(minIdx, 1);
                 }
-                this.products.push({
+                var res;
+                this.products.push(res = {
                     companyid: ctx.companyid, loc: ctx.loc, producturl: ctx.producturl, onbehalfof: ctx.onbehalfof || ctx.loginid,
-                    data: prod, insertOrder: this.maxInsertOrder++, taskid: null, loginid: -1, lickeys: null, persistence: null
+                    data: null, insertOrder: this.maxInsertOrder++, taskid: null, loginid: -1, lickeys: null, persistence: null
                 });
+                return res;
+            };
+            cacheOfProducts.prototype.resolveDefereds = function (resIt, data) {
+                resIt.data = data;
+                var defs = resIt.defereds;
+                delete resIt.defereds;
+                _.each(defs, function (def) { return def.resolve(data); });
             };
             return cacheOfProducts;
         })();

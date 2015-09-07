@@ -63,7 +63,7 @@ module vyzva {
     //$rootScope.$on('$stateChangeStart', (e, toState, toParams, fromState, fromParams) => {
     $rootScope.$on('$stateChangeSuccess', (e, toState, toParams, fromState, fromParams) => {
       $rootScope.$broadcast('onStateChangeSuccess'); //sance pred ulozenim produktu naplnit data. Vyuzije pro volani exerciseService.onDestroy
-      var prod = blended.loader.productCache.fromCache(fromParams);
+      var prod = blended.loader.productCache.fromCache(fromParams).prod;
       if (prod) prod.saveProduct(fromParams, $.noop);
     });
   }];

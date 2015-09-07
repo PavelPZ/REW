@@ -37,7 +37,7 @@ module blended {
   export function setPersistData<T>(dataNode: CourseMeta.data, taskid: string, modify: (data: T) => void): T {
     var it = dataNode.userData ? dataNode.userData[taskid] : null;
     if (!it) {
-      it = { short: <T>{}, modified: true, long:null };
+      it = { short: <T>{}, modified: true, long: null };
       if (!dataNode.userData) dataNode.userData = {};
       dataNode.userData[taskid] = it;
     } else
@@ -131,15 +131,16 @@ module blended {
     export function adjustProduct(ctx: learnContext): ng.IPromise<IProductEx> {
       try {
         var deferred = ctx.$q.defer();
-        var prod = productCache.fromCache(ctx);
-        if (prod) { deferred.resolve(prod); return; }
+        var fromCache = productCache.fromCache(ctx, deferred);
+        if (fromCache.prod) { deferred.resolve(fromCache.prod); return; } //produkt je jiz nacten, resolve.
+        if (!fromCache.startReading) return; //produkt se zacal nacitat jiz drive, pouze se deferred ulozi do seznamu deferreds.
         var href = ctx.productUrl.substr(0, ctx.productUrl.length - 1);
         var promises = _.map(
           [href + '.js', href + '.' + LMComLib.Langs[ctx.loc] + '.js', href + '_instrs.js'],
           url => ctx.$http.get(baseUrlRelToRoot + url, { transformResponse: s => CourseMeta.jsonParse(s) }));
         ctx.$q.all(promises).then(
           (files: Array<ng.IHttpPromiseCallbackArg<any>>) => {
-            prod = files[0].data; prod.url = ctx.productUrl; prod.instructions = {}; prod.nodeDir = {}; prod.nodeList = [];
+            var prod: IProductEx = files[0].data; prod.url = ctx.productUrl; prod.instructions = {}; prod.nodeDir = {}; prod.nodeList = [];
             finishProduktStart(prod);
             var loc: { [id: string]: any; } = files[1].data; if (!loc) loc = {};
             var instrs: Array<any> = files[2].data;
@@ -147,7 +148,7 @@ module blended {
             var scan: (dt: CourseMeta.data) => void;
             scan = dt => {
               prod.nodeDir[dt.url] = dt; prod.nodeList.push(dt);
-              if (dt.other) dt = $.extend(dt, JSON.parse(dt.other.replace(/'/g,'"')));
+              if (dt.other) dt = $.extend(dt, JSON.parse(dt.other.replace(/'/g, '"')));
               _.each(dt.Items, it => { it.parent = dt; scan(it); });
             };
             scan(prod);
@@ -163,18 +164,20 @@ module blended {
             }
             //cache
             if (ctx.finishProduct) ctx.finishProduct(prod);
-            productCache.toCache(ctx, prod);
+            //productCache.toCache(ctx, prod);
             //user data
             proxies.vyzva57services.getShortProductDatas(ctx.companyid, ctx.loginid, ctx.productUrl, res => {
               _.each(res, it => {
                 var node = prod.nodeDir[it.url]; if (!node) debugger/*something wrong*/;
                 if (!node.userData) node.userData = {};
                 var taskData = node.userData[it.taskId];
-                var shortLong: IPersistNodeItem<any> = { modified: false, long: null, short: JSON.parse(it.shortData)}; 
+                var shortLong: IPersistNodeItem<any> = { modified: false, long: null, short: JSON.parse(it.shortData) };
                 if (!taskData) node.userData[it.taskId] = shortLong;
                 //else debugger; /*something wrong*/
               });
-              deferred.resolve(prod);
+              //product nacten, resolve vsechny cekajici deferreds
+              productCache.resolveDefereds(fromCache.startReading, prod);
+              //deferred.resolve(prod);
             });
           },
           errors => {
@@ -228,30 +231,49 @@ module blended {
     }
 
     //*************** globalni CACHE produktu
+    export interface fromCacheRsult {
+      prod?: IProductEx; //!=null => vse OK, vrat produkt
+      startReading?: productCacheItem; //nove vytvorena polozka, zacalo se nacitat.
+    }
     export interface productCacheItem extends learnContext { //prvek cache
       data: IProductEx;
       insertOrder: number;
-      //defereds: Array<ng.IDeferred<IProductEx>>;
+      defereds?: Array<ng.IDeferred<IProductEx>>;
     }
     export class cacheOfProducts {
       products: Array<productCacheItem> = [];
       maxInsertOrder = 0;
-      fromCache(ctx: learnContext): IProductEx {
+      //data != null => ihned vrat. Jinak startReading!=null => spust nacitani, jinak ukonci.
+      fromCache(ctx: learnContext, defered?: ng.IDeferred<IProductEx>): fromCacheRsult {
         var resIt = _.find(this.products, it => it.companyid == ctx.companyid && it.onbehalfof == ctx.onbehalfof || ctx.loginid &&
           it.loc == ctx.loc && it.producturl == ctx.producturl);
-        if (resIt) resIt.insertOrder = this.maxInsertOrder++;
-        return resIt ? resIt.data : null;
+        var justCreated = false;
+        if (!resIt) { //budto jiz nacteno nebo se zacalo nacitat jiz drive
+          resIt = this.toCache(ctx); //vytvor polozku v cache
+          resIt.defereds = [];
+          justCreated = true;
+        };
+        if (resIt.data) return { prod: resIt.data }
+        resIt.defereds.push(defered);
+        resIt.insertOrder = this.maxInsertOrder++; //naposledy pouzity produkt (kvuli vyhazovani z cache)
+        return { startReading: justCreated ? resIt : null };
       }
-      toCache(ctx: learnContext, prod: IProductEx): void {
+      private toCache(ctx: learnContext): productCacheItem { //privatni 
         if (this.products.length >= 3) { //vyrad prvni pridany
           var minIdx = 99999;
           for (var i = 0; i < this.products.length; i++) minIdx = Math.min(this.products[i].insertOrder, minIdx);
           this.products.splice(minIdx, 1);
         }
-        this.products.push({
+        var res: productCacheItem;
+        this.products.push(res = {
           companyid: ctx.companyid, loc: ctx.loc, producturl: ctx.producturl, onbehalfof: ctx.onbehalfof || ctx.loginid,
-          data: prod, insertOrder: this.maxInsertOrder++, taskid: null, loginid: -1, lickeys: null, persistence: null
+          data: null, insertOrder: this.maxInsertOrder++, taskid: null, loginid: -1, lickeys: null, persistence: null
         });
+        return res;
+      }
+      resolveDefereds(resIt: productCacheItem, data: IProductEx) { //na konci nacteni produktu: resolve vsechny defereds, co na nacteni cekaji
+        resIt.data = data; var defs = resIt.defereds; delete resIt.defereds;
+        _.each(defs, def => def.resolve(data));
       }
     }
 
