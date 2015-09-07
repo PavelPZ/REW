@@ -71,21 +71,16 @@ var blended;
         //osetreni zelene sipky
         exerciseTaskViewController.prototype.moveForward = function (sender) {
             var _this = this;
-            //if (this.showResultAfterEval) { delete this.showResultAfterEval; return moveForwardResult.toParent; }
             var res = this.exService.evaluate(this.moduleParent.state.moduleType != blended.moduleServiceType.lesson, this.state.exerciseShowWarningPercent);
             if (!res.confirmWrongScore) {
-                //this.showResultAfterEval = res.showResult; //
                 return res.showResult ? blended.moveForwardResult.selfInnner : blended.moveForwardResult.toParent;
             }
             res.confirmWrongScore.then(function (okScore) {
                 if (!okScore)
                     return;
-                //this.showResultAfterEval = true;
                 _this.$scope.$apply();
-                //this.greenClick();
             });
             return blended.moveForwardResult.selfInnner;
-            //return this.justEvaluated && this.moduleParent.state.moduleType == blended.moduleServiceType.lesson ? moveForwardResult.selfInnner : moveForwardResult.toParent;
         };
         //provede reset cviceni, napr. v panelu s instrukci
         exerciseTaskViewController.prototype.resetExercise = function () { alert('reset'); };

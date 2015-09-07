@@ -12,7 +12,7 @@
       super($scope, $state, $loadedEx, $loadedLongData);
     }
     tbClick() { this.greenClick(); }
-    tbNavigateProductHome() { this.navigate({ stateName: stateNames.home.name, pars: this.ctx }) }
+    tbNavigateProductHome() { this.navigateProductHome() } //this.navigate({ stateName: stateNames.home.name, pars: this.ctx }) }
     tbTitle: string;
     tbDoneTitle: string;
     confirmWrongScoreDialog(): ng.IPromise<any> {

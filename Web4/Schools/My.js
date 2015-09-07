@@ -183,7 +183,7 @@ var schoolMy;
                                 hash = blended.root.href(vyzva.stateNames.shoolManager.name, ctx);
                                 break;
                             default:
-                                hash = blended.root.href(vyzva.stateNames.home.name, ctx);
+                                hash = blended.root.href(blended.prodStates.home.name, ctx);
                                 break;
                         }
                         Pager.navigateToHash(hash);

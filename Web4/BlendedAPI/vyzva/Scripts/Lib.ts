@@ -11,7 +11,7 @@
 
   export function breadcrumbBase(ctrl: blended.controller, homeOnly?: boolean): Array<blended.breadcrumbItem> {
     var res = [{ title: 'Moje Online jazykové kurzy a testy', url: '#' + Pager.getHomeUrl() }];
-    if (!homeOnly) res.push({ title: ctrl.productParent.dataNode.title, url: ctrl.href({ stateName: stateNames.home.name, pars: ctrl.ctx }), active: false });
+    if (!homeOnly) res.push({ title: ctrl.productParent.dataNode.title, url: ctrl.href(ctrl.getProductHomeUrl()/*{ stateName: stateNames.home.name, pars: ctrl.ctx }*/), active: false });
     return res;
   }
 

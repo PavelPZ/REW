@@ -111,7 +111,7 @@
 
     user: IPersistNodeItem<IModuleUser>;
     exercises: Array<CourseMeta.data>;
-    congratulation: boolean; //priznak, ze modul byl prave preveden do stavu DONE a ukazuje se congratulation dialog
+    inCongratulation: boolean; //priznak, ze modul byl prave preveden do stavu DONE a ukazuje se congratulation dialog
 
     constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
       super($scope, $state);
@@ -140,7 +140,7 @@
     }
 
     moveForward(sender: exerciseTaskViewController): moveForwardResult {
-      if (this.congratulation) { delete this.congratulation; return moveForwardResult.toParent; }
+      if (this.inCongratulation) { delete this.inCongratulation; return moveForwardResult.toParent; }
       var ud = this.user.short;
       if (ud.done) {
         ud.actChildIdx = ud.actChildIdx == this.exercises.length - 1 ? 0 : ud.actChildIdx + 1;
@@ -150,14 +150,13 @@
         var exNode = _.find(this.exercises, it => { var itUd = blended.getPersistData<IExShort>(it, this.ctx.taskid); return (!itUd || !itUd.done); });
         if (!ud.done && !exNode) { //cerstve ukonceny modul, mozno zobrazit dialog s gratulaci
           ud.done = true; this.user.modified = true;
+          if (this.pretestParent) return moveForwardResult.toParent;
           sender.congratulationDialog().then(
             () => sender.greenClick(),
             () => sender.greenClick()
           );
-          this.congratulation = true;
+          this.inCongratulation = true;
           return moveForwardResult.selfInnner;
-          //return moveForwardResult.toParent;
-          //this.congratulation = true; return moveForwardResult.selfInnner;
         }
         return moveForwardResult.selfAdjustChild;
       }

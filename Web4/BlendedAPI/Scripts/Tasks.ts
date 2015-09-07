@@ -89,18 +89,8 @@
 
     navigateWebHome() { Pager.gotoHomeUrl(); }
     navigateReturnUrl() { location.href = this.ctx.returnurl; }
-
-    //taskList(): Array<taskController> {
-    //  var t: taskController = this.taskRoot();
-    //  var res: Array<taskController> = [];
-    //  while (t) { res.push(t); t = t.child; }
-    //  return res;
-    //}
-    //taskRoot<T extends homeTaskController>(): T {
-    //  var t = this;
-    //  while (t.state.name != prodStates.homeTask.name) t = t.parent;
-    //  return <T>t;
-    //}
+    getProductHomeUrl(): IStateUrl { return { stateName: prodStates.home.name, pars: this.ctx };}
+    navigateProductHome() { this.navigate(this.getProductHomeUrl()); }
 
     wrongUrlRedirect(url: IStateUrl) {
       if (!url) return;
@@ -115,12 +105,9 @@
     constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
       super($scope, $state);
       this.myTask = this.isFakeCreate ? (<blended.IStateService>$scope).parent : (<ng.IScope>$scope).$parent['ts'];
-      //constructor(state: IStateService) {
-      //  super(state);
       this.title = this.myTask.dataNode.title;
     }
     myTask: taskController;
-    //parent: taskController;
   }
 
 
@@ -205,7 +192,7 @@
           case moveForwardResult.toParent:
             if (task == task.exParent) { task = task.moduleParent; continue; }
             if (task == task.moduleParent && task.pretestParent) { task = task.pretestParent; continue; }
-            return { stateName: prodStates.home.name, pars: this.ctx }
+            return this.getProductHomeUrl(); //{ stateName: prodStates.home.name, pars: this.ctx }
           case moveForwardResult.selfAdjustChild: return task.goCurrent();
         }
       }
@@ -279,30 +266,29 @@
 
     dataNode: IPretestRepository;
     user: IPersistNodeItem<IPretestUser>;
+    //inCongratulation: boolean; //priznak, ze modul byl prave preveden do stavu DONE a ukazuje se congratulation dialog
 
     constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
       super($scope, $state);
-      //constructor(state: IStateService) {
-      //  super(state);
       this.pretestParent = this;
       //sance prerusit navigaci
+      if (this.isFakeCreate) return;
       this.user = getPersistWrapper<IPretestUser>(this.dataNode, this.ctx.taskid, () => {
         return { actLevel: levelIds.A2, history: [levelIds.A2], targetLevel: -1, done: false };
       });
-      if (this.isFakeCreate) return;
       this.wrongUrlRedirect(this.checkCommingUrl());
     }
 
     checkCommingUrl() {
       var ud = this.user.short;
-      if (!ud) return { stateName: prodStates.home.name, pars: this.ctx }; //pretest jeste nezacal => goto product home
+      if (!ud) return this.getProductHomeUrl(); //{ stateName: prodStates.home.name, pars: this.ctx }; //pretest jeste nezacal => goto product home
       if (ud.done) return null; //done pretest: vse je povoleno
       var dataNode = <IPretestRepository>this.dataNode;
       var actModule = dataNode.Items[ud.actLevel];
       var actEx = this.productParent.dataNode.nodeDir[this.ctx.Url];
       if (actModule.url != actEx.parent.url) { //cviceni neni v aktalnim modulu
         var pars = cloneAndModifyContext(this.ctx, c => c.moduleurl = encodeUrl(actModule.url));
-        return { stateName: prodStates.home.name, pars: pars }; //v URL je adresa jineho nez aktivniho modulu (asi pomoci back) => jdi na prvni cviceni aktualniho modulu
+        return this.getProductHomeUrl(); //{ stateName: prodStates.home.name, pars: pars }; //v URL je adresa jineho nez aktivniho modulu (asi pomoci back) => jdi na prvni cviceni aktualniho modulu
       }
       return null;
     }
@@ -321,6 +307,7 @@
     }
 
     moveForward(sender: exerciseTaskViewController): moveForwardResult {
+      //if (this.inCongratulation) { delete this.inCongratulation; return moveForwardResult.toParent; }
       var ud = this.user.short;
       var actTestItem = sender.moduleParent; // <exerciseTaskViewController>(this.child);
       var actRepo = this.actRepo(ud.actLevel);
@@ -330,18 +317,18 @@
       var score = scorePercent(childSummary);
 
       if (actRepo.level == levelIds.A1) {
-        return this.finishPretest(ud, levelIds.A1);
+        return this.finishPretest(sender, ud, levelIds.A1);
       } else if (actRepo.level == levelIds.A2) {
-        if (score >= actRepo.min && score < actRepo.max) return this.finishPretest(ud, levelIds.A2);
+        if (score >= actRepo.min && score < actRepo.max) return this.finishPretest(sender, ud, levelIds.A2);
         else if (score < actRepo.min) return this.newTestItem(ud, levelIds.A1);
         else return this.newTestItem(ud, levelIds.B1);
       } else if (actRepo.level == levelIds.B1) {
-        if (score >= actRepo.min && score < actRepo.max) return this.finishPretest(ud, levelIds.B1);
-        else if (score < actRepo.min) return this.finishPretest(ud, levelIds.A2);
+        if (score >= actRepo.min && score < actRepo.max) return this.finishPretest(sender, ud, levelIds.B1);
+        else if (score < actRepo.min) return this.finishPretest(sender, ud, levelIds.A2);
         else return this.newTestItem(ud, levelIds.B2);
       } else if (actRepo.level == levelIds.B2) {
-        if (score < actRepo.min) return this.finishPretest(ud, levelIds.B1);
-        else return this.finishPretest(ud, levelIds.B2);
+        if (score < actRepo.min) return this.finishPretest(sender, ud, levelIds.B1);
+        else return this.finishPretest(sender, ud, levelIds.B2);
       }
       throw 'not implemented';
     }
@@ -352,10 +339,15 @@
       ud.history.push(lev);
       return moveForwardResult.selfAdjustChild;
     }
-    finishPretest(ud: IPretestUser, lev: levelIds): moveForwardResult {
+    finishPretest(sender: exerciseTaskViewController, ud: IPretestUser, lev: levelIds): moveForwardResult {
       this.user.modified = true;
       ud.done = true; ud.targetLevel = lev; delete ud.actLevel;
-      return moveForwardResult.toParent;
+      sender.congratulationDialog().then(
+        () => this.navigateProductHome(),
+        () => this.navigateProductHome()
+        );
+      //this.inCongratulation = true;
+      return moveForwardResult.selfInnner;
     }
     actRepo(lev: levelIds): IPretestItemRepository { return _.find(this.dataNode.Items, l => l.level == lev); }
 

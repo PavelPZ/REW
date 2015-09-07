@@ -69,17 +69,8 @@ var blended;
         };
         controller.prototype.navigateWebHome = function () { Pager.gotoHomeUrl(); };
         controller.prototype.navigateReturnUrl = function () { location.href = this.ctx.returnurl; };
-        //taskList(): Array<taskController> {
-        //  var t: taskController = this.taskRoot();
-        //  var res: Array<taskController> = [];
-        //  while (t) { res.push(t); t = t.child; }
-        //  return res;
-        //}
-        //taskRoot<T extends homeTaskController>(): T {
-        //  var t = this;
-        //  while (t.state.name != prodStates.homeTask.name) t = t.parent;
-        //  return <T>t;
-        //}
+        controller.prototype.getProductHomeUrl = function () { return { stateName: blended.prodStates.home.name, pars: this.ctx }; };
+        controller.prototype.navigateProductHome = function () { this.navigate(this.getProductHomeUrl()); };
         controller.prototype.wrongUrlRedirect = function (url) {
             if (!url)
                 return;
@@ -96,8 +87,6 @@ var blended;
         function taskViewController($scope, $state) {
             _super.call(this, $scope, $state);
             this.myTask = this.isFakeCreate ? $scope.parent : $scope.$parent['ts'];
-            //constructor(state: IStateService) {
-            //  super(state);
             this.title = this.myTask.dataNode.title;
         }
         return taskViewController;
@@ -173,7 +162,7 @@ var blended;
                             task = task.pretestParent;
                             continue;
                         }
-                        return { stateName: blended.prodStates.home.name, pars: this.ctx };
+                        return this.getProductHomeUrl(); //{ stateName: prodStates.home.name, pars: this.ctx }
                     case moveForwardResult.selfAdjustChild: return task.goCurrent();
                 }
             }
@@ -221,23 +210,22 @@ var blended;
     blended.pretestScore = pretestScore;
     var pretestTaskController = (function (_super) {
         __extends(pretestTaskController, _super);
+        //inCongratulation: boolean; //priznak, ze modul byl prave preveden do stavu DONE a ukazuje se congratulation dialog
         function pretestTaskController($scope, $state) {
             _super.call(this, $scope, $state);
-            //constructor(state: IStateService) {
-            //  super(state);
             this.pretestParent = this;
             //sance prerusit navigaci
+            if (this.isFakeCreate)
+                return;
             this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () {
                 return { actLevel: blended.levelIds.A2, history: [blended.levelIds.A2], targetLevel: -1, done: false };
             });
-            if (this.isFakeCreate)
-                return;
             this.wrongUrlRedirect(this.checkCommingUrl());
         }
         pretestTaskController.prototype.checkCommingUrl = function () {
             var ud = this.user.short;
             if (!ud)
-                return { stateName: blended.prodStates.home.name, pars: this.ctx }; //pretest jeste nezacal => goto product home
+                return this.getProductHomeUrl(); //{ stateName: prodStates.home.name, pars: this.ctx }; //pretest jeste nezacal => goto product home
             if (ud.done)
                 return null; //done pretest: vse je povoleno
             var dataNode = this.dataNode;
@@ -245,7 +233,7 @@ var blended;
             var actEx = this.productParent.dataNode.nodeDir[this.ctx.Url];
             if (actModule.url != actEx.parent.url) {
                 var pars = blended.cloneAndModifyContext(this.ctx, function (c) { return c.moduleurl = blended.encodeUrl(actModule.url); });
-                return { stateName: blended.prodStates.home.name, pars: pars }; //v URL je adresa jineho nez aktivniho modulu (asi pomoci back) => jdi na prvni cviceni aktualniho modulu
+                return this.getProductHomeUrl(); //{ stateName: prodStates.home.name, pars: pars }; //v URL je adresa jineho nez aktivniho modulu (asi pomoci back) => jdi na prvni cviceni aktualniho modulu
             }
             return null;
         };
@@ -264,6 +252,7 @@ var blended;
             return new blended.moduleTaskController(state);
         };
         pretestTaskController.prototype.moveForward = function (sender) {
+            //if (this.inCongratulation) { delete this.inCongratulation; return moveForwardResult.toParent; }
             var ud = this.user.short;
             var actTestItem = sender.moduleParent; // <exerciseTaskViewController>(this.child);
             var actRepo = this.actRepo(ud.actLevel);
@@ -274,11 +263,11 @@ var blended;
                 throw '!childUser.done';
             var score = blended.scorePercent(childSummary);
             if (actRepo.level == blended.levelIds.A1) {
-                return this.finishPretest(ud, blended.levelIds.A1);
+                return this.finishPretest(sender, ud, blended.levelIds.A1);
             }
             else if (actRepo.level == blended.levelIds.A2) {
                 if (score >= actRepo.min && score < actRepo.max)
-                    return this.finishPretest(ud, blended.levelIds.A2);
+                    return this.finishPretest(sender, ud, blended.levelIds.A2);
                 else if (score < actRepo.min)
                     return this.newTestItem(ud, blended.levelIds.A1);
                 else
@@ -286,17 +275,17 @@ var blended;
             }
             else if (actRepo.level == blended.levelIds.B1) {
                 if (score >= actRepo.min && score < actRepo.max)
-                    return this.finishPretest(ud, blended.levelIds.B1);
+                    return this.finishPretest(sender, ud, blended.levelIds.B1);
                 else if (score < actRepo.min)
-                    return this.finishPretest(ud, blended.levelIds.A2);
+                    return this.finishPretest(sender, ud, blended.levelIds.A2);
                 else
                     return this.newTestItem(ud, blended.levelIds.B2);
             }
             else if (actRepo.level == blended.levelIds.B2) {
                 if (score < actRepo.min)
-                    return this.finishPretest(ud, blended.levelIds.B1);
+                    return this.finishPretest(sender, ud, blended.levelIds.B1);
                 else
-                    return this.finishPretest(ud, blended.levelIds.B2);
+                    return this.finishPretest(sender, ud, blended.levelIds.B2);
             }
             throw 'not implemented';
         };
@@ -306,12 +295,15 @@ var blended;
             ud.history.push(lev);
             return moveForwardResult.selfAdjustChild;
         };
-        pretestTaskController.prototype.finishPretest = function (ud, lev) {
+        pretestTaskController.prototype.finishPretest = function (sender, ud, lev) {
+            var _this = this;
             this.user.modified = true;
             ud.done = true;
             ud.targetLevel = lev;
             delete ud.actLevel;
-            return moveForwardResult.toParent;
+            sender.congratulationDialog().then(function () { return _this.navigateProductHome(); }, function () { return _this.navigateProductHome(); });
+            //this.inCongratulation = true;
+            return moveForwardResult.selfInnner;
         };
         pretestTaskController.prototype.actRepo = function (lev) { return _.find(this.dataNode.Items, function (l) { return l.level == lev; }); };
         return pretestTaskController;

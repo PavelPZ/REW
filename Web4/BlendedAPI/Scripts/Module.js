@@ -141,8 +141,8 @@ var blended;
         };
         moduleTaskController.prototype.moveForward = function (sender) {
             var _this = this;
-            if (this.congratulation) {
-                delete this.congratulation;
+            if (this.inCongratulation) {
+                delete this.inCongratulation;
                 return blended.moveForwardResult.toParent;
             }
             var ud = this.user.short;
@@ -156,8 +156,10 @@ var blended;
                 if (!ud.done && !exNode) {
                     ud.done = true;
                     this.user.modified = true;
+                    if (this.pretestParent)
+                        return blended.moveForwardResult.toParent;
                     sender.congratulationDialog().then(function () { return sender.greenClick(); }, function () { return sender.greenClick(); });
-                    this.congratulation = true;
+                    this.inCongratulation = true;
                     return blended.moveForwardResult.selfInnner;
                 }
                 return blended.moveForwardResult.selfAdjustChild;

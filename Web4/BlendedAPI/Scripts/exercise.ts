@@ -99,21 +99,16 @@
 
     //osetreni zelene sipky
     moveForward(sender: exerciseTaskViewController): moveForwardResult {
-      //if (this.showResultAfterEval) { delete this.showResultAfterEval; return moveForwardResult.toParent; }
       var res = this.exService.evaluate(this.moduleParent.state.moduleType != blended.moduleServiceType.lesson, this.state.exerciseShowWarningPercent);
       if (!res.confirmWrongScore) { //neni potreba wrongScore confirmation dialog
-        //this.showResultAfterEval = res.showResult; //
         return res.showResult ? moveForwardResult.selfInnner : moveForwardResult.toParent;
       }
 
       res.confirmWrongScore.then(okScore => {
         if (!okScore) return;
-        //this.showResultAfterEval = true;
         this.$scope.$apply();
-        //this.greenClick();
       });
       return moveForwardResult.selfInnner;
-      //return this.justEvaluated && this.moduleParent.state.moduleType == blended.moduleServiceType.lesson ? moveForwardResult.selfInnner : moveForwardResult.toParent;
     }
     //provede reset cviceni, napr. v panelu s instrukci
     resetExercise() { alert('reset'); }

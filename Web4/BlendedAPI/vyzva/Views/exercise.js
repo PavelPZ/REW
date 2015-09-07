@@ -21,7 +21,7 @@ var vyzva;
             this.$modal = $modal;
         }
         exerciseViewLow.prototype.tbClick = function () { this.greenClick(); };
-        exerciseViewLow.prototype.tbNavigateProductHome = function () { this.navigate({ stateName: vyzva.stateNames.home.name, pars: this.ctx }); };
+        exerciseViewLow.prototype.tbNavigateProductHome = function () { this.navigateProductHome(); }; //this.navigate({ stateName: stateNames.home.name, pars: this.ctx }) }
         exerciseViewLow.prototype.confirmWrongScoreDialog = function () {
             return this.$modal.open({
                 templateUrl: 'vyzva$exercise$wrongscore.html',

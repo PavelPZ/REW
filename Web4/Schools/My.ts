@@ -160,7 +160,7 @@ module schoolMy {
             switch (pr.url) {
               case '/lm/blcourse/langmastermanager.product/': hash = blended.root.href(vyzva.stateNames.langmasterManager.name, ctx); break;
               case '/lm/blcourse/schoolmanager.product/': hash = blended.root.href(vyzva.stateNames.shoolManager.name, ctx); break;
-              default: hash = blended.root.href(vyzva.stateNames.home.name, ctx); break;
+              default: hash = blended.root.href(blended.prodStates.home.name, ctx); break;
             }
             Pager.navigateToHash(hash);
             return;
