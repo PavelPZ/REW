@@ -272,10 +272,10 @@
       super($scope, $state);
       this.pretestParent = this;
       //sance prerusit navigaci
-      if (this.isFakeCreate) return;
       this.user = getPersistWrapper<IPretestUser>(this.dataNode, this.ctx.taskid, () => {
         return { actLevel: levelIds.A2, history: [levelIds.A2], targetLevel: -1, done: false };
       });
+      if (this.isFakeCreate) return;
       this.wrongUrlRedirect(this.checkCommingUrl());
     }
 

@@ -78,7 +78,10 @@ var Pager;
     Pager.registerAppLocator = registerAppLocator;
     var regApps = {};
     function locatePageFromHash(hash, completed) {
-        alert('locatePageFromHash cannot be called');
+        if (!cfg.noAngularjsApp) {
+            alert('locatePageFromHash cannot be called');
+            return;
+        }
         locatePageFromHashLow(hash, function (pg) {
             if (pg) {
                 completed(pg);
@@ -107,7 +110,10 @@ var Pager;
     }
     Pager.angularJS_OAuthLogin = angularJS_OAuthLogin;
     function locatePageFromHashLow(hash, completed) {
-        alert('locatePageFromHash cannot be called');
+        if (!cfg.noAngularjsApp) {
+            alert('locatePageFromHash cannot be called');
+            return;
+        }
         if (hash != null && hash.indexOf("access_token=") >= 0) {
             OAuth.checkForToken(function (obj) {
                 Pager.ajaxGet(Pager.pathType.restServices, Login.CmdAdjustUser_Type, Login.CmdAdjustUser_Create(obj.providerid, obj.id, obj.email, obj.firstName, obj.lastName), function (res) {
@@ -174,6 +180,7 @@ var Pager;
     //  if (page == null) locatePageFromHash('', loadPageLow); else loadPageLow(page);
     //}
     function loadPageHash(hash) {
+        debugger;
         locatePageFromHash(hash, function (pg) { return loadPage(pg); });
     }
     Pager.loadPageHash = loadPageHash;

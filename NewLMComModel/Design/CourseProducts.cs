@@ -129,8 +129,8 @@ namespace CourseMeta {
           yield return res;
         }
       }
-      //CourseIds[] vyzva57 = new CourseIds[] { CourseIds.English, CourseIds.German, CourseIds.French };
-      CourseIds[] vyzva57 = new CourseIds[] { CourseIds.English };
+      CourseIds[] vyzva57 = new CourseIds[] { CourseIds.English, CourseIds.German, CourseIds.French };
+      //CourseIds[] vyzva57 = new CourseIds[] { CourseIds.English };
       foreach (var lang in vyzva57) {
         var url = ("/lm/BLCourse/" + lang.ToString()).ToLower();
         var prodId = url.Replace('/', '_');

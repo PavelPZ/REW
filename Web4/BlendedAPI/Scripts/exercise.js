@@ -218,6 +218,7 @@ var blended;
                 _this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
                 if (!isTest)
                     _this.page.acceptData(true);
+                _this.user.modified = true;
                 short.done = true;
                 if (_this.exercise.dataNode.ms != score.ms) {
                     debugger;

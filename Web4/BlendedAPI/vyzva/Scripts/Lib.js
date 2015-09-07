@@ -3,9 +3,11 @@ var vyzva;
     function finishHomeDataNode(prod) {
         if (prod.pretest)
             return;
-        var clonedLessons = _.map(_.range(0, 4), function (idx) { return (_.clone(prod.Items[idx].Items)); }); //pro kazdou level kopie napr. </lm/blcourse/english/a1/>.Items
+        var urlRoot = '/lm/blcourse/' + LMComLib.LineIds[prod.line].toLowerCase() + '/';
+        var levels = _.map(['a1', 'a2', 'b1', 'b2'], function (lev) { return prod.find(urlRoot + lev + '/'); });
+        var clonedLessons = _.map(levels, function (lev) { return (_.clone(lev.Items)); }); //pro kazdou level kopie napr. </lm/blcourse/english/a1/>.Items
         var firstEntryTests = _.map(clonedLessons, function (l) { return l.splice(0, 1)[0]; }); //z kopie vyndej prvni prvek (entry test) a dej jej do firstPretests;
-        prod.pretest = (prod.find('/lm/blcourse/' + LMComLib.LineIds[prod.line].toLowerCase() + '/pretests/'));
+        prod.pretest = (prod.find(urlRoot + 'pretests/'));
         prod.entryTests = firstEntryTests;
         prod.lessons = clonedLessons;
     }

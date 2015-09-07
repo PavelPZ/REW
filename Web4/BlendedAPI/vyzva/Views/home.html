@@ -1,15 +1,24 @@
 ﻿<div class="panel panel-default lm-top-margin" ng-if="::ts.myTask.isLector">
   <div class="panel-heading">
-    <h4>Studijní skupiny lektora</h4>
+    <h4>Moje studijní skupiny</h4>
   </div>
   <div class="list-group">
-    <a href="#" class="list-group-item" ng-repeat="group in ts.myTask.lectorGroups" ng-click="ts.gotoLector(group.groupId)"><h4>{{::group.title}}</h4></a>
+    <a href="#" class="list-group-item" ng-repeat="group in ts.myTask.lectorGroups" ng-click="ts.gotoLector(group.groupId)">
+      <div class="row">
+        <div class="col-sm-10">
+          <h4 class="pull-left"><span class="flag-small" style="vertical-align:top" ng-class="group.line | lineIdsFlag"></span> {{::group.title}}</h4>
+        </div>
+        <div class="col-sm-2 text-right">
+          <div class="btn btn-success ">Studenti <i class="fa fa-play"></i></div>
+        </div>
+      </div>
+    </a>
   </div>
 </div>
 
 <div ng-click="::ts.debugClearProduct()">del</div>
 
-<div class="panel panel-primary lm-top-margin home-course" ng-if="::ts.myTask.isStudent" ng-controller="collapsable as homecollapsable" >
+<div class="panel panel-primary lm-top-margin home-course" ng-if="::ts.myTask.isStudent" ng-controller="collapsable as homecollapsable">
   <div class="panel-heading" ng-click="homecollapsable.isCollapsed = !homecollapsable.isCollapsed">
     <h3>
       <span ng-if="ts.lessons[0].status<=1">Rozřazovací test</span>
@@ -55,13 +64,14 @@
   <div data-ng-if="::lesson.status<2">
     <p>
       <button class="btn btn-success btn-lg" ng-disabled="::lesson.cannotRun" data-ng-click="::ts.navigateLesson(lesson)">
-        {{::lesson.status==0 ? 'Začněte spuštěním testu' : 'Dokončete test'}}
+        Rozřazovací test
+        <!--{{::lesson.status==0 ? 'Začněte spuštěním testu' : 'Dokončete test'}}-->
       </button>
     </p>
-    Test určí vaši jazykovou úroveň (A1, A2, B1 nabo B2), na základě které se zvolí odpovídající pokračování vašeho kurzu.
+    Rozřazovací test určí vaši jazykovou úroveň (A1, A2, B1 nabo B2), na základě které se zvolí odpovídající pokračování vašeho kurzu.
   </div>
   <div data-ng-if="::lesson.status>=2">
-    <h4><i class="fa fa-line-chart"></i> Test dokončen: vaše jazyková úroveň je {{::ts.pretestLevel | levelText}}</h4>
+    <h4><i class="fa fa-line-chart"></i> Rozřazovací test dokončen: vaše jazyková úroveň je {{::ts.pretestLevel | levelText}}</h4>
     <div class="btn-group right-mark">
       <button type="button" ng-repeat="level in ::ts.pretestLevels" class="btn btn-info btn-sm" ng-click="::ts.navigatePretestLevel(level)">{{level | levelText}} <i class="fa fa-eye"></i></button>
     </div>

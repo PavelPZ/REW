@@ -1,3 +1,10 @@
+.bl {
+  /*.exercise-place {
+    margin-top:20px;
+    border: solid 1px @panel-default-border;
+    padding:10px;
+  }*/
+}
 .bl .topbar-exercise {
   height: auto;
   padding-top: 2px;

@@ -92,21 +92,31 @@ if (cfg.noCpv) Write("class='hide-cpv'");
   <div id='lm-alert-place' class='rtl'></div>
   <div id='lm-console-place' class='rtl'></div>
   <div id='lm-docdlg-place' class='rtl'></div>
-  <div ng-app=""appRoot"" class=""bl""><div data-ui-view></div></div>
-  <div id='root'></div>
-  <script id='dummy' type='text/x-jsrender' data-for='Dummy'>
-    {{for ~ActPage()}}{{/for}}
-  </script>
   ");
             
-            #line 52 "D:\LMCom\REW\NewLMComModel\Design\Templates\html.tt"
+            #line 47 "D:\LMCom\REW\NewLMComModel\Design\Templates\html.tt"
+if (!cfg.noAngularjsApp) { 
+            
+            #line default
+            #line hidden
+            this.Write("  <div ng-app=\"appRoot\" class=\"bl\"><div data-ui-view></div></div>\r\n  ");
+            
+            #line 49 "D:\LMCom\REW\NewLMComModel\Design\Templates\html.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("  <div id=\'root\'></div>\r\n  <script id=\'dummy\' type=\'text/x-jsrender\' data-for=\'Du" +
+                    "mmy\'>\r\n    {{for ~ActPage()}}{{/for}}\r\n  </script>\r\n  ");
+            
+            #line 54 "D:\LMCom\REW\NewLMComModel\Design\Templates\html.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(MainPage.htmls(RewApp.htmlNewEA(cfg))));
             
             #line default
             #line hidden
             this.Write("\r\n  ");
             
-            #line 53 "D:\LMCom\REW\NewLMComModel\Design\Templates\html.tt"
+            #line 55 "D:\LMCom\REW\NewLMComModel\Design\Templates\html.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(serverScript??""));
             
             #line default

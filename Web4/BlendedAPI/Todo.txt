@@ -1,11 +1,4 @@
-﻿- modalni dialogy na ukonceni modulu
-
-Vylepsit layout managerske stranky
-
+﻿
 Lesson exercise:
-- i pasivni cviceni maji vyhodnoceny stav, nepreskakuji se
 - cviceni pouze s Recorderem - nechape se jako aktivni ale jen pasivni.
 - reset cviceni, reset lekce
-- modalni dialogy na ukonceni modulu
-
-

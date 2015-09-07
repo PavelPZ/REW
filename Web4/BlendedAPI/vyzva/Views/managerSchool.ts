@@ -2,11 +2,9 @@
   export class managerSchool extends blended.controller {
     constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, intranetInfo: intranet.IAlocatedKeyRoot) {
       super($scope, $state);
-      //this.taskRoot<homeTaskController>().companyData;
-      //var intranetInfo = <intranet.IAlocatedKeyRoot>resolves[0];
       this.company = intranetInfo ? intranetInfo.companyData : null;
       this.breadcrumb = breadcrumbBase(this, true);
-      this.breadcrumb.push({ title: this.title = 'Studijní skupiny a licenční klíče', active: true });
+      this.breadcrumb.push({ title: this.title = 'Správa studijních skupin a lektorů', active: true });
       if (this.company) { this.wizzardStep = 2; return; }
       this.wizzardStep = 0;
       this.adjustWizzardButtons();
@@ -19,11 +17,18 @@
 
     wizzardStep: number;
     nextTitle: string;
-    groupNameCounter = 0;
+    groupNameCounter = 1;
     groups: Array<intranet.IStudyGroup> = [];
 
     addItem(line: LMComLib.LineIds, isPattern3: boolean) {
-      this.groups.push({ groupId: managerSchool.groupIdCounter++, title: 'Skupina ' + (this.groupNameCounter++).toString(), line: line, num: isPattern3 ? 1 : 20, isPattern3: isPattern3 });
+      var item: intranet.IStudyGroup = {
+        groupId: managerSchool.groupIdCounter++,
+        title: isPattern3 ? blended.lineIdToText(line) + ' pro učitele' : 'Pokročilí' + (this.groupNameCounter++).toString() + ' - 3.A (2015/2016)',
+        line: line,
+        num: isPattern3 ? 1 : 20,
+        isPattern3: isPattern3
+      };
+      this.groups.splice(0, 0, item);
     } static groupIdCounter = 1;
 
     removeItem(idx: number) {
@@ -57,8 +62,8 @@
 
     adjustWizzardButtons() {
       switch (this.wizzardStep) {
-        case 0: this.nextTitle = 'Další'; break;
-        case 1: this.nextTitle = 'Založ školu'; break;
+        case 0: this.nextTitle = 'Potvrzení údajů'; break;
+        case 1: this.nextTitle = 'Údaje v pořádku'; break;
       }
     }
 
@@ -87,7 +92,7 @@
 
   blended.rootModule
     .filter('vyzva$managerschool$sablonaid', () => {
-      return (id: boolean) => id ? "Šablona č.3" : "Šablona č.4"
+      return (id: boolean) => id ? "Učitelé (č.3)" : "Studenti (č.4)"
     })
     .directive('vyzva$managerschool$usekey', () => {
       return {

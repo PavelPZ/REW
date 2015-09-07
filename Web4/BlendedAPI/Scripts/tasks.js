@@ -215,11 +215,11 @@ var blended;
             _super.call(this, $scope, $state);
             this.pretestParent = this;
             //sance prerusit navigaci
-            if (this.isFakeCreate)
-                return;
             this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () {
                 return { actLevel: blended.levelIds.A2, history: [blended.levelIds.A2], targetLevel: -1, done: false };
             });
+            if (this.isFakeCreate)
+                return;
             this.wrongUrlRedirect(this.checkCommingUrl());
         }
         pretestTaskController.prototype.checkCommingUrl = function () {

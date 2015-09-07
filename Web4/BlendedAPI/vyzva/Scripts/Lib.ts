@@ -2,9 +2,11 @@
 
   export function finishHomeDataNode(prod: IBlendedCourseRepository) {
     if (prod.pretest) return;
-    var clonedLessons = _.map(_.range(0, 4), idx => <any>(_.clone(prod.Items[idx].Items))); //pro kazdou level kopie napr. </lm/blcourse/english/a1/>.Items
+    var urlRoot = '/lm/blcourse/' + LMComLib.LineIds[prod.line].toLowerCase() + '/';
+    var levels = _.map(['a1', 'a2', 'b1', 'b2'], lev => prod.find(urlRoot + lev + '/'));
+    var clonedLessons = _.map(levels, lev => <any>(_.clone(lev.Items))); //pro kazdou level kopie napr. </lm/blcourse/english/a1/>.Items
     var firstEntryTests = _.map(clonedLessons, l => l.splice(0, 1)[0]); //z kopie vyndej prvni prvek (entry test) a dej jej do firstPretests;
-    prod.pretest = <any>(prod.find('/lm/blcourse/' + LMComLib.LineIds[prod.line].toLowerCase() + '/pretests/'));
+    prod.pretest = <any>(prod.find(urlRoot + 'pretests/'));
     prod.entryTests = firstEntryTests;
     prod.lessons = clonedLessons;
   }

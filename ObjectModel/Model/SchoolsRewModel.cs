@@ -281,6 +281,9 @@ namespace schools
     public licenceConfig licenceConfig; //config licence
 
     public bool vocabulary; //kurz s rewise apod. slovnickem. Nejedna se o Dictionary (= slovnik)
+
+    public bool noAngularjsApp;
+
     public config copyTo(config cfg) {
       cfg.dataBatchUrl = dataBatchUrl;
       cfg.failLimit = failLimit;
@@ -324,6 +327,7 @@ namespace schools
       cfg.forceDriver = forceDriver;
       cfg.displayMode = displayMode;
       cfg.alowedParentDomain = alowedParentDomain;
+      cfg.noAngularjsApp = noAngularjsApp;
       if (cfg.licenceConfig == null && licenceConfig != null) cfg.licenceConfig = licenceConfig.copy();
       return cfg;
     }

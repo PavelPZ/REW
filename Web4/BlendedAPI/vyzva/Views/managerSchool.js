@@ -10,13 +10,11 @@ var vyzva;
         __extends(managerSchool, _super);
         function managerSchool($scope, $state, intranetInfo) {
             _super.call(this, $scope, $state);
-            this.groupNameCounter = 0;
+            this.groupNameCounter = 1;
             this.groups = [];
-            //this.taskRoot<homeTaskController>().companyData;
-            //var intranetInfo = <intranet.IAlocatedKeyRoot>resolves[0];
             this.company = intranetInfo ? intranetInfo.companyData : null;
             this.breadcrumb = vyzva.breadcrumbBase(this, true);
-            this.breadcrumb.push({ title: this.title = 'Studijní skupiny a licenční klíče', active: true });
+            this.breadcrumb.push({ title: this.title = 'Správa studijních skupin a lektorů', active: true });
             if (this.company) {
                 this.wizzardStep = 2;
                 return;
@@ -25,7 +23,14 @@ var vyzva;
             this.adjustWizzardButtons();
         }
         managerSchool.prototype.addItem = function (line, isPattern3) {
-            this.groups.push({ groupId: managerSchool.groupIdCounter++, title: 'Skupina ' + (this.groupNameCounter++).toString(), line: line, num: isPattern3 ? 1 : 20, isPattern3: isPattern3 });
+            var item = {
+                groupId: managerSchool.groupIdCounter++,
+                title: isPattern3 ? blended.lineIdToText(line) + ' pro učitele' : 'Pokročilí' + (this.groupNameCounter++).toString() + ' - 3.A (2015/2016)',
+                line: line,
+                num: isPattern3 ? 1 : 20,
+                isPattern3: isPattern3
+            };
+            this.groups.splice(0, 0, item);
         };
         managerSchool.prototype.removeItem = function (idx) {
             this.groups.splice(idx, 1);
@@ -63,10 +68,10 @@ var vyzva;
         managerSchool.prototype.adjustWizzardButtons = function () {
             switch (this.wizzardStep) {
                 case 0:
-                    this.nextTitle = 'Další';
+                    this.nextTitle = 'Potvrzení údajů';
                     break;
                 case 1:
-                    this.nextTitle = 'Založ školu';
+                    this.nextTitle = 'Údaje v pořádku';
                     break;
             }
         };
@@ -89,7 +94,7 @@ var vyzva;
     vyzva.managerSchool = managerSchool;
     blended.rootModule
         .filter('vyzva$managerschool$sablonaid', function () {
-        return function (id) { return id ? "Šablona č.3" : "Šablona č.4"; };
+        return function (id) { return id ? "Učitelé (č.3)" : "Studenti (č.4)"; };
     })
         .directive('vyzva$managerschool$usekey', function () {
         return {

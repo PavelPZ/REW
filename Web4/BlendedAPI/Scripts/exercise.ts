@@ -250,7 +250,8 @@
         this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
         if (!isTest) this.page.acceptData(true);
 
-        short.done = true;
+        this.user.modified = true;
+        short.done = true; 
         if (this.exercise.dataNode.ms != score.ms) { debugger; def.reject("this.maxScore != score.ms"); return null; }
         short.s = score.s;
         //short.score = blended.scorePercent(short);

@@ -27,29 +27,8 @@
 .bl .wizzard {
   font-size: 110%;
 }
-.bl .wizzard .fa {
-  color: lightgray;
-  padding: 0 10px;
-}
-.bl .wizzard .wizzard-item {
-  display: inline;
-  padding: .2em .6em .3em;
-  line-height: 1;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: baseline;
-  border: 1px solid lightgray;
-  border-radius: .25em;
-  color: lightgray;
-}
-.bl .wizzard .wizzard-item.done,
-.bl .wizzard .wizzard-item.active {
-  color: #fff;
-  background-color: #337ab7;
-}
-a.bl .wizzard .wizzard-item.done:hover,
-a.bl .wizzard .wizzard-item.active:hover {
-  background-color: #286090;
+.bl .wizzard td {
+  vertical-align: middle;
 }
 .bl h3 .flag-small {
   height: 22px;
@@ -286,6 +265,13 @@ fieldset[disabled] .bl .btn-succes-info.active {
   top: 24px;
   right: 18px;
   font-size: 24px;
+}
+.bl {
+  /*.exercise-place {
+    margin-top:20px;
+    border: solid 1px @panel-default-border;
+    padding:10px;
+  }*/
 }
 .bl .topbar-exercise {
   height: auto;

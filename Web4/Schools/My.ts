@@ -18,7 +18,9 @@ module schoolMy {
         this.licKey.message('');
         if (!validate.isPropsValid([this.licKey])) return;
         var k: keys.Key;
-        try { k = keys.fromString(this.licKey()); } catch (err) {
+        var key: string = this.licKey();
+        key = key.trim();
+        try { k = keys.fromString(key); } catch (err) {
           this.licKey.message(errWrongFormat());
           return;
         }

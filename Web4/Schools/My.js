@@ -25,8 +25,10 @@ var schoolMy;
                 if (!validate.isPropsValid([_this.licKey]))
                     return;
                 var k;
+                var key = _this.licKey();
+                key = key.trim();
                 try {
-                    k = keys.fromString(_this.licKey());
+                    k = keys.fromString(key);
                 }
                 catch (err) {
                     _this.licKey.message(errWrongFormat());

@@ -1,15 +1,14 @@
 ﻿module blended {
+  export function lineIdToText(id: LMComLib.LineIds) {
+    switch (id) {
+      case LMComLib.LineIds.English: return "Angličtina";
+      case LMComLib.LineIds.German: return "Němčina";
+      case LMComLib.LineIds.French: return "Francouzština";
+      default: return "???";
+    }
+  };
   blended.rootModule
-    .filter('lineIdsText', () => {
-      return (id: LMComLib.LineIds) => {
-        switch (id) {
-          case LMComLib.LineIds.English: return "Angličtina";
-          case LMComLib.LineIds.German: return "Němčina";
-          case LMComLib.LineIds.French: return "Francouzština";
-          default: return "???";
-        }
-      };
-    })
+    .filter('lineIdsText', () => (id: LMComLib.LineIds) => lineIdToText(id))
     .filter('lineIdsFlag', () => {
       return (id: LMComLib.LineIds) => {
         switch (id) {

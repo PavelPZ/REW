@@ -43,7 +43,7 @@ module Pager {
   } var regApps: { [appId: string]: { [type: string]: (urlParts: string[], completed: (pg: Page) => void) => void; } } = {};
 
   export function locatePageFromHash(hash: string, completed: (pg: Page) => void): void {
-    alert('locatePageFromHash cannot be called');
+    if (!cfg.noAngularjsApp) { alert('locatePageFromHash cannot be called'); return; }
     locatePageFromHashLow(hash, pg => {
       if (pg) { completed(pg); return; }
       if (!hash || hash.length < 2) locatePageFromHashLow(initHash(), completed);
@@ -69,7 +69,7 @@ module Pager {
   }
 
   function locatePageFromHashLow(hash: string, completed: (pg: Page) => void): void {
-    alert('locatePageFromHash cannot be called');
+    if (!cfg.noAngularjsApp) { alert('locatePageFromHash cannot be called'); return; }
     if (hash != null && hash.indexOf("access_token=") >= 0) { //navrat z externiho loginu
       OAuth.checkForToken((obj: OAuth.profile) => {
         Pager.ajaxGet( //dle externiho ID zjisti LM Id (a ev. zaloz usera)
@@ -127,6 +127,7 @@ module Pager {
   //}
 
   export function loadPageHash(hash: string) {
+    debugger;
     locatePageFromHash(hash, pg => loadPage(pg));
   }
 
