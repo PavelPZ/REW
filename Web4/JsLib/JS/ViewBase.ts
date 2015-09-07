@@ -20,7 +20,8 @@ module ViewBase {
 
   export var init = function () {
     Logger.traceMsg('ViewBase.initBootStrapApp');
-    if (!cfg.noAngularjsApp) return;
+    //if (!cfg.noAngularjsApp) return;
+    return;
     if (!location.hash || location.hash.length < 3) location.hash = '/old/school/schoolmymodel/-1///';
     $(window).hashchange(() => Pager.loadPageHash(location.hash));
     $(window).hashchange();

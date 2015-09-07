@@ -124,7 +124,8 @@ var blended;
                     return;
                 } //produkt je jiz nacten, resolve.
                 if (!fromCache.startReading)
-                    return; //produkt se zacal nacitat jiz drive, pouze se deferred ulozi do seznamu deferreds.
+                    return; //produkt se zacal nacitat jiz drive - deferred se pouze ulozi do seznamu deferreds.
+                //novy start nacitani produktu
                 var href = ctx.productUrl.substr(0, ctx.productUrl.length - 1);
                 var promises = _.map([href + '.js', href + '.' + LMComLib.Langs[ctx.loc] + '.js', href + '_instrs.js'], function (url) { return ctx.$http.get(blended.baseUrlRelToRoot + url, { transformResponse: function (s) { return CourseMeta.jsonParse(s); } }); });
                 ctx.$q.all(promises).then(function (files) {
@@ -164,10 +165,8 @@ var blended;
                                 delete tg.id; }); //instrukce nemohou mit tag.id, protoze se ID tlucou s ID ze cviceni
                             prod.instructions[p] = JsRenderTemplateEngine.render("c_genitems", pg);
                         }
-                    //cache
                     if (ctx.finishProduct)
                         ctx.finishProduct(prod);
-                    //productCache.toCache(ctx, prod);
                     //user data
                     proxies.vyzva57services.getShortProductDatas(ctx.companyid, ctx.loginid, ctx.productUrl, function (res) {
                         _.each(res, function (it) {
@@ -184,7 +183,6 @@ var blended;
                         });
                         //product nacten, resolve vsechny cekajici deferreds
                         loader.productCache.resolveDefereds(fromCache.startReading, prod);
-                        //deferred.resolve(prod);
                     });
                 }, function (errors) {
                     deferred.reject();
@@ -258,15 +256,19 @@ var blended;
             cacheOfProducts.prototype.fromCache = function (ctx, defered) {
                 var resIt = _.find(this.products, function (it) { return it.companyid == ctx.companyid && it.onbehalfof == ctx.onbehalfof || ctx.loginid &&
                     it.loc == ctx.loc && it.producturl == ctx.producturl; });
+                //jiz nacteno nebo neni defered => return
+                if (resIt && resIt.data)
+                    return { prod: resIt.data };
+                if (!defered)
+                    return {};
+                //nenacteno
                 var justCreated = false;
                 if (!resIt) {
                     resIt = this.toCache(ctx); //vytvor polozku v cache
                     resIt.defereds = [];
-                    justCreated = true;
+                    justCreated = true; //start noveho nacitani
                 }
                 ;
-                if (resIt.data)
-                    return { prod: resIt.data };
                 resIt.defereds.push(defered);
                 resIt.insertOrder = this.maxInsertOrder++; //naposledy pouzity produkt (kvuli vyhazovani z cache)
                 return { startReading: justCreated ? resIt : null };

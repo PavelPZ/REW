@@ -95,7 +95,6 @@ export interface config {
   alowedParentDomain: string;
   licenceConfig: licenceConfig;
   vocabulary: boolean;
-  noAngularjsApp: boolean;
 }
 export interface licenceConfig {
   isDynamic: boolean;

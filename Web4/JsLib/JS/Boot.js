@@ -85,6 +85,4 @@ var boot;
     function OldApplicationStart() { if (doOldApplicationStart)
         doOldApplicationStart(); doOldApplicationStart = null; }
     boot.OldApplicationStart = OldApplicationStart;
-    if (cfg.noAngularjsApp)
-        $(OldApplicationStart);
 })(boot || (boot = {}));

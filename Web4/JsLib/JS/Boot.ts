@@ -81,6 +81,6 @@ module boot {
 
   export function OldApplicationStart() { if (doOldApplicationStart) doOldApplicationStart(); doOldApplicationStart = null; }
 
-  if (cfg.noAngularjsApp) $(OldApplicationStart);
+  //if (cfg.noAngularjsApp) $(OldApplicationStart);
 
 }

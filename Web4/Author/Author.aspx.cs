@@ -119,7 +119,6 @@ namespace Author {
         hash = hash,
         forceEval = forceEval,
         humanEvalMode = humanEvalMode,
-        noAngularjsApp = true,
       }, serverScript);
       contentPlace.Controls.Add(new LiteralControl(pageContent));
     }

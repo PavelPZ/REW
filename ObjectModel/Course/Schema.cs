@@ -794,6 +794,11 @@ namespace CourseModel {
   [tgAt(tgSt.docIgnore | tgSt.xsdIgnore)]
   [XmlType(TypeName = "human-eval")]
   public abstract partial class humanEval : evalControl {
+    //[tgAt(0), XmlAttribute(AttributeName = "no-eval"), DefaultValue(0)]
+    //public bool noEval;
+    //AngularJS
+    //public override int getMaxScore() { return 0; }
+    //public override bool isSkipEvaluation() { return true; }
   }
 
   [tgAt(tgSt.jsCtrl | tgSt.csControl | tgSt.xsdHtmlEl)]
@@ -812,7 +817,7 @@ namespace CourseModel {
     public int numberOfRows;
   }
 
-  [tgAt(tgSt.jsCtrl | tgSt.csControl | tgSt.xsdHtmlEl, _oldName = "audio-capture")]
+  [tgAt(tgSt.jsCtrl | tgSt.csControl | tgSt.xsdHtmlEl)]
   [XmlType(TypeName = "recording")]
   public partial class recording : humanEval {
 

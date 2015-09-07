@@ -248,28 +248,6 @@ module Course {
         self.progressBarValue((actMWords > words ? actMWords % words : actMWords) / words * 100);
         self.result.text = value; self.result.words = actMWords;
       });
-
-      //var self = this;
-      //this.textInput = ko.computed({
-      //  read: function () {
-      //    return self.result ? self.result.text : '';
-      //  },
-      //  write: function (value) {
-      //    var actMWords = _.filter(DictConnector.startSplitWord(value), w => !_.isEmpty(w.trim())).length;
-      //    var words = Math.max(self.wordsMin, self.wordsMax); if (!words) words = 100;
-      //    var txt = 'written ' + Math.round(actMWords) + ' words';
-      //    if (self.wordsMin > 0 && self.wordsMax > 0) txt += ' (min ' + self.wordsMin.toString() + ', max ' + self.wordsMax.toString() + ' words)';
-      //    else if (self.wordsMin > 0) txt += ' (min ' + self.wordsMin.toString() + ' words)';
-      //    else if (self.wordsMax > 0) txt += ' (max ' + self.wordsMax.toString() + ' words)';
-      //    self.progressText(txt);
-      //    self.progressBarLimetExceeded(self.wordsMax && actMWords > self.wordsMax);
-      //    if (!self.progressBarLimetExceeded() && actMWords > words) self.progressBarFrom(0);
-      //    self.progressBarValue((actMWords > words ? actMWords % words : actMWords) / words * 100);
-      //    self.result.text = value; self.result.words = actMWords;
-      //  },
-      //  owner: this,
-      //  pure: true,
-      //});
     }
 
     limitRecommend: number;
@@ -280,8 +258,6 @@ module Course {
     result: CourseModel.WritingResult;
     textInput = ko.observable<string>();
 
-    //humanHelpTxt = ko.observable('');
-
     createResult(forceEval: boolean): CourseModel.WritingResult { this.done(false); return { ms: 0, s: 0, tg: this._tg, flag: CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate, text: null, words: forceEval ? (this.limitMin ? this.limitMin : 0) : 0, hPercent: -1, hEmail: null, hDate: 0, hLmcomId: 0, hLevel: this.acTestLevel(), hRecommendMin: this.limitRecommend, hMax: this.limitMax, hMin: this.limitMin }; }
     provideData(): void { //predani dat z kontrolky do persistence
       //this.result.text = this.textInput();
@@ -291,18 +267,10 @@ module Course {
     acceptData(done: boolean): void {//zmena stavu kontrolky na zaklade persistentnich dat
       super.acceptData(done);
       this.textInput(this.result.text ? this.result.text : '');
-      //var txt = this.result.text ? this.result.text : '';
-      //$('#' + this.id).find('textarea').val(txt);
-      //this.textInput(txt);
       this.human(this.result.hPercent < 0 ? '' : this.result.hPercent.toString());
       var tostr = this.limitMax ? ' - ' + this.limitMax.toString() : '';
       this.humanHelpTxt(this.limitRecommend ? this.limitRecommend.toString() + tostr + ' / ' + this.result.words.toString() : '');
       this.humanLevel(this.result.hLevel);
-      //this.textInput.evaluateImmediate();
-      //this.textInput.valueHasMutated();
-      //var t = this.textInput();
-      //if (!t) return;
-      //this.textInput.notifySubscribers();
       this.isDone(this.done());
     }
     setScore(): void {
