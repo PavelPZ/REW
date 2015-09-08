@@ -90,6 +90,7 @@
       //elapsed, beg a end
       res.beg = setDate(res.beg, short.beg, true); res.end = setDate(res.end, short.end, false);
       res.elapsed += short.elapsed || 0;
+      res.sumPlay += short.sumPlay; res.sumPlayRecord += short.sumPlayRecord; res.sumRecord += short.sumRecord;
     });
     res.score = blended.scorePercent(res);
     res.finished = blended.donesPercent(res);

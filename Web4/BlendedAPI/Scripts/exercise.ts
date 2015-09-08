@@ -1,8 +1,13 @@
 ﻿module blended {
 
   //********************* INTERFACES 
-  //long persistent informace o cviceni
-  export interface IExLong { [exId: string]: CourseModel.Result; }
+  export interface ICoursePageCallback { //callback z Media.ts
+    onRecorder(page: Course.Page, msecs: number);
+    onPlayRecorder(page: Course.Page, msecs: number);
+    onPlayed(page: Course.Page, msecs: number);
+  }
+
+  export interface IExLong { [exId: string]: CourseModel.Result; } //long persistent informace o cviceni
 
   export interface IInstructionData { title: string; body: string; }
 
@@ -165,6 +170,11 @@
       //this.refresh();
     }
 
+    //ICoursePageCallback
+    onRecorder(page: Course.Page, msecs: number) { this.user.modified = true; if (!this.user.short.sumRecord) this.user.short.sumRecord = 0; this.user.short.sumRecord += Math.round(msecs / 1000); }
+    onPlayRecorder(page: Course.Page, msecs: number) { this.user.modified = true; if (!this.user.short.sumPlayRecord) this.user.short.sumPlayRecord = 0; this.user.short.sumPlayRecord += Math.round(msecs / 1000); }
+    onPlayed(page: Course.Page, msecs: number) { this.user.modified = true; if (!this.user.short.sumPlay) this.user.short.sumPlay = 0; this.user.short.sumPlay += Math.round(msecs / 1000); }
+
     score(): number {
       return blended.scorePercent(this.user.short);
     }
@@ -172,6 +182,7 @@
     onDisplay(el: ng.IAugmentedJQuery, completed: (pg: Course.Page) => void) {
 
       var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
+      pg.blendedPageCallback = this;
       Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, this.exercise.mod.loc));
       var isGramm = CourseMeta.isType(this.exercise.dataNode, CourseMeta.runtimeType.grammar);
       if (!isGramm) {

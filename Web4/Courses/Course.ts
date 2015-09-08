@@ -144,6 +144,7 @@ module Course {
 
   export class humanEvalControlImpl extends evalControlImpl {
     result: CourseModel.HumanEvalResult; //pointer na vysledek kontrolky
+    isPassive: boolean;
     form: JQuery; //humanEval form
     human = ko.observable('');
     humanLevel = ko.observable('');
@@ -224,8 +225,9 @@ module Course {
     seeAlsoStr: string;
     //blended angular: 
     //userData: Object; //uzivatelova long data stranky (short data jsou v produkut u kazdeho node)
-    myNode: CourseMeta.data; //my node v produktu
-    myModule: blended.cachedModule; //muj slovnik a lokalizace
+    //myNode: CourseMeta.data; //my node v produktu
+    //myModule: blended.cachedModule; //muj slovnik a lokalizace
+    blendedPageCallback: blended.ICoursePageCallback;
     //---
     title: string;
     instrs: Array<string>;

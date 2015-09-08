@@ -330,7 +330,7 @@ var metaJS;
                 "summary": null,
                 "descr": null,
                 "flag": 4101,
-                "_newName": "audio-capture"
+                "_newName": null
             },
             "list": {
                 "ancestor": "macro",
@@ -1191,6 +1191,19 @@ var metaJS;
                 "summary": null,
                 "descr": null,
                 "flag": 128,
+                "_newName": null
+            },
+            {
+                "propOf": "human-eval",
+                "type": 3,
+                "modifier": 0,
+                "clsEnumName": null,
+                "constrains": 0,
+                "regexConstrains": null,
+                "name": "is-passive",
+                "summary": null,
+                "descr": null,
+                "flag": 0,
                 "_newName": null
             },
             {

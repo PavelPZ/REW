@@ -369,6 +369,7 @@ var Course;
             this.playing = ko.observable(false);
             this.isRecorded = ko.observable(false);
             this.isDone = ko.observable(false);
+            this.blendedCallbackMax = 0;
             if (!this.singleAttempt)
                 this.singleAttempt = false;
             if (!this.limitMin)
@@ -466,16 +467,23 @@ var Course;
             setTimeout(completed, 500);
         };
         //Eval control
-        audioCaptureImpl.prototype.createResult = function (forceEval) { this.done(false); return { ms: 0, s: 0, tg: this._tg, flag: 0, audioUrl: createMediaUrl(this.id), recordedMilisecs: forceEval ? (this.limitMin ? this.limitMin * 1000 : 0) : 0, hPercent: -1, hEmail: null, hDate: 0, hLevel: this.acTestLevel(), hLmcomId: 0, hFrom: this.limitMin, hTo: this.limitMax, hRecommendFrom: this.limitRecommend }; };
+        audioCaptureImpl.prototype.createResult = function (forceEval) {
+            this.done(false);
+            return {
+                ms: 0, s: 0, tg: this._tg, flag: 0,
+                audioUrl: createMediaUrl(this.id),
+                recordedMilisecs: forceEval ? (this.limitMin ? this.limitMin * 1000 : 0) : 0,
+                hPercent: -1, hEmail: null, hDate: 0, hLevel: this.acTestLevel(), hLmcomId: 0, hFrom: this.limitMin, hTo: this.limitMax, hRecommendFrom: this.limitRecommend
+            };
+        };
         audioCaptureImpl.prototype.provideData = function () {
         };
         audioCaptureImpl.prototype.acceptData = function (done) {
             _super.prototype.acceptData.call(this, done);
             this.isRecorded(this.isRecordLengthCorrect());
-            this.isDone(this.done());
+            this.isDone(this.done() && !this.isPassive);
             this.human(this.result.hPercent < 0 ? '' : this.result.hPercent.toString());
             var tostr = this.limitMax ? ' - ' + Utils.formatTimeSpan(this.limitMax) : '';
-            ;
             this.humanHelpTxt(this.limitRecommend ? Utils.formatTimeSpan(this.limitRecommend) + tostr + ' / ' + Utils.formatTimeSpan(Math.round(this.result.recordedMilisecs / 1000)) : '');
             this.humanLevel(this.result.hLevel);
             //CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate
@@ -507,9 +515,17 @@ var Course;
                 this.result.recordedMilisecs = 0;
             this.isRecorded(c);
             //vyjimka pro tuto kontrolku: save stavu cviceni
-            this.doProvideData();
-            this._myPage.result.userPending = true;
-            CourseMeta.lib.saveProduct($.noop);
+            //if (!cfg.noAngularjsApp) return;
+            //this.doProvideData();
+            //this._myPage.result.userPending = true;
+            //CourseMeta.lib.saveProduct($.noop);
+            //angularJS
+            if (this._myPage.blendedPageCallback)
+                this._myPage.blendedPageCallback.onRecorder(this._myPage, this.result.recordedMilisecs);
+            //var us = <blended.IPersistNodeItem<blended.IExShort>>(this._myPage.result.userData['']);
+            //us.modified = true;
+            //if (!us.short.sumRecord) us.short.sumRecord = 0;
+            //if (this.result.recordedMilisecs) us.short.sumRecord += Math.round(this.result.recordedMilisecs / 1000);
         };
         audioCaptureImpl.prototype.play = function () {
             var _this = this;
@@ -519,7 +535,18 @@ var Course;
             if (!wasPaused)
                 return;
             var url = this.recorderSound ? this.recorderSound.url : ((cfg.baseTagUrl ? cfg.baseTagUrl : Pager.basicDir) + this.result.audioUrl).toLowerCase();
-            this.driver.play(url + '?stamp=' + (audioCaptureImpl.playCnt++).toString(), 0, function (msec) { return _this.playing(msec >= 0); });
+            this.blendedCallbackMax = 0;
+            this.driver.play(url + '?stamp=' + (audioCaptureImpl.playCnt++).toString(), 0, function (msec) {
+                if (msec > 0) {
+                    //console.log(msec.toString());
+                    _this.blendedCallbackMax = Math.max(_this.blendedCallbackMax, msec);
+                }
+                else {
+                    if (_this._myPage.blendedPageCallback)
+                        _this._myPage.blendedPageCallback.onPlayRecorder(_this._myPage, _this.blendedCallbackMax);
+                }
+                _this.playing(msec >= 0);
+            });
         };
         audioCaptureImpl.prototype.stopRecording = function () {
             var _this = this;
@@ -585,6 +612,7 @@ var Course;
         __extends(sndPageImpl, _super);
         function sndPageImpl() {
             _super.apply(this, arguments);
+            this.blendedCallbackMax = 0;
             //***** ACTIVE management
             this.actSent = null; //aktualni veta
         }
@@ -646,10 +674,25 @@ var Course;
             }
         };
         sndPageImpl.prototype.playInt = function (interv, begPos) {
+            var _this = this;
             var self = this; //var intVar = interv; var bp = begPos;
+            this.blendedCallbackMax = 0;
             interv._owner.player().openPlay(interv._owner._owner.mediaUrl, begPos, interv.endPos).
-                progress(function (msec) { return self.onPlaying(interv, msec < begPos ? begPos : msec /*pri zacatku hrani muze byt notifikovana pozice kousek pred zacatkem*/, progressType.progress); }).
-                done(function () { return self.onPlaying(interv, -1, progressType.done); }).
+                progress(function (msec) {
+                if (msec > 0) {
+                    _this.blendedCallbackMax = Math.max(_this.blendedCallbackMax, msec);
+                }
+                self.onPlaying(interv, msec < begPos ? begPos : msec /*pri zacatku hrani muze byt notifikovana pozice kousek pred zacatkem*/, progressType.progress);
+            }).
+                done(function () {
+                if (_this._myPage.blendedPageCallback)
+                    _this._myPage.blendedPageCallback.onPlayed(_this._myPage, _this.blendedCallbackMax - begPos);
+                //var us = <blended.IPersistNodeItem<blended.IExShort>>(this._myPage.result.userData['']);
+                //us.modified = true;
+                //if (!us.short.sumPlay) us.short.sumPlay = 0;
+                //us.short.sumPlay += Math.round((this.maxPlayProgress - begPos) / 1000);
+                self.onPlaying(interv, -1, progressType.done);
+            }).
                 always(function () { return self.onPlaying(interv, -1, progressType.always); }); //uplny konec
         };
         //vstupni procedura do active managmentu

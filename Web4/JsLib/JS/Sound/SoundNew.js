@@ -294,10 +294,14 @@ var SndLow;
             th.onPaused = function () { if (th.onCanplaythrough)
                 return; th.onPaused = null; th.timeupdate = null; def.resolve(); };
             th.timeupdate = function (msec) {
-                if (endMsec > 0 && msec > endMsec)
+                if (endMsec > 0 && msec > endMsec) {
+                    Logger.trace_lmsnd('soundnew.ts timeupdate pause');
                     th.handler.pause();
-                else
+                }
+                else {
+                    //Logger.trace_lmsnd('soundnew.ts timeupdate: ' + msec.toString());
                     def.notify(msec);
+                }
             };
             th.onCanplaythrough = function () {
                 th.onCanplaythrough = null;
@@ -316,12 +320,12 @@ var SndLow;
             this.timeupdate(Math.round(this.handler.currentTime * 1000));
         }
         catch (msg) { } };
-        MediaDriver.prototype.doPaused = function () { Logger.trace_lmsnd('soundnew.ts: MediaDriver.doPaused'); if (!this.onPaused)
+        MediaDriver.prototype.doPaused = function () { if (!this.onPaused)
             return; try {
             this.onPaused();
         }
         catch (msg) { } };
-        MediaDriver.prototype.doCanplaythrough = function () { guiBlocker(false); Logger.trace_lmsnd('soundnew.ts: MediaDriver.doCanplaythrough'); if (!this.onCanplaythrough)
+        MediaDriver.prototype.doCanplaythrough = function () { guiBlocker(false); /*Logger.trace_lmsnd('soundnew.ts: MediaDriver.doCanplaythrough');*/ if (!this.onCanplaythrough)
             return; try {
             this.onCanplaythrough();
         }
@@ -764,7 +768,7 @@ var LMSnd;
                         Logger.trace_lmsnd('soundnew.ts: LMSnd.Player.playFile stoped');
                     }
                     else {
-                        Logger.trace_lmsnd('****** ' + msec.toString());
+                        //Logger.trace_lmsnd('****** ' + msec.toString());
                         if (file)
                             file.onPlaying(msec);
                     }

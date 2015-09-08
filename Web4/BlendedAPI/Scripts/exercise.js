@@ -130,12 +130,20 @@ var blended;
             this.greenArrowRoot = controller.pretestParent ? controller.pretestParent : controller.moduleParent;
             //this.refresh();
         }
+        //ICoursePageCallback
+        exerciseService.prototype.onRecorder = function (page, msecs) { this.user.modified = true; if (!this.user.short.sumRecord)
+            this.user.short.sumRecord = 0; this.user.short.sumRecord += Math.round(msecs / 1000); };
+        exerciseService.prototype.onPlayRecorder = function (page, msecs) { this.user.modified = true; if (!this.user.short.sumPlayRecord)
+            this.user.short.sumPlayRecord = 0; this.user.short.sumPlayRecord += Math.round(msecs / 1000); };
+        exerciseService.prototype.onPlayed = function (page, msecs) { this.user.modified = true; if (!this.user.short.sumPlay)
+            this.user.short.sumPlay = 0; this.user.short.sumPlay += Math.round(msecs / 1000); };
         exerciseService.prototype.score = function () {
             return blended.scorePercent(this.user.short);
         };
         exerciseService.prototype.onDisplay = function (el, completed) {
             var _this = this;
             var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
+            pg.blendedPageCallback = this;
             Course.localize(pg, function (s) { return CourseMeta.localizeString(pg.url, s, _this.exercise.mod.loc); });
             var isGramm = CourseMeta.isType(this.exercise.dataNode, CourseMeta.runtimeType.grammar);
             if (!isGramm) {

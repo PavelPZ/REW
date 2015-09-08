@@ -794,11 +794,11 @@ namespace CourseModel {
   [tgAt(tgSt.docIgnore | tgSt.xsdIgnore)]
   [XmlType(TypeName = "human-eval")]
   public abstract partial class humanEval : evalControl {
-    //[tgAt(0), XmlAttribute(AttributeName = "no-eval"), DefaultValue(0)]
-    //public bool noEval;
+    [tgAt(0), XmlAttribute(AttributeName = "is-passive"), DefaultValue(false)]
+    public bool isPassive;
     //AngularJS
-    //public override int getMaxScore() { return 0; }
-    //public override bool isSkipEvaluation() { return true; }
+    public humanEval() { isPassive = true; }
+    public override int getMaxScore() { return true /*isPassive*/ ? 0 : base.getMaxScore(); }
   }
 
   [tgAt(tgSt.jsCtrl | tgSt.csControl | tgSt.xsdHtmlEl)]
