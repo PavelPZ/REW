@@ -17167,6 +17167,12 @@ var bowser;
 })(bowser || (bowser = {}));
 var Utils;
 (function (Utils) {
+    function sum(list, getNumber) {
+        var res = 0;
+        _.each(list, function (item) { return res += getNumber(item); });
+        return res;
+    }
+    Utils.sum = sum;
     function getObjectClassName(obj) {
         if (obj && obj.constructor && obj.constructor.toString()) {
             /*
@@ -17477,11 +17483,11 @@ var Utils;
     function toUtcTime(dt) { return new Date(dt.getTime() + localOffset); }
     Utils.toUtcTime = toUtcTime;
     function nowToInt() { return dateToInt(new Date()); }
-    Utils.nowToInt = nowToInt;
+    Utils.nowToInt = nowToInt; //milivteriny
     function nowToNum() { return dateToNum(new Date()); }
-    Utils.nowToNum = nowToNum;
+    Utils.nowToNum = nowToNum; //vteriny
     function nowToDay() { return dayToInt(new Date()); }
-    Utils.nowToDay = nowToDay;
+    Utils.nowToDay = nowToDay; //dny
     function formatDateLow(dt) { return Globalize.format(dt, 'd'); }
     Utils.formatDateLow = formatDateLow;
     function formatTimeLow(dt) { return Globalize.format(dt, ', H:m:s'); }
@@ -17491,7 +17497,7 @@ var Utils;
     Utils.dateToNum = dateToNum;
     function numToDate(num) { return new Date(num * 1000); }
     Utils.numToDate = numToDate;
-    function formatDate(sec) { return formatTimeLow(numToDate(sec)); }
+    function formatDate(sec) { return formatDateLow(numToDate(sec)); }
     Utils.formatDate = formatDate;
     function formatDateTime(sec) { return formatDate(sec) + formatTimeLow(numToDate(sec)); }
     Utils.formatDateTime = formatDateTime;

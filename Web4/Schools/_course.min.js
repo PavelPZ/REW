@@ -25,8 +25,10 @@ var schoolMy;
                 if (!validate.isPropsValid([_this.licKey]))
                     return;
                 var k;
+                var key = _this.licKey();
+                key = key.trim();
                 try {
-                    k = keys.fromString(_this.licKey());
+                    k = keys.fromString(key);
                 }
                 catch (err) {
                     _this.licKey.message(errWrongFormat());
@@ -158,17 +160,34 @@ var schoolMy;
                 //isPublIndiv: crs==null,
                 expired: crs.Expired <= 0 ? new Date() : Utils.intToDate(crs.Expired),
                 line: pr.line, title: pr.title, prodId: pr.url, isTest: CourseMeta.lib.isTest(pr),
-                isAngularJS: CourseMeta.lib.isAngularJS(pr),
+                isVyzvaProduct: CourseMeta.lib.isVyzvaProduct(pr),
                 data: crs,
                 myCompany: comp,
                 gotoUrl: function (dt) {
                     //nove AngularJS produkty
-                    if (dt.isAngularJS) {
+                    if (dt.isVyzvaProduct) {
+                        var licenceKeysStr = _.map(crs.LicenceKeys, function (licenceKey) {
+                            var parts = licenceKey.split('|');
+                            var key = { licId: parseInt(parts[0]), counter: parseInt(parts[1]) };
+                            return keys.toString(key);
+                        });
                         var ctx = {
-                            producturl: blended.encodeUrl(pr.url), companyid: comp.data.Id, userid: LMStatus.Cookie.id,
-                            subuserid: LMStatus.Cookie.id, loc: Trados.actLang, taskid: 'def', persistence: null /*TODO*/
+                            producturl: blended.encodeUrl(pr.url), companyid: comp.data.Id, loginid: LMStatus.Cookie.id,
+                            /*userdataid: LMStatus.Cookie.id,*/ loc: LMComLib.Langs.cs_cz /*Trados.actLang*/, taskid: '', persistence: null,
+                            lickeys: licenceKeysStr.join('#')
                         };
-                        var hash = blended.root.href(vyzva.stateNames.home.name, ctx);
+                        var hash;
+                        switch (pr.url) {
+                            case '/lm/blcourse/langmastermanager.product/':
+                                hash = blended.root.href(vyzva.stateNames.langmasterManager.name, ctx);
+                                break;
+                            case '/lm/blcourse/schoolmanager.product/':
+                                hash = blended.root.href(vyzva.stateNames.shoolManager.name, ctx);
+                                break;
+                            default:
+                                hash = blended.root.href(blended.prodStates.home.name, ctx);
+                                break;
+                        }
                         Pager.navigateToHash(hash);
                         return;
                     } //window.location.hash = '/pg/ajs/vyzvaproduct/xxx'; return; }
@@ -817,7 +836,7 @@ var CourseModel;
         threeStateBool[threeStateBool["false"] = 2] = "false";
     })(CourseModel.threeStateBool || (CourseModel.threeStateBool = {}));
     var threeStateBool = CourseModel.threeStateBool;
-    CourseModel.meta = { "rootTagName": "tag", "types": { "smart-pairing": { "st": 6, "anc": "smart-element-low", "props": { "random": { "st": 64 }, "left-width": { "enumType": CourseModel.pairingLeftWidth } } }, "smart-offering": { "st": 6, "anc": "smart-element-low", "props": { "words": {}, "mode": { "enumType": CourseModel.smartOfferingMode } } }, "smart-element": { "st": 6, "anc": "smart-element-low", "props": { "inline-type": { "enumType": CourseModel.smartElementTypes } } }, "smart-element-low": { "anc": "macro-template", "props": {} }, "macro-article": { "st": 6, "anc": "macro-template", "props": {} }, "macro-vocabulary": { "st": 6, "anc": "macro-template", "props": {} }, "macro-video": { "st": 6, "anc": "macro-template", "props": { "cut-url": {}, "media-url": {}, "display-style": {} } }, "macro-true-false": { "st": 6, "anc": "macro-template", "props": { "text-id": { "enumType": CourseModel.CheckItemTexts } } }, "macro-single-choices": { "st": 6, "anc": "macro-template", "props": {} }, "macro-list-word-ordering": { "st": 6, "anc": "macro-template", "props": {} }, "macro-pairing": { "st": 6, "anc": "macro-template", "props": {} }, "macro-table": { "st": 6, "anc": "macro-template", "props": { "inline-type": { "enumType": CourseModel.inlineControlTypes } } }, "macro-list": { "st": 6, "anc": "macro-template", "props": { "inline-type": { "enumType": CourseModel.inlineControlTypes } } }, "macro-icon-list": { "st": 6, "anc": "macro-template", "props": { "delim": {}, "is-striped": { "st": 64 }, "icon": { "enumType": CourseModel.listIcon }, "color": { "enumType": CourseModel.colors } } }, "tag": { "st": 384, "props": { "id": { "st": 524288 }, "style-sheet": { "st": 1024 }, "srcpos": { "st": 384 }, "items": { "st": 640 }, "temporary-macro-item": { "st": 1600 }, "class": { "st": 160 }, "class-setter": { "st": 1664 } } }, "smart-tag": { "st": 2180, "anc": "tag", "props": { "correct": { "st": 64 }, "default-inline-type": { "st": 128, "enumType": CourseModel.inlineControlTypes }, "smart-text": { "st": 1536 } } }, "node": { "st": 4228, "anc": "tag", "props": {} }, "text": { "st": 384, "anc": "tag", "props": { "title": {} } }, "error": { "st": 16512, "anc": "tag", "props": { "msg": {} } }, "header-prop": { "st": 36992, "anc": "tag", "props": {} }, "eval-control": { "st": 392, "anc": "tag", "props": { "eval-group": { "st": 524288 }, "score-weight": { "st": 524352 }, "eval-button-id": { "st": 524288 } } }, "body": { "st": 131333, "anc": "tag", "props": { "snd-page": { "st": 640, "childPropTypes": "_snd-page" }, "eval-page": { "st": 640, "childPropTypes": "_eval-page" }, "url": { "st": 384 }, "order": { "st": 64 }, "instr-title": {}, "externals": { "st": 128 }, "see-also-links": {}, "old-ea-is-passive": { "st": 192 }, "is-old-ea": { "st": 192 }, "see-also": { "st": 1664 }, "title": { "st": 1536 }, "body-style": { "st": 1536 }, "instr-body": {}, "see-also-str": { "st": 128 }, "instrs": { "st": 1536 } } }, "eval-button": { "st": 13, "anc": "eval-control", "props": { "score-as-ratio": { "st": 64 } } }, "check-low": { "st": 8, "anc": "eval-control", "props": { "correct-value": { "st": 64 }, "text-type": { "enumType": CourseModel.CheckItemTexts }, "init-value": { "enumType": CourseModel.threeStateBool }, "read-only": { "st": 64 }, "skip-evaluation": { "st": 64 } } }, "check-box": { "st": 13, "anc": "check-low", "props": {} }, "check-item": { "st": 4109, "anc": "check-low", "props": {} }, "offering": { "st": 5, "anc": "tag", "props": { "words": {}, "mode": { "st": 524288, "enumType": CourseModel.offeringDropDownMode }, "hidden": { "st": 524352 } } }, "radio-button": { "st": 4109, "anc": "eval-control", "props": { "correct-value": { "st": 64 }, "init-value": { "st": 64 }, "read-only": { "st": 64 }, "skip-evaluation": { "st": 64 } } }, "single-choice": { "st": 4, "xsdChildElements": "c0_:['radio-button']", "anc": "tag", "props": { "read-only": { "st": 64 }, "skip-evaluation": { "st": 64 }, "score-weight": { "st": 64 }, "eval-button-id": {} } }, "word-selection": { "st": 13, "anc": "eval-control", "props": { "words": {} } }, "word-multi-selection": { "st": 13, "anc": "eval-control", "props": { "words": {} } }, "word-ordering": { "st": 13, "anc": "eval-control", "props": { "correct-order": {} } }, "sentence-ordering": { "st": 13, "xsdChildElements": "c0_:['sentence-ordering-item']", "anc": "eval-control", "props": {} }, "sentence-ordering-item": { "st": 4101, "anc": "tag", "props": {} }, "edit": { "st": 392, "anc": "eval-control", "props": { "correct-value": {}, "width-group": { "st": 524288 }, "width": { "st": 524352 }, "offering-id": { "st": 524288 }, "case-sensitive": { "st": 524352 } } }, "gap-fill": { "st": 13, "anc": "edit", "props": { "hint": { "st": 524288 }, "init-value": {}, "read-only": { "st": 524352 }, "skip-evaluation": { "st": 524352 } } }, "drop-down": { "st": 13, "anc": "edit", "props": { "gap-fill-like": { "st": 524736 } } }, "pairing": { "st": 13, "xsdChildElements": "c0_:['pairing-item']", "anc": "eval-control", "props": { "left-random": { "st": 64 }, "left-width": { "enumType": CourseModel.pairingLeftWidth } } }, "pairing-item": { "st": 4101, "anc": "tag", "props": { "right": {} } }, "human-eval": { "st": 392, "anc": "eval-control", "props": {} }, "writing": { "st": 4109, "anc": "human-eval", "props": { "limit-recommend": { "st": 64 }, "limit-min": { "st": 64 }, "limit-max": { "st": 64 }, "number-of-rows": { "st": 64 } } }, "recording": { "st": 4109, "anc": "human-eval", "props": { "limit-recommend": { "st": 64 }, "limit-min": { "st": 64 }, "limit-max": { "st": 64 }, "record-in-dialog": { "st": 64 }, "dialog-header-id": {}, "dialog-size": { "enumType": CourseModel.modalSize }, "single-attempt": { "st": 64 } } }, "macro": { "st": 384, "anc": "tag", "props": {} }, "list": { "st": 4, "xsdChildElements": "c0_:['li']", "anc": "macro", "props": { "delim": {}, "is-striped": { "st": 64 }, "icon": { "enumType": CourseModel.listIcon }, "color": { "enumType": CourseModel.colors } } }, "list-group": { "st": 12293, "anc": "macro", "props": { "is-striped": { "st": 64 } } }, "two-column": { "st": 4101, "anc": "macro", "props": {} }, "panel": { "st": 131077, "xsdChildElements": "s:[{c01: ['header-prop']},{c0_: ['@flowContent']}]", "anc": "macro", "props": { "header": { "st": 640, "childPropTypes": "header-prop" } } }, "_eval-page": { "st": 384, "anc": "tag", "props": { "max-score": { "st": 64 }, "radio-groups-obj": { "st": 1536 }, "radio-groups": {} } }, "_eval-btn": { "st": 384, "anc": "tag", "props": { "btn-id": {} } }, "_eval-group": { "st": 384, "anc": "tag", "props": { "is-and": { "st": 64 }, "is-exchangeable": { "st": 64 }, "eval-control-ids": { "st": 32 }, "max-score": { "st": 1600 } } }, "_snd-page": { "st": 385, "anc": "tag", "props": {} }, "_snd-file-group": { "st": 385, "anc": "url-tag", "props": {} }, "_snd-group": { "st": 385, "anc": "tag", "props": { "intervals": { "st": 1536 }, "sf": { "st": 1536 }, "is-passive": { "st": 1600 } } }, "_snd-interval": { "st": 384, "anc": "tag", "props": {} }, "_snd-sent": { "st": 384, "anc": "tag", "props": { "idx": { "st": 64 }, "beg-pos": { "st": 64 }, "end-pos": { "st": 64 }, "text": {}, "actor": {} } }, "media-text": { "st": 5, "xsdChildElements": "c01: ['include-text','include-dialog','cut-text','cut-dialog']", "anc": "media-tag", "props": { "continue-media-id": { "st": 1024 }, "passive": { "st": 64 }, "is-old-to-new": { "st": 192 }, "hidden": { "st": 64 } } }, "_media-replica": { "st": 389, "anc": "tag", "props": { "icon-id": { "enumType": CourseModel.IconIds }, "dlg-left": { "st": 64 }, "actor": {} } }, "_media-sent": { "st": 131461, "anc": "tag", "props": { "idx": { "st": 64 } } }, "include": { "st": 384, "anc": "tag", "props": { "cut-url": { "st": 262144 } } }, "include-text": { "st": 98304, "xsdChildElements": "c0_:['phrase-replace']", "anc": "include", "props": {} }, "include-dialog": { "st": 98304, "xsdChildElements": "c0_:['phrase-replace']", "anc": "include", "props": {} }, "phrase-replace": { "st": 102400, "anc": "tag", "props": { "phrase-idx": { "st": 64 }, "replica-phrase-idx": {} } }, "_snd-file": { "st": 384, "anc": "url-tag", "props": { "file": { "st": 640, "childPropTypes": "include-text|include-dialog" }, "temp-replicas": { "st": 1536 } } }, "cut-dialog": { "st": 98308, "xsdChildElements": "s:[{c01:['include-text']},{c0_:['replica']}]", "anc": "_snd-file", "props": {} }, "cut-text": { "st": 98308, "xsdChildElements": "c01:[{c01:['include-dialog']},{c0_:['phrase']}]", "anc": "_snd-file", "props": {} }, "phrase": { "st": 102405, "anc": "tag", "props": { "beg-pos": { "st": 64 }, "end-pos": { "st": 64 }, "idx": { "st": 1600 }, "text": { "st": 1536 }, "actor": { "st": 1536 } } }, "replica": { "st": 98309, "xsdChildElements": "c0_:['phrase']", "anc": "tag", "props": { "actor-id": { "enumType": CourseModel.IconIds }, "actor-name": {}, "number-of-phrases": { "st": 64 } } }, "url-tag": { "anc": "tag", "props": { "media-url": { "st": 1024 }, "any-url": { "st": 1536 }, "is-video": { "st": 1600 } } }, "media-tag": { "st": 384, "anc": "url-tag", "props": { "cut-url": { "st": 1024 }, "subset": { "st": 1024 }, "share-media-id": { "st": 1024 }, "_sent-group-id": { "st": 384 }, "file": { "st": 1664, "childPropTypes": "cut-dialog|cut-text|include-text|include-dialog" } } }, "media-big-mark": { "st": 5, "xsdChildElements": "c01: ['include-text','include-dialog','cut-text','cut-dialog']", "anc": "media-tag", "props": {} }, "media-player": { "st": 5, "xsdChildElements": "c01: ['include-text','include-dialog','cut-text','cut-dialog']", "anc": "media-tag", "props": {} }, "media-video": { "st": 5, "xsdChildElements": "c01: ['include-text','include-dialog','cut-text','cut-dialog']", "anc": "media-tag", "props": {} }, "tts-sound": { "st": 133, "anc": "media-tag", "props": { "text": {} } }, "macro-template": { "st": 384, "anc": "macro", "props": { "name": {}, "cdata": {} } }, "inline-tag": { "st": 16388, "anc": "macro-template", "props": { "inline-type": { "enumType": CourseModel.inlineElementTypes } } }, "html-tag": { "st": 384, "anc": "tag", "props": { "tag-name": {}, "attrs": { "st": 384 } } }, "script": { "st": 386, "anc": "tag", "props": { "cdata": {} } }, "img": { "st": 384, "anc": "tag", "props": { "src": {} } }, "extension": { "st": 143, "anc": "eval-control", "props": { "data": {}, "cdata": {} } }, "doc-example": { "st": 133, "xsdChildElements": "s:[{c01: ['header-prop']},{c01: ['doc-descr']},{c0_: ['@flowContent']}]", "anc": "tag", "props": { "todo": { "st": 64 }, "code-listing": {}, "code-post-listing": {}, "header": { "st": 512, "childPropTypes": "header-prop" }, "descr": { "st": 512, "childPropTypes": "doc-descr" }, "eval-btn": { "st": 512, "childPropTypes": "eval-btn" } } }, "drag-target": { "st": 8, "anc": "edit", "props": {} }, "doc-named": { "st": 384, "anc": "tag", "props": { "name": {}, "summary": {}, "cdata": {} } }, "doc-type": { "st": 386, "anc": "doc-named", "props": { "is-html": { "st": 64 }, "is-ign": { "st": 64 }, "descendants-and-self": { "st": 32 }, "my-props": { "st": 32 }, "xref": {} } }, "doc-enum": { "st": 386, "anc": "doc-named", "props": { "xref": {}, "enums": { "st": 544, "childPropTypes": "doc-enum-item" } } }, "doc-enum-item": { "st": 386, "anc": "doc-named", "props": { "xref": {} } }, "doc-prop": { "st": 386, "anc": "doc-named", "props": { "owner-type": {}, "data-type": {}, "xref": {}, "is-html": { "st": 64 } } }, "doc-descr": { "st": 36992, "anc": "tag", "props": {} }, "doc-tags-meta": { "st": 384, "anc": "tag", "props": { "types": { "st": 544, "childPropTypes": "doc-type" }, "props": { "st": 544, "childPropTypes": "doc-prop" }, "enums": { "st": 544, "childPropTypes": "doc-enum" } } } } };
+    CourseModel.meta = { "rootTagName": "tag", "types": { "smart-pairing": { "st": 6, "anc": "smart-element-low", "props": { "random": { "st": 64 }, "left-width": { "enumType": CourseModel.pairingLeftWidth } } }, "smart-offering": { "st": 6, "anc": "smart-element-low", "props": { "words": {}, "mode": { "enumType": CourseModel.smartOfferingMode } } }, "smart-element": { "st": 6, "anc": "smart-element-low", "props": { "inline-type": { "enumType": CourseModel.smartElementTypes } } }, "smart-element-low": { "anc": "macro-template", "props": {} }, "macro-article": { "st": 6, "anc": "macro-template", "props": {} }, "macro-vocabulary": { "st": 6, "anc": "macro-template", "props": {} }, "macro-video": { "st": 6, "anc": "macro-template", "props": { "cut-url": {}, "media-url": {}, "display-style": {} } }, "macro-true-false": { "st": 6, "anc": "macro-template", "props": { "text-id": { "enumType": CourseModel.CheckItemTexts } } }, "macro-single-choices": { "st": 6, "anc": "macro-template", "props": {} }, "macro-list-word-ordering": { "st": 6, "anc": "macro-template", "props": {} }, "macro-pairing": { "st": 6, "anc": "macro-template", "props": {} }, "macro-table": { "st": 6, "anc": "macro-template", "props": { "inline-type": { "enumType": CourseModel.inlineControlTypes } } }, "macro-list": { "st": 6, "anc": "macro-template", "props": { "inline-type": { "enumType": CourseModel.inlineControlTypes } } }, "macro-icon-list": { "st": 6, "anc": "macro-template", "props": { "delim": {}, "is-striped": { "st": 64 }, "icon": { "enumType": CourseModel.listIcon }, "color": { "enumType": CourseModel.colors } } }, "tag": { "st": 384, "props": { "id": { "st": 524288 }, "style-sheet": { "st": 1024 }, "srcpos": { "st": 384 }, "items": { "st": 640 }, "temporary-macro-item": { "st": 1600 }, "class": { "st": 160 }, "class-setter": { "st": 1664 } } }, "smart-tag": { "st": 2180, "anc": "tag", "props": { "correct": { "st": 64 }, "default-inline-type": { "st": 128, "enumType": CourseModel.inlineControlTypes }, "smart-text": { "st": 1536 } } }, "node": { "st": 4228, "anc": "tag", "props": {} }, "text": { "st": 384, "anc": "tag", "props": { "title": {} } }, "error": { "st": 16512, "anc": "tag", "props": { "msg": {} } }, "header-prop": { "st": 36992, "anc": "tag", "props": {} }, "eval-control": { "st": 392, "anc": "tag", "props": { "eval-group": { "st": 524288 }, "score-weight": { "st": 524352 }, "eval-button-id": { "st": 524288 } } }, "body": { "st": 131333, "anc": "tag", "props": { "snd-page": { "st": 640, "childPropTypes": "_snd-page" }, "eval-page": { "st": 640, "childPropTypes": "_eval-page" }, "url": { "st": 384 }, "order": { "st": 64 }, "instr-title": {}, "externals": { "st": 128 }, "see-also-links": {}, "old-ea-is-passive": { "st": 192 }, "is-old-ea": { "st": 192 }, "see-also": { "st": 1664 }, "title": { "st": 1536 }, "body-style": { "st": 1536 }, "instr-body": {}, "see-also-str": { "st": 128 }, "instrs": { "st": 1536 } } }, "eval-button": { "st": 13, "anc": "eval-control", "props": { "score-as-ratio": { "st": 64 } } }, "check-low": { "st": 8, "anc": "eval-control", "props": { "correct-value": { "st": 64 }, "text-type": { "enumType": CourseModel.CheckItemTexts }, "init-value": { "enumType": CourseModel.threeStateBool }, "read-only": { "st": 64 }, "skip-evaluation": { "st": 64 } } }, "check-box": { "st": 13, "anc": "check-low", "props": {} }, "check-item": { "st": 4109, "anc": "check-low", "props": {} }, "offering": { "st": 5, "anc": "tag", "props": { "words": {}, "mode": { "st": 524288, "enumType": CourseModel.offeringDropDownMode }, "hidden": { "st": 524352 } } }, "radio-button": { "st": 4109, "anc": "eval-control", "props": { "correct-value": { "st": 64 }, "init-value": { "st": 64 }, "read-only": { "st": 64 }, "skip-evaluation": { "st": 64 } } }, "single-choice": { "st": 4, "xsdChildElements": "c0_:['radio-button']", "anc": "tag", "props": { "read-only": { "st": 64 }, "skip-evaluation": { "st": 64 }, "score-weight": { "st": 64 }, "eval-button-id": {} } }, "word-selection": { "st": 13, "anc": "eval-control", "props": { "words": {} } }, "word-multi-selection": { "st": 13, "anc": "eval-control", "props": { "words": {} } }, "word-ordering": { "st": 13, "anc": "eval-control", "props": { "correct-order": {} } }, "sentence-ordering": { "st": 13, "xsdChildElements": "c0_:['sentence-ordering-item']", "anc": "eval-control", "props": {} }, "sentence-ordering-item": { "st": 4101, "anc": "tag", "props": {} }, "edit": { "st": 392, "anc": "eval-control", "props": { "correct-value": {}, "width-group": { "st": 524288 }, "width": { "st": 524352 }, "offering-id": { "st": 524288 }, "case-sensitive": { "st": 524352 } } }, "gap-fill": { "st": 13, "anc": "edit", "props": { "hint": { "st": 524288 }, "init-value": {}, "read-only": { "st": 524352 }, "skip-evaluation": { "st": 524352 } } }, "drop-down": { "st": 13, "anc": "edit", "props": { "gap-fill-like": { "st": 524736 } } }, "pairing": { "st": 13, "xsdChildElements": "c0_:['pairing-item']", "anc": "eval-control", "props": { "left-random": { "st": 64 }, "left-width": { "enumType": CourseModel.pairingLeftWidth } } }, "pairing-item": { "st": 4101, "anc": "tag", "props": { "right": {} } }, "human-eval": { "st": 392, "anc": "eval-control", "props": { "is-passive": { "st": 64 } } }, "writing": { "st": 4109, "anc": "human-eval", "props": { "limit-recommend": { "st": 64 }, "limit-min": { "st": 64 }, "limit-max": { "st": 64 }, "number-of-rows": { "st": 64 } } }, "recording": { "st": 4109, "anc": "human-eval", "props": { "limit-recommend": { "st": 64 }, "limit-min": { "st": 64 }, "limit-max": { "st": 64 }, "record-in-dialog": { "st": 64 }, "dialog-header-id": {}, "dialog-size": { "enumType": CourseModel.modalSize }, "single-attempt": { "st": 64 } } }, "macro": { "st": 384, "anc": "tag", "props": {} }, "list": { "st": 4, "xsdChildElements": "c0_:['li']", "anc": "macro", "props": { "delim": {}, "is-striped": { "st": 64 }, "icon": { "enumType": CourseModel.listIcon }, "color": { "enumType": CourseModel.colors } } }, "list-group": { "st": 12293, "anc": "macro", "props": { "is-striped": { "st": 64 } } }, "two-column": { "st": 4101, "anc": "macro", "props": {} }, "panel": { "st": 131077, "xsdChildElements": "s:[{c01: ['header-prop']},{c0_: ['@flowContent']}]", "anc": "macro", "props": { "header": { "st": 640, "childPropTypes": "header-prop" } } }, "_eval-page": { "st": 384, "anc": "tag", "props": { "max-score": { "st": 64 }, "radio-groups-obj": { "st": 1536 }, "radio-groups": {} } }, "_eval-btn": { "st": 384, "anc": "tag", "props": { "btn-id": {} } }, "_eval-group": { "st": 384, "anc": "tag", "props": { "is-and": { "st": 64 }, "is-exchangeable": { "st": 64 }, "eval-control-ids": { "st": 32 }, "max-score": { "st": 1600 } } }, "_snd-page": { "st": 385, "anc": "tag", "props": {} }, "_snd-file-group": { "st": 385, "anc": "url-tag", "props": {} }, "_snd-group": { "st": 385, "anc": "tag", "props": { "intervals": { "st": 1536 }, "sf": { "st": 1536 }, "is-passive": { "st": 1600 } } }, "_snd-interval": { "st": 384, "anc": "tag", "props": {} }, "_snd-sent": { "st": 384, "anc": "tag", "props": { "idx": { "st": 64 }, "beg-pos": { "st": 64 }, "end-pos": { "st": 64 }, "text": {}, "actor": {} } }, "media-text": { "st": 5, "xsdChildElements": "c01: ['include-text','include-dialog','cut-text','cut-dialog']", "anc": "media-tag", "props": { "continue-media-id": { "st": 1024 }, "passive": { "st": 64 }, "is-old-to-new": { "st": 192 }, "hidden": { "st": 64 } } }, "_media-replica": { "st": 389, "anc": "tag", "props": { "icon-id": { "enumType": CourseModel.IconIds }, "dlg-left": { "st": 64 }, "actor": {} } }, "_media-sent": { "st": 131461, "anc": "tag", "props": { "idx": { "st": 64 } } }, "include": { "st": 384, "anc": "tag", "props": { "cut-url": { "st": 262144 } } }, "include-text": { "st": 98304, "xsdChildElements": "c0_:['phrase-replace']", "anc": "include", "props": {} }, "include-dialog": { "st": 98304, "xsdChildElements": "c0_:['phrase-replace']", "anc": "include", "props": {} }, "phrase-replace": { "st": 102400, "anc": "tag", "props": { "phrase-idx": { "st": 64 }, "replica-phrase-idx": {} } }, "_snd-file": { "st": 384, "anc": "url-tag", "props": { "file": { "st": 640, "childPropTypes": "include-text|include-dialog" }, "temp-replicas": { "st": 1536 } } }, "cut-dialog": { "st": 98308, "xsdChildElements": "s:[{c01:['include-text']},{c0_:['replica']}]", "anc": "_snd-file", "props": {} }, "cut-text": { "st": 98308, "xsdChildElements": "c01:[{c01:['include-dialog']},{c0_:['phrase']}]", "anc": "_snd-file", "props": {} }, "phrase": { "st": 102405, "anc": "tag", "props": { "beg-pos": { "st": 64 }, "end-pos": { "st": 64 }, "idx": { "st": 1600 }, "text": { "st": 1536 }, "actor": { "st": 1536 } } }, "replica": { "st": 98309, "xsdChildElements": "c0_:['phrase']", "anc": "tag", "props": { "actor-id": { "enumType": CourseModel.IconIds }, "actor-name": {}, "number-of-phrases": { "st": 64 } } }, "url-tag": { "anc": "tag", "props": { "media-url": { "st": 1024 }, "any-url": { "st": 1536 }, "is-video": { "st": 1600 } } }, "media-tag": { "st": 384, "anc": "url-tag", "props": { "cut-url": { "st": 1024 }, "subset": { "st": 1024 }, "share-media-id": { "st": 1024 }, "_sent-group-id": { "st": 384 }, "file": { "st": 1664, "childPropTypes": "cut-dialog|cut-text|include-text|include-dialog" } } }, "media-big-mark": { "st": 5, "xsdChildElements": "c01: ['include-text','include-dialog','cut-text','cut-dialog']", "anc": "media-tag", "props": {} }, "media-player": { "st": 5, "xsdChildElements": "c01: ['include-text','include-dialog','cut-text','cut-dialog']", "anc": "media-tag", "props": {} }, "media-video": { "st": 5, "xsdChildElements": "c01: ['include-text','include-dialog','cut-text','cut-dialog']", "anc": "media-tag", "props": {} }, "tts-sound": { "st": 133, "anc": "media-tag", "props": { "text": {} } }, "macro-template": { "st": 384, "anc": "macro", "props": { "name": {}, "cdata": {} } }, "inline-tag": { "st": 16388, "anc": "macro-template", "props": { "inline-type": { "enumType": CourseModel.inlineElementTypes } } }, "html-tag": { "st": 384, "anc": "tag", "props": { "tag-name": {}, "attrs": { "st": 384 } } }, "script": { "st": 386, "anc": "tag", "props": { "cdata": {} } }, "img": { "st": 384, "anc": "tag", "props": { "src": {} } }, "extension": { "st": 143, "anc": "eval-control", "props": { "data": {}, "cdata": {} } }, "doc-example": { "st": 133, "xsdChildElements": "s:[{c01: ['header-prop']},{c01: ['doc-descr']},{c0_: ['@flowContent']}]", "anc": "tag", "props": { "todo": { "st": 64 }, "code-listing": {}, "code-post-listing": {}, "header": { "st": 512, "childPropTypes": "header-prop" }, "descr": { "st": 512, "childPropTypes": "doc-descr" }, "eval-btn": { "st": 512, "childPropTypes": "eval-btn" } } }, "drag-target": { "st": 8, "anc": "edit", "props": {} }, "doc-named": { "st": 384, "anc": "tag", "props": { "name": {}, "summary": {}, "cdata": {} } }, "doc-type": { "st": 386, "anc": "doc-named", "props": { "is-html": { "st": 64 }, "is-ign": { "st": 64 }, "descendants-and-self": { "st": 32 }, "my-props": { "st": 32 }, "xref": {} } }, "doc-enum": { "st": 386, "anc": "doc-named", "props": { "xref": {}, "enums": { "st": 544, "childPropTypes": "doc-enum-item" } } }, "doc-enum-item": { "st": 386, "anc": "doc-named", "props": { "xref": {} } }, "doc-prop": { "st": 386, "anc": "doc-named", "props": { "owner-type": {}, "data-type": {}, "xref": {}, "is-html": { "st": 64 } } }, "doc-descr": { "st": 36992, "anc": "tag", "props": {} }, "doc-tags-meta": { "st": 384, "anc": "tag", "props": { "types": { "st": 544, "childPropTypes": "doc-type" }, "props": { "st": 544, "childPropTypes": "doc-prop" }, "enums": { "st": 544, "childPropTypes": "doc-enum" } } } } };
     CourseModel.tsmartPairing = 'smart-pairing';
     CourseModel.tsmartOffering = 'smart-offering';
     CourseModel.tsmartElement = 'smart-element';
@@ -1369,7 +1388,9 @@ var Course;
         tagImpl.prototype.jsonMLParsed = function () {
             this._myPage = (_.find(this.parents(true), function (t) { return t._tg == CourseModel.tbody; }));
         };
-        tagImpl.prototype.pageCreated = function () { }; //volana po nacteni user dat, vytvoreni page apod.
+        tagImpl.prototype.pageCreated = function () {
+            this.blended = this._myPage.blendedExtension;
+        };
         tagImpl.prototype.parents = function (incSelf) { var res = []; var t = incSelf ? this : this._owner; while (t) {
             res.push(t);
             t = t._owner;
@@ -1462,6 +1483,7 @@ var Course;
         evalControlImpl.prototype.doCreateResult = function (forceEval) { this.result = this.createResult(forceEval); this.setScore(); return this.result; };
         evalControlImpl.prototype.selfElement = function () { return idToElement(this.id); };
         evalControlImpl.prototype.pageCreated = function () {
+            _super.prototype.pageCreated.call(this);
             if (!this.id)
                 throw 'eval control mush have id';
             var pgRes = this._myPage.result;
@@ -1493,7 +1515,7 @@ var Course;
                 return;
             this.form = $('#form-' + this.id);
             var par = { onsubmit: false, rules: {} };
-            par.rules['human-ed-' + this.id] = { required: true, range: [0, this.scoreWeight], number: true };
+            par.rules['human-ed-' + this.id] = { required: true, range: [0, 100], number: true };
             this.form.validate(par);
         };
         humanEvalControlImpl.prototype.acTestLevel = function () {
@@ -1521,7 +1543,7 @@ var Course;
             if (!_.all(toEvals, function (f) { return f.form.valid(); }))
                 return false;
             _.each(toEvals, function (ev) {
-                ev.result.hPercent = parseInt(ev.human());
+                ev.result.hPercent = parseInt(ev.human()) / 100 * ev.scoreWeight;
                 ev.result.hEmail = LMStatus.Cookie.EMail;
                 ev.result.hLmcomId = LMStatus.Cookie.id;
                 ev.result.hDate = Utils.nowToNum();
@@ -1535,12 +1557,31 @@ var Course;
             CourseMeta.actCourseRoot.refreshNumbers();
             return true;
         };
+        humanEvalControlImpl.prototype.isKBeforeHumanEval = function () { throw 'notimplemented'; };
+        humanEvalControlImpl.prototype.setScore = function () {
+            this.result.ms = this.scoreWeight;
+            if ((this.result.flag & CourseModel.CourseDataFlag.needsEval) == 0 && (this.result.flag & CourseModel.CourseDataFlag.pcCannotEvaluate) != 0) {
+                this.result.s = Math.round(this.result.hPercent);
+                return;
+            }
+            var c = this.isKBeforeHumanEval();
+            this.result.s = 0;
+            //Oprava 9.9.2015 kvuli Blended. 
+            //this.result.s = c ? this.scoreWeight : 0;
+            if (c) {
+                this.result.flag |= CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate;
+            }
+            else {
+                this.result.flag &= ~(CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate) & CourseModel.CourseDataFlag.all;
+            }
+            //this.result.flag = !c ? 0 : CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.needsEval;
+        };
         return humanEvalControlImpl;
     })(evalControlImpl);
     Course.humanEvalControlImpl = humanEvalControlImpl;
     function idToElement(id) { return $('#' + id).first(); }
     Course.idToElement = idToElement;
-    function finishCreatePage(ex) { var res = ex.page; res.finishCreatePage(ex); return res; }
+    function finishCreatePage(exImpl) { var page = exImpl.page; page.finishCreatePage(exImpl); return page; }
     Course.finishCreatePage = finishCreatePage;
     var Page = (function (_super) {
         __extends(Page, _super);
@@ -2392,10 +2433,10 @@ var CourseMeta;
             return prod && CourseMeta.isType(prod, CourseMeta.runtimeType.test);
         }
         lib.isTest = isTest;
-        function isAngularJS(prod) {
+        function isVyzvaProduct(prod) {
             return prod && CourseMeta.isType(prod, CourseMeta.runtimeType.productNew);
         }
-        lib.isAngularJS = isAngularJS;
+        lib.isVyzvaProduct = isVyzvaProduct;
         function keyTitle(prod, Days) {
             return prod.title + ' / ' + (CourseMeta.lib.isTest(prod) ? 'test' : 'days: ' + Days.toString());
         }
@@ -2542,21 +2583,6 @@ var CourseMeta;
         lib.info_continue = info_continue;
         function info_courseFinished() { return new CourseMeta.greenArrowInfo(CSLocalize('e06a4208d7c84c8ba97c1a700f00046c', 'Course completed!'), CourseMeta.actNode == CourseMeta.actCourseRoot, "info", "thumbs-up", CourseMeta.actNode == CourseMeta.actCourseRoot ? $.noop : function () { return CourseMeta.gui.gotoData(null); }); }
         lib.info_courseFinished = info_courseFinished;
-        function blendedDisplayEx(page, insertToHTMLPage) {
-            page.finishCreatePage({});
-            page.callInitProcs(Course.initPhase.beforeRender, function () {
-                //var html = JsRenderTemplateEngine.render("c_blended_body", page);
-                var html = JsRenderTemplateEngine.render("c_gen", page);
-                CourseMeta.actExPageControl = page;
-                insertToHTMLPage(html);
-                page.callInitProcs(Course.initPhase.afterRender, function () {
-                    page.callInitProcs(Course.initPhase.afterRender2, function () {
-                    });
-                });
-                //Pager.renderHtmlEx(true, '', page); //HTML rendering (kod, provedeny normalne za onUpdate)
-            });
-        }
-        lib.blendedDisplayEx = blendedDisplayEx;
         //vykresleni naladovaneho cviceni
         function displayEx(loadedEx, beforeUpdate, afterUpdate) {
             //TODO EVAL
@@ -4827,6 +4853,25 @@ var Course;
         function writingImpl(staticData) {
             _super.call(this, staticData);
             this.textInput = ko.observable();
+            //setScore(): void {
+            //  if ((this.result.flag & CourseModel.CourseDataFlag.needsEval) == 0 && (this.result.flag & CourseModel.CourseDataFlag.pcCannotEvaluate) != 0) {
+            //    this.result.ms = this.scoreWeight;
+            //    this.result.s = Math.round(this.result.hPercent);
+            //    return;
+            //  }
+            //  var c = this.limitMin && (this.result.words >= this.limitMin);
+            //  //Oprava 9.9.2015 kvuli Blended. 
+            //  //this.result.ms = this.scoreWeight;
+            //  //this.result.s = c ? this.scoreWeight : 0;
+            //  if (c) {
+            //    this.result.flag |= CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate;
+            //    this.result.ms = this.result.s = 0;
+            //  } else {
+            //    this.result.flag &= ~(CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate) & CourseModel.CourseDataFlag.all;
+            //    this.result.ms = this.scoreWeight; this.result.s = 0;
+            //  }
+            //  //this.result.flag = !c ? 0 : CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.needsEval;
+            //}
             this.progressBarValue = ko.observable(0);
             this.progressBarFrom = ko.observable(0);
             this.progressText = ko.observable('');
@@ -4864,29 +4909,7 @@ var Course;
                 self.result.text = value;
                 self.result.words = actMWords;
             });
-            //var self = this;
-            //this.textInput = ko.computed({
-            //  read: function () {
-            //    return self.result ? self.result.text : '';
-            //  },
-            //  write: function (value) {
-            //    var actMWords = _.filter(DictConnector.startSplitWord(value), w => !_.isEmpty(w.trim())).length;
-            //    var words = Math.max(self.wordsMin, self.wordsMax); if (!words) words = 100;
-            //    var txt = 'written ' + Math.round(actMWords) + ' words';
-            //    if (self.wordsMin > 0 && self.wordsMax > 0) txt += ' (min ' + self.wordsMin.toString() + ', max ' + self.wordsMax.toString() + ' words)';
-            //    else if (self.wordsMin > 0) txt += ' (min ' + self.wordsMin.toString() + ' words)';
-            //    else if (self.wordsMax > 0) txt += ' (max ' + self.wordsMax.toString() + ' words)';
-            //    self.progressText(txt);
-            //    self.progressBarLimetExceeded(self.wordsMax && actMWords > self.wordsMax);
-            //    if (!self.progressBarLimetExceeded() && actMWords > words) self.progressBarFrom(0);
-            //    self.progressBarValue((actMWords > words ? actMWords % words : actMWords) / words * 100);
-            //    self.result.text = value; self.result.words = actMWords;
-            //  },
-            //  owner: this,
-            //  pure: true,
-            //});
         }
-        //humanHelpTxt = ko.observable('');
         writingImpl.prototype.createResult = function (forceEval) { this.done(false); return { ms: 0, s: 0, tg: this._tg, flag: CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate, text: null, words: forceEval ? (this.limitMin ? this.limitMin : 0) : 0, hPercent: -1, hEmail: null, hDate: 0, hLmcomId: 0, hLevel: this.acTestLevel(), hRecommendMin: this.limitRecommend, hMax: this.limitMax, hMin: this.limitMin }; };
         writingImpl.prototype.provideData = function () {
             //this.result.text = this.textInput();
@@ -4896,35 +4919,13 @@ var Course;
         writingImpl.prototype.acceptData = function (done) {
             _super.prototype.acceptData.call(this, done);
             this.textInput(this.result.text ? this.result.text : '');
-            //var txt = this.result.text ? this.result.text : '';
-            //$('#' + this.id).find('textarea').val(txt);
-            //this.textInput(txt);
             this.human(this.result.hPercent < 0 ? '' : this.result.hPercent.toString());
             var tostr = this.limitMax ? ' - ' + this.limitMax.toString() : '';
             this.humanHelpTxt(this.limitRecommend ? this.limitRecommend.toString() + tostr + ' / ' + this.result.words.toString() : '');
             this.humanLevel(this.result.hLevel);
-            //this.textInput.evaluateImmediate();
-            //this.textInput.valueHasMutated();
-            //var t = this.textInput();
-            //if (!t) return;
-            //this.textInput.notifySubscribers();
             this.isDone(this.done());
         };
-        writingImpl.prototype.setScore = function () {
-            if ((this.result.flag & CourseModel.CourseDataFlag.needsEval) == 0 && (this.result.flag & CourseModel.CourseDataFlag.pcCannotEvaluate) != 0) {
-                this.result.ms = this.scoreWeight;
-                this.result.s = Math.round(this.result.hPercent);
-                return;
-            }
-            var c = this.limitMin && (this.result.words >= this.limitMin);
-            this.result.ms = this.scoreWeight;
-            this.result.s = c ? this.scoreWeight : 0;
-            if (c)
-                this.result.flag |= CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate;
-            else
-                this.result.flag &= ~(CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate) & CourseModel.CourseDataFlag.all;
-            //this.result.flag = !c ? 0 : CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.needsEval;
-        };
+        writingImpl.prototype.isKBeforeHumanEval = function () { return this.limitMin && (this.result.words >= this.limitMin); };
         writingImpl.prototype.initProc = function (phase, getTypeOnly, completed) {
             switch (phase) {
                 case Course.initPhase.afterRender:
@@ -4962,6 +4963,7 @@ var Course;
             this.playing = ko.observable(false);
             this.isRecorded = ko.observable(false);
             this.isDone = ko.observable(false);
+            this.blendedCallbackMax = 0;
             if (!this.singleAttempt)
                 this.singleAttempt = false;
             if (!this.limitMin)
@@ -5059,35 +5061,57 @@ var Course;
             setTimeout(completed, 500);
         };
         //Eval control
-        audioCaptureImpl.prototype.createResult = function (forceEval) { this.done(false); return { ms: 0, s: 0, tg: this._tg, flag: 0, audioUrl: createMediaUrl(this.id), recordedMilisecs: forceEval ? (this.limitMin ? this.limitMin * 1000 : 0) : 0, hPercent: -1, hEmail: null, hDate: 0, hLevel: this.acTestLevel(), hLmcomId: 0, hFrom: this.limitMin, hTo: this.limitMax, hRecommendFrom: this.limitRecommend }; };
+        audioCaptureImpl.prototype.createResult = function (forceEval) {
+            this.done(false);
+            return {
+                ms: 0, s: 0, tg: this._tg, flag: 0,
+                audioUrl: createMediaUrl(this.id),
+                recordedMilisecs: forceEval ? (this.limitMin ? this.limitMin * 1000 : 0) : 0,
+                hPercent: -1, hEmail: null, hDate: 0, hLevel: this.acTestLevel(), hLmcomId: 0, hFrom: this.limitMin, hTo: this.limitMax, hRecommendFrom: this.limitRecommend
+            };
+        };
         audioCaptureImpl.prototype.provideData = function () {
         };
         audioCaptureImpl.prototype.acceptData = function (done) {
             _super.prototype.acceptData.call(this, done);
             this.isRecorded(this.isRecordLengthCorrect());
-            this.isDone(this.done());
+            //Aktivni nahravatko:
+            var done = this.done();
+            if (this.blended) {
+                this.isDone(this.blended.isLector || (this.blended.isTest && done)); //pro blended je stale mozne nahravat jen pro lekci nebo nehotovy test
+            }
+            else
+                this.isDone(done && !this.isPassive); //stale je mozne nahravat pro pasivni RECORD kontrolku
             this.human(this.result.hPercent < 0 ? '' : this.result.hPercent.toString());
             var tostr = this.limitMax ? ' - ' + Utils.formatTimeSpan(this.limitMax) : '';
-            ;
             this.humanHelpTxt(this.limitRecommend ? Utils.formatTimeSpan(this.limitRecommend) + tostr + ' / ' + Utils.formatTimeSpan(Math.round(this.result.recordedMilisecs / 1000)) : '');
             this.humanLevel(this.result.hLevel);
             //CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate
         };
-        audioCaptureImpl.prototype.setScore = function () {
-            if ((this.result.flag & CourseModel.CourseDataFlag.needsEval) == 0 && (this.result.flag & CourseModel.CourseDataFlag.pcCannotEvaluate) != 0) {
-                this.result.ms = this.scoreWeight;
-                this.result.s = Math.round(this.result.hPercent);
-                return;
-            }
-            var c = this.isRecordLengthCorrect();
-            this.result.ms = this.scoreWeight;
-            this.result.s = c ? this.scoreWeight : 0;
-            if (c)
-                this.result.flag |= CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.hasExternalAttachments;
-            else
-                this.result.flag &= ~(CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.hasExternalAttachments) & CourseModel.CourseDataFlag.all;
-        };
+        audioCaptureImpl.prototype.isKBeforeHumanEval = function () { return this.isRecordLengthCorrect(); };
+        //setScore(): void {
+        //  if ((this.result.flag & CourseModel.CourseDataFlag.needsEval) == 0 && (this.result.flag & CourseModel.CourseDataFlag.pcCannotEvaluate) != 0) {
+        //    this.result.ms = this.scoreWeight;
+        //    this.result.s = Math.round(this.result.hPercent);
+        //    return;
+        //  }
+        //  var c = this.isRecordLengthCorrect();
+        //  //Oprava 9.9.2015 kvuli Blended. 
+        //  //this.result.ms = this.scoreWeight;
+        //  //this.result.s = c ? this.scoreWeight : 0;
+        //  if (c) {
+        //    this.result.flag |= CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.hasExternalAttachments;
+        //    this.result.ms = this.result.s = 0;
+        //  } else {
+        //    this.result.flag &= ~(CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.hasExternalAttachments) & CourseModel.CourseDataFlag.all;
+        //    this.result.ms = this.scoreWeight; this.result.s = 0;
+        //  }
+        //}
         audioCaptureImpl.prototype.isRecordLengthCorrect = function () { return this.result.recordedMilisecs > 0 && (!this.limitMin || (this.result.recordedMilisecs >= this.limitMin * 1000)); }; //pro 0 x 1 score
+        //isHumanEvalMode(): boolean {
+        //  if (!this._myPage.blendedPageCallback) return super.isHumanEvalMode();
+        //  return this._myPage.blendedPageCallback.isHumanEvalMode();
+        //}
         audioCaptureImpl.prototype.setRecorderSound = function (recorderSound) {
             this.driver.openFile(null); //reset driveru
             if (this.recorderSound)
@@ -5100,9 +5124,17 @@ var Course;
                 this.result.recordedMilisecs = 0;
             this.isRecorded(c);
             //vyjimka pro tuto kontrolku: save stavu cviceni
-            this.doProvideData();
-            this._myPage.result.userPending = true;
-            CourseMeta.lib.saveProduct($.noop);
+            //if (!cfg.noAngularjsApp) return;
+            //this.doProvideData();
+            //this._myPage.result.userPending = true;
+            //CourseMeta.lib.saveProduct($.noop);
+            //angularJS
+            if (this.blended)
+                this.blended.recorder.onRecorder(this._myPage, this.result.recordedMilisecs);
+            //var us = <blended.IPersistNodeItem<blended.IExShort>>(this._myPage.result.userData['']);
+            //us.modified = true;
+            //if (!us.short.sumRecord) us.short.sumRecord = 0;
+            //if (this.result.recordedMilisecs) us.short.sumRecord += Math.round(this.result.recordedMilisecs / 1000);
         };
         audioCaptureImpl.prototype.play = function () {
             var _this = this;
@@ -5112,7 +5144,18 @@ var Course;
             if (!wasPaused)
                 return;
             var url = this.recorderSound ? this.recorderSound.url : ((cfg.baseTagUrl ? cfg.baseTagUrl : Pager.basicDir) + this.result.audioUrl).toLowerCase();
-            this.driver.play(url + '?stamp=' + (audioCaptureImpl.playCnt++).toString(), 0, function (msec) { return _this.playing(msec >= 0); });
+            this.blendedCallbackMax = 0;
+            this.driver.play(url + '?stamp=' + (audioCaptureImpl.playCnt++).toString(), 0, function (msec) {
+                if (msec > 0) {
+                    //console.log(msec.toString());
+                    _this.blendedCallbackMax = Math.max(_this.blendedCallbackMax, msec);
+                }
+                else {
+                    if (_this.blended)
+                        _this.blended.recorder.onPlayRecorder(_this._myPage, _this.blendedCallbackMax);
+                }
+                _this.playing(msec >= 0);
+            });
         };
         audioCaptureImpl.prototype.stopRecording = function () {
             var _this = this;
@@ -5178,6 +5221,7 @@ var Course;
         __extends(sndPageImpl, _super);
         function sndPageImpl() {
             _super.apply(this, arguments);
+            this.blendedCallbackMax = 0;
             //***** ACTIVE management
             this.actSent = null; //aktualni veta
         }
@@ -5239,10 +5283,25 @@ var Course;
             }
         };
         sndPageImpl.prototype.playInt = function (interv, begPos) {
+            var _this = this;
             var self = this; //var intVar = interv; var bp = begPos;
+            this.blendedCallbackMax = 0;
             interv._owner.player().openPlay(interv._owner._owner.mediaUrl, begPos, interv.endPos).
-                progress(function (msec) { return self.onPlaying(interv, msec < begPos ? begPos : msec /*pri zacatku hrani muze byt notifikovana pozice kousek pred zacatkem*/, progressType.progress); }).
-                done(function () { return self.onPlaying(interv, -1, progressType.done); }).
+                progress(function (msec) {
+                if (msec > 0) {
+                    _this.blendedCallbackMax = Math.max(_this.blendedCallbackMax, msec);
+                }
+                self.onPlaying(interv, msec < begPos ? begPos : msec /*pri zacatku hrani muze byt notifikovana pozice kousek pred zacatkem*/, progressType.progress);
+            }).
+                done(function () {
+                if (_this.blended)
+                    _this.blended.recorder.onPlayed(_this._myPage, _this.blendedCallbackMax - begPos);
+                //var us = <blended.IPersistNodeItem<blended.IExShort>>(this._myPage.result.userData['']);
+                //us.modified = true;
+                //if (!us.short.sumPlay) us.short.sumPlay = 0;
+                //us.short.sumPlay += Math.round((this.maxPlayProgress - begPos) / 1000);
+                self.onPlaying(interv, -1, progressType.done);
+            }).
                 always(function () { return self.onPlaying(interv, -1, progressType.always); }); //uplny konec
         };
         //vstupni procedura do active managmentu
@@ -9303,22 +9362,6 @@ var blended;
     function newGuid() { return (new Date().getTime() + (startGui++)).toString(); }
     blended.newGuid = newGuid;
     var startGui = new Date().getTime();
-    var controller = (function () {
-        function controller($scope, $state) {
-            this.$state = $state;
-            var params = ($state.params);
-            finishContext(params);
-            $.extend(this, $scope, $state.current.data);
-            $scope.ts = this;
-            this.urlParams = params;
-        }
-        controller.prototype.href = function (state, params) {
-            return this.$state.href(state, params);
-        };
-        controller.$inject = ['$scope', '$state'];
-        return controller;
-    })();
-    blended.controller = controller;
     blended.baseUrlRelToRoot = '..'; //jak se z root stranky dostat do rootu webu
     function cloneAndModifyContext(ctx, modify) {
         if (modify === void 0) { modify = null; }
@@ -9336,6 +9379,15 @@ var blended;
         ctx.Url = decodeUrl(ctx.url);
         ctx.pretestUrl = decodeUrl(ctx.pretesturl);
         ctx.moduleUrl = decodeUrl(ctx.moduleurl);
+        ctx.userDataId = function () { return ctx.onbehalfof || ctx.loginid; };
+        if (_.isString(ctx.onbehalfof))
+            ctx.onbehalfof = parseInt((ctx.onbehalfof));
+        if (_.isString(ctx.loginid))
+            ctx.loginid = parseInt((ctx.loginid));
+        if (_.isString(ctx.companyid))
+            ctx.companyid = parseInt((ctx.companyid));
+        if (_.isString(ctx.loc))
+            ctx.loc = parseInt((ctx.loc));
         if (!ctx.$http) {
             var inj = angular.injector(['ng']);
             ctx.$http = (inj.get('$http'));
@@ -9344,108 +9396,126 @@ var blended;
         return ctx;
     }
     blended.finishContext = finishContext;
-    //export function getStateChain($state: angular.ui.IStateService): Array<angular.ui.IState> {
-    //  var res = [];
-    //  var stWrapper = <any>$state.$current;
-    //  while (stWrapper) {
-    //    res.push(stWrapper);
-    //    stWrapper = stWrapper.parent;
-    //  }
-    //  return res;
-    //}
-    //************ LOGGING functions
-    function traceRoute() {
-        // Credits: Adam's answer in http://stackoverflow.com/a/20786262/69362
-        var $rootScope = angular.element(document.querySelectorAll("[ui-view]")[0]).injector().get('$rootScope');
-        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-            console.log('$stateChangeStart to ' + toState.to + '- fired when the transition begins. toState,toParams : \n', toState, toParams);
+    function waitForEvaluation(sc) { return !!(sc.flag & CourseModel.CourseDataFlag.needsEval); }
+    blended.waitForEvaluation = waitForEvaluation;
+    function scorePercent(sc) { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
+    blended.scorePercent = scorePercent;
+    function donesPercent(sc) { return sc.count == 0 ? -1 : Math.round((sc.dones || 0) / sc.count * 100); }
+    blended.donesPercent = donesPercent;
+    function scoreText(sc) { var pr = scorePercent(sc); return pr < 0 ? '' : pr.toString() + '%'; }
+    blended.scoreText = scoreText;
+    function agregateShorts(shorts) {
+        var res = $.extend({}, blended.shortDefault);
+        res.done = true;
+        _.each(shorts, function (short) {
+            if (!short) {
+                res.done = false;
+                return;
+            }
+            var done = short.done;
+            res.waitForEvaluation = res.waitForEvaluation || short.waitForEvaluation;
+            res.done = res.done && done;
+            res.count += short.count || 1;
+            res.dones += (short.dones ? short.dones : (short.done ? 1 : 0));
+            if (done) {
+                res.ms += short.ms || 0;
+                res.s += short.s || 0;
+            }
+            //elapsed, beg a end
+            res.beg = setDate(res.beg, short.beg, true);
+            res.end = setDate(res.end, short.end, false);
+            res.elapsed += short.elapsed || 0;
+            res.sumPlay += short.sumPlay;
+            res.sumPlayRecord += short.sumPlayRecord;
+            res.sumRecord += short.sumRecord;
         });
-        $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams) {
-            console.log('$stateChangeError - fired when an error occurs during transition.');
-            console.log(arguments);
-        });
-        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-            console.log('$stateChangeSuccess to ' + toState.name + '- fired once the state transition is complete.');
-        });
-        $rootScope.$on('$viewContentLoaded', function (event) {
-            console.log('$viewContentLoaded - fired after dom rendered', event);
-        });
-        $rootScope.$on('$stateNotFound', function (event, unfoundState, fromState, fromParams) {
-            console.log('$stateNotFound ' + unfoundState.to + '  - fired when a state cannot be found by its name.');
-            console.log(unfoundState, fromState, fromParams);
-        });
+        res.score = blended.scorePercent(res);
+        res.finished = blended.donesPercent(res);
+        return res;
     }
-    blended.traceRoute = traceRoute;
-    https: function routerLogging($provide) {
-        $provide.decorator('$rootScope', ['$delegate', function ($delegate) {
-                wrapMethod($delegate, '$broadcast', function (method, args) {
-                    if (isNonSystemEvent(args[0]))
-                        logCall('$broadcast', args);
-                    return method.apply(this, args);
-                });
-                wrapMethod($delegate, '$emit', function (method, args) {
-                    if (isNonSystemEvent(args[0]))
-                        logCall('$emit', args);
-                    return method.apply(this, args);
-                });
-                return $delegate;
-                function isNonSystemEvent(eventName) {
-                    return eventName && eventName[0] && eventName[0] !== '$';
+    blended.agregateShorts = agregateShorts;
+    function agregateShortFromNodes(node, taskId, moduleAlowFinishWhenUndone /*do vyhodnoceni zahrn i nehotova cviceni*/) {
+        var res = $.extend({}, blended.shortDefault);
+        res.done = true;
+        _.each(node.Items, function (nd) {
+            if (!blended.isEx(nd))
+                return;
+            res.count++;
+            var us = blended.getPersistWrapper(nd, taskId);
+            var done = us && us.short.done;
+            res.waitForEvaluation = done && waitForEvaluation(us.short);
+            if (done)
+                res.dones += (us.short.dones ? us.short.dones : (us.short.done ? 1 : 0));
+            res.done = res.done && done;
+            if (nd.ms) {
+                if (done) {
+                    res.ms += nd.ms;
+                    res.s += us.short.s;
                 }
-            }]);
-        $provide.decorator('$state', ['$delegate', function ($delegate) {
-                wrapMethod($delegate, 'go', function (method, args) {
-                    logCall('$state.go', args);
-                    return method.apply(this, args);
-                });
-                return $delegate;
-            }]);
-        function wrapMethod(obj, methodName, wrapper) {
-            var original = obj[methodName];
-            obj[methodName] = function () {
-                var args = Array.prototype.slice.call(arguments, 0);
-                return wrapper.call(this, original, args);
-            };
-        }
-        function logCall(funcName, args) {
-            var prettyArgs = args.map(function (a) { return repr(a); })
-                .join(', ');
-            console.log(funcName + '(' + prettyArgs + ')');
-        }
-        function repr(obj) {
-            return JSON.stringify(obj, function (k, v) {
-                if (k !== '' && v instanceof Object)
-                    return '[Obj]';
-                else
-                    return v;
-            });
-        }
+                else if (moduleAlowFinishWhenUndone) {
+                    res.ms += nd.ms;
+                }
+            }
+            if (us) {
+                res.beg = setDate(res.beg, us.short.beg, true);
+                res.end = setDate(res.end, us.short.end, false);
+                res.elapsed += us.short.elapsed;
+                res.sumPlay += us.short.sumPlay;
+                res.sumPlayRecord += us.short.sumPlayRecord;
+                res.sumRecord += us.short.sumRecord;
+            }
+        });
+        res.score = blended.scorePercent(res);
+        res.finished = blended.donesPercent(res);
+        return res;
     }
-    blended.routerLogging = routerLogging;
-    ;
+    blended.agregateShortFromNodes = agregateShortFromNodes;
+    blended.shortDefault = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0, count: 0, dones: 0, sumPlay: 0, sumPlayRecord: 0, sumRecord: 0, waitForEvaluation: false };
+    function setDate(dt1, dt2, min) { if (!dt1)
+        return dt2; if (!dt2)
+        return dt1; if (min)
+        return dt2 > dt1 ? dt1 : dt2;
+    else
+        return dt2 < dt1 ? dt1 : dt2; }
 })(blended || (blended = {}));
 
 var blended;
 (function (blended) {
+    function getPersistWrapper(dataNode, taskid, createProc) {
+        if (createProc) {
+            if (!dataNode.userData)
+                dataNode.userData = {};
+            var res = dataNode.userData[taskid];
+            if (res)
+                return res;
+            res = { long: null, short: createProc(), modified: true };
+            dataNode.userData[taskid] = res;
+            return res;
+        }
+        else {
+            if (!dataNode.userData)
+                return null;
+            return dataNode.userData[taskid];
+        }
+    }
+    blended.getPersistWrapper = getPersistWrapper;
     function getPersistData(dataNode, taskid) {
-        if (!dataNode.userData)
-            return null;
-        var it = dataNode.userData[taskid];
-        return it ? (it.data) : null;
+        var res = getPersistWrapper(dataNode, taskid);
+        return res ? res.short : null;
     }
     blended.getPersistData = getPersistData;
     function setPersistData(dataNode, taskid, modify) {
         var it = dataNode.userData ? dataNode.userData[taskid] : null;
         if (!it) {
-            it = { data: {}, modified: true };
+            it = { short: {}, modified: true, long: null };
             if (!dataNode.userData)
                 dataNode.userData = {};
             dataNode.userData[taskid] = it;
         }
         else
             it.modified = true;
-        modify((it.data));
-        return (it.data);
+        modify((it.short));
+        return (it.short);
     }
     blended.setPersistData = setPersistData;
     //rozsireni interface o metody
@@ -9474,6 +9544,31 @@ var blended;
                 return;
             pe.nodeDir[repo.url] = repo;
             pe.nodeList.push(repo);
+        },
+        saveProduct: function (ctx, completed) {
+            var pe = this;
+            var toSave = [];
+            _.each(pe.nodeList, function (nd) {
+                if (!nd.userData)
+                    return;
+                for (var p in nd.userData) {
+                    try {
+                        var d = nd.userData[p];
+                        if (!d.modified)
+                            return;
+                        d.modified = false;
+                        toSave.push({ url: nd.url, taskId: p, shortData: JSON.stringify(d.short), longData: d.long ? JSON.stringify(d.long) : null });
+                    }
+                    finally {
+                        delete p.long;
+                    }
+                }
+            });
+            if (toSave.length == 0) {
+                completed();
+                return;
+            }
+            proxies.vyzva57services.saveUserData(ctx.companyid, ctx.userDataId(), ctx.productUrl, toSave, completed);
         }
     };
     var cachedModule = (function () {
@@ -9489,30 +9584,33 @@ var blended;
         return cachedModule;
     })();
     blended.cachedModule = cachedModule;
+    var cacheExercise = (function () {
+        function cacheExercise(mod, dataNode, pageJsonML) {
+            this.mod = mod;
+            this.dataNode = dataNode;
+            this.pageJsonML = pageJsonML;
+        }
+        return cacheExercise;
+    })();
+    blended.cacheExercise = cacheExercise;
     var loader;
     (function (loader) {
-        //help
-        var _adjustProduct = CourseMeta.lib.adjustProduct;
-        var _adjustMod = CourseMeta.lib.adjustMod;
-        var _loadLocalizedProductAndInstrs = CourseMeta.loadLocalizedProductAndInstrs;
-        var _finishInstr = CourseMeta.finishInstr;
-        //slovnik pro modul
-        var _dict;
-        var _dictItem;
-        var _dictItemRoot;
         //baseUrlRelToRoot: relativni adresa rootu Web4 aplikace vyhledem k aktualni HTML strance
         function adjustProduct(ctx) {
             try {
                 var deferred = ctx.$q.defer();
-                var prod = loader.productCache.fromCache(ctx);
-                if (prod) {
-                    deferred.resolve(prod);
+                var fromCache = loader.productCache.fromCache(ctx, deferred);
+                if (fromCache.prod) {
+                    deferred.resolve(fromCache.prod);
                     return;
-                }
+                } //produkt je jiz nacten, resolve.
+                if (!fromCache.startReading)
+                    return; //produkt se zacal nacitat jiz drive - deferred se pouze ulozi do seznamu deferreds.
+                //novy start nacitani produktu
                 var href = ctx.productUrl.substr(0, ctx.productUrl.length - 1);
                 var promises = _.map([href + '.js', href + '.' + LMComLib.Langs[ctx.loc] + '.js', href + '_instrs.js'], function (url) { return ctx.$http.get(blended.baseUrlRelToRoot + url, { transformResponse: function (s) { return CourseMeta.jsonParse(s); } }); });
                 ctx.$q.all(promises).then(function (files) {
-                    prod = files[0].data;
+                    var prod = files[0].data;
                     prod.url = ctx.productUrl;
                     prod.instructions = {};
                     prod.nodeDir = {};
@@ -9528,7 +9626,7 @@ var blended;
                         prod.nodeDir[dt.url] = dt;
                         prod.nodeList.push(dt);
                         if (dt.other)
-                            dt.other = $.extend(dt, JSON.parse(dt.other));
+                            dt = $.extend(dt, JSON.parse(dt.other.replace(/'/g, '"')));
                         _.each(dt.Items, function (it) { it.parent = dt; scan(it); });
                     };
                     scan(prod);
@@ -9548,20 +9646,25 @@ var blended;
                                 delete tg.id; }); //instrukce nemohou mit tag.id, protoze se ID tlucou s ID ze cviceni
                             prod.instructions[p] = JsRenderTemplateEngine.render("c_genitems", pg);
                         }
-                    //cache
                     if (ctx.finishProduct)
                         ctx.finishProduct(prod);
-                    loader.productCache.toCache(ctx, prod);
                     //user data
-                    if (!!ctx.persistence)
-                        ctx.persistence.loadShortUserData(ctx.userid, ctx.companyid, ctx.productUrl, function (data) {
-                            prod.persistData = data;
-                            //if (data) for (var p in data) { var dt = prod.nodeDir[p]; if (dt) dt.userData = data[p]; /*nektera data mohou patrit taskum*/ }
-                            deferred.resolve(prod);
+                    proxies.vyzva57services.getShortProductDatas(ctx.companyid, ctx.loginid, ctx.productUrl, function (res) {
+                        _.each(res, function (it) {
+                            var node = prod.nodeDir[it.url];
+                            if (!node)
+                                debugger;
+                            if (!node.userData)
+                                node.userData = {};
+                            var taskData = node.userData[it.taskId];
+                            var shortLong = { modified: false, long: null, short: JSON.parse(it.shortData) };
+                            if (!taskData)
+                                node.userData[it.taskId] = shortLong;
+                            //else debugger; /*something wrong*/
                         });
-                    else {
-                        deferred.resolve(prod);
-                    }
+                        //product nacten, resolve vsechny cekajici deferreds
+                        loader.productCache.resolveDefereds(fromCache.startReading, prod);
+                    });
                 }, function (errors) {
                     deferred.reject();
                 });
@@ -9611,31 +9714,9 @@ var blended;
                         }
                         var href = blended.baseUrlRelToRoot + ctx.Url + '.js';
                         ctx.$http.get(href, { transformResponse: function (s) { return CourseMeta.jsonParse(s); } }).then(function (file) {
-                            var pg = CourseMeta.extractEx(file.data);
-                            Course.localize(pg, function (s) { return CourseMeta.localizeString(pg.url, s, mod.loc); });
-                            var isGramm = CourseMeta.isType(exNode, CourseMeta.runtimeType.grammar);
-                            var resolve = function (exData) {
-                                var exServ = new blended.exerciseService(ctx, mod, exNode, pg, exData);
-                                mod.cacheOfPages.toCache(ctx.Url, ctx.taskid, exServ);
-                                deferred.resolve(exServ);
-                            };
-                            if (isGramm)
-                                resolve();
-                            else {
-                                if (!!ctx.persistence)
-                                    ctx.persistence.loadUserData(ctx.userid, ctx.companyid, ctx.productUrl, ctx.Url, function (exData) {
-                                        if (pg.evalPage && !pg.isOldEa)
-                                            exNode.ms = pg.evalPage.maxScore;
-                                        //provazani produktu, stranky, modulu:
-                                        if (!exData)
-                                            exData = {};
-                                        pg.userData = exData;
-                                        pg.myNode = exNode;
-                                        resolve(exData);
-                                    });
-                                else
-                                    resolve();
-                            }
+                            var exServ = new cacheExercise(mod, exNode, file.data);
+                            mod.cacheOfPages.toCache(ctx.Url, ctx.taskid, exServ);
+                            deferred.resolve(exServ);
                         }, function (errors) {
                             deferred.reject();
                         });
@@ -9652,24 +9733,46 @@ var blended;
                 this.products = [];
                 this.maxInsertOrder = 0;
             }
-            cacheOfProducts.prototype.fromCache = function (ctx) {
-                var resIt = _.find(this.products, function (it) { return it.companyid == ctx.companyid && it.userid == ctx.userid && it.subuserid == ctx.subuserid &&
-                    it.persistence == ctx.persistence && it.loc == ctx.loc && it.producturl == ctx.producturl && it.taskid == ctx.taskid; });
-                if (resIt)
-                    resIt.insertOrder = this.maxInsertOrder++;
-                return resIt ? resIt.data : null;
+            //data != null => ihned vrat. Jinak startReading!=null => spust nacitani, jinak ukonci.
+            cacheOfProducts.prototype.fromCache = function (ctx, defered) {
+                var resIt = _.find(this.products, function (it) { return it.companyid == ctx.companyid && it.onbehalfof == ctx.onbehalfof || ctx.loginid &&
+                    it.loc == ctx.loc && it.producturl == ctx.producturl; });
+                //jiz nacteno nebo neni defered => return
+                if (resIt && resIt.data)
+                    return { prod: resIt.data };
+                if (!defered)
+                    return {};
+                //nenacteno
+                var justCreated = false;
+                if (!resIt) {
+                    resIt = this.toCache(ctx); //vytvor polozku v cache
+                    resIt.defereds = [];
+                    justCreated = true; //start noveho nacitani
+                }
+                ;
+                resIt.defereds.push(defered);
+                resIt.insertOrder = this.maxInsertOrder++; //naposledy pouzity produkt (kvuli vyhazovani z cache)
+                return { startReading: justCreated ? resIt : null };
             };
-            cacheOfProducts.prototype.toCache = function (ctx, prod) {
+            cacheOfProducts.prototype.toCache = function (ctx) {
                 if (this.products.length >= 3) {
                     var minIdx = 99999;
                     for (var i = 0; i < this.products.length; i++)
                         minIdx = Math.min(this.products[i].insertOrder, minIdx);
                     this.products.splice(minIdx, 1);
                 }
-                this.products.push({
-                    companyid: ctx.companyid, userid: ctx.userid, data: prod, loc: ctx.loc, producturl: ctx.producturl,
-                    persistence: ctx.persistence, insertOrder: this.maxInsertOrder++, subuserid: ctx.subuserid, taskid: ctx.taskid,
+                var res;
+                this.products.push(res = {
+                    companyid: ctx.companyid, loc: ctx.loc, producturl: ctx.producturl, onbehalfof: ctx.onbehalfof || ctx.loginid,
+                    data: null, insertOrder: this.maxInsertOrder++, taskid: null, loginid: -1, lickeys: null, persistence: null
                 });
+                return res;
+            };
+            cacheOfProducts.prototype.resolveDefereds = function (resIt, data) {
+                resIt.data = data;
+                var defs = resIt.defereds;
+                delete resIt.defereds;
+                _.each(defs, function (def) { return def.resolve(data); });
             };
             return cacheOfProducts;
         })();
@@ -9712,107 +9815,889 @@ var blended;
 
 var blended;
 (function (blended) {
-    blended.showExerciseDirective2 = ['$stateParams', function ($stateParams) { return new showExerciseModel($stateParams); }];
+    function lineIdToText(id) {
+        switch (id) {
+            case LMComLib.LineIds.English: return "Angličtina";
+            case LMComLib.LineIds.German: return "Němčina";
+            case LMComLib.LineIds.French: return "Francouzština";
+            default: return "???";
+        }
+    }
+    blended.lineIdToText = lineIdToText;
+    ;
+    blended.rootModule
+        .filter('lineIdsText', function () { return function (id) { return lineIdToText(id); }; })
+        .filter('lineIdsFlag', function () {
+        return function (id) {
+            switch (id) {
+                case LMComLib.LineIds.English: return "flag-small-english";
+                case LMComLib.LineIds.German: return "flag-small-german";
+                case LMComLib.LineIds.French: return "flag-small-french";
+                default: return "???";
+            }
+        };
+    })
+        .filter('levelText', function () { return function (id) { return ['A1', 'A2', 'B1', 'B2'][id]; }; })
+        .controller('collapsable', function () { this.isCollapsed = true; })
+        .filter("rawhtml", ['$sce', function ($sce) { return function (htmlCode) { return $sce.trustAsHtml(htmlCode); }; }])
+        .directive('lmEnterKey', ['$document', function ($document) {
+            return {
+                link: function (scope, element, attrs) {
+                    var enterWatcher = function (event) {
+                        if (event.which === 13) {
+                            scope.lmEnterKey();
+                            scope.$apply();
+                            event.preventDefault();
+                            $document.unbind("keydown keypress", enterWatcher);
+                        }
+                    };
+                    $document.bind("keydown keypress", enterWatcher);
+                },
+                scope: {
+                    lmEnterKey: "&"
+                },
+            };
+        }]);
+})(blended || (blended = {}));
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var blended;
+(function (blended) {
+    blended.taskContextAs = {
+        product: 'productParent',
+        pretest: 'pretestParent',
+        module: 'moduleParent',
+        ex: 'exParent',
+        lector: 'lectorParent',
+    };
+    function extendTaskContext($scope, task) {
+        for (var p in blended.taskContextAs) {
+            var propName = blended.taskContextAs[p];
+            var value = $scope[propName];
+            if (value)
+                task[propName] = $scope[propName];
+        }
+    }
+    blended.extendTaskContext = extendTaskContext;
+    var controller = (function () {
+        function controller($scope, $state) {
+            var stateService = this.getStateService($scope);
+            if (stateService) {
+                this.isFakeCreate = true;
+                this.ctx = stateService.params;
+                blended.finishContext(this.ctx);
+                //this.parent = stateService.parent;
+                this.state = stateService.current;
+                extendTaskContext(stateService.parent, this);
+                return;
+            }
+            this.$scope = $scope;
+            this.$state = $state;
+            extendTaskContext(this.$scope, this);
+            this.ctx = $state.params;
+            blended.finishContext(this.ctx);
+            //this.ctx.$state = $state;
+            this.$scope['ts'] = this;
+            var st = $state.current;
+            var constr = this.constructor;
+            while (st) {
+                if (st.controller == constr) {
+                    this.state = st;
+                    break;
+                }
+                st = st.parent;
+            }
+            this.$scope.state = this.state;
+            //this.parent = this.$scope.$parent['ts'];
+        }
+        controller.prototype.getStateService = function ($scope) { return !!$scope['current'] ? $scope : null; };
+        controller.prototype.href = function (url) {
+            return this.$state.href(url.stateName, url.pars);
+        };
+        controller.prototype.navigate = function (url) {
+            if (!url)
+                return;
+            var hash = this.href(url);
+            setTimeout(function () { return window.location.hash = hash; }, 1);
+        };
+        controller.prototype.navigateWrapper = function () {
+            var self = this;
+            return function (stateName) { return self.navigate({ stateName: stateName, pars: self.ctx }); };
+        };
+        controller.prototype.navigateWebHome = function () { Pager.gotoHomeUrl(); };
+        controller.prototype.navigateReturnUrl = function () { location.href = this.ctx.returnurl; };
+        controller.prototype.getProductHomeUrl = function () { return { stateName: blended.prodStates.home.name, pars: this.ctx }; };
+        controller.prototype.navigateProductHome = function () { this.navigate(this.getProductHomeUrl()); };
+        controller.prototype.wrongUrlRedirect = function (url) {
+            if (!url)
+                return;
+            this.isWrongUrl = true;
+            setTimeout(this.navigate(url), 1);
+        };
+        controller.$inject = ['$scope', '$state'];
+        return controller;
+    })();
+    blended.controller = controller;
+    //******* TASK VIEW - predchudce vsech controllers, co maji vizualni podobu (html stranku)
+    var taskViewController = (function (_super) {
+        __extends(taskViewController, _super);
+        function taskViewController($scope, $state) {
+            _super.call(this, $scope, $state);
+            this.myTask = this.isFakeCreate ? $scope.parent : $scope.$parent['ts'];
+            this.title = this.myTask.dataNode.title;
+        }
+        return taskViewController;
+    })(controller);
+    blended.taskViewController = taskViewController;
+    (function (moveForwardResult) {
+        moveForwardResult[moveForwardResult["toParent"] = 0] = "toParent"; /*neumi se posunout dopredu, musi se volat moveForward parenta*/
+        moveForwardResult[moveForwardResult["selfAdjustChild"] = 1] = "selfAdjustChild"; /*posunuto dopredu, nutno spocitat goCurrent a skocit na jiny task*/
+        moveForwardResult[moveForwardResult["selfInnner"] = 2] = "selfInnner"; /*posun osetren v ramci zmeny stavu aktualniho tasku (bez nutnosti navigace na jiny task)*/
+    })(blended.moveForwardResult || (blended.moveForwardResult = {}));
+    var moveForwardResult = blended.moveForwardResult;
+    //******* TASK (predchudce vse abstraktnich controllers (mimo cviceni), reprezentujicich TASK). Task umi obslouzit zelenou sipku apod.
+    var taskController = (function (_super) {
+        __extends(taskController, _super);
+        //parent: taskController;
+        //isProductHome: boolean;
+        //********************* 
+        function taskController($scope, $state) {
+            _super.call(this, $scope, $state);
+            //constructor(state: IStateService, resolves?: Array<any>) {
+            //    super(state);
+            if (!this.state.dataNodeUrlParName)
+                return;
+            //provaz parent - child
+            //if (this.parent) this.parent.child = this;
+            //var parentTask = this.parent = (<ng.IScope>$scope).$parent['ts']; if (parentTask) parentTask.child = this;
+            //dataNode
+            if (this.productParent) {
+                this.dataNode = this.productParent.dataNode.nodeDir[this.ctx[this.state.dataNodeUrlParName]];
+                this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid);
+            }
+        }
+        //********************** GREEN MANAGEMENT
+        // Zelena sipka je prirazena nejakemu ACT_TASK (Pretest nebo Lesson ve VYZVA aplikaci apod.)
+        // Zelena sipka neni videt, musi se skocit do tasku pomoci ACT_TASK.goCurrent
+        // Pak je videt a pri kliku na sipku se vola ACT_TASK.goAhead 
+        // Vrati-li ACT_TASK.goAhead null, skoci se na home produktu
+        // **** goCurrent
+        // PARENT na zaklade USER dat svych childu urcuje, ktery z nich je narade (pomoci funkce PARENT.adjustChild)
+        // skace se na posledni child, co vrati adjustChild() null
+        //Fake dodelavka TASKLIST (pridanim taskuu s 'createMode=createControllerModes.adjustChild') tak, aby posledni v rade byl task, na ktery se skace.
+        //Sance parent tasku prenest zodpovednost na child.
+        //Klicove je do childUrl tasku doplnit spravny task.ctx, aby v goCurrent fungovalo 'return { stateName: t.state.name, pars: t.ctx }'
+        taskController.prototype.adjustChild = function () { return null; };
+        //posun stavu dal
+        taskController.prototype.moveForward = function (sender) { throw 'notimplemented'; };
+        //priznak pro 'if (t.taskControllerSignature)' test, ze tento objekt je task.
+        taskController.prototype.taskControllerSignature = function () { };
+        //nevirtualni funkce: dobuduje TASKLIST umele vytvorenymi tasks (pomoci adjust Child) a vrati URL posledniho child v TASKLIST.
+        taskController.prototype.goCurrent = function () {
+            var t = this;
+            while (t) {
+                var newt = t.adjustChild();
+                if (!newt)
+                    return { stateName: t.state.name, pars: t.ctx };
+                t = newt;
+            }
+        };
+        taskController.prototype.navigateAhead = function (sender) {
+            this.navigate(this.goAhead(sender));
+        };
+        taskController.prototype.goAhead = function (sender) {
+            var task = sender;
+            while (true) {
+                switch (task.moveForward(sender)) {
+                    case moveForwardResult.selfInnner: return null;
+                    case moveForwardResult.toParent:
+                        if (task == task.exParent) {
+                            task = task.moduleParent;
+                            continue;
+                        }
+                        if (task == task.moduleParent && task.pretestParent) {
+                            task = task.pretestParent;
+                            continue;
+                        }
+                        return this.getProductHomeUrl(); //{ stateName: prodStates.home.name, pars: this.ctx }
+                    case moveForwardResult.selfAdjustChild: return task.goCurrent();
+                }
+            }
+            //seznam od childs k this
+            //var taskList: Array<taskController> = [];
+            //var act = this; while (act) {
+            //  if (!act.taskControllerSignature) break;
+            //  taskList.push(act);
+            //  act = act.child;
+            //}
+            ////najdi prvni task, co se umi posunout dopredu: jdi od spodu nahoru
+            //for (var i = taskList.length - 1; i >= 0; i--) {
+            //  var act = taskList[i];
+            //  switch (act.moveForward()) {
+            //    case moveForwardResult.selfInnner: return null;
+            //    case moveForwardResult.toParent: break;
+            //    case moveForwardResult.selfAdjustChild: return act.goCurrent();
+            //  }
+            //}
+            ////ani jeden z parentu move nevyresil => jdi na home produktu
+            //return { stateName: prodStates.home.name, pars: this.ctx }
+        };
+        taskController.prototype.log = function (msg) {
+            console.log('%%% ' + Utils.getObjectClassName(this) + ": " + msg + ' (' + this.dataNode.url + ')');
+        };
+        return taskController;
+    })(controller);
+    blended.taskController = taskController;
+    //****************** PRODUCT HOME
+    var homeTaskController = (function (_super) {
+        __extends(homeTaskController, _super);
+        function homeTaskController($scope, $state, product) {
+            _super.call(this, $scope, $state);
+            this.dataNode = product;
+        }
+        return homeTaskController;
+    })(taskController);
+    blended.homeTaskController = homeTaskController;
+    function pretestScore(dataNode, user, taskId) {
+        if (!user || !user.done)
+            return null;
+        var users = _.map(user.history, function (l) { return blended.agregateShortFromNodes(dataNode.Items[l], taskId); });
+        return blended.agregateShorts(users);
+    }
+    blended.pretestScore = pretestScore;
+    var pretestTaskController = (function (_super) {
+        __extends(pretestTaskController, _super);
+        //inCongratulation: boolean; //priznak, ze modul byl prave preveden do stavu DONE a ukazuje se congratulation dialog
+        function pretestTaskController($scope, $state) {
+            _super.call(this, $scope, $state);
+            this.pretestParent = this;
+            //sance prerusit navigaci
+            this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () {
+                return { actLevel: blended.levelIds.A2, history: [blended.levelIds.A2], targetLevel: -1, done: false };
+            });
+            if (this.isFakeCreate)
+                return;
+            this.wrongUrlRedirect(this.checkCommingUrl());
+        }
+        pretestTaskController.prototype.checkCommingUrl = function () {
+            var ud = this.user.short;
+            if (!ud)
+                return this.getProductHomeUrl(); //{ stateName: prodStates.home.name, pars: this.ctx }; //pretest jeste nezacal => goto product home
+            if (ud.done)
+                return null; //done pretest: vse je povoleno
+            var dataNode = this.dataNode;
+            var actModule = dataNode.Items[ud.actLevel];
+            var actEx = this.productParent.dataNode.nodeDir[this.ctx.Url];
+            if (actModule.url != actEx.parent.url) {
+                var pars = blended.cloneAndModifyContext(this.ctx, function (c) { return c.moduleurl = blended.encodeUrl(actModule.url); });
+                return this.getProductHomeUrl(); //{ stateName: prodStates.home.name, pars: pars }; //v URL je adresa jineho nez aktivniho modulu (asi pomoci back) => jdi na prvni cviceni aktualniho modulu
+            }
+            return null;
+        };
+        pretestTaskController.prototype.adjustChild = function () {
+            var ud = this.user.short;
+            if (ud.done)
+                return null;
+            var actModule = this.actRepo(ud.actLevel);
+            if (!actModule)
+                throw '!actModule';
+            var state = {
+                params: blended.cloneAndModifyContext(this.ctx, function (d) { return d.moduleurl = blended.encodeUrl(actModule.url); }),
+                parent: this,
+                current: blended.prodStates.pretestModule,
+            };
+            return new blended.moduleTaskController(state);
+        };
+        pretestTaskController.prototype.moveForward = function (sender) {
+            //if (this.inCongratulation) { delete this.inCongratulation; return moveForwardResult.toParent; }
+            var ud = this.user.short;
+            var actTestItem = sender.moduleParent; // <exerciseTaskViewController>(this.child);
+            var actRepo = this.actRepo(ud.actLevel);
+            if (actTestItem.dataNode != actRepo)
+                throw 'actTestItem.dataNode != actRepo';
+            var childSummary = blended.agregateShortFromNodes(actTestItem.dataNode, this.ctx.taskid);
+            if (!childSummary.done)
+                throw '!childUser.done';
+            var score = blended.scorePercent(childSummary);
+            if (actRepo.level == blended.levelIds.A1) {
+                return this.finishPretest(sender, ud, blended.levelIds.A1);
+            }
+            else if (actRepo.level == blended.levelIds.A2) {
+                if (score >= actRepo.min && score < actRepo.max)
+                    return this.finishPretest(sender, ud, blended.levelIds.A2);
+                else if (score < actRepo.min)
+                    return this.newTestItem(ud, blended.levelIds.A1);
+                else
+                    return this.newTestItem(ud, blended.levelIds.B1);
+            }
+            else if (actRepo.level == blended.levelIds.B1) {
+                if (score >= actRepo.min && score < actRepo.max)
+                    return this.finishPretest(sender, ud, blended.levelIds.B1);
+                else if (score < actRepo.min)
+                    return this.finishPretest(sender, ud, blended.levelIds.A2);
+                else
+                    return this.newTestItem(ud, blended.levelIds.B2);
+            }
+            else if (actRepo.level == blended.levelIds.B2) {
+                if (score < actRepo.min)
+                    return this.finishPretest(sender, ud, blended.levelIds.B1);
+                else
+                    return this.finishPretest(sender, ud, blended.levelIds.B2);
+            }
+            throw 'not implemented';
+        };
+        pretestTaskController.prototype.newTestItem = function (ud, lev) {
+            this.user.modified = true;
+            ud.actLevel = lev;
+            ud.history.push(lev);
+            return moveForwardResult.selfAdjustChild;
+        };
+        pretestTaskController.prototype.finishPretest = function (sender, ud, lev) {
+            var _this = this;
+            this.user.modified = true;
+            ud.done = true;
+            ud.targetLevel = lev;
+            delete ud.actLevel;
+            sender.congratulationDialog().then(function () { return _this.navigateProductHome(); }, function () { return _this.navigateProductHome(); });
+            //this.inCongratulation = true;
+            return moveForwardResult.selfInnner;
+        };
+        pretestTaskController.prototype.actRepo = function (lev) { return _.find(this.dataNode.Items, function (l) { return l.level == lev; }); };
+        return pretestTaskController;
+    })(taskController);
+    blended.pretestTaskController = pretestTaskController;
+})(blended || (blended = {}));
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var blended;
+(function (blended) {
+    (function (exDoneStatus) {
+        exDoneStatus[exDoneStatus["no"] = 0] = "no";
+        exDoneStatus[exDoneStatus["passive"] = 1] = "passive";
+        exDoneStatus[exDoneStatus["active"] = 2] = "active";
+    })(blended.exDoneStatus || (blended.exDoneStatus = {}));
+    var exDoneStatus = blended.exDoneStatus;
+    //********************* RESOLVES
+    blended.loadEx = ['$stateParams', function ($stateParams) {
+            blended.finishContext($stateParams);
+            return blended.loader.adjustEx($stateParams);
+        }];
+    blended.loadLongData = ['$stateParams', function (ctx) {
+            blended.finishContext(ctx);
+            var def = ctx.$q.defer();
+            try {
+                proxies.vyzva57services.getLongData(ctx.companyid, ctx.userDataId(), ctx.productUrl, ctx.taskid, ctx.Url, function (long) {
+                    var res = JSON.parse(long);
+                    def.resolve(res);
+                });
+            }
+            finally {
+                return def.promise;
+            }
+        }];
+    //***************** EXERCISE controller
+    var exerciseTaskViewController = (function (_super) {
+        __extends(exerciseTaskViewController, _super);
+        function exerciseTaskViewController($scope /*union types*/, $state, $loadedEx, $loadedLongData) {
+            _super.call(this, $scope, $state);
+            this.exParent = this;
+            if (this.isFakeCreate)
+                return;
+            var modIdx = _.indexOf(this.moduleParent.exercises, this.dataNode);
+            this.exService = new exerciseService($loadedEx, $loadedLongData, this, modIdx); //, () => this.confirmWrongScoreDialog());
+            this.modService = new blended.moduleService(this.moduleParent.dataNode, this.exService, this.moduleParent.state.moduleType, this);
+            var sc = $scope;
+            sc.exService = this.exService;
+            sc.modService = this.modService;
+            this.user = this.exService.user;
+            this.title = this.dataNode.title;
+            this.moduleParent.onExerciseLoaded(modIdx); //zmena actChildIdx v persistentnich datech modulu
+        }
+        exerciseTaskViewController.prototype.confirmWrongScoreDialog = function () {
+            var def = this.ctx.$q.defer();
+            setTimeout(function () {
+                if (confirm('Špatné skore, pokračovat?'))
+                    def.resolve();
+                else
+                    def.reject();
+            }, 1000);
+            return def.promise;
+        };
+        exerciseTaskViewController.prototype.congratulationDialog = function () {
+            var def = this.ctx.$q.defer();
+            setTimeout(function () {
+                alert('Gratulace');
+                def.resolve();
+                ;
+            }, 1000);
+            return def.promise;
+        };
+        //osetreni zelene sipky
+        exerciseTaskViewController.prototype.moveForward = function (sender) {
+            var _this = this;
+            var res = this.exService.evaluate(this.moduleParent.state.moduleType != blended.moduleServiceType.lesson, this.state.exerciseShowWarningPercent);
+            if (!res.confirmWrongScore) {
+                return res.showResult ? blended.moveForwardResult.selfInnner : blended.moveForwardResult.toParent;
+            }
+            res.confirmWrongScore.then(function (okScore) {
+                if (!okScore)
+                    return;
+                _this.$scope.$apply();
+            });
+            return blended.moveForwardResult.selfInnner;
+        };
+        //provede reset cviceni, napr. v panelu s instrukci
+        exerciseTaskViewController.prototype.resetExercise = function () { alert('reset'); };
+        exerciseTaskViewController.prototype.greenClick = function () {
+            this.exService.greenArrowRoot.navigateAhead(this);
+        };
+        exerciseTaskViewController.$inject = ['$scope', '$state', '$loadedEx', '$loadedLongData'];
+        return exerciseTaskViewController;
+    })(blended.taskController);
+    blended.exerciseTaskViewController = exerciseTaskViewController;
+    //********************* SHOW EXERCISES DIRECTIVE
     var showExerciseModel = (function () {
         function showExerciseModel($stateParams) {
-            var _this = this;
             this.$stateParams = $stateParams;
             this.link = function (scope, el, attrs) {
-                scope.$on('$destroy', function () {
-                    if (_this.page.sndPage)
-                        _this.page.sndPage.htmlClearing();
-                    if (_this.page.sndPage)
-                        _this.page.sndPage.leave();
-                    ko.cleanNode(el[0]);
-                    el.html('');
-                });
-                blended.loader.adjustEx(_this.$stateParams).then(function (exserv) {
-                    _this.page = exserv.page;
-                    ko.cleanNode(el[0]);
-                    el.html('');
-                    CourseMeta.lib.blendedDisplayEx(_this.page, function (html) {
-                        el.html(html);
-                        ko.applyBindings({}, el[0]);
-                    });
-                });
+                var exService = scope.exService();
+                //scope.$on('$destroy', ev => exService.onDestroy(el));
+                scope.$on('onStateChangeSuccess', function (ev) { return exService.onDestroy(el); });
+                exService.onDisplay(el, $.noop);
             };
+            this.scope = { exService: '&exService' };
         }
         return showExerciseModel;
     })();
     blended.showExerciseModel = showExerciseModel;
-    var exItemProxy = (function () {
-        function exItemProxy() {
-        }
-        return exItemProxy;
-    })();
-    blended.exItemProxy = exItemProxy;
+    blended.rootModule
+        .directive('showExercise', ['$stateParams', function ($stateParams) { return new showExerciseModel($stateParams); }]);
+    //********************* EXERCISE SERVICE
     var exerciseService = (function () {
-        function exerciseService(ctx /*ctx v dobe vlozeni do cache*/, mod, dataNode, page, userLong) {
-            var _this = this;
-            this.ctx = ctx;
-            this.mod = mod;
-            this.dataNode = dataNode;
-            this.page = page;
-            this.userLong = userLong;
-            this.modIdx = _.indexOf(mod.dataNode.Items, dataNode);
-            this.modItems = _.map(mod.dataNode.Items, function (node, idx) {
-                return { user: blended.getPersistData(node, _this.ctx.taskid), modIdx: idx, title: node.title };
-            });
-            this.userShort = this.modItems[this.modIdx].user;
+        function exerciseService(exercise, long, controller, modIdx) {
+            this.controller = controller;
+            this.exercise = exercise;
+            this.modIdx = modIdx;
+            this.confirmWrongScoreDialog = function () { return controller.confirmWrongScoreDialog(); };
+            this.ctx = controller.ctx;
+            this.product = controller.productParent.dataNode;
+            this.isTest = controller.moduleParent.state.moduleType != blended.moduleServiceType.lesson;
+            this.moduleUser = controller.moduleParent.user.short;
+            this.user = blended.getPersistWrapper(exercise.dataNode, this.ctx.taskid, function () { var res = $.extend({}, blended.shortDefault); res.ms = exercise.dataNode.ms; return res; });
+            if (!long) {
+                long = {};
+                this.user.modified = true;
+            }
+            this.user.long = long;
+            this.startTime = Utils.nowToNum();
+            //greenArrowRoot
+            this.greenArrowRoot = controller.pretestParent ? controller.pretestParent : controller.moduleParent;
+            //this.refresh();
+            this.isLector = !!controller.ctx.onbehalfof;
+            this.showLectorPanel = !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
         }
-        exerciseService.prototype.display = function (el, attrs) { };
-        exerciseService.prototype.destroy = function (el) { };
-        exerciseService.prototype.getPersistData = function () { return blended.getPersistData(this.dataNode, this.ctx.taskid); };
-        exerciseService.prototype.setPersistData = function (modify) { return blended.setPersistData(this.dataNode, this.ctx.taskid, modify); };
+        //ICoursePageCallback
+        exerciseService.prototype.onRecorder = function (page, msecs) { this.user.modified = true; if (!this.user.short.sumRecord)
+            this.user.short.sumRecord = 0; this.user.short.sumRecord += Math.round(msecs / 1000); };
+        exerciseService.prototype.onPlayRecorder = function (page, msecs) { this.user.modified = true; if (!this.user.short.sumPlayRecord)
+            this.user.short.sumPlayRecord = 0; this.user.short.sumPlayRecord += Math.round(msecs / 1000); };
+        exerciseService.prototype.onPlayed = function (page, msecs) { this.user.modified = true; if (!this.user.short.sumPlay)
+            this.user.short.sumPlay = 0; this.user.short.sumPlay += Math.round(msecs / 1000); };
+        exerciseService.prototype.saveLectorEvaluation = function () {
+            var _this = this;
+            var humanEvals = _.map($('.human-form:visible').toArray(), function (f) {
+                var id = f.id.substr(5);
+                return { ctrl: (_this.page.tags[f.id.substr(5)]), edit: $('#human-ed-' + id) };
+            });
+            _.each(humanEvals, function (ev) {
+                _this.user.modified = true;
+                var val = parseInt(ev.edit.val());
+                if (!val)
+                    val = 0;
+                if (val > 100)
+                    val = 100;
+                ev.ctrl.result.hPercent = val / 100 * ev.ctrl.scoreWeight;
+                ev.ctrl.result.flag = ev.ctrl.result.flag & ~CourseModel.CourseDataFlag.needsEval;
+                ev.ctrl.setScore();
+            });
+            var score = this.page.getScore();
+            this.user.short.s = score.s;
+            this.user.short.flag = score.flag;
+        };
+        //lectorEvaluationScore() { return scorePercent(this.user.short); }
+        exerciseService.prototype.score = function () {
+            return blended.scorePercent(this.user.short);
+        };
+        exerciseService.prototype.onDisplay = function (el, completed) {
+            var _this = this;
+            var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
+            if (this.isLector)
+                this.page.humanEvalMode = true;
+            this.recorder = this;
+            pg.blendedExtension = this; //navazani rozsireni na Page
+            Course.localize(pg, function (s) { return CourseMeta.localizeString(pg.url, s, _this.exercise.mod.loc); });
+            var isGramm = CourseMeta.isType(this.exercise.dataNode, CourseMeta.runtimeType.grammar);
+            if (!isGramm) {
+                if (pg.evalPage)
+                    this.exercise.dataNode.ms = pg.evalPage.maxScore;
+            }
+            //instrukce
+            var instrs = this.product.instructions;
+            var instrBody = _.map(pg.instrs, function (instrUrl) { return instrs[instrUrl]; });
+            this.instructionData = { title: pg.instrTitle, body: instrBody.join('') };
+            var exImpl = (this.exercise.dataNode);
+            exImpl.page = pg;
+            exImpl.result = this.user.long;
+            pg.finishCreatePage((this.exercise.dataNode));
+            pg.callInitProcs(Course.initPhase.beforeRender, function () {
+                var html = JsRenderTemplateEngine.render("c_gen", pg);
+                CourseMeta.actExPageControl = pg; //knockout pro cviceni binduje CourseMeta.actExPageControl
+                ko.cleanNode(el[0]);
+                el.html('');
+                el.html(html);
+                ko.applyBindings({}, el[0]);
+                pg.callInitProcs(Course.initPhase.afterRender, function () {
+                    pg.callInitProcs(Course.initPhase.afterRender2, function () {
+                        if (_this.isTest && _this.user.short.done && !_this.moduleUser.done && !_this.isLector) {
+                            //test cviceni nesmi byt (pro nedokonceny test) videt ve vyhodnocenem stavu. Do vyhodnoceneho stav se vrati dalsim klikem na zelenou sipku.
+                            _this.user.short.done = false;
+                        }
+                        pg.acceptData(_this.user.short.done, exImpl.result);
+                        completed(pg);
+                    });
+                });
+            });
+        };
+        exerciseService.prototype.onDestroy = function (el) {
+            //elapsed
+            var now = Utils.nowToNum();
+            var delta = Math.min(maxDelta, Math.round(now - this.startTime));
+            var short = this.user.short;
+            if (!short.elapsed)
+                short.elapsed = 0;
+            short.elapsed += delta;
+            short.end = Utils.nowToNum();
+            this.user.modified = true;
+            if (!this.user.short.done)
+                this.page.provideData(); //prevzeti poslednich dat z kontrolek cviceni
+            //uklid
+            if (this.page.sndPage)
+                this.page.sndPage.htmlClearing();
+            if (this.page.sndPage)
+                this.page.sndPage.leave();
+            ko.cleanNode(el[0]);
+            el.html('');
+            delete (this.exercise.dataNode).result;
+        };
+        //vrati budto promise v IEvaluateResult.confirmWrongScore (= aktivni pod 75% = cekani na wrongScore confirmation dialog) 
+        // nebo IEvaluateResult.showResult (ukazat vysledek vyhodnoceni: pro aktivni nad 75% cviceni ano, pro pasivni a test ne)
+        exerciseService.prototype.evaluate = function (isTest, exerciseShowWarningPercent) {
+            var _this = this;
+            if (exerciseShowWarningPercent === void 0) { exerciseShowWarningPercent = 75; }
+            if (this.user.short.done) {
+                return { showResult: false };
+            }
+            this.user.modified = true;
+            var short = this.user.short;
+            //pasivni stranka
+            if (this.page.isPassivePage()) {
+                this.page.processReadOnlyEtc(true, true);
+                short.done = true;
+                return { showResult: false };
+            }
+            //aktivni stranka
+            this.page.provideData(); //prevzeti vysledku z kontrolek
+            var score = this.page.getScore(); //vypocet score
+            if (!score) {
+                debugger;
+                short.done = true;
+                return null;
+            }
+            var afterConfirmScore = function () {
+                _this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
+                if (!isTest)
+                    _this.page.acceptData(true);
+                _this.user.modified = true;
+                short.done = true;
+                if (_this.exercise.dataNode.ms != score.ms) {
+                    debugger;
+                    def.reject("this.maxScore != score.ms");
+                    return null;
+                }
+                short.s = score.s;
+                short.flag = score.flag;
+            };
+            var exerciseOK = isTest || !this.confirmWrongScoreDialog ? true : (score == null || score.ms == 0 || (score.s / score.ms * 100) >= exerciseShowWarningPercent);
+            if (!exerciseOK) {
+                var def = this.ctx.$q.defer();
+                try {
+                    this.confirmWrongScoreDialog().then(function () {
+                        afterConfirmScore();
+                        def.resolve(true);
+                    }, function () {
+                        def.resolve(false);
+                    });
+                }
+                finally {
+                    return { confirmWrongScore: def.promise };
+                }
+            }
+            else {
+                afterConfirmScore();
+                return { showResult: !isTest };
+            }
+        };
         return exerciseService;
     })();
     blended.exerciseService = exerciseService;
+    var maxDelta = 10 * 60; //10 minut
 })(blended || (blended = {}));
-//export var showExerciseDirective2_ = ['$stateParams', ($stateParams: blended.learnContext) => {
-//  var model = new showExerciseModel($stateParams);
-//  return { link: model.link };
-//  return {
-//    link: (scope: ng.IScope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
-//      scope.$on('$destroy', () => {
-//        ko.cleanNode(el[0]);
-//        el.html('');
-//      });
-//      var page: Course.Page = blended.loader.productCache.fromCache($stateParams).moduleCache.fromCache($stateParams.moduleUrl).cacheOfPages.fromCache($stateParams.Url);
-//      ko.cleanNode(el[0].parentElement);
-//      el.html('');
-//      CourseMeta.lib.blendedDisplayEx(page, html => {
-//        el.html(html);
-//        ko.applyBindings({}, el[0].parentElement);
-//      });
-//    }
-//  };
-//}]; 
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var blended;
+(function (blended) {
+    (function (exItemBackground) {
+        exItemBackground[exItemBackground["no"] = 0] = "no";
+        exItemBackground[exItemBackground["warning"] = 1] = "warning";
+        exItemBackground[exItemBackground["success"] = 2] = "success";
+        exItemBackground[exItemBackground["danger"] = 3] = "danger";
+    })(blended.exItemBackground || (blended.exItemBackground = {}));
+    var exItemBackground = blended.exItemBackground;
+    (function (exItemContent) {
+        exItemContent[exItemContent["no"] = 0] = "no";
+        exItemContent[exItemContent["check"] = 1] = "check";
+        exItemContent[exItemContent["folderOpen"] = 2] = "folderOpen";
+        exItemContent[exItemContent["folder"] = 3] = "folder";
+        exItemContent[exItemContent["progressBar"] = 4] = "progressBar";
+        exItemContent[exItemContent["waitForEvaluation"] = 5] = "waitForEvaluation";
+    })(blended.exItemContent || (blended.exItemContent = {}));
+    var exItemContent = blended.exItemContent;
+    var moduleServiceLow = (function () {
+        function moduleServiceLow(node, type, controller, forHome) {
+            this.node = node;
+            this.controller = controller;
+            this.lessonType = type;
+            this.onbehalfof = controller.ctx.onbehalfof > 0;
+            if (forHome)
+                this.refresh(0);
+        }
+        moduleServiceLow.prototype.refresh = function (actExIdx) {
+            var _this = this;
+            this.exercises = _.map(_.filter(this.node.Items, function (it) { return isEx(it); }), function (node, idx) {
+                return {
+                    user: blended.getPersistData(node, _this.controller.ctx.taskid),
+                    idx: idx,
+                    node: node,
+                    active: idx == actExIdx
+                };
+            });
+            this.user = blended.agregateShortFromNodes(this.node, this.controller.ctx.taskid);
+        };
+        return moduleServiceLow;
+    })();
+    blended.moduleServiceLow = moduleServiceLow;
+    var moduleService = (function (_super) {
+        __extends(moduleService, _super);
+        function moduleService(node, exService, type, controller) {
+            _super.call(this, node, type, controller, false);
+            this.exService = exService;
+            this.refresh(this.exService.modIdx);
+            this.exShowPanel = this.user.done || this.lessonType != blended.moduleServiceType.pretest;
+        }
+        moduleService.prototype.showResult = function () {
+            var res = this.exService.user && this.exService.user.short && this.exService.user.short.done &&
+                (this.lessonType == blended.moduleServiceType.lesson || this.moduleDone);
+            return res;
+        };
+        moduleService.prototype.resetExercise = function () { alert('reset'); };
+        moduleService.prototype.refresh = function (actExIdx) {
+            var _this = this;
+            _super.prototype.refresh.call(this, actExIdx);
+            this.moduleDone = this.user && this.user.done;
+            this.exNoclickable = this.lessonType == blended.moduleServiceType.test && !this.moduleDone && !this.controller.ctx.onbehalfof;
+            _.each(this.exercises, function (ex) {
+                //active item: stejny pro vsechny pripady
+                if (ex.active) {
+                    ex.content = exItemContent.folderOpen;
+                    ex.background = exItemBackground.warning;
+                    return;
+                }
+                var exDone = ex.user && ex.user.done;
+                //nehotovy test
+                if (_this.lessonType == blended.moduleServiceType.test && !_this.moduleDone && !_this.controller.ctx.onbehalfof) {
+                    ex.content = exDone ? exItemContent.check : exItemContent.folder;
+                    return;
+                }
+                //vse ostatni: nehotova lekce, hotovy test i pretest
+                if (!exDone)
+                    ex.content = exItemContent.folder;
+                else if (ex.user.ms) {
+                    var waitForEval = blended.waitForEvaluation(ex.user);
+                    ex.content = waitForEval ? exItemContent.waitForEvaluation : exItemContent.progressBar;
+                    ex.percent = blended.scorePercent(ex.user);
+                    ex.background = waitForEval && _this.controller.ctx.onbehalfof ? exItemBackground.danger : exItemBackground.success;
+                }
+                else {
+                    ex.background = exItemBackground.success;
+                    ex.content = exItemContent.check;
+                }
+            });
+        };
+        //skok na jine cviceni, napr. v module map panelu 
+        moduleService.prototype.navigateExercise = function (idx) {
+            if (idx == this.exService.modIdx)
+                return;
+            var exNode = this.exercises[idx].node;
+            var ctx = blended.cloneAndModifyContext(this.controller.ctx, function (c) { return c.url = blended.encodeUrl(exNode.url); });
+            this.controller.navigate({ stateName: this.controller.state.name, pars: ctx });
+        };
+        return moduleService;
+    })(moduleServiceLow);
+    blended.moduleService = moduleService;
+    function moduleIsDone(nd, taskId) {
+        return !_.find(nd.Items, function (it) { var itUd = blended.getPersistData(it, taskId); return (!itUd || !itUd.done); });
+    }
+    blended.moduleIsDone = moduleIsDone;
+    function isEx(nd) { return CourseMeta.isType(nd, CourseMeta.runtimeType.ex); }
+    blended.isEx = isEx;
+    var moduleTaskController = (function (_super) {
+        __extends(moduleTaskController, _super);
+        function moduleTaskController($scope, $state) {
+            _super.call(this, $scope, $state);
+            this.moduleParent = this;
+            this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { done: false, actChildIdx: 0 }; });
+            this.exercises = _.filter(this.dataNode.Items, function (it) { return isEx(it); });
+        }
+        moduleTaskController.prototype.onExerciseLoaded = function (idx) {
+            var ud = this.user.short;
+            if (ud.done) {
+                ud.actChildIdx = idx;
+                this.user.modified = true;
+            }
+        };
+        moduleTaskController.prototype.adjustChild = function () {
+            var _this = this;
+            var ud = this.user.short;
+            var exNode = ud.done ? this.exercises[ud.actChildIdx] : _.find(this.exercises, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (!itUd || !itUd.done); });
+            if (!exNode) {
+                debugger;
+                ud.done = true;
+                this.user.modified = true;
+            }
+            var moduleExerciseState = _.find(this.state.childs, function (ch) { return !ch.noModuleExercise; });
+            var state = {
+                params: blended.cloneAndModifyContext(this.ctx, function (d) { return d.url = blended.encodeUrl(exNode.url); }),
+                parent: this,
+                current: moduleExerciseState,
+            };
+            return new moduleExerciseState.controller(state, null);
+        };
+        moduleTaskController.prototype.moveForward = function (sender) {
+            var _this = this;
+            if (this.inCongratulation) {
+                delete this.inCongratulation;
+                return blended.moveForwardResult.toParent;
+            }
+            var ud = this.user.short;
+            if (ud.done) {
+                ud.actChildIdx = ud.actChildIdx == this.exercises.length - 1 ? 0 : ud.actChildIdx + 1;
+                this.user.modified = true;
+                return blended.moveForwardResult.selfAdjustChild;
+            }
+            else {
+                var exNode = _.find(this.exercises, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (!itUd || !itUd.done); });
+                if (!ud.done && !exNode) {
+                    ud.done = true;
+                    this.user.modified = true;
+                    if (this.pretestParent)
+                        return blended.moveForwardResult.toParent;
+                    sender.congratulationDialog().then(function () { return sender.greenClick(); }, function () { return sender.greenClick(); });
+                    this.inCongratulation = true;
+                    return blended.moveForwardResult.selfInnner;
+                }
+                return blended.moveForwardResult.selfAdjustChild;
+            }
+        };
+        return moduleTaskController;
+    })(blended.taskController);
+    blended.moduleTaskController = moduleTaskController;
+    blended.rootModule
+        .filter('vyzva$exmodule$percentheight', function () { return function (per, maxHeight) { return { height: ((100 - per) * maxHeight / 100).toString() + 'px' }; }; })
+        .filter('vyzva$exmodule$percentwidth', function () { return function (per, maxWidth) { return { width: ((100 - per) * maxWidth / 100).toString() + 'px' }; }; })
+        .filter('vyzva$exmodule$sec', function () { return function (sec) { return sec ? Utils.formatDateTime(sec) : null; }; })
+        .filter('vyzva$exmodule$time', function () { return function (sec) { return sec ? Utils.formatTimeSpan(sec) : null; }; })
+        .filter('vyzva$exmodule$score', function () { return function (short) { return blended.scoreText(short); }; })
+        .directive('vyzva$exmodule$emptytest', function () {
+        return {
+            scope: { label: '@label', value: '@value', nobr: '@nobr' },
+            template: '<span ng-if="value">{{label}}: <b>{{value}}</b></span><br ng-if="!nobr"/>'
+        };
+    })
+        .directive('vyzva$exmodule$scoreprogress', function () {
+        return {
+            scope: { value: '@value', colors: '@colors' },
+            template: '<div ng-class="colors ? colors: \'score-bar\'"><div class="score-text">{{value}}%</div><div class="progress-red" ng-style="value | vyzva$exmodule$percentwidth : 50"></div></div>'
+        };
+    });
+})(blended || (blended = {}));
 
 var blended;
 (function (blended) {
+    (function (moduleServiceType) {
+        moduleServiceType[moduleServiceType["pretest"] = 0] = "pretest";
+        moduleServiceType[moduleServiceType["lesson"] = 1] = "lesson";
+        moduleServiceType[moduleServiceType["test"] = 2] = "test";
+    })(blended.moduleServiceType || (blended.moduleServiceType = {}));
+    var moduleServiceType = blended.moduleServiceType;
     function createStateData(data) { return data; }
     blended.createStateData = createStateData;
-    (function (createControllerCtx) {
-        createControllerCtx[createControllerCtx["adjustChild"] = 0] = "adjustChild";
-        createControllerCtx[createControllerCtx["checkForUrl"] = 1] = "checkForUrl";
-        createControllerCtx[createControllerCtx["navigate"] = 2] = "navigate";
-    })(blended.createControllerCtx || (blended.createControllerCtx = {}));
-    var createControllerCtx = blended.createControllerCtx;
+    //export var globalApi: {
+    //  new ($scope: IControllerScope, $state: angular.ui.IStateService, ctx: learnContext): Object;
+    //};
+    //export var globalApi: Function;
     //zaregistrovany stav (v app.ts)
     var state = (function () {
         function state(st) {
-            var _this = this;
-            this.oldController = (st.controller);
-            var self = this;
-            if (this.oldController) {
-                st.controller = ['$scope', '$state', function ($scope, $state) {
-                        var params = ($state.params);
-                        params.$state = $state;
-                        var ss = { current: self, params: params, parent: ($scope.$parent).ts, createForCheckUrl: createControllerCtx.navigate };
-                        var task = new _this.oldController(ss);
-                        $scope.ts = task;
-                    }];
-            }
+            //this.oldController = <any>(st.controller); var self = this;
+            //if (this.oldController) {
+            //  var services: Array<any> = ['$scope', '$state' ];
+            //  if (st.resolve) for (var p in st.resolve) services.push(p);
+            //  services.push(($scope: IControllerScope, $state: angular.ui.IStateService, ...resolves: Array<Object>) => {
+            //    var parent: taskController = (<any>($scope.$parent)).ts;
+            //    //kontrola jestli nektery z parentu nenastavil isWrongUrl. Pokud ano, vrat fake controller
+            //    if (parent && parent.isWrongUrl) {
+            //      parent.isWrongUrl = false;
+            //      $scope.ts = <any>{ isWrongUrl: true, parent: parent }; return;
+            //    }
+            //    //neni isWrongUrl, pokracuj
+            //    var params = <learnContext><any>($state.params);
+            //    finishContext(params);
+            //    params.$state = $state;
+            //    var ss: IStateService = { current: self, params: params, parent: parent, createMode: createControllerModes.navigate, $scope: $scope };
+            //    var task = <controller>(new this.oldController(ss, resolves));
+            //    $scope.ts = task;
+            //    if (globalApi) {
+            //      var api = new globalApi($scope, $state, params);
+            //      $scope.api = () => api;
+            //    }
+            //  });
+            //  st.controller = <any>services;
+            //}
             $.extend(this, st);
         }
         //******* Inicializace: linearizace state tree na definict states
@@ -9825,443 +10710,130 @@ var blended;
                 ch.initFromStateTree(provider, root);
             });
         };
-        //sance osetrit nekonsistentni URL (kterou by se prislo do nekonsistentniho stavu)
-        state.onRouteChangeStart = function (e, toState, toParams, $location, $state) {
-            //v parents neni prodStates.homeTask (jedna se o stav mimo spravu managera, napr. na home webu)
-            var st = toState;
-            while (st && st != blended.prodStates.homeTask)
-                st = st.parent;
-            if (!st)
-                return;
-            //neni produkt - laduje se na home:
-            var prod = blended.loader.productCache.fromCache(toParams);
-            //var stateMan = new stateManager(toState, toParams);
-            if (!prod) {
-                if (toState == blended.prodStates.home)
-                    return; //jsem na home => return (home se musi naladovat vzdy, neni z ni redirekc)
-                //neni naladovan produkt a neni home page => goto home page
-                e.preventDefault();
-                var hash = $state.href(blended.prodStates.home.name, toParams);
-                setTimeout(function () { return window.location.hash = hash; }, 1);
-                return;
-            }
-            //vse je OK, zjisti konsistenci stavu
-            var st = toState;
-            while (st) {
-                if (st.dataNodeUrlParName) {
-                    var ss = { current: st, params: toParams, parent: null, createForCheckUrl: createControllerCtx.checkForUrl };
-                    var task = new st.oldController(ss);
-                    var url = task.checkCommingUrl();
-                    if (url) {
-                        e.preventDefault();
-                        var hash = $state.href(url.stateName, url.pars);
-                        setTimeout(function () { return window.location.hash = hash; }, 1);
-                        return;
-                    }
-                }
-                st = st.parent;
-            }
-        };
         return state;
     })();
     blended.state = state;
 })(blended || (blended = {}));
-
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-var blended;
-(function (blended) {
-    //******* TASK VIEW
-    var taskViewController = (function () {
-        function taskViewController(state) {
-            this.ctx = state.params;
-            blended.finishContext(this.ctx);
-            $.extend(this, state.current.data);
-            this.myTask = state.parent;
-            if (!this.ctx.$state)
-                this.ctx.$state = this.myTask.ctx.$state;
-            this.title = this.myTask.dataNode.title;
-        }
-        taskViewController.prototype.gotoHomeUrl = function () { Pager.gotoHomeUrl(); };
-        return taskViewController;
-    })();
-    blended.taskViewController = taskViewController;
-    //******* TASK 
-    var taskController = (function () {
-        //********************* 
-        function taskController(state) {
-            var _this = this;
-            this.getPersistData = function () { return blended.getPersistData(_this.dataNode, _this.ctx.taskid); };
-            this.setPersistData = function (modify) { return blended.setPersistData(_this.dataNode, _this.ctx.taskid, modify); };
-            this.doInitPersistData = function () {
-                var ud = _this.getPersistData();
-                if (!ud)
-                    ud = _this.setPersistData(function (ud) {
-                        _this.log('initPersistData');
-                        _this.initPersistData(ud);
-                    });
-                return ud;
-            };
-            if (!state.current.dataNodeUrlParName)
-                return;
-            this.ctx = state.params;
-            blended.finishContext(this.ctx);
-            $.extend(this, state.current.data);
-            this.myState = state.current;
-            this.ctx.product = blended.loader.productCache.fromCache(this.ctx);
-            if (!this.ctx.product)
-                return;
-            var paretScope = this.parent = state.parent;
-            if (paretScope) {
-                paretScope.child = this;
-                if (!this.ctx.$state)
-                    this.ctx.$state = state.parent.ctx.$state;
-            }
-            this.dataNode = this.ctx.product.nodeDir[this.ctx[state.current.dataNodeUrlParName]];
-            if (!this.dataNode)
-                throw '!this.dataNode';
-            if (state.createForCheckUrl != blended.createControllerCtx.checkForUrl)
-                this.doInitPersistData();
-        }
-        //********************** Virtualni procs
-        //inicialni naplneni user dat  (pri jejich prvnim vytvoreni)
-        taskController.prototype.initPersistData = function (ud) { ud.done = false; }; //ud.url = this.dataNode.url; }
-        //test na validnost URL - sance presmerovat system jinam
-        taskController.prototype.checkCommingUrl = function () { return null; };
-        //dodelej task list do green stavu
-        taskController.prototype.adjustChild = function () { };
-        //posun stavu dal
-        taskController.prototype.moveForward = function (ud) { throw 'notimplemented'; };
-        //var it = this.dataNode.userData ? this.dataNode.userData[this.ctx.taskid] : null;
-        //if (!it) {
-        //  it = { data: <any>{}, modified: true };
-        //  if (!this.dataNode.userData) this.dataNode.userData = {};
-        //  this.dataNode.userData[this.ctx.taskid] = it;
-        //} else
-        //  it.modified = true;
-        //modify(it.data);
-        //return it.data;
-        taskController.prototype.log = function (msg) {
-            console.log('%%% ' + Utils.getObjectClassName(this) + ": " + msg + ' (' + this.dataNode.url + ')');
-        };
-        taskController.prototype.goCurrent = function () {
-            var t = this;
-            while (t) {
-                t.adjustChild();
-                if (!t.child)
-                    return { stateName: t.myState.name, pars: t.ctx };
-                t = t.child;
-            }
-        };
-        //posun zelenou sipkou. Child Musi byt adjusted (goCurrent -> goAhead -> goAhead...)
-        taskController.prototype.goAhead = function () {
-            var ud = this.getPersistData();
-            if (ud.done)
-                return null;
-            if (this.child) {
-                var childUrl = this.child.goAhead();
-                if (childUrl)
-                    return childUrl; //... ano, posun udelal child
-                this.log('doMoveForward, child finished'); //... ne musim jej udelat sam
-            }
-            else {
-                this.log('doMoveForward');
-            }
-            this.moveForward(ud); //posun stav dopredu
-            if (ud.done)
-                return null;
-            return this.goCurrent();
-        };
-        //addToHistory(child: taskController, ud: IPersistNodeUser) {
-        //  if (!ud.history) ud.history = [];
-        //  var hist: IPersistHistoryItem = { date: Utils.nowToNum(), url: child.dataNode.url, taskId: child.ctx.taskid };
-        //  if (_.find(ud.history, h => h.url == hist.url && h.taskId == hist.taskId)) return;
-        //  ud.history.push(hist);
-        //}
-        taskController.prototype.href = function (url) {
-            return this.ctx.$state.href(url.stateName, url.pars);
-        };
-        taskController.prototype.navigate = function (url) {
-            var hash = this.href(url);
-            setTimeout(function () { return window.location.hash = hash; }, 1);
-        };
-        taskController.prototype.taskList = function () {
-            var t = this.taskRoot();
-            var res = [];
-            while (t) {
-                res.push(t);
-                t = t.child;
-            }
-            return res;
-        };
-        taskController.prototype.taskRoot = function () {
-            var t = this;
-            while (t.myState.name != blended.prodStates.homeTask.name)
-                t = t.parent;
-            return t;
-        };
-        return taskController;
-    })();
-    blended.taskController = taskController;
-    var pretestTaskController = (function (_super) {
-        __extends(pretestTaskController, _super);
-        function pretestTaskController() {
-            _super.apply(this, arguments);
-        }
-        pretestTaskController.prototype.checkCommingUrl = function () {
-            var ud = this.getPersistData();
-            if (!ud)
-                return { stateName: blended.prodStates.home.name, pars: this.ctx }; //pretest jeste nezacal => goto product home
-            if (ud.done)
-                return null; //done pretest: vse je povoleno
-            var dataNode = this.dataNode;
-            var actModule = dataNode.Items[ud.actLevel];
-            var actEx = this.ctx.product.nodeDir[this.ctx.Url];
-            if (actModule.url != actEx.parent.url) {
-                var pars = blended.cloneAndModifyContext(this.ctx, function (c) { return c.moduleurl = blended.encodeUrl(actModule.url); });
-                return { stateName: blended.prodStates.home.name, pars: pars }; //v URL je adresa jineho nez aktivniho modulu (asi pomoci back) => jdi na prvni cviceni aktualniho modulu
-            }
-            return null;
-        };
-        pretestTaskController.prototype.initPersistData = function (ud) {
-            if (ud.urls)
-                return;
-            _super.prototype.initPersistData.call(this, ud);
-            ud.actLevel = blended.levelIds.A2;
-            ud.urls = [this.actRepo(blended.levelIds.A2).url];
-        };
-        pretestTaskController.prototype.adjustChild = function () {
-            if (this.child)
-                return;
-            var ud = this.getPersistData();
-            if (ud.done)
-                return;
-            var actModule = this.actRepo(ud.actLevel);
-            if (!actModule)
-                throw '!actModule';
-            var state = {
-                params: blended.cloneAndModifyContext(this.ctx, function (d) { return d.moduleurl = blended.encodeUrl(actModule.url); }),
-                parent: this,
-                current: blended.prodStates.pretestModule,
-                createForCheckUrl: blended.createControllerCtx.adjustChild
-            };
-            this.child = new moduleTaskController(state);
-        };
-        pretestTaskController.prototype.moveForward = function (ud) {
-            var actTestItem = (this.child);
-            var actRepo = this.actRepo(ud.actLevel);
-            var childUser = actTestItem.getPersistData();
-            if (!childUser.done || actTestItem.dataNode.url != actRepo.url)
-                throw '!childUser.done || actTestItem.dataNode.parent.url != actRepo.url';
-            if (actRepo.level == blended.levelIds.A1) {
-                this.finishPretest(ud, blended.levelIds.A1);
-            }
-            else if (actRepo.level == blended.levelIds.A2) {
-                if (childUser.score >= actRepo.minScore && childUser.score < actRepo.maxScore)
-                    this.finishPretest(ud, blended.levelIds.A2);
-                else if (childUser.score < actRepo.minScore)
-                    this.newTestItem(ud, blended.levelIds.A1);
-                else
-                    this.newTestItem(ud, blended.levelIds.B1);
-            }
-            else if (actRepo.level == blended.levelIds.B1) {
-                if (childUser.score >= actRepo.minScore && childUser.score < actRepo.maxScore)
-                    this.finishPretest(ud, blended.levelIds.B1);
-                else if (childUser.score < actRepo.minScore)
-                    this.finishPretest(ud, blended.levelIds.A2);
-                else
-                    this.newTestItem(ud, blended.levelIds.B2);
-            }
-            else if (actRepo.level == blended.levelIds.B2) {
-                if (childUser.score < actRepo.minScore)
-                    this.finishPretest(ud, blended.levelIds.B1);
-                else
-                    this.finishPretest(ud, blended.levelIds.B2);
-            }
-        };
-        pretestTaskController.prototype.newTestItem = function (ud, lev) {
-            this.child = null;
-            ud.actLevel = lev;
-            ud.urls.push(this.actRepo(lev).url);
-        };
-        pretestTaskController.prototype.finishPretest = function (ud, lev) {
-            this.child = null;
-            ud.done = true;
-            ud.targetLevel = lev;
-            delete ud.actLevel;
-        };
-        pretestTaskController.prototype.actRepo = function (lev) { return _.find(this.dataNode.Items, function (l) { return l.level == lev; }); };
-        return pretestTaskController;
-    })(taskController);
-    blended.pretestTaskController = pretestTaskController;
-    var moduleTaskController = (function (_super) {
-        __extends(moduleTaskController, _super);
-        function moduleTaskController() {
-            _super.apply(this, arguments);
-        }
-        moduleTaskController.prototype.adjustChild = function () {
-            var _this = this;
-            if (this.child)
-                return;
-            var ud = this.getPersistData();
-            if (ud.done)
-                return;
-            var exNode;
-            if (!this.alowCycleExercise) {
-                exNode = _.find(this.dataNode.Items, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (!itUd || !itUd.done); });
-            }
-            else {
-                exNode = this.dataNode.Items[ud.actChildIdx];
-            }
-            if (!exNode)
-                return;
-            var state = {
-                params: blended.cloneAndModifyContext(this.ctx, function (d) { return d.url = blended.encodeUrl(exNode.url); }),
-                parent: this,
-                current: blended.prodStates.pretestExercise,
-                createForCheckUrl: blended.createControllerCtx.adjustChild
-            };
-            this.child = new vyzva.pretestExercise(state);
-        };
-        moduleTaskController.prototype.initPersistData = function (ud) {
-            _super.prototype.initPersistData.call(this, ud);
-            ud.actChildIdx = 0;
-        };
-        moduleTaskController.prototype.moveForward = function (ud) {
-            var _this = this;
-            var ud = this.getPersistData();
-            if (this.alowCycleExercise) {
-                this.setPersistData(function (d) { if (d.actChildIdx == _this.dataNode.Items.length - 1)
-                    d.actChildIdx = 0;
-                else
-                    d.actChildIdx++; });
-            }
-            if (_.all(this.dataNode.Items, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (itUd && itUd.done); }))
-                this.setPersistData(function (d) { return d.done = true; });
-            this.child = null;
-        };
-        return moduleTaskController;
-    })(taskController);
-    blended.moduleTaskController = moduleTaskController;
-    var exerciseTaskViewController = (function (_super) {
-        __extends(exerciseTaskViewController, _super);
-        function exerciseTaskViewController(state) {
-            _super.call(this, state);
-            this.title = this.dataNode.title;
-        }
-        exerciseTaskViewController.prototype.gotoHomeUrl = function () { Pager.gotoHomeUrl(); };
-        exerciseTaskViewController.prototype.initPersistData = function (ud) {
-            _super.prototype.initPersistData.call(this, ud);
-        };
-        exerciseTaskViewController.prototype.moveForward = function (ud) {
-            ud.done = true;
-        };
-        return exerciseTaskViewController;
-    })(taskController);
-    blended.exerciseTaskViewController = exerciseTaskViewController;
-})(blended || (blended = {}));
-//export class controllerLow {
-//  constructor($scope: IControllerLowScope, public $state: angular.ui.IStateService) {
-//    this.ctx = <learnContext><any>($state.params);
-//    finishContext(this.ctx);
-//    $.extend(this, $state.current.data);
-//    $scope.ts = this;
-//  }
-//  ctx: learnContext;
-//}
-//export class pretestGreenProxy extends greenProxy {
-//  constructor(public dataNode: IPretestRepository, ctx: learnContext) {
-//    super(dataNode, ctx);
-//  }
-//  getPersistData: () => IPretestUser;
-//  getChild(): IStateUrl {
-//    var ud = this.getPersistData(); if (ud.done) return null;
-//    var act: IPretestItemRepository = _.find(this.dataNode.Items, l => l.level == ud.actLevel); if (!act) throw '!act';
-//    return new pretestItemGreenProxy(act, this.ctx).getChild();
-//  }
-//}
-//export class pretestItemGreenProxy extends greenProxy {
-//  constructor(public dataNode: IPretestItemRepository, ctx: learnContext) {
-//    super(dataNode, ctx);
-//  }
-//  getPersistData: () => IModuleUser;
-//  getChild(): IStateUrl {
-//    var ud = this.getPersistData(); if (ud.done) return null;
-//    var node = _.find(this.dataNode.Items, it => {
-//      var nodeUd = blended.getPersistData(it, '*** TODO');
-//      return nodeUd != null && !nodeUd.done;
-//    });
-//    //return node ? new greenProxy(node, this.ctx) /*TODO: null;
-//  }
-//}
-//export class pretestState extends state {
-//  constructor(st: angular.ui.IState, public exerciseState: state) {
-//    super(st);
-//  }
-//getPersistData: (data: IPretestStateData) => IPretestUser;
-//setPersistData: (data: IPretestStateData, modify: (data: IPretestUser) => void) => IPretestUser;
-//modifyTargetState(data: IPretestStateData): IStateUrl {
-//  var ud = this.getPersistData(data);
-//  //if (!ud) return { stateName: prodStates.home.name, pars: data.man.ctx }; //pretest jeste nezacal => goto home
-//  if (ud && ud.done) return null; //done pretest: vse je povoleno
-//  var dataNode = <IPretestRepository>data.dataNode;
-//  if (!ud) ud = this.setPersistData(data, d => {
-//    d.url = dataNode.url;
-//    d.actLevel = levelIds.A2;
-//    d.urls = [this.actRepo(data, levelIds.A2).url];
-//  });
-//  var actModule = dataNode.Items[ud.actLevel];
-//  if (actModule.url != data.man.ctx.moduleUrl) {
-//    var pars = cloneAndModifyContext(data.man.ctx, c => {
-//      c.moduleurl = enocdeUrl(actModule.url);
-//      c.url = enocdeUrl(actModule.Items[0].url);
-//    });
-//    return { stateName: this.exerciseState.name, pars: pars }; //v URL je adresa jineho nez aktivniho modulu (asi pomoci back) => jdi na prvni cviceni aktualniho modulu
-//  }
-//  return null;
-//}
-//initPersistData(data: IPretestStateData, ud: IPretestUser) {
-//  super.initPersistData(data, ud);
-//  ud.actLevel = levelIds.A2;
-//  ud.urls = [this.actRepo(data, levelIds.A2).url];
-//}
-//actRepo(data: IPretestStateData, lev: levelIds): IPretestItemRepository { return _.find(data.dataNode.Items, l => l.level == lev); }
-//}
-//export interface IPretestStateData extends blended.IStateData {
-//  dataNode: IPretestRepository;
-//}
 
 var vyzva;
 (function (vyzva) {
     function finishHomeDataNode(prod) {
         if (prod.pretest)
             return;
-        var clonedLessons = _.map(_.range(0, 4), function (idx) { return (_.clone(prod.Items[idx].Items)); }); //pro kazdou level kopie napr. </lm/blcourse/english/a1/>.Items
+        var urlRoot = '/lm/blcourse/' + LMComLib.LineIds[prod.line].toLowerCase() + '/';
+        var levels = _.map(['a1', 'a2', 'b1', 'b2'], function (lev) { return prod.find(urlRoot + lev + '/'); });
+        var clonedLessons = _.map(levels, function (lev) { return (_.clone(lev.Items)); }); //pro kazdou level kopie napr. </lm/blcourse/english/a1/>.Items
         var firstEntryTests = _.map(clonedLessons, function (l) { return l.splice(0, 1)[0]; }); //z kopie vyndej prvni prvek (entry test) a dej jej do firstPretests;
-        prod.pretest = (prod.find('/lm/blcourse/' + LMComLib.LineIds[prod.line].toLowerCase() + '/pretests/'));
+        prod.pretest = (prod.find(urlRoot + 'pretests/'));
         prod.entryTests = firstEntryTests;
         prod.lessons = clonedLessons;
-        //_.each(<any>(prod.pretest.Items), (it: CourseMeta.data) => {
-        //  if (it.other) $.extend(it, JSON.parse(it.other));
-        //});
     }
     vyzva.finishHomeDataNode = finishHomeDataNode;
-    function breadcrumbBase(ctx) {
-        return [
-            { title: 'Moje Online jazykové kurzy a testy', url: '#' + Pager.getHomeUrl() },
-            { title: ctx.product.title, url: ctx.$state.href(vyzva.stateNames.home.name, ctx), active: false }
-        ];
+    function breadcrumbBase(ctrl, homeOnly) {
+        var res = [{ title: 'Moje Online jazykové kurzy a testy', url: '#' + Pager.getHomeUrl() }];
+        if (!homeOnly)
+            res.push({ title: ctrl.productParent.dataNode.title, url: ctrl.href(ctrl.getProductHomeUrl() /*{ stateName: stateNames.home.name, pars: ctrl.ctx }*/), active: false });
+        return res;
     }
     vyzva.breadcrumbBase = breadcrumbBase;
 })(vyzva || (vyzva = {}));
 
+var vyzva;
+(function (vyzva) {
+    var intranet;
+    (function (intranet) {
+        function lmAdminCreateLicenceKeys_request(groups) {
+            var res = [];
+            //school manager keys: 2 dalsi klice pro spravce (mimo prvniho spravce = self)
+            res.push({ line: LMComLib.LineIds.no, num: 2, keys: null });
+            //students keys: pro kazdou line a group a pocet
+            var lineGroups = _.groupBy(groups, function (g) { return g.line; });
+            _.each(lineGroups, function (lineGroup, line) {
+                var lg = { line: parseInt(line), num: Utils.sum(lineGroup, function (grp) { return grp.num + 6; } /*3 klice pro lektora, 3 pro visitora*/ /*3 klice pro lektora, 3 pro visitora*/), keys: null };
+                //lg.num += 3;
+                res.push(lg);
+            });
+            return res;
+        }
+        intranet.lmAdminCreateLicenceKeys_request = lmAdminCreateLicenceKeys_request;
+        function lmAdminCreateLicenceKeys_reponse(groups, respKeys) {
+            var useKey = function (line, num) {
+                //odeber NUM klicu pro line
+                var key = _.find(respKeys, function (k) { return k.line == line; });
+                var keyStrs = key.keys.slice(0, num);
+                if (keyStrs.length != num)
+                    throw 'keyStrs.length != num';
+                key.keys.splice(0, num);
+                //zkonvertuj lienceId|counter na encoded licence key
+                return _.map(keyStrs, function (keyStr) {
+                    var parts = keyStr.split('|');
+                    return { keyStr: keys.toString({ licId: parseInt(parts[0]), counter: parseInt(parts[1]) }) };
+                });
+            };
+            _.each(groups, function (grp) {
+                grp.studentKeys = useKey(grp.line, grp.num);
+                grp.visitorsKeys = useKey(grp.line, 3);
+                grp.lectorKeys = useKey(grp.line, 3);
+            });
+            var managerKeys = useKey(LMComLib.LineIds.no, 2);
+            return { studyGroups: groups, managerKeys: managerKeys };
+        }
+        intranet.lmAdminCreateLicenceKeys_reponse = lmAdminCreateLicenceKeys_reponse;
+        //******************* zakladni info PO SPUSTENI PRODUKTU
+        //informace o licencich a klicich k spustenemu produktu
+        function enteredProductInfo(json, licenceKeysStr /*platne licencni klice k produktu*/, cookie) {
+            if (_.isEmpty(json))
+                return null;
+            var licenceKeys = licenceKeysStr.split('#');
+            var companyData = (JSON.parse(json));
+            var oldJson = JSON.stringify(companyData);
+            //linearizace klicu
+            var alocList = [];
+            alocList.pushArray(_.map(companyData.managerKeys, function (alocKey) { return { key: alocKey, group: null, isLector: false, isVisitor: false, isStudent: false }; }));
+            _.each(companyData.studyGroups, function (grp) {
+                alocList.pushArray(_.map(grp.lectorKeys, function (alocKey) { return { key: alocKey, group: grp, isLector: true, isVisitor: false, isStudent: false }; }));
+                alocList.pushArray(_.map(grp.studentKeys, function (alocKey) { return { key: alocKey, group: grp, isLector: false, isVisitor: false, isStudent: true }; }));
+                alocList.pushArray(_.map(grp.visitorsKeys, function (alocKey) { return { key: alocKey, group: grp, isLector: false, isVisitor: true, isStudent: false }; }));
+            });
+            ////student nebo visitor lmcomid => seznam lines. Pomaha zajistit jednoznacn
+            //var lmcomIdToLineDir: { [lmcomid: number]: Array<LMComLib.LineIds>; } = {};
+            //_.each(_.filter(alocList, l => l.isStudent || l.isVisitor), l => {
+            //  var lines = lmcomIdToLineDir[l.key.lmcomId];
+            //  if (!lines) lmcomIdToLineDir[l.key.lmcomId] = lines = [];
+            //  lines.push(l.group.line);
+            //});
+            //doplneni udaju do alokovaneho klice uzivatele. Alokovany klice se paruje s licencnim klicem
+            var alocatedKeyInfos = [];
+            _.each(licenceKeys, function (licenceKey) {
+                var alocatedKeyInfo = _.find(alocList, function (k) { return k.key.keyStr == licenceKey; });
+                if (!alocatedKeyInfo)
+                    return;
+                if (!alocatedKeyInfo)
+                    return;
+                alocatedKeyInfo.key.email = cookie.EMail || cookie.Login;
+                alocatedKeyInfo.key.firstName = cookie.FirstName;
+                alocatedKeyInfo.key.lastName = cookie.LastName;
+                alocatedKeyInfo.key.lmcomId = cookie.id;
+                alocatedKeyInfos.push(alocatedKeyInfo);
+            });
+            //if (!usedKeyInfo) usedKeyInfo = { group: null, groupLector: false, key: null, visitor:true };
+            var newJson = JSON.stringify(companyData);
+            var res = { companyData: companyData, jsonToSave: oldJson == newJson ? null : newJson, alocatedKeyInfos: alocatedKeyInfos };
+            return res;
+        }
+        intranet.enteredProductInfo = enteredProductInfo;
+    })(intranet = vyzva.intranet || (vyzva.intranet = {}));
+})(vyzva || (vyzva = {}));
 
 
-
+//module vyzva {
+//  export interface IToolbarModule {
+//    tbClick();
+//    tbSkipClick();
+//    tbFinishClick();
+//    tbTitle:string;
+//  }
+//} 
 
 
 var __extends = (this && this.__extends) || function (d, b) {
@@ -10272,82 +10844,225 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var vyzva;
 (function (vyzva) {
-    //export class exerciseController extends controller implements IToolbar, IToolbarModule {
-    //  constructor($scope: blended.IControllerScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
-    //    super($scope, $state, $rootTask);
-    //  }
-    //  tbTitle = 'Spustit lekci';
-    //  tbClick() { alert('click exercise'); }
-    //  tbSkipClick() { alert('skip exercise'); }
-    //  tbFinishClick() { alert('finish exercise'); }
-    //}
+    var managerLANGMaster = (function (_super) {
+        __extends(managerLANGMaster, _super);
+        function managerLANGMaster(state, resolves) {
+            _super.call(this, state);
+            this.enteredProduct = resolves[0];
+        }
+        return managerLANGMaster;
+    })(blended.controller);
+    vyzva.managerLANGMaster = managerLANGMaster;
+})(vyzva || (vyzva = {}));
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var vyzva;
+(function (vyzva) {
+    var managerSchool = (function (_super) {
+        __extends(managerSchool, _super);
+        function managerSchool($scope, $state, intranetInfo) {
+            _super.call(this, $scope, $state);
+            this.groupNameCounter = 1;
+            this.groups = [];
+            this.company = intranetInfo ? intranetInfo.companyData : null;
+            this.breadcrumb = vyzva.breadcrumbBase(this, true);
+            this.breadcrumb.push({ title: this.title = 'Správa studijních skupin a lektorů', active: true });
+            if (this.company) {
+                this.wizzardStep = 2;
+                return;
+            }
+            this.wizzardStep = 0;
+            this.adjustWizzardButtons();
+        }
+        managerSchool.prototype.addItem = function (line, isPattern3) {
+            var item = {
+                groupId: managerSchool.groupIdCounter++,
+                title: isPattern3 ? blended.lineIdToText(line) + ' pro učitele' : 'Pokročilí' + (this.groupNameCounter++).toString() + ' - 3.A (2015/2016)',
+                line: line,
+                num: isPattern3 ? 1 : 20,
+                isPattern3: isPattern3
+            };
+            this.groups.splice(0, 0, item);
+        };
+        managerSchool.prototype.removeItem = function (idx) {
+            this.groups.splice(idx, 1);
+        };
+        managerSchool.prototype.wizzardClick = function (isBack) {
+            var _this = this;
+            if (!isBack)
+                switch (this.wizzardStep) {
+                    case 0:
+                        this.wizzardStep = 1;
+                        break;
+                    case 1:
+                        var req = vyzva.intranet.lmAdminCreateLicenceKeys_request(this.groups);
+                        proxies.vyzva57services.lmAdminCreateLicenceKeys(this.ctx.companyid, req, function (resp) {
+                            _this.company = vyzva.intranet.lmAdminCreateLicenceKeys_reponse(_this.groups, resp);
+                            /*pred zalozenim company nema sanci mit manager vice klicu. Ten jeden pridej mezi klice spravce*/
+                            var actualManagerKey = _this.ctx.lickeys.split('#')[0];
+                            var cook = LMStatus.Cookie;
+                            _this.company.managerKeys.push({ keyStr: actualManagerKey, email: cook.EMail, firstName: cook.FirstName, lastName: cook.LastName, lmcomId: cook.id });
+                            proxies.vyzva57services.lmAdminCreateCompany(_this.ctx.companyid, JSON.stringify(_this.company), function () {
+                                _this.wizzardStep = 2;
+                                _this.$scope.$apply();
+                            });
+                        });
+                        break;
+                }
+            else
+                switch (this.wizzardStep) {
+                    case 1:
+                        this.wizzardStep = 0;
+                        break;
+                }
+            this.adjustWizzardButtons();
+        };
+        managerSchool.prototype.adjustWizzardButtons = function () {
+            switch (this.wizzardStep) {
+                case 0:
+                    this.nextTitle = 'Potvrzení údajů';
+                    break;
+                case 1:
+                    this.nextTitle = 'Údaje v pořádku';
+                    break;
+            }
+        };
+        managerSchool.prototype.lineToFlagClass = function (id) {
+            switch (id) {
+                case LMComLib.LineIds.English: return "flag-small-english";
+                case LMComLib.LineIds.German: return "flag-small-german";
+                case LMComLib.LineIds.French: return "flag-small-french";
+                default: return "???";
+            }
+        };
+        managerSchool.prototype.disabled = function (line) { return _.any(this.groups, function (g) { return g.line == line && g.isPattern3; }); };
+        managerSchool.prototype.debugDeletCompany = function () {
+            proxies.vyzva57services.writeCompanyData(this.ctx.companyid, null, $.noop);
+        };
+        managerSchool.$inject = ['$scope', '$state', '$intranetInfo'];
+        managerSchool.groupIdCounter = 1;
+        return managerSchool;
+    })(blended.controller);
+    vyzva.managerSchool = managerSchool;
+    blended.rootModule
+        .filter('vyzva$managerschool$sablonaid', function () {
+        return function (id) { return id ? "Učitelé (č.3)" : "Studenti (č.4)"; };
+    })
+        .directive('vyzva$managerschool$usekey', function () {
+        return {
+            scope: { item: '&item', },
+            templateUrl: 'vyzva$managerschool$usekey.html'
+        };
+    })
+        .directive('vyzva$managerchool$usekeys', function () {
+        return {
+            scope: { items: '&items', },
+            templateUrl: 'vyzva$managerchool$usekeys.html'
+        };
+    });
+})(vyzva || (vyzva = {}));
+//class managerSchool_usedKey {
+//  constructor($scope) {
+//    debugger;
+//  }
+//}
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var vyzva;
+(function (vyzva) {
+    var moduleTaskController = (function (_super) {
+        __extends(moduleTaskController, _super);
+        function moduleTaskController() {
+            _super.apply(this, arguments);
+        }
+        return moduleTaskController;
+    })(blended.moduleTaskController);
+    vyzva.moduleTaskController = moduleTaskController;
+    var exerciseViewLow = (function (_super) {
+        __extends(exerciseViewLow, _super);
+        function exerciseViewLow($scope, $state, $loadedEx, $loadedLongData, $modal) {
+            _super.call(this, $scope, $state, $loadedEx, $loadedLongData);
+            this.$modal = $modal;
+        }
+        exerciseViewLow.prototype.tbClick = function () { this.greenClick(); };
+        exerciseViewLow.prototype.tbNavigateProductHome = function () { this.navigateProductHome(); }; //this.navigate({ stateName: stateNames.home.name, pars: this.ctx }) }
+        exerciseViewLow.prototype.confirmWrongScoreDialog = function () {
+            return this.$modal.open({
+                templateUrl: 'vyzva$exercise$wrongscore.html',
+            }).result;
+        };
+        exerciseViewLow.prototype.congratulationDialog = function () {
+            return this.$modal.open({
+                templateUrl: 'vyzva$exercise$congratulation.html',
+            }).result;
+        };
+        exerciseViewLow.$inject = ['$scope', '$state', '$loadedEx', '$loadedLongData', '$modal'];
+        return exerciseViewLow;
+    })(blended.exerciseTaskViewController);
+    vyzva.exerciseViewLow = exerciseViewLow;
     var pretestExercise = (function (_super) {
         __extends(pretestExercise, _super);
-        function pretestExercise(state) {
-            _super.call(this, state);
-            if (state.createForCheckUrl != blended.createControllerCtx.navigate)
+        function pretestExercise($scope, $state, $loadedEx, $loadedLongData, $modal) {
+            _super.call(this, $scope, $state, $loadedEx, $loadedLongData, $modal);
+            if (this.isFakeCreate)
                 return;
-            this.breadcrumb = vyzva.breadcrumbBase(this.ctx);
-            this.breadcrumb.push({ title: this.title, url: null, active: true });
-            this.tbTitle = 'Pokračovat';
-            this.pageUrls = this.ctx.productUrl + '|' + this.ctx.moduleUrl + '|' + this.ctx.Url;
+            this.breadcrumb = vyzva.breadcrumbBase(this);
+            this.breadcrumb.push({ title: 'Rozřazovací test', url: null, active: true });
+            this.tbTitle = 'Pokračovat v testu';
+            this.tbDoneTitle = 'Test dokončen';
         }
-        pretestExercise.prototype.tbClick = function () {
-            var pretest = _.find(this.taskList(), function (t) { return t.myState.name == vyzva.stateNames.pretestTask.name; });
-            if (pretest == null)
-                throw 'pretest==null';
-            var url = pretest.goAhead();
-            if (url == null)
-                url = { stateName: vyzva.stateNames.home.name, pars: this.ctx };
-            this.navigate(url);
-        };
         return pretestExercise;
-    })(blended.exerciseTaskViewController);
+    })(exerciseViewLow);
     vyzva.pretestExercise = pretestExercise;
     var lessonExercise = (function (_super) {
         __extends(lessonExercise, _super);
-        function lessonExercise() {
-            _super.apply(this, arguments);
+        function lessonExercise($scope, $state, $loadedEx, $loadedLongData, $modal) {
+            _super.call(this, $scope, $state, $loadedEx, $loadedLongData, $modal);
+            if (this.isFakeCreate)
+                return;
+            this.breadcrumb = vyzva.breadcrumbBase(this);
+            this.breadcrumb.push({ title: this.title, url: null, active: true });
+            this.tbTitle = 'Pokračovat v lekci';
+            this.tbDoneTitle = 'Lekce dokončena';
         }
         return lessonExercise;
-    })(blended.exerciseTaskViewController);
+    })(exerciseViewLow);
     vyzva.lessonExercise = lessonExercise;
+    var lessonTest = (function (_super) {
+        __extends(lessonTest, _super);
+        function lessonTest($scope, $state, $loadedEx, $loadedLongData, $modal) {
+            _super.call(this, $scope, $state, $loadedEx, $loadedLongData, $modal);
+            if (this.isFakeCreate)
+                return;
+            this.breadcrumb = vyzva.breadcrumbBase(this);
+            this.breadcrumb.push({ title: this.title, url: null, active: true });
+            this.tbTitle = 'Pokračovat v testu';
+            this.tbDoneTitle = 'Test dokončen';
+        }
+        return lessonTest;
+    })(exerciseViewLow);
+    vyzva.lessonTest = lessonTest;
 })(vyzva || (vyzva = {}));
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-var vyzva;
-(function (vyzva) {
-    //export class moduleHomeController extends controller implements IToolbar, IToolbarRun {
-    //  constructor($scope: blended.IControllerScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
-    //    super($scope, $state, $rootTask);
-    //  }
-    //  tbTitle = 'Spustit lekci';
-    //  tbClick() { alert('click lesson'); }
-    //}
-    var moduleViewController = (function (_super) {
-        __extends(moduleViewController, _super);
-        function moduleViewController(state) {
-            _super.call(this, state);
-            this.breadcrumb = vyzva.breadcrumbBase(this.ctx);
-            this.breadcrumb.push({ title: this.title, url: null, active: true });
-        }
-        return moduleViewController;
-    })(blended.taskViewController);
-    vyzva.moduleViewController = moduleViewController;
-    var moduleTaskController = (function (_super) {
-        __extends(moduleTaskController, _super);
-        function moduleTaskController(state) {
-            _super.call(this, state);
-        }
-        return moduleTaskController;
-    })(blended.pretestTaskController);
-    vyzva.moduleTaskController = moduleTaskController;
-})(vyzva || (vyzva = {}));
+//namespace vyzva {
+//  //export class moduleViewController extends blended.taskViewController {
+//  //  constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
+//  //    super($scope, $state);
+//  //    this.breadcrumb = breadcrumbBase(this);
+//  //    this.breadcrumb.push({ title: this.title, url: null, active: true });
+//  //  }
+//  //}
+//} 
 
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -10359,9 +11074,9 @@ var vyzva;
 (function (vyzva) {
     var pretestViewController = (function (_super) {
         __extends(pretestViewController, _super);
-        function pretestViewController(state) {
-            _super.call(this, state);
-            this.breadcrumb = vyzva.breadcrumbBase(this.ctx);
+        function pretestViewController($scope, $state) {
+            _super.call(this, $scope, $state);
+            this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb.push({ title: this.title, url: null, active: true });
         }
         return pretestViewController;
@@ -10377,218 +11092,601 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var vyzva;
 (function (vyzva) {
+    var lectorController = (function (_super) {
+        __extends(lectorController, _super);
+        function lectorController($scope, $state) {
+            _super.call(this, $scope, $state);
+            var lectorGroups = this.productParent.lectorGroups;
+            var gid = parseInt(this.ctx.groupid);
+            this.lectorGroup = _.find(lectorGroups, function (grp) { return grp.groupId == gid; });
+        }
+        return lectorController;
+    })(blended.controller);
+    vyzva.lectorController = lectorController;
+    var lectorViewBase = (function (_super) {
+        __extends(lectorViewBase, _super);
+        function lectorViewBase($scope, $state) {
+            _super.call(this, $scope, $state);
+            this.title = 'Studijní skupina ' + this.lectorParent.lectorGroup.title;
+            this.breadcrumb = this.breadcrumbBase();
+            this.breadcrumb[this.breadcrumb.length - 1].active = true;
+        }
+        lectorViewBase.prototype.breadcrumbBase = function () {
+            var res = vyzva.breadcrumbBase(this);
+            res.push({ title: this.title, url: this.href({ stateName: vyzva.stateNames.lectorHome.name, pars: this.ctx }) });
+            return res;
+        };
+        return lectorViewBase;
+    })(blended.controller);
+    vyzva.lectorViewBase = lectorViewBase;
+    var lectorViewController = (function (_super) {
+        __extends(lectorViewController, _super);
+        function lectorViewController($scope, $state) {
+            _super.call(this, $scope, $state);
+            this.breadcrumb[this.breadcrumb.length - 1].active = true;
+            this.tabIdx = 0;
+            this.students = _.map(this.lectorParent.lectorGroup.studentKeys, function (k) { return { key: k }; });
+        }
+        lectorViewController.prototype.gotoStudentResult = function (student) {
+            var _this = this;
+            var ctx = blended.cloneAndModifyContext(this.ctx, function (c) {
+                c.onbehalfof = student.key.lmcomId;
+                c.returnurl = _this.href({ stateName: vyzva.stateNames.lectorHome.name, pars: _this.ctx });
+            });
+            this.navigate({ stateName: vyzva.stateNames.home.name, pars: ctx });
+        };
+        return lectorViewController;
+    })(lectorViewBase);
+    vyzva.lectorViewController = lectorViewController;
+    blended.rootModule
+        .directive('vyzva$lector$user', function () {
+        return {
+            scope: { student: '&student', ts: '&ts' },
+            templateUrl: 'vyzva$lector$user.html'
+        };
+    })
+        .directive('vyzva$lector$users', function () {
+        return {
+            scope: { students: '&students', ts: '&ts' },
+            templateUrl: 'vyzva$lector$users.html'
+        };
+    });
+})(vyzva || (vyzva = {}));
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var vyzva;
+(function (vyzva) {
+    (function (homeLessonStates) {
+        homeLessonStates[homeLessonStates["no"] = 0] = "no";
+        homeLessonStates[homeLessonStates["entered"] = 1] = "entered";
+        homeLessonStates[homeLessonStates["done"] = 2] = "done";
+    })(vyzva.homeLessonStates || (vyzva.homeLessonStates = {}));
+    var homeLessonStates = vyzva.homeLessonStates;
+    (function (rightButtonTypes) {
+        rightButtonTypes[rightButtonTypes["no"] = 0] = "no";
+        rightButtonTypes[rightButtonTypes["run"] = 1] = "run";
+        rightButtonTypes[rightButtonTypes["preview"] = 2] = "preview";
+    })(vyzva.rightButtonTypes || (vyzva.rightButtonTypes = {}));
+    var rightButtonTypes = vyzva.rightButtonTypes;
+    (function (leftMarkTypes) {
+        leftMarkTypes[leftMarkTypes["no"] = 0] = "no";
+        leftMarkTypes[leftMarkTypes["active"] = 1] = "active";
+        leftMarkTypes[leftMarkTypes["pretestLevel"] = 2] = "pretestLevel";
+        leftMarkTypes[leftMarkTypes["progress"] = 3] = "progress";
+        leftMarkTypes[leftMarkTypes["waitForEvaluation"] = 4] = "waitForEvaluation";
+    })(vyzva.leftMarkTypes || (vyzva.leftMarkTypes = {}));
+    var leftMarkTypes = vyzva.leftMarkTypes;
     //****************** VIEW
+    var homeLesson = (function (_super) {
+        __extends(homeLesson, _super);
+        function homeLesson() {
+            _super.apply(this, arguments);
+        }
+        return homeLesson;
+    })(blended.moduleServiceLow);
+    vyzva.homeLesson = homeLesson;
     var homeViewController = (function (_super) {
         __extends(homeViewController, _super);
-        function homeViewController(state) {
-            _super.call(this, state);
-            this.breadcrumb = vyzva.breadcrumbBase(this.ctx);
+        function homeViewController($scope, $state) {
+            var _this = this;
+            _super.call(this, $scope, $state);
+            this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb[1].active = true;
-            this.prt = this.myTask.getPretestItemModel();
+            var pretestItem;
+            var pretestUser;
+            var firstNotDoneCheckTestIdx; //index prvnio nehotoveho kontrolniho testu
+            var fromNode = function (node, idx) {
+                var res = new homeLesson(node, idx == 0 ? blended.moduleServiceType.pretest : (node.url.indexOf('/test') > 0 ? blended.moduleServiceType.test : blended.moduleServiceType.lesson), _this, true);
+                res.idx = idx;
+                var nodeUser = blended.getPersistData(node, _this.ctx.taskid);
+                if (idx == 0) {
+                    res.user = blended.pretestScore((node), nodeUser, _this.ctx.taskid);
+                    pretestUser = res.user = $.extend(res.user, nodeUser);
+                }
+                else {
+                    res.user = blended.agregateShortFromNodes(res.node, _this.ctx.taskid, false);
+                }
+                res.status = !res.user ? homeLessonStates.no : (res.user.done ? homeLessonStates.done : homeLessonStates.entered);
+                //lesson nejde spustit
+                //res.cannotRun = this.ctx.onbehalfof && res.lessonType != blended.moduleServiceType.lesson && res.status != homeLessonStates.done;
+                //rightButtonType management: vsechny nehotove dej RUN a ev. nastav index prvniho nehotoveho check testu
+                if (res.lessonType != blended.moduleServiceType.pretest)
+                    res.rightButtonType = res.status == homeLessonStates.done ? rightButtonTypes.preview : rightButtonTypes.run;
+                if (!firstNotDoneCheckTestIdx && res.lessonType == blended.moduleServiceType.test && res.status != homeLessonStates.done)
+                    firstNotDoneCheckTestIdx = idx;
+                //left mark
+                if (res.user && res.user.done) {
+                    res.leftMarkType = res.lessonType == blended.moduleServiceType.pretest ? leftMarkTypes.pretestLevel : (res.user.waitForEvaluation ? leftMarkTypes.waitForEvaluation : leftMarkTypes.progress);
+                }
+                return res;
+            };
+            this.lessons = [pretestItem = fromNode(this.myTask.dataNode.pretest, 0)];
+            if (pretestUser && pretestUser.done) {
+                this.pretestLevels = pretestUser.history;
+                this.pretestLevel = pretestUser.targetLevel;
+                this.lessons.push(fromNode(this.myTask.dataNode.entryTests[this.pretestLevel], 1));
+                this.lessons.pushArray(_.map(this.myTask.dataNode.lessons[this.pretestLevel], function (nd, idx) { return fromNode(nd, idx + 2); }));
+            }
+            //rightButtonType management: vsechna cviceni za firstNotDoneCheckTestIdx dej rightButtonTypes=no
+            for (var i = firstNotDoneCheckTestIdx + 1; i < this.lessons.length; i++)
+                this.lessons[i].rightButtonType = rightButtonTypes.no;
+            //prvni nehotovy node je aktivni
+            _.find(this.lessons, function (pl) {
+                if (pl.status == homeLessonStates.done)
+                    return false;
+                pl.active = true;
+                pl.leftMarkType = leftMarkTypes.active;
+                return true;
+            });
+            //skore za cely kurz
+            //var users = _.map(_.filter(this.lessons, l => /*l.status == homeLessonStates.done &&*/ l.lessonType != blended.moduleServiceType.pretest), l=> l.user);
+            var users = _.map(this.lessons, function (l) { return l.user; });
+            this.user = blended.agregateShorts(users);
+            //this.score = blended.scorePercent(this.user);
         }
+        homeViewController.prototype.navigateLesson = function (lesson) {
+            var _this = this;
+            //if (lesson.cannotRun) return;
+            var service = {
+                params: lesson.lessonType == blended.moduleServiceType.pretest ?
+                    blended.cloneAndModifyContext(this.ctx, function (d) { return d.pretesturl = blended.encodeUrl(_this.myTask.dataNode.pretest.url); }) :
+                    blended.cloneAndModifyContext(this.ctx, function (d) { return d.moduleurl = blended.encodeUrl(lesson.node.url); }),
+                current: lesson.lessonType == blended.moduleServiceType.pretest ?
+                    vyzva.stateNames.pretestTask :
+                    (lesson.lessonType == blended.moduleServiceType.test ? vyzva.stateNames.moduleTestTask : vyzva.stateNames.moduleLessonTask),
+                parent: this.myTask,
+            };
+            var nextTask = lesson.lessonType == blended.moduleServiceType.pretest ?
+                new blended.pretestTaskController(service) :
+                new vyzva.moduleTaskController(service);
+            var url = nextTask.goCurrent();
+            this.navigate(url);
+            //this.myTask.child = lesson.lessonType == blended.moduleServiceType.pretest ?
+            //  new blended.pretestTaskController(service) :
+            //  new moduleTaskController(service);
+            //var url = this.myTask.child.goCurrent();
+        };
+        ;
+        homeViewController.prototype.navigatePretestLevel = function (lev) {
+            var _this = this;
+            var service = {
+                params: blended.cloneAndModifyContext(this.ctx, function (d) { var mod = _this.myTask.dataNode.pretest.Items[lev]; d.moduleurl = blended.encodeUrl(mod.url); }),
+                current: vyzva.stateNames.pretestPreview,
+                //current: blended.prodStates.pretestModule,
+                parent: this.myTask,
+            };
+            var nextTask = new vyzva.moduleTaskController(service);
+            var url = nextTask.goCurrent();
+            this.navigate(url);
+            //this.myTask.child = new moduleTaskController(service);
+            //var url = this.myTask.child.goCurrent();
+        };
+        homeViewController.prototype.gotoLector = function (groupId) {
+            this.navigate({ stateName: vyzva.stateNames.lectorHome.name, pars: { groupid: groupId } });
+        };
+        homeViewController.prototype.debugClearProduct = function () {
+            proxies.vyzva57services.debugClearProduct(this.ctx.companyid, this.ctx.onbehalfof || this.ctx.loginid, this.ctx.productUrl, function () { return location.reload(); });
+        };
         return homeViewController;
     })(blended.taskViewController);
     vyzva.homeViewController = homeViewController;
     //****************** TASK
     var homeTaskController = (function (_super) {
         __extends(homeTaskController, _super);
-        function homeTaskController() {
-            _super.apply(this, arguments);
+        function homeTaskController($scope, $state, product, intranetInfo) {
+            _super.call(this, $scope, $state, product);
+            //constructor(state: blended.IStateService, resolves: Array<any>) {
+            //  super(state, resolves);
+            this.productParent = this;
+            this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { startDate: Utils.nowToNum() }; });
+            //Intranet
+            this.companyData = intranetInfo;
+            if (!this.companyData)
+                return;
+            var alocatedKeyInfos = this.companyData.alocatedKeyInfos;
+            this.lectorGroups = _.map(_.filter(alocatedKeyInfos, function (inf) { return inf.isLector; }), function (inf) { return inf.group; });
+            var studentGroups = _.map(_.filter(alocatedKeyInfos, function (inf) { return inf.isLector || inf.isVisitor; }), function (inf) { return inf.group; });
+            //this.studentGroup = studentGroups.length > 0 ? studentGroups[0] : null;
+            this.isLector = !this.ctx.onbehalfof && this.lectorGroups.length > 0;
+            this.isStudent = studentGroups.length > 0;
         }
-        homeTaskController.prototype.initPersistData = function (ud) {
-            _super.prototype.initPersistData.call(this, ud);
-            ud.startDate = Utils.nowToNum();
-            //ud.pretest = { url: this.dataNode.pretest.url }
-        };
-        homeTaskController.prototype.moveForward = function (ud) {
-            var childUd = this.child.getPersistData();
-            if (this.child.dataNode.url == this.dataNode.pretest.url) {
-            }
-            else {
-                var pretestUd = blended.getPersistData(this.dataNode.pretest, this.ctx.taskid);
-                if (this.child.dataNode.url == this.dataNode.entryTests[pretestUd.targetLevel].url) {
-                }
-                else if (this.child.dataNode.url == this.dataNode.lessons[pretestUd.targetLevel].url) {
-                }
-                else
-                    throw 'tasks.course.doGoAhead: unknown child url - ' + this.child.dataNode.url;
-            }
-        };
-        //getName(): string { return stateNames.taskRoot; }
-        //********** PRETEST item
-        homeTaskController.prototype.getPretestItemModel = function () {
-            var _this = this;
-            var prUd = blended.getPersistData(this.dataNode.pretest, this.ctx.taskid);
-            return {
-                run: function () {
-                    _this.child = new blended.pretestTaskController({
-                        params: blended.cloneAndModifyContext(_this.ctx, function (d) { return d.pretesturl = blended.encodeUrl(_this.dataNode.pretest.url); }),
-                        current: vyzva.stateNames.pretestTask,
-                        parent: _this,
-                        createForCheckUrl: blended.createControllerCtx.adjustChild
-                    });
-                    var url = _this.child.goCurrent();
-                    _this.navigate(url);
-                },
-                canRun: !prUd || !prUd.done,
-                btnTitle: !prUd ? 'Začněte spuštěním Rozřazovacího testu' : 'Dokončete Rozřazovací test',
-                resultLevel: prUd && prUd.done ? blended.levelIds[prUd.targetLevel] : '',
-                previewUrl: vyzva.stateNames.pretest.name,
-            };
-        };
+        homeTaskController.$inject = ['$scope', '$state', '$loadedProduct', '$intranetInfo'];
         return homeTaskController;
-    })(blended.taskController);
+    })(blended.homeTaskController);
     vyzva.homeTaskController = homeTaskController;
+    blended.rootModule
+        .filter('vyzva$home$nodeclass', function () {
+        return function (lesson) {
+            if (lesson.active && lesson.lessonType != blended.moduleServiceType.pretest)
+                return "list-group-item-success-primary";
+            else if (lesson.status == homeLessonStates.done || (lesson.active && lesson.lessonType == blended.moduleServiceType.pretest))
+                return "list-group-item-success";
+        };
+    })
+        .directive('vyzva$common$summary', function () {
+        return {
+            scope: { user: '&user' },
+            templateUrl: 'vyzva$common$summary.html'
+        };
+    });
 })(vyzva || (vyzva = {}));
-//******* Home produktu
-//export class productHomeController extends controller implements IToolbar, IToolbarEmpty {
-//  constructor($scope: blended.IControllerScope, $state: angular.ui.IStateService, $rootTask: blendedCourseTask) {
-//    super($scope, $state, $rootTask);
-//    this.title = $rootTask.dataNode.title;
-//    this.breadcrumb[1].active = true;
-//    this.prt = $rootTask.getPretestItemModel();
-//  }
-//  //************ IHomePretest
-//  prt: IHomePretest;
-//}
-//export interface IHomeStateData extends blended.IStateData{
-//  dataNode: IBlendedCourseRepository;
-//}
-//export class homeState extends blended.state {
-//  initPersistData(data: IHomeStateData, ud: IBlendedCourseUser) {
-//    super.initPersistData(data, ud);
-//    ud.startDate = Utils.nowToNum();
-//    ud.pretest = { url: data.dataNode.pretest.url }
-//  }
-//  getPersistData: (data: IHomeStateData) => IBlendedCourseUser;
-//  setPersistData: (data: IHomeStateData, modify: (data: IBlendedCourseUser) => void) => IBlendedCourseUser;
-//  getPretestItemModel(data: IHomeStateData): IHomePretest {
-//    var ud = this.getPersistData(data);
-//    return {
-//      run: () => {
-//        debugger;
-//      },
-//      canRun: !ud.pretest || !ud.pretest.done,
-//      btnTitle: !ud.pretest ? 'Začněte spuštěním Rozřazovacího testu' : 'Dokončete Rozřazovací test',
-//      resultLevel: ud.pretest.done ? blended.levelIds[ud.pretest.targetLevel] : '',
-//      previewUrl: stateNames.pretest.name,
-//    };
-//  }
-//}
-//export class homeGreenProxy extends blended.greenProxy {
-//  constructor(public dataNode: IBlendedCourseRepository, ctx: blended.learnContext) {
-//    super(dataNode, ctx);
-//  }
-//  getPersistData: () => IBlendedCourseUser;
-//  getChild(): blended.IStateUrl {
-//    var ud = this.getPersistData();
-//    if (!ud.pretest.done) { //pretest task neexistuje nebo neni dokoncen
-//      return new blended.pretestGreenProxy(this.dataNode.pretest, this.ctx).getChild();
-//    } else if (!ud.entryTest.done) { //entryTest task neexistuje nebo neni dokoncen
-//      return new blended.greenProxy(this.dataNode.entryTests[ud.pretest.targetLevel], this.ctx).getChild();
-//    } else if (!ud.lessons.done) { //level task neexistuje nebo neni dokoncen
-//      return new blended.greenProxy(this.dataNode.lessons[ud.pretest.targetLevel], this.ctx).getChild();
-//    } else {
-//      return null;
+
+//module vyzva {
+//  blended.rootModule
+//    .directive('vyzva$home$pretest', () => new homePretest())
+//  ;
+//  export class homePretest {
+//    link = (scope, el: ng.IAugmentedJQuery) => {
+//      //scope = { ts: '&ts' }; dole znamena, ze v parametr TS direktivy ae chape jako readonly odkaz na homeTaskController
+//      var ts = <homeTaskController>(scope.ts());
+//      var prUd = blended.getPersistData<blended.IPretestUser>(ts.dataNode.pretest, ts.ctx.taskid);
+//      scope.run = () => {
+//        ts.child = new blended.pretestTaskController({
+//          params: blended.cloneAndModifyContext(ts.ctx, d => d.pretesturl = blended.encodeUrl(ts.dataNode.pretest.url)),
+//          current: stateNames.pretestTask,
+//          parent: ts,
+//          createMode: blended.createControllerModes.adjustChild
+//        });
+//        var url = ts.child.goCurrent();
+//        ts.navigate(url);
+//      };
+//      scope.canRun = !prUd || !prUd.done;
+//      scope.btnTitle = !prUd ? 'Začněte spuštěním Rozřazovacího testu' : 'Dokončete Rozřazovací test';
+//      scope.targetLevel = prUd ? prUd.targetLevel : -1;
+//      scope.previewUrl = stateNames.pretest.name;
 //    }
+//    //templateUrl = blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/home/pretestItem.html';
+//    templateUrl = 'vyzva$home$pretest.html';
+//    scope = { ts: '&ts', api:'&api'};
 //  }
-//}
-//greenChild(): taskController {
-//  var ud = this.getPersistData();
-//  if (!ud.pretest.done) { //pretest task neexistuje nebo neni dokoncen
-//    this.child = new pretestTaskController(this.dataNode.pretest, this.ctx, this, completed);
-//  } else if (!ud.entryTest.done) { //entryTest task neexistuje nebo neni dokoncen
-//    this.child = new blended.moduleTask(this.dataNode.entryTests[ud.pretest.targetLevel], this.ctx, this, completed);
-//  } else if (!ud.lessons.done) { //level task neexistuje nebo neni dokoncen
-//    this.child = new blended.listTask(this.dataNode.lessons[ud.pretest.targetLevel], this.ctx, this, completed);
-//  } else {
-//    ud.done = true; this.child = null;
-//    completed();
+//} 
+
+//module vyzva {
+//  blended.rootModule
+//    .directive('vyzva$home$lesson', () => new homeLesson())
+//    .directive('vyzva$home$test', () => new homeLesson())
+//  ;
+//  export class homeLesson { //implements ILearnPlanLesson{
+//    link = (scope: IHomeLessonScope, el: ng.IAugmentedJQuery) => {
+//      var ts = scope.ts();
+//      var lesson = scope.lesson();
+//      var service: blended.IStateService = {
+//        params: blended.cloneAndModifyContext(ts.ctx, d => d.moduleurl = blended.encodeUrl(lesson.node.url)),
+//        current: lesson.isTest ? stateNames.moduleTestTask : stateNames.moduleLessonTask,
+//        parent: ts,
+//        createMode: blended.createControllerModes.adjustChild
+//      };
+//      scope.run = () => {
+//        ts.child = new moduleTaskController(service);
+//        var url = ts.child.goCurrent();
+//        ts.navigate(url);
+//      };
+//    }
+//    templateUrl = 'vyzva$home$lesson.html';
+//    scope = { lesson: '&lesson', api: "&api", ts:'&ts' };
 //  }
-//}
+//  export interface IHomeLessonScope extends ng.IScope {
+//    lesson(): ILearnPlanLesson;
+//    api(): globalApi;
+//    run: () => void;
+//    ts: () => homeTaskController;
+//  }
+//} 
+
+//module vyzva {
+//  blended.rootModule
+//    .directive('vyzva$exercise$instruction', () => new exerciseInstruction())
+//  ;
+//  export class exerciseInstruction { 
+//    templateUrl = vyzvaRoot + 'views/exercise/instruction.html';
+//    scope = { user: '&user', doReset: '&doReset', data: '&instructionData', state: '&state' };
+//  }
+//} 
+
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var vyzva;
+(function (vyzva) {
+    var lectorEvalController = (function (_super) {
+        __extends(lectorEvalController, _super);
+        function lectorEvalController($scope, $state) {
+            _super.call(this, $scope, $state);
+            this.tabIdx = 1;
+            this.breadcrumb = this.breadcrumbBase();
+            this.breadcrumb.push({ title: vyzva.getLectorTabs()[this.tabIdx].shortTitle, active: true });
+        }
+        return lectorEvalController;
+    })(vyzva.lectorViewBase);
+    vyzva.lectorEvalController = lectorEvalController;
+})(vyzva || (vyzva = {}));
 
 var vyzva;
 (function (vyzva) {
+    blended.rootModule
+        .directive('vyzva$lector$tabs', function () { return new lectorTabs(); });
+    var lectorTabs = (function () {
+        function lectorTabs() {
+            this.link = function (scope, el) {
+                scope.tabs = getLectorTabs();
+                scope.navigate = function (idx) {
+                    var actIdx = (scope.actIdx());
+                    if (idx == actIdx)
+                        return;
+                    var doNavigate = (scope.doNavigate());
+                    var tab = getLectorTabs()[idx];
+                    doNavigate(tab.stateName);
+                };
+            };
+            this.templateUrl = vyzva.vyzvaRoot + 'views/lector/_tabs.html';
+            this.scope = { doNavigate: '&doNavigate', actIdx: '&actIdx', longTitle: '&longTitle' };
+        }
+        return lectorTabs;
+    })();
+    vyzva.lectorTabs = lectorTabs;
+    var tabs;
+    function getLectorTabs() {
+        return tabs || [
+            { idx: 0, stateName: vyzva.stateNames.lectorHome.name, shortTitle: 'Seznam studentů' },
+            { idx: 1, stateName: vyzva.stateNames.lectorEval.name, shortTitle: 'Vyhodnocení testů' }
+        ];
+    }
+    vyzva.getLectorTabs = getLectorTabs;
+})(vyzva || (vyzva = {}));
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var angular$course;
+(function (angular$course) {
+    ko.bindingHandlers['angularjs'] = {
+        init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+            var directiveName = valueAccessor();
+            var el = angular.element('<' + directiveName + '/>');
+            $(element).append(el);
+            var compiled = blended.compile(el);
+            var ctrl = bindingContext.$data;
+            var exService = (ctrl._myPage.blendedExtension);
+            var scope = blended.rootScope.$new(); //true, rootScope);
+            scope.ctrl = ctrl;
+            scope.exService = exService;
+            compiled(scope);
+            //scope.$apply();
+        },
+    };
+    var controller = (function () {
+        function controller($scope) {
+            $scope.ts = this;
+            this.ctrl = $scope.ctrl;
+            this.exService = $scope.exService;
+        }
+        return controller;
+    })();
+    //********************** audiocapture$humaneval
+    var audiocapture$humaneval = (function (_super) {
+        __extends(audiocapture$humaneval, _super);
+        function audiocapture$humaneval($scope) {
+            _super.call(this, $scope);
+        }
+        audiocapture$humaneval.prototype.visible = function () { return this.exService.isLector && this.exService.isTest; };
+        return audiocapture$humaneval;
+    })(controller);
+    //Direktiva vznika v:
+    //- kodu D:\LMCom\REW\Web4\BlendedAPI\app.ts, ko.bindingHandlers['angularjs']
+    //- datech napr. D:\LMCom\REW\Web4\Courses\Media.html
+    blended.rootModule.directive('course$audiocapture$humaneval', function () {
+        return {
+            restrict: 'E',
+            controller: audiocapture$humaneval,
+            templateUrl: 'course$audiocapture$humaneval.html'
+        };
+    });
+})(angular$course || (angular$course = {}));
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var vyzva;
+(function (vyzva) {
+    vyzva.vyzvaRoot = blended.baseUrlRelToRoot + '/blendedapi/vyzva/';
     //*************** RESOLVERs
     //adjust produkt
-    vyzva.loadProduct = ['$stateParams', function ($stateParams) {
-            blended.finishContext($stateParams);
-            $stateParams.finishProduct = vyzva.finishHomeDataNode;
-            return blended.loader.adjustProduct($stateParams);
+    vyzva.loadProduct = ['$stateParams', function (ctx) {
+            blended.finishContext(ctx);
+            ctx.finishProduct = vyzva.finishHomeDataNode;
+            return blended.loader.adjustProduct(ctx);
         }];
-    vyzva.loadEx = ['$stateParams', function ($stateParams) {
-            blended.finishContext($stateParams);
-            $stateParams.finishProduct = vyzva.finishHomeDataNode;
-            return blended.loader.adjustEx($stateParams);
-        }];
+    vyzva.loadIntranetInfo = function () { return ['$stateParams', function (ctx) {
+            blended.finishContext(ctx);
+            var def = ctx.$q.defer();
+            proxies.vyzva57services.loadCompanyData(ctx.companyid, function (res) {
+                if (!res) {
+                    def.resolve(null);
+                    return;
+                }
+                var compInfo = vyzva.intranet.enteredProductInfo(res, ctx.lickeys, LMStatus.Cookie);
+                if (compInfo && compInfo.jsonToSave) {
+                    proxies.vyzva57services.writeCompanyData(ctx.companyid, compInfo.jsonToSave, function () { return def.resolve(compInfo); });
+                }
+                else
+                    def.resolve(compInfo);
+            });
+            return def.promise;
+        }]; };
     vyzva.stateNames = {}; //taskRoot: 'root', taskCheckTest: 'checktest', taskLesson: 'lesson', taskPretest: 'pretest', taskPretestItem: 'pretestitem' };
     vyzva.initVyzvaApp = ['$rootScope', '$location', '$state', function ($rootScope, $location, $state) {
+            //$rootScope.$on('$locationChangeStart', (event: angular.IAngularEvent, newUrl: string, oldUrl: string, newState, oldState) => {
+            //})
             //sance zrusit ladovani stranky
-            $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
-                blended.finishContext(toParams);
-                blended.state.onRouteChangeStart(e, toState, toParams, $location, $state);
+            //$rootScope.$on('$stateChangeStart', (e, toState, toParams, fromState, fromParams) => {
+            $rootScope.$on('$stateChangeSuccess', function (e, toState, toParams, fromState, fromParams) {
+                $rootScope.$broadcast('onStateChangeSuccess'); //sance pred ulozenim produktu naplnit data. Vyuzije pro volani exerciseService.onDestroy
+                var prod = blended.loader.productCache.fromCache(fromParams).prod;
+                if (prod)
+                    prod.saveProduct(fromParams, $.noop);
             });
         }];
+    var state = (function (_super) {
+        __extends(state, _super);
+        function state(st) {
+            _super.call(this, st);
+        }
+        return state;
+    })(blended.state);
+    vyzva.state = state;
+    blended.rootModule
+        .filter('vyzva$state$viewpath', function () { return function (id) { return vyzva.vyzvaRoot + 'views/' + id + '.html'; }; });
+    var pageTemplate = vyzva.vyzvaRoot + 'views/_pageTemplate.html';
     function initVyzvaStates(params) {
-        vyzva.stateNames.root = new blended.state({
+        vyzva.stateNames.root = new state({
             name: 'pg.ajs',
             url: '/ajs',
             abstract: true,
             controller: function () { Pager.clearHtml(); },
             template: "<div data-ui-view></div>",
+            onEnter: function () { return anim.inAngularjsGui = true; },
+            onExit: function () { return anim.inAngularjsGui = false; },
             childs: [
-                blended.prodStates.homeTask = vyzva.stateNames.homeTask = new blended.state({
+                new state({
+                    name: 'managers',
+                    url: "/vyzva/managers/:companyid/:loginid/:lickeys",
+                    template: "<div data-ui-view></div>",
+                    abstract: true,
+                    childs: [
+                        vyzva.stateNames.shoolManager = new state({
+                            name: 'schoolmanager',
+                            url: "/schoolmanager",
+                            templateUrl: pageTemplate,
+                            layoutContentId: 'managerschool',
+                            controller: vyzva.managerSchool,
+                            resolve: {
+                                $intranetInfo: vyzva.loadIntranetInfo(),
+                            },
+                        }),
+                    ]
+                }),
+                blended.prodStates.homeTask = vyzva.stateNames.homeTask = new state({
                     name: 'vyzva',
-                    url: "/vyzva/:persistence/:taskid/:companyid/:userid/:subuserid/:loc/:producturl",
+                    //lickeys ve formatu <UserLicences.LicenceId>|<UserLicences.Counter>#<UserLicences.LicenceId>|<UserLicences.Counter>...
+                    url: "/vyzva/:companyid/:loginid/:persistence/:loc/:lickeys/:producturl/:taskid?:onbehalfof&returnurl",
                     dataNodeUrlParName: 'productUrl',
                     controller: vyzva.homeTaskController,
+                    controllerAs: blended.taskContextAs.product,
                     abstract: true,
                     resolve: {
                         $loadedProduct: vyzva.loadProduct,
+                        $intranetInfo: vyzva.loadIntranetInfo(),
                     },
                     template: "<div data-ui-view></div>",
                     childs: [
-                        blended.prodStates.home = vyzva.stateNames.home = new blended.state({
+                        blended.prodStates.home = vyzva.stateNames.home = new state({
                             name: 'home',
                             url: "/home",
                             controller: vyzva.homeViewController,
-                            data: $.extend(getDataConfig('home', 'empty'), {
-                                dataPretestItem: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/home/pretestItem.html',
-                            }),
+                            layoutContentId: 'home',
                             templateUrl: pageTemplate,
                         }),
-                        vyzva.stateNames.pretestTask = new blended.state({
-                            name: 'pretest',
-                            url: '/pretest/:pretesturl',
-                            controller: blended.pretestTaskController,
-                            dataNodeUrlParName: 'pretestUrl',
+                        vyzva.stateNames.lector = new state({
+                            name: 'lector',
+                            url: "/lector/:groupid",
+                            controller: vyzva.lectorController,
+                            controllerAs: blended.taskContextAs.lector,
                             abstract: true,
                             template: "<div data-ui-view></div>",
                             childs: [
-                                vyzva.stateNames.pretest = new blended.state({
+                                vyzva.stateNames.lectorHome = new state({
                                     name: 'home',
                                     url: "/home",
-                                    data: getDataConfig('pretest', 'empty'),
+                                    controller: vyzva.lectorViewController,
+                                    layoutContentId: 'lector',
+                                    templateUrl: pageTemplate,
+                                }),
+                                vyzva.stateNames.lectorEval = new state({
+                                    name: 'eval',
+                                    url: "/eval",
+                                    controller: vyzva.lectorEvalController,
+                                    layoutContentId: 'lector/eval',
+                                    templateUrl: pageTemplate,
+                                }),
+                            ]
+                        }),
+                        vyzva.stateNames.pretestTask = new state({
+                            name: 'pretest',
+                            url: '/pretest/:pretesturl',
+                            controller: blended.pretestTaskController,
+                            controllerAs: blended.taskContextAs.pretest,
+                            dataNodeUrlParName: 'pretestUrl',
+                            //isGreenArrowRoot:true,
+                            abstract: true,
+                            template: "<div data-ui-view></div>",
+                            childs: [
+                                vyzva.stateNames.pretest = new state({
+                                    name: 'home',
+                                    url: "/home",
+                                    layoutContentId: 'pretest',
                                     controller: vyzva.pretestViewController,
                                     templateUrl: pageTemplate,
                                 }),
-                                blended.prodStates.pretestModule = new blended.state({
+                                blended.prodStates.pretestModule = new state({
                                     name: 'test',
                                     url: '/test/:moduleurl',
-                                    controller: blended.moduleTaskController,
+                                    controller: vyzva.moduleTaskController,
+                                    controllerAs: blended.taskContextAs.module,
                                     dataNodeUrlParName: 'moduleUrl',
-                                    data: blended.createStateData({ alowCycleExercise: false }),
                                     abstract: true,
+                                    moduleType: blended.moduleServiceType.pretest,
                                     template: "<div data-ui-view></div>",
                                     childs: [
-                                        blended.prodStates.pretestExercise = vyzva.stateNames.pretestExercise = new blended.state({
+                                        blended.prodStates.pretestExercise = vyzva.stateNames.pretestExercise = new state({
                                             name: 'ex',
                                             url: '/ex/:url',
                                             controller: vyzva.pretestExercise,
+                                            controllerAs: blended.taskContextAs.ex,
                                             dataNodeUrlParName: 'Url',
-                                            data: $.extend(getDataConfig('exercise', 'run'), blended.createStateData({ isTest: true })),
+                                            layoutSpecial: true,
+                                            layoutContentId: 'exercise',
+                                            //layoutToolbarType: 'toolbar/run',
+                                            ignorePageTitle: true,
+                                            //exerciseIsTest: true,
+                                            //exerciseOmitModuleMap: true,
                                             resolve: {
-                                                $loadedEx: vyzva.loadEx,
+                                                $loadedEx: blended.loadEx,
+                                                $loadedLongData: blended.loadLongData,
                                             },
                                             templateUrl: pageTemplate,
                                         })
@@ -10596,27 +11694,87 @@ var vyzva;
                                 }),
                             ]
                         }),
-                        vyzva.stateNames.lessonTask = new blended.state({
-                            name: 'lesson',
-                            url: '/lesson/:moduleurl',
+                        vyzva.stateNames.pretestPreview = new state({
+                            name: 'testview',
+                            url: '/testview/:moduleurl',
                             controller: vyzva.moduleTaskController,
+                            controllerAs: blended.taskContextAs.module,
                             dataNodeUrlParName: 'moduleUrl',
+                            moduleType: blended.moduleServiceType.pretest,
+                            //isGreenArrowRoot: true,
                             abstract: true,
                             template: "<div data-ui-view></div>",
                             childs: [
-                                vyzva.stateNames.lesson = new blended.state({
-                                    name: 'home',
-                                    url: '/home',
-                                    data: getDataConfig('module', 'run'),
-                                    controller: vyzva.moduleViewController,
+                                new state({
+                                    name: 'ex',
+                                    url: '/:url',
+                                    controller: vyzva.lessonTest,
+                                    controllerAs: blended.taskContextAs.ex,
+                                    //exerciseIsTest: true,
+                                    dataNodeUrlParName: 'Url',
+                                    layoutSpecial: true,
+                                    layoutContentId: 'exercise',
+                                    resolve: {
+                                        $loadedEx: blended.loadEx,
+                                        $loadedLongData: blended.loadLongData,
+                                    },
+                                    templateUrl: pageTemplate,
+                                })
+                            ]
+                        }),
+                        vyzva.stateNames.moduleLessonTask = new state({
+                            name: 'lesson',
+                            url: '/lesson/:moduleurl',
+                            controller: vyzva.moduleTaskController,
+                            controllerAs: blended.taskContextAs.module,
+                            dataNodeUrlParName: 'moduleUrl',
+                            //isGreenArrowRoot: true,
+                            moduleType: blended.moduleServiceType.lesson,
+                            abstract: true,
+                            template: "<div data-ui-view></div>",
+                            childs: [
+                                new state({
+                                    name: 'ex',
+                                    url: '/:url',
+                                    controller: vyzva.lessonExercise,
+                                    controllerAs: blended.taskContextAs.ex,
+                                    dataNodeUrlParName: 'Url',
+                                    layoutSpecial: true,
+                                    layoutContentId: 'exercise',
+                                    //layoutToolbarType: 'toolbar/run',
+                                    resolve: {
+                                        $loadedEx: blended.loadEx,
+                                        $loadedLongData: blended.loadLongData,
+                                    },
                                     templateUrl: pageTemplate,
                                 }),
-                                vyzva.stateNames.lessonExercise = new blended.state({
+                            ]
+                        }),
+                        vyzva.stateNames.moduleTestTask = new state({
+                            name: 'test',
+                            url: '/test/:moduleurl',
+                            controller: vyzva.moduleTaskController,
+                            controllerAs: blended.taskContextAs.module,
+                            dataNodeUrlParName: 'moduleUrl',
+                            //isGreenArrowRoot: true,
+                            abstract: true,
+                            template: "<div data-ui-view></div>",
+                            moduleType: blended.moduleServiceType.test,
+                            childs: [
+                                new state({
                                     name: 'ex',
-                                    url: '/ex/:url',
-                                    controller: vyzva.lessonExercise,
+                                    url: '/:url',
+                                    controller: vyzva.lessonTest,
+                                    controllerAs: blended.taskContextAs.ex,
+                                    //exerciseIsTest: true,
                                     dataNodeUrlParName: 'Url',
-                                    data: getDataConfig('exercise', 'run'),
+                                    layoutSpecial: true,
+                                    layoutContentId: 'exercise',
+                                    //layoutToolbarType: 'toolbar/run',
+                                    resolve: {
+                                        $loadedEx: blended.loadEx,
+                                        $loadedLongData: blended.loadLongData,
+                                    },
                                     templateUrl: pageTemplate,
                                 })
                             ]
@@ -10628,22 +11786,14 @@ var vyzva;
         vyzva.stateNames.root.initFromStateTree(params.$stateProvider);
     }
     vyzva.initVyzvaStates = initVyzvaStates;
-    function getDataConfig(page, toolbar) {
-        return {
-            dataTemplate: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/' + page + '.html',
-            dataToolbar: blended.baseUrlRelToRoot + '/blendedapi/vyzva/ViewParts/Toolbar/toolbar.html',
-            dataToolbarType: blended.baseUrlRelToRoot + '/blendedapi/vyzva/ViewParts/Toolbar/' + toolbar + '.html',
-        };
-    }
-    var pageTemplate = blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/_pageTemplate.html';
 })(vyzva || (vyzva = {}));
 
 var blended;
 (function (blended) {
     var Module = (function () {
-        function Module(name, modules) {
+        function Module() {
             var self = this;
-            this.app = angular.module(name, modules);
+            this.app = blended.rootModule;
         }
         Module.prototype.href = function (stateName, params, options) {
             return this.$oldActState.href(stateName, params);
@@ -10676,9 +11826,11 @@ var blended;
     })();
     blended.OldController = OldController;
     blended.prodStates = {};
-    blended.root = new Module('appRoot', ['ngLocale', 'ngResource', 'ui.router']);
-    blended.root.app
-        .directive('showExercise', blended.showExerciseDirective2)
+    blended.root = new Module();
+    blended.rootScope;
+    blended.templateCache;
+    blended.compile;
+    blended.rootModule
         .directive('lmInclude', function () {
         return {
             restrict: 'A',
@@ -10686,7 +11838,10 @@ var blended;
         };
     })
         .run(vyzva.initVyzvaApp)
-        .run(['$rootScope', '$location', function ($rootScope, $location) {
+        .run(['$rootScope', '$location', '$templateCache', '$compile', function ($rootScope, $location, $templateCache, $compile) {
+            blended.rootScope = $rootScope;
+            blended.templateCache = $templateCache;
+            blended.compile = $compile;
             $rootScope.$on('$locationChangeStart', function (event, newUrl, oldUrl, newState, oldState) {
                 if (Pager.angularJS_OAuthLogin(location.hash, function () { return Pager.gotoHomeUrl(); }))
                     event.preventDefault();
@@ -10713,15 +11868,12 @@ var blended;
             }
             $stateProvider
                 .state({
-                name: 'loginwaiting',
-                url: '/loginwaiting',
-                template: ''
-            })
-                .state({
                 name: 'pg',
                 url: '/pg',
                 abstract: true,
-                template: "<div data-ui-view></div>",
+                //template: "<div data-ui-view></div>",
+                //***** preload common templates
+                templateUrl: blended.baseUrlRelToRoot + '/courses/angularjs/angularjs.html',
                 resolve: {
                     checkOldApplicationStart: checkOldApplicationStart //ceka se na dokonceni inicalizace nasi technologie
                 }

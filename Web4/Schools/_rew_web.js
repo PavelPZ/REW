@@ -180,8 +180,12 @@ var anim;
     }
     anim.toggleMenuLow = toggleMenuLow;
     $(document).on('click', '[data-toggle=menu], [data-toggle=menu] *', toggleMenuLow);
+    //zabrani odchyceni KEY events pro angularjs GUI
+    anim.inAngularjsGui = false;
     //uzavri menu
     $(document).on('keydown', '*', function (ev) {
+        if (anim.inAngularjsGui)
+            return true;
         stopAnim();
         if (ev.keyCode != 27)
             return;
@@ -363,7 +367,9 @@ var Pager;
     Pager.registerAppLocator = registerAppLocator;
     var regApps = {};
     function locatePageFromHash(hash, completed) {
+        //if (!cfg.noAngularjsApp) { alert('locatePageFromHash cannot be called'); return; }
         alert('locatePageFromHash cannot be called');
+        return;
         locatePageFromHashLow(hash, function (pg) {
             if (pg) {
                 completed(pg);
@@ -392,7 +398,9 @@ var Pager;
     }
     Pager.angularJS_OAuthLogin = angularJS_OAuthLogin;
     function locatePageFromHashLow(hash, completed) {
+        //if (!cfg.noAngularjsApp) { alert('locatePageFromHash cannot be called'); return; }
         alert('locatePageFromHash cannot be called');
+        return;
         if (hash != null && hash.indexOf("access_token=") >= 0) {
             OAuth.checkForToken(function (obj) {
                 Pager.ajaxGet(Pager.pathType.restServices, Login.CmdAdjustUser_Type, Login.CmdAdjustUser_Create(obj.providerid, obj.id, obj.email, obj.firstName, obj.lastName), function (res) {
@@ -459,6 +467,7 @@ var Pager;
     //  if (page == null) locatePageFromHash('', loadPageLow); else loadPageLow(page);
     //}
     function loadPageHash(hash) {
+        debugger;
         locatePageFromHash(hash, function (pg) { return loadPage(pg); });
     }
     Pager.loadPageHash = loadPageHash;
@@ -1193,14 +1202,12 @@ var ViewBase;
     var modelIdToScriptId;
     ViewBase.init = function () {
         Logger.traceMsg('ViewBase.initBootStrapApp');
-        //if (!location.hash || location.hash.length < 3) location.hash = '/old/school/schoolmymodel/-1///';
-        //$(window).hashchange(() => Pager.loadPageHash(location.hash));
-        //Pager.locatePageFromHash(location.hash, (page: Pager.Page) => {
-        //  if (page == null || page == Pager.ignorePage) return;
-        //  Pager.loadPage(page);
-        //});
-        //});
-        //$(window).hashchange();
+        //if (!cfg.noAngularjsApp) return;
+        return;
+        if (!location.hash || location.hash.length < 3)
+            location.hash = '/old/school/schoolmymodel/-1///';
+        $(window).hashchange(function () { return Pager.loadPageHash(location.hash); });
+        $(window).hashchange();
     };
 })(ViewBase || (ViewBase = {}));
 
@@ -2132,6 +2139,7 @@ var TreeView;
 
 var blended;
 (function (blended) {
+    blended.rootModule = angular.module('appRoot', ['ui.router', 'ngAnimate', 'ui.bootstrap']);
     function registerOldLocator(params, name, appId, type, numOfPars, createModel, needsLogin) {
         if (needsLogin === void 0) { needsLogin = true; }
         if (_.isNumber(numOfPars))
@@ -2672,6 +2680,7 @@ var Login;
     //    (res: number) => completed(res));
     //}
     function finishMyData() {
+        //myData vznikaji v CSharp v NewData.My.Init. Kurzy jsou v myData.Companies.Courses. comp.companyProducts comp.companyProducts jsou LM Author produkty
         if (!Login.myData || Login.myData.finished)
             return;
         Login.myData.finished = true;
@@ -2692,7 +2701,8 @@ var Login;
                 Archives: null,
                 isAuthoredCourse: true,
                 LicCount: 1,
-                ProductId: p.url
+                ProductId: p.url,
+                LicenceKeys: null,
             }); });
         });
         //agreguj archivy testu a dosad isTest
@@ -2720,6 +2730,7 @@ var Login;
                         Archives: [],
                         LicCount: 0,
                         isAuthoredCourse: isAuthoredCourse,
+                        LicenceKeys: null,
                     };
                     _.each(prodGroup, function (it) {
                         var parts = it.ProductId.split('|'); //productId je url|archiveId
@@ -3876,20 +3887,32 @@ var proxies;
     var vyzva57services = (function () {
         function vyzva57services() {
         }
-        vyzva57services.getCourseUserId = function (companyid, userid, producturl, completed) {
-            invoke('vyzva57services/getcourseuserid', 'get', { companyid: companyid, userid: userid, producturl: producturl }, null, completed);
+        vyzva57services.lmAdminCreateCompany = function (companyid, companydata, completed) {
+            invoke('vyzva57services/lmadmincreatecompany', 'post', { companyid: companyid }, JSON.stringify(companydata), completed);
         };
-        vyzva57services.deleteDataKeys = function (companyid, courseuserid, producturl, taskid, urls, completed) {
-            invoke('vyzva57services/deletedatakeys', 'post', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid }, JSON.stringify(urls), completed);
+        vyzva57services.lmAdminCreateLicenceKeys = function (companyid, requestedkeys, completed) {
+            invoke('vyzva57services/lmadmincreatelicencekeys', 'post', { companyid: companyid }, JSON.stringify(requestedkeys), completed);
         };
-        vyzva57services.getShortProductDatas = function (companyid, courseuserid, producturl, taskid, completed) {
-            invoke('vyzva57services/getshortproductdatas', 'get', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid }, null, completed);
+        vyzva57services.loadCompanyData = function (companyid, completed) {
+            invoke('vyzva57services/loadcompanydata', 'get', { companyid: companyid }, null, completed);
         };
-        vyzva57services.getLongData = function (companyid, courseuserid, producturl, taskid, key, completed) {
-            invoke('vyzva57services/getlongdata', 'get', { companyid: companyid, courseuserid: courseuserid, producturl: producturl, taskid: taskid, key: key }, null, completed);
+        vyzva57services.writeCompanyData = function (companyid, data, completed) {
+            invoke('vyzva57services/writecompanydata', 'post', { companyid: companyid }, JSON.stringify(data), completed);
         };
-        vyzva57services.saveUserData = function (companyid, courseuserid, producturl, data, completed) {
-            invoke('vyzva57services/saveuserdata', 'post', { companyid: companyid, courseuserid: courseuserid, producturl: producturl }, JSON.stringify(data), completed);
+        vyzva57services.deleteDataKeys = function (companyid, lmcomid, producturl, urltaskids, completed) {
+            invoke('vyzva57services/deletedatakeys', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, JSON.stringify(urltaskids), completed);
+        };
+        vyzva57services.getShortProductDatas = function (companyid, lmcomid, producturl, completed) {
+            invoke('vyzva57services/getshortproductdatas', 'get', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, null, completed);
+        };
+        vyzva57services.getLongData = function (companyid, lmcomid, producturl, taskid, key, completed) {
+            invoke('vyzva57services/getlongdata', 'get', { companyid: companyid, lmcomid: lmcomid, producturl: producturl, taskid: taskid, key: key }, null, completed);
+        };
+        vyzva57services.debugClearProduct = function (companyid, lmcomid, producturl, completed) {
+            invoke('vyzva57services/debugclearproduct', 'get', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, null, completed);
+        };
+        vyzva57services.saveUserData = function (companyid, lmcomid, producturl, data, completed) {
+            invoke('vyzva57services/saveuserdata', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, JSON.stringify(data), completed);
         };
         return vyzva57services;
     })();
@@ -4490,10 +4513,14 @@ var SndLow;
             th.onPaused = function () { if (th.onCanplaythrough)
                 return; th.onPaused = null; th.timeupdate = null; def.resolve(); };
             th.timeupdate = function (msec) {
-                if (endMsec > 0 && msec > endMsec)
+                if (endMsec > 0 && msec > endMsec) {
+                    Logger.trace_lmsnd('soundnew.ts timeupdate pause');
                     th.handler.pause();
-                else
+                }
+                else {
+                    //Logger.trace_lmsnd('soundnew.ts timeupdate: ' + msec.toString());
                     def.notify(msec);
+                }
             };
             th.onCanplaythrough = function () {
                 th.onCanplaythrough = null;
@@ -4512,12 +4539,12 @@ var SndLow;
             this.timeupdate(Math.round(this.handler.currentTime * 1000));
         }
         catch (msg) { } };
-        MediaDriver.prototype.doPaused = function () { Logger.trace_lmsnd('soundnew.ts: MediaDriver.doPaused'); if (!this.onPaused)
+        MediaDriver.prototype.doPaused = function () { if (!this.onPaused)
             return; try {
             this.onPaused();
         }
         catch (msg) { } };
-        MediaDriver.prototype.doCanplaythrough = function () { guiBlocker(false); Logger.trace_lmsnd('soundnew.ts: MediaDriver.doCanplaythrough'); if (!this.onCanplaythrough)
+        MediaDriver.prototype.doCanplaythrough = function () { guiBlocker(false); /*Logger.trace_lmsnd('soundnew.ts: MediaDriver.doCanplaythrough');*/ if (!this.onCanplaythrough)
             return; try {
             this.onCanplaythrough();
         }
@@ -4960,7 +4987,7 @@ var LMSnd;
                         Logger.trace_lmsnd('soundnew.ts: LMSnd.Player.playFile stoped');
                     }
                     else {
-                        Logger.trace_lmsnd('****** ' + msec.toString());
+                        //Logger.trace_lmsnd('****** ' + msec.toString());
                         if (file)
                             file.onPlaying(msec);
                     }
