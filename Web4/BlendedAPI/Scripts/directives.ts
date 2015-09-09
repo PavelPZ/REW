@@ -22,9 +22,9 @@
     .filter('levelText', () => (id: number) => ['A1', 'A2', 'B1', 'B2'][id])
     .controller('collapsable', function () { this.isCollapsed = true; })
     .filter("rawhtml", ['$sce', $sce => htmlCode => $sce.trustAsHtml(htmlCode)])
-    .directive('lmEnterKey', function ($document) {
+    .directive('lmEnterKey', ['$document', $document => {
       return {
-        link: function (scope:any, element, attrs) {
+        link: function (scope: any, element, attrs) {
           var enterWatcher = function (event) {
             if (event.which === 13) {
               scope.lmEnterKey();
@@ -39,6 +39,6 @@
           lmEnterKey: "&"
         },
       }
-    })
+    }])
   ;
 }

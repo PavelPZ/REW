@@ -2,7 +2,7 @@
 
   export enum homeLessonStates { no, entered, done }
   export enum rightButtonTypes { no, run, preview }
-  export enum leftMarkTypes { no, active, pretestLevel, progress }
+  export enum leftMarkTypes { no, active, pretestLevel, progress, waitForEvaluation }
 
   
   //****************** VIEW
@@ -10,7 +10,7 @@
     idx: number;
     active: boolean;
     status: homeLessonStates;
-    cannotRun: boolean; //ucitel nemuze prohlidnout nehotovy test
+    //cannotRun: boolean; //ucitel nemuze prohlidnout nehotovy test
     rightButtonType: rightButtonTypes;
     leftMarkType: leftMarkTypes;
   }
@@ -48,13 +48,15 @@
         }
         res.status = !res.user ? homeLessonStates.no : (res.user.done ? homeLessonStates.done : homeLessonStates.entered);
         //lesson nejde spustit
-        res.cannotRun = this.ctx.onbehalfof && res.lessonType != blended.moduleServiceType.lesson && res.status != homeLessonStates.done;
+        //res.cannotRun = this.ctx.onbehalfof && res.lessonType != blended.moduleServiceType.lesson && res.status != homeLessonStates.done;
         //rightButtonType management: vsechny nehotove dej RUN a ev. nastav index prvniho nehotoveho check testu
         if (res.lessonType != blended.moduleServiceType.pretest)
           res.rightButtonType = res.status == homeLessonStates.done ? rightButtonTypes.preview : rightButtonTypes.run;
         if (!firstNotDoneCheckTestIdx && res.lessonType == blended.moduleServiceType.test && res.status != homeLessonStates.done) firstNotDoneCheckTestIdx = idx;
         //left mark
-        if (res.user && res.user.done) res.leftMarkType = res.lessonType == blended.moduleServiceType.pretest ? leftMarkTypes.pretestLevel : leftMarkTypes.progress;
+        if (res.user && res.user.done) {
+          res.leftMarkType = res.lessonType == blended.moduleServiceType.pretest ? leftMarkTypes.pretestLevel : (res.user.waitForEvaluation ? leftMarkTypes.waitForEvaluation : leftMarkTypes.progress);
+        }
         return res;
       }
 
@@ -81,7 +83,7 @@
     }
 
     navigateLesson(lesson: homeLesson) {
-      if (lesson.cannotRun) return;
+      //if (lesson.cannotRun) return;
       var service: blended.IStateService = {
         params: lesson.lessonType == blended.moduleServiceType.pretest ?
           blended.cloneAndModifyContext(this.ctx, d => d.pretesturl = blended.encodeUrl(this.myTask.dataNode.pretest.url)) :

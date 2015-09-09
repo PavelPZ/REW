@@ -797,8 +797,8 @@ namespace CourseModel {
     [tgAt(0), XmlAttribute(AttributeName = "is-passive"), DefaultValue(false)]
     public bool isPassive;
     //AngularJS
-    public humanEval() { isPassive = true; }
-    public override int getMaxScore() { return true /*isPassive*/ ? 0 : base.getMaxScore(); }
+    //public humanEval() { isPassive = true; }
+    public override int getMaxScore() { return isPassive ? 0 : base.getMaxScore(); }
   }
 
   [tgAt(tgSt.jsCtrl | tgSt.csControl | tgSt.xsdHtmlEl)]

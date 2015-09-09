@@ -5,6 +5,9 @@
     padding:10px;
   }*/
 }
+.bl .ex-lector-panel {
+  padding-top: 10px;
+}
 .bl .topbar-exercise {
   height: auto;
   padding-top: 2px;
@@ -59,6 +62,10 @@
 }
 .bl .topbar-exercise .ex-item.success {
   background-color: #5cb85c;
+  color: white;
+}
+.bl .topbar-exercise .ex-item.danger {
+  background-color: #d9534f;
   color: white;
 }
 .bl .topbar-exercise .ex-item.warning {

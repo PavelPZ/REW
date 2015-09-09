@@ -37,7 +37,7 @@
   <doc-type name="gapFill" descendants-and-self="gapFill" my-props="gapFill.hint gapFill.initValue gapFill.readOnly gapFill.skipEvaluation edit.correctValue edit.widthGroup edit.width edit.offeringId edit.caseSensitive evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="headerProp" is-ign="true" descendants-and-self="headerProp" my-props="tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="htmlTag" is-ign="true" descendants-and-self="htmlTag" my-props="htmlTag.tagName tag.id tag.styleSheet tag.temporaryMacroItem" />
-  <doc-type name="humanEval" is-ign="true" descendants-and-self="humanEval writing recording" my-props="evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="humanEval" is-ign="true" descendants-and-self="humanEval writing recording" my-props="humanEval.isPassive evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="img" is-ign="true" descendants-and-self="img" my-props="img.src tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="include" is-ign="true" descendants-and-self="include includeText includeDialog" my-props="include.cutUrl tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="includeDialog" descendants-and-self="includeDialog" my-props="include.cutUrl tag.id tag.styleSheet tag.temporaryMacroItem" />
@@ -70,7 +70,7 @@
   <doc-type name="phrase" descendants-and-self="phrase" my-props="phrase.begPos phrase.endPos phrase.idx phrase.text phrase.actor tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="phraseReplace" descendants-and-self="phraseReplace" my-props="phraseReplace.phraseIdx phraseReplace.replicaPhraseIdx tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="radioButton" descendants-and-self="radioButton" my-props="radioButton.correctValue radioButton.initValue radioButton.readOnly radioButton.skipEvaluation evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
-  <doc-type name="recording" descendants-and-self="recording" my-props="recording.limitRecommend recording.limitMin recording.limitMax recording.recordInDialog recording.dialogHeaderId recording.dialogSize recording.singleAttempt evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="recording" descendants-and-self="recording" my-props="recording.limitRecommend recording.limitMin recording.limitMax recording.recordInDialog recording.dialogHeaderId recording.dialogSize recording.singleAttempt humanEval.isPassive evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="replica" descendants-and-self="replica" my-props="replica.actorId replica.actorName replica.numberOfPhrases tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="script" is-ign="true" descendants-and-self="script" my-props="script.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="sentenceOrdering" descendants-and-self="sentenceOrdering" my-props="evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
@@ -89,7 +89,7 @@
   <doc-type name="wordMultiSelection" descendants-and-self="wordMultiSelection" my-props="wordMultiSelection.words evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="wordOrdering" descendants-and-self="wordOrdering" my-props="wordOrdering.correctOrder evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="wordSelection" descendants-and-self="wordSelection" my-props="wordSelection.words evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
-  <doc-type name="writing" descendants-and-self="writing" my-props="writing.limitRecommend writing.limitMin writing.limitMax writing.numberOfRows evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="writing" descendants-and-self="writing" my-props="writing.limitRecommend writing.limitMin writing.limitMax writing.numberOfRows humanEval.isPassive evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-prop name="actor" owner-type="_sndSent" data-type="@sys:String" />
   <doc-prop name="actor" owner-type="_mediaReplica" data-type="@sys:String" />
   <doc-prop name="actor" owner-type="phrase" data-type="@sys:String" />
@@ -167,6 +167,7 @@ Pro radioButton pouze [id]??
   <doc-prop name="isHtml" owner-type="docType" data-type="@sys:Boolean" />
   <doc-prop name="isHtml" owner-type="docProp" data-type="@sys:Boolean" />
   <doc-prop name="isIgn" owner-type="docType" data-type="@sys:Boolean" />
+  <doc-prop name="isPassive" owner-type="humanEval" data-type="@sys:Boolean" />
   <doc-prop name="isPassive" owner-type="_sndGroup" data-type="@sys:Boolean" />
   <doc-prop name="isStriped" owner-type="macroIconList" data-type="@sys:Boolean" />
   <doc-prop name="isStriped" owner-type="list" data-type="@sys:Boolean" />

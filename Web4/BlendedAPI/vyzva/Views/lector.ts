@@ -45,7 +45,7 @@
         c.onbehalfof = student.key.lmcomId;
         c.returnurl = this.href({ stateName: stateNames.lectorHome.name, pars: this.ctx })
       });
-      this.navigateProductHome();  //this.navigate({ stateName: stateNames.home.name, pars: ctx });
+      this.navigate({ stateName: stateNames.home.name, pars: ctx });
     }
   }
 

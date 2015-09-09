@@ -8,7 +8,7 @@
   }
 
   export class exerciseViewLow extends blended.exerciseTaskViewController implements IToolbarRun {
-    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, $loadedEx: blended.cacheExercise, $loadedLongData: blended.IExLong, public $modal: angular.ui.bootstrap.IModalService) {
+    constructor($scope: blended.IExerciseScope | blended.IStateService, $state: angular.ui.IStateService, $loadedEx: blended.cacheExercise, $loadedLongData: blended.IExLong, public $modal: angular.ui.bootstrap.IModalService) {
       super($scope, $state, $loadedEx, $loadedLongData);
     }
     tbClick() { this.greenClick(); }
@@ -30,7 +30,7 @@
 
   export class pretestExercise extends exerciseViewLow {
 
-    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, $loadedEx: blended.cacheExercise, $loadedLongData: blended.IExLong, $modal: angular.ui.bootstrap.IModalService) {
+    constructor($scope: blended.IExerciseScope | blended.IStateService, $state: angular.ui.IStateService, $loadedEx: blended.cacheExercise, $loadedLongData: blended.IExLong, $modal: angular.ui.bootstrap.IModalService) {
       super($scope, $state, $loadedEx, $loadedLongData, $modal);
       if (this.isFakeCreate) return;
       this.breadcrumb = breadcrumbBase(this);
@@ -41,7 +41,7 @@
   }
 
   export class lessonExercise extends exerciseViewLow {
-    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, $loadedEx: blended.cacheExercise, $loadedLongData: blended.IExLong, $modal: angular.ui.bootstrap.IModalService) {
+    constructor($scope: blended.IExerciseScope | blended.IStateService, $state: angular.ui.IStateService, $loadedEx: blended.cacheExercise, $loadedLongData: blended.IExLong, $modal: angular.ui.bootstrap.IModalService) {
       super($scope, $state, $loadedEx, $loadedLongData, $modal);
       if (this.isFakeCreate) return;
       this.breadcrumb = breadcrumbBase(this);
@@ -53,7 +53,7 @@
   }
 
   export class lessonTest extends exerciseViewLow {
-    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, $loadedEx: blended.cacheExercise, $loadedLongData: blended.IExLong, $modal: angular.ui.bootstrap.IModalService) {
+    constructor($scope: blended.IExerciseScope | blended.IStateService, $state: angular.ui.IStateService, $loadedEx: blended.cacheExercise, $loadedLongData: blended.IExLong, $modal: angular.ui.bootstrap.IModalService) {
       super($scope, $state, $loadedEx, $loadedLongData, $modal);
       if (this.isFakeCreate) return;
       this.breadcrumb = breadcrumbBase(this);

@@ -27,6 +27,7 @@ module Course {
     //---
     _owner: tagImpl;
     _myPage: Course.Page;
+    blended: blended.ICoursePageExtension; 
     constructor(data?: CourseModel.tag) { //volana pri jsonML parse
       if (data) for (var p in data) if (data.hasOwnProperty(p)) this[p] = data[p];
     }
@@ -34,7 +35,9 @@ module Course {
       this._myPage = <Course.Page>(_.find(this.parents(true), t => t._tg == CourseModel.tbody));
     }
 
-    pageCreated() { } //volana po nacteni user dat, vytvoreni page apod.
+    pageCreated() { //volana po nacteni user dat, vytvoreni page apod.
+      this.blended = this._myPage.blendedExtension;
+    } 
 
     parents(incSelf: boolean): Array<tagImpl> { var res: Array<tagImpl> = []; var t = incSelf ? this : this._owner; while (t) { res.push(t); t = t._owner; } return res; }
 
@@ -134,6 +137,7 @@ module Course {
     selfElement() { return idToElement(this.id); }
 
     pageCreated() {
+      super.pageCreated();
       if (!this.id) throw 'eval control mush have id';
       var pgRes = this._myPage.result;
       if (!pgRes.result) { pgRes.result = {}; this._myPage.result.userPending = true; }
@@ -150,13 +154,13 @@ module Course {
     humanLevel = ko.observable('');
     humanHelpTxt = ko.observable('');
 
-    isHumanEvalMode() { return cfg.humanEvalMode || this._myPage.humanEvalMode; }
+    isHumanEvalMode():boolean { return cfg.humanEvalMode || this._myPage.humanEvalMode; }
 
     adjustEvalForm() {
       if (!this.isHumanEvalMode()) return;
       this.form = $('#form-' + this.id);
       var par = { onsubmit: false, rules: {} };
-      par.rules['human-ed-' + this.id] = { required: true, range: [0, this.scoreWeight], number: true };
+      par.rules['human-ed-' + this.id] = { required: true, range: [0, /*this.scoreWeight*/100], number: true };
       this.form.validate(par);
     }
 
@@ -180,7 +184,7 @@ module Course {
       //if (!_.all(toEvals, f => !f.visible || f.hc.form.valid())) return false;
       if (!_.all(toEvals, f => f.form.valid())) return false;
       _.each(toEvals, ev => {
-        ev.result.hPercent = parseInt(ev.human());
+        ev.result.hPercent = parseInt(ev.human()) / 100 * ev.scoreWeight;
         ev.result.hEmail = LMStatus.Cookie.EMail;
         ev.result.hLmcomId = LMStatus.Cookie.id;
         ev.result.hDate = Utils.nowToNum();
@@ -193,6 +197,26 @@ module Course {
       ex.flag = score.flag;
       CourseMeta.actCourseRoot.refreshNumbers();
       return true;
+    }
+
+    isKBeforeHumanEval(): boolean { throw 'notimplemented'; }
+
+    setScore(): void {
+      this.result.ms = this.scoreWeight;
+      if ((this.result.flag & CourseModel.CourseDataFlag.needsEval) == 0 && (this.result.flag & CourseModel.CourseDataFlag.pcCannotEvaluate) != 0) {
+        this.result.s = Math.round(this.result.hPercent);
+        return;
+      }
+      var c = this.isKBeforeHumanEval();
+      this.result.s = 0;
+      //Oprava 9.9.2015 kvuli Blended. 
+      //this.result.s = c ? this.scoreWeight : 0;
+      if (c) {
+        this.result.flag |= CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate;
+      } else {
+        this.result.flag &= ~(CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate) & CourseModel.CourseDataFlag.all;
+      }
+      //this.result.flag = !c ? 0 : CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.needsEval;
     }
   }
 
@@ -227,7 +251,7 @@ module Course {
     //userData: Object; //uzivatelova long data stranky (short data jsou v produkut u kazdeho node)
     //myNode: CourseMeta.data; //my node v produktu
     //myModule: blended.cachedModule; //muj slovnik a lokalizace
-    blendedPageCallback: blended.ICoursePageCallback;
+    blendedExtension: blended.ICoursePageExtension;
     //---
     title: string;
     instrs: Array<string>;
@@ -274,10 +298,6 @@ module Course {
       });
     }
 
-
-    //blendedProvideData(allData: { [ctrlId: string]: CourseModel.Result; }): void { this.result.result = allData; this.provideData(null); }
-    //blendedAcceptData(done: boolean, allData: { [ctrlId: string]: CourseModel.Result; }): void { this.result.result = allData; this.acceptData(done, null); }
-    //blendedGetScore(): CourseModel.Score { return this.evalPage.getScore(); }// getORScore(this.evalItems); }
 
     /*** IScoreProvider ***/
     provideData(allData?: { [ctrlId: string]: Object; }): void {

@@ -47,7 +47,7 @@ var vyzva;
                 c.onbehalfof = student.key.lmcomId;
                 c.returnurl = _this.href({ stateName: vyzva.stateNames.lectorHome.name, pars: _this.ctx });
             });
-            this.navigateProductHome(); //this.navigate({ stateName: stateNames.home.name, pars: ctx });
+            this.navigate({ stateName: vyzva.stateNames.home.name, pars: ctx });
         };
         return lectorViewController;
     })(lectorViewBase);

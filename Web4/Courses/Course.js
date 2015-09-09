@@ -43,7 +43,9 @@ var Course;
         tagImpl.prototype.jsonMLParsed = function () {
             this._myPage = (_.find(this.parents(true), function (t) { return t._tg == CourseModel.tbody; }));
         };
-        tagImpl.prototype.pageCreated = function () { }; //volana po nacteni user dat, vytvoreni page apod.
+        tagImpl.prototype.pageCreated = function () {
+            this.blended = this._myPage.blendedExtension;
+        };
         tagImpl.prototype.parents = function (incSelf) { var res = []; var t = incSelf ? this : this._owner; while (t) {
             res.push(t);
             t = t._owner;
@@ -136,6 +138,7 @@ var Course;
         evalControlImpl.prototype.doCreateResult = function (forceEval) { this.result = this.createResult(forceEval); this.setScore(); return this.result; };
         evalControlImpl.prototype.selfElement = function () { return idToElement(this.id); };
         evalControlImpl.prototype.pageCreated = function () {
+            _super.prototype.pageCreated.call(this);
             if (!this.id)
                 throw 'eval control mush have id';
             var pgRes = this._myPage.result;
@@ -167,7 +170,7 @@ var Course;
                 return;
             this.form = $('#form-' + this.id);
             var par = { onsubmit: false, rules: {} };
-            par.rules['human-ed-' + this.id] = { required: true, range: [0, this.scoreWeight], number: true };
+            par.rules['human-ed-' + this.id] = { required: true, range: [0, 100], number: true };
             this.form.validate(par);
         };
         humanEvalControlImpl.prototype.acTestLevel = function () {
@@ -195,7 +198,7 @@ var Course;
             if (!_.all(toEvals, function (f) { return f.form.valid(); }))
                 return false;
             _.each(toEvals, function (ev) {
-                ev.result.hPercent = parseInt(ev.human());
+                ev.result.hPercent = parseInt(ev.human()) / 100 * ev.scoreWeight;
                 ev.result.hEmail = LMStatus.Cookie.EMail;
                 ev.result.hLmcomId = LMStatus.Cookie.id;
                 ev.result.hDate = Utils.nowToNum();
@@ -208,6 +211,25 @@ var Course;
             ex.flag = score.flag;
             CourseMeta.actCourseRoot.refreshNumbers();
             return true;
+        };
+        humanEvalControlImpl.prototype.isKBeforeHumanEval = function () { throw 'notimplemented'; };
+        humanEvalControlImpl.prototype.setScore = function () {
+            this.result.ms = this.scoreWeight;
+            if ((this.result.flag & CourseModel.CourseDataFlag.needsEval) == 0 && (this.result.flag & CourseModel.CourseDataFlag.pcCannotEvaluate) != 0) {
+                this.result.s = Math.round(this.result.hPercent);
+                return;
+            }
+            var c = this.isKBeforeHumanEval();
+            this.result.s = 0;
+            //Oprava 9.9.2015 kvuli Blended. 
+            //this.result.s = c ? this.scoreWeight : 0;
+            if (c) {
+                this.result.flag |= CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate;
+            }
+            else {
+                this.result.flag &= ~(CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate) & CourseModel.CourseDataFlag.all;
+            }
+            //this.result.flag = !c ? 0 : CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.needsEval;
         };
         return humanEvalControlImpl;
     })(evalControlImpl);
@@ -256,9 +278,6 @@ var Course;
                 completed();
             });
         };
-        //blendedProvideData(allData: { [ctrlId: string]: CourseModel.Result; }): void { this.result.result = allData; this.provideData(null); }
-        //blendedAcceptData(done: boolean, allData: { [ctrlId: string]: CourseModel.Result; }): void { this.result.result = allData; this.acceptData(done, null); }
-        //blendedGetScore(): CourseModel.Score { return this.evalPage.getScore(); }// getORScore(this.evalItems); }
         /*** IScoreProvider ***/
         Page.prototype.provideData = function (allData) {
             //_.each(this.evalItems, ctrl => ctrl.provideData(allData[ctrl.id]));

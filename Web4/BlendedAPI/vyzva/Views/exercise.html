@@ -7,9 +7,8 @@
       <div class="pull-left module-finished" ng-if="::modService.moduleDone"><i class="fa fa-checked"></i> {{::ts.tbDoneTitle}}</div>
       <button class="btn-finish pull-left btn btn-default" ng-click="::ts.tbNavigateProductHome()">Zpět na kurz <i class="fa fa-level-up"></i></button>
       <div class="pull-left topbar-title" ng-if="::!state.ignorePageTitle">{{::modService.node.title}}</div>
-      <div class="pull-right more fa fa-bars" ng-if="::!(exService.exerciseIsTest && !modService.moduleDone)" ng-click="modulecollapsable.isCollapsed = !modulecollapsable.isCollapsed"></div>
+      <div class="pull-right more fa fa-bars" ng-if="::!(exService.isTest && !modService.moduleDone)" ng-click="modulecollapsable.isCollapsed = !modulecollapsable.isCollapsed"></div>
       <div class="pull-right" ng-include="'vyzva$common$topbarinnerright.html'"></div>
-      <div class="clearfix"></div>
       <div class="clearfix"></div>
       <div class="ex-items" ng-include="'vyzva$exercise$moduleheaderitem.html'"></div>
     </div>
@@ -18,17 +17,34 @@
 </div>
 <div class="container lm-top-margin">
   <div class="instruction" ng-include="'vyzva$exercise$instruction.html'"></div>
+  <div class="ex-lector-panel" ng-if="::exService.showLectorPanel" ng-include="'vyzva$exercise$lector.html'"></div>
   <div class="new-ea lm-top-margin" data-show-exercise="" ex-service="::exService"></div>
 </div>
+
+<!--***************** LECTOR PANEL -->
+<script type="text/ng-template" id="vyzva$exercise$lector.html">
+  <div class="alert alert-success">
+    <div class="row">
+      <div class="col-sm-8">
+        <h4>Vyhodnocení nahrávek studenta</h4>
+        <p>Poslechněte si nahrávky studenta klikem na modrou šipku. Pak vyplňte hodnocení v procentech (0-100). Po vyplnění všech hodnocení stiskněte <i>Uložit hodnocení</i></p>
+      </div>
+      <div class="col-sm-4">
+        <button class="btn btn-success btn-lg pull-right" ng-click="::exService.saveLectorEvaluation()"><i class="fa fa-check"></i> Uložit vyhodnocení</button>
+      </div>
+    </div>
+  </div>
+</script>
 
 <!--***************** MODULE HEADER ITEM -->
 <script type="text/ng-template" id="vyzva$exercise$moduleheaderitem.html">
   <div ng-if="::modService.exShowPanel" ng-repeat="it in ::modService.exercises" class="ex-item"
-       ng-class="{warning:it.background==1, success: it.background==2, 'no-clickable': modService.exNoclickable, active: it.active}"
+       ng-class="{warning:it.background==1, success: it.background==2, danger: it.background==3, 'no-clickable': modService.exNoclickable, active: it.active}"
        ng-style="{cursor: modService.exNoclickable ? 'default' : 'pointer'}"
        ng-click="modService.exNoclickable ? null : modService.navigateExercise(it.idx)">
     <span ng-if="it.content==1" class="fa fa-check"></span>
     <span ng-if="it.content==2 || it.content==3">{{it.idx+1}}.</span>
+    <span ng-if="it.content==5" class="fa fa-question"></span>
     <!--<span ng-if="it.content==3">{{it.idx+1}}.</span>-->
     <span ng-if="it.content==4" ng-style="it.percent | vyzva$exmodule$percentheight : 28" class="progress-red">{{it.percent}}%</span>
     <span ng-if="it.content==4">{{it.percent}}%</span>

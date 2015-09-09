@@ -1106,7 +1106,7 @@ input {
 
 .oli-sent {
   cursor: pointer;
-  padding:3px 0;
+  padding: 3px 0;
 
   > .actor {
     //vertical-align: bottom;
@@ -1820,6 +1820,15 @@ input {
 .oli-audio-capture {
   .column-fixed-fluid (progress, 210);
 
+  .lector {
+    &.alert {
+      padding: 0;
+      margin: 5px 0;
+      padding-bottom: 10px;
+      display:none;
+    }
+  }
+
   .test-notify {
     color: @brand-danger;
     text-align: left;
@@ -1929,7 +1938,7 @@ input {
   }
 
   &.human-eval-mode {
-    .human-form {
+    .human-form, .lector {
       display: block;
     }
   }
@@ -2265,8 +2274,12 @@ input {
       }
     }
   }
+
   .info {
-    color:lightgray;
-    span {color:@brand-success;}
+    color: lightgray;
+
+    span {
+      color: @brand-success;
+    }
   }
 }

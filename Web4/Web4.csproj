@@ -277,6 +277,8 @@
     <Content Include="BlendedAPI\vyzva\Views\exercise.html" />
     <Content Include="BlendedAPI\vyzva\Views\_pageTemplate.html" />
     <Content Include="BlendedAPI\vyzva\Views\home.html" />
+    <Content Include="Courses\angularJS\angularjs.html" />
+    <Content Include="Courses\mediaBackup.html" />
     <Content Include="JsLib\css\flag-mid.css" />
     <Content Include="JsLib\css\flag-small.css" />
     <Content Include="JsLib\Scripts\angular-ie8.js" />
@@ -1395,6 +1397,7 @@
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\home.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\home\pretestItem.ts" />
     <TypeScriptCompile Include="BS3\js\bootstrap.d.ts" />
+    <TypeScriptCompile Include="Courses\angularJS\angularjs.ts" />
     <TypeScriptCompile Include="Courses\codes\chinhSpeaking.ts" />
     <TypeScriptCompile Include="Courses\codes\docReference.ts" />
     <TypeScriptCompile Include="Courses\CourseLib.ts" />
@@ -1443,6 +1446,7 @@
     <Content Include="Schools\Design\ExtractWords.aspx" />
     <None Include="Statistics\Default.ascx_" />
     <None Include="Statistics\Toc.ascx_" />
+    <Content Include="Temp\angular\knockout.html" />
     <Content Include="Temp\angular\index.html" />
     <Content Include="Temp\file1.js" />
     <Content Include="Temp\GoogleLogin.html" />
@@ -1490,6 +1494,7 @@
     <TypeScriptCompile Include="JsLib\JSD\HtmlAudio\waa.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\jquery-ui.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\lib-lm.d.ts" />
+    <TypeScriptCompile Include="Temp\angular\knockout.ts" />
     <TypeScriptCompile Include="Temp\angular\test.ts" />
     <TypeScriptCompile Include="Temp\mediumJS\ts\Base.ts" />
     <TypeScriptCompile Include="Temp\mediumJS\ts\Cache.ts" />

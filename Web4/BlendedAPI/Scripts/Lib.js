@@ -56,6 +56,8 @@ var blended;
         return ctx;
     }
     blended.finishContext = finishContext;
+    function waitForEvaluation(sc) { return !!(sc.flag & CourseModel.CourseDataFlag.needsEval); }
+    blended.waitForEvaluation = waitForEvaluation;
     function scorePercent(sc) { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
     blended.scorePercent = scorePercent;
     function donesPercent(sc) { return sc.count == 0 ? -1 : Math.round((sc.dones || 0) / sc.count * 100); }
@@ -71,6 +73,7 @@ var blended;
                 return;
             }
             var done = short.done;
+            res.waitForEvaluation = res.waitForEvaluation || short.waitForEvaluation;
             res.done = res.done && done;
             res.count += short.count || 1;
             res.dones += (short.dones ? short.dones : (short.done ? 1 : 0));
@@ -100,6 +103,7 @@ var blended;
             res.count++;
             var us = blended.getPersistWrapper(nd, taskId);
             var done = us && us.short.done;
+            res.waitForEvaluation = done && waitForEvaluation(us.short);
             if (done)
                 res.dones += (us.short.dones ? us.short.dones : (us.short.done ? 1 : 0));
             res.done = res.done && done;
@@ -126,7 +130,7 @@ var blended;
         return res;
     }
     blended.agregateShortFromNodes = agregateShortFromNodes;
-    blended.shortDefault = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0, count: 0, dones: 0, sumPlay: 0, sumPlayRecord: 0, sumRecord: 0 };
+    blended.shortDefault = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0, count: 0, dones: 0, sumPlay: 0, sumPlayRecord: 0, sumRecord: 0, waitForEvaluation: false };
     function setDate(dt1, dt2, min) { if (!dt1)
         return dt2; if (!dt2)
         return dt1; if (min)

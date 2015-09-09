@@ -30,7 +30,7 @@
     onbehalfof?: number; //id studenta, jehoz data vyuzivam
     returnurl?: string; //return url pro back tlacitko
     //pro intranet:
-    groupid?:string, //identifikace skupiny studentu
+    groupid?: string, //identifikace skupiny studentu
     //lectortab?: string, //tab na lector strance
 
     pretesturl?: string; moduleurl?: string; url?: string; 
@@ -71,16 +71,18 @@
     return ctx;
   }
 
-  export function scorePercent(sc: IExShort) { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
-  export function donesPercent(sc: IExShort) { return sc.count == 0 ? -1 : Math.round((sc.dones || 0) / sc.count * 100); }
-  export function scoreText(sc: IExShort) { var pr = scorePercent(sc); return pr < 0 ? '' : pr.toString() + '%'; }
+  export function waitForEvaluation(sc: IExShort):boolean { return !!(sc.flag & CourseModel.CourseDataFlag.needsEval); }
+  export function scorePercent(sc: IExShort):number { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
+  export function donesPercent(sc: IExShortAgreg): number { return sc.count == 0 ? -1 : Math.round((sc.dones || 0) / sc.count * 100); }
+  export function scoreText(sc: IExShort):string { var pr = scorePercent(sc); return pr < 0 ? '' : pr.toString() + '%'; }
 
-  export function agregateShorts(shorts: Array<IExShort>): IExShort {
-    var res: IExShort = $.extend({}, shortDefault);
+  export function agregateShorts(shorts: Array<IExShortAgreg>): IExShortAgreg {
+    var res: IExShortAgreg = $.extend({}, shortDefault);
     res.done = true;
     _.each(shorts, short => {
       if (!short) { res.done = false; return; }
       var done = short.done;
+      res.waitForEvaluation = res.waitForEvaluation || short.waitForEvaluation;
       res.done = res.done && done;
       res.count += short.count || 1;
       res.dones += (short.dones ? short.dones : (short.done ? 1 : 0));
@@ -96,14 +98,15 @@
     res.finished = blended.donesPercent(res);
     return res;
   }
-  export function agregateShortFromNodes(node: CourseMeta.data, taskId: string, moduleAlowFinishWhenUndone?: boolean /*do vyhodnoceni zahrn i nehotova cviceni*/): IExShort {
-    var res: IExShort = $.extend({}, shortDefault);
+  export function agregateShortFromNodes(node: CourseMeta.data, taskId: string, moduleAlowFinishWhenUndone?: boolean /*do vyhodnoceni zahrn i nehotova cviceni*/): IExShortAgreg {
+    var res: IExShortAgreg = $.extend({}, shortDefault);
     res.done = true;
     _.each(node.Items, nd => {
       if (!isEx(nd)) return;
       res.count++;
-      var us = getPersistWrapper<IExShort>(nd, taskId);
+      var us = getPersistWrapper<IExShortAgreg>(nd, taskId);
       var done = us && us.short.done;
+      res.waitForEvaluation = done && waitForEvaluation(us.short);
       if (done) res.dones += (us.short.dones ? us.short.dones : (us.short.done ? 1 : 0));
       res.done = res.done && done;
       if (nd.ms) { //aktivni cviceni (se skore)
@@ -123,7 +126,7 @@
     res.finished = blended.donesPercent(res);
     return res;
   }
-  export var shortDefault: IExShort = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0, count: 0, dones: 0, sumPlay: 0, sumPlayRecord: 0, sumRecord: 0 };
+  export var shortDefault: IExShortAgreg = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0, count: 0, dones: 0, sumPlay: 0, sumPlayRecord: 0, sumRecord: 0, waitForEvaluation: false };
   function setDate(dt1: number, dt2: number, min: boolean): number { if (!dt1) return dt2; if (!dt2) return dt1; if (min) return dt2 > dt1 ? dt1 : dt2; else return dt2 < dt1 ? dt1 : dt2; }
 
   ////************ LOGGING functions

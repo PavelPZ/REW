@@ -273,19 +273,28 @@ module Course {
       this.humanLevel(this.result.hLevel);
       this.isDone(this.done());
     }
-    setScore(): void {
-      if ((this.result.flag & CourseModel.CourseDataFlag.needsEval) == 0 && (this.result.flag & CourseModel.CourseDataFlag.pcCannotEvaluate) != 0) {
-        this.result.ms = this.scoreWeight;
-        this.result.s = Math.round(this.result.hPercent);
-        return;
-      }
-      var c = this.limitMin && (this.result.words >= this.limitMin); this.result.ms = this.scoreWeight;
-      this.result.s = c ? this.scoreWeight : 0;
-      if (c) this.result.flag |= CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate;
-      else this.result.flag &= ~(CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate) & CourseModel.CourseDataFlag.all;
+    isKBeforeHumanEval(): boolean { return this.limitMin && (this.result.words >= this.limitMin); }
 
-      //this.result.flag = !c ? 0 : CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.needsEval;
-    }
+    //setScore(): void {
+    //  if ((this.result.flag & CourseModel.CourseDataFlag.needsEval) == 0 && (this.result.flag & CourseModel.CourseDataFlag.pcCannotEvaluate) != 0) {
+    //    this.result.ms = this.scoreWeight;
+    //    this.result.s = Math.round(this.result.hPercent);
+    //    return;
+    //  }
+    //  var c = this.limitMin && (this.result.words >= this.limitMin);
+    //  //Oprava 9.9.2015 kvuli Blended. 
+    //  //this.result.ms = this.scoreWeight;
+    //  //this.result.s = c ? this.scoreWeight : 0;
+    //  if (c) {
+    //    this.result.flag |= CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate;
+    //    this.result.ms = this.result.s = 0;
+    //  } else {
+    //    this.result.flag &= ~(CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate) & CourseModel.CourseDataFlag.all;
+    //    this.result.ms = this.scoreWeight; this.result.s = 0;
+    //  }
+
+    //  //this.result.flag = !c ? 0 : CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.needsEval;
+    //}
 
     progressBarValue = ko.observable(0);
     progressBarFrom = ko.observable(0);
@@ -431,25 +440,39 @@ module Course {
     acceptData(done: boolean): void {//zmena stavu kontrolky na zaklade persistentnich dat
       super.acceptData(done);
       this.isRecorded(this.isRecordLengthCorrect());
-      this.isDone(this.done() && !this.isPassive);
+      //Aktivni nahravatko:
+      var done = this.done();
+      if (this.blended) {
+        this.isDone(this.blended.isLector || (this.blended.isTest && done)); //pro blended je stale mozne nahravat jen pro lekci nebo nehotovy test
+      } else
+        this.isDone(done && !this.isPassive); //stale je mozne nahravat pro pasivni RECORD kontrolku
       this.human(this.result.hPercent < 0 ? '' : this.result.hPercent.toString());
       var tostr = this.limitMax ? ' - ' + Utils.formatTimeSpan(this.limitMax) : '';
       this.humanHelpTxt(this.limitRecommend ? Utils.formatTimeSpan(this.limitRecommend) + tostr + ' / ' + Utils.formatTimeSpan(Math.round(this.result.recordedMilisecs / 1000)) : '');
       this.humanLevel(this.result.hLevel);
       //CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate
     }
-    setScore(): void {
-      if ((this.result.flag & CourseModel.CourseDataFlag.needsEval) == 0 && (this.result.flag & CourseModel.CourseDataFlag.pcCannotEvaluate) != 0) {
-        this.result.ms = this.scoreWeight;
-        this.result.s = Math.round(this.result.hPercent);
-        return;
-      }
-      var c = this.isRecordLengthCorrect();
-      this.result.ms = this.scoreWeight;
-      this.result.s = c ? this.scoreWeight : 0;
-      if (c) this.result.flag |= CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.hasExternalAttachments;
-      else this.result.flag &= ~(CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.hasExternalAttachments) & CourseModel.CourseDataFlag.all;
-    }
+
+    isKBeforeHumanEval(): boolean { return this.isRecordLengthCorrect(); }
+
+    //setScore(): void {
+    //  if ((this.result.flag & CourseModel.CourseDataFlag.needsEval) == 0 && (this.result.flag & CourseModel.CourseDataFlag.pcCannotEvaluate) != 0) {
+    //    this.result.ms = this.scoreWeight;
+    //    this.result.s = Math.round(this.result.hPercent);
+    //    return;
+    //  }
+    //  var c = this.isRecordLengthCorrect();
+    //  //Oprava 9.9.2015 kvuli Blended. 
+    //  //this.result.ms = this.scoreWeight;
+    //  //this.result.s = c ? this.scoreWeight : 0;
+    //  if (c) {
+    //    this.result.flag |= CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.hasExternalAttachments;
+    //    this.result.ms = this.result.s = 0;
+    //  } else {
+    //    this.result.flag &= ~(CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.hasExternalAttachments) & CourseModel.CourseDataFlag.all;
+    //    this.result.ms = this.scoreWeight; this.result.s = 0;
+    //  }
+    //}
 
 
     isRecordLengthCorrect(): boolean { return this.result.recordedMilisecs > 0 && (!this.limitMin || (this.result.recordedMilisecs >= this.limitMin * 1000)); } //pro 0 x 1 score
@@ -465,6 +488,11 @@ module Course {
     isDone = ko.observable(false);
 
     private recorderSound: SndLow.recordedSound;
+
+    //isHumanEvalMode(): boolean {
+    //  if (!this._myPage.blendedPageCallback) return super.isHumanEvalMode();
+    //  return this._myPage.blendedPageCallback.isHumanEvalMode();
+    //}
     setRecorderSound(recorderSound: SndLow.recordedSound): void {
       this.driver.openFile(null); //reset driveru
       if (this.recorderSound) this.recorderSound.close();
@@ -479,7 +507,7 @@ module Course {
       //this._myPage.result.userPending = true;
       //CourseMeta.lib.saveProduct($.noop);
       //angularJS
-      if (this._myPage.blendedPageCallback) this._myPage.blendedPageCallback.onRecorder(this._myPage, this.result.recordedMilisecs);
+      if (this.blended) this.blended.recorder.onRecorder(this._myPage, this.result.recordedMilisecs);
       //var us = <blended.IPersistNodeItem<blended.IExShort>>(this._myPage.result.userData['']);
       //us.modified = true;
       //if (!us.short.sumRecord) us.short.sumRecord = 0;
@@ -497,7 +525,7 @@ module Course {
           //console.log(msec.toString());
           this.blendedCallbackMax = Math.max(this.blendedCallbackMax, msec);
         } else { //angularJS
-          if (this._myPage.blendedPageCallback) this._myPage.blendedPageCallback.onPlayRecorder(this._myPage, this.blendedCallbackMax);
+          if (this.blended) this.blended.recorder.onPlayRecorder(this._myPage, this.blendedCallbackMax);
           //var us = <blended.IPersistNodeItem<blended.IExShort>>(this._myPage.result.userData['']);
           //us.modified = true;
           //if (!us.short.sumPlayRecord) us.short.sumPlayRecord = 0;
@@ -635,7 +663,7 @@ module Course {
           self.onPlaying(interv, msec < begPos ? begPos : msec /*pri zacatku hrani muze byt notifikovana pozice kousek pred zacatkem*/, progressType.progress);
         }).
         done(() => { //angularJS //konec prehrani intervalu
-          if (this._myPage.blendedPageCallback) this._myPage.blendedPageCallback.onPlayed(this._myPage, this.blendedCallbackMax - begPos);
+        if (this.blended) this.blended.recorder.onPlayed(this._myPage, this.blendedCallbackMax - begPos);
           //var us = <blended.IPersistNodeItem<blended.IExShort>>(this._myPage.result.userData['']);
           //us.modified = true;
           //if (!us.short.sumPlay) us.short.sumPlay = 0;

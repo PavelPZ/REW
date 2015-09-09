@@ -81,6 +81,7 @@
 <script type="text/ng-template" id="vyzva$home$leftmark.html">
   <div ng-if="::lesson.leftMarkType==1" class="left-mark icon"><i class="fa fa-hand-o-right"></i></div>
   <div ng-if="::lesson.leftMarkType==2" class="left-mark level">{{::ts.pretestLevel | levelText}}</div>
+  <div ng-if="::lesson.leftMarkType==4" class="left-mark icon"><i class="fa fa-question"></i></div>
   <div ng-if="::lesson.leftMarkType==3" class="left-mark percent-mark">
     <div class="progress-bar">
       <span ng-style="::lesson.user.score | vyzva$exmodule$percentheight : 32" class="progress-red">{{::lesson.user.score}}%</span>

@@ -33,9 +33,7 @@ var blended;
     //***************** EXERCISE controller
     var exerciseTaskViewController = (function (_super) {
         __extends(exerciseTaskViewController, _super);
-        //parent: moduleTaskController;
-        //showResultAfterEval: boolean; //nepersistentni stavova promenna - je zobrazen vysledek po vyhodnoceni. V nasledujicim moveForward
-        function exerciseTaskViewController($scope, $state, $loadedEx, $loadedLongData) {
+        function exerciseTaskViewController($scope /*union types*/, $state, $loadedEx, $loadedLongData) {
             _super.call(this, $scope, $state);
             this.exParent = this;
             if (this.isFakeCreate)
@@ -43,8 +41,9 @@ var blended;
             var modIdx = _.indexOf(this.moduleParent.exercises, this.dataNode);
             this.exService = new exerciseService($loadedEx, $loadedLongData, this, modIdx); //, () => this.confirmWrongScoreDialog());
             this.modService = new blended.moduleService(this.moduleParent.dataNode, this.exService, this.moduleParent.state.moduleType, this);
-            $scope['exService'] = this.exService;
-            $scope['modService'] = this.modService;
+            var sc = $scope;
+            sc.exService = this.exService;
+            sc.modService = this.modService;
             this.user = this.exService.user;
             this.title = this.dataNode.title;
             this.moduleParent.onExerciseLoaded(modIdx); //zmena actChildIdx v persistentnich datech modulu
@@ -111,13 +110,13 @@ var blended;
     //********************* EXERCISE SERVICE
     var exerciseService = (function () {
         function exerciseService(exercise, long, controller, modIdx) {
+            this.controller = controller;
             this.exercise = exercise;
             this.modIdx = modIdx;
             this.confirmWrongScoreDialog = function () { return controller.confirmWrongScoreDialog(); };
             this.ctx = controller.ctx;
             this.product = controller.productParent.dataNode;
-            //this.exerciseIsTest = controller.state.exerciseIsTest; this.moduleUser = controller.parent.user.short;
-            this.exerciseIsTest = controller.moduleParent.state.moduleType != blended.moduleServiceType.lesson;
+            this.isTest = controller.moduleParent.state.moduleType != blended.moduleServiceType.lesson;
             this.moduleUser = controller.moduleParent.user.short;
             this.user = blended.getPersistWrapper(exercise.dataNode, this.ctx.taskid, function () { var res = $.extend({}, blended.shortDefault); res.ms = exercise.dataNode.ms; return res; });
             if (!long) {
@@ -129,6 +128,8 @@ var blended;
             //greenArrowRoot
             this.greenArrowRoot = controller.pretestParent ? controller.pretestParent : controller.moduleParent;
             //this.refresh();
+            this.isLector = !!controller.ctx.onbehalfof;
+            this.showLectorPanel = !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
         }
         //ICoursePageCallback
         exerciseService.prototype.onRecorder = function (page, msecs) { this.user.modified = true; if (!this.user.short.sumRecord)
@@ -137,13 +138,38 @@ var blended;
             this.user.short.sumPlayRecord = 0; this.user.short.sumPlayRecord += Math.round(msecs / 1000); };
         exerciseService.prototype.onPlayed = function (page, msecs) { this.user.modified = true; if (!this.user.short.sumPlay)
             this.user.short.sumPlay = 0; this.user.short.sumPlay += Math.round(msecs / 1000); };
+        exerciseService.prototype.saveLectorEvaluation = function () {
+            var _this = this;
+            var humanEvals = _.map($('.human-form:visible').toArray(), function (f) {
+                var id = f.id.substr(5);
+                return { ctrl: (_this.page.tags[f.id.substr(5)]), edit: $('#human-ed-' + id) };
+            });
+            _.each(humanEvals, function (ev) {
+                _this.user.modified = true;
+                var val = parseInt(ev.edit.val());
+                if (!val)
+                    val = 0;
+                if (val > 100)
+                    val = 100;
+                ev.ctrl.result.hPercent = val / 100 * ev.ctrl.scoreWeight;
+                ev.ctrl.result.flag = ev.ctrl.result.flag & ~CourseModel.CourseDataFlag.needsEval;
+                ev.ctrl.setScore();
+            });
+            var score = this.page.getScore();
+            this.user.short.s = score.s;
+            this.user.short.flag = score.flag;
+        };
+        //lectorEvaluationScore() { return scorePercent(this.user.short); }
         exerciseService.prototype.score = function () {
             return blended.scorePercent(this.user.short);
         };
         exerciseService.prototype.onDisplay = function (el, completed) {
             var _this = this;
             var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
-            pg.blendedPageCallback = this;
+            if (this.isLector)
+                this.page.humanEvalMode = true;
+            this.recorder = this;
+            pg.blendedExtension = this; //navazani rozsireni na Page
             Course.localize(pg, function (s) { return CourseMeta.localizeString(pg.url, s, _this.exercise.mod.loc); });
             var isGramm = CourseMeta.isType(this.exercise.dataNode, CourseMeta.runtimeType.grammar);
             if (!isGramm) {
@@ -167,7 +193,7 @@ var blended;
                 ko.applyBindings({}, el[0]);
                 pg.callInitProcs(Course.initPhase.afterRender, function () {
                     pg.callInitProcs(Course.initPhase.afterRender2, function () {
-                        if (_this.exerciseIsTest && _this.user.short.done && !_this.moduleUser.done) {
+                        if (_this.isTest && _this.user.short.done && !_this.moduleUser.done && !_this.isLector) {
                             //test cviceni nesmi byt (pro nedokonceny test) videt ve vyhodnocenem stavu. Do vyhodnoceneho stav se vrati dalsim klikem na zelenou sipku.
                             _this.user.short.done = false;
                         }
@@ -234,7 +260,7 @@ var blended;
                     return null;
                 }
                 short.s = score.s;
-                //short.score = blended.scorePercent(short);
+                short.flag = score.flag;
             };
             var exerciseOK = isTest || !this.confirmWrongScoreDialog ? true : (score == null || score.ms == 0 || (score.s / score.ms * 100) >= exerciseShowWarningPercent);
             if (!exerciseOK) {

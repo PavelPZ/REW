@@ -51,9 +51,11 @@
   export var prodStates: IProductStates = {};
 
   export var root = new Module();
+  export var rootScope: angular.IRootScopeService;
+  export var templateCache: ng.ITemplateCacheService;
+  export var compile: ng.ICompileService;
 
   rootModule
-  //.directive('showExercise', blended.showExerciseDirective2)
     .directive('lmInclude', () => {
       return {
         restrict: 'A',
@@ -61,7 +63,8 @@
       };
     })
     .run(vyzva.initVyzvaApp)
-    .run(['$rootScope', '$location', ($rootScope: angular.IRootScopeService, $location: angular.ILocationService) => {
+    .run(['$rootScope', '$location', '$templateCache', '$compile', ($rootScope: angular.IRootScopeService, $location: angular.ILocationService, $templateCache: ng.ITemplateCacheService, $compile: ng.ICompileService) => {
+      rootScope = $rootScope; templateCache = $templateCache; compile = $compile;
       $rootScope.$on('$locationChangeStart', (event: angular.IAngularEvent, newUrl: string, oldUrl: string, newState, oldState) => {
         if (Pager.angularJS_OAuthLogin(location.hash, () => Pager.gotoHomeUrl())) event.preventDefault()
       })
@@ -100,7 +103,9 @@
         name: 'pg',
         url: '/pg',
         abstract: true,
-        template: "<div data-ui-view></div>",
+        //template: "<div data-ui-view></div>",
+        //***** preload common templates
+        templateUrl: blended.baseUrlRelToRoot + '/courses/angularjs/angularjs.html',
         resolve: {
           checkOldApplicationStart: checkOldApplicationStart //ceka se na dokonceni inicalizace nasi technologie
         }
@@ -130,8 +135,7 @@
     _.each(debugAllRoutes, r => Logger.trace("Pager", 'Define:' + r));
   }]);
 
-
-  //dokumentace pro dostupne services
+   //dokumentace pro dostupne services
   export function servicesDocumentation() {
     //https://docs.angularjs.org/api/ng/function/angular.injector
     //http://stackoverflow.com/questions/17497006/use-http-inside-custom-provider-in-app-config-angular-js

@@ -264,6 +264,25 @@ var Course;
         function writingImpl(staticData) {
             _super.call(this, staticData);
             this.textInput = ko.observable();
+            //setScore(): void {
+            //  if ((this.result.flag & CourseModel.CourseDataFlag.needsEval) == 0 && (this.result.flag & CourseModel.CourseDataFlag.pcCannotEvaluate) != 0) {
+            //    this.result.ms = this.scoreWeight;
+            //    this.result.s = Math.round(this.result.hPercent);
+            //    return;
+            //  }
+            //  var c = this.limitMin && (this.result.words >= this.limitMin);
+            //  //Oprava 9.9.2015 kvuli Blended. 
+            //  //this.result.ms = this.scoreWeight;
+            //  //this.result.s = c ? this.scoreWeight : 0;
+            //  if (c) {
+            //    this.result.flag |= CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate;
+            //    this.result.ms = this.result.s = 0;
+            //  } else {
+            //    this.result.flag &= ~(CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate) & CourseModel.CourseDataFlag.all;
+            //    this.result.ms = this.scoreWeight; this.result.s = 0;
+            //  }
+            //  //this.result.flag = !c ? 0 : CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.needsEval;
+            //}
             this.progressBarValue = ko.observable(0);
             this.progressBarFrom = ko.observable(0);
             this.progressText = ko.observable('');
@@ -317,21 +336,7 @@ var Course;
             this.humanLevel(this.result.hLevel);
             this.isDone(this.done());
         };
-        writingImpl.prototype.setScore = function () {
-            if ((this.result.flag & CourseModel.CourseDataFlag.needsEval) == 0 && (this.result.flag & CourseModel.CourseDataFlag.pcCannotEvaluate) != 0) {
-                this.result.ms = this.scoreWeight;
-                this.result.s = Math.round(this.result.hPercent);
-                return;
-            }
-            var c = this.limitMin && (this.result.words >= this.limitMin);
-            this.result.ms = this.scoreWeight;
-            this.result.s = c ? this.scoreWeight : 0;
-            if (c)
-                this.result.flag |= CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate;
-            else
-                this.result.flag &= ~(CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate) & CourseModel.CourseDataFlag.all;
-            //this.result.flag = !c ? 0 : CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.needsEval;
-        };
+        writingImpl.prototype.isKBeforeHumanEval = function () { return this.limitMin && (this.result.words >= this.limitMin); };
         writingImpl.prototype.initProc = function (phase, getTypeOnly, completed) {
             switch (phase) {
                 case Course.initPhase.afterRender:
@@ -481,28 +486,43 @@ var Course;
         audioCaptureImpl.prototype.acceptData = function (done) {
             _super.prototype.acceptData.call(this, done);
             this.isRecorded(this.isRecordLengthCorrect());
-            this.isDone(this.done() && !this.isPassive);
+            //Aktivni nahravatko:
+            var done = this.done();
+            if (this.blended) {
+                this.isDone(this.blended.isLector || (this.blended.isTest && done)); //pro blended je stale mozne nahravat jen pro lekci nebo nehotovy test
+            }
+            else
+                this.isDone(done && !this.isPassive); //stale je mozne nahravat pro pasivni RECORD kontrolku
             this.human(this.result.hPercent < 0 ? '' : this.result.hPercent.toString());
             var tostr = this.limitMax ? ' - ' + Utils.formatTimeSpan(this.limitMax) : '';
             this.humanHelpTxt(this.limitRecommend ? Utils.formatTimeSpan(this.limitRecommend) + tostr + ' / ' + Utils.formatTimeSpan(Math.round(this.result.recordedMilisecs / 1000)) : '');
             this.humanLevel(this.result.hLevel);
             //CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate
         };
-        audioCaptureImpl.prototype.setScore = function () {
-            if ((this.result.flag & CourseModel.CourseDataFlag.needsEval) == 0 && (this.result.flag & CourseModel.CourseDataFlag.pcCannotEvaluate) != 0) {
-                this.result.ms = this.scoreWeight;
-                this.result.s = Math.round(this.result.hPercent);
-                return;
-            }
-            var c = this.isRecordLengthCorrect();
-            this.result.ms = this.scoreWeight;
-            this.result.s = c ? this.scoreWeight : 0;
-            if (c)
-                this.result.flag |= CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.hasExternalAttachments;
-            else
-                this.result.flag &= ~(CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.hasExternalAttachments) & CourseModel.CourseDataFlag.all;
-        };
+        audioCaptureImpl.prototype.isKBeforeHumanEval = function () { return this.isRecordLengthCorrect(); };
+        //setScore(): void {
+        //  if ((this.result.flag & CourseModel.CourseDataFlag.needsEval) == 0 && (this.result.flag & CourseModel.CourseDataFlag.pcCannotEvaluate) != 0) {
+        //    this.result.ms = this.scoreWeight;
+        //    this.result.s = Math.round(this.result.hPercent);
+        //    return;
+        //  }
+        //  var c = this.isRecordLengthCorrect();
+        //  //Oprava 9.9.2015 kvuli Blended. 
+        //  //this.result.ms = this.scoreWeight;
+        //  //this.result.s = c ? this.scoreWeight : 0;
+        //  if (c) {
+        //    this.result.flag |= CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.hasExternalAttachments;
+        //    this.result.ms = this.result.s = 0;
+        //  } else {
+        //    this.result.flag &= ~(CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.hasExternalAttachments) & CourseModel.CourseDataFlag.all;
+        //    this.result.ms = this.scoreWeight; this.result.s = 0;
+        //  }
+        //}
         audioCaptureImpl.prototype.isRecordLengthCorrect = function () { return this.result.recordedMilisecs > 0 && (!this.limitMin || (this.result.recordedMilisecs >= this.limitMin * 1000)); }; //pro 0 x 1 score
+        //isHumanEvalMode(): boolean {
+        //  if (!this._myPage.blendedPageCallback) return super.isHumanEvalMode();
+        //  return this._myPage.blendedPageCallback.isHumanEvalMode();
+        //}
         audioCaptureImpl.prototype.setRecorderSound = function (recorderSound) {
             this.driver.openFile(null); //reset driveru
             if (this.recorderSound)
@@ -520,8 +540,8 @@ var Course;
             //this._myPage.result.userPending = true;
             //CourseMeta.lib.saveProduct($.noop);
             //angularJS
-            if (this._myPage.blendedPageCallback)
-                this._myPage.blendedPageCallback.onRecorder(this._myPage, this.result.recordedMilisecs);
+            if (this.blended)
+                this.blended.recorder.onRecorder(this._myPage, this.result.recordedMilisecs);
             //var us = <blended.IPersistNodeItem<blended.IExShort>>(this._myPage.result.userData['']);
             //us.modified = true;
             //if (!us.short.sumRecord) us.short.sumRecord = 0;
@@ -542,8 +562,8 @@ var Course;
                     _this.blendedCallbackMax = Math.max(_this.blendedCallbackMax, msec);
                 }
                 else {
-                    if (_this._myPage.blendedPageCallback)
-                        _this._myPage.blendedPageCallback.onPlayRecorder(_this._myPage, _this.blendedCallbackMax);
+                    if (_this.blended)
+                        _this.blended.recorder.onPlayRecorder(_this._myPage, _this.blendedCallbackMax);
                 }
                 _this.playing(msec >= 0);
             });
@@ -685,8 +705,8 @@ var Course;
                 self.onPlaying(interv, msec < begPos ? begPos : msec /*pri zacatku hrani muze byt notifikovana pozice kousek pred zacatkem*/, progressType.progress);
             }).
                 done(function () {
-                if (_this._myPage.blendedPageCallback)
-                    _this._myPage.blendedPageCallback.onPlayed(_this._myPage, _this.blendedCallbackMax - begPos);
+                if (_this.blended)
+                    _this.blended.recorder.onPlayed(_this._myPage, _this.blendedCallbackMax - begPos);
                 //var us = <blended.IPersistNodeItem<blended.IExShort>>(this._myPage.result.userData['']);
                 //us.modified = true;
                 //if (!us.short.sumPlay) us.short.sumPlay = 0;

@@ -1,8 +1,10 @@
-﻿
-Lesson exercise:
-- cviceni pouze s Recorderem - nechape se jako aktivni ale jen pasivni.
-- reset cviceni, reset lekce
+﻿Excel exports
+Vyhodnoceni testů
+Barvicky v kontrolkach dialogu
+texty do potvrzovacich dialogu
 
+Lesson exercise:
+- reset cviceni, reset lekce
 
 Cache:
 - cviceni i modul nejsou pod produktem ale mimo nej (neobsahuji user data, jsou spolecna pro vice users)

@@ -1,7 +1,7 @@
 ﻿module blended {
 
-  export enum exItemBackground { no, warning, success }
-  export enum exItemContent { no, check, folderOpen, folder, progressBar }
+  export enum exItemBackground { no, warning, success, danger }
+  export enum exItemContent { no, check, folderOpen, folder, progressBar, waitForEvaluation }
 
   export interface IExItemProxy {
     node: CourseMeta.data;
@@ -12,11 +12,12 @@
     percent?: number; //pro status==doneActive: procento vyhodnoceni
     background?: exItemBackground;
     content?: exItemContent;
+    waitForEvaluation?: boolean;
   }
 
   export class moduleServiceLow {
     node: CourseMeta.data;
-    user: IExShort;
+    user: IExShortAgreg;
     controller: controller;
     lessonType: moduleServiceType;
     exercises: Array<IExItemProxy>; //info o vsech cvicenich modulu
@@ -63,13 +64,13 @@
     refresh(actExIdx: number) {
       super.refresh(actExIdx);
       this.moduleDone = this.user && this.user.done;
-      this.exNoclickable = this.lessonType == moduleServiceType.test && !this.moduleDone;
+      this.exNoclickable = this.lessonType == moduleServiceType.test && !this.moduleDone && !this.controller.ctx.onbehalfof;
       _.each(this.exercises, ex => {
         //active item: stejny pro vsechny pripady
         if (ex.active) { ex.content = exItemContent.folderOpen; ex.background = exItemBackground.warning; return; }
         var exDone = ex.user && ex.user.done;
         //nehotovy test
-        if (this.lessonType == moduleServiceType.test && !this.moduleDone) {
+        if (this.lessonType == moduleServiceType.test && !this.moduleDone && !this.controller.ctx.onbehalfof) {
           ex.content = exDone ? exItemContent.check : exItemContent.folder;
           return;
         }
@@ -77,9 +78,10 @@
         if (!exDone) //nehotove cviceni
           ex.content = exItemContent.folder;
         else if (ex.user.ms) { //vyhodnotitelne cviceni
-          ex.content = exItemContent.progressBar;
+          var waitForEval = waitForEvaluation(ex.user);
+          ex.content = waitForEval ? exItemContent.waitForEvaluation : exItemContent.progressBar;
           ex.percent = scorePercent(ex.user);
-          ex.background = exItemBackground.success;
+          ex.background = waitForEval && this.controller.ctx.onbehalfof ? exItemBackground.danger : exItemBackground.success;
         } else { //nevyhodnotitelne cviceni
           ex.background = exItemBackground.success; ex.content = exItemContent.check;
         }

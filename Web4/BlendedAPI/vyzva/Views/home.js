@@ -23,6 +23,7 @@ var vyzva;
         leftMarkTypes[leftMarkTypes["active"] = 1] = "active";
         leftMarkTypes[leftMarkTypes["pretestLevel"] = 2] = "pretestLevel";
         leftMarkTypes[leftMarkTypes["progress"] = 3] = "progress";
+        leftMarkTypes[leftMarkTypes["waitForEvaluation"] = 4] = "waitForEvaluation";
     })(vyzva.leftMarkTypes || (vyzva.leftMarkTypes = {}));
     var leftMarkTypes = vyzva.leftMarkTypes;
     //****************** VIEW
@@ -57,15 +58,16 @@ var vyzva;
                 }
                 res.status = !res.user ? homeLessonStates.no : (res.user.done ? homeLessonStates.done : homeLessonStates.entered);
                 //lesson nejde spustit
-                res.cannotRun = _this.ctx.onbehalfof && res.lessonType != blended.moduleServiceType.lesson && res.status != homeLessonStates.done;
+                //res.cannotRun = this.ctx.onbehalfof && res.lessonType != blended.moduleServiceType.lesson && res.status != homeLessonStates.done;
                 //rightButtonType management: vsechny nehotove dej RUN a ev. nastav index prvniho nehotoveho check testu
                 if (res.lessonType != blended.moduleServiceType.pretest)
                     res.rightButtonType = res.status == homeLessonStates.done ? rightButtonTypes.preview : rightButtonTypes.run;
                 if (!firstNotDoneCheckTestIdx && res.lessonType == blended.moduleServiceType.test && res.status != homeLessonStates.done)
                     firstNotDoneCheckTestIdx = idx;
                 //left mark
-                if (res.user && res.user.done)
-                    res.leftMarkType = res.lessonType == blended.moduleServiceType.pretest ? leftMarkTypes.pretestLevel : leftMarkTypes.progress;
+                if (res.user && res.user.done) {
+                    res.leftMarkType = res.lessonType == blended.moduleServiceType.pretest ? leftMarkTypes.pretestLevel : (res.user.waitForEvaluation ? leftMarkTypes.waitForEvaluation : leftMarkTypes.progress);
+                }
                 return res;
             };
             this.lessons = [pretestItem = fromNode(this.myTask.dataNode.pretest, 0)];
@@ -94,8 +96,7 @@ var vyzva;
         }
         homeViewController.prototype.navigateLesson = function (lesson) {
             var _this = this;
-            if (lesson.cannotRun)
-                return;
+            //if (lesson.cannotRun) return;
             var service = {
                 params: lesson.lessonType == blended.moduleServiceType.pretest ?
                     blended.cloneAndModifyContext(this.ctx, function (d) { return d.pretesturl = blended.encodeUrl(_this.myTask.dataNode.pretest.url); }) :

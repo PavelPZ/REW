@@ -529,6 +529,7 @@ namespace Packager {
 
       "blendedapi/vyzva/views/lector/eval.js",
       "blendedapi/vyzva/views/lector/_tabs.js",
+      "courses/angularjs/angularjs.js",
 
       "blendedapi/vyzva/app.js",
       "blendedapi/app.js",

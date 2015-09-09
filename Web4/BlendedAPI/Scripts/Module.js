@@ -10,6 +10,7 @@ var blended;
         exItemBackground[exItemBackground["no"] = 0] = "no";
         exItemBackground[exItemBackground["warning"] = 1] = "warning";
         exItemBackground[exItemBackground["success"] = 2] = "success";
+        exItemBackground[exItemBackground["danger"] = 3] = "danger";
     })(blended.exItemBackground || (blended.exItemBackground = {}));
     var exItemBackground = blended.exItemBackground;
     (function (exItemContent) {
@@ -18,6 +19,7 @@ var blended;
         exItemContent[exItemContent["folderOpen"] = 2] = "folderOpen";
         exItemContent[exItemContent["folder"] = 3] = "folder";
         exItemContent[exItemContent["progressBar"] = 4] = "progressBar";
+        exItemContent[exItemContent["waitForEvaluation"] = 5] = "waitForEvaluation";
     })(blended.exItemContent || (blended.exItemContent = {}));
     var exItemContent = blended.exItemContent;
     var moduleServiceLow = (function () {
@@ -62,7 +64,7 @@ var blended;
             var _this = this;
             _super.prototype.refresh.call(this, actExIdx);
             this.moduleDone = this.user && this.user.done;
-            this.exNoclickable = this.lessonType == blended.moduleServiceType.test && !this.moduleDone;
+            this.exNoclickable = this.lessonType == blended.moduleServiceType.test && !this.moduleDone && !this.controller.ctx.onbehalfof;
             _.each(this.exercises, function (ex) {
                 //active item: stejny pro vsechny pripady
                 if (ex.active) {
@@ -72,7 +74,7 @@ var blended;
                 }
                 var exDone = ex.user && ex.user.done;
                 //nehotovy test
-                if (_this.lessonType == blended.moduleServiceType.test && !_this.moduleDone) {
+                if (_this.lessonType == blended.moduleServiceType.test && !_this.moduleDone && !_this.controller.ctx.onbehalfof) {
                     ex.content = exDone ? exItemContent.check : exItemContent.folder;
                     return;
                 }
@@ -80,9 +82,10 @@ var blended;
                 if (!exDone)
                     ex.content = exItemContent.folder;
                 else if (ex.user.ms) {
-                    ex.content = exItemContent.progressBar;
+                    var waitForEval = blended.waitForEvaluation(ex.user);
+                    ex.content = waitForEval ? exItemContent.waitForEvaluation : exItemContent.progressBar;
                     ex.percent = blended.scorePercent(ex.user);
-                    ex.background = exItemBackground.success;
+                    ex.background = waitForEval && _this.controller.ctx.onbehalfof ? exItemBackground.danger : exItemBackground.success;
                 }
                 else {
                     ex.background = exItemBackground.success;

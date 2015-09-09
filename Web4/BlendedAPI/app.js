@@ -37,6 +37,9 @@ var blended;
     blended.OldController = OldController;
     blended.prodStates = {};
     blended.root = new Module();
+    blended.rootScope;
+    blended.templateCache;
+    blended.compile;
     blended.rootModule
         .directive('lmInclude', function () {
         return {
@@ -45,7 +48,10 @@ var blended;
         };
     })
         .run(vyzva.initVyzvaApp)
-        .run(['$rootScope', '$location', function ($rootScope, $location) {
+        .run(['$rootScope', '$location', '$templateCache', '$compile', function ($rootScope, $location, $templateCache, $compile) {
+            blended.rootScope = $rootScope;
+            blended.templateCache = $templateCache;
+            blended.compile = $compile;
             $rootScope.$on('$locationChangeStart', function (event, newUrl, oldUrl, newState, oldState) {
                 if (Pager.angularJS_OAuthLogin(location.hash, function () { return Pager.gotoHomeUrl(); }))
                     event.preventDefault();
@@ -75,7 +81,9 @@ var blended;
                 name: 'pg',
                 url: '/pg',
                 abstract: true,
-                template: "<div data-ui-view></div>",
+                //template: "<div data-ui-view></div>",
+                //***** preload common templates
+                templateUrl: blended.baseUrlRelToRoot + '/courses/angularjs/angularjs.html',
                 resolve: {
                     checkOldApplicationStart: checkOldApplicationStart //ceka se na dokonceni inicalizace nasi technologie
                 }
