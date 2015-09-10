@@ -263,15 +263,8 @@
     <None Include="BlendedAPI\Styles\other.less" />
     <None Include="BlendedAPI\Styles\topbar.less" />
     <Content Include="BlendedAPI\Todo.txt" />
-    <Content Include="BlendedAPI\views\exercise.html" />
-    <Content Include="BlendedAPI\vyzva\Views\exercise\moduleMap.html" />
-    <Content Include="BlendedAPI\vyzva\Views\exercise\instruction.html" />
     <Content Include="BlendedAPI\vyzva\Views\lector.html" />
-    <Content Include="BlendedAPI\vyzva\Views\lector\_tabs.html" />
-    <Content Include="BlendedAPI\vyzva\Views\lector\eval.html" />
     <Content Include="BlendedAPI\vyzva\Views\managerSchool.html" />
-    <Content Include="BlendedAPI\vyzva\Views\toolbar\Run.html" />
-    <Content Include="BlendedAPI\vyzva\Views\toolbar\Module.html" />
     <Content Include="BlendedAPI\vyzva\Views\module.html" />
     <Content Include="BlendedAPI\vyzva\Views\pretest.html" />
     <Content Include="BlendedAPI\vyzva\Views\exercise.html" />
@@ -1382,20 +1375,13 @@
     <TypeScriptCompile Include="BlendedAPI\vyzva\Scripts\Intranet.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Scripts\Lib.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Tasks.ts" />
-    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\exercise\moduleMap.ts" />
-    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\exercise\instruction.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\lector\_tabs.ts" />
-    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\toolbar\Run.ts" />
-    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\toolbar\Module.ts" />
-    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\home\lesson.ts" />
-    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\lector\eval.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\managerSchool.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\module.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\exercise.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\lector.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\pretest.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\home.ts" />
-    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\home\pretestItem.ts" />
     <TypeScriptCompile Include="BS3\js\bootstrap.d.ts" />
     <TypeScriptCompile Include="Courses\angularJS\angularjs.ts" />
     <TypeScriptCompile Include="Courses\codes\chinhSpeaking.ts" />
@@ -2772,6 +2758,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="BlendedAPI\views\" />
     <Folder Include="BlendedAPI\vyzva\Pages\" />
     <Folder Include="BS3\css\" />
     <Folder Include="ClientBin\" />

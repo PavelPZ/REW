@@ -1,0 +1,12 @@
+﻿Schools/SLExtension.xap
+jslib/js/lmconsoleinit.js
+jslib/ea/ea.css
+blendedapi/styles/style.less
+blendedapi/styles/img/lm-logo-black.png
+blendedapi/vyzva/views/pretest.html
+blendedapi/vyzva/views/module.html
+blendedapi/vyzva/views/managerschool.html
+blendedapi/vyzva/views/lector.html
+blendedapi/vyzva/views/home.html
+blendedapi/vyzva/views/exercise.html
+blendedapi/vyzva/views/_pagetemplate.html

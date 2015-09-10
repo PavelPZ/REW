@@ -10826,16 +10826,6 @@ var vyzva;
 })(vyzva || (vyzva = {}));
 
 
-//module vyzva {
-//  export interface IToolbarModule {
-//    tbClick();
-//    tbSkipClick();
-//    tbFinishClick();
-//    tbTitle:string;
-//  }
-//} 
-
-
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -11107,7 +11097,8 @@ var vyzva;
         __extends(lectorViewBase, _super);
         function lectorViewBase($scope, $state) {
             _super.call(this, $scope, $state);
-            this.title = 'Studijní skupina ' + this.lectorParent.lectorGroup.title;
+            //this.title = 'Studijní skupina ' + this.lectorParent.lectorGroup.title;
+            this.title = this.lectorParent.lectorGroup.title;
             this.breadcrumb = this.breadcrumbBase();
             this.breadcrumb[this.breadcrumb.length - 1].active = true;
         }
@@ -11138,6 +11129,14 @@ var vyzva;
         return lectorViewController;
     })(lectorViewBase);
     vyzva.lectorViewController = lectorViewController;
+    //export class lectorEvalController extends lectorViewBase {
+    //  constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
+    //    super($scope, $state);
+    //    this.tabIdx = 1;
+    //    this.breadcrumb = this.breadcrumbBase();
+    //    this.breadcrumb.push({ title: getLectorTabs()[this.tabIdx].shortTitle, active: true });
+    //  }
+    //}
     blended.rootModule
         .directive('vyzva$lector$user', function () {
         return {
@@ -11336,100 +11335,6 @@ var vyzva;
     });
 })(vyzva || (vyzva = {}));
 
-//module vyzva {
-//  blended.rootModule
-//    .directive('vyzva$home$pretest', () => new homePretest())
-//  ;
-//  export class homePretest {
-//    link = (scope, el: ng.IAugmentedJQuery) => {
-//      //scope = { ts: '&ts' }; dole znamena, ze v parametr TS direktivy ae chape jako readonly odkaz na homeTaskController
-//      var ts = <homeTaskController>(scope.ts());
-//      var prUd = blended.getPersistData<blended.IPretestUser>(ts.dataNode.pretest, ts.ctx.taskid);
-//      scope.run = () => {
-//        ts.child = new blended.pretestTaskController({
-//          params: blended.cloneAndModifyContext(ts.ctx, d => d.pretesturl = blended.encodeUrl(ts.dataNode.pretest.url)),
-//          current: stateNames.pretestTask,
-//          parent: ts,
-//          createMode: blended.createControllerModes.adjustChild
-//        });
-//        var url = ts.child.goCurrent();
-//        ts.navigate(url);
-//      };
-//      scope.canRun = !prUd || !prUd.done;
-//      scope.btnTitle = !prUd ? 'Začněte spuštěním Rozřazovacího testu' : 'Dokončete Rozřazovací test';
-//      scope.targetLevel = prUd ? prUd.targetLevel : -1;
-//      scope.previewUrl = stateNames.pretest.name;
-//    }
-//    //templateUrl = blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/home/pretestItem.html';
-//    templateUrl = 'vyzva$home$pretest.html';
-//    scope = { ts: '&ts', api:'&api'};
-//  }
-//} 
-
-//module vyzva {
-//  blended.rootModule
-//    .directive('vyzva$home$lesson', () => new homeLesson())
-//    .directive('vyzva$home$test', () => new homeLesson())
-//  ;
-//  export class homeLesson { //implements ILearnPlanLesson{
-//    link = (scope: IHomeLessonScope, el: ng.IAugmentedJQuery) => {
-//      var ts = scope.ts();
-//      var lesson = scope.lesson();
-//      var service: blended.IStateService = {
-//        params: blended.cloneAndModifyContext(ts.ctx, d => d.moduleurl = blended.encodeUrl(lesson.node.url)),
-//        current: lesson.isTest ? stateNames.moduleTestTask : stateNames.moduleLessonTask,
-//        parent: ts,
-//        createMode: blended.createControllerModes.adjustChild
-//      };
-//      scope.run = () => {
-//        ts.child = new moduleTaskController(service);
-//        var url = ts.child.goCurrent();
-//        ts.navigate(url);
-//      };
-//    }
-//    templateUrl = 'vyzva$home$lesson.html';
-//    scope = { lesson: '&lesson', api: "&api", ts:'&ts' };
-//  }
-//  export interface IHomeLessonScope extends ng.IScope {
-//    lesson(): ILearnPlanLesson;
-//    api(): globalApi;
-//    run: () => void;
-//    ts: () => homeTaskController;
-//  }
-//} 
-
-//module vyzva {
-//  blended.rootModule
-//    .directive('vyzva$exercise$instruction', () => new exerciseInstruction())
-//  ;
-//  export class exerciseInstruction { 
-//    templateUrl = vyzvaRoot + 'views/exercise/instruction.html';
-//    scope = { user: '&user', doReset: '&doReset', data: '&instructionData', state: '&state' };
-//  }
-//} 
-
-
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-var vyzva;
-(function (vyzva) {
-    var lectorEvalController = (function (_super) {
-        __extends(lectorEvalController, _super);
-        function lectorEvalController($scope, $state) {
-            _super.call(this, $scope, $state);
-            this.tabIdx = 1;
-            this.breadcrumb = this.breadcrumbBase();
-            this.breadcrumb.push({ title: vyzva.getLectorTabs()[this.tabIdx].shortTitle, active: true });
-        }
-        return lectorEvalController;
-    })(vyzva.lectorViewBase);
-    vyzva.lectorEvalController = lectorEvalController;
-})(vyzva || (vyzva = {}));
-
 var vyzva;
 (function (vyzva) {
     blended.rootModule
@@ -11447,7 +11352,7 @@ var vyzva;
                     doNavigate(tab.stateName);
                 };
             };
-            this.templateUrl = vyzva.vyzvaRoot + 'views/lector/_tabs.html';
+            this.templateUrl = 'vyzva$lector$tabs.html';
             this.scope = { doNavigate: '&doNavigate', actIdx: '&actIdx', longTitle: '&longTitle' };
         }
         return lectorTabs;
@@ -11463,59 +11368,7 @@ var vyzva;
     vyzva.getLectorTabs = getLectorTabs;
 })(vyzva || (vyzva = {}));
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-var angular$course;
-(function (angular$course) {
-    ko.bindingHandlers['angularjs'] = {
-        init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-            var directiveName = valueAccessor();
-            var el = angular.element('<' + directiveName + '/>');
-            $(element).append(el);
-            var compiled = blended.compile(el);
-            var ctrl = bindingContext.$data;
-            var exService = (ctrl._myPage.blendedExtension);
-            var scope = blended.rootScope.$new(); //true, rootScope);
-            scope.ctrl = ctrl;
-            scope.exService = exService;
-            compiled(scope);
-            //scope.$apply();
-        },
-    };
-    var controller = (function () {
-        function controller($scope) {
-            $scope.ts = this;
-            this.ctrl = $scope.ctrl;
-            this.exService = $scope.exService;
-        }
-        return controller;
-    })();
-    //********************** audiocapture$humaneval
-    var audiocapture$humaneval = (function (_super) {
-        __extends(audiocapture$humaneval, _super);
-        function audiocapture$humaneval($scope) {
-            _super.call(this, $scope);
-        }
-        audiocapture$humaneval.prototype.visible = function () { return this.exService.isLector && this.exService.isTest; };
-        return audiocapture$humaneval;
-    })(controller);
-    //Direktiva vznika v:
-    //- kodu D:\LMCom\REW\Web4\BlendedAPI\app.ts, ko.bindingHandlers['angularjs']
-    //- datech napr. D:\LMCom\REW\Web4\Courses\Media.html
-    blended.rootModule.directive('course$audiocapture$humaneval', function () {
-        return {
-            restrict: 'E',
-            controller: audiocapture$humaneval,
-            templateUrl: 'course$audiocapture$humaneval.html'
-        };
-    });
-})(angular$course || (angular$course = {}));
-
-var __extends = (this && this.__extends) || function (d, b) {
+  var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
@@ -11634,13 +11487,6 @@ var vyzva;
                                     url: "/home",
                                     controller: vyzva.lectorViewController,
                                     layoutContentId: 'lector',
-                                    templateUrl: pageTemplate,
-                                }),
-                                vyzva.stateNames.lectorEval = new state({
-                                    name: 'eval',
-                                    url: "/eval",
-                                    controller: vyzva.lectorEvalController,
-                                    layoutContentId: 'lector/eval',
                                     templateUrl: pageTemplate,
                                 }),
                             ]
@@ -11871,9 +11717,9 @@ var blended;
                 name: 'pg',
                 url: '/pg',
                 abstract: true,
-                //template: "<div data-ui-view></div>",
+                template: "<div data-ui-view></div>",
                 //***** preload common templates
-                templateUrl: blended.baseUrlRelToRoot + '/courses/angularjs/angularjs.html',
+                //templateUrl: blended.baseUrlRelToRoot + '/courses/angularjs/angularjs.html',
                 resolve: {
                     checkOldApplicationStart: checkOldApplicationStart //ceka se na dokonceni inicalizace nasi technologie
                 }

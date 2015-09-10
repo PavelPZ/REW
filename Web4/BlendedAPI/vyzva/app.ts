@@ -143,13 +143,13 @@ module vyzva {
                   layoutContentId: 'lector',
                   templateUrl: pageTemplate,
                 }),
-                stateNames.lectorEval = new state({
-                  name: 'eval',
-                  url: "/eval",
-                  controller: lectorEvalController,
-                  layoutContentId: 'lector/eval',
-                  templateUrl: pageTemplate,
-                }),
+                //stateNames.lectorEval = new state({
+                //  name: 'eval',
+                //  url: "/eval",
+                //  controller: lectorEvalController,
+                //  layoutContentId: 'lector/eval',
+                //  templateUrl: pageTemplate,
+                //}),
               ]
             }),
             stateNames.pretestTask = new state({

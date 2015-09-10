@@ -1,5 +1,12 @@
 ﻿namespace vyzva {
 
+  export interface IToolbarRun {
+    tbClick();
+    tbNavigateProductHome();
+    tbTitle: string;
+    tbDoneTitle: string;
+  }
+
   export class moduleTaskController extends blended.moduleTaskController {
     //constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService) {
     //  super($scope, $state);

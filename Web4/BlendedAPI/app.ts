@@ -103,9 +103,9 @@
         name: 'pg',
         url: '/pg',
         abstract: true,
-        //template: "<div data-ui-view></div>",
+        template: "<div data-ui-view></div>",
         //***** preload common templates
-        templateUrl: blended.baseUrlRelToRoot + '/courses/angularjs/angularjs.html',
+        //templateUrl: blended.baseUrlRelToRoot + '/courses/angularjs/angularjs.html',
         resolve: {
           checkOldApplicationStart: checkOldApplicationStart //ceka se na dokonceni inicalizace nasi technologie
         }

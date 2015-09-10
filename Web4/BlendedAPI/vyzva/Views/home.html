@@ -18,6 +18,14 @@
 
 <div ng-click="::ts.debugClearProduct()">del</div>
 
+<div class="alert alert-success lm-bottom-margin" ng-if="::ts.ctx.onbehalfof">
+  TODO Popis<br />
+  - nyní vidím výsledky studenta<br />
+  - jeho jméno a příjmení je vpravo nahoře<br />
+  - návrat pod "svůj" účet je vlevo nahoře<br />
+  - mám zde možnost nejenom prohlížet ale i hodnotit Kontrolní testy.
+</div>
+
 <div class="panel panel-primary lm-top-margin home-course" ng-if="::ts.myTask.isStudent" ng-controller="collapsable as homecollapsable">
   <div class="panel-heading" ng-click="homecollapsable.isCollapsed = !homecollapsable.isCollapsed">
     <h3>
