@@ -168,7 +168,7 @@ var blended;
                     if (ctx.finishProduct)
                         ctx.finishProduct(prod);
                     //user data
-                    proxies.vyzva57services.getShortProductDatas(ctx.companyid, ctx.loginid, ctx.productUrl, function (res) {
+                    proxies.vyzva57services.getShortProductDatas(ctx.companyid, ctx.userDataId(), ctx.productUrl, function (res) {
                         _.each(res, function (it) {
                             var node = prod.nodeDir[it.url];
                             if (!node)
@@ -254,7 +254,7 @@ var blended;
             }
             //data != null => ihned vrat. Jinak startReading!=null => spust nacitani, jinak ukonci.
             cacheOfProducts.prototype.fromCache = function (ctx, defered) {
-                var resIt = _.find(this.products, function (it) { return it.companyid == ctx.companyid && it.onbehalfof == ctx.onbehalfof || ctx.loginid &&
+                var resIt = _.find(this.products, function (it) { return it.companyid == ctx.companyid && it.onbehalfof == ctx.userDataId() &&
                     it.loc == ctx.loc && it.producturl == ctx.producturl; });
                 //jiz nacteno nebo neni defered => return
                 if (resIt && resIt.data)
@@ -282,7 +282,7 @@ var blended;
                 }
                 var res;
                 this.products.push(res = {
-                    companyid: ctx.companyid, loc: ctx.loc, producturl: ctx.producturl, onbehalfof: ctx.onbehalfof || ctx.loginid,
+                    companyid: ctx.companyid, loc: ctx.loc, producturl: ctx.producturl, onbehalfof: ctx.userDataId(),
                     data: null, insertOrder: this.maxInsertOrder++, taskid: null, loginid: -1, lickeys: null, persistence: null
                 });
                 return res;

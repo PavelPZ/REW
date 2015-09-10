@@ -2709,6 +2709,12 @@ input {
   min-height: 1px;
 }
 /********************** MEDIA ***********************/
+/*@oli-dialog-a: #A6D711;
+@oli-dialog-b: #FDAC19;
+@oli-dialog-c: #B9DEFA;
+@oli-dialog-d: #FF575E;
+@oli-dialog-e: #9382FF;
+@oli-dialog-f: #E3B8F8;*/
 .oli-sent {
   cursor: pointer;
   padding: 3px 0;
@@ -2888,68 +2894,68 @@ input {
   margin-left: 17px;
 }
 .oli-replica.a {
-  background-color: #a6d711;
-  border-color: #a6d711;
+  background-color: #b1f1b4;
+  border-color: #b1f1b4;
 }
 .oli-replica.a.dlg-left:before {
-  border-right-color: #a6d711;
+  border-right-color: #b1f1b4;
 }
 .oli-replica.a.dlg-right:before {
-  border-left-color: #a6d711;
+  border-left-color: #b1f1b4;
 }
 .oli-replica.a.dlg-left:before {
-  border-right-color: #a6d711;
+  border-right-color: #b1f1b4;
 }
 .oli-replica.a.dlg-right:before {
-  border-left-color: #a6d711;
+  border-left-color: #b1f1b4;
 }
 .oli-replica.a.active {
-  background-color: #82a80d;
-  border-color: #82a80d;
+  background-color: #86e98a;
+  border-color: #86e98a;
 }
 .oli-replica.a.active.dlg-left:before {
-  border-right-color: #82a80d;
+  border-right-color: #86e98a;
 }
 .oli-replica.a.active.dlg-right:before {
-  border-left-color: #82a80d;
+  border-left-color: #86e98a;
 }
 .oli-replica.a.active.dlg-left:before {
-  border-right-color: #82a80d;
+  border-right-color: #86e98a;
 }
 .oli-replica.a.active.dlg-right:before {
-  border-left-color: #82a80d;
+  border-left-color: #86e98a;
 }
 .oli-replica.b {
-  background-color: #fdac19;
-  border-color: #fdac19;
+  background-color: #ffdbb7;
+  border-color: #ffdbb7;
 }
 .oli-replica.b.dlg-left:before {
-  border-right-color: #fdac19;
+  border-right-color: #ffdbb7;
 }
 .oli-replica.b.dlg-right:before {
-  border-left-color: #fdac19;
+  border-left-color: #ffdbb7;
 }
 .oli-replica.b.dlg-left:before {
-  border-right-color: #fdac19;
+  border-right-color: #ffdbb7;
 }
 .oli-replica.b.dlg-right:before {
-  border-left-color: #fdac19;
+  border-left-color: #ffdbb7;
 }
 .oli-replica.b.active {
-  background-color: #e19202;
-  border-color: #e19202;
+  background-color: #ffc284;
+  border-color: #ffc284;
 }
 .oli-replica.b.active.dlg-left:before {
-  border-right-color: #e19202;
+  border-right-color: #ffc284;
 }
 .oli-replica.b.active.dlg-right:before {
-  border-left-color: #e19202;
+  border-left-color: #ffc284;
 }
 .oli-replica.b.active.dlg-left:before {
-  border-right-color: #e19202;
+  border-right-color: #ffc284;
 }
 .oli-replica.b.active.dlg-right:before {
-  border-left-color: #e19202;
+  border-left-color: #ffc284;
 }
 .oli-replica.c {
   background-color: #b9defa;
@@ -2984,100 +2990,100 @@ input {
   border-left-color: #89c8f7;
 }
 .oli-replica.d {
-  background-color: #ff575e;
-  border-color: #ff575e;
+  background-color: #ffff84;
+  border-color: #ffff84;
 }
 .oli-replica.d.dlg-left:before {
-  border-right-color: #ff575e;
+  border-right-color: #ffff84;
 }
 .oli-replica.d.dlg-right:before {
-  border-left-color: #ff575e;
+  border-left-color: #ffff84;
 }
 .oli-replica.d.dlg-left:before {
-  border-right-color: #ff575e;
+  border-right-color: #ffff84;
 }
 .oli-replica.d.dlg-right:before {
-  border-left-color: #ff575e;
+  border-left-color: #ffff84;
 }
 .oli-replica.d.active {
-  background-color: #ff242d;
-  border-color: #ff242d;
+  background-color: #ffff51;
+  border-color: #ffff51;
 }
 .oli-replica.d.active.dlg-left:before {
-  border-right-color: #ff242d;
+  border-right-color: #ffff51;
 }
 .oli-replica.d.active.dlg-right:before {
-  border-left-color: #ff242d;
+  border-left-color: #ffff51;
 }
 .oli-replica.d.active.dlg-left:before {
-  border-right-color: #ff242d;
+  border-right-color: #ffff51;
 }
 .oli-replica.d.active.dlg-right:before {
-  border-left-color: #ff242d;
+  border-left-color: #ffff51;
 }
 .oli-replica.e {
-  background-color: #9382ff;
-  border-color: #9382ff;
+  background-color: #dad5ff;
+  border-color: #dad5ff;
 }
 .oli-replica.e.dlg-left:before {
-  border-right-color: #9382ff;
+  border-right-color: #dad5ff;
 }
 .oli-replica.e.dlg-right:before {
-  border-left-color: #9382ff;
+  border-left-color: #dad5ff;
 }
 .oli-replica.e.dlg-left:before {
-  border-right-color: #9382ff;
+  border-right-color: #dad5ff;
 }
 .oli-replica.e.dlg-right:before {
-  border-left-color: #9382ff;
+  border-left-color: #dad5ff;
 }
 .oli-replica.e.active {
-  background-color: #674fff;
-  border-color: #674fff;
+  background-color: #ada2ff;
+  border-color: #ada2ff;
 }
 .oli-replica.e.active.dlg-left:before {
-  border-right-color: #674fff;
+  border-right-color: #ada2ff;
 }
 .oli-replica.e.active.dlg-right:before {
-  border-left-color: #674fff;
+  border-left-color: #ada2ff;
 }
 .oli-replica.e.active.dlg-left:before {
-  border-right-color: #674fff;
+  border-right-color: #ada2ff;
 }
 .oli-replica.e.active.dlg-right:before {
-  border-left-color: #674fff;
+  border-left-color: #ada2ff;
 }
 .oli-replica.f {
-  background-color: #e3b8f8;
-  border-color: #e3b8f8;
+  background-color: #ffc1c1;
+  border-color: #ffc1c1;
 }
 .oli-replica.f.dlg-left:before {
-  border-right-color: #e3b8f8;
+  border-right-color: #ffc1c1;
 }
 .oli-replica.f.dlg-right:before {
-  border-left-color: #e3b8f8;
+  border-left-color: #ffc1c1;
 }
 .oli-replica.f.dlg-left:before {
-  border-right-color: #e3b8f8;
+  border-right-color: #ffc1c1;
 }
 .oli-replica.f.dlg-right:before {
-  border-left-color: #e3b8f8;
+  border-left-color: #ffc1c1;
 }
 .oli-replica.f.active {
-  background-color: #d18af3;
-  border-color: #d18af3;
+  background-color: #ff8e8e;
+  border-color: #ff8e8e;
 }
 .oli-replica.f.active.dlg-left:before {
-  border-right-color: #d18af3;
+  border-right-color: #ff8e8e;
 }
 .oli-replica.f.active.dlg-right:before {
-  border-left-color: #d18af3;
+  border-left-color: #ff8e8e;
 }
 .oli-replica.f.active.dlg-left:before {
-  border-right-color: #d18af3;
+  border-right-color: #ff8e8e;
 }
 .oli-replica.f.active.dlg-right:before {
-  border-left-color: #d18af3;
+  border-left-color: #ff8e8e;
 }
 /********************** RADIO BUTTON ***********************/
 .oli-radiobutton .content {

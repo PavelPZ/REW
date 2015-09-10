@@ -14,7 +14,7 @@ var vyzva;
             this.groups = [];
             this.company = intranetInfo ? intranetInfo.companyData : null;
             this.breadcrumb = vyzva.breadcrumbBase(this, true);
-            this.breadcrumb.push({ title: this.title = 'Správa studijních skupin a lektorů', active: true });
+            this.breadcrumb.push({ title: this.title = 'Správa Studijních skupin a Učitelů', active: true });
             if (this.company) {
                 this.wizzardStep = 2;
                 return;
@@ -98,13 +98,13 @@ var vyzva;
     })
         .directive('vyzva$managerschool$usekey', function () {
         return {
-            scope: { item: '&item', },
+            scope: { item: '&item' },
             templateUrl: 'vyzva$managerschool$usekey.html'
         };
     })
         .directive('vyzva$managerchool$usekeys', function () {
         return {
-            scope: { items: '&items', },
+            scope: { items: '&items', for: '&for' },
             templateUrl: 'vyzva$managerchool$usekeys.html'
         };
     });

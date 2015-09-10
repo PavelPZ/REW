@@ -51,7 +51,7 @@ var blended;
                 st = st.parent;
             }
             this.$scope.state = this.state;
-            //this.parent = this.$scope.$parent['ts'];
+            this.$scope['appService'] = this.appService = new vyzva.appService(this);
         }
         controller.prototype.getStateService = function ($scope) { return !!$scope['current'] ? $scope : null; };
         controller.prototype.href = function (url) {

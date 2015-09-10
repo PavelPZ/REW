@@ -17,4 +17,17 @@
     return res;
   }
 
+  //services, spolecne pro Vyzva aplikaci. Jsou dostupne v scope.appService
+  export class appService {
+    constructor(public controller: blended.controller) {
+      this.home = <homeTaskController>(controller.productParent);
+    }
+    home: homeTaskController;
+
+    schoolUserInfo(lmcomId: number): vyzva.intranet.IAlocatedKey {
+      return this.home.intranetInfo.userInfo(lmcomId || this.controller.ctx.userDataId());
+    }
+
+  }
+
 }

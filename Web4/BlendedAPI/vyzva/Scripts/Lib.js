@@ -19,4 +19,16 @@ var vyzva;
         return res;
     }
     vyzva.breadcrumbBase = breadcrumbBase;
+    //services, spolecne pro Vyzva aplikaci. Jsou dostupne v scope.appService
+    var appService = (function () {
+        function appService(controller) {
+            this.controller = controller;
+            this.home = (controller.productParent);
+        }
+        appService.prototype.schoolUserInfo = function (lmcomId) {
+            return this.home.intranetInfo.userInfo(lmcomId || this.controller.ctx.userDataId());
+        };
+        return appService;
+    })();
+    vyzva.appService = appService;
 })(vyzva || (vyzva = {}));

@@ -1,15 +1,36 @@
-﻿<div class="panel panel-default lm-top-margin" ng-if="::ts.myTask.isLector">
+﻿<div class="alert alert-success lm-top-margin" ng-if="::ts.myTask.showLectorPart">
+
+  <div class="row">
+    <div class="col-sm-6">
+      <h4>Nápověda pro <i>Učitele</i></h4>
+      Klikněte na tlačítko <b>Studenti <i>Studijní skupiny</i></b> níže. To vám umožní:
+      <ul>
+        <li>přizvat <i>Studenty</i> k blended learning výuce</li>
+        <li>moci řídit výuku a prohlížet výsledky práce <i>Studentů</i></li>
+      </ul>
+    </div>
+    <div class="col-sm-6">
+      <h4>Vysvětlení pojmů:</h4>
+      <b><i>Student</i></b>: student nebo žák Vaší školy<br />
+      <b><i>Studující učitel</i></b>: učitel Vaší školy, který se bude sám vyučuje v rámci šablony č.3.<br />
+      <b><i>Učitel</i></b>: to jste Vy, který řídí výuku <i>Studentů</i> v rámci šablony č. 4.<br />
+      <b><i>Návštěvník</i></b>: kdokoliv, kdo si chce prohlédnout kurz, aniž by jeho výuka byla řízena <i>Učitelem</i><br />
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default lm-top-margin" ng-if="::ts.myTask.showLectorPart">
   <div class="panel-heading">
-    <h4>Moje studijní skupiny</h4>
+    <h4>Mnou spravované <i>Studijní skupiny</i></h4>
   </div>
   <div class="list-group">
     <a href="#" class="list-group-item" ng-repeat="group in ts.myTask.lectorGroups" ng-click="ts.gotoLector(group.groupId)">
       <div class="row">
         <div class="col-sm-10">
-          <h4 class="pull-left"><span class="flag-small" style="vertical-align:top" ng-class="group.line | lineIdsFlag"></span> {{::group.title}}</h4>
+          <h4><span class="flag-small" style="vertical-align:top" ng-class="group.line | lineIdsFlag"></span> {{::group.title}}</h4>
         </div>
-        <div class="col-sm-2 text-right">
-          <div class="btn btn-success ">Studenti <i class="fa fa-play"></i></div>
+        <div class="col-sm-2">
+          <div class="btn btn-success pull-right">Studenti <i>Studijní skupiny</i> <i class="fa fa-play"></i></div>
         </div>
       </div>
     </a>
@@ -26,7 +47,7 @@
   - mám zde možnost nejenom prohlížet ale i hodnotit Kontrolní testy.
 </div>
 
-<div class="panel panel-primary lm-top-margin home-course" ng-if="::ts.myTask.isStudent" ng-controller="collapsable as homecollapsable">
+<div class="panel panel-primary lm-top-margin home-course" ng-if="::ts.myTask.showStudentPart" ng-controller="collapsable as homecollapsable">
   <div class="panel-heading" ng-click="homecollapsable.isCollapsed = !homecollapsable.isCollapsed">
     <h3>
       <span ng-if="ts.lessons[0].status<=1">Rozřazovací test</span>
@@ -73,7 +94,6 @@
     <p>
       <button class="btn btn-success btn-lg" ng-disabled="::lesson.cannotRun" data-ng-click="::ts.navigateLesson(lesson)">
         Rozřazovací test
-        <!--{{::lesson.status==0 ? 'Začněte spuštěním testu' : 'Dokončete test'}}-->
       </button>
     </p>
     Rozřazovací test určí vaši jazykovou úroveň (A1, A2, B1 nabo B2), na základě které se zvolí odpovídající pokračování vašeho kurzu.

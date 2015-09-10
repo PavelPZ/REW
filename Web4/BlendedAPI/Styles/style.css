@@ -1,3 +1,8 @@
+.bl .primary {
+  color: white;
+  padding: 8px;
+  background-color: #337ab7;
+}
 .bl .container-fluid {
   padding: 0;
 }
@@ -23,12 +28,6 @@
 }
 .bl .lm-top-margin-lg {
   margin-top: 40px;
-}
-.bl .wizzard {
-  font-size: 110%;
-}
-.bl .wizzard td {
-  vertical-align: middle;
 }
 .bl h3 .flag-small {
   height: 22px;
@@ -93,6 +92,12 @@
 }
 .bl .position-relative {
   position: relative;
+}
+.bl .wizzard {
+  font-size: 110%;
+}
+.bl .wizzard td {
+  vertical-align: middle;
 }
 .bl .topbar {
   background-color: black;

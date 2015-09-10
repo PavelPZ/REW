@@ -3439,7 +3439,12 @@ var lmConsole;
             val = null;
         }
         val = val ? val + msg : msg;
-        localStorage.setItem(actName, val + '\r\n');
+        try {
+            localStorage.setItem(actName, val + '\r\n');
+        }
+        catch (msg) {
+            localStorage.clear();
+        }
     }
     function refreshNames() {
         names = getLogFiles();

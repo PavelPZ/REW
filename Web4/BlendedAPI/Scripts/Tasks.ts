@@ -39,6 +39,7 @@
     exParent: exerciseTaskViewController;
     lectorParent: vyzva.lectorController;
 
+    appService: Object;
     //pro (neabstraktni) view controllery
     title: string;
     breadcrumb: Array<breadcrumbItem>;
@@ -69,7 +70,8 @@
         st = st.parent;
       }
       this.$scope.state = this.state;
-      //this.parent = this.$scope.$parent['ts'];
+
+      this.$scope['appService'] = this.appService = new vyzva.appService(this);
     }
     static $inject = ['$scope', '$state'];
     getStateService($scope: ng.IScope | IStateService): IStateService { return !!$scope['current'] ? <IStateService>$scope : null; }

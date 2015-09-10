@@ -4,7 +4,12 @@
     //***************** globalni informace o firme, ulozene v databazi, tabulka Company
     export interface ICompanyData {
       managerKeys: Array<IAlocatedKey>;
+      visitorsKeys?: Array<IVisitors>; //licencni klice visitor studentuu k blended kurzu. Vidi je SPRAVCE na home spravcovske konzole. Visitors se napocitaji do skore, jsou pro navstevniky
       studyGroups: Array<IStudyGroup>; //studijni skupiny firmy
+    }
+    export interface IVisitors {
+      line: LMComLib.LineIds; //jazyk vyuky
+      visitorsKeys?: Array<IAlocatedKey>; //licencni klice visitor studentuu k blended kurzu. Vidi je LEKTOR na home kurzu. Visitors se napocitaji do skore, jsou pro navstevniky
     }
     export interface IStudyGroup {
       title: string;
@@ -25,10 +30,16 @@
     }
 
     //***************** odvozene informace, vhodne pro zobrazeni
-    export interface IAlocatedKeyRoot {
-      alocatedKeyInfos: Array<IAlocatedKeyInfo>; //dato, odvozene z companyData
-      companyData: ICompanyData;
-      jsonToSave: string; //null => nezmeneno
+    export class alocatedKeyRoot {
+      constructor(
+        public alocatedKeyInfos: Array<IAlocatedKeyInfo>, //dato, odvozene z companyData
+        public companyData: ICompanyData,
+        public userDir: { [lmcomid: string]: IAlocatedKey; },
+        public jsonToSave: string) { } //null => nezmeneno
+
+      userInfo(lmcomId: number): IAlocatedKey {
+        return this.userDir[lmcomId.toString()];
+      }
     }
     export interface IAlocatedKeyInfo {
       key: IAlocatedKey;
@@ -51,8 +62,7 @@
       //students keys: pro kazdou line a group a pocet
       var lineGroups = _.groupBy(groups, g => g.line);
       _.each(lineGroups, (lineGroup, line) => {
-        var lg: ILmAdminCreateLicenceKey = { line: parseInt(line), num: Utils.sum(lineGroup, grp => grp.num + 6 /*3 klice pro lektora, 3 pro visitora*/), keys: null };
-        //lg.num += 3;
+        var lg: ILmAdminCreateLicenceKey = { line: parseInt(line), num: 3 /*3 klice pro Spravce-visitora*/ + Utils.sum(lineGroup, grp => grp.num + 6 /*3 pro lector-visitora, 3 pro lektora*/), keys: null };
         res.push(lg);
       })
       return res;
@@ -74,12 +84,18 @@
         grp.lectorKeys = useKey(grp.line, 3);
       });
       var managerKeys: Array<IAlocatedKey> = useKey(LMComLib.LineIds.no, 2);
-      return { studyGroups: groups, managerKeys: managerKeys };
+      //Visitors pro Spravce:
+      var lineGroups = _.groupBy(groups, g => g.line);
+      var visitorsKeys: Array<IVisitors> = [];
+      _.each(lineGroups, (lineGroup, line) => {
+        visitorsKeys.push({ line: parseInt(line), visitorsKeys: useKey(parseInt(line), 3) })
+      });
+      return { studyGroups: groups, managerKeys: managerKeys, visitorsKeys: visitorsKeys };
     }
 
     //******************* zakladni info PO SPUSTENI PRODUKTU
     //informace o licencich a klicich k spustenemu produktu
-    export function enteredProductInfo(json: string, licenceKeysStr /*platne licencni klice k produktu*/: string, cookie: LMStatus.LMCookie): IAlocatedKeyRoot {
+    export function enteredProductInfo(json: string, licenceKeysStr /*platne licencni klice k produktu*/: string, cookie: LMStatus.LMCookie): alocatedKeyRoot {
       if (_.isEmpty(json)) return null;
       var licenceKeys = licenceKeysStr.split('#');
       var companyData = <ICompanyData>(JSON.parse(json));
@@ -93,6 +109,9 @@
         alocList.pushArray(_.map(grp.studentKeys, alocKey => { return { key: alocKey, group: grp, isLector: false, isVisitor: false, isStudent: true }; }));
         alocList.pushArray(_.map(grp.visitorsKeys, alocKey => { return { key: alocKey, group: grp, isLector: false, isVisitor: true, isStudent: false }; }));
       });
+      _.each(companyData.visitorsKeys, keys => {
+        alocList.pushArray(_.map(keys.visitorsKeys, alocKey => { return { key: alocKey, group: null, isLector: false, isVisitor: true, isStudent: false }; }));
+      });
 
       ////student nebo visitor lmcomid => seznam lines. Pomaha zajistit jednoznacn
       //var lmcomIdToLineDir: { [lmcomid: number]: Array<LMComLib.LineIds>; } = {};
@@ -105,15 +124,19 @@
       //doplneni udaju do alokovaneho klice uzivatele. Alokovany klice se paruje s licencnim klicem
       var alocatedKeyInfos: Array<IAlocatedKeyInfo> = [];
       _.each(licenceKeys, licenceKey => {
-        var alocatedKeyInfo = _.find(alocList, k => k.key.keyStr == licenceKey); if (!alocatedKeyInfo) return;
+        var alocatedKeyInfo = _.find(alocList, k => k.key.keyStr == licenceKey);
         if (!alocatedKeyInfo) return;
         alocatedKeyInfo.key.email = cookie.EMail || cookie.Login; alocatedKeyInfo.key.firstName = cookie.FirstName; alocatedKeyInfo.key.lastName = cookie.LastName; alocatedKeyInfo.key.lmcomId = cookie.id;
         alocatedKeyInfos.push(alocatedKeyInfo);
       });
-      //if (!usedKeyInfo) usedKeyInfo = { group: null, groupLector: false, key: null, visitor:true };
+      //adresar lmcomid => user udaje
+      var userDir: { [lmcomid: string]: IAlocatedKey; } = {};
+      _.each(alocList, al => {
+        if (!al.key || !al.key.lmcomId) return;
+        userDir[al.key.lmcomId.toString()] = al.key;
+      });
       var newJson = JSON.stringify(companyData);
-      var res: IAlocatedKeyRoot = { companyData: companyData, jsonToSave: oldJson == newJson ? null : newJson, alocatedKeyInfos: alocatedKeyInfos };
-      return res;
+      return new alocatedKeyRoot(alocatedKeyInfos, companyData, userDir, oldJson == newJson ? null : newJson);
     }
 
   }

@@ -11,7 +11,6 @@
   </div>
   <div class="container">
     <div ng-include="'vyzva$common$breadcrumb.html'"></div>
-    <!--<h1 ng-if="::state.pageTitlePlace==1">{{::ts.title}}</h1>-->
     <div data-ng-include="::state.layoutContentId | vyzva$state$viewpath"></div>
   </div>
 </script>
@@ -31,7 +30,7 @@
 </script>
 
 <script type="text/ng-template" id="vyzva$common$topbarinnerright.html">
-  <div ng-if="::ts.ctx.onbehalfof" class="pull-right onbehav-right-part-name">Pavel<br />Zika</div>
+  <div ng-if="::ts.ctx.onbehalfof" class="pull-right onbehav-right-part-name">{{::appService.schoolUserInfo().firstName}}<br />{{::appService.schoolUserInfo().lastName}}</div>
   <div ng-if="::ts.ctx.onbehalfof" class="pull-right onbehav-right-part-at"><i class="fa fa-at"></i></div>
 </script>
 

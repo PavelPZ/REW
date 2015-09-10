@@ -1,10 +1,10 @@
 ﻿module vyzva {
   export class managerSchool extends blended.controller {
-    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, intranetInfo: intranet.IAlocatedKeyRoot) {
+    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, intranetInfo: intranet.alocatedKeyRoot) {
       super($scope, $state);
       this.company = intranetInfo ? intranetInfo.companyData : null;
       this.breadcrumb = breadcrumbBase(this, true);
-      this.breadcrumb.push({ title: this.title = 'Správa studijních skupin a lektorů', active: true });
+      this.breadcrumb.push({ title: this.title = 'Správa Studijních skupin a Učitelů', active: true });
       if (this.company) { this.wizzardStep = 2; return; }
       this.wizzardStep = 0;
       this.adjustWizzardButtons();
@@ -96,13 +96,13 @@
     })
     .directive('vyzva$managerschool$usekey', () => {
       return {
-        scope: { item: '&item', },
+        scope: { item: '&item' },
         templateUrl: 'vyzva$managerschool$usekey.html'
       }
     })
     .directive('vyzva$managerchool$usekeys', () => {
       return {
-        scope: { items: '&items', },
+        scope: { items: '&items', for: '&for'},
         templateUrl: 'vyzva$managerchool$usekeys.html'
       }
     })

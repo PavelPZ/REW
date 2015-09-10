@@ -129,7 +129,7 @@
     }
 
     debugClearProduct() {
-      proxies.vyzva57services.debugClearProduct(this.ctx.companyid, this.ctx.onbehalfof || this.ctx.loginid, this.ctx.productUrl, () => location.reload());
+      proxies.vyzva57services.debugClearProduct(this.ctx.companyid, this.ctx.userDataId(), this.ctx.productUrl, () => location.reload());
     }
 
   }
@@ -137,31 +137,31 @@
   //****************** TASK
   export class homeTaskController extends blended.homeTaskController {
 
-    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, product: IBlendedCourseRepository, intranetInfo: intranet.IAlocatedKeyRoot) {
+    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, product: IBlendedCourseRepository, public intranetInfo: intranet.alocatedKeyRoot) {
       super($scope, $state, product);
       //constructor(state: blended.IStateService, resolves: Array<any>) {
       //  super(state, resolves);
       this.productParent = this;
       this.user = blended.getPersistWrapper<IBlendedCourseUser>(this.dataNode, this.ctx.taskid, () => { return { startDate: Utils.nowToNum() }; });
       //Intranet
-      this.companyData = intranetInfo;
-      if (!this.companyData) return;
-      var alocatedKeyInfos = this.companyData.alocatedKeyInfos;
+      //this.intranetInfo = intranetInfo;
+      if (!this.intranetInfo) return;
+      var alocatedKeyInfos = this.intranetInfo.alocatedKeyInfos;
       this.lectorGroups = _.map(_.filter(alocatedKeyInfos, inf => inf.isLector), inf => inf.group);
-      var studentGroups = _.map(_.filter(alocatedKeyInfos, inf => inf.isLector || inf.isVisitor), inf => inf.group);
+      var studentGroups = _.map(_.filter(alocatedKeyInfos, inf => inf.isStudent || inf.isVisitor), inf => inf.group);
       //this.studentGroup = studentGroups.length > 0 ? studentGroups[0] : null;
-      this.isLector = !this.ctx.onbehalfof && this.lectorGroups.length > 0;
-      this.isStudent = studentGroups.length > 0;
+      this.showLectorPart = !this.ctx.onbehalfof && this.lectorGroups.length > 0;
+      this.showStudentPart = studentGroups.length > 0;
     }
     static $inject = ['$scope', '$state', '$loadedProduct', '$intranetInfo'];
 
     dataNode: IBlendedCourseRepository;
 
     //intranet
-    companyData: intranet.IAlocatedKeyRoot;
+    //intranetInfo: intranet.IAlocatedKeyRoot;
     lectorGroups: Array<intranet.IStudyGroup>; //skupiny, spravovane lektorem
-    isLector: boolean; //jsem lektor
-    isStudent: boolean; //jsem student nebo vizitor
+    showLectorPart: boolean; //jsem lektor
+    showStudentPart: boolean; //jsem student nebo vizitor
   }
 
   export interface IBlendedCourseRepository extends blended.IProductEx {

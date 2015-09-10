@@ -22,7 +22,7 @@ module vyzva {
 
   export var loadIntranetInfo = () => ['$stateParams', (ctx: blended.learnContext) => {
     blended.finishContext(ctx);
-    var def = ctx.$q.defer<intranet.IAlocatedKeyRoot>();
+    var def = ctx.$q.defer<intranet.alocatedKeyRoot>();
     proxies.vyzva57services.loadCompanyData(ctx.companyid, res => {
       if (!res) { def.resolve(null); return; }
       var compInfo = intranet.enteredProductInfo(res, ctx.lickeys, LMStatus.Cookie);
@@ -110,7 +110,7 @@ module vyzva {
         blended.prodStates.homeTask = stateNames.homeTask = new state({
           name: 'vyzva',
           //lickeys ve formatu <UserLicences.LicenceId>|<UserLicences.Counter>#<UserLicences.LicenceId>|<UserLicences.Counter>...
-          url: "/vyzva/:companyid/:loginid/:persistence/:loc/:lickeys/:producturl/:taskid?:onbehalfof&returnurl",
+          url: "/vyzva/:companyid/:loginid/:persistence/:loc/:lickeys/:producturl/:taskid/:onbehalfof?returnurl",
           dataNodeUrlParName: 'productUrl',
           controller: homeTaskController,
           controllerAs: blended.taskContextAs.product,

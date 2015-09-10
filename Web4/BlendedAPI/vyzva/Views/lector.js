@@ -41,6 +41,7 @@ var vyzva;
             this.breadcrumb[this.breadcrumb.length - 1].active = true;
             this.tabIdx = 0;
             this.students = _.map(this.lectorParent.lectorGroup.studentKeys, function (k) { return { key: k }; });
+            this.visitors = _.map(this.lectorParent.lectorGroup.visitorsKeys, function (k) { return { key: k }; });
         }
         lectorViewController.prototype.gotoStudentResult = function (student) {
             var _this = this;
@@ -72,6 +73,18 @@ var vyzva;
         return {
             scope: { students: '&students', ts: '&ts' },
             templateUrl: 'vyzva$lector$users.html'
+        };
+    })
+        .directive('vyzva$lector$visitors', function () {
+        return {
+            scope: { students: '&students', ts: '&ts' },
+            templateUrl: 'vyzva$lector$visitors.html'
+        };
+    })
+        .directive('vyzva$lector$visitor', function () {
+        return {
+            scope: { student: '&student', ts: '&ts' },
+            templateUrl: 'vyzva$lector$visitor.html'
         };
     });
 })(vyzva || (vyzva = {}));

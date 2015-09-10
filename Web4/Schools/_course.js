@@ -9649,7 +9649,7 @@ var blended;
                     if (ctx.finishProduct)
                         ctx.finishProduct(prod);
                     //user data
-                    proxies.vyzva57services.getShortProductDatas(ctx.companyid, ctx.loginid, ctx.productUrl, function (res) {
+                    proxies.vyzva57services.getShortProductDatas(ctx.companyid, ctx.userDataId(), ctx.productUrl, function (res) {
                         _.each(res, function (it) {
                             var node = prod.nodeDir[it.url];
                             if (!node)
@@ -9735,7 +9735,7 @@ var blended;
             }
             //data != null => ihned vrat. Jinak startReading!=null => spust nacitani, jinak ukonci.
             cacheOfProducts.prototype.fromCache = function (ctx, defered) {
-                var resIt = _.find(this.products, function (it) { return it.companyid == ctx.companyid && it.onbehalfof == ctx.onbehalfof || ctx.loginid &&
+                var resIt = _.find(this.products, function (it) { return it.companyid == ctx.companyid && it.onbehalfof == ctx.userDataId() &&
                     it.loc == ctx.loc && it.producturl == ctx.producturl; });
                 //jiz nacteno nebo neni defered => return
                 if (resIt && resIt.data)
@@ -9763,7 +9763,7 @@ var blended;
                 }
                 var res;
                 this.products.push(res = {
-                    companyid: ctx.companyid, loc: ctx.loc, producturl: ctx.producturl, onbehalfof: ctx.onbehalfof || ctx.loginid,
+                    companyid: ctx.companyid, loc: ctx.loc, producturl: ctx.producturl, onbehalfof: ctx.userDataId(),
                     data: null, insertOrder: this.maxInsertOrder++, taskid: null, loginid: -1, lickeys: null, persistence: null
                 });
                 return res;
@@ -9913,7 +9913,7 @@ var blended;
                 st = st.parent;
             }
             this.$scope.state = this.state;
-            //this.parent = this.$scope.$parent['ts'];
+            this.$scope['appService'] = this.appService = new vyzva.appService(this);
         }
         controller.prototype.getStateService = function ($scope) { return !!$scope['current'] ? $scope : null; };
         controller.prototype.href = function (url) {
@@ -10736,12 +10736,39 @@ var vyzva;
         return res;
     }
     vyzva.breadcrumbBase = breadcrumbBase;
+    //services, spolecne pro Vyzva aplikaci. Jsou dostupne v scope.appService
+    var appService = (function () {
+        function appService(controller) {
+            this.controller = controller;
+            this.home = (controller.productParent);
+        }
+        appService.prototype.schoolUserInfo = function (lmcomId) {
+            return this.home.intranetInfo.userInfo(lmcomId || this.controller.ctx.userDataId());
+        };
+        return appService;
+    })();
+    vyzva.appService = appService;
 })(vyzva || (vyzva = {}));
 
 var vyzva;
 (function (vyzva) {
     var intranet;
     (function (intranet) {
+        //***************** odvozene informace, vhodne pro zobrazeni
+        var alocatedKeyRoot = (function () {
+            function alocatedKeyRoot(alocatedKeyInfos, //dato, odvozene z companyData
+                companyData, userDir, jsonToSave) {
+                this.alocatedKeyInfos = alocatedKeyInfos;
+                this.companyData = companyData;
+                this.userDir = userDir;
+                this.jsonToSave = jsonToSave;
+            } //null => nezmeneno
+            alocatedKeyRoot.prototype.userInfo = function (lmcomId) {
+                return this.userDir[lmcomId.toString()];
+            };
+            return alocatedKeyRoot;
+        })();
+        intranet.alocatedKeyRoot = alocatedKeyRoot;
         function lmAdminCreateLicenceKeys_request(groups) {
             var res = [];
             //school manager keys: 2 dalsi klice pro spravce (mimo prvniho spravce = self)
@@ -10749,8 +10776,7 @@ var vyzva;
             //students keys: pro kazdou line a group a pocet
             var lineGroups = _.groupBy(groups, function (g) { return g.line; });
             _.each(lineGroups, function (lineGroup, line) {
-                var lg = { line: parseInt(line), num: Utils.sum(lineGroup, function (grp) { return grp.num + 6; } /*3 klice pro lektora, 3 pro visitora*/ /*3 klice pro lektora, 3 pro visitora*/), keys: null };
-                //lg.num += 3;
+                var lg = { line: parseInt(line), num: 3 /*3 klice pro Spravce-visitora*/ + Utils.sum(lineGroup, function (grp) { return grp.num + 6; } /*3 pro lector-visitora, 3 pro lektora*/ /*3 pro lector-visitora, 3 pro lektora*/), keys: null };
                 res.push(lg);
             });
             return res;
@@ -10776,7 +10802,13 @@ var vyzva;
                 grp.lectorKeys = useKey(grp.line, 3);
             });
             var managerKeys = useKey(LMComLib.LineIds.no, 2);
-            return { studyGroups: groups, managerKeys: managerKeys };
+            //Visitors pro Spravce:
+            var lineGroups = _.groupBy(groups, function (g) { return g.line; });
+            var visitorsKeys = [];
+            _.each(lineGroups, function (lineGroup, line) {
+                visitorsKeys.push({ line: parseInt(line), visitorsKeys: useKey(parseInt(line), 3) });
+            });
+            return { studyGroups: groups, managerKeys: managerKeys, visitorsKeys: visitorsKeys };
         }
         intranet.lmAdminCreateLicenceKeys_reponse = lmAdminCreateLicenceKeys_reponse;
         //******************* zakladni info PO SPUSTENI PRODUKTU
@@ -10795,6 +10827,9 @@ var vyzva;
                 alocList.pushArray(_.map(grp.studentKeys, function (alocKey) { return { key: alocKey, group: grp, isLector: false, isVisitor: false, isStudent: true }; }));
                 alocList.pushArray(_.map(grp.visitorsKeys, function (alocKey) { return { key: alocKey, group: grp, isLector: false, isVisitor: true, isStudent: false }; }));
             });
+            _.each(companyData.visitorsKeys, function (keys) {
+                alocList.pushArray(_.map(keys.visitorsKeys, function (alocKey) { return { key: alocKey, group: null, isLector: false, isVisitor: true, isStudent: false }; }));
+            });
             ////student nebo visitor lmcomid => seznam lines. Pomaha zajistit jednoznacn
             //var lmcomIdToLineDir: { [lmcomid: number]: Array<LMComLib.LineIds>; } = {};
             //_.each(_.filter(alocList, l => l.isStudent || l.isVisitor), l => {
@@ -10808,18 +10843,21 @@ var vyzva;
                 var alocatedKeyInfo = _.find(alocList, function (k) { return k.key.keyStr == licenceKey; });
                 if (!alocatedKeyInfo)
                     return;
-                if (!alocatedKeyInfo)
-                    return;
                 alocatedKeyInfo.key.email = cookie.EMail || cookie.Login;
                 alocatedKeyInfo.key.firstName = cookie.FirstName;
                 alocatedKeyInfo.key.lastName = cookie.LastName;
                 alocatedKeyInfo.key.lmcomId = cookie.id;
                 alocatedKeyInfos.push(alocatedKeyInfo);
             });
-            //if (!usedKeyInfo) usedKeyInfo = { group: null, groupLector: false, key: null, visitor:true };
+            //adresar lmcomid => user udaje
+            var userDir = {};
+            _.each(alocList, function (al) {
+                if (!al.key || !al.key.lmcomId)
+                    return;
+                userDir[al.key.lmcomId.toString()] = al.key;
+            });
             var newJson = JSON.stringify(companyData);
-            var res = { companyData: companyData, jsonToSave: oldJson == newJson ? null : newJson, alocatedKeyInfos: alocatedKeyInfos };
-            return res;
+            return new alocatedKeyRoot(alocatedKeyInfos, companyData, userDir, oldJson == newJson ? null : newJson);
         }
         intranet.enteredProductInfo = enteredProductInfo;
     })(intranet = vyzva.intranet || (vyzva.intranet = {}));
@@ -10861,7 +10899,7 @@ var vyzva;
             this.groups = [];
             this.company = intranetInfo ? intranetInfo.companyData : null;
             this.breadcrumb = vyzva.breadcrumbBase(this, true);
-            this.breadcrumb.push({ title: this.title = 'Správa studijních skupin a lektorů', active: true });
+            this.breadcrumb.push({ title: this.title = 'Správa Studijních skupin a Učitelů', active: true });
             if (this.company) {
                 this.wizzardStep = 2;
                 return;
@@ -10945,13 +10983,13 @@ var vyzva;
     })
         .directive('vyzva$managerschool$usekey', function () {
         return {
-            scope: { item: '&item', },
+            scope: { item: '&item' },
             templateUrl: 'vyzva$managerschool$usekey.html'
         };
     })
         .directive('vyzva$managerchool$usekeys', function () {
         return {
-            scope: { items: '&items', },
+            scope: { items: '&items', for: '&for' },
             templateUrl: 'vyzva$managerchool$usekeys.html'
         };
     });
@@ -11117,6 +11155,7 @@ var vyzva;
             this.breadcrumb[this.breadcrumb.length - 1].active = true;
             this.tabIdx = 0;
             this.students = _.map(this.lectorParent.lectorGroup.studentKeys, function (k) { return { key: k }; });
+            this.visitors = _.map(this.lectorParent.lectorGroup.visitorsKeys, function (k) { return { key: k }; });
         }
         lectorViewController.prototype.gotoStudentResult = function (student) {
             var _this = this;
@@ -11148,6 +11187,18 @@ var vyzva;
         return {
             scope: { students: '&students', ts: '&ts' },
             templateUrl: 'vyzva$lector$users.html'
+        };
+    })
+        .directive('vyzva$lector$visitors', function () {
+        return {
+            scope: { students: '&students', ts: '&ts' },
+            templateUrl: 'vyzva$lector$visitors.html'
+        };
+    })
+        .directive('vyzva$lector$visitor', function () {
+        return {
+            scope: { student: '&student', ts: '&ts' },
+            templateUrl: 'vyzva$lector$visitor.html'
         };
     });
 })(vyzva || (vyzva = {}));
@@ -11289,7 +11340,7 @@ var vyzva;
             this.navigate({ stateName: vyzva.stateNames.lectorHome.name, pars: { groupid: groupId } });
         };
         homeViewController.prototype.debugClearProduct = function () {
-            proxies.vyzva57services.debugClearProduct(this.ctx.companyid, this.ctx.onbehalfof || this.ctx.loginid, this.ctx.productUrl, function () { return location.reload(); });
+            proxies.vyzva57services.debugClearProduct(this.ctx.companyid, this.ctx.userDataId(), this.ctx.productUrl, function () { return location.reload(); });
         };
         return homeViewController;
     })(blended.taskViewController);
@@ -11299,20 +11350,21 @@ var vyzva;
         __extends(homeTaskController, _super);
         function homeTaskController($scope, $state, product, intranetInfo) {
             _super.call(this, $scope, $state, product);
+            this.intranetInfo = intranetInfo;
             //constructor(state: blended.IStateService, resolves: Array<any>) {
             //  super(state, resolves);
             this.productParent = this;
             this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { startDate: Utils.nowToNum() }; });
             //Intranet
-            this.companyData = intranetInfo;
-            if (!this.companyData)
+            //this.intranetInfo = intranetInfo;
+            if (!this.intranetInfo)
                 return;
-            var alocatedKeyInfos = this.companyData.alocatedKeyInfos;
+            var alocatedKeyInfos = this.intranetInfo.alocatedKeyInfos;
             this.lectorGroups = _.map(_.filter(alocatedKeyInfos, function (inf) { return inf.isLector; }), function (inf) { return inf.group; });
-            var studentGroups = _.map(_.filter(alocatedKeyInfos, function (inf) { return inf.isLector || inf.isVisitor; }), function (inf) { return inf.group; });
+            var studentGroups = _.map(_.filter(alocatedKeyInfos, function (inf) { return inf.isStudent || inf.isVisitor; }), function (inf) { return inf.group; });
             //this.studentGroup = studentGroups.length > 0 ? studentGroups[0] : null;
-            this.isLector = !this.ctx.onbehalfof && this.lectorGroups.length > 0;
-            this.isStudent = studentGroups.length > 0;
+            this.showLectorPart = !this.ctx.onbehalfof && this.lectorGroups.length > 0;
+            this.showStudentPart = studentGroups.length > 0;
         }
         homeTaskController.$inject = ['$scope', '$state', '$loadedProduct', '$intranetInfo'];
         return homeTaskController;
@@ -11368,7 +11420,7 @@ var vyzva;
     vyzva.getLectorTabs = getLectorTabs;
 })(vyzva || (vyzva = {}));
 
-  var __extends = (this && this.__extends) || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
@@ -11456,7 +11508,7 @@ var vyzva;
                 blended.prodStates.homeTask = vyzva.stateNames.homeTask = new state({
                     name: 'vyzva',
                     //lickeys ve formatu <UserLicences.LicenceId>|<UserLicences.Counter>#<UserLicences.LicenceId>|<UserLicences.Counter>...
-                    url: "/vyzva/:companyid/:loginid/:persistence/:loc/:lickeys/:producturl/:taskid?:onbehalfof&returnurl",
+                    url: "/vyzva/:companyid/:loginid/:persistence/:loc/:lickeys/:producturl/:taskid/:onbehalfof?returnurl",
                     dataNodeUrlParName: 'productUrl',
                     controller: vyzva.homeTaskController,
                     controllerAs: blended.taskContextAs.product,

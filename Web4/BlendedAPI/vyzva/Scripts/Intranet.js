@@ -2,6 +2,21 @@ var vyzva;
 (function (vyzva) {
     var intranet;
     (function (intranet) {
+        //***************** odvozene informace, vhodne pro zobrazeni
+        var alocatedKeyRoot = (function () {
+            function alocatedKeyRoot(alocatedKeyInfos, //dato, odvozene z companyData
+                companyData, userDir, jsonToSave) {
+                this.alocatedKeyInfos = alocatedKeyInfos;
+                this.companyData = companyData;
+                this.userDir = userDir;
+                this.jsonToSave = jsonToSave;
+            } //null => nezmeneno
+            alocatedKeyRoot.prototype.userInfo = function (lmcomId) {
+                return this.userDir[lmcomId.toString()];
+            };
+            return alocatedKeyRoot;
+        })();
+        intranet.alocatedKeyRoot = alocatedKeyRoot;
         function lmAdminCreateLicenceKeys_request(groups) {
             var res = [];
             //school manager keys: 2 dalsi klice pro spravce (mimo prvniho spravce = self)
@@ -9,8 +24,7 @@ var vyzva;
             //students keys: pro kazdou line a group a pocet
             var lineGroups = _.groupBy(groups, function (g) { return g.line; });
             _.each(lineGroups, function (lineGroup, line) {
-                var lg = { line: parseInt(line), num: Utils.sum(lineGroup, function (grp) { return grp.num + 6; } /*3 klice pro lektora, 3 pro visitora*/ /*3 klice pro lektora, 3 pro visitora*/), keys: null };
-                //lg.num += 3;
+                var lg = { line: parseInt(line), num: 3 /*3 klice pro Spravce-visitora*/ + Utils.sum(lineGroup, function (grp) { return grp.num + 6; } /*3 pro lector-visitora, 3 pro lektora*/ /*3 pro lector-visitora, 3 pro lektora*/), keys: null };
                 res.push(lg);
             });
             return res;
@@ -36,7 +50,13 @@ var vyzva;
                 grp.lectorKeys = useKey(grp.line, 3);
             });
             var managerKeys = useKey(LMComLib.LineIds.no, 2);
-            return { studyGroups: groups, managerKeys: managerKeys };
+            //Visitors pro Spravce:
+            var lineGroups = _.groupBy(groups, function (g) { return g.line; });
+            var visitorsKeys = [];
+            _.each(lineGroups, function (lineGroup, line) {
+                visitorsKeys.push({ line: parseInt(line), visitorsKeys: useKey(parseInt(line), 3) });
+            });
+            return { studyGroups: groups, managerKeys: managerKeys, visitorsKeys: visitorsKeys };
         }
         intranet.lmAdminCreateLicenceKeys_reponse = lmAdminCreateLicenceKeys_reponse;
         //******************* zakladni info PO SPUSTENI PRODUKTU
@@ -55,6 +75,9 @@ var vyzva;
                 alocList.pushArray(_.map(grp.studentKeys, function (alocKey) { return { key: alocKey, group: grp, isLector: false, isVisitor: false, isStudent: true }; }));
                 alocList.pushArray(_.map(grp.visitorsKeys, function (alocKey) { return { key: alocKey, group: grp, isLector: false, isVisitor: true, isStudent: false }; }));
             });
+            _.each(companyData.visitorsKeys, function (keys) {
+                alocList.pushArray(_.map(keys.visitorsKeys, function (alocKey) { return { key: alocKey, group: null, isLector: false, isVisitor: true, isStudent: false }; }));
+            });
             ////student nebo visitor lmcomid => seznam lines. Pomaha zajistit jednoznacn
             //var lmcomIdToLineDir: { [lmcomid: number]: Array<LMComLib.LineIds>; } = {};
             //_.each(_.filter(alocList, l => l.isStudent || l.isVisitor), l => {
@@ -68,18 +91,21 @@ var vyzva;
                 var alocatedKeyInfo = _.find(alocList, function (k) { return k.key.keyStr == licenceKey; });
                 if (!alocatedKeyInfo)
                     return;
-                if (!alocatedKeyInfo)
-                    return;
                 alocatedKeyInfo.key.email = cookie.EMail || cookie.Login;
                 alocatedKeyInfo.key.firstName = cookie.FirstName;
                 alocatedKeyInfo.key.lastName = cookie.LastName;
                 alocatedKeyInfo.key.lmcomId = cookie.id;
                 alocatedKeyInfos.push(alocatedKeyInfo);
             });
-            //if (!usedKeyInfo) usedKeyInfo = { group: null, groupLector: false, key: null, visitor:true };
+            //adresar lmcomid => user udaje
+            var userDir = {};
+            _.each(alocList, function (al) {
+                if (!al.key || !al.key.lmcomId)
+                    return;
+                userDir[al.key.lmcomId.toString()] = al.key;
+            });
             var newJson = JSON.stringify(companyData);
-            var res = { companyData: companyData, jsonToSave: oldJson == newJson ? null : newJson, alocatedKeyInfos: alocatedKeyInfos };
-            return res;
+            return new alocatedKeyRoot(alocatedKeyInfos, companyData, userDir, oldJson == newJson ? null : newJson);
         }
         intranet.enteredProductInfo = enteredProductInfo;
     })(intranet = vyzva.intranet || (vyzva.intranet = {}));

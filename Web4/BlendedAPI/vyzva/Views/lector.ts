@@ -39,8 +39,10 @@
       this.breadcrumb[this.breadcrumb.length - 1].active = true;
       this.tabIdx = 0;
       this.students = _.map(this.lectorParent.lectorGroup.studentKeys, k => { return { key: k } });
+      this.visitors = _.map(this.lectorParent.lectorGroup.visitorsKeys, k => { return { key: k } });
     }
     students: Array<lectorViewItem>;
+    visitors: Array<lectorViewItem>;
     gotoStudentResult(student: lectorViewItem) {
       var ctx = blended.cloneAndModifyContext(this.ctx, c => {
         c.onbehalfof = student.key.lmcomId;
@@ -70,6 +72,18 @@
       return {
         scope: { students: '&students', ts: '&ts' },
         templateUrl: 'vyzva$lector$users.html'
+      }
+    })
+    .directive('vyzva$lector$visitors', () => {
+      return {
+        scope: { students: '&students', ts: '&ts' },
+        templateUrl: 'vyzva$lector$visitors.html'
+      }
+    })
+    .directive('vyzva$lector$visitor', () => {
+      return {
+        scope: { student: '&student', ts: '&ts' },
+        templateUrl: 'vyzva$lector$visitor.html'
       }
     })
   ;

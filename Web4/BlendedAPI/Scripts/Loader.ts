@@ -165,7 +165,7 @@ module blended {
             }
             if (ctx.finishProduct) ctx.finishProduct(prod);
             //user data
-            proxies.vyzva57services.getShortProductDatas(ctx.companyid, ctx.loginid, ctx.productUrl, res => {
+            proxies.vyzva57services.getShortProductDatas(ctx.companyid, ctx.userDataId(), ctx.productUrl, res => {
               _.each(res, it => {
                 var node = prod.nodeDir[it.url]; if (!node) debugger/*something wrong*/;
                 if (!node.userData) node.userData = {};
@@ -243,7 +243,7 @@ module blended {
       maxInsertOrder = 0;
       //data != null => ihned vrat. Jinak startReading!=null => spust nacitani, jinak ukonci.
       fromCache(ctx: learnContext, defered?: ng.IDeferred<IProductEx>): fromCacheRsult {
-        var resIt = _.find(this.products, it => it.companyid == ctx.companyid && it.onbehalfof == ctx.onbehalfof || ctx.loginid &&
+        var resIt = _.find(this.products, it => it.companyid == ctx.companyid && it.onbehalfof == ctx.userDataId() &&
           it.loc == ctx.loc && it.producturl == ctx.producturl);
         //jiz nacteno nebo neni defered => return
         if (resIt && resIt.data) return { prod: resIt.data }; if (!defered) return {};
@@ -266,7 +266,7 @@ module blended {
         }
         var res: productCacheItem;
         this.products.push(res = {
-          companyid: ctx.companyid, loc: ctx.loc, producturl: ctx.producturl, onbehalfof: ctx.onbehalfof || ctx.loginid,
+          companyid: ctx.companyid, loc: ctx.loc, producturl: ctx.producturl, onbehalfof: ctx.userDataId(),
           data: null, insertOrder: this.maxInsertOrder++, taskid: null, loginid: -1, lickeys: null, persistence: null
         });
         return res;

@@ -4,21 +4,22 @@
     <div class="alert alert-success" data-ng-if="ts.wizzardStep==0">
       <div class="row">
         <div class="col-sm-6">
-          <h4>Krok číslo 1: založení studijních skupin</h4>
-          Postupně přidávejte studijní skupiny pro Vaše studenty (šablona č. 4) a učitele (šablona č. 3). Upravte jim <i>Název studijní skupiny</i> a <i>Počet (studentů nebo učitelů)</i><br />
-          Pro učitele přidejte pouze jednu studijní skupinu na kurz (například všichni učitelé, co budou studovat angličtinu, budou v jedné studijní skupině).
+          <h4>Krok číslo 1: založení <i>Studijních skupin</i></h4>
+          Postupně přidávejte <i>Studijní skupiny</i> pro Vaše <i>Studenty</i> (šablona č. 4) a <i>Studující učitele</i> (šablona č. 3). Upravte jim <i>Název studijní skupiny</i> a <i>Počet studentů</i><br />
+          Pro <i>Studující učitele</i> přidejte pouze jednu <i>Studijní skupinu</i> na kurz (například všichni učitelé, co budou studovat angličtinu, budou v jedné <i>Studijní skupině</i>).
         </div>
         <div class="col-sm-6">
           <h4>Vysvětlení pojmů:</h4>
-          <b>Student</b>: student nebo žák Vaší školy<br />
-          <b>Učitel</b>: učitel Vaší školy, který se bude sám vyučovat v rámci šablony č.3.<br />
-          <b>Lektor</b>: učitel Vaší školy, který bude řídit výuku studentů v rámci šablony č. 4.<br />
-          <b>Správce</b>: to jste Vy, který spravujete studijní skupiny a lektory.<br />
+          <b><i>Student</i></b>: student nebo žák Vaší školy<br />
+          <b><i>Studující učitel</i></b>: učitel Vaší školy, který se bude sám vyučovat v rámci šablony č.3.<br />
+          <b><i>Učitel</i></b>: učitel Vaší školy, který bude řídit výuku <i>Studentů</i> v rámci šablony č. 4.<br />
+          <b><i>Správce</i></b>: to jste Vy, který spravujete <i>Studijní skupiny</i> a <i>Učitele</i>.<br />
+          <b><i>Návštěvník</i></b>: kdokoliv, kdo si chce prohlédnout kurz, aniž by jeho výuka byla řízena <i>Učitelem</i><br />
         </div>
       </div>
     </div>
     <div class="alert alert-success" data-ng-if="ts.wizzardStep==1">
-      <h4>Krok číslo 2: kontrola studijních skupin</h4>
+      <h4>Krok číslo 2: kontrola <i>Studijních skupin</i></h4>
       Zkontrolujte zadané údaje.
     </div>
     <div class="clearfix"></div>
@@ -27,12 +28,12 @@
       <div class="alert alert-default" ng-if="ts.wizzardStep==0">
         <div class="row">
           <div class="col-sm-12 text-center">
-            <h4>Přidat studijní skupinu...</h4>
+            <h4>Přidat <i>Studijní skupinu</i>...</h4>
           </div>
         </div>
         <div class="row">
           <div class="col-sm-6">
-            <h4 class="text-center">...studentů (dle šablony č. 4)</h4>
+            <h4 class="text-center">...<i>Studentů</i> (dle šablony č. 4)</h4>
             <div class="col-sm-4" ng-repeat="btn in [1,2,5]" style="padding:0;">
               <button class="btm btn-warning" ng-click="ts.addItem(btn, false)" style="white-space:nowrap">
                 <span class="flag-small" ng-class="btn | lineIdsFlag"></span> {{btn | lineIdsText}}
@@ -40,7 +41,7 @@
             </div>
           </div>
           <div class="col-sm-6">
-            <h4 class="text-center">...učitelů (dle šablony č. 3)</h4>
+            <h4 class="text-center">...<i>Studujících učitelů</i> (dle šablony č. 3)</h4>
             <div class="col-sm-4" ng-repeat="btn in [1,2,5]" style="padding:0;">
               <button class="btm btn-warning" ng-disabled="ts.disabled(btn)" ng-click="ts.addItem(btn, true)" style="white-space:nowrap">
                 <span class="flag-small" ng-class="btn | lineIdsFlag"></span> {{btn | lineIdsText}}
@@ -53,9 +54,9 @@
         <thead>
           <tr>
             <th>Kurz</th>
-            <th>Název studijní skupiny</th>
+            <th>Název <i>Studijní skupiny</i></th>
             <th>Šablona</th>
-            <th>Počet (studentů nebo učitelů)</th>
+            <th>Počet studentů</th>
             <th></th>
           </tr>
         </thead>
@@ -73,10 +74,10 @@
       <div class="clearfix"></div>
       <br />
       <div class="alert alert-success" data-ng-if="ts.wizzardStep==0">
-        Stikněte <i>Potvrzení údajů</i>, pokud jste přidali všechny požadované studijní skupiny se správným počtem studentů nebo učitelů.
+        Stikněte <b>Potvrzení údajů</b>, pokud jste přidali všechny požadované <i>Studijní skupiny</i> se správným počtem <i>Studentů</i> nebo <i>Studujících učitelů</i>.
       </div>
       <div class="alert alert-success" data-ng-if="ts.wizzardStep==1">
-        Jsou-li údaje v pořádku, stiskněte <i>Údaje v pořádku</i>. Pro opravu údajů stiskněte <i>Opravit údaje</i>.
+        Jsou-li údaje v pořádku, stiskněte <b>Údaje v pořádku</b>. Pro opravu údajů stiskněte <b>Opravit údaje</b>.
       </div>
       <button class="btm btn-default btn-lg" ng-if="ts.wizzardStep==1" ng-click="ts.wizzardClick(true)">Opravit údaje</button>
       <button class="btm btn-success btn-lg" ng-disabled="ts.groups.length==0" ng-click="ts.wizzardClick(false)">{{ts.nextTitle}}</button>
@@ -86,34 +87,42 @@
 
   <div data-ng-if="ts.wizzardStep==2">
     <div class="alert alert-success" data-ng-if="ts.wizzardStep==2">
-      <h4>Správce: rozdání licenčních klíčů lektorům</h4>
+      <h4>Rozdání <i>Licenčních klíčů</i> <i>Učitelům</i></h4>
       <ul>
         <li>
-          Pro každou <i>Studijní skupinu</i> máte připraveny 3 <i>Licenční klíče</i> pro lektory, kteří budou řídit výuku studentů ve skupině.
-          Každá skupina tedy může mít až 3 lektory (v případě nepřítomnosti jednoho lektora tak může řídit výuku jiný lektor).
+          Pro každou <i>Studijní skupinu</i> máte připraveny 3 <i>Licenční klíče</i> pro <i>Učitele</i>, kteří budou řídit výuku studentů v této skupině.<br />
+          Poznámka: Každá skupina může mít až 3 <i>Učitele</i>, tj. například v případě nepřítomnosti jednoho <i>Učitele</i> může řídit výuku někdo jiný.
         </li>
         <li>
-          Dále máte také možnost určit další dva <i>Správce</i> (se stejnými pravomocemi jako máte Vy). Předejte mu jeden ze dvou zbylých klíčů v tabulce <i>Správci školy</i>.
+          <b>Postup <i>Učitele</i>:</b> <i>Učitel</i> na hlavní stránce aplikace zadá <i>Licenční klíč</i> (který mu předáte) tak, jako jste Vy zadal <i>Licenční klíč</i>, který jsme Vám předali my.
+          Po jeho zadání bude moci řídit výuku <i>Studentů</i> ve své <i>Studijní skupině</i>.
         </li>
         <li>
-          <b>Postup lektora:</b> Lektor zadá licenční klíč (který mu předáte) do aplikace tak, jako jste Vy zadal licenční klíč, který jsme Vám předali my. 
-          Po jeho zadání bude moci řídit výuku studentů ve své <i>Studijní skupině</i>.
+          <b>Vysvětlení:</b> Po použití předaného <i>Licenčního klíče</i> <i>Učitelem</i> se jeho údaje (Jméno, Příjmení, EMail) objeví v tabulkách níže podobně, jako jsou v nich nyní uvedeny Vaše údaje.
+        </li>
+      </ul>
+      <h4>Další licenční klíče</h4>
+      <ul>
+        <li>
+          Jak Vy tak kdokoliv z Vaší školy si může vyzkoušet kurz. K tomu jsou určeny <i>Licenční klíče</i> pro <i>Návštěvníky</i>. 
+          Tyto klíče můžete poskytnout komukoliv - výuka ale tomto případě nebude řízena <i>Učitelem</i>.
         </li>
         <li>
-          <b>Vysvětlení:</b> Po použití předaného licenčního klíče Lektorem nebo Správcem se jeho údaje (Jméno, Příjmení, EMail) objeví v tabulkách podobně, jako jsou v nich uvedeny Vaše údaje.
+          Dále máte možnost určit další dva <i>Správce</i> (se stejnými pravomocemi jako máte Vy). Předejte mu jeden ze dvou zbylých <i>Licenčních klíčů</i> pro <i>Správce</i>.
         </li>
       </ul>
     </div>
-    <h3>Správci školy</h3>
-    <div vyzva$managerchool$usekeys items="::ts.company.managerKeys"></div>
     <div ng-repeat="grp in ::ts.company.studyGroups">
-      <h4>
-        {{grp.title}}:
+      <h4 class="primary">
         <span class="flag-small" style="vertical-align:top;" ng-class="::grp.line | lineIdsFlag"></span>
-        {{::grp.line | lineIdsText}}
-        pro {{::grp.isPattern3 ? 'učitele (šablona č.3)' : 'studenty (šablona č.4)'}}
+        {{grp.title}} ({{::grp.isPattern3 ? 'šablona č.3' : 'šablona č.4'}})
       </h4>
-      <div vyzva$managerchool$usekeys items="::grp.lectorKeys" hosts="::grp.visitorsKeys"></div>
+      <div vyzva$managerchool$usekeys items="::grp.lectorKeys" for="::'Učitele'"></div>
+    </div>
+    <h4 class="primary">Další licenční klíče</h4>
+    <div vyzva$managerchool$usekeys items="::ts.company.managerKeys" for="::'Správce'"></div>
+    <div ng-repeat="keys in ::ts.company.visitorsKeys">
+      <div vyzva$managerchool$usekeys items="::keys.visitorsKeys" for="::'Návštěvníky (' + (keys.line | lineIdsText) + ')'"></div>
     </div>
   </div>
 </div>
@@ -126,10 +135,10 @@
 </script>
 
 <script type="text/ng-template" id="vyzva$managerchool$usekeys.html">
-  <table class="table table-bordered table-striped">
+  <table class="table table-bordered table-striped key-table">
     <thead>
-      <tr class="active">
-        <th>Licenční klíč</th>
+      <tr class="active" ng-class="primaryHeader ? 'primary' : ''">
+        <th><i>Licenční klíče</i> pro <i>{{::for()}}</i></th>
         <th>Jméno</th>
         <th>Příjmení</th>
         <th>EMail</th>

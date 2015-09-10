@@ -135,7 +135,7 @@ var vyzva;
             this.navigate({ stateName: vyzva.stateNames.lectorHome.name, pars: { groupid: groupId } });
         };
         homeViewController.prototype.debugClearProduct = function () {
-            proxies.vyzva57services.debugClearProduct(this.ctx.companyid, this.ctx.onbehalfof || this.ctx.loginid, this.ctx.productUrl, function () { return location.reload(); });
+            proxies.vyzva57services.debugClearProduct(this.ctx.companyid, this.ctx.userDataId(), this.ctx.productUrl, function () { return location.reload(); });
         };
         return homeViewController;
     })(blended.taskViewController);
@@ -145,20 +145,21 @@ var vyzva;
         __extends(homeTaskController, _super);
         function homeTaskController($scope, $state, product, intranetInfo) {
             _super.call(this, $scope, $state, product);
+            this.intranetInfo = intranetInfo;
             //constructor(state: blended.IStateService, resolves: Array<any>) {
             //  super(state, resolves);
             this.productParent = this;
             this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { startDate: Utils.nowToNum() }; });
             //Intranet
-            this.companyData = intranetInfo;
-            if (!this.companyData)
+            //this.intranetInfo = intranetInfo;
+            if (!this.intranetInfo)
                 return;
-            var alocatedKeyInfos = this.companyData.alocatedKeyInfos;
+            var alocatedKeyInfos = this.intranetInfo.alocatedKeyInfos;
             this.lectorGroups = _.map(_.filter(alocatedKeyInfos, function (inf) { return inf.isLector; }), function (inf) { return inf.group; });
-            var studentGroups = _.map(_.filter(alocatedKeyInfos, function (inf) { return inf.isLector || inf.isVisitor; }), function (inf) { return inf.group; });
+            var studentGroups = _.map(_.filter(alocatedKeyInfos, function (inf) { return inf.isStudent || inf.isVisitor; }), function (inf) { return inf.group; });
             //this.studentGroup = studentGroups.length > 0 ? studentGroups[0] : null;
-            this.isLector = !this.ctx.onbehalfof && this.lectorGroups.length > 0;
-            this.isStudent = studentGroups.length > 0;
+            this.showLectorPart = !this.ctx.onbehalfof && this.lectorGroups.length > 0;
+            this.showStudentPart = studentGroups.length > 0;
         }
         homeTaskController.$inject = ['$scope', '$state', '$loadedProduct', '$intranetInfo'];
         return homeTaskController;

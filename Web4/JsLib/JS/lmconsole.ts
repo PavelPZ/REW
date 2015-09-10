@@ -133,7 +133,9 @@ module lmConsole {
 
     }
     val = val ? val + msg : msg;
-    localStorage.setItem(actName, val + '\r\n');
+    try {
+      localStorage.setItem(actName, val + '\r\n');
+    } catch (msg) { localStorage.clear(); }
   }
 
   function refreshNames() {
@@ -178,7 +180,7 @@ module lmConsole {
     var msg = orig && orig.filename ? orig.filename + '.' + orig.lineno + '.' + orig.message : '';
     logError('*** ERROR (window.onerror): ' + msg);
   });
-  $(window).bind('hashchange',() => {
+  $(window).bind('hashchange', () => {
     if (!isLogging) {
       isLogging = location.hash && location.hash == '#log';
       if (isLogging) {
