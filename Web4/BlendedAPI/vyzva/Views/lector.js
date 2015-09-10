@@ -21,7 +21,8 @@ var vyzva;
         __extends(lectorViewBase, _super);
         function lectorViewBase($scope, $state) {
             _super.call(this, $scope, $state);
-            this.title = 'Studijní skupina ' + this.lectorParent.lectorGroup.title;
+            //this.title = 'Studijní skupina ' + this.lectorParent.lectorGroup.title;
+            this.title = this.lectorParent.lectorGroup.title;
             this.breadcrumb = this.breadcrumbBase();
             this.breadcrumb[this.breadcrumb.length - 1].active = true;
         }
@@ -52,6 +53,14 @@ var vyzva;
         return lectorViewController;
     })(lectorViewBase);
     vyzva.lectorViewController = lectorViewController;
+    //export class lectorEvalController extends lectorViewBase {
+    //  constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
+    //    super($scope, $state);
+    //    this.tabIdx = 1;
+    //    this.breadcrumb = this.breadcrumbBase();
+    //    this.breadcrumb.push({ title: getLectorTabs()[this.tabIdx].shortTitle, active: true });
+    //  }
+    //}
     blended.rootModule
         .directive('vyzva$lector$user', function () {
         return {

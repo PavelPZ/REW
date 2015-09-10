@@ -14,7 +14,7 @@
         doNavigate(tab.stateName);
       }
     };
-    templateUrl = vyzvaRoot + 'views/lector/_tabs.html';
+    templateUrl = 'vyzva$lector$tabs.html';
     scope = { doNavigate: '&doNavigate', actIdx: '&actIdx', longTitle: '&longTitle' };
   }
 

@@ -14,7 +14,8 @@
   export class lectorViewBase extends blended.controller {
     constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService) {
       super($scope, $state);
-      this.title = 'Studijní skupina ' + this.lectorParent.lectorGroup.title;
+      //this.title = 'Studijní skupina ' + this.lectorParent.lectorGroup.title;
+      this.title = this.lectorParent.lectorGroup.title;
       this.breadcrumb = this.breadcrumbBase(); this.breadcrumb[this.breadcrumb.length - 1].active = true;
     }
     breadcrumbBase(): Array<blended.breadcrumbItem> {
@@ -48,6 +49,15 @@
       this.navigate({ stateName: stateNames.home.name, pars: ctx });
     }
   }
+
+  //export class lectorEvalController extends lectorViewBase {
+  //  constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
+  //    super($scope, $state);
+  //    this.tabIdx = 1;
+  //    this.breadcrumb = this.breadcrumbBase();
+  //    this.breadcrumb.push({ title: getLectorTabs()[this.tabIdx].shortTitle, active: true });
+  //  }
+  //}
 
   blended.rootModule
     .directive('vyzva$lector$user', () => {

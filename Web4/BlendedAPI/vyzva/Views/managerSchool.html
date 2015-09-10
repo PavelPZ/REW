@@ -11,7 +11,7 @@
         <div class="col-sm-6">
           <h4>Vysvětlení pojmů:</h4>
           <b>Student</b>: student nebo žák Vaší školy<br />
-          <b>Učitel</b>: učitel Vaší školy, který se bude vyučovat v rámci šablony č.3.<br />
+          <b>Učitel</b>: učitel Vaší školy, který se bude sám vyučovat v rámci šablony č.3.<br />
           <b>Lektor</b>: učitel Vaší školy, který bude řídit výuku studentů v rámci šablony č. 4.<br />
           <b>Správce</b>: to jste Vy, který spravujete studijní skupiny a lektory.<br />
         </div>
@@ -73,10 +73,10 @@
       <div class="clearfix"></div>
       <br />
       <div class="alert alert-success" data-ng-if="ts.wizzardStep==0">
-        Stikněte Potvrzení údajů, pokud jste přidali všechny požadované studijní skupiny se správným počtem studentů nebo učitelů.
+        Stikněte <i>Potvrzení údajů</i>, pokud jste přidali všechny požadované studijní skupiny se správným počtem studentů nebo učitelů.
       </div>
       <div class="alert alert-success" data-ng-if="ts.wizzardStep==1">
-        Jsou-li údaje v pořádku, stiskněte Údaje v pořádku. Pro opravu údajů stiskněte Opravit údaje.
+        Jsou-li údaje v pořádku, stiskněte <i>Údaje v pořádku</i>. Pro opravu údajů stiskněte <i>Opravit údaje</i>.
       </div>
       <button class="btm btn-default btn-lg" ng-if="ts.wizzardStep==1" ng-click="ts.wizzardClick(true)">Opravit údaje</button>
       <button class="btm btn-success btn-lg" ng-disabled="ts.groups.length==0" ng-click="ts.wizzardClick(false)">{{ts.nextTitle}}</button>
@@ -86,23 +86,21 @@
 
   <div data-ng-if="ts.wizzardStep==2">
     <div class="alert alert-success" data-ng-if="ts.wizzardStep==2">
-      <h4>Krok číslo 3: rozdání licenčních klíčů lektorům</h4>
+      <h4>Správce: rozdání licenčních klíčů lektorům</h4>
       <ul>
         <li>
-          Pro každou skupinu máte připraveny 3 <i>Licenční klíče</i> pro lektory, kteří budou řídit výuku studentů ve skupině.
-          Každá skupina tedy může mít až 3 lektory (v případě nepřítomnosti lektora tak může řídit výuku jiný lektor).
+          Pro každou <i>Studijní skupinu</i> máte připraveny 3 <i>Licenční klíče</i> pro lektory, kteří budou řídit výuku studentů ve skupině.
+          Každá skupina tedy může mít až 3 lektory (v případě nepřítomnosti jednoho lektora tak může řídit výuku jiný lektor).
         </li>
         <li>
-          Lektor zadá licenční klíč (který mu předáte) do aplikace tak, jako jste Vy zadával licenční klíč, který jsme Vám předali my.
+          Dále máte také možnost určit další dva <i>Správce</i> (se stejnými pravomocemi jako máte Vy). Předejte mu jeden ze dvou zbylých klíčů v tabulce <i>Správci školy</i>.
         </li>
         <li>
-          Máte také možnost určit další dva Správce (se stejnými pravomocemi jako máte Vy). Předejte mu jeden ze dvou zbylých klíčů v tabulce Správci školy.
+          <b>Postup lektora:</b> Lektor zadá licenční klíč (který mu předáte) do aplikace tak, jako jste Vy zadal licenční klíč, který jsme Vám předali my. 
+          Po jeho zadání bude moci řídit výuku studentů ve své <i>Studijní skupině</i>.
         </li>
         <li>
-          Po použití předaného licenčního klíče Lektorem nebo Správcem se jeho údaje (Jméno, Příjmení, EMail) objeví v tabulkách podobně, jako jsou vedeny Vaše údaje.
-        </li>
-        <li>
-          Lektor bude mít na své stránce licenční klíče pro své studenty - tyto Licenční klíče jim rozdá tak, aby měli přístup do výuky.
+          <b>Vysvětlení:</b> Po použití předaného licenčního klíče Lektorem nebo Správcem se jeho údaje (Jméno, Příjmení, EMail) objeví v tabulkách podobně, jako jsou v nich uvedeny Vaše údaje.
         </li>
       </ul>
     </div>

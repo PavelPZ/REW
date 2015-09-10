@@ -1,4 +1,12 @@
-﻿<div vyzva$lector$tabs act-idx="ts.tabIdx" do-navigate="ts.navigateWrapper()"></div>
+﻿<!--<div vyzva$lector$tabs act-idx="ts.tabIdx" do-navigate="ts.navigateWrapper()"></div>-->
+
+<h2><i class="fa fa-user-times"></i> {{::ts.title}}</h2>
+
+<div class="alert alert-success lm-bottom-margin">
+  TODO Popis<br />
+  - vysvětlení ohledně klíčů podobné jako u Správce<br />
+  - motivační info o prohlížení výsledku studentů
+</div>
 
 <div vyzva$lector$users students="::ts.students" ts="::ts"></div>
 
@@ -21,3 +29,11 @@
   </table>
 </script>
 
+<script type="text/ng-template" id="vyzva$lector$tabs.html">
+  <tabset type="pills" class="lm-top-margin">
+    <tab ng-repeat="it in ::tabs" heading="{{::it.shortTitle}}" select="navigate(it.idx)" active="::it.idx==actIdx()"></tab>
+  </tabset>
+  <div class="lm-tabs-header">
+    <h3>{{::tabs[actIdx()].shortTitle || tabs[actIdx()].longTitle}}</h3>
+  </div>
+</script>
