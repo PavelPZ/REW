@@ -118,7 +118,7 @@ var blended;
             this.product = controller.productParent.dataNode;
             this.isTest = controller.moduleParent.state.moduleType != blended.moduleServiceType.lesson;
             this.moduleUser = controller.moduleParent.user.short;
-            this.user = blended.getPersistWrapper(exercise.dataNode, this.ctx.taskid, function () { var res = $.extend({}, blended.shortDefault); res.ms = exercise.dataNode.ms; return res; });
+            this.user = blended.getPersistWrapper(exercise.dataNode, this.ctx.taskid, function () { var res = $.extend({}, blended.shortDefault); res.ms = exercise.dataNode.ms; res.flag = CourseModel.CourseDataFlag.ex; return res; });
             if (!long) {
                 long = {};
                 this.user.modified = true;
@@ -132,12 +132,12 @@ var blended;
             this.showLectorPanel = !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
         }
         //ICoursePageCallback
-        exerciseService.prototype.onRecorder = function (page, msecs) { this.user.modified = true; if (!this.user.short.sumRecord)
-            this.user.short.sumRecord = 0; this.user.short.sumRecord += Math.round(msecs / 1000); };
-        exerciseService.prototype.onPlayRecorder = function (page, msecs) { this.user.modified = true; if (!this.user.short.sumPlayRecord)
-            this.user.short.sumPlayRecord = 0; this.user.short.sumPlayRecord += Math.round(msecs / 1000); };
-        exerciseService.prototype.onPlayed = function (page, msecs) { this.user.modified = true; if (!this.user.short.sumPlay)
-            this.user.short.sumPlay = 0; this.user.short.sumPlay += Math.round(msecs / 1000); };
+        exerciseService.prototype.onRecorder = function (page, msecs) { this.user.modified = true; if (!this.user.short.sRec)
+            this.user.short.sRec = 0; this.user.short.sRec += Math.round(msecs / 1000); };
+        exerciseService.prototype.onPlayRecorder = function (page, msecs) { this.user.modified = true; if (!this.user.short.sPRec)
+            this.user.short.sPRec = 0; this.user.short.sPRec += Math.round(msecs / 1000); };
+        exerciseService.prototype.onPlayed = function (page, msecs) { this.user.modified = true; if (!this.user.short.sPlay)
+            this.user.short.sPlay = 0; this.user.short.sPlay += Math.round(msecs / 1000); };
         exerciseService.prototype.saveLectorEvaluation = function () {
             var _this = this;
             var humanEvals = _.map($('.human-form:visible').toArray(), function (f) {
@@ -152,12 +152,12 @@ var blended;
                 if (val > 100)
                     val = 100;
                 ev.ctrl.result.hPercent = val / 100 * ev.ctrl.scoreWeight;
-                ev.ctrl.result.flag = ev.ctrl.result.flag & ~CourseModel.CourseDataFlag.needsEval;
+                ev.ctrl.result.flag &= ~CourseModel.CourseDataFlag.needsEval;
                 ev.ctrl.setScore();
             });
             var score = this.page.getScore();
             this.user.short.s = score.s;
-            this.user.short.flag = score.flag;
+            this.user.short.flag = Course.setAgregateFlag(this.user.short.flag, score.flag);
         };
         //lectorEvaluationScore() { return scorePercent(this.user.short); }
         exerciseService.prototype.score = function () {
@@ -193,11 +193,11 @@ var blended;
                 ko.applyBindings({}, el[0]);
                 pg.callInitProcs(Course.initPhase.afterRender, function () {
                     pg.callInitProcs(Course.initPhase.afterRender2, function () {
-                        if (_this.isTest && _this.user.short.done && !_this.moduleUser.done && !_this.isLector) {
+                        if (_this.isTest && blended.persistUserIsDone(_this.user.short) && !blended.persistUserIsDone(_this.moduleUser) && !_this.isLector) {
                             //test cviceni nesmi byt (pro nedokonceny test) videt ve vyhodnocenem stavu. Do vyhodnoceneho stav se vrati dalsim klikem na zelenou sipku.
-                            _this.user.short.done = false;
+                            blended.persistUserIsDone(_this.user.short, false);
                         }
-                        pg.acceptData(_this.user.short.done, exImpl.result);
+                        pg.acceptData(blended.persistUserIsDone(_this.user.short), exImpl.result);
                         completed(pg);
                     });
                 });
@@ -213,7 +213,7 @@ var blended;
             short.elapsed += delta;
             short.end = Utils.nowToNum();
             this.user.modified = true;
-            if (!this.user.short.done)
+            if (!blended.persistUserIsDone(this.user.short))
                 this.page.provideData(); //prevzeti poslednich dat z kontrolek cviceni
             //uklid
             if (this.page.sndPage)
@@ -229,7 +229,7 @@ var blended;
         exerciseService.prototype.evaluate = function (isTest, exerciseShowWarningPercent) {
             var _this = this;
             if (exerciseShowWarningPercent === void 0) { exerciseShowWarningPercent = 75; }
-            if (this.user.short.done) {
+            if (blended.persistUserIsDone(this.user.short)) {
                 return { showResult: false };
             }
             this.user.modified = true;
@@ -237,7 +237,7 @@ var blended;
             //pasivni stranka
             if (this.page.isPassivePage()) {
                 this.page.processReadOnlyEtc(true, true);
-                short.done = true;
+                blended.persistUserIsDone(short, true);
                 return { showResult: false };
             }
             //aktivni stranka
@@ -245,7 +245,7 @@ var blended;
             var score = this.page.getScore(); //vypocet score
             if (!score) {
                 debugger;
-                short.done = true;
+                blended.persistUserIsDone(short, true);
                 return null;
             }
             var afterConfirmScore = function () {
@@ -253,14 +253,15 @@ var blended;
                 if (!isTest)
                     _this.page.acceptData(true);
                 _this.user.modified = true;
-                short.done = true;
+                blended.persistUserIsDone(short, true);
                 if (_this.exercise.dataNode.ms != score.ms) {
                     debugger;
                     def.reject("this.maxScore != score.ms");
                     return null;
                 }
                 short.s = score.s;
-                short.flag = score.flag;
+                short.flag = Course.setAgregateFlag(short.flag, score.flag);
+                //short.flag |= score.flag;
             };
             var exerciseOK = isTest || !this.confirmWrongScoreDialog ? true : (score == null || score.ms == 0 || (score.s / score.ms * 100) >= exerciseShowWarningPercent);
             if (!exerciseOK) {

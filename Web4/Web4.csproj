@@ -1416,6 +1416,9 @@
     <EmbeddedResource Include="Migrations\201509010756168_v003.resx">
       <DependentUpon>201509010756168_v003.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509111452537_v004.resx">
+      <DependentUpon>201509111452537_v004.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -2457,6 +2460,7 @@
     <Compile Include="Author\Author.aspx.designer.cs">
       <DependentUpon>Author.aspx</DependentUpon>
     </Compile>
+    <Compile Include="BlendedAPI\vyzva\Server\ExcelReport.cs" />
     <Compile Include="BlendedAPI\Server\Persistence.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\Vyzva57Services.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\DataModel\Company.cs" />
@@ -2493,6 +2497,10 @@
     <Compile Include="Migrations\201509010756168_v003.cs" />
     <Compile Include="Migrations\201509010756168_v003.Designer.cs">
       <DependentUpon>201509010756168_v003.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509111452537_v004.cs" />
+    <Compile Include="Migrations\201509111452537_v004.Designer.cs">
+      <DependentUpon>201509111452537_v004.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="mp3Uploader.ashx.cs">
@@ -2760,6 +2768,7 @@
   <ItemGroup>
     <Folder Include="BlendedAPI\views\" />
     <Folder Include="BlendedAPI\vyzva\Pages\" />
+    <Folder Include="BlendedAPI\vyzva\Server\Excels\" />
     <Folder Include="BS3\css\" />
     <Folder Include="ClientBin\" />
     <Folder Include="JsLib\css\img\Reports\" />

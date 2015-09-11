@@ -199,10 +199,21 @@ var Course;
         return evalGroupImpl;
     })(_evalObj);
     Course.evalGroupImpl = evalGroupImpl;
+    //k SUM prida agregatabe priznaky
+    function agregateFlag(sum, flag) {
+        return sum | (flag & addAbleFlags) /*k sum prida addAbleTags z flag*/;
+    }
+    Course.agregateFlag = agregateFlag;
+    //do SUM nastavi agregatabe priznaky
+    function setAgregateFlag(sum, flag) {
+        return (sum & ~addAbleFlags /*v sum vynuluje addAbleTags*/) | (flag & addAbleFlags /*prida addAbleTags z flag do sum*/);
+    }
+    Course.setAgregateFlag = setAgregateFlag;
+    var addAbleFlags = CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.hasExternalAttachments;
     function addORScore(res, sc) {
         res.ms += sc.ms;
         res.s += sc.s;
-        res.flag |= sc.flag;
+        res.flag = agregateFlag(res.flag, sc.flag);
     }
     function createORScoreObj(scs) {
         var res = { ms: 0, s: 0, flag: 0 };
@@ -214,7 +225,7 @@ var Course;
         //return { ms: 1, s: allOK ? 1 : 0, flag: 0 };
         var res = { ms: 1, s: 1, flag: 0 };
         var hasWrong = false;
-        _.each(scs, function (sc) { hasWrong = hasWrong || sc.ms != sc.s; res.flag |= sc.flag; });
+        _.each(scs, function (sc) { hasWrong = hasWrong || sc.ms != sc.s; res.flag = agregateFlag(res.flag, sc.flag); });
         if (hasWrong)
             res.s = 0;
         return res;
@@ -222,7 +233,7 @@ var Course;
     function createAndScoreObj(scs) {
         var res = { ms: 0, s: 0, flag: 0 };
         var cnt = 0;
-        _.each(scs, function (sc) { res.ms += sc.ms; res.s += sc.s; res.flag |= sc.flag; cnt++; });
+        _.each(scs, function (sc) { res.ms += sc.ms; res.s += sc.s; res.flag = agregateFlag(res.flag, sc.flag); cnt++; });
         var ok = res.ms == res.s;
         res.ms = Math.round(res.ms / cnt);
         res.s = ok ? res.ms : 0;

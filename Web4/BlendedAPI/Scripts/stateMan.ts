@@ -21,6 +21,14 @@ module blended {
 
   export enum moduleServiceType { pretest, lesson, test }
 
+  export function serviceTypeToPersistFlag(st: moduleServiceType): CourseModel.CourseDataFlag {
+    switch (st) {
+      case moduleServiceType.pretest: return CourseModel.CourseDataFlag.blPretestItem;
+      case moduleServiceType.lesson: return CourseModel.CourseDataFlag.blLesson;
+      case moduleServiceType.test: return CourseModel.CourseDataFlag.blTest;
+    }
+  }
+
   export function createStateData<T>(data: T): T { return data; }
 
   //export enum createControllerModes {

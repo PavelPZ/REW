@@ -31,4 +31,17 @@ var vyzva;
         return appService;
     })();
     vyzva.appService = appService;
+    //musi souhlasit s D:\LMCom\REW\Web4\BlendedAPI\vyzva\Server\ExcelReport.cs
+    (function (reportType) {
+        reportType[reportType["managerKeys"] = 0] = "managerKeys";
+        reportType[reportType["managerStudy"] = 1] = "managerStudy";
+        reportType[reportType["lectorKeys"] = 2] = "lectorKeys";
+        reportType[reportType["lectorStudy"] = 3] = "lectorStudy";
+    })(vyzva.reportType || (vyzva.reportType = {}));
+    var reportType = vyzva.reportType;
+    function downloadExcelReport(par) {
+        var url = Pager.basicUrl + 'vyzva57services/reports' + "?" + $.param({ reportpar: JSON.stringify(par) });
+        blended.downloadExcelFile(url.toLowerCase());
+    }
+    vyzva.downloadExcelReport = downloadExcelReport;
 })(vyzva || (vyzva = {}));

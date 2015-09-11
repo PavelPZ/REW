@@ -49,6 +49,11 @@ export enum CourseDataFlag {
   multiTestImpl = 4096,
   testEx = 8192,
   all = 16127,
+  blPretestItem = 16384,
+  blLesson = 32768,
+  blTest = 65536,
+  blPretest = 131072,
+  blProductHome = 262144,
 }
 
 export enum modalSize {

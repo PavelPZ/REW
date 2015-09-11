@@ -52,10 +52,10 @@ var blended;
             _super.call(this, node, type, controller, false);
             this.exService = exService;
             this.refresh(this.exService.modIdx);
-            this.exShowPanel = this.user.done || this.lessonType != blended.moduleServiceType.pretest;
+            this.exShowPanel = blended.persistUserIsDone(this.user) || this.lessonType != blended.moduleServiceType.pretest;
         }
         moduleService.prototype.showResult = function () {
-            var res = this.exService.user && this.exService.user.short && this.exService.user.short.done &&
+            var res = this.exService.user && this.exService.user.short && blended.persistUserIsDone(this.exService.user.short) &&
                 (this.lessonType == blended.moduleServiceType.lesson || this.moduleDone);
             return res;
         };
@@ -63,7 +63,7 @@ var blended;
         moduleService.prototype.refresh = function (actExIdx) {
             var _this = this;
             _super.prototype.refresh.call(this, actExIdx);
-            this.moduleDone = this.user && this.user.done;
+            this.moduleDone = blended.persistUserIsDone(this.user);
             this.exNoclickable = this.lessonType == blended.moduleServiceType.test && !this.moduleDone && !this.controller.ctx.onbehalfof;
             _.each(this.exercises, function (ex) {
                 //active item: stejny pro vsechny pripady
@@ -72,7 +72,7 @@ var blended;
                     ex.background = exItemBackground.warning;
                     return;
                 }
-                var exDone = ex.user && ex.user.done;
+                var exDone = blended.persistUserIsDone(ex.user);
                 //nehotovy test
                 if (_this.lessonType == blended.moduleServiceType.test && !_this.moduleDone && !_this.controller.ctx.onbehalfof) {
                     ex.content = exDone ? exItemContent.check : exItemContent.folder;
@@ -105,7 +105,7 @@ var blended;
     })(moduleServiceLow);
     blended.moduleService = moduleService;
     function moduleIsDone(nd, taskId) {
-        return !_.find(nd.Items, function (it) { var itUd = blended.getPersistData(it, taskId); return (!itUd || !itUd.done); });
+        return !_.find(nd.Items, function (it) { var itUd = blended.getPersistData(it, taskId); return !blended.persistUserIsDone(itUd); });
     }
     blended.moduleIsDone = moduleIsDone;
     function isEx(nd) { return CourseMeta.isType(nd, CourseMeta.runtimeType.ex); }
@@ -113,14 +113,15 @@ var blended;
     var moduleTaskController = (function (_super) {
         __extends(moduleTaskController, _super);
         function moduleTaskController($scope, $state) {
+            var _this = this;
             _super.call(this, $scope, $state);
             this.moduleParent = this;
-            this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { done: false, actChildIdx: 0 }; });
+            this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { actChildIdx: 0, flag: blended.serviceTypeToPersistFlag(_this.moduleParent.state.moduleType) }; });
             this.exercises = _.filter(this.dataNode.Items, function (it) { return isEx(it); });
         }
         moduleTaskController.prototype.onExerciseLoaded = function (idx) {
             var ud = this.user.short;
-            if (ud.done) {
+            if (blended.persistUserIsDone(ud)) {
                 ud.actChildIdx = idx;
                 this.user.modified = true;
             }
@@ -128,10 +129,10 @@ var blended;
         moduleTaskController.prototype.adjustChild = function () {
             var _this = this;
             var ud = this.user.short;
-            var exNode = ud.done ? this.exercises[ud.actChildIdx] : _.find(this.exercises, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (!itUd || !itUd.done); });
+            var exNode = blended.persistUserIsDone(ud) ? this.exercises[ud.actChildIdx] : _.find(this.exercises, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return !blended.persistUserIsDone(itUd); });
             if (!exNode) {
                 debugger;
-                ud.done = true;
+                blended.persistUserIsDone(ud, true);
                 this.user.modified = true;
             }
             var moduleExerciseState = _.find(this.state.childs, function (ch) { return !ch.noModuleExercise; });
@@ -149,15 +150,15 @@ var blended;
                 return blended.moveForwardResult.toParent;
             }
             var ud = this.user.short;
-            if (ud.done) {
+            if (blended.persistUserIsDone(ud)) {
                 ud.actChildIdx = ud.actChildIdx == this.exercises.length - 1 ? 0 : ud.actChildIdx + 1;
                 this.user.modified = true;
                 return blended.moveForwardResult.selfAdjustChild;
             }
             else {
-                var exNode = _.find(this.exercises, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (!itUd || !itUd.done); });
-                if (!ud.done && !exNode) {
-                    ud.done = true;
+                var exNode = _.find(this.exercises, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return !blended.persistUserIsDone(itUd); });
+                if (!exNode) {
+                    blended.persistUserIsDone(ud, true);
                     this.user.modified = true;
                     if (this.pretestParent)
                         return blended.moveForwardResult.toParent;

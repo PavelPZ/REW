@@ -56,7 +56,7 @@ var vyzva;
                 else {
                     res.user = blended.agregateShortFromNodes(res.node, _this.ctx.taskid, false);
                 }
-                res.status = !res.user ? homeLessonStates.no : (res.user.done ? homeLessonStates.done : homeLessonStates.entered);
+                res.status = !res.user ? homeLessonStates.no : (blended.persistUserIsDone(res.user) ? homeLessonStates.done : homeLessonStates.entered);
                 //lesson nejde spustit
                 //res.cannotRun = this.ctx.onbehalfof && res.lessonType != blended.moduleServiceType.lesson && res.status != homeLessonStates.done;
                 //rightButtonType management: vsechny nehotove dej RUN a ev. nastav index prvniho nehotoveho check testu
@@ -65,13 +65,13 @@ var vyzva;
                 if (!firstNotDoneCheckTestIdx && res.lessonType == blended.moduleServiceType.test && res.status != homeLessonStates.done)
                     firstNotDoneCheckTestIdx = idx;
                 //left mark
-                if (res.user && res.user.done) {
+                if (blended.persistUserIsDone(res.user)) {
                     res.leftMarkType = res.lessonType == blended.moduleServiceType.pretest ? leftMarkTypes.pretestLevel : (res.user.waitForEvaluation ? leftMarkTypes.waitForEvaluation : leftMarkTypes.progress);
                 }
                 return res;
             };
             this.lessons = [pretestItem = fromNode(this.myTask.dataNode.pretest, 0)];
-            if (pretestUser && pretestUser.done) {
+            if (pretestUser && blended.persistUserIsDone(pretestUser)) {
                 this.pretestLevels = pretestUser.history;
                 this.pretestLevel = pretestUser.targetLevel;
                 this.lessons.push(fromNode(this.myTask.dataNode.entryTests[this.pretestLevel], 1));
@@ -149,7 +149,7 @@ var vyzva;
             //constructor(state: blended.IStateService, resolves: Array<any>) {
             //  super(state, resolves);
             this.productParent = this;
-            this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { startDate: Utils.nowToNum() }; });
+            this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { startDate: Utils.nowToNum(), flag: CourseModel.CourseDataFlag.blProductHome }; });
             //Intranet
             //this.intranetInfo = intranetInfo;
             if (!this.intranetInfo)

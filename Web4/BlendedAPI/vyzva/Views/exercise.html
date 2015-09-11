@@ -1,5 +1,5 @@
 ﻿<!--***************** LAYOUT -->
-<div class="topbar topbar-exercise" ng-controller="collapsable as modulecollapsable">
+<div class="topbar topbar-exercise" collapsablemanager="modulecollapsable" >
   <div class="container-fluid">
     <div class="container">
       <div class="pull-left" ng-include="'vyzva$common$topbarinnerleft.html'"></div>
@@ -7,7 +7,7 @@
       <div class="pull-left module-finished" ng-if="::modService.moduleDone"><i class="fa fa-checked"></i> {{::ts.tbDoneTitle}}</div>
       <button class="btn-finish pull-left btn btn-default" ng-click="::ts.tbNavigateProductHome()">Zpět na kurz <i class="fa fa-level-up"></i></button>
       <div class="pull-left topbar-title" ng-if="::!state.ignorePageTitle">{{::modService.node.title}}</div>
-      <div class="pull-right more fa fa-bars" ng-if="::!(exService.isTest && !modService.moduleDone)" ng-click="modulecollapsable.isCollapsed = !modulecollapsable.isCollapsed"></div>
+      <div class="pull-right more fa fa-bars" ng-if="::!(exService.isTest && !modService.moduleDone)" ng-click="modulecollapsable.collapseToogle()"></div>
       <div class="pull-right" ng-include="'vyzva$common$topbarinnerright.html'"></div>
       <div class="clearfix"></div>
       <div class="ex-items" ng-include="'vyzva$exercise$moduleheaderitem.html'"></div>
@@ -58,7 +58,7 @@
 <script type="text/ng-template" id="vyzva$exercise$modulemorepanel.html">
   <div collapse="modulecollapsable.isCollapsed" class="container ">
     <div class="more-body-module position-relative">
-      <div class="close-panel fa fa-times" ng-click="modulecollapsable.isCollapsed = !modulecollapsable.isCollapsed"></div>
+      <div class="close-panel fa fa-times" ng-click="modulecollapsable.collapseToogle()"></div>
       <h4>{{::modService.node.title}}, podrobné informace:</h4>
       <div vyzva$common$summary user="modService.user"></div>
     </div>
@@ -68,14 +68,14 @@
 <!--***************** INSTRUCTION -->
 <script type="text/ng-template" id="vyzva$exercise$instruction.html">
   {{modService.showInstruction}}
-  <div ng-controller="collapsable as excollapsed" ng-if="modService.showResult()">
-    <div class="header h4" ng-click="excollapsed.isCollapsed = !excollapsed.isCollapsed">
+  <div collapsablemanager="excollapsed" ng-if="modService.showResult()">
+    <div class="header h4" ng-click="excollapsed.collapseToogle()">
       <div class="more fa fa-bars"></div>
       <span class="fa fa-check"></span>
-      Cvičení "{{::ts.title}}" dokončeno: <span ng-if="exService.score()>=0"> skore <span vyzva$exmodule$scoreprogress value="{{exService.score()}}"></span></span>
+      Cvičení "{{::ts.title}}" dokončeno: <span ng-if="exService.score()>=0"> skóre <span vyzva$exmodule$scoreprogress value="{{exService.score()}}"></span></span>
     </div>
     <div collapse="excollapsed.isCollapsed" class="more-body-exercise position-relative">
-      <div class="close-panel fa fa-times" ng-click="excollapsed.isCollapsed = !excollapsed.isCollapsed"></div>
+      <div class="close-panel fa fa-times" ng-click="excollapsed.collapseToogle()"></div>
       <div class="row">
         <div class="col-sm-5">
           <table class="table">
@@ -96,14 +96,14 @@
       </div>
     </div>
   </div>
-  <div ng-controller="collapsable as excollapsed" ng-if="!modService.showResult()">
-    <div ng-click="excollapsed.isCollapsed = !excollapsed.isCollapsed" class="header h4">
+  <div collapsablemanager="excollapsed" ng-if="!modService.showResult()">
+    <div ng-click="excollapsed.collapseToogle()" class="header h4">
       <!--<span class="fa fa-question-circle"></span>-->
       {{::exService.instructionData.title}}
       <div class="more fa fa-question-circle"></div>
     </div>
     <div collapse="excollapsed.isCollapsed" class="more-body-exercise position-relative">
-      <div class="close-panel fa fa-times" ng-click="excollapsed.isCollapsed = !excollapsed.isCollapsed"></div>
+      <div class="close-panel fa fa-times" ng-click="excollapsed.collapseToogle()"></div>
       <hr />
       <div ng-bind-html="::exService.instructionData.body | rawhtml"></div>
     </div>

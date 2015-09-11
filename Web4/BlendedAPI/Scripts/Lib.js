@@ -23,6 +23,16 @@ var blended;
     blended.newGuid = newGuid;
     var startGui = new Date().getTime();
     blended.baseUrlRelToRoot = '..'; //jak se z root stranky dostat do rootu webu
+    function downloadExcelFile(url) {
+        var hiddenIFrameID = 'hiddenDownloader';
+        var iframe = ($('#hiddenDownloader')[0]);
+        if (!iframe) {
+            iframe = ($('<iframe id="hiddenDownloader" style="display:none" src="about:blank"></iframe>')[0]);
+            $('body').append(iframe);
+        }
+        iframe.src = url;
+    }
+    blended.downloadExcelFile = downloadExcelFile;
     function cloneAndModifyContext(ctx, modify) {
         if (modify === void 0) { modify = null; }
         var res = {};
@@ -65,18 +75,19 @@ var blended;
     function scoreText(sc) { var pr = scorePercent(sc); return pr < 0 ? '' : pr.toString() + '%'; }
     blended.scoreText = scoreText;
     function agregateShorts(shorts) {
-        var res = $.extend({}, blended.shortDefault);
-        res.done = true;
+        var res = $.extend({}, blended.shortDefaultAgreg);
+        blended.persistUserIsDone(res, true);
         _.each(shorts, function (short) {
             if (!short) {
-                res.done = false;
+                blended.persistUserIsDone(res, false);
                 return;
             }
-            var done = short.done;
+            var done = blended.persistUserIsDone(short);
             res.waitForEvaluation = res.waitForEvaluation || short.waitForEvaluation;
-            res.done = res.done && done;
+            if (!done)
+                blended.persistUserIsDone(res, false);
             res.count += short.count || 1;
-            res.dones += (short.dones ? short.dones : (short.done ? 1 : 0));
+            res.dones += (short.dones ? short.dones : (blended.persistUserIsDone(short) ? 1 : 0));
             if (done) {
                 res.ms += short.ms || 0;
                 res.s += short.s || 0;
@@ -85,9 +96,9 @@ var blended;
             res.beg = setDate(res.beg, short.beg, true);
             res.end = setDate(res.end, short.end, false);
             res.elapsed += short.elapsed || 0;
-            res.sumPlay += short.sumPlay;
-            res.sumPlayRecord += short.sumPlayRecord;
-            res.sumRecord += short.sumRecord;
+            res.sPlay += short.sPlay;
+            res.sPRec += short.sPRec;
+            res.sRec += short.sRec;
         });
         res.score = blended.scorePercent(res);
         res.finished = blended.donesPercent(res);
@@ -95,18 +106,19 @@ var blended;
     }
     blended.agregateShorts = agregateShorts;
     function agregateShortFromNodes(node, taskId, moduleAlowFinishWhenUndone /*do vyhodnoceni zahrn i nehotova cviceni*/) {
-        var res = $.extend({}, blended.shortDefault);
-        res.done = true;
+        var res = $.extend({}, blended.shortDefaultAgreg);
+        blended.persistUserIsDone(res, true);
         _.each(node.Items, function (nd) {
             if (!blended.isEx(nd))
                 return;
             res.count++;
             var us = blended.getPersistWrapper(nd, taskId);
-            var done = us && us.short.done;
-            res.waitForEvaluation = done && waitForEvaluation(us.short);
+            var done = us && blended.persistUserIsDone(us.short);
+            res.waitForEvaluation = res.waitForEvaluation || (done && waitForEvaluation(us.short));
             if (done)
-                res.dones += (us.short.dones ? us.short.dones : (us.short.done ? 1 : 0));
-            res.done = res.done && done;
+                res.dones += (us.short.dones ? us.short.dones : (blended.persistUserIsDone(us.short) ? 1 : 0));
+            if (!done)
+                blended.persistUserIsDone(res, false);
             if (nd.ms) {
                 if (done) {
                     res.ms += nd.ms;
@@ -120,9 +132,9 @@ var blended;
                 res.beg = setDate(res.beg, us.short.beg, true);
                 res.end = setDate(res.end, us.short.end, false);
                 res.elapsed += us.short.elapsed;
-                res.sumPlay += us.short.sumPlay;
-                res.sumPlayRecord += us.short.sumPlayRecord;
-                res.sumRecord += us.short.sumRecord;
+                res.sPlay += us.short.sPlay;
+                res.sPRec += us.short.sPRec;
+                res.sRec += us.short.sRec;
             }
         });
         res.score = blended.scorePercent(res);
@@ -130,7 +142,8 @@ var blended;
         return res;
     }
     blended.agregateShortFromNodes = agregateShortFromNodes;
-    blended.shortDefault = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0, count: 0, dones: 0, sumPlay: 0, sumPlayRecord: 0, sumRecord: 0, waitForEvaluation: false };
+    blended.shortDefault = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), ms: 0, s: 0, sPlay: 0, sPRec: 0, sRec: 0, flag: 0 };
+    blended.shortDefaultAgreg = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), ms: 0, s: 0, count: 0, dones: 0, sPlay: 0, sPRec: 0, sRec: 0, waitForEvaluation: false, flag: 0 };
     function setDate(dt1, dt2, min) { if (!dt1)
         return dt2; if (!dt2)
         return dt1; if (min)

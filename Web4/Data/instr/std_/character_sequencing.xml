@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.langmaster.com/new/author/coursemodelschema.xsd">
+  <head>
+    <title></title>
+    <style />
+  </head>
+  <body xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <h1 class="techInstr  ">{{th13|CHARACTER SEQUENCING}}</h1>
+  <p>{{tp3|Your task is to put the characters into correct order. Proceed as follows:}}</p>
+  <ol>
+    <li>{{tli12|Click on the character you wish to move. The character will be highlighted.}}</li>
+    <li>{{tli13|Hold the left mouse button down and drag the character to the right place.}}</li>
+    <li>{{tli14|When the mouse arrow points to the right place, release the left mouse button.}}</li>
+    <li>{{tli15|The character will be moved.}}</li>
+  </ol>
+</body>
+</html>

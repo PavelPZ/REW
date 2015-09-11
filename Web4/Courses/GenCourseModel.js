@@ -50,6 +50,11 @@ var CourseModel;
         CourseDataFlag[CourseDataFlag["multiTestImpl"] = 4096] = "multiTestImpl";
         CourseDataFlag[CourseDataFlag["testEx"] = 8192] = "testEx";
         CourseDataFlag[CourseDataFlag["all"] = 16127] = "all";
+        CourseDataFlag[CourseDataFlag["blPretestItem"] = 16384] = "blPretestItem";
+        CourseDataFlag[CourseDataFlag["blLesson"] = 32768] = "blLesson";
+        CourseDataFlag[CourseDataFlag["blTest"] = 65536] = "blTest";
+        CourseDataFlag[CourseDataFlag["blPretest"] = 131072] = "blPretest";
+        CourseDataFlag[CourseDataFlag["blProductHome"] = 262144] = "blProductHome";
     })(CourseModel.CourseDataFlag || (CourseModel.CourseDataFlag = {}));
     var CourseDataFlag = CourseModel.CourseDataFlag;
     (function (modalSize) {

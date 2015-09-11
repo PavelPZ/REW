@@ -1,6 +1,5 @@
 ﻿testovací stránka pro nahrávání a přehrávání
 Excel exports
-Barvicky v kontrolkach dialogu
 texty do potvrzovacich dialogu a do nápověd
 
 Lesson exercise:
@@ -10,3 +9,5 @@ Cache:
 - cviceni i modul nejsou pod produktem ale mimo nej (neobsahuji user data, jsou spolecna pro vice users)
 
 LM konzole pro založení školy
+
+Barvicky v kontrolkach dialogu

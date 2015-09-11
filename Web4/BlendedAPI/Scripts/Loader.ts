@@ -10,23 +10,45 @@ module blended {
     modified: boolean;
   }
 
+  //export enum IPersistNodeFlag {
+  //  needsEval = 0x1, //dynamicke
+  //  pcCannotEvaluate = 0x2,
+  //  hasExternalAttachments = 0x4,
+  //  done = 0x8, //dynamicke
+  //  passive = 0x10,
+
+  //  //moduleServiceType { pretest, lesson, test }
+  //  modPretest = 0x20,
+  //  modLesson = 0x40,
+  //  modTest = 0x80,
+
+  //  pretest = 0x100,
+  //  ex = 0x200,
+  //}
+
   export interface IPersistNodeUser { //user dato pro task obecne
+    flag?: CourseModel.CourseDataFlag;
+  }
+
+  export function persistUserIsDone(us: IPersistNodeUser, val?: boolean): boolean {
+    if (val === undefined) return us ? !!(us.flag & CourseModel.CourseDataFlag.done) : false;
+    if (val) us.flag |= CourseModel.CourseDataFlag.done; else us.flag &= ~CourseModel.CourseDataFlag.done;
   }
 
   export interface IPersistNodeImpl {
-    userData: { [taskId: string]: IPersistNodeItem<any>; } //dato pro jednotlive variatny
+    userData: { [taskId: string]: IPersistNodeItem<IPersistNodeUser>; } //dato pro jednotlive variatny
   }
 
-  export function getPersistWrapper<T>(dataNode: CourseMeta.data, taskid: string, createProc?: () => T): IPersistNodeItem<T> {
+  export function getPersistWrapper<T extends IPersistNodeUser>(dataNode: CourseMeta.data, taskid: string, createProc?: () => T): IPersistNodeItem<T> {
     if (createProc) {
       if (!dataNode.userData) dataNode.userData = {};
-      var res = dataNode.userData[taskid]; if (res) return res;
+      var res = dataNode.userData[taskid]; if (res) return <IPersistNodeItem<T>> res;
       res = { long: null, short: createProc(), modified: true };
       dataNode.userData[taskid] = res;
-      return res;
+      return <IPersistNodeItem<T>> res;
     } else {
       if (!dataNode.userData) return null;
-      return dataNode.userData[taskid];
+      return <IPersistNodeItem<T>>(dataNode.userData[taskid]);
     }
   }
   export function getPersistData<T>(dataNode: CourseMeta.data, taskid: string): T {
@@ -95,7 +117,7 @@ module blended {
           try {
             var d = nd.userData[p]; if (!d.modified) return;
             d.modified = false;
-            toSave.push({ url: nd.url, taskId: p, shortData: JSON.stringify(d.short), longData: d.long ? JSON.stringify(d.long) : null });
+            toSave.push({ url: nd.url, taskId: p, shortData: JSON.stringify(d.short), longData: d.long ? JSON.stringify(d.long) : null, flag: d.short.flag });
           } finally { delete p.long; }
         }
       });
@@ -108,6 +130,7 @@ module blended {
     taskId: string;
     shortData: string;
     longData: string;
+    flag: CourseModel.CourseDataFlag;
   }
 
   export class cachedModule { //module z cache
@@ -249,7 +272,7 @@ module blended {
         if (resIt && resIt.data) return { prod: resIt.data }; if (!defered) return {};
         //nenacteno
         var justCreated = false;
-        if (!resIt) { 
+        if (!resIt) {
           resIt = this.toCache(ctx); //vytvor polozku v cache
           resIt.defereds = [];
           justCreated = true; //start noveho nacitani

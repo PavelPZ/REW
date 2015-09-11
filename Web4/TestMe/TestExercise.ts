@@ -78,7 +78,7 @@
         var id = this.needsRecording() ? 'testForRecording' : 'testForPlaying';
         CourseMeta.processInlineControls(id.toLowerCase(), $.noop);
       } else
-        SndLow.getGlobalMedia().adjustGlobalDriver(this.needsRecording(),(dr, disabled) => this.testDisabled(disabled));
+        SndLow.getGlobalMedia().adjustGlobalDriver(this.needsRecording(), (dr, disabled) => this.testDisabled(disabled));
     }
     needsRecording = ko.observable(false);
     needsPlaying = ko.observable(false);
@@ -170,7 +170,7 @@
             () => CourseMeta.lib.displayEx(actEx, null, actEx => {
               Logger.trace_course('testMe: doUpdate end');
               th.instrTitle(actEx.page.instrTitle);
-              th.instrBody(_.map(actEx.page.instrs,(s: string) => { var res = CourseMeta.instructions[s.toLowerCase()]; return res ? res : (_.isEmpty(s) ? "" : "Missing [" + s + "] instruction"); }).join());
+              th.instrBody(_.map(actEx.page.instrs, (s: string) => { var res = CourseMeta.instructions[s.toLowerCase()]; return res ? res : (_.isEmpty(s) ? "" : "Missing [" + s + "] instruction"); }).join());
               th.startTimer(); //adjustace mereni casu
               //completed(); completed je osetreno v displayEx. Pri completed by knockout hlasil vicenasobny binding.
             })));
@@ -182,7 +182,7 @@
     multiActTest(): testImpl {
       var mt = this.multiTest();
       var end = '/' + mt.level + '/';
-      return <testImpl>(_.find(mt.Items,(dt: testImpl) => Utils.endsWith(dt.url, end)));
+      return <testImpl>(_.find(mt.Items, (dt: testImpl) => Utils.endsWith(dt.url, end)));
     }
 
     htmlClearing() {
@@ -244,9 +244,9 @@
       //if (!ex.testDone && markDone) ex.testDone = true;
       //soucet elapsed vsech cviceni testu
       var exElapsed = 0;
-      _.each(this.actTest.Items, m => _.each(m.Items,(ex: CourseMeta.exImpl) => { if (ex.elapsed) exElapsed += ex.elapsed; }));
+      _.each(this.actTest.Items, m => _.each(m.Items, (ex: CourseMeta.exImpl) => { if (ex.elapsed) exElapsed += ex.elapsed; }));
       //soucet elapsed vsech modulu
-      var modElapsed = 0; _.each(this.actTest.Items,(t: testSkillImpl) => modElapsed += t.elapsed);
+      var modElapsed = 0; _.each(this.actTest.Items, (t: testSkillImpl) => modElapsed += t.elapsed);
       //uprav elapsed aktualniho cviceni
       if (modElapsed > exElapsed) ex.elapsed += Math.floor(modElapsed - exElapsed);
       //aktualizuj moduly a test
@@ -257,7 +257,7 @@
       Logger.trace_course('testMe: finishModule start');
       this.clearTimer();
       //_.each(this.actModule.Items, (ex: CourseMeta.exImpl) => { if (!ex.done) { ex.s = 0; ex.done = true; ex.userPending = true; } });
-      _.each(this.actModule.Items,(ex: CourseMeta.exImpl) => { if (ex.done) return; ex.done = true; ex.userPending = true; });
+      _.each(this.actModule.Items, (ex: CourseMeta.exImpl) => { if (ex.done) return; ex.done = true; ex.userPending = true; });
       CourseMeta.actCourseRoot.refreshNumbers();
       this.actModule.end = Utils.nowToNum(); this.actModule.userPending = true;
       this.findActModule();
@@ -270,7 +270,7 @@
             this.actTest.createEmptyResult(archiveId); //vytvor test result
             this.actTest.adjustResult(); //vytvor test result
             saveProduct(() => { //save testu i s results
-              Login.adjustMyData(true,() => { //aktualizuj my home data
+              Login.adjustMyData(true, () => { //aktualizuj my home data
                 Logger.trace_course('testMe: finishModule, test end');
                 window.location.hash = createResultUrl(); //jdi na result stranku
               });
@@ -288,7 +288,7 @@
       var th = this;
       CourseMeta.actCourseRoot.refreshNumbers();
       //if (!th.actModule) {
-      th.actModule = <testSkillImpl>(_.find(th.actTest.Items,(it: CourseMeta.courseNode) => !it.done));
+      th.actModule = <testSkillImpl>(_.find(th.actTest.Items, (it: CourseMeta.courseNode) => !it.done));
       if (!th.actModule) { th.actTest.done = true; return; }
       if (!th.actModule.beg) th.actModule.beg = Utils.nowToNum();
       th.actIdx = 0;
@@ -306,24 +306,24 @@
         var levStdBoundary = [3, 5, 7, 9, 11, 12];
         var score = 0; var isAll = true; var singleSels = multiEx.page.evalPage.Items[0].Items;
         _.each(singleSels, grp => { //<_eval-group id="and-screading" eval-control-ids="ra1 ra2 rb1 rb2 rc1 rc2" is-and="true"/>
-          var ctrl = <Course.radioButton>(_.find(grp.evalControls,(r: Course.radioButton) => r.selected()));
+          var ctrl = <Course.radioButton>(_.find(grp.evalControls, (r: Course.radioButton) => r.selected()));
           //selected[grp.id.substr(6)] = ctrl ? ctrl.id.substr(ctrl.id.length-2) : null;
           if (!ctrl) isAll = false; else score += levToScore[ctrl.id.substr(ctrl.id.length - 2)];
         });
         if (!isAll) {
-          anim.alert().show(CSLocalize('5ae8d0cbcd5e44b68843f2010ec215b7', 'Fill in all parts of the self-evaluation form'), $.noop,() => anim.alert().isCancelVisible(false));
+          anim.alert().show(CSLocalize('5ae8d0cbcd5e44b68843f2010ec215b7', 'Fill in all parts of the self-evaluation form'), $.noop, () => anim.alert().isCancelVisible(false));
           return;
         }
         var boundaries = singleSels.length == 4 ? levComplBoundary : levStdBoundary; //aktualni hranice pro skore
         var multiTest = this.multiTest();
         for (var i = 0; i < boundaries.length; i++) if (score <= boundaries[i]) { multiTest.level = numToLev[i]; break; }
-        anim.alert().show(CSLocalize('8f8d748c9209489b8710fa30b10905d3', 'The following test will be started now') + ':<p class="text-info"><b>' + this.multiActTest().title + '</b></p>',() => {
+        anim.alert().show(CSLocalize('8f8d748c9209489b8710fa30b10905d3', 'The following test will be started now') + ':<p class="text-info"><b>' + this.multiActTest().title + '</b></p>', () => {
           multiTest.userPending = true;
           this.isPretest = false;
           this.isHome = true;
           Pager.blockGui(true);
           saveProduct(Pager.reloadPage);
-        },() => anim.alert().isCancelVisible(false));
+        }, () => anim.alert().isCancelVisible(false));
       }
       else if (this.isResult) { debugger; throw 'this.isResult'; }
       else {
@@ -406,7 +406,7 @@
       if (this.isResult) { debugger; throw 'this.isResult'; }
       var res: Array<SkillItemLabel> = [];
       res.push({ title: CSLocalize('02bea28a09a847cca2488a6791e87e2a', 'Introduction'), active: this.isHome ? 'active' : '' });
-      _.each(<any>(this.actTest.Items),(it: CourseMeta.taskTestSkill) => res.push({ title: Model.skillText(it.skill), active: !this.isHome && this.actModule == it ? 'active' : '' }));
+      _.each(<any>(this.actTest.Items), (it: CourseMeta.taskTestSkill) => res.push({ title: Model.skillText(it.skill), active: !this.isHome && this.actModule == it ? 'active' : '' }));
       res.push({ title: CSLocalize('ba059f7aff4a4a2f965ffb17656b0e60', 'Results'), active: '' });
       //res.push({ title: 'Vysledky', active: this.isResult ? 'active' : '' });
       this.skills = res;
@@ -463,7 +463,7 @@
     }
 
     doReset() {
-      _.each(this.Items,(it: testSkillImpl) => it.doReset());
+      _.each(this.Items, (it: testSkillImpl) => it.doReset());
       this.interrupts = null; this.ip = Login.myData.IP; this.done = false;
     }
 
@@ -480,7 +480,7 @@
     isDemoTest: boolean;
 
 
-    lastDate(): number { var max = 0; _.each(this.Items,(it: testSkillImpl) => max = Math.max(max, it.end)); return max; }
+    lastDate(): number { var max = 0; _.each(this.Items, (it: testSkillImpl) => max = Math.max(max, it.end)); return max; }
 
     createEmptyResult(id: number) {
       this.result = {
@@ -492,7 +492,7 @@
         title: testTitle(this),
         ip: this.ip,
         interrupts: this.interrupts,
-        skills: _.map(this.Items,(sk: testSkillImpl) => {
+        skills: _.map(this.Items, (sk: testSkillImpl) => {
           //posledi 3 polozku se aktualizuji az v adjustResult (adjustResult se vola jednouna konci testu a opakovan pri humanEval)
           var res: skillResult = { title: sk.title, skill: sk.skill, elapsed: sk.elapsed, finished: sk.end, started: sk.beg, ms: sk.ms, s: 0, flag: 0, scoreWeight: 0 };
           return res;
@@ -511,7 +511,7 @@
     adjustResult() {
       //aktualni flag a skore (protoze adjustResult se vola jek na konci testu tak i po human eval testu)
       this.result.flag = 0;
-      _.each(this.Items,(sk: testSkillImpl) => {
+      _.each(this.Items, (sk: testSkillImpl) => {
         var skResult = _.find(this.result.skills, s => s.skill == sk.skill);
         skResult.flag = sk.flag; skResult.s = sk.s; skResult.scoreWeight = sk.scoreWeight;
         this.result.flag |= sk.flag;
@@ -523,13 +523,13 @@
       if (wsum > 100) { debugger; throw 'wsum > 100'; }
       var wempty = (100 - wsum) / (this.Items.length - wcnt); //pocet procent pro undefined scoreWeight
       //dosad weights, aby jejich soucet byl 100
-      var wintSum = 0; _.each(this.result.skills,(sk: skillResult) => wintSum += sk.scoreWeight = Math.round(sk.scoreWeight ? sk.scoreWeight : wempty));
+      var wintSum = 0; _.each(this.result.skills, (sk: skillResult) => wintSum += sk.scoreWeight = Math.round(sk.scoreWeight ? sk.scoreWeight : wempty));
       if (wintSum > 100 || wintSum < 98) { debugger; throw 'wintSum > 100 || wintSum < 98'; } // neco je spatne
       if (wintSum < 100) this.result.skills[0].scoreWeight += 100 - wintSum;
 
       if (!Course.needsHumanEval(this.result.flag)) {
         //vazeny prumer
-        var ssum = 0; _.each(this.result.skills,(sk: skillResult) => ssum += Course.scorePercent(sk) * sk.scoreWeight);
+        var ssum = 0; _.each(this.result.skills, (sk: skillResult) => ssum += Course.scorePercent(sk) * sk.scoreWeight);
         this.result.score = Math.round(ssum / 100);
       }
 
@@ -552,7 +552,7 @@
     static resultKey = 'result';
     expandDynamicAll(): boolean {
       var res = false;
-      CourseMeta.scan(this,(nd: testMe.testSkillImpl) => {
+      CourseMeta.scan(this, (nd: testMe.testSkillImpl) => {
         if (!CourseMeta.isType(nd, CourseMeta.runtimeType.taskTestSkill)) return;
         if (nd.expandDynamic()) res = true;
         //prevzeti informaci z dynamicModuleData
@@ -584,7 +584,7 @@
       var th = this
       th.exCount = th.Items.length;
       th.s = th.flag = 0; th.done = true;
-      _.each(th.Items,(it: CourseMeta.exImpl) => { it.refreshNumbers(); it.complNotPassiveCnt = 1; if (!it.s) it.s = 0; th.s += it.s; th.done = th.done && it.done; th.flag |= it.flag; });
+      _.each(th.Items, (it: CourseMeta.exImpl) => { it.refreshNumbers(); it.complNotPassiveCnt = 1; if (!it.s) it.s = 0; th.s += it.s; th.done = th.done && it.done; th.flag = Course.agregateFlag(th.flag, it.flag); });
       th.complPassiveCnt = 0; th.complNotPassiveCnt = th.Items.length;
     }
 

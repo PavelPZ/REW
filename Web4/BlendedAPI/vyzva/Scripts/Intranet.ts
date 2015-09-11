@@ -2,6 +2,7 @@
   export module intranet {
 
     //***************** globalni informace o firme, ulozene v databazi, tabulka Company
+    //!!!!!!!!!!!!!!!!  //musi souhlasit s D:\LMCom\REW\Web4\BlendedAPI\vyzva\Server\ExcelReport.cs
     export interface ICompanyData {
       managerKeys: Array<IAlocatedKey>;
       visitorsKeys?: Array<IVisitors>; //licencni klice visitor studentuu k blended kurzu. Vidi je SPRAVCE na home spravcovske konzole. Visitors se napocitaji do skore, jsou pro navstevniky

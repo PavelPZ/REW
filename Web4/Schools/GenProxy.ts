@@ -162,10 +162,13 @@ module proxies {
     static writeCompanyData(companyid: number, data: string, completed: () => void): void {
 		  invoke('vyzva57services/writecompanydata', 'post', { companyid: companyid }, JSON.stringify(data), completed);
 	  } 
+    static reports(reportpar: string, completed: (res: Array<number>) => void): void {
+		  invoke('vyzva57services/reports', 'get', { reportpar: reportpar }, null, completed);
+	  } 
     static deleteDataKeys(companyid: number, lmcomid: number, producturl: string, urltaskids: {  url: string;  taskId: string;  }[], completed: () => void): void {
 		  invoke('vyzva57services/deletedatakeys', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, JSON.stringify(urltaskids), completed);
 	  } 
-    static getShortProductDatas(companyid: number, lmcomid: number, producturl: string, completed: (res: {  shortData: string;  taskId: string;  url: string;  }[]) => void): void {
+    static getShortProductDatas(companyid: number, lmcomid: number, producturl: string, completed: (res: {  url: string;  taskId: string;  shortData: string;  }[]) => void): void {
 		  invoke('vyzva57services/getshortproductdatas', 'get', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, null, completed);
 	  } 
     static getLongData(companyid: number, lmcomid: number, producturl: string, taskid: string, key: string, completed: (res: string) => void): void {
@@ -174,7 +177,7 @@ module proxies {
     static debugClearProduct(companyid: number, lmcomid: number, producturl: string, completed: () => void): void {
 		  invoke('vyzva57services/debugclearproduct', 'get', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, null, completed);
 	  } 
-    static saveUserData(companyid: number, lmcomid: number, producturl: string, data: {  url: string;  taskId: string;  shortData: string;  longData: string;  }[], completed: () => void): void {
+    static saveUserData(companyid: number, lmcomid: number, producturl: string, data: {  url: string;  taskId: string;  flag: CourseModel.CourseDataFlag;  shortData: string;  longData: string;  }[], completed: () => void): void {
 		  invoke('vyzva57services/saveuserdata', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, JSON.stringify(data), completed);
 	  } 
    

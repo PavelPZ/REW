@@ -4,11 +4,11 @@
     <style />
   </head>
   <body xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <h1 class="techInstr  ">{{th16|SINGLE CHOICE - ONE CORRECT ANSWER}}</h1>
-  <p>{{tp6|Your task is to select the correct one out of several offered options. Proceed as follows:}}</p>
+  <h1 class="techInstr  ">VÝBĚR Z VÍCE MOŽNOSTÍ - PRÁVĚ JEDNA SPRÁVNÁ</h1>
+  <p>Vaším úkolem je na základě úvodního poslechu vybrat k zadáním správné odpovědi. Doporučujeme postupovat následovně:</p>
   <ol>
-    <li>{{tli24|Left click the chosen item.}}</li>
-    <li>{{tli25|If you wish to change your selection, click another option.}}</li>
+    <li>Klikněte levým tlačítkem myši na zvolenou možnost.</li>
+    <li>Chcete-li svoji volbu změnit, klikněte na nově vybranou možnost.</li>
   </ol>
 </body>
 </html>

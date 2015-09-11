@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-sm-6">
       <h4>Nápověda pro <i>Učitele</i></h4>
-      Klikněte na tlačítko <b>Studenti <i>Studijní skupiny</i></b> níže. To vám umožní:
+      Klikněte na <b>Studenti <i>Studijní skupiny</i></b> níže. To vám umožní:
       <ul>
         <li>přizvat <i>Studenty</i> k blended learning výuce</li>
         <li>moci řídit výuku a prohlížet výsledky práce <i>Studentů</i></li>
@@ -12,7 +12,7 @@
     <div class="col-sm-6">
       <h4>Vysvětlení pojmů:</h4>
       <b><i>Student</i></b>: student nebo žák Vaší školy<br />
-      <b><i>Studující učitel</i></b>: učitel Vaší školy, který se bude sám vyučuje v rámci šablony č.3.<br />
+      <b><i>Studující učitel</i></b>: učitel Vaší školy, který se sám vyučuje v rámci šablony č.3.<br />
       <b><i>Učitel</i></b>: to jste Vy, který řídí výuku <i>Studentů</i> v rámci šablony č. 4.<br />
       <b><i>Návštěvník</i></b>: kdokoliv, kdo si chce prohlédnout kurz, aniž by jeho výuka byla řízena <i>Učitelem</i><br />
     </div>
@@ -47,8 +47,8 @@
   - mám zde možnost nejenom prohlížet ale i hodnotit Kontrolní testy.
 </div>
 
-<div class="panel panel-primary lm-top-margin home-course" ng-if="::ts.myTask.showStudentPart" ng-controller="collapsable as homecollapsable">
-  <div class="panel-heading" ng-click="homecollapsable.isCollapsed = !homecollapsable.isCollapsed">
+<div class="panel panel-primary lm-top-margin home-course" ng-if="::ts.myTask.showStudentPart" collapsablemanager="homecollapsable" >
+  <div class="panel-heading" ng-click="homecollapsable.collapseToogle()">
     <h3>
       <span ng-if="ts.lessons[0].status<=1">Rozřazovací test</span>
       <b ng-if="ts.lessons[0].status>1">Kurz úrovně {{::ts.pretestLevel | levelText}}</b>
@@ -57,7 +57,7 @@
   </div>
   <div collapse="homecollapsable.isCollapsed" class="position-relative home-more-panel">
     <div class="clearfix"></div>
-    <div class="close-panel fa fa-times" ng-click="homecollapsable.isCollapsed = !homecollapsable.isCollapsed"></div>
+    <div class="close-panel fa fa-times" ng-click="homecollapsable.collapseToogle()"></div>
     <h4>{{::ts.title}}, podrobné informace:</h4>
     <div vyzva$common$summary user="ts.user"></div>
   </div>
@@ -96,7 +96,7 @@
         Rozřazovací test
       </button>
     </p>
-    Rozřazovací test určí vaši jazykovou úroveň (A1, A2, B1 nabo B2), na základě které se zvolí odpovídající pokračování vašeho kurzu.
+    Rozřazovací test určí vaši jazykovou úroveň (A1, A2, B1 nebo B2), na základě které se zvolí odpovídající pokračování vašeho kurzu.
   </div>
   <div data-ng-if="::lesson.status>=2">
     <h4><i class="fa fa-line-chart"></i> Rozřazovací test dokončen: vaše jazyková úroveň je {{::ts.pretestLevel | levelText}}</h4>

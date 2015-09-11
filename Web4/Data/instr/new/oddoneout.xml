@@ -3,11 +3,11 @@
     <title></title>
   </head>
   <body>
-    <h1 class="techInstr  ">{{th301|ODD ONE OUT}}</h1>
-    <p>{{tp301|Your task is to mark the word that does not belong to the group. Proceed as follows:}}</p>
+    <h1 class="techInstr  ">CO DO SKUPINY NEPATŘÍ?</h1>
+    <p>Vaším úkolem je označit slovo, které do uvedené skupiny nepatří. Postupujte následovně:</p>
     <ol>
-      <li>{{tli301|Left click the selected word.}}</li>
-      <li>{{tli302|If you wish to change your selection, click another word.}}</li>
+      <li>Klikněte levým tlačítkem myši na zvolené slovo.</li>
+      <li>Chcete-li svoji volbu změnit, klikněte na jiné slovo.</li>
     </ol>
   </body>
 </html>

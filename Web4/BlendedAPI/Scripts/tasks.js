@@ -202,7 +202,7 @@ var blended;
     })(taskController);
     blended.homeTaskController = homeTaskController;
     function pretestScore(dataNode, user, taskId) {
-        if (!user || !user.done)
+        if (!blended.persistUserIsDone(user))
             return null;
         var users = _.map(user.history, function (l) { return blended.agregateShortFromNodes(dataNode.Items[l], taskId); });
         return blended.agregateShorts(users);
@@ -216,7 +216,7 @@ var blended;
             this.pretestParent = this;
             //sance prerusit navigaci
             this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () {
-                return { actLevel: blended.levelIds.A2, history: [blended.levelIds.A2], targetLevel: -1, done: false };
+                return { actLevel: blended.levelIds.A2, history: [blended.levelIds.A2], targetLevel: -1, flag: CourseModel.CourseDataFlag.blPretest };
             });
             if (this.isFakeCreate)
                 return;
@@ -226,7 +226,7 @@ var blended;
             var ud = this.user.short;
             if (!ud)
                 return this.getProductHomeUrl(); //{ stateName: prodStates.home.name, pars: this.ctx }; //pretest jeste nezacal => goto product home
-            if (ud.done)
+            if (blended.persistUserIsDone(ud))
                 return null; //done pretest: vse je povoleno
             var dataNode = this.dataNode;
             var actModule = dataNode.Items[ud.actLevel];
@@ -239,7 +239,7 @@ var blended;
         };
         pretestTaskController.prototype.adjustChild = function () {
             var ud = this.user.short;
-            if (ud.done)
+            if (blended.persistUserIsDone(ud))
                 return null;
             var actModule = this.actRepo(ud.actLevel);
             if (!actModule)
@@ -259,7 +259,7 @@ var blended;
             if (actTestItem.dataNode != actRepo)
                 throw 'actTestItem.dataNode != actRepo';
             var childSummary = blended.agregateShortFromNodes(actTestItem.dataNode, this.ctx.taskid);
-            if (!childSummary.done)
+            if (!blended.persistUserIsDone(childSummary))
                 throw '!childUser.done';
             var score = blended.scorePercent(childSummary);
             if (actRepo.level == blended.levelIds.A1) {
@@ -298,7 +298,7 @@ var blended;
         pretestTaskController.prototype.finishPretest = function (sender, ud, lev) {
             var _this = this;
             this.user.modified = true;
-            ud.done = true;
+            blended.persistUserIsDone(ud, true);
             ud.targetLevel = lev;
             delete ud.actLevel;
             sender.congratulationDialog().then(function () { return _this.navigateProductHome(); }, function () { return _this.navigateProductHome(); });

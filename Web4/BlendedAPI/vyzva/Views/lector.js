@@ -9,10 +9,11 @@ var vyzva;
     var lectorController = (function (_super) {
         __extends(lectorController, _super);
         function lectorController($scope, $state) {
+            var _this = this;
             _super.call(this, $scope, $state);
             var lectorGroups = this.productParent.lectorGroups;
-            var gid = parseInt(this.ctx.groupid);
-            this.lectorGroup = _.find(lectorGroups, function (grp) { return grp.groupId == gid; });
+            this.groupId = parseInt(this.ctx.groupid);
+            this.lectorGroup = _.find(lectorGroups, function (grp) { return grp.groupId == _this.groupId; });
         }
         return lectorController;
     })(blended.controller);
@@ -21,7 +22,6 @@ var vyzva;
         __extends(lectorViewBase, _super);
         function lectorViewBase($scope, $state) {
             _super.call(this, $scope, $state);
-            //this.title = 'Studijní skupina ' + this.lectorParent.lectorGroup.title;
             this.title = this.lectorParent.lectorGroup.title;
             this.breadcrumb = this.breadcrumbBase();
             this.breadcrumb[this.breadcrumb.length - 1].active = true;
@@ -51,17 +51,15 @@ var vyzva;
             });
             this.navigate({ stateName: vyzva.stateNames.home.name, pars: ctx });
         };
+        lectorViewController.prototype.downloadLicenceKeys = function () {
+            vyzva.downloadExcelReport({ type: vyzva.reportType.lectorKeys, companyId: this.ctx.companyid, groupId: this.lectorParent.groupId });
+        };
+        lectorViewController.prototype.downloadSummary = function (isStudyAll) {
+            vyzva.downloadExcelReport({ type: vyzva.reportType.lectorStudy, companyId: this.ctx.companyid, groupId: this.lectorParent.groupId, isStudyAll: isStudyAll });
+        };
         return lectorViewController;
     })(lectorViewBase);
     vyzva.lectorViewController = lectorViewController;
-    //export class lectorEvalController extends lectorViewBase {
-    //  constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
-    //    super($scope, $state);
-    //    this.tabIdx = 1;
-    //    this.breadcrumb = this.breadcrumbBase();
-    //    this.breadcrumb.push({ title: getLectorTabs()[this.tabIdx].shortTitle, active: true });
-    //  }
-    //}
     blended.rootModule
         .directive('vyzva$lector$user', function () {
         return {

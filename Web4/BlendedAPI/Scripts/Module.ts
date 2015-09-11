@@ -51,24 +51,25 @@
       super(node, type, controller, false);
       this.exService = exService;
       this.refresh(this.exService.modIdx);
-      this.exShowPanel = this.user.done || this.lessonType != moduleServiceType.pretest;
+      this.exShowPanel = persistUserIsDone(this.user) || this.lessonType != moduleServiceType.pretest;
     }
 
     showResult(): boolean {
-      var res = this.exService.user && this.exService.user.short && this.exService.user.short.done &&
+      var res = this.exService.user && this.exService.user.short && persistUserIsDone(this.exService.user.short) &&
         (this.lessonType == blended.moduleServiceType.lesson || this.moduleDone);
       return res;
     }
 
     resetExercise() { alert('reset'); }
+
     refresh(actExIdx: number) {
       super.refresh(actExIdx);
-      this.moduleDone = this.user && this.user.done;
+      this.moduleDone = persistUserIsDone(this.user);
       this.exNoclickable = this.lessonType == moduleServiceType.test && !this.moduleDone && !this.controller.ctx.onbehalfof;
       _.each(this.exercises, ex => {
         //active item: stejny pro vsechny pripady
         if (ex.active) { ex.content = exItemContent.folderOpen; ex.background = exItemBackground.warning; return; }
-        var exDone = ex.user && ex.user.done;
+        var exDone = persistUserIsDone(ex.user);
         //nehotovy test
         if (this.lessonType == moduleServiceType.test && !this.moduleDone && !this.controller.ctx.onbehalfof) {
           ex.content = exDone ? exItemContent.check : exItemContent.folder;
@@ -100,11 +101,10 @@
 
   export interface IModuleUser extends IPersistNodeUser { //course dato pro test
     actChildIdx: number;
-    done: boolean;
+    //done: boolean;
   }
-
   export function moduleIsDone(nd: CourseMeta.data, taskId: string): boolean {
-    return !_.find(nd.Items, it => { var itUd = blended.getPersistData<IExShort>(it, taskId); return (!itUd || !itUd.done); });
+    return !_.find(nd.Items, it => { var itUd = blended.getPersistData<IExShort>(it, taskId); return !persistUserIsDone(itUd); });
   }
 
   export function isEx(nd: CourseMeta.data) { return CourseMeta.isType(nd, CourseMeta.runtimeType.ex); }
@@ -118,19 +118,19 @@
     constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
       super($scope, $state);
       this.moduleParent = this;
-      this.user = getPersistWrapper<IModuleUser>(this.dataNode, this.ctx.taskid, () => { return { done: false, actChildIdx: 0 }; });
+      this.user = getPersistWrapper<IModuleUser>(this.dataNode, this.ctx.taskid, () => { return { actChildIdx: 0, flag: serviceTypeToPersistFlag(this.moduleParent.state.moduleType) }; });
       this.exercises = _.filter(this.dataNode.Items, it => isEx(it));
     }
 
     onExerciseLoaded(idx: number) {
       var ud = this.user.short;
-      if (ud.done) { ud.actChildIdx = idx; this.user.modified = true; }
+      if (persistUserIsDone(ud)) { ud.actChildIdx = idx; this.user.modified = true; }
     }
 
     adjustChild(): taskController {
       var ud = this.user.short;
-      var exNode = ud.done ? this.exercises[ud.actChildIdx] : _.find(this.exercises, it => { var itUd = blended.getPersistData<IExShort>(it, this.ctx.taskid); return (!itUd || !itUd.done); });
-      if (!exNode) { debugger; ud.done = true; this.user.modified = true; }
+      var exNode = persistUserIsDone(ud) ? this.exercises[ud.actChildIdx] : _.find(this.exercises, it => { var itUd = blended.getPersistData<IExShort>(it, this.ctx.taskid); return !persistUserIsDone(itUd); });
+      if (!exNode) { debugger; persistUserIsDone(ud,true); this.user.modified = true; }
 
       var moduleExerciseState = _.find(this.state.childs, ch => !ch.noModuleExercise);
       var state: IStateService = {
@@ -144,19 +144,19 @@
     moveForward(sender: exerciseTaskViewController): moveForwardResult {
       if (this.inCongratulation) { delete this.inCongratulation; return moveForwardResult.toParent; }
       var ud = this.user.short;
-      if (ud.done) {
+      if (persistUserIsDone(ud)) {
         ud.actChildIdx = ud.actChildIdx == this.exercises.length - 1 ? 0 : ud.actChildIdx + 1;
         this.user.modified = true;
         return moveForwardResult.selfAdjustChild;
       } else {
-        var exNode = _.find(this.exercises, it => { var itUd = blended.getPersistData<IExShort>(it, this.ctx.taskid); return (!itUd || !itUd.done); });
-        if (!ud.done && !exNode) { //cerstve ukonceny modul, mozno zobrazit dialog s gratulaci
-          ud.done = true; this.user.modified = true;
+        var exNode = _.find(this.exercises, it => { var itUd = blended.getPersistData<IExShort>(it, this.ctx.taskid); return !persistUserIsDone(itUd); });
+        if (!exNode) { //cerstve ukonceny modul, mozno zobrazit dialog s gratulaci
+          persistUserIsDone(ud,true); this.user.modified = true;
           if (this.pretestParent) return moveForwardResult.toParent;
           sender.congratulationDialog().then(
             () => sender.greenClick(),
             () => sender.greenClick()
-          );
+            );
           this.inCongratulation = true;
           return moveForwardResult.selfInnner;
         }

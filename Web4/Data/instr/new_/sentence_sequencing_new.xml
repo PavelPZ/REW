@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.langmaster.com/new/author/coursemodelschema.xsd">
+  <head>
+    <title></title>
+    <style />
+  </head>
+  <body xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <h1 class="techInstr  ">{{th401|SENTENCE SEQUENCING}}</h1>
+  <p>{{tp401|Your task is to put the sentences into correct order. Proceed as follows:}}</p>
+  <ol>
+    <li>{{tli401|Click on the sentence you wish to move.}}</li>
+    <li>{{tli402|The sentence will be moved to the list of ordered sentences.}}</li>
+    <li>{{tli403|To move any sentence back to the unsorted list, just click on it.}}</li>
+  </ol>
+</body>
+</html>

@@ -252,14 +252,14 @@
   }
 
   export interface IPretestUser extends IPersistNodeUser { //course dato pro IPretestRepository
-    done: boolean;
+    //done: boolean;
     history: Array<levelIds>;
     actLevel: levelIds; //aktualne probirany pretest
     targetLevel: levelIds; //vysledek pretestu pro done=true
   }
 
   export function pretestScore(dataNode: IPretestRepository, user: IPretestUser, taskId:string): IExShort {
-    if (!user || !user.done) return null;
+    if (!persistUserIsDone(user)) return null;
     var users = _.map(user.history, l => agregateShortFromNodes(dataNode.Items[l], taskId));
     return agregateShorts(users);
   }
@@ -275,7 +275,7 @@
       this.pretestParent = this;
       //sance prerusit navigaci
       this.user = getPersistWrapper<IPretestUser>(this.dataNode, this.ctx.taskid, () => {
-        return { actLevel: levelIds.A2, history: [levelIds.A2], targetLevel: -1, done: false };
+        return { actLevel: levelIds.A2, history: [levelIds.A2], targetLevel: -1, flag: CourseModel.CourseDataFlag.blPretest };
       });
       if (this.isFakeCreate) return;
       this.wrongUrlRedirect(this.checkCommingUrl());
@@ -284,7 +284,7 @@
     checkCommingUrl() {
       var ud = this.user.short;
       if (!ud) return this.getProductHomeUrl(); //{ stateName: prodStates.home.name, pars: this.ctx }; //pretest jeste nezacal => goto product home
-      if (ud.done) return null; //done pretest: vse je povoleno
+      if (persistUserIsDone(ud)) return null; //done pretest: vse je povoleno
       var dataNode = <IPretestRepository>this.dataNode;
       var actModule = dataNode.Items[ud.actLevel];
       var actEx = this.productParent.dataNode.nodeDir[this.ctx.Url];
@@ -297,7 +297,7 @@
 
     adjustChild(): taskController {
       var ud = this.user.short;
-      if (ud.done) return null;
+      if (persistUserIsDone(ud)) return null;
       var actModule = this.actRepo(ud.actLevel); if (!actModule) throw '!actModule';
       var state: IStateService = {
         params: cloneAndModifyContext(this.ctx, d => d.moduleurl = encodeUrl(actModule.url)),
@@ -315,7 +315,7 @@
       var actRepo = this.actRepo(ud.actLevel);
       if (actTestItem.dataNode != actRepo) throw 'actTestItem.dataNode != actRepo';
       var childSummary = agregateShortFromNodes(actTestItem.dataNode, this.ctx.taskid);
-      if (!childSummary.done) throw '!childUser.done';
+      if (!persistUserIsDone(childSummary)) throw '!childUser.done';
       var score = scorePercent(childSummary);
 
       if (actRepo.level == levelIds.A1) {
@@ -343,7 +343,7 @@
     }
     finishPretest(sender: exerciseTaskViewController, ud: IPretestUser, lev: levelIds): moveForwardResult {
       this.user.modified = true;
-      ud.done = true; ud.targetLevel = lev; delete ud.actLevel;
+      persistUserIsDone(ud, true); ud.targetLevel = lev; delete ud.actLevel;
       sender.congratulationDialog().then(
         () => this.navigateProductHome(),
         () => this.navigateProductHome()

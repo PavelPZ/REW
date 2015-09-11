@@ -29,7 +29,7 @@ namespace blendedData {
 
     //public long Date { get; set; }
 
-    //public long Flags { get; set; }
+    public long Flags { get; set; }
 
     public virtual CourseUser CourseUser { get; set; }
   }

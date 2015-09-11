@@ -4,12 +4,12 @@
     <style />
   </head>
   <body xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <h1 class="techInstr  ">{{th411|WORD SEQUENCING}}</h1>
-  <p>{{tp411|Your task is to put the words into correct order. Proceed as follows:}}</p>
+  <h1 class="techInstr  ">ŘAZENÍ SLOV</h1>
+  <p>Vaším úkolem je seřadit slova do správného pořadí, aby tvořila větu. Postupujte následovně:</p>
   <ol>
-    <li>{{tli411|Click on the word you wish to move.}}</li>
-    <li>{{tli412|The word will be moved to the list of ordered words.}}</li>
-    <li>{{tli413|To move any word back to the unsorted list, just click on it.}}</li>
+    <li>Klikněte na slovo, které chcete zatřídit.</li>
+    <li>Slovo bude přesunuto.</li>
+    <li>Chcete-li slovo přesunout zpět mezi nesetříděné, klikněte na něj.</li>
   </ol>
 </body>
 </html>

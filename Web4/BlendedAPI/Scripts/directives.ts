@@ -20,7 +20,7 @@
       };
     })
     .filter('levelText', () => (id: number) => ['A1', 'A2', 'B1', 'B2'][id])
-    .controller('collapsable', function () { this.isCollapsed = true; })
+  //.controller('collapsable', function () { this.isCollapsed = true; })
     .filter("rawhtml", ['$sce', $sce => htmlCode => $sce.trustAsHtml(htmlCode)])
     .directive('lmEnterKey', ['$document', $document => {
       return {
@@ -40,5 +40,28 @@
         },
       }
     }])
+    .directive('collapsablemanager', () => new collapseMan())
   ;
+
+
+  export class collapseMan {
+    link: (scope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes) => void = (scope, el, attrs) => {
+      var id = attrs['collapsablemanager'];
+      var th: ICollapseMan = {
+        isCollapsed: true,
+        collapseToogle: () => {
+          var act = <ICollapseMan>(scope[id]);
+          if (act.isCollapsed) _.each(collapseMan.allCollapsable, (man, id) => man.isCollapsed = true);
+          act.isCollapsed = !act.isCollapsed;
+        },
+      }; 
+      scope[id] = collapseMan.allCollapsable[id] = th;
+      scope.$on('$destroy', () => delete collapseMan.allCollapsable[id]);
+    };
+    static allCollapsable: { [id: string]: ICollapseMan; } = {};
+  }
+  interface ICollapseMan {
+    isCollapsed: boolean;
+    collapseToogle();
+  }
 }

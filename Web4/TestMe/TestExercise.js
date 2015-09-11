@@ -624,7 +624,7 @@ var testMe;
             th.s = th.flag = 0;
             th.done = true;
             _.each(th.Items, function (it) { it.refreshNumbers(); it.complNotPassiveCnt = 1; if (!it.s)
-                it.s = 0; th.s += it.s; th.done = th.done && it.done; th.flag |= it.flag; });
+                it.s = 0; th.s += it.s; th.done = th.done && it.done; th.flag = Course.agregateFlag(th.flag, it.flag); });
             th.complPassiveCnt = 0;
             th.complNotPassiveCnt = th.Items.length;
         };

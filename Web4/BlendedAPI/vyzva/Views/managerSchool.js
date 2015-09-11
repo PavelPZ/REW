@@ -22,10 +22,16 @@ var vyzva;
             this.wizzardStep = 0;
             this.adjustWizzardButtons();
         }
+        managerSchool.prototype.downloadLicenceKeys = function (managerIncludeStudents) {
+            vyzva.downloadExcelReport({ type: vyzva.reportType.managerKeys, companyId: this.ctx.companyid, managerIncludeStudents: managerIncludeStudents });
+        };
+        managerSchool.prototype.downloadSummary = function (isStudyAll) {
+            vyzva.downloadExcelReport({ type: vyzva.reportType.managerStudy, companyId: this.ctx.companyid, isStudyAll: isStudyAll });
+        };
         managerSchool.prototype.addItem = function (line, isPattern3) {
             var item = {
                 groupId: managerSchool.groupIdCounter++,
-                title: isPattern3 ? blended.lineIdToText(line) + ' pro učitele' : 'Pokročilí' + (this.groupNameCounter++).toString() + ' - 3.A (2015/2016)',
+                title: isPattern3 ? blended.lineIdToText(line) + ' pro Studující učitele' : 'Pokročilí' + (this.groupNameCounter++).toString() + ' - 3.A (2015/2016)',
                 line: line,
                 num: isPattern3 ? 1 : 20,
                 isPattern3: isPattern3

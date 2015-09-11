@@ -44,6 +44,14 @@ namespace CourseModel {
     multiTestImpl = 0x1000, //multiTestImpl
     testEx = 0x2000, //rozsireni informace o "ex": navic cviceni testu
 
+    blPretestItem = 0x4000,
+    blLesson = 0x8000,
+    blTest = 0x10000,
+
+    blPretest = 0x20000,
+    blProductHome = 0x40000,
+
+
     //allSpecialTypes = testImpl_result | testImpl | testSkillImpl,
 
     all = needsEval | pcCannotEvaluate | hasExternalAttachments | done | passive | testImpl_result | testImpl | testSkillImpl | testEx | skipAbleRoot | modImpl | pretestImp | multiTestImpl | testEx,

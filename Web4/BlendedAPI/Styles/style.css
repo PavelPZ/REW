@@ -1,3 +1,6 @@
+.bl .text-small {
+  font-size: 13px;
+}
 .bl .primary {
   color: white;
   padding: 8px;
@@ -19,6 +22,9 @@
 }
 .bl .lm-top-margin {
   margin-top: 20px;
+}
+.bl .lm-margin {
+  margin: 20px;
 }
 .bl .lm-bottom-margin {
   margin-bottom: 20px;
@@ -96,8 +102,15 @@
 .bl .wizzard {
   font-size: 110%;
 }
-.bl .wizzard td {
+.bl .wizzard .key-table td {
   vertical-align: middle;
+}
+.bl .export-table td {
+  font-size: 13px;
+  width: 50%;
+}
+.bl .export-table td .btn {
+  margin-bottom: 5px;
 }
 .bl .topbar {
   background-color: black;

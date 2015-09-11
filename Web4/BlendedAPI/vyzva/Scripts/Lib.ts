@@ -30,4 +30,19 @@
 
   }
 
+  //musi souhlasit s D:\LMCom\REW\Web4\BlendedAPI\vyzva\Server\ExcelReport.cs
+  export enum reportType { managerKeys, managerStudy, lectorKeys, lectorStudy }
+  export interface requestPar {
+    type: reportType;
+    companyId: number;
+    managerIncludeStudents? : boolean;
+    isStudyAll?: boolean;
+    groupId?:number;
+  }
+
+  export function downloadExcelReport(par: requestPar) {
+    var url = Pager.basicUrl + 'vyzva57services/reports' + "?" + $.param({ reportpar: JSON.stringify(par) });
+    blended.downloadExcelFile(url.toLowerCase());
+  }
+
 }

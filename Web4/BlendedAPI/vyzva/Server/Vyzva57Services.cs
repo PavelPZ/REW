@@ -65,6 +65,14 @@ namespace blended {
       blendedData.Lib.SaveChanges(db);
     }
 
+    [Route("reports"), HttpGet]
+    public byte[] reports(string reportpar) {
+      var par = JsonConvert.DeserializeObject<ExcelReport.requestPar>(reportpar);
+      NewModel.Lib.downloadResponse(ExcelReport.run(par), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "licenceKeys.xlsx");
+      return null;
+    }
+
+
     //***************************  SCORM
     public class IResetData {
       public string url;
@@ -105,6 +113,7 @@ namespace blended {
     public class ISaveData {
       public string url;
       public string taskId;
+      public CourseModel.CourseDataFlag flag;
       public string shortData;
       public string longData;
     }
@@ -115,8 +124,8 @@ namespace blended {
       if (courseUser == null) db.CourseUsers.Add(courseUser = new blendedData.CourseUser() { CompanyId = companyid, LMComId = lmcomId, ProductUrl = productUrl });
       foreach (var dt in data) {
         var courseData = courseUser.CourseDatas.FirstOrDefault(cd => cd.Key == dt.url && cd.TaskId == dt.taskId);
-        if (courseData == null) db.CourseDatas.Add(courseData = new blendedData.CourseData() { CourseUser = courseUser, Key = dt.url, TaskId = dt.taskId });
-        courseData.ShortData = dt.shortData; courseData.Data = dt.longData;
+        if (courseData == null) db.CourseDatas.Add(courseData = new blendedData.CourseData() { CourseUser = courseUser, Key = dt.url, TaskId = dt.taskId});
+        courseData.ShortData = dt.shortData; courseData.Data = dt.longData; courseData.Flags = (long)dt.flag;
       }
       blendedData.Lib.SaveChanges(db);
     }

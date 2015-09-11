@@ -4,17 +4,17 @@
     constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService) {
       super($scope, $state);
       var lectorGroups = this.productParent.lectorGroups;
-      var gid = parseInt(this.ctx.groupid);
-      this.lectorGroup = _.find(lectorGroups, grp => grp.groupId == gid);
+      this.groupId = parseInt(this.ctx.groupid);
+      this.lectorGroup = _.find(lectorGroups, grp => grp.groupId == this.groupId);
     }
     lectorGroup: intranet.IStudyGroup; //aktualni skupina
     productParent: homeTaskController;
+    groupId: number;
   }
 
   export class lectorViewBase extends blended.controller {
     constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService) {
       super($scope, $state);
-      //this.title = 'Studijní skupina ' + this.lectorParent.lectorGroup.title;
       this.title = this.lectorParent.lectorGroup.title;
       this.breadcrumb = this.breadcrumbBase(); this.breadcrumb[this.breadcrumb.length - 1].active = true;
     }
@@ -50,16 +50,14 @@
       });
       this.navigate({ stateName: stateNames.home.name, pars: ctx });
     }
-  }
+    downloadLicenceKeys() {
+      downloadExcelReport({ type: reportType.lectorKeys, companyId: this.ctx.companyid, groupId: this.lectorParent.groupId });
+    }
+    downloadSummary(isStudyAll: boolean) {
+      downloadExcelReport({ type: reportType.lectorStudy, companyId: this.ctx.companyid, groupId: this.lectorParent.groupId, isStudyAll: isStudyAll });
+    }
 
-  //export class lectorEvalController extends lectorViewBase {
-  //  constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
-  //    super($scope, $state);
-  //    this.tabIdx = 1;
-  //    this.breadcrumb = this.breadcrumbBase();
-  //    this.breadcrumb.push({ title: getLectorTabs()[this.tabIdx].shortTitle, active: true });
-  //  }
-  //}
+  }
 
   blended.rootModule
     .directive('vyzva$lector$user', () => {

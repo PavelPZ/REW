@@ -6,6 +6,14 @@ var blended;
         moduleServiceType[moduleServiceType["test"] = 2] = "test";
     })(blended.moduleServiceType || (blended.moduleServiceType = {}));
     var moduleServiceType = blended.moduleServiceType;
+    function serviceTypeToPersistFlag(st) {
+        switch (st) {
+            case moduleServiceType.pretest: return CourseModel.CourseDataFlag.blPretestItem;
+            case moduleServiceType.lesson: return CourseModel.CourseDataFlag.blLesson;
+            case moduleServiceType.test: return CourseModel.CourseDataFlag.blTest;
+        }
+    }
+    blended.serviceTypeToPersistFlag = serviceTypeToPersistFlag;
     function createStateData(data) { return data; }
     blended.createStateData = createStateData;
     //export var globalApi: {

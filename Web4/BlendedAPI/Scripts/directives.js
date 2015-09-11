@@ -23,7 +23,6 @@ var blended;
         };
     })
         .filter('levelText', function () { return function (id) { return ['A1', 'A2', 'B1', 'B2'][id]; }; })
-        .controller('collapsable', function () { this.isCollapsed = true; })
         .filter("rawhtml", ['$sce', function ($sce) { return function (htmlCode) { return $sce.trustAsHtml(htmlCode); }; }])
         .directive('lmEnterKey', ['$document', function ($document) {
             return {
@@ -42,5 +41,27 @@ var blended;
                     lmEnterKey: "&"
                 },
             };
-        }]);
+        }])
+        .directive('collapsablemanager', function () { return new collapseMan(); });
+    var collapseMan = (function () {
+        function collapseMan() {
+            this.link = function (scope, el, attrs) {
+                var id = attrs['collapsablemanager'];
+                var th = {
+                    isCollapsed: true,
+                    collapseToogle: function () {
+                        var act = (scope[id]);
+                        if (act.isCollapsed)
+                            _.each(collapseMan.allCollapsable, function (man, id) { return man.isCollapsed = true; });
+                        act.isCollapsed = !act.isCollapsed;
+                    },
+                };
+                scope[id] = collapseMan.allCollapsable[id] = th;
+                scope.$on('$destroy', function () { return delete collapseMan.allCollapsable[id]; });
+            };
+        }
+        collapseMan.allCollapsable = {};
+        return collapseMan;
+    })();
+    blended.collapseMan = collapseMan;
 })(blended || (blended = {}));

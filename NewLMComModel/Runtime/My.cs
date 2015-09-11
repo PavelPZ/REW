@@ -266,7 +266,7 @@ namespace NewData {
     /******** REPORT *******************************************************************************************/
     static bool report(CmdReport par) {
       string fileName;
-      byte[] data = excelReport.lib.getResponse(par, out fileName);
+      byte[] data = excelReport.lib2.getResponse(par, out fileName);
       NewModel.Lib.downloadResponse(data, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName + ".xlsx");
       return true;
     }

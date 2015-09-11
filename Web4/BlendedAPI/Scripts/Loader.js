@@ -1,5 +1,14 @@
 var blended;
 (function (blended) {
+    function persistUserIsDone(us, val) {
+        if (val === undefined)
+            return us ? !!(us.flag & CourseModel.CourseDataFlag.done) : false;
+        if (val)
+            us.flag |= CourseModel.CourseDataFlag.done;
+        else
+            us.flag &= ~CourseModel.CourseDataFlag.done;
+    }
+    blended.persistUserIsDone = persistUserIsDone;
     function getPersistWrapper(dataNode, taskid, createProc) {
         if (createProc) {
             if (!dataNode.userData)
@@ -14,7 +23,7 @@ var blended;
         else {
             if (!dataNode.userData)
                 return null;
-            return dataNode.userData[taskid];
+            return (dataNode.userData[taskid]);
         }
     }
     blended.getPersistWrapper = getPersistWrapper;
@@ -76,7 +85,7 @@ var blended;
                         if (!d.modified)
                             return;
                         d.modified = false;
-                        toSave.push({ url: nd.url, taskId: p, shortData: JSON.stringify(d.short), longData: d.long ? JSON.stringify(d.long) : null });
+                        toSave.push({ url: nd.url, taskId: p, shortData: JSON.stringify(d.short), longData: d.long ? JSON.stringify(d.long) : null, flag: d.short.flag });
                     }
                     finally {
                         delete p.long;

@@ -4,17 +4,17 @@
     <style />
   </head>
   <body xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <h1 class="techInstr  ">{{th114|FILLING IN FROM A MENU}}</h1>
-  <p>{{tp21|Your task is to fill in the empty boxes within the text. You are given a list of items with different properties as described below:}}</p>
+  <h1 class="techInstr  ">DOPLŇOVÁNÍ POLOŽEK Z NABÍDKY</h1>
+  <p>Vaším úkolem je vyplnit prázdná okénka v textu. Máte k dispozici seznam položek, který se může chovat následovně:</p>
   <ol>
-    <li>{{tli45|after filling in to the text, the item in the menu is deactivated}}</li>
-    <li>{{tli46|after filling in, the item in the list is not deactivated and can be used again}}</li>
+    <li>po doplnění do textu bude položka v seznamu deaktivována</li>
+    <li>položka zůstane po doplnění do textu aktivní a bude moci být opakovaně použita</li>
   </ol>
-  <p>{{tp22|Proceed as follows:}}</p>
+  <p>Postupujte následovně:</p>
   <ol>
-    <li>{{tli47|Click on the empty gap - a menu with items appears}}</li>
-    <li>{{tli48|Click a selected item. It will be filled in to the gap.}}</li>
+    <li>Klikněte do prázdného okénka - objeví se nabídka s položkami.</li>
+    <li>Klikněte na vybranou položku. Položka se doplní do okénka.</li>
   </ol>
-  <p>{{tp23|To change the filled in item, fill in another one into its place.}}</p>
+  <p>Pokud chcete doplněnou položku změnit, doplňte na její místo jinou.</p>
 </body>
 </html>

@@ -143,7 +143,8 @@ namespace excelReport {
 
         return xlsx.result;
       }
-    } const int msecPerDay = 24 * 3600 * 1000;
+    }
+    const int msecPerDay = 24 * 3600 * 1000;
     static Dictionary<string, int> levelIds = new Dictionary<string, int>() { { "A1", 0 }, { "A2", 1 }, { "B1", 2 }, { "B2", 3 }, { "C1", 4 }, { "C2", 5 } };
     public static void test(string fn, int companyId) {
       if (File.Exists(fn)) File.Delete(fn);
@@ -221,7 +222,7 @@ namespace excelReport {
         userName = lib.userName(sk.testSrc.data.eMail, sk.testSrc.data.firstName, sk.testSrc.data.lastName),
         tElapsed = new timeHelper(sk.interrupt.end - sk.interrupt.beg, 0)
       }).ToArray();
-      var rows = lib.emptyAndHeader(dataRows).Select(t => new object[] { 
+      var rows = lib.emptyAndHeader(dataRows).Select(t => new object[] {
         t==null ? (object)"testId" : t.userName + ": " + t.testSrc.prod.title + " (" + t.testSrc.data.id + ")",
         t==null ? (object)"ipAddress" : t.src.ip,
         t==null ? (object)"prodLine" :t.testSrc.prod.line.ToString(),
@@ -288,7 +289,7 @@ namespace excelReport {
         tEnd = new dataHelper(0, sk.skill.finished, 0),
         tElapsed = new timeHelper(sk.skill.elapsed, 0),
       }).ToArray();
-      var rows = lib.emptyAndHeader(dataRows).Select(t => new object[] { 
+      var rows = lib.emptyAndHeader(dataRows).Select(t => new object[] {
         t==null ? (object)"name" : lib.userName(t.testSrc.data.eMail, t.testSrc.data.firstName, t.testSrc.data.lastName),
         t==null ? (object)"prodTitle" : t.testSrc.prod.title,
         t==null ? (object)"skill" :t.src.skill,
@@ -345,7 +346,7 @@ namespace excelReport {
         tEnd = new dataHelper(0, t.data.skills.Select(s => s.finished).Max(), 0),
         tElapsed = new timeHelper(t.data.skills.Select(s => s.elapsed).Sum(), 0)
       }).ToArray();
-      var rows = lib.emptyAndHeader(dataRows).Select(t => new object[] { 
+      var rows = lib.emptyAndHeader(dataRows).Select(t => new object[] {
         t==null ? (object)"name" : lib.userName(t.src.data.eMail, t.src.data.firstName, t.src.data.lastName),
         t==null ? (object)"certificate" : certUrl(t.src.data.companyId, t.src.data.lmcomId, t.src.data.productUrl),
         t==null ? (object)"email" : t.src.data.eMail,
@@ -483,8 +484,7 @@ namespace excelReport {
     static scoreInterval[] ints = new scoreInterval[] { new scoreInterval { gte = 91, title = "excellent (>90)" }, new scoreInterval { gte = 83, title = "very good (83-90)" }, new scoreInterval { gte = 75, title = "good (75-82)" }, new scoreInterval { gte = 60, title = "insufficient (60-74)" }, new scoreInterval { gte = 0, title = "failed (<60)" } };
   }
 
-  public static class lib {
-
+  public static class lib2 {
     public static byte[] getResponse(Login.CmdReport par, out string fileName) {
       switch (par.type) {
         case Login.CmdReportType.test:
@@ -498,9 +498,12 @@ namespace excelReport {
       }
     }
     static int respCnt = 0;
+  }
 
+  public static class lib {
 
     public static string userName(string email, string fm, string lm) { return email + (string.IsNullOrEmpty(fm + lm) ? null : " (" + fm + " " + lm + ")"); }
+
     //Osetreni prvni Row a prazdneho zdroje dat
     public static IEnumerable<T> emptyAndHeader<T>(IEnumerable<T> src) where T : class {
       var isEmpty = !src.Any();
@@ -508,6 +511,12 @@ namespace excelReport {
       var rowsData = isEmpty ? XExtension.Create(empty) : src; //neprazdny zdroj dat
       return XExtension.Create(empty).Concat(rowsData); //prvni radek jako header
     }
+
+    //prevede napr. 337ab7 html color do 
+    public static System.Drawing.Color formHtmlColor(string htmlHex) {
+      return System.Drawing.Color.FromArgb(int.Parse(htmlHex, System.Globalization.NumberStyles.HexNumber));
+    }
+
 
     public static ExcelWorksheet prepareSheet(ExcelPackage package, string name, int rowShift = 0) {
       ExcelWorksheet sheet = package.Workbook.Worksheets[name];
@@ -535,7 +544,8 @@ namespace excelReport {
           //propoj depOj s parentObj
           if (parentObj.items == null) parentObj.items = new List<departmentNode>();
           parentObj.items.Add(depObj); depObj.parent = parentObj;
-        } else //root
+        }
+        else //root
           root = depObj;
       }
       return res;
@@ -585,7 +595,8 @@ namespace excelReport {
           var cellValue = v; cellFormat fmt = cellFormat.no;
           if (cellValue == null) cellValue = "";
           var cell = worksheet.Cells[lastRow + 1, actCol++ + 1];
-          if (cellValue is formatedValue) { fmt = ((formatedValue)cellValue).fmt; cellValue = ((formatedValue)cellValue).value; } else {
+          if (cellValue is formatedValue) { fmt = ((formatedValue)cellValue).fmt; cellValue = ((formatedValue)cellValue).value; }
+          else {
             if (intTypes.Contains(cellValue.GetType())) fmt = cellFormat.intAll;
             else if (realTypes.Contains(cellValue.GetType())) fmt = cellFormat.realAll;
           }
