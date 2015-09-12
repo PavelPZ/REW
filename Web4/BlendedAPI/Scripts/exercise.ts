@@ -180,7 +180,14 @@
       this.ctx = controller.ctx; this.product = controller.productParent.dataNode;
       this.isTest = controller.moduleParent.state.moduleType != blended.moduleServiceType.lesson;
       this.moduleUser = controller.moduleParent.user.short;
-      this.user = getPersistWrapper<IExShort>(exercise.dataNode, this.ctx.taskid, () => { var res: IExShort = $.extend({}, shortDefault); res.ms = exercise.dataNode.ms; res.flag = CourseModel.CourseDataFlag.ex; return res; });
+      this.user = getPersistWrapper<IExShort>(exercise.dataNode, this.ctx.taskid, () => {
+        var res: IExShort = $.extend({}, shortDefault); 
+        res.ms = exercise.dataNode.ms;
+        res.flag = CourseModel.CourseDataFlag.ex;
+        if (controller.pretestParent) res.flag |= CourseModel.CourseDataFlag.blPretestEx;
+        else if (this.isTest) res.flag |= CourseModel.CourseDataFlag.testEx;
+        return res;
+      });
       if (!long) { long = {}; this.user.modified = true; }
       this.user.long = long
       this.startTime = Utils.nowToNum();
@@ -192,7 +199,7 @@
     }
 
     //ICoursePageCallback
-    onRecorder(page: Course.Page, msecs: number) { this.user.modified = true; if (!this.user.short.sRec) this.user.short.sRec = 0; this.user.short.sRec += Math.round(msecs / 1000); }
+    onRecorder(page: Course.Page, msecs: number) { if (page != this.page) debugger; this.user.modified = true; if (!this.user.short.sRec) this.user.short.sRec = 0; this.user.short.sRec += Math.round(msecs / 1000); }
     onPlayRecorder(page: Course.Page, msecs: number) { this.user.modified = true; if (!this.user.short.sPRec) this.user.short.sPRec = 0; this.user.short.sPRec += Math.round(msecs / 1000); }
     onPlayed(page: Course.Page, msecs: number) { this.user.modified = true; if (!this.user.short.sPlay) this.user.short.sPlay = 0; this.user.short.sPlay += Math.round(msecs / 1000); }
     recorder: ICpeRecorder;

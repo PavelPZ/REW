@@ -5,9 +5,15 @@ texty do potvrzovacich dialogu a do nápověd
 Lesson exercise:
 - reset cviceni, reset lekce
 
-Cache:
-- cviceni i modul nejsou pod produktem ale mimo nej (neobsahuji user data, jsou spolecna pro vice users)
+Business: 
+- kriterium nejnizsi cena a multilicence, poslat partnerum
+- wagner - 16% off
+- pragodata - volat
+
+Zabezpeceni dle roli Admin, Lector.
 
 LM konzole pro založení školy
 
-Barvicky v kontrolkach dialogu
+Cache:
+- cviceni i modul nejsou pod produktem ale mimo nej (neobsahuji user data, jsou spolecna pro vice users)
+

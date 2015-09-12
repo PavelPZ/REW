@@ -110,6 +110,7 @@ var blended;
     //********************* EXERCISE SERVICE
     var exerciseService = (function () {
         function exerciseService(exercise, long, controller, modIdx) {
+            var _this = this;
             this.controller = controller;
             this.exercise = exercise;
             this.modIdx = modIdx;
@@ -118,7 +119,16 @@ var blended;
             this.product = controller.productParent.dataNode;
             this.isTest = controller.moduleParent.state.moduleType != blended.moduleServiceType.lesson;
             this.moduleUser = controller.moduleParent.user.short;
-            this.user = blended.getPersistWrapper(exercise.dataNode, this.ctx.taskid, function () { var res = $.extend({}, blended.shortDefault); res.ms = exercise.dataNode.ms; res.flag = CourseModel.CourseDataFlag.ex; return res; });
+            this.user = blended.getPersistWrapper(exercise.dataNode, this.ctx.taskid, function () {
+                var res = $.extend({}, blended.shortDefault);
+                res.ms = exercise.dataNode.ms;
+                res.flag = CourseModel.CourseDataFlag.ex;
+                if (controller.pretestParent)
+                    res.flag |= CourseModel.CourseDataFlag.blPretestEx;
+                else if (_this.isTest)
+                    res.flag |= CourseModel.CourseDataFlag.testEx;
+                return res;
+            });
             if (!long) {
                 long = {};
                 this.user.modified = true;
@@ -132,7 +142,8 @@ var blended;
             this.showLectorPanel = !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
         }
         //ICoursePageCallback
-        exerciseService.prototype.onRecorder = function (page, msecs) { this.user.modified = true; if (!this.user.short.sRec)
+        exerciseService.prototype.onRecorder = function (page, msecs) { if (page != this.page)
+            debugger; this.user.modified = true; if (!this.user.short.sRec)
             this.user.short.sRec = 0; this.user.short.sRec += Math.round(msecs / 1000); };
         exerciseService.prototype.onPlayRecorder = function (page, msecs) { this.user.modified = true; if (!this.user.short.sPRec)
             this.user.short.sPRec = 0; this.user.short.sPRec += Math.round(msecs / 1000); };

@@ -51,6 +51,7 @@ namespace CourseModel {
     blPretest = 0x20000,
     blProductHome = 0x40000,
 
+    blPretestEx = 0x80000,
 
     //allSpecialTypes = testImpl_result | testImpl | testSkillImpl,
 

@@ -55,6 +55,7 @@ var CourseModel;
         CourseDataFlag[CourseDataFlag["blTest"] = 65536] = "blTest";
         CourseDataFlag[CourseDataFlag["blPretest"] = 131072] = "blPretest";
         CourseDataFlag[CourseDataFlag["blProductHome"] = 262144] = "blProductHome";
+        CourseDataFlag[CourseDataFlag["blPretestEx"] = 524288] = "blPretestEx";
     })(CourseModel.CourseDataFlag || (CourseModel.CourseDataFlag = {}));
     var CourseDataFlag = CourseModel.CourseDataFlag;
     (function (modalSize) {

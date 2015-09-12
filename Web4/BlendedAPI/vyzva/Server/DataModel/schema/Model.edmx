@@ -9,27 +9,28 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Data" Type="nvarchar(max)" />
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="LearningData" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="CourseDatas">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TaskId" Type="nvarchar" MaxLength="240" Nullable="false" />
+          <Property Name="TaskId" Type="nvarchar" MaxLength="32" />
           <Property Name="Key" Type="nvarchar" MaxLength="240" Nullable="false" />
-          <Property Name="Data" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Data" Type="nvarchar(max)" />
           <Property Name="ShortData" Type="nvarchar(max)" />
-          <Property Name="CourseUserId" Type="nvarchar" MaxLength="10" Nullable="false" />
-          <Property Name="Date" Type="bigint" Nullable="false" />
+          <Property Name="CourseUserId" Type="int" Nullable="false" />
           <Property Name="Flags" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="CourseUsers">
           <Key>
-            <PropertyRef Name="LicenceKey" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="LicenceKey" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductUrl" Type="nvarchar" MaxLength="120" Nullable="false" />
+          <Property Name="LMComId" Type="bigint" Nullable="false" />
           <Property Name="CompanyId" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_dbo_CourseDatas_dbo_CourseUsers_CourseUserId">
@@ -39,7 +40,7 @@
           <End Role="CourseDatas" Type="Self.CourseDatas" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CourseUsers">
-              <PropertyRef Name="LicenceKey" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="CourseDatas">
               <PropertyRef Name="CourseUserId" />
@@ -94,8 +95,8 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Data" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="LearningData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CourseUsers" Relationship="vyzva57Model.FK_dbo_CourseUsers_dbo_Companies_CompanyId" FromRole="Company" ToRole="CourseUser" />
         </EntityType>
         <EntityType Name="CourseData">
@@ -103,19 +104,20 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TaskId" Type="String" Nullable="false" MaxLength="240" FixedLength="false" Unicode="true" />
+          <Property Name="TaskId" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
           <Property Name="Key" Type="String" Nullable="false" MaxLength="240" FixedLength="false" Unicode="true" />
-          <Property Name="Data" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Data" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ShortData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Date" Type="Int64" Nullable="false" />
           <Property Name="Flags" Type="Int64" Nullable="false" />
           <NavigationProperty Name="CourseUser" Relationship="vyzva57Model.FK_dbo_CourseDatas_dbo_CourseUsers_CourseUserId" FromRole="CourseData" ToRole="CourseUser" />
         </EntityType>
         <EntityType Name="CourseUser">
           <Key>
-            <PropertyRef Name="LicenceKey" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="LicenceKey" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductUrl" Type="String" Nullable="false" MaxLength="120" FixedLength="false" Unicode="true" />
+          <Property Name="LMComId" Type="Int64" Nullable="false" />
           <NavigationProperty Name="Company" Relationship="vyzva57Model.FK_dbo_CourseUsers_dbo_Companies_CompanyId" FromRole="CourseUser" ToRole="Company" />
           <NavigationProperty Name="CourseDatas" Relationship="vyzva57Model.FK_dbo_CourseDatas_dbo_CourseUsers_CourseUserId" FromRole="CourseUser" ToRole="CourseData" />
         </EntityType>
@@ -140,7 +142,7 @@
           <EntitySetMapping Name="Companies">
             <EntityTypeMapping TypeName="vyzva57Model.Company">
               <MappingFragment StoreEntitySet="Companies">
-                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="LearningData" ColumnName="LearningData" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -149,7 +151,6 @@
             <EntityTypeMapping TypeName="vyzva57Model.CourseData">
               <MappingFragment StoreEntitySet="CourseDatas">
                 <ScalarProperty Name="Flags" ColumnName="Flags" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="ShortData" ColumnName="ShortData" />
                 <ScalarProperty Name="Data" ColumnName="Data" />
                 <ScalarProperty Name="Key" ColumnName="Key" />
@@ -161,13 +162,15 @@
           <EntitySetMapping Name="CourseUsers">
             <EntityTypeMapping TypeName="vyzva57Model.CourseUser">
               <MappingFragment StoreEntitySet="CourseUsers">
-                <ScalarProperty Name="LicenceKey" ColumnName="LicenceKey" />
+                <ScalarProperty Name="LMComId" ColumnName="LMComId" />
+                <ScalarProperty Name="ProductUrl" ColumnName="ProductUrl" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <AssociationSetMapping Name="FK_dbo_CourseUsers_dbo_Companies_CompanyId" TypeName="vyzva57Model.FK_dbo_CourseUsers_dbo_Companies_CompanyId" StoreEntitySet="CourseUsers">
             <EndProperty Name="CourseUser">
-              <ScalarProperty Name="LicenceKey" ColumnName="LicenceKey" />
+              <ScalarProperty Name="Id" ColumnName="Id" />
             </EndProperty>
             <EndProperty Name="Company">
               <ScalarProperty Name="Id" ColumnName="CompanyId" />
@@ -178,7 +181,7 @@
               <ScalarProperty Name="Id" ColumnName="Id" />
             </EndProperty>
             <EndProperty Name="CourseUser">
-              <ScalarProperty Name="LicenceKey" ColumnName="CourseUserId" />
+              <ScalarProperty Name="Id" ColumnName="CourseUserId" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

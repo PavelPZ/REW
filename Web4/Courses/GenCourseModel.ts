@@ -54,6 +54,7 @@ export enum CourseDataFlag {
   blTest = 65536,
   blPretest = 131072,
   blProductHome = 262144,
+  blPretestEx = 0x80000,
 }
 
 export enum modalSize {

@@ -7,8 +7,13 @@ using System.IO;
 using OfficeOpenXml;
 using System.Drawing;
 using OfficeOpenXml.Style;
+using Newtonsoft.Json;
+using LMNetLib;
+using CourseMeta;
+using blendedMeta;
 
 namespace blended {
+
   public static class ExcelReport {
 
     //D:\LMCom\REW\Web4\BlendedAPI\vyzva\Scripts\Lib.ts
@@ -25,53 +30,122 @@ namespace blended {
       switch (par.type) {
         case reportType.managerKeys: return managerKeys.run(par.companyId, par.managerIncludeStudents);
         case reportType.lectorKeys: return managerKeys.run(par.companyId, par.groupId);
-        case reportType.managerStudy: return studyResults.run(par.companyId);
-        case reportType.lectorStudy: return studyResults.run(par.companyId, par.groupId);
+
+        case reportType.managerStudy: return par.isStudyAll ? studyResults.runAll(par.companyId, -1) : studyResults.run(par.companyId, -1);
+        case reportType.lectorStudy: return par.isStudyAll ? studyResults.runAll(par.companyId, par.groupId) : studyResults.run(par.companyId, par.groupId);
+
         default: throw new Exception("blended.ExcelReport.run: unknown par.type");
       }
     }
 
     //**************************** STUDY RESULTS
     public static class studyResults {
-      public static byte[] run(int companyId) {
-        return null;
-      }
-      public static byte[] runAll(int companyId) {
-        return null;
-      }
+
       public static byte[] run(int companyId, int groupId) {
-        return null;
+        var db = blendedData.Lib.CreateContext();
+        //nacteni Companies.data, kde je JSON se strukturou grup, licencnich klicu apod.
+        ICompanyData data = readData(companyId, db);
+        //adresar <lineId,lmcomId> => user informace (firstName, lastname...)
+        var courseUsers = usersFromCompany(groupId < 0 ? data.studyGroups : data.studyGroups.Where(g => g.groupId == groupId));
+        //nac ti z CourseData pretesty, hotove lekce nebo vyhodnocene testy:
+        long validTypes = (long)(CourseModel.CourseDataFlag.blLesson | CourseModel.CourseDataFlag.blTest | CourseModel.CourseDataFlag.blPretest);
+        var query = db.CourseDatas.
+          Where(cd =>
+            cd.CourseUser.CompanyId == companyId &&
+            (cd.Flags & (long)CourseModel.CourseDataFlag.done) != 0 && //musi byt done
+            (cd.Flags & validTypes) != 0 && //pretest, lekce nebo test
+            (cd.Flags & (long)CourseModel.CourseDataFlag.needsEval) == 0); //jsou vyhodnocene
+        //filtr pouze na skupinu studentu studijni grupy
+        if (groupId >= 0) {
+          var grp = data.studyGroups.First(g => g.groupId == groupId);
+          var lmcomIds = courseUsers.Keys.Select(u => u.lmcomId).ToArray();
+          query = query.Where(cd => lmcomIds.Contains(cd.CourseUser.LMComId));
+        }
+        //vyber raw data z databaze
+        var query2 = query.
+          Select(cd => new { cd.Key, cd.ShortData, cd.CourseUser.ProductUrl, cd.CourseUser.LMComId }).
+          ToArray();
+        //zpracovani raw dat
+        var allModules = query2.
+          Select(kd => {
+            var res = JsonConvert.DeserializeObject<peristBase>(kd.ShortData);
+            res.url = kd.Key; res.productUrl = kd.ProductUrl; res.lmcomId = kd.LMComId;
+            return res;
+          }).
+          ToArray();
+        //zapracovani user dat do struktury kurzu
+        var userProducts = new blendedMeta.uProducts();
+        foreach (var module in allModules) blendedMeta.MetaInfo.addModule(userProducts, module); //zatrideni existujicich dat
+        foreach (var lmcId in courseUsers.Keys) blendedMeta.MetaInfo.addDummuUsers(userProducts, lmcId); //doplneni studentu, co jeste nedokoncili nic z kurzu (tj. nemaji zadna DONE data v DB)
+        using (var pck = new ExcelPackage()) {
+          ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Přehled");
+          var rows = lib.emptyAndHeader(userProducts.uproducts.Select(kv => new { kv.Key, kv.Value })).Select(t => {
+            var usr = courseUsers[t.Key];
+            return new object[] {
+              t==null ? "Student" : usr.lastName + " " + usr.firstName,
+              t==null ? "Studijní skupina" : "",
+              t==null ? "Kurz" : t.Value.product.line.ToString(),
+              t==null ? "Etapa" : t.Value.etapId(),
+            };
+          });
+          //vloz do excelu
+          var rng = lib.import(ws, rows, 0, 0);
+          return pck.GetAsByteArray();
+        }
       }
       public static byte[] runAll(int companyId, int groupId) {
         var db = blendedData.Lib.CreateContext();
         ICompanyData data = readData(companyId, db);
-        var grp = data.studyGroups.First(g => g.groupId == groupId);
-        var ids = grp.studentKeys.Select(k => k.lmcomId).Where(id => id > 0).Distinct().ToArray();
-        db.CourseDatas.Where(cd => cd.CourseUser.CompanyId == companyId && ids.Contains(cd.CourseUser.LMComId));
+        var courseUsers = usersFromCompany(groupId < 0 ? data.studyGroups : data.studyGroups.Where(g => g.groupId == groupId));
+        //hotova cviceni, ktera nepotrebuji human evaluaci:
+        long exFlag = (long)(CourseModel.CourseDataFlag.ex | CourseModel.CourseDataFlag.done);
+        long wrongFlag = (long)CourseModel.CourseDataFlag.needsEval;
+        var query = db.CourseDatas.
+          Where(cd =>
+            cd.CourseUser.CompanyId == companyId &&
+            (cd.Flags & exFlag) == exFlag &&
+            (cd.Flags & wrongFlag) == 0);
+        //filtr pouze na skupinu studentu studijni grupy
+        if (groupId >= 0) {
+          var grp = data.studyGroups.First(g => g.groupId == groupId);
+          var lmcomIds = courseUsers.Keys.Select(u => u.lmcomId).ToArray();
+          query = query.Where(cd => lmcomIds.Contains(cd.CourseUser.LMComId));
+        }
+        //vyber raw data z databaze
+        var query2 = query.
+          Select(cd => new { cd.Key, cd.ShortData, cd.CourseUser.ProductUrl, cd.CourseUser.LMComId }).
+          ToArray();
+        //zpracovani raw dat
+        var allExercises = query2.
+          Select(kd => {
+            var res = JsonConvert.DeserializeObject<userEx>(kd.ShortData);
+            res.url = kd.Key; res.productUrl = kd.ProductUrl; res.lmcomId = kd.LMComId;
+            return res;
+          }).
+          ToArray();
+        //merge user data s product sitemap
+        var userProducts = new blendedMeta.uProducts();
+        foreach (var ex in allExercises) blendedMeta.MetaInfo.addEx(userProducts, ex); //zatrideni existujicich dat
+        foreach (var lmcId in courseUsers.Keys) blendedMeta.MetaInfo.addDummuUsers(userProducts, lmcId); //doplneni studentu, co nemaji zadna data
+
         using (var pck = new ExcelPackage()) {
           return pck.GetAsByteArray();
         }
       }
+    }
 
-      public class IExShort {
-        public int ms;
-        public int s;
-        public CourseModel.CourseDataFlag flag;
-        public int elapsed; //straveny cas ve vterinach
-        public int beg; //datum zacatku, ve dnech
-        public int end; //datum konce (ve dnech), na datum se prevede pomoci intToDate(end * 1000000)
-        //Other
-        public int sPlay; //prehrany nas zvuk (sec)
-        public int sRec; //nahrany zvuk  (sec)
-        public int sPRec; //prehrano nahravek (sec)
-      }
-
+    //vsichni Course x Student firmy.
+    static Dictionary<blendedMeta.lineUser, IAlocatedKey> usersFromCompany(IEnumerable<IStudyGroup> groups) {
+      var res = new Dictionary<lineUser, IAlocatedKey>(new blendedMeta.lineUserEqualityComparer());
+      foreach (var kv in groups.SelectMany(g => g.studentKeys.Where(k => k.lmcomId > 0).Select(k => new { key = new blendedMeta.lineUser(g.line, k.lmcomId), value = k })))
+        res[kv.key] = kv.value;
+      return res;
     }
 
     static ICompanyData readData(int companyId, blendedData.Vyzva57 db = null) {
-      if(db==null) db = blendedData.Lib.CreateContext();
+      if (db == null) db = blendedData.Lib.CreateContext();
       var dbData = db.Companies.Where(c => c.Id == companyId).Select(c => c.LearningData).FirstOrDefault();
-      return Newtonsoft.Json.JsonConvert.DeserializeObject<ICompanyData>(dbData);
+      return JsonConvert.DeserializeObject<ICompanyData>(dbData);
     }
     //**************************** MANAGER & LECTOR KEYS
     public static class managerKeys {
@@ -133,7 +207,6 @@ namespace blended {
         //format druhy radek
         var secondLine = startRow + (title == null ? 1 : 2);
         fmtHeader(ws.Cells[startRow + 2, 1, startRow + 2, 4].Style);
-        //return new rowIndex
         return rng.Start.Row + rng.Rows;
       }
       static void fmtTitle(ExcelStyle st) {
@@ -152,31 +225,32 @@ namespace blended {
         st.ShrinkToFit = false;
       }
     }
-    public class ICompanyData {
-      public IAlocatedKey[] managerKeys;
-      public IVisitors[] visitorsKeys; //licencni klice visitor studentuu k blended kurzu. Vidi je SPRAVCE na home spravcovske konzole. Visitors se napocitaji do skore, jsou pro navstevniky
-      public IStudyGroup[] studyGroups; //studijni skupiny firmy
-    }
-    public class IVisitors {
-      public LMComLib.LineIds line; //jazyk vyuky
-      public IAlocatedKey[] visitorsKeys; //licencni klice visitor studentuu k blended kurzu. Vidi je LEKTOR na home kurzu. Visitors se napocitaji do skore, jsou pro navstevniky
-    }
-    public class IStudyGroup {
-      public string title;
-      public int groupId;
-      public LMComLib.LineIds line; //jazyk vyuky
-      public bool isPattern3; //true pro skupinu ucitelu
-      public IAlocatedKey[] lectorKeys; //licencni klice lektoruu k blended kurzu. Vidi je ADMIN v admin konzoli
-      public IAlocatedKey[] studentKeys; //licencni klice studentuu k blended kurzu. Vidi je LEKTOR na home kurzu
-      public IAlocatedKey[] visitorsKeys; //licencni klice visitor studentuu k blended kurzu. Vidi je LEKTOR na home kurzu. Visitors se napocitaji do skore, jsou pro navstevniky
-      public int num; //pro create school wizzard - pocet studentu
-    }
-    public class IAlocatedKey {
-      public string keyStr;
-      public Int64 lmcomId;
-      public string email;
-      public string firstName;
-      public string lastName;
-    }
+
+  }
+  public class ICompanyData {
+    public IAlocatedKey[] managerKeys;
+    public IVisitors[] visitorsKeys; //licencni klice visitor studentuu k blended kurzu. Vidi je SPRAVCE na home spravcovske konzole. Visitors se napocitaji do skore, jsou pro navstevniky
+    public IStudyGroup[] studyGroups; //studijni skupiny firmy
+  }
+  public class IVisitors {
+    public LMComLib.LineIds line; //jazyk vyuky
+    public IAlocatedKey[] visitorsKeys; //licencni klice visitor studentuu k blended kurzu. Vidi je LEKTOR na home kurzu. Visitors se napocitaji do skore, jsou pro navstevniky
+  }
+  public class IStudyGroup {
+    public string title;
+    public int groupId;
+    public LMComLib.LineIds line; //jazyk vyuky
+    public bool isPattern3; //true pro skupinu ucitelu
+    public IAlocatedKey[] lectorKeys; //licencni klice lektoruu k blended kurzu. Vidi je ADMIN v admin konzoli
+    public IAlocatedKey[] studentKeys; //licencni klice studentuu k blended kurzu. Vidi je LEKTOR na home kurzu
+    public IAlocatedKey[] visitorsKeys; //licencni klice visitor studentuu k blended kurzu. Vidi je LEKTOR na home kurzu. Visitors se napocitaji do skore, jsou pro navstevniky
+    public int num; //pro create school wizzard - pocet studentu
+  }
+  public class IAlocatedKey {
+    public string keyStr;
+    public Int64 lmcomId;
+    public string email;
+    public string firstName;
+    public string lastName;
   }
 }

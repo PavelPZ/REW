@@ -42,7 +42,7 @@
       <td>První interakce:</td>
       <td><b>{{(user().beg | vyzva$exmodule$sec) || '-'}}</b></td>
       <td>Přehráno zvuku:</td>
-      <td><b>{{(user().sumPlay | vyzva$exmodule$time) || '-'}}</b></td>
+      <td><b>{{(user().sPlay | vyzva$exmodule$time) || '-'}}</b></td>
     </tr>
     <tr>
       <td>Dokončeno:</td>
@@ -50,7 +50,7 @@
       <td>Poslední interakce:</td>
       <td><b>{{(user().end | vyzva$exmodule$sec) || '-'}}</b></td>
       <td>Vlastní nahrávky</td>
-      <td><b>{{(user().sumRecord | vyzva$exmodule$time) || '-'}}</b></td>
+      <td><b>{{(user().sRec | vyzva$exmodule$time) || '-'}}</b></td>
     </tr>
     <tr>
       <td>Počet cvičení</td>
@@ -58,7 +58,7 @@
       <td>Strávený čas</td>
       <td><b>{{(user().elapsed | vyzva$exmodule$time) || '-'}}</b></td>
       <td>Přehráno nahrávek</td>
-      <td><b>{{(user().sumPlayRecord | vyzva$exmodule$time) || '-'}}</b></td>
+      <td><b>{{(user().sPRec | vyzva$exmodule$time) || '-'}}</b></td>
     </tr>
     <tr>
       <td>Dokončených cvičení</td>

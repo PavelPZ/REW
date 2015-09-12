@@ -2462,15 +2462,11 @@
     </Compile>
     <Compile Include="BlendedAPI\vyzva\Server\ExcelReport.cs" />
     <Compile Include="BlendedAPI\Server\Persistence.cs" />
+    <Compile Include="BlendedAPI\vyzva\Server\MetaInfo.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\Vyzva57Services.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\DataModel\Company.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\DataModel\CourseData.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\DataModel\CourseUser.cs" />
-    <Compile Include="BlendedAPI\vyzva\Server\DataModel\schema\Model.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.edmx</DependentUpon>
-    </Compile>
     <Compile Include="BlendedAPI\vyzva\Server\DataModel\Vyzva57.cs" />
     <Compile Include="Code\LibMp3Lame.cs" />
     <Compile Include="Code\NormalizeProjectFile.cs" />
