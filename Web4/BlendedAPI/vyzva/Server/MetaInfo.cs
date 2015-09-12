@@ -45,7 +45,7 @@ namespace blendedMeta {
       //other: musi byt lekce
       var lesson = (lesson)mod;
       uModule uless = upart.ulessons[lesson.idx];
-      if (uless != null) return;  upart.ulessons[lesson.idx] = uless = new uModule(lesson); uless.copyFrom(umodule);
+      if (uless != null) return; upart.ulessons[lesson.idx] = uless = new uModule(lesson); uless.copyFrom(umodule);
     }
 
     public static void addEx(uDoneModules modules, uEx uex) {
@@ -227,8 +227,15 @@ namespace blendedMeta {
   public class level : productHolder {
     public level(CourseMeta.data data, product product, int lev) : base(data, product) {
       this.lev = lev;
+      int cnt = 1;
       startTest = new startTest(data.Items.First(), product, this);
+      startTest.setOrder(cnt++);
       parts = Enumerable.Range(0, 4).Select(idx => new { idx, items = data.Items.Skip(idx * 4 + 1).Take(4) }).Select(idxItems => new part(idxItems.items.ToArray(), product, this, idxItems.idx)).ToArray();
+      //lesson order, aby byly v exportu podle abecedy
+      foreach (var part in parts) {
+        foreach (var less in part.lessons) less.setOrder(cnt++);
+        part.test.setOrder(cnt++);
+      }
     }
     public int lev; //identifikace level, 0,1,2,3
     public startTest startTest;
@@ -250,6 +257,8 @@ namespace blendedMeta {
       MetaInfo.modAndPretests.Add(data.url, this);
       exs = data.Items.Select(it => new ex(it, product, level, part, this)).ToArray();
     }
+    public void setOrder(int idx) { order = (idx < 10 ? " " + idx.ToString() : idx.ToString()) + ". "; }
+    public string order = "  "; //textovy order aby napr. v reportech fungovalo alphabeticke trideni
     public ex[] exs;
   }
   public class lesson : module {

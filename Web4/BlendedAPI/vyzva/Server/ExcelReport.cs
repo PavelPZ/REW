@@ -39,6 +39,25 @@ namespace blended {
       }
     }
 
+    static string levelToText(int lev) {
+      switch (lev) {
+        case 0: return "A1";
+        case 1: return "A2";
+        case 2: return "B1";
+        case 3: return "B2";
+        default:return "unknown level";
+      }
+    }
+
+    static string lineToText(LineIds line) {
+      switch (line) {
+        case LineIds.English: return "Angličtina";
+        case LineIds.German: return "Němčina";
+        case LineIds.French: return "Francouzština";
+        default: return "unknown line";
+      }
+    }
+
     //**************************** STUDY RESULTS
     public static class studyResults {
 
@@ -83,10 +102,10 @@ namespace blended {
           IAlocatedKey usr = null; if (t != null) courseUsers.TryGetValue(t.Key, out usr);
           IAlocatedKey lector = usr == null ? null : allUsers[usr._myLectorLmcomId];
           return new object[] {
-              t==null ? "Student" : usr.lastName + " " + usr.firstName,
-              t==null ? "Studijní skupina" : usr._myGroup.title + " (učitel " + lector.firstName + " " + lector.lastName + ")",
-              t==null ? "Kurz" : t.Value.product.line.ToString(),
-              t==null ? "Fáze výuky" : t.Value.etapId(),
+              t==null ? "_student" : usr.lastName + " " + usr.firstName,
+              t==null ? "_studyGroup" : usr._myGroup.title + " (učitel " + lector.firstName + " " + lector.lastName + ")",
+              t==null ? "_course" : lineToText(t.Value.product.line),
+              t==null ? "_learnphase" : t.Value.etapId(),
             };
         });
         //export user produktu do excelu
@@ -142,17 +161,17 @@ namespace blended {
           IAlocatedKey lector = usr == null ? null : allUsers[usr._myLectorLmcomId];
           int lev = t == null ? 0 : (t.module is pretestItem ? ((pretestItem)t.module).lev : t.module.level.lev);
           return new object[] {
-              t==null ? "Student" : usr.lastName + " " + usr.firstName,
-              t==null ? "Studijní skupina" : usr._myGroup.title + " (učitel " + lector.firstName + " " + lector.lastName + ")",
-              t==null ? "Kurz" : t.module.product.line.ToString(),
-              t==null ? "Úroveň" : lev.ToString(),
-              t==null ? "Lekce" : t.module.data.title,
-              t==null ? (object)"maxScore" : t.ms,//new lib.formatedValue(Math.Round(t.ms==0 ? -1 : (decimal)t.s / t.ms, 2), lib.cellFormat.percent),
-              t==null ? (object)"score" : t.s,
-              t==null ? (Object)"Doba výuky" : new lib.formatedValue(t.elapsed / secPerDay, lib.cellFormat.time),
-              t==null ? (Object)"Nahrávky" : new lib.formatedValue(t.sRec / secPerDay, lib.cellFormat.time),
-              t==null ? (Object)"Přehrání nahrávek" : new lib.formatedValue(t.sPRec / secPerDay, lib.cellFormat.time),
-              t==null ? (Object)"Přehrání zvuku" : new lib.formatedValue(t.sPlay / secPerDay, lib.cellFormat.time),
+              t==null ? "_student" : usr.lastName + " " + usr.firstName,
+              t==null ? "_studyGroup" : usr._myGroup.title + " (učitel " + lector.firstName + " " + lector.lastName + ")",
+              t==null ? "_course" : lineToText(t.module.product.line),
+              t==null ? "_level" : levelToText(lev),
+              t==null ? "_lesson" : t.module.order + t.module.data.title,
+              t==null ? (object)"_maxScore" : t.ms,//new lib.formatedValue(Math.Round(t.ms==0 ? -1 : (decimal)t.s / t.ms, 2), lib.cellFormat.percent),
+              t==null ? (object)"_score" : t.s,
+              t==null ? (Object)"_elapsed" : new lib.formatedValue((double)t.elapsed / secPerDay, lib.cellFormat.time),
+              t==null ? (Object)"_recording" : new lib.formatedValue((double)t.sRec / secPerDay, lib.cellFormat.time),
+              t==null ? (Object)"_playRecording" : new lib.formatedValue((double)t.sPRec / secPerDay, lib.cellFormat.time),
+              t==null ? (Object)"_play" : new lib.formatedValue((double)t.sPlay / secPerDay, lib.cellFormat.time),
             };
         }).ToArray();
         //vloz do excelu

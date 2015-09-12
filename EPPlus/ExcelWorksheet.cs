@@ -2655,43 +2655,44 @@ namespace OfficeOpenXml {
             parentNode.AppendChild(fieldNode);
           }
         }
-        var ws = Workbook.Worksheets[pt.CacheDefinition.SourceRange.WorkSheet];
-        var t = ws.Tables.GetFromRange(pt.CacheDefinition.SourceRange);
-        var fields =
-            pt.CacheDefinition.CacheDefinitionXml.SelectNodes(
-                "d:pivotCacheDefinition/d:cacheFields/d:cacheField", NameSpaceManager);
-        //LM
-        fields = null;
-        int ix = 0;
-        if (fields != null) {
-          foreach (XmlElement node in fields) {
-            if (ix >= pt.CacheDefinition.SourceRange.Columns) break;
-            if (t == null) {
-              node.SetAttribute("name", pt.CacheDefinition.SourceRange.Offset(0, ix++, 1, 1).Value.ToString());
-            }
-            else {
-              node.SetAttribute("name", t.Columns[ix++].Name);
-            }
-          }
-          foreach (var df in pt.DataFields) {
-            if (string.IsNullOrEmpty(df.Name)) {
-              string name;
-              if (df.Function == DataFieldFunctions.None) {
-                name = df.Field.Name; //Name must be set or Excel will crash on rename.                                
-              }
-              else {
-                name = df.Function.ToString() + " of " + df.Field.Name; //Name must be set or Excel will crash on rename.
-              }
-              //Make sure name is unique
-              var newName = name;
-              var i = 2;
-              while (pt.DataFields.ExistsDfName(newName, df)) {
-                newName = name + (i++).ToString(CultureInfo.InvariantCulture);
-              }
-              df.Name = newName;
-            }
-          }
-        }
+        //LM excel s pivot table nejde otevrit
+
+        //var ws = Workbook.Worksheets[pt.CacheDefinition.SourceRange.WorkSheet];
+        //var t = ws.Tables.GetFromRange(pt.CacheDefinition.SourceRange);
+        //var fields =
+        //    pt.CacheDefinition.CacheDefinitionXml.SelectNodes(
+        //        "d:pivotCacheDefinition/d:cacheFields/d:cacheField", NameSpaceManager);
+        //fields = null;
+        //int ix = 0;
+        //if (fields != null) {
+        //  foreach (XmlElement node in fields) {
+        //    if (ix >= pt.CacheDefinition.SourceRange.Columns) break;
+        //    if (t == null) {
+        //      node.SetAttribute("name", pt.CacheDefinition.SourceRange.Offset(0, ix++, 1, 1).Value.ToString());
+        //    }
+        //    else {
+        //      node.SetAttribute("name", t.Columns[ix++].Name);
+        //    }
+        //  }
+        //  foreach (var df in pt.DataFields) {
+        //    if (string.IsNullOrEmpty(df.Name)) {
+        //      string name;
+        //      if (df.Function == DataFieldFunctions.None) {
+        //        name = df.Field.Name; //Name must be set or Excel will crash on rename.                                
+        //      }
+        //      else {
+        //        name = df.Function.ToString() + " of " + df.Field.Name; //Name must be set or Excel will crash on rename.
+        //      }
+        //      //Make sure name is unique
+        //      var newName = name;
+        //      var i = 2;
+        //      while (pt.DataFields.ExistsDfName(newName, df)) {
+        //        newName = name + (i++).ToString(CultureInfo.InvariantCulture);
+        //      }
+        //      df.Name = newName;
+        //    }
+        //  }
+        //}
         pt.PivotTableXml.Save(pt.Part.GetStream(FileMode.Create));
         pt.CacheDefinition.CacheDefinitionXml.Save(pt.CacheDefinition.Part.GetStream(FileMode.Create));
       }

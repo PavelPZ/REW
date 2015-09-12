@@ -720,6 +720,12 @@ var CourseModel;
         CourseDataFlag[CourseDataFlag["multiTestImpl"] = 4096] = "multiTestImpl";
         CourseDataFlag[CourseDataFlag["testEx"] = 8192] = "testEx";
         CourseDataFlag[CourseDataFlag["all"] = 16127] = "all";
+        CourseDataFlag[CourseDataFlag["blPretestItem"] = 16384] = "blPretestItem";
+        CourseDataFlag[CourseDataFlag["blLesson"] = 32768] = "blLesson";
+        CourseDataFlag[CourseDataFlag["blTest"] = 65536] = "blTest";
+        CourseDataFlag[CourseDataFlag["blPretest"] = 131072] = "blPretest";
+        CourseDataFlag[CourseDataFlag["blProductHome"] = 262144] = "blProductHome";
+        CourseDataFlag[CourseDataFlag["blPretestEx"] = 524288] = "blPretestEx";
     })(CourseModel.CourseDataFlag || (CourseModel.CourseDataFlag = {}));
     var CourseDataFlag = CourseModel.CourseDataFlag;
     (function (modalSize) {
@@ -5734,10 +5740,21 @@ var Course;
         return evalGroupImpl;
     })(_evalObj);
     Course.evalGroupImpl = evalGroupImpl;
+    //k SUM prida agregatabe priznaky
+    function agregateFlag(sum, flag) {
+        return sum | (flag & addAbleFlags) /*k sum prida addAbleTags z flag*/;
+    }
+    Course.agregateFlag = agregateFlag;
+    //do SUM nastavi agregatabe priznaky
+    function setAgregateFlag(sum, flag) {
+        return (sum & ~addAbleFlags /*v sum vynuluje addAbleTags*/) | (flag & addAbleFlags /*prida addAbleTags z flag do sum*/);
+    }
+    Course.setAgregateFlag = setAgregateFlag;
+    var addAbleFlags = CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.hasExternalAttachments;
     function addORScore(res, sc) {
         res.ms += sc.ms;
         res.s += sc.s;
-        res.flag |= sc.flag;
+        res.flag = agregateFlag(res.flag, sc.flag);
     }
     function createORScoreObj(scs) {
         var res = { ms: 0, s: 0, flag: 0 };
@@ -5749,7 +5766,7 @@ var Course;
         //return { ms: 1, s: allOK ? 1 : 0, flag: 0 };
         var res = { ms: 1, s: 1, flag: 0 };
         var hasWrong = false;
-        _.each(scs, function (sc) { hasWrong = hasWrong || sc.ms != sc.s; res.flag |= sc.flag; });
+        _.each(scs, function (sc) { hasWrong = hasWrong || sc.ms != sc.s; res.flag = agregateFlag(res.flag, sc.flag); });
         if (hasWrong)
             res.s = 0;
         return res;
@@ -5757,7 +5774,7 @@ var Course;
     function createAndScoreObj(scs) {
         var res = { ms: 0, s: 0, flag: 0 };
         var cnt = 0;
-        _.each(scs, function (sc) { res.ms += sc.ms; res.s += sc.s; res.flag |= sc.flag; cnt++; });
+        _.each(scs, function (sc) { res.ms += sc.ms; res.s += sc.s; res.flag = agregateFlag(res.flag, sc.flag); cnt++; });
         var ok = res.ms == res.s;
         res.ms = Math.round(res.ms / cnt);
         res.s = ok ? res.ms : 0;
@@ -6725,7 +6742,7 @@ var testMe;
             th.s = th.flag = 0;
             th.done = true;
             _.each(th.Items, function (it) { it.refreshNumbers(); it.complNotPassiveCnt = 1; if (!it.s)
-                it.s = 0; th.s += it.s; th.done = th.done && it.done; th.flag |= it.flag; });
+                it.s = 0; th.s += it.s; th.done = th.done && it.done; th.flag = Course.agregateFlag(th.flag, it.flag); });
             th.complPassiveCnt = 0;
             th.complNotPassiveCnt = th.Items.length;
         };
@@ -9363,6 +9380,16 @@ var blended;
     blended.newGuid = newGuid;
     var startGui = new Date().getTime();
     blended.baseUrlRelToRoot = '..'; //jak se z root stranky dostat do rootu webu
+    function downloadExcelFile(url) {
+        var hiddenIFrameID = 'hiddenDownloader';
+        var iframe = ($('#hiddenDownloader')[0]);
+        if (!iframe) {
+            iframe = ($('<iframe id="hiddenDownloader" style="display:none" src="about:blank"></iframe>')[0]);
+            $('body').append(iframe);
+        }
+        iframe.src = url;
+    }
+    blended.downloadExcelFile = downloadExcelFile;
     function cloneAndModifyContext(ctx, modify) {
         if (modify === void 0) { modify = null; }
         var res = {};
@@ -9405,18 +9432,19 @@ var blended;
     function scoreText(sc) { var pr = scorePercent(sc); return pr < 0 ? '' : pr.toString() + '%'; }
     blended.scoreText = scoreText;
     function agregateShorts(shorts) {
-        var res = $.extend({}, blended.shortDefault);
-        res.done = true;
+        var res = $.extend({}, blended.shortDefaultAgreg);
+        blended.persistUserIsDone(res, true);
         _.each(shorts, function (short) {
             if (!short) {
-                res.done = false;
+                blended.persistUserIsDone(res, false);
                 return;
             }
-            var done = short.done;
+            var done = blended.persistUserIsDone(short);
             res.waitForEvaluation = res.waitForEvaluation || short.waitForEvaluation;
-            res.done = res.done && done;
+            if (!done)
+                blended.persistUserIsDone(res, false);
             res.count += short.count || 1;
-            res.dones += (short.dones ? short.dones : (short.done ? 1 : 0));
+            res.dones += (short.dones ? short.dones : (blended.persistUserIsDone(short) ? 1 : 0));
             if (done) {
                 res.ms += short.ms || 0;
                 res.s += short.s || 0;
@@ -9425,9 +9453,9 @@ var blended;
             res.beg = setDate(res.beg, short.beg, true);
             res.end = setDate(res.end, short.end, false);
             res.elapsed += short.elapsed || 0;
-            res.sumPlay += short.sumPlay;
-            res.sumPlayRecord += short.sumPlayRecord;
-            res.sumRecord += short.sumRecord;
+            res.sPlay += short.sPlay;
+            res.sPRec += short.sPRec;
+            res.sRec += short.sRec;
         });
         res.score = blended.scorePercent(res);
         res.finished = blended.donesPercent(res);
@@ -9435,18 +9463,19 @@ var blended;
     }
     blended.agregateShorts = agregateShorts;
     function agregateShortFromNodes(node, taskId, moduleAlowFinishWhenUndone /*do vyhodnoceni zahrn i nehotova cviceni*/) {
-        var res = $.extend({}, blended.shortDefault);
-        res.done = true;
+        var res = $.extend({}, blended.shortDefaultAgreg);
+        blended.persistUserIsDone(res, true);
         _.each(node.Items, function (nd) {
             if (!blended.isEx(nd))
                 return;
             res.count++;
             var us = blended.getPersistWrapper(nd, taskId);
-            var done = us && us.short.done;
-            res.waitForEvaluation = done && waitForEvaluation(us.short);
+            var done = us && blended.persistUserIsDone(us.short);
+            res.waitForEvaluation = res.waitForEvaluation || (done && waitForEvaluation(us.short));
             if (done)
-                res.dones += (us.short.dones ? us.short.dones : (us.short.done ? 1 : 0));
-            res.done = res.done && done;
+                res.dones += (us.short.dones ? us.short.dones : (blended.persistUserIsDone(us.short) ? 1 : 0));
+            if (!done)
+                blended.persistUserIsDone(res, false);
             if (nd.ms) {
                 if (done) {
                     res.ms += nd.ms;
@@ -9460,9 +9489,9 @@ var blended;
                 res.beg = setDate(res.beg, us.short.beg, true);
                 res.end = setDate(res.end, us.short.end, false);
                 res.elapsed += us.short.elapsed;
-                res.sumPlay += us.short.sumPlay;
-                res.sumPlayRecord += us.short.sumPlayRecord;
-                res.sumRecord += us.short.sumRecord;
+                res.sPlay += us.short.sPlay;
+                res.sPRec += us.short.sPRec;
+                res.sRec += us.short.sRec;
             }
         });
         res.score = blended.scorePercent(res);
@@ -9470,7 +9499,8 @@ var blended;
         return res;
     }
     blended.agregateShortFromNodes = agregateShortFromNodes;
-    blended.shortDefault = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), done: false, ms: 0, s: 0, count: 0, dones: 0, sumPlay: 0, sumPlayRecord: 0, sumRecord: 0, waitForEvaluation: false };
+    blended.shortDefault = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), ms: 0, s: 0, sPlay: 0, sPRec: 0, sRec: 0, flag: 0 };
+    blended.shortDefaultAgreg = { elapsed: 0, beg: Utils.nowToNum(), end: Utils.nowToNum(), ms: 0, s: 0, count: 0, dones: 0, sPlay: 0, sPRec: 0, sRec: 0, waitForEvaluation: false, flag: 0 };
     function setDate(dt1, dt2, min) { if (!dt1)
         return dt2; if (!dt2)
         return dt1; if (min)
@@ -9481,6 +9511,15 @@ var blended;
 
 var blended;
 (function (blended) {
+    function persistUserIsDone(us, val) {
+        if (val === undefined)
+            return us ? !!(us.flag & CourseModel.CourseDataFlag.done) : false;
+        if (val)
+            us.flag |= CourseModel.CourseDataFlag.done;
+        else
+            us.flag &= ~CourseModel.CourseDataFlag.done;
+    }
+    blended.persistUserIsDone = persistUserIsDone;
     function getPersistWrapper(dataNode, taskid, createProc) {
         if (createProc) {
             if (!dataNode.userData)
@@ -9495,7 +9534,7 @@ var blended;
         else {
             if (!dataNode.userData)
                 return null;
-            return dataNode.userData[taskid];
+            return (dataNode.userData[taskid]);
         }
     }
     blended.getPersistWrapper = getPersistWrapper;
@@ -9557,7 +9596,7 @@ var blended;
                         if (!d.modified)
                             return;
                         d.modified = false;
-                        toSave.push({ url: nd.url, taskId: p, shortData: JSON.stringify(d.short), longData: d.long ? JSON.stringify(d.long) : null });
+                        toSave.push({ url: nd.url, taskId: p, shortData: JSON.stringify(d.short), longData: d.long ? JSON.stringify(d.long) : null, flag: d.short.flag });
                     }
                     finally {
                         delete p.long;
@@ -9838,7 +9877,6 @@ var blended;
         };
     })
         .filter('levelText', function () { return function (id) { return ['A1', 'A2', 'B1', 'B2'][id]; }; })
-        .controller('collapsable', function () { this.isCollapsed = true; })
         .filter("rawhtml", ['$sce', function ($sce) { return function (htmlCode) { return $sce.trustAsHtml(htmlCode); }; }])
         .directive('lmEnterKey', ['$document', function ($document) {
             return {
@@ -9857,7 +9895,29 @@ var blended;
                     lmEnterKey: "&"
                 },
             };
-        }]);
+        }])
+        .directive('collapsablemanager', function () { return new collapseMan(); });
+    var collapseMan = (function () {
+        function collapseMan() {
+            this.link = function (scope, el, attrs) {
+                var id = attrs['collapsablemanager'];
+                var th = {
+                    isCollapsed: true,
+                    collapseToogle: function () {
+                        var act = (scope[id]);
+                        if (act.isCollapsed)
+                            _.each(collapseMan.allCollapsable, function (man, id) { return man.isCollapsed = true; });
+                        act.isCollapsed = !act.isCollapsed;
+                    },
+                };
+                scope[id] = collapseMan.allCollapsable[id] = th;
+                scope.$on('$destroy', function () { return delete collapseMan.allCollapsable[id]; });
+            };
+        }
+        collapseMan.allCollapsable = {};
+        return collapseMan;
+    })();
+    blended.collapseMan = collapseMan;
 })(blended || (blended = {}));
 
 var __extends = (this && this.__extends) || function (d, b) {
@@ -10064,7 +10124,7 @@ var blended;
     })(taskController);
     blended.homeTaskController = homeTaskController;
     function pretestScore(dataNode, user, taskId) {
-        if (!user || !user.done)
+        if (!blended.persistUserIsDone(user))
             return null;
         var users = _.map(user.history, function (l) { return blended.agregateShortFromNodes(dataNode.Items[l], taskId); });
         return blended.agregateShorts(users);
@@ -10078,7 +10138,7 @@ var blended;
             this.pretestParent = this;
             //sance prerusit navigaci
             this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () {
-                return { actLevel: blended.levelIds.A2, history: [blended.levelIds.A2], targetLevel: -1, done: false };
+                return { actLevel: blended.levelIds.A2, history: [blended.levelIds.A2], targetLevel: -1, flag: CourseModel.CourseDataFlag.blPretest };
             });
             if (this.isFakeCreate)
                 return;
@@ -10088,7 +10148,7 @@ var blended;
             var ud = this.user.short;
             if (!ud)
                 return this.getProductHomeUrl(); //{ stateName: prodStates.home.name, pars: this.ctx }; //pretest jeste nezacal => goto product home
-            if (ud.done)
+            if (blended.persistUserIsDone(ud))
                 return null; //done pretest: vse je povoleno
             var dataNode = this.dataNode;
             var actModule = dataNode.Items[ud.actLevel];
@@ -10101,7 +10161,7 @@ var blended;
         };
         pretestTaskController.prototype.adjustChild = function () {
             var ud = this.user.short;
-            if (ud.done)
+            if (blended.persistUserIsDone(ud))
                 return null;
             var actModule = this.actRepo(ud.actLevel);
             if (!actModule)
@@ -10121,7 +10181,7 @@ var blended;
             if (actTestItem.dataNode != actRepo)
                 throw 'actTestItem.dataNode != actRepo';
             var childSummary = blended.agregateShortFromNodes(actTestItem.dataNode, this.ctx.taskid);
-            if (!childSummary.done)
+            if (!blended.persistUserIsDone(childSummary))
                 throw '!childUser.done';
             var score = blended.scorePercent(childSummary);
             if (actRepo.level == blended.levelIds.A1) {
@@ -10160,7 +10220,7 @@ var blended;
         pretestTaskController.prototype.finishPretest = function (sender, ud, lev) {
             var _this = this;
             this.user.modified = true;
-            ud.done = true;
+            blended.persistUserIsDone(ud, true);
             ud.targetLevel = lev;
             delete ud.actLevel;
             sender.congratulationDialog().then(function () { return _this.navigateProductHome(); }, function () { return _this.navigateProductHome(); });
@@ -10285,6 +10345,7 @@ var blended;
     //********************* EXERCISE SERVICE
     var exerciseService = (function () {
         function exerciseService(exercise, long, controller, modIdx) {
+            var _this = this;
             this.controller = controller;
             this.exercise = exercise;
             this.modIdx = modIdx;
@@ -10293,7 +10354,16 @@ var blended;
             this.product = controller.productParent.dataNode;
             this.isTest = controller.moduleParent.state.moduleType != blended.moduleServiceType.lesson;
             this.moduleUser = controller.moduleParent.user.short;
-            this.user = blended.getPersistWrapper(exercise.dataNode, this.ctx.taskid, function () { var res = $.extend({}, blended.shortDefault); res.ms = exercise.dataNode.ms; return res; });
+            this.user = blended.getPersistWrapper(exercise.dataNode, this.ctx.taskid, function () {
+                var res = $.extend({}, blended.shortDefault);
+                res.ms = exercise.dataNode.ms;
+                res.flag = CourseModel.CourseDataFlag.ex;
+                if (controller.pretestParent)
+                    res.flag |= CourseModel.CourseDataFlag.blPretestEx;
+                else if (_this.isTest)
+                    res.flag |= CourseModel.CourseDataFlag.testEx;
+                return res;
+            });
             if (!long) {
                 long = {};
                 this.user.modified = true;
@@ -10307,12 +10377,13 @@ var blended;
             this.showLectorPanel = !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
         }
         //ICoursePageCallback
-        exerciseService.prototype.onRecorder = function (page, msecs) { this.user.modified = true; if (!this.user.short.sumRecord)
-            this.user.short.sumRecord = 0; this.user.short.sumRecord += Math.round(msecs / 1000); };
-        exerciseService.prototype.onPlayRecorder = function (page, msecs) { this.user.modified = true; if (!this.user.short.sumPlayRecord)
-            this.user.short.sumPlayRecord = 0; this.user.short.sumPlayRecord += Math.round(msecs / 1000); };
-        exerciseService.prototype.onPlayed = function (page, msecs) { this.user.modified = true; if (!this.user.short.sumPlay)
-            this.user.short.sumPlay = 0; this.user.short.sumPlay += Math.round(msecs / 1000); };
+        exerciseService.prototype.onRecorder = function (page, msecs) { if (page != this.page)
+            debugger; this.user.modified = true; if (!this.user.short.sRec)
+            this.user.short.sRec = 0; this.user.short.sRec += Math.round(msecs / 1000); };
+        exerciseService.prototype.onPlayRecorder = function (page, msecs) { this.user.modified = true; if (!this.user.short.sPRec)
+            this.user.short.sPRec = 0; this.user.short.sPRec += Math.round(msecs / 1000); };
+        exerciseService.prototype.onPlayed = function (page, msecs) { this.user.modified = true; if (!this.user.short.sPlay)
+            this.user.short.sPlay = 0; this.user.short.sPlay += Math.round(msecs / 1000); };
         exerciseService.prototype.saveLectorEvaluation = function () {
             var _this = this;
             var humanEvals = _.map($('.human-form:visible').toArray(), function (f) {
@@ -10327,12 +10398,12 @@ var blended;
                 if (val > 100)
                     val = 100;
                 ev.ctrl.result.hPercent = val / 100 * ev.ctrl.scoreWeight;
-                ev.ctrl.result.flag = ev.ctrl.result.flag & ~CourseModel.CourseDataFlag.needsEval;
+                ev.ctrl.result.flag &= ~CourseModel.CourseDataFlag.needsEval;
                 ev.ctrl.setScore();
             });
             var score = this.page.getScore();
             this.user.short.s = score.s;
-            this.user.short.flag = score.flag;
+            this.user.short.flag = Course.setAgregateFlag(this.user.short.flag, score.flag);
         };
         //lectorEvaluationScore() { return scorePercent(this.user.short); }
         exerciseService.prototype.score = function () {
@@ -10368,11 +10439,11 @@ var blended;
                 ko.applyBindings({}, el[0]);
                 pg.callInitProcs(Course.initPhase.afterRender, function () {
                     pg.callInitProcs(Course.initPhase.afterRender2, function () {
-                        if (_this.isTest && _this.user.short.done && !_this.moduleUser.done && !_this.isLector) {
+                        if (_this.isTest && blended.persistUserIsDone(_this.user.short) && !blended.persistUserIsDone(_this.moduleUser) && !_this.isLector) {
                             //test cviceni nesmi byt (pro nedokonceny test) videt ve vyhodnocenem stavu. Do vyhodnoceneho stav se vrati dalsim klikem na zelenou sipku.
-                            _this.user.short.done = false;
+                            blended.persistUserIsDone(_this.user.short, false);
                         }
-                        pg.acceptData(_this.user.short.done, exImpl.result);
+                        pg.acceptData(blended.persistUserIsDone(_this.user.short), exImpl.result);
                         completed(pg);
                     });
                 });
@@ -10388,7 +10459,7 @@ var blended;
             short.elapsed += delta;
             short.end = Utils.nowToNum();
             this.user.modified = true;
-            if (!this.user.short.done)
+            if (!blended.persistUserIsDone(this.user.short))
                 this.page.provideData(); //prevzeti poslednich dat z kontrolek cviceni
             //uklid
             if (this.page.sndPage)
@@ -10404,7 +10475,7 @@ var blended;
         exerciseService.prototype.evaluate = function (isTest, exerciseShowWarningPercent) {
             var _this = this;
             if (exerciseShowWarningPercent === void 0) { exerciseShowWarningPercent = 75; }
-            if (this.user.short.done) {
+            if (blended.persistUserIsDone(this.user.short)) {
                 return { showResult: false };
             }
             this.user.modified = true;
@@ -10412,7 +10483,7 @@ var blended;
             //pasivni stranka
             if (this.page.isPassivePage()) {
                 this.page.processReadOnlyEtc(true, true);
-                short.done = true;
+                blended.persistUserIsDone(short, true);
                 return { showResult: false };
             }
             //aktivni stranka
@@ -10420,7 +10491,7 @@ var blended;
             var score = this.page.getScore(); //vypocet score
             if (!score) {
                 debugger;
-                short.done = true;
+                blended.persistUserIsDone(short, true);
                 return null;
             }
             var afterConfirmScore = function () {
@@ -10428,14 +10499,15 @@ var blended;
                 if (!isTest)
                     _this.page.acceptData(true);
                 _this.user.modified = true;
-                short.done = true;
+                blended.persistUserIsDone(short, true);
                 if (_this.exercise.dataNode.ms != score.ms) {
                     debugger;
                     def.reject("this.maxScore != score.ms");
                     return null;
                 }
                 short.s = score.s;
-                short.flag = score.flag;
+                short.flag = Course.setAgregateFlag(short.flag, score.flag);
+                //short.flag |= score.flag;
             };
             var exerciseOK = isTest || !this.confirmWrongScoreDialog ? true : (score == null || score.ms == 0 || (score.s / score.ms * 100) >= exerciseShowWarningPercent);
             if (!exerciseOK) {
@@ -10517,10 +10589,10 @@ var blended;
             _super.call(this, node, type, controller, false);
             this.exService = exService;
             this.refresh(this.exService.modIdx);
-            this.exShowPanel = this.user.done || this.lessonType != blended.moduleServiceType.pretest;
+            this.exShowPanel = blended.persistUserIsDone(this.user) || this.lessonType != blended.moduleServiceType.pretest;
         }
         moduleService.prototype.showResult = function () {
-            var res = this.exService.user && this.exService.user.short && this.exService.user.short.done &&
+            var res = this.exService.user && this.exService.user.short && blended.persistUserIsDone(this.exService.user.short) &&
                 (this.lessonType == blended.moduleServiceType.lesson || this.moduleDone);
             return res;
         };
@@ -10528,7 +10600,7 @@ var blended;
         moduleService.prototype.refresh = function (actExIdx) {
             var _this = this;
             _super.prototype.refresh.call(this, actExIdx);
-            this.moduleDone = this.user && this.user.done;
+            this.moduleDone = blended.persistUserIsDone(this.user);
             this.exNoclickable = this.lessonType == blended.moduleServiceType.test && !this.moduleDone && !this.controller.ctx.onbehalfof;
             _.each(this.exercises, function (ex) {
                 //active item: stejny pro vsechny pripady
@@ -10537,7 +10609,7 @@ var blended;
                     ex.background = exItemBackground.warning;
                     return;
                 }
-                var exDone = ex.user && ex.user.done;
+                var exDone = blended.persistUserIsDone(ex.user);
                 //nehotovy test
                 if (_this.lessonType == blended.moduleServiceType.test && !_this.moduleDone && !_this.controller.ctx.onbehalfof) {
                     ex.content = exDone ? exItemContent.check : exItemContent.folder;
@@ -10570,7 +10642,7 @@ var blended;
     })(moduleServiceLow);
     blended.moduleService = moduleService;
     function moduleIsDone(nd, taskId) {
-        return !_.find(nd.Items, function (it) { var itUd = blended.getPersistData(it, taskId); return (!itUd || !itUd.done); });
+        return !_.find(nd.Items, function (it) { var itUd = blended.getPersistData(it, taskId); return !blended.persistUserIsDone(itUd); });
     }
     blended.moduleIsDone = moduleIsDone;
     function isEx(nd) { return CourseMeta.isType(nd, CourseMeta.runtimeType.ex); }
@@ -10578,14 +10650,15 @@ var blended;
     var moduleTaskController = (function (_super) {
         __extends(moduleTaskController, _super);
         function moduleTaskController($scope, $state) {
+            var _this = this;
             _super.call(this, $scope, $state);
             this.moduleParent = this;
-            this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { done: false, actChildIdx: 0 }; });
+            this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { actChildIdx: 0, flag: blended.serviceTypeToPersistFlag(_this.moduleParent.state.moduleType) }; });
             this.exercises = _.filter(this.dataNode.Items, function (it) { return isEx(it); });
         }
         moduleTaskController.prototype.onExerciseLoaded = function (idx) {
             var ud = this.user.short;
-            if (ud.done) {
+            if (blended.persistUserIsDone(ud)) {
                 ud.actChildIdx = idx;
                 this.user.modified = true;
             }
@@ -10593,10 +10666,10 @@ var blended;
         moduleTaskController.prototype.adjustChild = function () {
             var _this = this;
             var ud = this.user.short;
-            var exNode = ud.done ? this.exercises[ud.actChildIdx] : _.find(this.exercises, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (!itUd || !itUd.done); });
+            var exNode = blended.persistUserIsDone(ud) ? this.exercises[ud.actChildIdx] : _.find(this.exercises, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return !blended.persistUserIsDone(itUd); });
             if (!exNode) {
                 debugger;
-                ud.done = true;
+                blended.persistUserIsDone(ud, true);
                 this.user.modified = true;
             }
             var moduleExerciseState = _.find(this.state.childs, function (ch) { return !ch.noModuleExercise; });
@@ -10614,15 +10687,15 @@ var blended;
                 return blended.moveForwardResult.toParent;
             }
             var ud = this.user.short;
-            if (ud.done) {
+            if (blended.persistUserIsDone(ud)) {
                 ud.actChildIdx = ud.actChildIdx == this.exercises.length - 1 ? 0 : ud.actChildIdx + 1;
                 this.user.modified = true;
                 return blended.moveForwardResult.selfAdjustChild;
             }
             else {
-                var exNode = _.find(this.exercises, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return (!itUd || !itUd.done); });
-                if (!ud.done && !exNode) {
-                    ud.done = true;
+                var exNode = _.find(this.exercises, function (it) { var itUd = blended.getPersistData(it, _this.ctx.taskid); return !blended.persistUserIsDone(itUd); });
+                if (!exNode) {
+                    blended.persistUserIsDone(ud, true);
                     this.user.modified = true;
                     if (this.pretestParent)
                         return blended.moveForwardResult.toParent;
@@ -10664,6 +10737,14 @@ var blended;
         moduleServiceType[moduleServiceType["test"] = 2] = "test";
     })(blended.moduleServiceType || (blended.moduleServiceType = {}));
     var moduleServiceType = blended.moduleServiceType;
+    function serviceTypeToPersistFlag(st) {
+        switch (st) {
+            case moduleServiceType.pretest: return CourseModel.CourseDataFlag.blPretestItem;
+            case moduleServiceType.lesson: return CourseModel.CourseDataFlag.blLesson;
+            case moduleServiceType.test: return CourseModel.CourseDataFlag.blTest;
+        }
+    }
+    blended.serviceTypeToPersistFlag = serviceTypeToPersistFlag;
     function createStateData(data) { return data; }
     blended.createStateData = createStateData;
     //export var globalApi: {
@@ -10748,6 +10829,19 @@ var vyzva;
         return appService;
     })();
     vyzva.appService = appService;
+    //musi souhlasit s D:\LMCom\REW\Web4\BlendedAPI\vyzva\Server\ExcelReport.cs
+    (function (reportType) {
+        reportType[reportType["managerKeys"] = 0] = "managerKeys";
+        reportType[reportType["managerStudy"] = 1] = "managerStudy";
+        reportType[reportType["lectorKeys"] = 2] = "lectorKeys";
+        reportType[reportType["lectorStudy"] = 3] = "lectorStudy";
+    })(vyzva.reportType || (vyzva.reportType = {}));
+    var reportType = vyzva.reportType;
+    function downloadExcelReport(par) {
+        var url = Pager.basicUrl + 'vyzva57services/reports' + "?" + $.param({ reportpar: JSON.stringify(par) });
+        blended.downloadExcelFile(url.toLowerCase());
+    }
+    vyzva.downloadExcelReport = downloadExcelReport;
 })(vyzva || (vyzva = {}));
 
 var vyzva;
@@ -10907,10 +11001,16 @@ var vyzva;
             this.wizzardStep = 0;
             this.adjustWizzardButtons();
         }
+        managerSchool.prototype.downloadLicenceKeys = function (managerIncludeStudents) {
+            vyzva.downloadExcelReport({ type: vyzva.reportType.managerKeys, companyId: this.ctx.companyid, managerIncludeStudents: managerIncludeStudents });
+        };
+        managerSchool.prototype.downloadSummary = function (isStudyAll) {
+            vyzva.downloadExcelReport({ type: vyzva.reportType.managerStudy, companyId: this.ctx.companyid, isStudyAll: isStudyAll });
+        };
         managerSchool.prototype.addItem = function (line, isPattern3) {
             var item = {
                 groupId: managerSchool.groupIdCounter++,
-                title: isPattern3 ? blended.lineIdToText(line) + ' pro učitele' : 'Pokročilí' + (this.groupNameCounter++).toString() + ' - 3.A (2015/2016)',
+                title: isPattern3 ? blended.lineIdToText(line) + ' pro Studující učitele' : 'Pokročilí' + (this.groupNameCounter++).toString() + ' - 3.A (2015/2016)',
                 line: line,
                 num: isPattern3 ? 1 : 20,
                 isPattern3: isPattern3
@@ -11123,10 +11223,11 @@ var vyzva;
     var lectorController = (function (_super) {
         __extends(lectorController, _super);
         function lectorController($scope, $state) {
+            var _this = this;
             _super.call(this, $scope, $state);
             var lectorGroups = this.productParent.lectorGroups;
-            var gid = parseInt(this.ctx.groupid);
-            this.lectorGroup = _.find(lectorGroups, function (grp) { return grp.groupId == gid; });
+            this.groupId = parseInt(this.ctx.groupid);
+            this.lectorGroup = _.find(lectorGroups, function (grp) { return grp.groupId == _this.groupId; });
         }
         return lectorController;
     })(blended.controller);
@@ -11135,7 +11236,6 @@ var vyzva;
         __extends(lectorViewBase, _super);
         function lectorViewBase($scope, $state) {
             _super.call(this, $scope, $state);
-            //this.title = 'Studijní skupina ' + this.lectorParent.lectorGroup.title;
             this.title = this.lectorParent.lectorGroup.title;
             this.breadcrumb = this.breadcrumbBase();
             this.breadcrumb[this.breadcrumb.length - 1].active = true;
@@ -11165,17 +11265,15 @@ var vyzva;
             });
             this.navigate({ stateName: vyzva.stateNames.home.name, pars: ctx });
         };
+        lectorViewController.prototype.downloadLicenceKeys = function () {
+            vyzva.downloadExcelReport({ type: vyzva.reportType.lectorKeys, companyId: this.ctx.companyid, groupId: this.lectorParent.groupId });
+        };
+        lectorViewController.prototype.downloadSummary = function (isStudyAll) {
+            vyzva.downloadExcelReport({ type: vyzva.reportType.lectorStudy, companyId: this.ctx.companyid, groupId: this.lectorParent.groupId, isStudyAll: isStudyAll });
+        };
         return lectorViewController;
     })(lectorViewBase);
     vyzva.lectorViewController = lectorViewController;
-    //export class lectorEvalController extends lectorViewBase {
-    //  constructor($scope: ng.IScope | blended.IStateService, $state?: angular.ui.IStateService) {
-    //    super($scope, $state);
-    //    this.tabIdx = 1;
-    //    this.breadcrumb = this.breadcrumbBase();
-    //    this.breadcrumb.push({ title: getLectorTabs()[this.tabIdx].shortTitle, active: true });
-    //  }
-    //}
     blended.rootModule
         .directive('vyzva$lector$user', function () {
         return {
@@ -11261,7 +11359,7 @@ var vyzva;
                 else {
                     res.user = blended.agregateShortFromNodes(res.node, _this.ctx.taskid, false);
                 }
-                res.status = !res.user ? homeLessonStates.no : (res.user.done ? homeLessonStates.done : homeLessonStates.entered);
+                res.status = !res.user ? homeLessonStates.no : (blended.persistUserIsDone(res.user) ? homeLessonStates.done : homeLessonStates.entered);
                 //lesson nejde spustit
                 //res.cannotRun = this.ctx.onbehalfof && res.lessonType != blended.moduleServiceType.lesson && res.status != homeLessonStates.done;
                 //rightButtonType management: vsechny nehotove dej RUN a ev. nastav index prvniho nehotoveho check testu
@@ -11270,13 +11368,13 @@ var vyzva;
                 if (!firstNotDoneCheckTestIdx && res.lessonType == blended.moduleServiceType.test && res.status != homeLessonStates.done)
                     firstNotDoneCheckTestIdx = idx;
                 //left mark
-                if (res.user && res.user.done) {
+                if (blended.persistUserIsDone(res.user)) {
                     res.leftMarkType = res.lessonType == blended.moduleServiceType.pretest ? leftMarkTypes.pretestLevel : (res.user.waitForEvaluation ? leftMarkTypes.waitForEvaluation : leftMarkTypes.progress);
                 }
                 return res;
             };
             this.lessons = [pretestItem = fromNode(this.myTask.dataNode.pretest, 0)];
-            if (pretestUser && pretestUser.done) {
+            if (pretestUser && blended.persistUserIsDone(pretestUser)) {
                 this.pretestLevels = pretestUser.history;
                 this.pretestLevel = pretestUser.targetLevel;
                 this.lessons.push(fromNode(this.myTask.dataNode.entryTests[this.pretestLevel], 1));
@@ -11354,7 +11452,7 @@ var vyzva;
             //constructor(state: blended.IStateService, resolves: Array<any>) {
             //  super(state, resolves);
             this.productParent = this;
-            this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { startDate: Utils.nowToNum() }; });
+            this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { startDate: Utils.nowToNum(), flag: CourseModel.CourseDataFlag.blProductHome }; });
             //Intranet
             //this.intranetInfo = intranetInfo;
             if (!this.intranetInfo)

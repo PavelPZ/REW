@@ -1,7 +1,6 @@
 ﻿Schools/SLExtension.xap
-jslib/js/lmconsoleinit.js
 jslib/ea/ea.css
-blendedapi/styles/style.less
+blendedapi/styles/style.css
 blendedapi/styles/img/lm-logo-black.png
 blendedapi/vyzva/views/pretest.html
 blendedapi/vyzva/views/module.html
@@ -10,3 +9,5 @@ blendedapi/vyzva/views/lector.html
 blendedapi/vyzva/views/home.html
 blendedapi/vyzva/views/exercise.html
 blendedapi/vyzva/views/_pagetemplate.html
+blendedapi\vyzva\server\excels\studysmall.xlsx
+blendedapi\vyzva\server\excels\studyall.xlsx
