@@ -12,7 +12,7 @@ namespace blendedMeta {
     static MetaInfo() {
       string path = HttpContext.Current.Server.MapPath("~/data/actproductsexpanded.xml");
       var prodExpanded = XmlUtils.FileToObject<products>(path); prodExpanded.finishRead();
-      products = prodExpanded.Items.OfType<CourseMeta.product>().Select(it => new product(it)).ToArray();
+      products = prodExpanded.Items.OfType<CourseMeta.product>().Where(p => p.url.StartsWith("/lm/prods_lm_blcourse_")).Select(it => new product(it)).ToArray();
     }
 
     public static Dictionary<string, ex> exercises = new Dictionary<string, ex>();
@@ -25,27 +25,27 @@ namespace blendedMeta {
       return uprod;
     }
 
-    public static void addDummuUsers(uProducts uproducts, lineUser lineUser) {
+    public static void addDummyUsers(uProducts uproducts, lineUser lineUser) {
       adjustProduct(uproducts, products.First(p => p.line == lineUser.line), lineUser.lmcomId);
     }
 
-    public static void addModule(uProducts uproducts, peristBase umodule) {
+    public static void addModule(uProducts uproducts, userBase umodule) {
       var modPretest = modAndPretests[umodule.url];
       var uprod = adjustProduct(uproducts, modPretest.product, umodule.lmcomId);
       //Pretest
       if (modPretest is pretest) { if (uprod.upretest == null) uprod.upretest = new uPretest() { pretest = modPretest as pretest }; return; }
       var mod = (module)modPretest;
       //start test
-      if (mod is startTest) { if (uprod.ustartTest == null) uprod.ustartTest = new uModule(mod); return; }
+      if (mod is startTest) { if (uprod.ustartTest != null) return; uprod.ustartTest = new uModule(mod); uprod.ustartTest.copyFrom(umodule); return; }
       //part
       uPart upart = uprod.uparts[mod.part.number];
       if (upart == null) uprod.uparts[mod.part.number] = upart = new uPart() { part = mod.part };
       //test
-      if (mod is test) { if (upart.utest == null) upart.utest = new uModule(mod); return; }
+      if (mod is test) { if (upart.utest != null) return; upart.utest = new uModule(mod); upart.utest.copyFrom(umodule); return; }
       //other: musi byt lekce
       var lesson = (lesson)mod;
       uModule uless = upart.ulessons[lesson.idx];
-      if (uless == null) upart.ulessons[lesson.idx] = uless = new uModule(lesson);
+      if (uless != null) return;  upart.ulessons[lesson.idx] = uless = new uModule(lesson); uless.copyFrom(umodule);
     }
 
     public static void addEx(uProducts uproducts, userEx uex) {
@@ -83,7 +83,7 @@ namespace blendedMeta {
   }
 
   //*************************** 
-  //  user informace o produktech jednoho uzivatele, zjistenych z CourseData tabulky
+  //  user informace o vsech produktech vsech uzivatelu, zjistenych z CourseData tabulky. Kazdu yzivatel ma max. jeden produkt na kurz.
   //*************************** 
   public class uProducts {
     public Dictionary<lineUser, uProduct> uproducts = new Dictionary<lineUser, uProduct>(new lineUserEqualityComparer());
@@ -130,8 +130,7 @@ namespace blendedMeta {
 
   public class uModule : userBaseEx {
     public uModule(module module) { this.module = module; }
-    public void addEx(userEx ex) {
-    }
+    public void addEx(userEx ex) { }
     public bool done() {
       return (flag & CourseModel.CourseDataFlag.done) != 0;
     }
@@ -140,13 +139,13 @@ namespace blendedMeta {
   }
 
   //*********** ancestors
-  public class peristBase {
+  public class persistBase {
     public string url;
     public string productUrl;
     public long lmcomId;
   }
 
-  public class userBase : peristBase {
+  public class userBase : persistBase {
     public int ms;
     public int s;
     public CourseModel.CourseDataFlag flag;
@@ -157,6 +156,9 @@ namespace blendedMeta {
     public int sPlay; //prehrany nas zvuk (sec)
     public int sRec; //nahrany zvuk  (sec)
     public int sPRec; //prehrano nahravek (sec)
+    public void copyFrom(userBase from) {
+      ms = from.ms; s = from.s; flag = from.flag; elapsed = from.elapsed; beg = from.beg; end = from.end; sPlay = from.sPlay; sRec = from.sRec; sPRec = from.sPRec;
+    }
   }
 
   public class userEx : userBase {
@@ -177,7 +179,7 @@ namespace blendedMeta {
   }
   public class partLevelHolder : productHolder {
     public partLevelHolder(CourseMeta.data data, product product, level level, part part) : base(data, product) {
-      this.level = level; this.level = level;
+      this.level = level; this.part = part;
     }
     public level level;
     public part part;
@@ -198,6 +200,7 @@ namespace blendedMeta {
   }
   public class pretest : productHolder {
     public pretest(CourseMeta.data data, product product) : base(data, product) {
+      MetaInfo.modAndPretests.Add(data.url, this);
       int cnt = 0;
       pretestItems = data.Items.Select(d => new pretestItem(d, product, this, cnt++)).ToArray();
     }
@@ -226,6 +229,7 @@ namespace blendedMeta {
   }
   public class module : partLevelHolder {
     public module(CourseMeta.data data, product product, level level = null, part part = null) : base(data, product, level, part) {
+      MetaInfo.modAndPretests.Add(data.url, this);
       exs = data.Items.Select(it => new ex(it, product, level, part, this)).ToArray();
     }
     public ex[] exs;
@@ -252,6 +256,7 @@ namespace blendedMeta {
   }
   public class ex : partLevelHolder {
     public ex(data data, product product, level level, part part, module module) : base(data, product, level, part) {
+      MetaInfo.exercises.Add(data.url, this);
       this.module = module;
       pretestItem = module as pretestItem; if (pretestItem != null) pretest = pretestItem.pretest;
       lesson = module as lesson;

@@ -46,7 +46,8 @@ namespace blended {
         //nacteni Companies.data, kde je JSON se strukturou grup, licencnich klicu apod.
         ICompanyData data = readData(companyId, db);
         //adresar <lineId,lmcomId> => user informace (firstName, lastname...)
-        var courseUsers = usersFromCompany(groupId < 0 ? data.studyGroups : data.studyGroups.Where(g => g.groupId == groupId));
+        var courseUsers = studentsFromCompany(groupId < 0 ? data.studyGroups : data.studyGroups.Where(g => g.groupId == groupId));
+        var allUsers = usersFromCompany(data);
         //nac ti z CourseData pretesty, hotove lekce nebo vyhodnocene testy:
         long validTypes = (long)(CourseModel.CourseDataFlag.blLesson | CourseModel.CourseDataFlag.blTest | CourseModel.CourseDataFlag.blPretest);
         var query = db.CourseDatas.
@@ -68,7 +69,7 @@ namespace blended {
         //zpracovani raw dat
         var allModules = query2.
           Select(kd => {
-            var res = JsonConvert.DeserializeObject<peristBase>(kd.ShortData);
+            var res = JsonConvert.DeserializeObject<userBase>(kd.ShortData);
             res.url = kd.Key; res.productUrl = kd.ProductUrl; res.lmcomId = kd.LMComId;
             return res;
           }).
@@ -76,16 +77,17 @@ namespace blended {
         //zapracovani user dat do struktury kurzu
         var userProducts = new blendedMeta.uProducts();
         foreach (var module in allModules) blendedMeta.MetaInfo.addModule(userProducts, module); //zatrideni existujicich dat
-        foreach (var lmcId in courseUsers.Keys) blendedMeta.MetaInfo.addDummuUsers(userProducts, lmcId); //doplneni studentu, co jeste nedokoncili nic z kurzu (tj. nemaji zadna DONE data v DB)
+        foreach (var lmcId in courseUsers.Keys) blendedMeta.MetaInfo.addDummyUsers(userProducts, lmcId); //doplneni studentu, co jeste nedokoncili nic z kurzu (tj. nemaji zadna DONE data v DB)
         using (var pck = new ExcelPackage()) {
           ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Přehled");
           var rows = lib.emptyAndHeader(userProducts.uproducts.Select(kv => new { kv.Key, kv.Value })).Select(t => {
-            var usr = courseUsers[t.Key];
+            IAlocatedKey usr = t == null ? null : allUsers[t.Key.lmcomId];
+            IAlocatedKey lector = usr == null ? null : allUsers[usr._myLectorLmcomId];
             return new object[] {
               t==null ? "Student" : usr.lastName + " " + usr.firstName,
-              t==null ? "Studijní skupina" : "",
+              t==null ? "Studijní skupina" : usr._myGroup.title + " (" + lector.firstName + " " + lector.lastName + ")",
               t==null ? "Kurz" : t.Value.product.line.ToString(),
-              t==null ? "Etapa" : t.Value.etapId(),
+              t==null ? "Fáze výuky" : t.Value.etapId(),
             };
           });
           //vloz do excelu
@@ -96,7 +98,7 @@ namespace blended {
       public static byte[] runAll(int companyId, int groupId) {
         var db = blendedData.Lib.CreateContext();
         ICompanyData data = readData(companyId, db);
-        var courseUsers = usersFromCompany(groupId < 0 ? data.studyGroups : data.studyGroups.Where(g => g.groupId == groupId));
+        var courseUsers = studentsFromCompany(groupId < 0 ? data.studyGroups : data.studyGroups.Where(g => g.groupId == groupId));
         //hotova cviceni, ktera nepotrebuji human evaluaci:
         long exFlag = (long)(CourseModel.CourseDataFlag.ex | CourseModel.CourseDataFlag.done);
         long wrongFlag = (long)CourseModel.CourseDataFlag.needsEval;
@@ -126,7 +128,7 @@ namespace blended {
         //merge user data s product sitemap
         var userProducts = new blendedMeta.uProducts();
         foreach (var ex in allExercises) blendedMeta.MetaInfo.addEx(userProducts, ex); //zatrideni existujicich dat
-        foreach (var lmcId in courseUsers.Keys) blendedMeta.MetaInfo.addDummuUsers(userProducts, lmcId); //doplneni studentu, co nemaji zadna data
+        foreach (var lmcId in courseUsers.Keys) blendedMeta.MetaInfo.addDummyUsers(userProducts, lmcId); //doplneni studentu, co nemaji zadna data
 
         using (var pck = new ExcelPackage()) {
           return pck.GetAsByteArray();
@@ -135,10 +137,21 @@ namespace blended {
     }
 
     //vsichni Course x Student firmy.
-    static Dictionary<blendedMeta.lineUser, IAlocatedKey> usersFromCompany(IEnumerable<IStudyGroup> groups) {
+    static Dictionary<blendedMeta.lineUser, IAlocatedKey> studentsFromCompany(IEnumerable<IStudyGroup> groups) {
       var res = new Dictionary<lineUser, IAlocatedKey>(new blendedMeta.lineUserEqualityComparer());
-      foreach (var kv in groups.SelectMany(g => g.studentKeys.Where(k => k.lmcomId > 0).Select(k => new { key = new blendedMeta.lineUser(g.line, k.lmcomId), value = k })))
-        res[kv.key] = kv.value;
+      foreach (var kv in groups.SelectMany(grp => grp.studentKeys.Where(k => k.lmcomId > 0).Select(k => new { grp, key = k }))) {
+        var lineUser = new blendedMeta.lineUser(kv.grp.line, kv.key.lmcomId);
+        kv.key._myLectorLmcomId = kv.grp.lectorKeys.Select(lk =>lk.lmcomId).First(id => id>0);
+        kv.key._myGroup = kv.grp;
+        res[lineUser] = kv.key;
+      }
+      return res;
+    }
+
+    //vsichni Course x Student firmy.
+    static Dictionary<long, IAlocatedKey> usersFromCompany(ICompanyData data) {
+      var res = new Dictionary<long, IAlocatedKey>();
+      foreach (var kv in data.alocKeys().Where(k => k.lmcomId > 0)) res[kv.lmcomId] = kv;
       return res;
     }
 
@@ -231,6 +244,11 @@ namespace blended {
     public IAlocatedKey[] managerKeys;
     public IVisitors[] visitorsKeys; //licencni klice visitor studentuu k blended kurzu. Vidi je SPRAVCE na home spravcovske konzole. Visitors se napocitaji do skore, jsou pro navstevniky
     public IStudyGroup[] studyGroups; //studijni skupiny firmy
+    public IEnumerable<IAlocatedKey> alocKeys() {
+      foreach (var k in managerKeys) yield return k;
+      foreach (var k in visitorsKeys.SelectMany(vk => vk.visitorsKeys)) yield return k;
+      foreach (var k in studyGroups.SelectMany(g => g.alocKeys())) yield return k;
+    }
   }
   public class IVisitors {
     public LMComLib.LineIds line; //jazyk vyuky
@@ -245,6 +263,10 @@ namespace blended {
     public IAlocatedKey[] studentKeys; //licencni klice studentuu k blended kurzu. Vidi je LEKTOR na home kurzu
     public IAlocatedKey[] visitorsKeys; //licencni klice visitor studentuu k blended kurzu. Vidi je LEKTOR na home kurzu. Visitors se napocitaji do skore, jsou pro navstevniky
     public int num; //pro create school wizzard - pocet studentu
+
+    public IEnumerable<IAlocatedKey> alocKeys() {
+      return new IAlocatedKey[][] { lectorKeys, studentKeys, visitorsKeys }.SelectMany(ks => ks);
+    }
   }
   public class IAlocatedKey {
     public string keyStr;
@@ -252,5 +274,7 @@ namespace blended {
     public string email;
     public string firstName;
     public string lastName;
+    public long _myLectorLmcomId;
+    public IStudyGroup _myGroup;
   }
 }
