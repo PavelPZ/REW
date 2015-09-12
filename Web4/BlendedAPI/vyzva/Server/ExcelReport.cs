@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using LMNetLib;
 using CourseMeta;
 using blendedMeta;
+using LMComLib;
 
 namespace blended {
 
@@ -78,21 +79,25 @@ namespace blended {
         var userProducts = new blendedMeta.uProducts();
         foreach (var module in allModules) blendedMeta.MetaInfo.addModule(userProducts, module); //zatrideni existujicich dat
         foreach (var lmcId in courseUsers.Keys) blendedMeta.MetaInfo.addDummyUsers(userProducts, lmcId); //doplneni studentu, co jeste nedokoncili nic z kurzu (tj. nemaji zadna DONE data v DB)
-        using (var pck = new ExcelPackage()) {
-          ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Přehled");
-          var rows = lib.emptyAndHeader(userProducts.uproducts.Select(kv => new { kv.Key, kv.Value })).Select(t => {
-            IAlocatedKey usr = t == null ? null : allUsers[t.Key.lmcomId];
-            IAlocatedKey lector = usr == null ? null : allUsers[usr._myLectorLmcomId];
-            return new object[] {
+        var rows = lib.emptyAndHeader(userProducts.uproducts.Select(kv => new { kv.Key, kv.Value })).Select(t => {
+          IAlocatedKey usr = null; if (t != null) courseUsers.TryGetValue(t.Key, out usr);
+          IAlocatedKey lector = usr == null ? null : allUsers[usr._myLectorLmcomId];
+          return new object[] {
               t==null ? "Student" : usr.lastName + " " + usr.firstName,
-              t==null ? "Studijní skupina" : usr._myGroup.title + " (" + lector.firstName + " " + lector.lastName + ")",
+              t==null ? "Studijní skupina" : usr._myGroup.title + " (učitel " + lector.firstName + " " + lector.lastName + ")",
               t==null ? "Kurz" : t.Value.product.line.ToString(),
               t==null ? "Fáze výuky" : t.Value.etapId(),
             };
-          });
+        });
+        //export user produktu do excelu
+        //using (var pck = new ExcelPackage()) {
+        //ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Data");
+        using (var xlsx = new xlsxFile(HttpContext.Current.Server.MapPath("~/blendedapi/vyzva/server/excels/studysmall.xlsx"))) {
           //vloz do excelu
+          var ws = lib.prepareSheet(xlsx.package, "data", 0);
           var rng = lib.import(ws, rows, 0, 0);
-          return pck.GetAsByteArray();
+          ws.Names.Add(lib.dDataAll, rng);
+          return xlsx.result;//.GetAsByteArray();
         }
       }
       public static byte[] runAll(int companyId, int groupId) {
@@ -120,28 +125,54 @@ namespace blended {
         //zpracovani raw dat
         var allExercises = query2.
           Select(kd => {
-            var res = JsonConvert.DeserializeObject<userEx>(kd.ShortData);
+            var res = JsonConvert.DeserializeObject<uEx>(kd.ShortData);
             res.url = kd.Key; res.productUrl = kd.ProductUrl; res.lmcomId = kd.LMComId;
             return res;
           }).
           ToArray();
         //merge user data s product sitemap
-        var userProducts = new blendedMeta.uProducts();
-        foreach (var ex in allExercises) blendedMeta.MetaInfo.addEx(userProducts, ex); //zatrideni existujicich dat
-        foreach (var lmcId in courseUsers.Keys) blendedMeta.MetaInfo.addDummyUsers(userProducts, lmcId); //doplneni studentu, co nemaji zadna data
+        var umodules = new blendedMeta.uDoneModules();
+        foreach (var ex in allExercises) blendedMeta.MetaInfo.addEx(umodules, ex); //zatrideni existujicich dat
+        //foreach (var lmcId in courseUsers.Keys) blendedMeta.MetaInfo.addDummyUsers(userProducts, lmcId); //doplneni studentu, co nemaji zadna data
+        var allUsers = usersFromCompany(data);
 
-        using (var pck = new ExcelPackage()) {
-          return pck.GetAsByteArray();
+        var sourceData = umodules.umodules.Values.ToArray();
+        var rows = lib.emptyAndHeader(sourceData).Select(t => {
+          IAlocatedKey usr = null; if (t != null) courseUsers.TryGetValue(new lineUser(t.module.product.line, t.lmcomId), out usr);
+          IAlocatedKey lector = usr == null ? null : allUsers[usr._myLectorLmcomId];
+          int lev = t == null ? 0 : (t.module is pretestItem ? ((pretestItem)t.module).lev : t.module.level.lev);
+          return new object[] {
+              t==null ? "Student" : usr.lastName + " " + usr.firstName,
+              t==null ? "Studijní skupina" : usr._myGroup.title + " (učitel " + lector.firstName + " " + lector.lastName + ")",
+              t==null ? "Kurz" : t.module.product.line.ToString(),
+              t==null ? "Úroveň" : lev.ToString(),
+              t==null ? "Lekce" : t.module.data.title,
+              t==null ? (object)"maxScore" : t.ms,//new lib.formatedValue(Math.Round(t.ms==0 ? -1 : (decimal)t.s / t.ms, 2), lib.cellFormat.percent),
+              t==null ? (object)"score" : t.s,
+              t==null ? (Object)"Doba výuky" : new lib.formatedValue(t.elapsed / secPerDay, lib.cellFormat.time),
+              t==null ? (Object)"Nahrávky" : new lib.formatedValue(t.sRec / secPerDay, lib.cellFormat.time),
+              t==null ? (Object)"Přehrání nahrávek" : new lib.formatedValue(t.sPRec / secPerDay, lib.cellFormat.time),
+              t==null ? (Object)"Přehrání zvuku" : new lib.formatedValue(t.sPlay / secPerDay, lib.cellFormat.time),
+            };
+        }).ToArray();
+        //vloz do excelu
+        //ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Data");
+        using (var xlsx = new xlsxFile(HttpContext.Current.Server.MapPath("~/blendedapi/vyzva/server/excels/studyall.xlsx"))) {
+          var ws = lib.prepareSheet(xlsx.package, "data", 0);
+          var rng = lib.import(ws, rows, 0, 0);
+          ws.Names.Add(lib.dDataAll, rng);
+          return xlsx.result; // pck.GetAsByteArray();
         }
       }
     }
+    const int secPerDay = 60 * 60 * 24;
 
     //vsichni Course x Student firmy.
     static Dictionary<blendedMeta.lineUser, IAlocatedKey> studentsFromCompany(IEnumerable<IStudyGroup> groups) {
       var res = new Dictionary<lineUser, IAlocatedKey>(new blendedMeta.lineUserEqualityComparer());
       foreach (var kv in groups.SelectMany(grp => grp.studentKeys.Where(k => k.lmcomId > 0).Select(k => new { grp, key = k }))) {
         var lineUser = new blendedMeta.lineUser(kv.grp.line, kv.key.lmcomId);
-        kv.key._myLectorLmcomId = kv.grp.lectorKeys.Select(lk =>lk.lmcomId).First(id => id>0);
+        kv.key._myLectorLmcomId = kv.grp.lectorKeys.Select(lk => lk.lmcomId).First(id => id > 0);
         kv.key._myGroup = kv.grp;
         res[lineUser] = kv.key;
       }

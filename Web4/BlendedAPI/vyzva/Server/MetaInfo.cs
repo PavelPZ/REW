@@ -48,31 +48,37 @@ namespace blendedMeta {
       if (uless != null) return;  upart.ulessons[lesson.idx] = uless = new uModule(lesson); uless.copyFrom(umodule);
     }
 
-    public static void addEx(uProducts uproducts, userEx uex) {
+    public static void addEx(uDoneModules modules, uEx uex) {
       ex ex = exercises[uex.url];
-      var uprod = adjustProduct(uproducts, ex.product, uex.lmcomId);
-
-      if (ex.pretest != null) {
-        if (uprod.upretest == null) uprod.upretest = new uPretest() { pretest = ex.pretest };
-        uprod.upretest.addEx(uex);
-        return;
-      }
-      if (ex.startTest != null) {
-        if (uprod.ustartTest == null) uprod.ustartTest = new uModule(ex.startTest);
-        uprod.ustartTest.addEx(uex);
-        return;
-      }
-      uPart upart = uprod.uparts[ex.part.number];
-      if (upart == null) uprod.uparts[ex.part.number] = upart = new uPart() { part = ex.part };
-      if (ex.test != null) {
-        if (upart.utest == null) upart.utest = new uModule(ex.test);
-        upart.utest.addEx(uex);
-        return;
-      }
-      uModule uless = upart.ulessons[ex.lesson.idx];
-      if (uless == null) upart.ulessons[ex.lesson.idx] = uless = new uModule(ex.lesson);
-      uless.addEx(uex);
+      uModule umod;
+      if (!modules.umodules.TryGetValue(ex.module, out umod)) modules.umodules.Add(ex.module, umod = new uModule(ex.module));
+      umod.addEx(uex);
     }
+    //public static void addEx(uProducts uproducts, userEx uex) {
+    //  ex ex = exercises[uex.url];
+    //  var uprod = adjustProduct(uproducts, ex.product, uex.lmcomId);
+
+    //  if (ex.pretest != null) {
+    //    if (uprod.upretest == null) uprod.upretest = new uPretest() { pretest = ex.pretest };
+    //    uprod.upretest.addEx(uex);
+    //    return;
+    //  }
+    //  if (ex.startTest != null) {
+    //    if (uprod.ustartTest == null) uprod.ustartTest = new uModule(ex.startTest);
+    //    uprod.ustartTest.addEx(uex);
+    //    return;
+    //  }
+    //  uPart upart = uprod.uparts[ex.part.number];
+    //  if (upart == null) uprod.uparts[ex.part.number] = upart = new uPart() { part = ex.part };
+    //  if (ex.test != null) {
+    //    if (upart.utest == null) upart.utest = new uModule(ex.test);
+    //    upart.utest.addEx(uex);
+    //    return;
+    //  }
+    //  uModule uless = upart.ulessons[ex.lesson.idx];
+    //  if (uless == null) upart.ulessons[ex.lesson.idx] = uless = new uModule(ex.lesson);
+    //  uless.addEx(uex);
+    //}
   }
 
   public struct lineUser { public lineUser(LineIds line, long lmcomId) { this.line = line; this.lmcomId = lmcomId; } public LineIds line; public long lmcomId; }
@@ -87,6 +93,10 @@ namespace blendedMeta {
   //*************************** 
   public class uProducts {
     public Dictionary<lineUser, uProduct> uproducts = new Dictionary<lineUser, uProduct>(new lineUserEqualityComparer());
+  }
+
+  public class uDoneModules {
+    public Dictionary<module, uModule> umodules = new Dictionary<module, uModule>();
   }
 
   public class uProduct : userBase {
@@ -129,8 +139,16 @@ namespace blendedMeta {
   }
 
   public class uModule : userBaseEx {
-    public uModule(module module) { this.module = module; }
-    public void addEx(userEx ex) { }
+    public uModule(module module) {
+      this.module = module;
+      //this.count = module.data.Items.Length;
+    }
+    public void addEx(uEx ex) {
+      //if (lmcomId>0 && lmcomId!=ex.lmcomId) ;
+      lmcomId = ex.lmcomId;
+      ms += ex.ms; s += ex.s; elapsed += ex.elapsed;
+      sPlay += ex.sPlay; sRec += ex.sRec; sPRec += ex.sPRec;
+    }
     public bool done() {
       return (flag & CourseModel.CourseDataFlag.done) != 0;
     }
@@ -161,11 +179,11 @@ namespace blendedMeta {
     }
   }
 
-  public class userEx : userBase {
+  public class uEx : userBase {
   }
 
   public class userBaseEx : userBase {
-    public int count;
+    //public int count;
   }
 
   //*************************** 

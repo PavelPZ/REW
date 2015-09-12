@@ -1,119 +1,129 @@
 ﻿<div class="alert alert-success lm-top-margin" ng-if="::ts.myTask.showLectorPart">
 
-  <div class="row">
-    <div class="col-sm-6">
-      <h4>Nápověda pro <i>Učitele</i></h4>
-      Klikněte na <b>Studenti <i>Studijní skupiny</i></b> níže. To vám umožní:
-      <ul>
-        <li>přizvat <i>Studenty</i> k blended learning výuce</li>
-        <li>moci řídit výuku a prohlížet výsledky práce <i>Studentů</i></li>
-      </ul>
+    <div class="row">
+        <div class="col-sm-6">
+            <h4>Nápověda pro <i>Učitele</i></h4>
+            Klikněte na <b>Studenti <i>Studijní skupiny</i></b> níže. To vám umožní:
+            <ul>
+                <li>přizvat <i>Studenty</i> k blended learning výuce</li>
+                <li>moci řídit výuku a prohlížet výsledky práce <i>Studentů</i></li>
+            </ul>
+        </div>
+        <div class="col-sm-6">
+            <h4>Vysvětlení pojmů:</h4>
+            <b><i>Student</i></b>: student nebo žák Vaší školy<br />
+            <b><i>Studující učitel</i></b>: učitel Vaší školy, který se sám vyučuje v rámci šablony č.3.<br />
+            <b><i>Učitel</i></b>: to jste Vy, který řídí výuku <i>Studentů</i> v rámci šablony č. 4.<br />
+            <b><i>Návštěvník</i></b>: kdokoliv, kdo si chce prohlédnout kurz, aniž by jeho výuka byla řízena <i>Učitelem</i><br />
+        </div>
     </div>
-    <div class="col-sm-6">
-      <h4>Vysvětlení pojmů:</h4>
-      <b><i>Student</i></b>: student nebo žák Vaší školy<br />
-      <b><i>Studující učitel</i></b>: učitel Vaší školy, který se sám vyučuje v rámci šablony č.3.<br />
-      <b><i>Učitel</i></b>: to jste Vy, který řídí výuku <i>Studentů</i> v rámci šablony č. 4.<br />
-      <b><i>Návštěvník</i></b>: kdokoliv, kdo si chce prohlédnout kurz, aniž by jeho výuka byla řízena <i>Učitelem</i><br />
-    </div>
-  </div>
 </div>
 
 <div class="panel panel-default lm-top-margin" ng-if="::ts.myTask.showLectorPart">
-  <div class="panel-heading">
-    <h4>Mnou spravované <i>Studijní skupiny</i></h4>
-  </div>
-  <div class="list-group">
-    <a href="#" class="list-group-item" ng-repeat="group in ts.myTask.lectorGroups" ng-click="ts.gotoLector(group.groupId)">
-      <div class="row">
-        <div class="col-sm-10">
-          <h4><span class="flag-small" style="vertical-align:top" ng-class="group.line | lineIdsFlag"></span> {{::group.title}}</h4>
-        </div>
-        <div class="col-sm-2">
-          <div class="btn btn-success pull-right">Studenti <i>Studijní skupiny</i> <i class="fa fa-play"></i></div>
-        </div>
-      </div>
-    </a>
-  </div>
+    <div class="panel-heading">
+        <h4>Mnou spravované <i>Studijní skupiny</i></h4>
+    </div>
+    <div class="list-group">
+        <a href="#" class="list-group-item" ng-repeat="group in ts.myTask.lectorGroups" ng-click="ts.gotoLector(group.groupId)">
+            <div class="row">
+                <div class="col-sm-10">
+                    <h4><span class="flag-small" style="vertical-align:top" ng-class="group.line | lineIdsFlag"></span> {{::group.title}}</h4>
+                </div>
+                <div class="col-sm-2">
+                    <div class="btn btn-success pull-right">Studenti <i>Studijní skupiny</i> <i class="fa fa-play"></i></div>
+                </div>
+            </div>
+        </a>
+    </div>
 </div>
 
 <div ng-click="::ts.debugClearProduct()">del</div>
 
 <div class="alert alert-success lm-bottom-margin" ng-if="::ts.ctx.onbehalfof">
-  TODO Popis<br />
-  - nyní vidím výsledky studenta<br />
-  - jeho jméno a příjmení je vpravo nahoře<br />
-  - návrat pod "svůj" účet je vlevo nahoře<br />
-  - mám zde možnost nejenom prohlížet ale i hodnotit Kontrolní testy.
+    V tomto okně si můžete prohlédnout výsledky daného studenta.<br />
+    Vpravo nahoře vidíte pro orientaci studentovo jméno a příjmení.<br />
+    Vlevo nahoře se můžete vrátit zpět na svou stránku pro učitele.<br />
+    Vyberte si libovolnou lekci nebo test a klikněte na tlačítko Výsledky.<br />
+    <ul>
+        <li>můžete si prohlédnout studentovo skóre v jednotlivých cvičeních</li>
+        <li>můžete se podívat jaké student udělal v jednotlivých cvičeních chyby</li>
+        <li>můžete si poslechnout všechny studentovy nahrávky</li>
+        <li>u Kontrolních testů byste měli nahrávky daného studenta vyhodnotit</li>
+    </ul>
+    <!--TODO Popis
+    - nyní vidím výsledky studenta<br />
+    - jeho jméno a příjmení je vpravo nahoře<br />
+    - návrat pod "svůj" účet je vlevo nahoře<br />
+    - mám zde možnost nejenom prohlížet ale i hodnotit Kontrolní testy.-->
 </div>
 
-<div class="panel panel-primary lm-top-margin home-course" ng-if="::ts.myTask.showStudentPart" collapsablemanager="homecollapsable" >
-  <div class="panel-heading" ng-click="homecollapsable.collapseToogle()">
-    <h3>
-      <span ng-if="ts.lessons[0].status<=1">Rozřazovací test</span>
-      <b ng-if="ts.lessons[0].status>1">Kurz úrovně {{::ts.pretestLevel | levelText}}</b>
-    </h3>
-    <div ng-if="ts.lessons[0].status>1" class="more fa fa-bars fa-lg"></div>
-  </div>
-  <div collapse="homecollapsable.isCollapsed" class="position-relative home-more-panel">
-    <div class="clearfix"></div>
-    <div class="close-panel fa fa-times" ng-click="homecollapsable.collapseToogle()"></div>
-    <h4>{{::ts.title}}, podrobné informace:</h4>
-    <div vyzva$common$summary user="ts.user"></div>
-  </div>
-  <ul class="study-plan list-group">
-    <li class="list-group-item" ng-repeat="lesson in ::ts.lessons"
-        ng-style="::{cursor: lesson.rightButtonType && !lesson.cannotRun ? 'pointer' : 'default'}"
-        ng-click="::lesson.rightButtonType && ts.navigateLesson(lesson)"
-        ng-class="::lesson | vyzva$home$nodeclass">
-      <div ng-if="::!lesson.lessonType" ng-include="'vyzva$home$pretest.html'"></div>
-      <div ng-if="::lesson.lessonType" ng-include="'vyzva$home$lesson.html'"></div>
-    </li>
-  </ul>
+<div class="panel panel-primary lm-top-margin home-course" ng-if="::ts.myTask.showStudentPart" collapsablemanager="homecollapsable">
+    <div class="panel-heading" ng-click="homecollapsable.collapseToogle()">
+        <h3>
+            <span ng-if="ts.lessons[0].status<=1">Rozřazovací test</span>
+            <b ng-if="ts.lessons[0].status>1">Kurz úrovně {{::ts.pretestLevel | levelText}}</b>
+        </h3>
+        <div ng-if="ts.lessons[0].status>1" class="more fa fa-bars fa-lg"></div>
+    </div>
+    <div collapse="homecollapsable.isCollapsed" class="position-relative home-more-panel">
+        <div class="clearfix"></div>
+        <div class="close-panel fa fa-times" ng-click="homecollapsable.collapseToogle()"></div>
+        <h4>{{::ts.title}}, podrobné informace:</h4>
+        <div vyzva$common$summary user="ts.user"></div>
+    </div>
+    <ul class="study-plan list-group">
+        <li class="list-group-item" ng-repeat="lesson in ::ts.lessons"
+            ng-style="::{cursor: lesson.rightButtonType && !lesson.cannotRun ? 'pointer' : 'default'}"
+            ng-click="::lesson.rightButtonType && ts.navigateLesson(lesson)"
+            ng-class="::lesson | vyzva$home$nodeclass">
+            <div ng-if="::!lesson.lessonType" ng-include="'vyzva$home$pretest.html'"></div>
+            <div ng-if="::lesson.lessonType" ng-include="'vyzva$home$lesson.html'"></div>
+        </li>
+    </ul>
 </div>
 
 <script type="text/ng-template" id="vyzva$home$lesson.html">
-  <div ng-include="'vyzva$home$leftmark.html'"></div>
-  <button class="btn btn-info right-mark" ng-if="::lesson.rightButtonType==2">Výsledky <i class="fa fa-eye"></i></button>
-  <button class="btn right-mark"
-          ng-class="::{'btn-success': !lesson.active, 'btn-succes-info': lesson.active}"
-          ng-if="::lesson.rightButtonType==1"
-          ng-disabled="::lesson.cannotRun">
-    Spustit <i class="fa fa-play"></i>
-  </button>
-  <h4>
-    <span ng-if="::lesson.lessonType==1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    <span ng-if="::lesson.lessonType==2"><i class="fa fa-line-chart"></i></span>
-    {{::lesson.node.title}}
-  </h4>
+    <div ng-include="'vyzva$home$leftmark.html'"></div>
+    <button class="btn btn-info right-mark" ng-if="::lesson.rightButtonType==2">Výsledky <i class="fa fa-eye"></i></button>
+    <button class="btn right-mark"
+            ng-class="::{'btn-success': !lesson.active, 'btn-succes-info': lesson.active}"
+            ng-if="::lesson.rightButtonType==1"
+            ng-disabled="::lesson.cannotRun">
+        Spustit <i class="fa fa-play"></i>
+    </button>
+    <h4>
+        <span ng-if="::lesson.lessonType==1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <span ng-if="::lesson.lessonType==2"><i class="fa fa-line-chart"></i></span>
+        {{::lesson.node.title}}
+    </h4>
 </script>
 
 <script type="text/ng-template" id="vyzva$home$pretest.html">
-  <div ng-include="'vyzva$home$leftmark.html'"></div>
-  <div data-ng-if="::lesson.status<2">
-    <p>
-      <button class="btn btn-success btn-lg" ng-disabled="::lesson.cannotRun" data-ng-click="::ts.navigateLesson(lesson)">
-        Rozřazovací test
-      </button>
-    </p>
-    Rozřazovací test určí vaši jazykovou úroveň (A1, A2, B1 nebo B2), na základě které se zvolí odpovídající pokračování vašeho kurzu.
-  </div>
-  <div data-ng-if="::lesson.status>=2">
-    <h4><i class="fa fa-line-chart"></i> Rozřazovací test dokončen: vaše jazyková úroveň je {{::ts.pretestLevel | levelText}}</h4>
-    <div class="btn-group right-mark">
-      <button type="button" ng-repeat="level in ::ts.pretestLevels" class="btn btn-info btn-sm" ng-click="::ts.navigatePretestLevel(level)">{{level | levelText}} <i class="fa fa-eye"></i></button>
+    <div ng-include="'vyzva$home$leftmark.html'"></div>
+    <div data-ng-if="::lesson.status<2">
+        <p>
+            <button class="btn btn-success btn-lg" ng-disabled="::lesson.cannotRun" data-ng-click="::ts.navigateLesson(lesson)">
+                Rozřazovací test
+            </button>
+        </p>
+        Rozřazovací test určí vaši jazykovou úroveň (A1, A2, B1 nebo B2), na základě které se zvolí odpovídající pokračování vašeho kurzu.
     </div>
-  </div>
+    <div data-ng-if="::lesson.status>=2">
+        <h4><i class="fa fa-line-chart"></i> Rozřazovací test dokončen: vaše jazyková úroveň je {{::ts.pretestLevel | levelText}}</h4>
+        <div class="btn-group right-mark">
+            <button type="button" ng-repeat="level in ::ts.pretestLevels" class="btn btn-info btn-sm" ng-click="::ts.navigatePretestLevel(level)">{{level | levelText}} <i class="fa fa-eye"></i></button>
+        </div>
+    </div>
 </script>
 
 <script type="text/ng-template" id="vyzva$home$leftmark.html">
-  <div ng-if="::lesson.leftMarkType==1" class="left-mark icon"><i class="fa fa-hand-o-right"></i></div>
-  <div ng-if="::lesson.leftMarkType==2" class="left-mark level">{{::ts.pretestLevel | levelText}}</div>
-  <div ng-if="::lesson.leftMarkType==4" class="left-mark icon"><i class="fa fa-question"></i></div>
-  <div ng-if="::lesson.leftMarkType==3" class="left-mark percent-mark">
-    <div class="progress-bar">
-      <span ng-style="::lesson.user.score | vyzva$exmodule$percentheight : 32" class="progress-red">{{::lesson.user.score}}%</span>
-      <span>{{::lesson.user.score}}%</span>
+    <div ng-if="::lesson.leftMarkType==1" class="left-mark icon"><i class="fa fa-hand-o-right"></i></div>
+    <div ng-if="::lesson.leftMarkType==2" class="left-mark level">{{::ts.pretestLevel | levelText}}</div>
+    <div ng-if="::lesson.leftMarkType==4" class="left-mark icon"><i class="fa fa-question"></i></div>
+    <div ng-if="::lesson.leftMarkType==3" class="left-mark percent-mark">
+        <div class="progress-bar">
+            <span ng-style="::lesson.user.score | vyzva$exmodule$percentheight : 32" class="progress-red">{{::lesson.user.score}}%</span>
+            <span>{{::lesson.user.score}}%</span>
+        </div>
     </div>
-  </div>
 </script>

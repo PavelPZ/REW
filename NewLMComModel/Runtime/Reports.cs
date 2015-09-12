@@ -520,8 +520,6 @@ namespace excelReport {
 
     public static ExcelWorksheet prepareSheet(ExcelPackage package, string name, int rowShift = 0) {
       ExcelWorksheet sheet = package.Workbook.Worksheets[name];
-      //if (sheet != null) package.Workbook.Worksheets.Delete(sheet);
-      //sheet = package.Workbook.Worksheets.Add(name);
       var dim = sheet.Dimension;
       if (dim != null && dim.Start.Row + rowShift <= dim.End.Row) sheet.Cells[dim.Start.Row + rowShift, dim.Start.Column, dim.End.Row, dim.End.Column].Clear();
       if (sheet.Names.ContainsKey(dDataAll)) sheet.Names.Remove(dDataAll);
