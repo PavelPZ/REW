@@ -2139,7 +2139,7 @@ var TreeView;
 
 var blended;
 (function (blended) {
-    blended.rootModule = angular.module('appRoot', ['ui.router', 'ngAnimate', 'ui.bootstrap']);
+    blended.rootModule = angular.module('appRoot', ['ui.router', 'ngAnimate', 'ui.bootstrap', 'ngCookies']);
     function registerOldLocator(params, name, appId, type, numOfPars, createModel, needsLogin) {
         if (needsLogin === void 0) { needsLogin = true; }
         if (_.isNumber(numOfPars))

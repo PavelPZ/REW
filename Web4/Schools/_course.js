@@ -9896,18 +9896,29 @@ var blended;
                 },
             };
         }])
-        .directive('collapsablemanager', function () { return new collapseMan(); });
+        .directive('collapsablemanager', ['$cookies', function (cookies) { return new collapseMan(cookies); }]);
     var collapseMan = (function () {
-        function collapseMan() {
+        function collapseMan(cookies) {
             this.link = function (scope, el, attrs) {
                 var id = attrs['collapsablemanager'];
+                var collapsed = true;
+                if (id.charAt(0) == '+') {
+                    id = id.substr(1);
+                    collapsed = false;
+                }
+                if (id.indexOf('help') >= 0) {
+                    collapsed = cookies.get('lmcoll_' + id) == 'collapsed';
+                }
                 var th = {
-                    isCollapsed: true,
+                    isCollapsed: collapsed,
                     collapseToogle: function () {
                         var act = (scope[id]);
                         if (act.isCollapsed)
                             _.each(collapseMan.allCollapsable, function (man, id) { return man.isCollapsed = true; });
                         act.isCollapsed = !act.isCollapsed;
+                        var now = new Date();
+                        var exp = new Date(now.getFullYear(), now.getMonth() + 6, now.getDate());
+                        cookies.put('lmcoll_' + id, act.isCollapsed ? 'collapsed' : 'expanded', { 'expires': exp });
                     },
                 };
                 scope[id] = collapseMan.allCollapsable[id] = th;
@@ -10832,9 +10843,10 @@ var vyzva;
     //musi souhlasit s D:\LMCom\REW\Web4\BlendedAPI\vyzva\Server\ExcelReport.cs
     (function (reportType) {
         reportType[reportType["managerKeys"] = 0] = "managerKeys";
-        reportType[reportType["managerStudy"] = 1] = "managerStudy";
-        reportType[reportType["lectorKeys"] = 2] = "lectorKeys";
+        reportType[reportType["lectorKeys"] = 1] = "lectorKeys";
+        reportType[reportType["managerStudy"] = 2] = "managerStudy";
         reportType[reportType["lectorStudy"] = 3] = "lectorStudy";
+        reportType[reportType["finalReport"] = 4] = "finalReport";
     })(vyzva.reportType || (vyzva.reportType = {}));
     var reportType = vyzva.reportType;
     function downloadExcelReport(par) {
@@ -10870,7 +10882,7 @@ var vyzva;
             //students keys: pro kazdou line a group a pocet
             var lineGroups = _.groupBy(groups, function (g) { return g.line; });
             _.each(lineGroups, function (lineGroup, line) {
-                var lg = { line: parseInt(line), num: 3 /*3 klice pro Spravce-visitora*/ + Utils.sum(lineGroup, function (grp) { return grp.num + 6; } /*3 pro lector-visitora, 3 pro lektora*/ /*3 pro lector-visitora, 3 pro lektora*/), keys: null };
+                var lg = { line: parseInt(line), num: 3 /*3 klice pro Spravce-visitora*/ + Utils.sum(lineGroup, function (grp) { return parseInt(grp.num) + 6; } /*3 pro lector-visitora, 3 pro lektora*/ /*3 pro lector-visitora, 3 pro lektora*/), keys: null };
                 res.push(lg);
             });
             return res;
@@ -10891,7 +10903,7 @@ var vyzva;
                 });
             };
             _.each(groups, function (grp) {
-                grp.studentKeys = useKey(grp.line, grp.num);
+                grp.studentKeys = useKey(grp.line, parseInt(grp.num));
                 grp.visitorsKeys = useKey(grp.line, 3);
                 grp.lectorKeys = useKey(grp.line, 3);
             });
@@ -11004,15 +11016,15 @@ var vyzva;
         managerSchool.prototype.downloadLicenceKeys = function (managerIncludeStudents) {
             vyzva.downloadExcelReport({ type: vyzva.reportType.managerKeys, companyId: this.ctx.companyid, managerIncludeStudents: managerIncludeStudents });
         };
-        managerSchool.prototype.downloadSummary = function (isStudyAll) {
-            vyzva.downloadExcelReport({ type: vyzva.reportType.managerStudy, companyId: this.ctx.companyid, isStudyAll: isStudyAll });
+        managerSchool.prototype.downloadSummary = function () {
+            vyzva.downloadExcelReport({ type: vyzva.reportType.managerStudy, companyId: this.ctx.companyid });
         };
         managerSchool.prototype.addItem = function (line, isPattern3) {
             var item = {
                 groupId: managerSchool.groupIdCounter++,
                 title: isPattern3 ? blended.lineIdToText(line) + ' pro Studující učitele' : 'Pokročilí' + (this.groupNameCounter++).toString() + ' - 3.A (2015/2016)',
                 line: line,
-                num: isPattern3 ? 1 : 20,
+                num: isPattern3 ? '1' : '20',
                 isPattern3: isPattern3
             };
             this.groups.splice(0, 0, item);
@@ -11132,6 +11144,7 @@ var vyzva;
         exerciseViewLow.prototype.congratulationDialog = function () {
             return this.$modal.open({
                 templateUrl: 'vyzva$exercise$congratulation.html',
+                scope: this.$scope,
             }).result;
         };
         exerciseViewLow.$inject = ['$scope', '$state', '$loadedEx', '$loadedLongData', '$modal'];
@@ -11146,8 +11159,9 @@ var vyzva;
                 return;
             this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb.push({ title: 'Rozřazovací test', url: null, active: true });
-            this.tbTitle = 'Pokračovat v testu';
-            this.tbDoneTitle = 'Test dokončen';
+            this.tbTitle = 'Pokračovat v Rozřazovacím testu';
+            this.tbDoneTitle = 'Rozřazovací test dokončen';
+            this.tbCongratulation = 'Gratulujeme k dokončení Rozřazovacího testu!';
         }
         return pretestExercise;
     })(exerciseViewLow);
@@ -11162,6 +11176,7 @@ var vyzva;
             this.breadcrumb.push({ title: this.title, url: null, active: true });
             this.tbTitle = 'Pokračovat v lekci';
             this.tbDoneTitle = 'Lekce dokončena';
+            this.tbCongratulation = 'Gratulujeme k dokončení lekce!';
         }
         return lessonExercise;
     })(exerciseViewLow);
@@ -11176,6 +11191,7 @@ var vyzva;
             this.breadcrumb.push({ title: this.title, url: null, active: true });
             this.tbTitle = 'Pokračovat v testu';
             this.tbDoneTitle = 'Test dokončen';
+            this.tbCongratulation = 'Gratulujeme k dokončení testu!';
         }
         return lessonTest;
     })(exerciseViewLow);
@@ -11268,8 +11284,8 @@ var vyzva;
         lectorViewController.prototype.downloadLicenceKeys = function () {
             vyzva.downloadExcelReport({ type: vyzva.reportType.lectorKeys, companyId: this.ctx.companyid, groupId: this.lectorParent.groupId });
         };
-        lectorViewController.prototype.downloadSummary = function (isStudyAll) {
-            vyzva.downloadExcelReport({ type: vyzva.reportType.lectorStudy, companyId: this.ctx.companyid, groupId: this.lectorParent.groupId, isStudyAll: isStudyAll });
+        lectorViewController.prototype.downloadSummary = function () {
+            vyzva.downloadExcelReport({ type: vyzva.reportType.lectorStudy, companyId: this.ctx.companyid, groupId: this.lectorParent.groupId });
         };
         return lectorViewController;
     })(lectorViewBase);
@@ -11458,7 +11474,7 @@ var vyzva;
             if (!this.intranetInfo)
                 return;
             var alocatedKeyInfos = this.intranetInfo.alocatedKeyInfos;
-            this.lectorGroups = _.map(_.filter(alocatedKeyInfos, function (inf) { return inf.isLector; }), function (inf) { return inf.group; });
+            this.lectorGroups = _.uniq(_.map(_.filter(alocatedKeyInfos, function (inf) { return inf.isLector; }), function (inf) { return inf.group; }), function (it) { return it.groupId; });
             var studentGroups = _.map(_.filter(alocatedKeyInfos, function (inf) { return inf.isStudent || inf.isVisitor; }), function (inf) { return inf.group; });
             //this.studentGroup = studentGroups.length > 0 ? studentGroups[0] : null;
             this.showLectorPart = !this.ctx.onbehalfof && this.lectorGroups.length > 0;

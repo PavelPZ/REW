@@ -137,6 +137,12 @@
   //****************** TASK
   export class homeTaskController extends blended.homeTaskController {
 
+    dataNode: IBlendedCourseRepository;
+
+    lectorGroups: Array<intranet.IStudyGroup>; //skupiny, spravovane lektorem
+    showLectorPart: boolean; //jsem lektor
+    showStudentPart: boolean; //jsem student nebo vizitor
+
     constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, product: IBlendedCourseRepository, public intranetInfo: intranet.alocatedKeyRoot) {
       super($scope, $state, product);
       //constructor(state: blended.IStateService, resolves: Array<any>) {
@@ -147,7 +153,7 @@
       //this.intranetInfo = intranetInfo;
       if (!this.intranetInfo) return;
       var alocatedKeyInfos = this.intranetInfo.alocatedKeyInfos;
-      this.lectorGroups = _.map(_.filter(alocatedKeyInfos, inf => inf.isLector), inf => inf.group);
+      this.lectorGroups = _.uniq(_.map(_.filter(alocatedKeyInfos, inf => inf.isLector), inf => inf.group), it => it.groupId);
       var studentGroups = _.map(_.filter(alocatedKeyInfos, inf => inf.isStudent || inf.isVisitor), inf => inf.group);
       //this.studentGroup = studentGroups.length > 0 ? studentGroups[0] : null;
       this.showLectorPart = !this.ctx.onbehalfof && this.lectorGroups.length > 0;
@@ -155,13 +161,6 @@
     }
     static $inject = ['$scope', '$state', '$loadedProduct', '$intranetInfo'];
 
-    dataNode: IBlendedCourseRepository;
-
-    //intranet
-    //intranetInfo: intranet.IAlocatedKeyRoot;
-    lectorGroups: Array<intranet.IStudyGroup>; //skupiny, spravovane lektorem
-    showLectorPart: boolean; //jsem lektor
-    showStudentPart: boolean; //jsem student nebo vizitor
   }
 
   export interface IBlendedCourseRepository extends blended.IProductEx {

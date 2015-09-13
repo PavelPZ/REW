@@ -54,8 +54,8 @@ var vyzva;
         lectorViewController.prototype.downloadLicenceKeys = function () {
             vyzva.downloadExcelReport({ type: vyzva.reportType.lectorKeys, companyId: this.ctx.companyid, groupId: this.lectorParent.groupId });
         };
-        lectorViewController.prototype.downloadSummary = function (isStudyAll) {
-            vyzva.downloadExcelReport({ type: vyzva.reportType.lectorStudy, companyId: this.ctx.companyid, groupId: this.lectorParent.groupId, isStudyAll: isStudyAll });
+        lectorViewController.prototype.downloadSummary = function () {
+            vyzva.downloadExcelReport({ type: vyzva.reportType.lectorStudy, companyId: this.ctx.companyid, groupId: this.lectorParent.groupId });
         };
         return lectorViewController;
     })(lectorViewBase);

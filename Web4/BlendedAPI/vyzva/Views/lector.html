@@ -2,72 +2,77 @@
 
 <h2><i class="fa fa-user-times"></i> {{::ts.title}}</h2>
 
-<div class="alert alert-success lm-bottom-margin">
-  <div class="row">
-    <div class="col-sm-6">
-      <h4>Zahájení výuky (tj. rozdání <i>Licenčních klíčů</i>)</h4>
-      <ul>
-        <li>
-          Každému <i>Studentovi</i> Vaší <i>Studijní skupiny</i> dejte jeden z <i>Licenčních klíčů</i> ze seznamu níže.
-        </li>
-        <li>
-          <i>Student</i> na hlavní stránce aplikace zadá tento <i>Licenční klíč</i> tak, jako jste Vy zadal <i>Licenční klíč</i>, který Vám předal Váš správce výuky.
-        </li>
-        <li>
-          Po zadání <i>Licenčního klíče</i> <i>Studentem</i>:<br />
-          - bude student moci spustit kurz<br />
-          - údaje o studentovi (Jméno, Příjmení, EMail) se objeví v tabulce níže.
-        </li>
-        <li>
-          Jak Vy, tak kdokoliv z Vaší školy si může vyzkoušet kurz. K tomu jsou určeny <i>Licenční klíče</i> pro <i>Návštěvníky</i>.
-          Tyto klíče můžete poskytnout komukoliv - výuka ale v tomto případě nebude řízena <i>Učitelem</i>.
-        </li>
-      </ul>
-    </div>
-    <div class="col-sm-6">
-      <h4>Řízení výuky</h4>
-      U zvoleného <i>Studenta</i> klikněte na <b>Výsledky</b>. To vám umožní:
-      <ul>
-        <li>prohlížet výsledky práce <i>Studentů</i></li>
-        <li>poslouchat nahrávky <i>Studentů</i> v rámci audio-orální metody</li>
-        <li>ohodnotit kvalitu mluveného projevu <i>Studentů</i> ve vstupním, závěrečném a kontrolních testech</li>
-        <li>mít přehled o čase, který <i>Student</i> strávil poslechem nahrávek rodilých mluvčích, o množství jím nahraného zvuku apod.</li>
-      </ul>
+<div class="alert help-panel help-success lm-bottom-margin" collapsablemanager="+lectorhelp">
+  <div class="h3 help-header" ng-click="lectorhelp.collapseToogle()">
+    <div class="more fa fa-question-circle"></div>
+    Zahájení a řízení výuky
+  </div>
+  <div class="help-content" collapse="lectorhelp.isCollapsed">
+    <div class="help-close" ng-click="lectorhelp.collapseToogle()"><i class="fa fa-times"></i></div>
+    <div class="row">
+      <div class="col-sm-6">
+        <h4>Zahájení výuky (tj. rozdání <i>Licenčních klíčů</i>)</h4>
+        <ul>
+          <li>
+            Každému <i>Studentovi</i> Vaší <i>Studijní skupiny</i> dejte jeden z <i>Licenčních klíčů</i> ze seznamu níže.
+          </li>
+          <li>
+            <i>Student</i> na hlavní stránce aplikace zadá tento <i>Licenční klíč</i> tak, jako jste Vy zadal <i>Licenční klíč</i>, který Vám předal Váš správce výuky.
+          </li>
+          <li>
+            Po zadání <i>Licenčního klíče</i> <i>Studentem</i>:<br />
+            - bude student moci spustit kurz<br />
+            - údaje o studentovi (Jméno, Příjmení, EMail) se objeví v tabulce níže.
+          </li>
+          <li>
+            Jak Vy, tak kdokoliv z Vaší školy si může vyzkoušet kurz. K tomu jsou určeny <i>Licenční klíče</i> pro <i>Hosty</i>.
+            Tyto klíče můžete poskytnout komukoliv - výuka ale v tomto případě nebude řízena <i>Učitelem</i>.
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <h4>Řízení výuky</h4>
+        U zvoleného <i>Studenta</i> klikněte na <b>Výsledky</b>. To vám umožní:
+        <ul>
+          <li>prohlížet výsledky práce <i>Studentů</i></li>
+          <li>poslouchat nahrávky <i>Studentů</i> v rámci audio-orální metody</li>
+          <li>ohodnotit kvalitu mluveného projevu <i>Studentů</i> ve vstupním, závěrečném a kontrolních testech</li>
+          <li>mít přehled o čase, který <i>Student</i> strávil poslechem nahrávek rodilých mluvčích, o množství jím nahraného zvuku apod.</li>
+        </ul>
+        <h4 class="lm-top-margin">Exporty do excelu</h4>
+        <p>
+          Využijte exportů do Excelu k získání mnoha zajímavých údajů o výuce<br />
+          <b>Poznámka: </b> exporty mají význam pouze tehdy, pokud již ve Vaší <i>Studijní skupině</i> započala výuka.
+        </p>
+      </div>
     </div>
   </div>
 </div>
 
-
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h4>Exporty do excelu</h4>
+<div class="alert help-panel help-default export-table" collapsablemanager="+lectorhelpreports">
+  <div class="h3 help-header" ng-click="lectorhelpreports.collapseToogle()">
+    <div class="more fa fa-bars"></div>
+    Exporty do excelu
   </div>
-  <table class="table table-bordered export-table">
-    <tr>
-      <td>
+  <div class="help-content" collapse="lectorhelpreports.isCollapsed">
+    <div class="help-close" ng-click="lectorhelpreports.collapseToogle()"><i class="fa fa-times"></i></div>
+    <div class="row">
+      <div class="col-sm-6">
         <div class="btn btn-success btn-lg" ng-click="::ts.downloadLicenceKeys()"><i class="fa fa-file-excel-o"></i> Stáhnout Seznam studentů do Excelu</div><br />
         Tento export obsahuje data, totožná s obsahem této stránky. Využijte jej pro snažší rozdání <i>Licenčních klíčů</i> studentům.
-      </td>
-      <td>
-        &nbsp;
-      </td>
-    <tr>
-      <td>
-        <div class="btn btn-success btn-lg" ng-click="::ts.downloadSummary(true)"><i class="fa fa-file-excel-o"></i> Průběžné výsledky studia</div><br />
-        Extrémně detailní přehled o veškeré výuce a to až do takových detailů jako je:
+      </div>
+      <div class="col-sm-6">
+        <div class="btn btn-success btn-lg" ng-click="::ts.downloadSummary()"><i class="fa fa-file-excel-o"></i> Průběžné výsledky studia</div><br />
+        Přehledy o výuce a to až do takových detailů jako je:
         <ul>
-          <li>kolik vteřin zvuku student nahrál v rámci audio-orální metody</li>
+          <li>kolik vteřin zvuku který student nahrál v rámci audio-orální metody</li>
           <li>čas, strávený studentem při poslechu nahrávek rodilých mluvčích</li>
           <li>skore, dosažené ve všech cvičeních všech testů a lekcí</li>
           <li>pokrok ve studiu ...a mnoho dalších údajů]</li>
         </ul>
-      </td>
-      <td>
-        <div class="btn btn-success btn-lg" ng-click="::ts.downloadSummary(false)"><i class="fa fa-file-excel-o"></i> Přehled o studiu</div><br />
-        Část údajů z detailního přehledu k získání průběžného přehledu o výuce.
-      </td>
-    </tr>
-  </table>
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -95,7 +100,7 @@
 </script>
 
 <script type="text/ng-template" id="vyzva$lector$visitors.html">
-  <h3 class="primary">Seznam návštěvníků</h3>
+  <h3 class="primary">Seznam hostů</h3>
   <table class="table table-bordered table-striped">
     <thead>
       <tr class="active">

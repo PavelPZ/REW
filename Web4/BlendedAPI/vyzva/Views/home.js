@@ -155,7 +155,7 @@ var vyzva;
             if (!this.intranetInfo)
                 return;
             var alocatedKeyInfos = this.intranetInfo.alocatedKeyInfos;
-            this.lectorGroups = _.map(_.filter(alocatedKeyInfos, function (inf) { return inf.isLector; }), function (inf) { return inf.group; });
+            this.lectorGroups = _.uniq(_.map(_.filter(alocatedKeyInfos, function (inf) { return inf.isLector; }), function (inf) { return inf.group; }), function (it) { return it.groupId; });
             var studentGroups = _.map(_.filter(alocatedKeyInfos, function (inf) { return inf.isStudent || inf.isVisitor; }), function (inf) { return inf.group; });
             //this.studentGroup = studentGroups.length > 0 ? studentGroups[0] : null;
             this.showLectorPart = !this.ctx.onbehalfof && this.lectorGroups.length > 0;

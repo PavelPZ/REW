@@ -30,6 +30,7 @@ var vyzva;
         exerciseViewLow.prototype.congratulationDialog = function () {
             return this.$modal.open({
                 templateUrl: 'vyzva$exercise$congratulation.html',
+                scope: this.$scope,
             }).result;
         };
         exerciseViewLow.$inject = ['$scope', '$state', '$loadedEx', '$loadedLongData', '$modal'];
@@ -44,8 +45,9 @@ var vyzva;
                 return;
             this.breadcrumb = vyzva.breadcrumbBase(this);
             this.breadcrumb.push({ title: 'Rozřazovací test', url: null, active: true });
-            this.tbTitle = 'Pokračovat v testu';
-            this.tbDoneTitle = 'Test dokončen';
+            this.tbTitle = 'Pokračovat v Rozřazovacím testu';
+            this.tbDoneTitle = 'Rozřazovací test dokončen';
+            this.tbCongratulation = 'Gratulujeme k dokončení Rozřazovacího testu!';
         }
         return pretestExercise;
     })(exerciseViewLow);
@@ -60,6 +62,7 @@ var vyzva;
             this.breadcrumb.push({ title: this.title, url: null, active: true });
             this.tbTitle = 'Pokračovat v lekci';
             this.tbDoneTitle = 'Lekce dokončena';
+            this.tbCongratulation = 'Gratulujeme k dokončení lekce!';
         }
         return lessonExercise;
     })(exerciseViewLow);
@@ -74,6 +77,7 @@ var vyzva;
             this.breadcrumb.push({ title: this.title, url: null, active: true });
             this.tbTitle = 'Pokračovat v testu';
             this.tbDoneTitle = 'Test dokončen';
+            this.tbCongratulation = 'Gratulujeme k dokončení testu!';
         }
         return lessonTest;
     })(exerciseViewLow);

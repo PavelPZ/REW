@@ -53,8 +53,8 @@
     downloadLicenceKeys() {
       downloadExcelReport({ type: reportType.lectorKeys, companyId: this.ctx.companyid, groupId: this.lectorParent.groupId });
     }
-    downloadSummary(isStudyAll: boolean) {
-      downloadExcelReport({ type: reportType.lectorStudy, companyId: this.ctx.companyid, groupId: this.lectorParent.groupId, isStudyAll: isStudyAll });
+    downloadSummary() {
+      downloadExcelReport({ type: reportType.lectorStudy, companyId: this.ctx.companyid, groupId: this.lectorParent.groupId });
     }
 
   }

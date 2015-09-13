@@ -40,24 +40,34 @@
         },
       }
     }])
-    .directive('collapsablemanager', () => new collapseMan())
+    .directive('collapsablemanager', ['$cookies', (cookies: angular.cookies.ICookiesService) => new collapseMan(cookies)])
   ;
 
 
   export class collapseMan {
-    link: (scope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes) => void = (scope, el, attrs) => {
-      var id = attrs['collapsablemanager'];
-      var th: ICollapseMan = {
-        isCollapsed: true,
-        collapseToogle: () => {
-          var act = <ICollapseMan>(scope[id]);
-          if (act.isCollapsed) _.each(collapseMan.allCollapsable, (man, id) => man.isCollapsed = true);
-          act.isCollapsed = !act.isCollapsed;
-        },
-      }; 
-      scope[id] = collapseMan.allCollapsable[id] = th;
-      scope.$on('$destroy', () => delete collapseMan.allCollapsable[id]);
-    };
+    constructor(cookies: angular.cookies.ICookiesService) {
+      this.link = (scope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
+        var id: string = attrs['collapsablemanager'];
+        var collapsed = true;
+        if (id.charAt(0) == '+') { id = id.substr(1); collapsed = false; }
+        if (id.indexOf('help') >= 0) {
+          collapsed = cookies.get('lmcoll_' + id)=='collapsed';
+        }
+        var th: ICollapseMan = {
+          isCollapsed: collapsed,
+          collapseToogle: () => {
+            var act = <ICollapseMan>(scope[id]);
+            if (act.isCollapsed) _.each(collapseMan.allCollapsable, (man, id) => man.isCollapsed = true);
+            act.isCollapsed = !act.isCollapsed;
+            var now = new Date(); var exp = new Date(now.getFullYear(), now.getMonth() + 6, now.getDate());
+            cookies.put('lmcoll_' + id, act.isCollapsed ? 'collapsed' : 'expanded', { 'expires': exp });
+          },
+        };
+        scope[id] = collapseMan.allCollapsable[id] = th;
+        scope.$on('$destroy', () => delete collapseMan.allCollapsable[id]);
+      };
+    }
+    link;
     static allCollapsable: { [id: string]: ICollapseMan; } = {};
   }
   interface ICollapseMan {

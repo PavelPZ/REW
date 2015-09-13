@@ -1,26 +1,31 @@
 ﻿<a href="#" ng-click="ts.debugDeletCompany()">del</a>
 <div class="wizzard">
   <div ng-if="ts.wizzardStep<2">
-    <div class="alert alert-success" data-ng-if="ts.wizzardStep==0">
-      <div class="row">
-        <div class="col-sm-6">
-          <h4>Krok číslo 1: založení <i>Studijních skupin</i></h4>
-          Postupně přidávejte <i>Studijní skupiny</i> pro Vaše <i>Studenty</i> (šablona č. 4) a <i>Studující učitele</i> (šablona č. 3). Upravte jim <i>Název studijní skupiny</i> a <i>Počet studentů</i><br />
-          Pro <i>Studující učitele</i> přidejte pouze jednu <i>Studijní skupinu</i> na kurz (například všichni učitelé, co budou studovat angličtinu, budou v jedné <i>Studijní skupině</i>).
-        </div>
-        <div class="col-sm-6">
-          <h4>Vysvětlení pojmů:</h4>
-          <b><i>Student</i></b>: student nebo žák Vaší školy<br />
-          <b><i>Studující učitel</i></b>: učitel Vaší školy, který se bude sám vyučovat v rámci šablony č.3.<br />
-          <b><i>Učitel</i></b>: učitel Vaší školy, který bude řídit výuku <i>Studentů</i> v rámci šablony č. 4. nebo lektor z LANGMaster, který bude řídit výuku studujících učitelů v rámci šablony č. 3<br />
-          <b><i>Správce</i></b>: to jste Vy, který spravujete <i>Studijní skupiny</i> a <i>Učitele</i>.<br />
-          <b><i>Návštěvník</i></b>: kdokoliv, kdo si chce prohlédnout kurz, aniž by jeho výuka byla řízena <i>Učitelem</i><br />
+    <div class="alert help-panel help-success" data-ng-if="ts.wizzardStep==0" collapsablemanager="+managerhelponstart">
+      <div class="h4 help-header" ng-click="managerhelponstart.collapseToogle()">
+        <div class="more fa fa-question-circle"></div>
+        Krok číslo 1: Založte <i>Studijní skupiny</i> a upravte jim Název a Počet studentů
+      </div>
+      <div class="help-content" collapse="managerhelponstart.isCollapsed">
+        <div class="help-close" ng-click="managerhelponstart.collapseToogle()"><i class="fa fa-times"></i></div>
+        <div class="row">
+          <div class="col-sm-6">
+            Postupně přidávejte <i>Studijní skupiny</i> pro Vaše <i>Studenty</i> (šablona č. 4) a <i>Studující učitele</i> (šablona č. 3). Upravte jim <b>Název studijní skupiny</b> a <b>Počet studentů</b><br />
+            Pro <i>Studující učitele</i> přidejte pouze jednu <i>Studijní skupinu</i> na kurz (například všichni učitelé, co budou studovat angličtinu, budou v jedné <i>Studijní skupině</i>).
+          </div>
+          <div class="col-sm-6">
+            <h4>Vysvětlení pojmů:</h4>
+            <b><i>Student</i></b>: student nebo žák Vaší školy<br />
+            <b><i>Studující učitel</i></b>: učitel Vaší školy, který se bude sám vyučovat v rámci šablony č.3.<br />
+            <b><i>Učitel</i></b>: učitel Vaší školy, který bude řídit výuku <i>Studentů</i> v rámci šablony č. 4. nebo lektor z LANGMaster, který bude řídit výuku studujících učitelů v rámci šablony č. 3<br />
+            <b><i>Správce</i></b>: to jste Vy, který spravujete <i>Studijní skupiny</i> a <i>Učitele</i>.<br />
+            <b><i>Host</i></b>: kdokoliv, kdo si chce prohlédnout kurz, aniž by jeho výuka byla řízena <i>Učitelem</i><br />
+          </div>
         </div>
       </div>
     </div>
-    <div class="alert alert-success" data-ng-if="ts.wizzardStep==1">
-      <h4>Krok číslo 2: kontrola <i>Studijních skupin</i></h4>
-      Zkontrolujte zadané údaje.
+    <div class="alert alert-success help-panel" data-ng-if="ts.wizzardStep==1">
+      <div class="h4 help-header">Krok číslo 2: kontrola založených <i>Studijních skupin</i></div>
     </div>
     <div class="clearfix"></div>
     <div data-ng-if="ts.wizzardStep<2">
@@ -56,7 +61,7 @@
             <th>Kurz</th>
             <th>Název <i>Studijní skupiny</i></th>
             <th>Šablona</th>
-            <th>Počet studentů</th>
+            <th>Počet <i>Studentů</i></th>
             <th></th>
           </tr>
         </thead>
@@ -66,7 +71,7 @@
             <td><input class="form-control" ng-model="item.title" ng-readonly="ts.wizzardStep>0 || item.isPattern3" placeholder="titulek..." /></td>
             <td ng-bind="item.isPattern3 | vyzva$managerschool$sablonaid"></td>
             <td><input class="form-control" ng-model="item.num" ng-readonly="ts.wizzardStep>0" /></td>
-            <td><button class="btn btn-sm btn-info" ng-if="ts.wizzardStep==0" ng-click="ts.removeItem($index)">X</button></td>
+            <td><button class="btn btn-sm btn-warning" ng-if="ts.wizzardStep==0" ng-click="ts.removeItem($index)"><i class="fa fa-times"></i></button></td>
           </tr>
         </tbody>
       </table>
@@ -86,70 +91,78 @@
   </div>
 
   <div data-ng-if="ts.wizzardStep==2">
-    <div class="alert alert-success" data-ng-if="ts.wizzardStep==2">
-      <h4>Rozdání <i>Licenčních klíčů</i> <i>Učitelům</i></h4>
-      <ul>
-        <li>
-          Pro každou <i>Studijní skupinu</i> máte připraveny 3 <i>Licenční klíče</i> pro <i>Učitele</i>, kteří budou v této skupině řídit výuku studentů.<br />
-          Poznámka: Každá skupina může mít až 3 <i>Učitele</i>, tj. například v případě nepřítomnosti jednoho <i>Učitele</i> může řídit výuku někdo jiný.
-        </li>
-        <li>
-          <b>Postup <i>Učitele</i>:</b> <i>Učitel</i> na hlavní stránce aplikace zadá <i>Licenční klíč</i> (který mu předáte) tak, jako jste Vy zadal <i>Licenční klíč</i>, který jsme Vám předali my.
-          Po jeho zadání bude moci řídit výuku <i>Studentů</i> ve své <i>Studijní skupině</i>.
-        </li>
-        <li>
-          <b>Vysvětlení:</b> Po použití předaného <i>Licenčního klíče</i> <i>Učitelem</i> se jeho údaje (Jméno, Příjmení, EMail) objeví v tabulkách níže podobně, jako jsou v nich nyní uvedeny Vaše údaje.
-        </li>
-      </ul>
-      <h4 class="lm-top-margin">Exporty do excelu</h4>
-      <p>
-        Využijte exportů do Excelu k získání mnoha zajímavých údajů o výuce<br />
-        <b>Poznámka: </b> exporty (mimo prvního) mají význam pouze tehdy, pokud již v nějaké <i>Studijní skupině</i> započala výuka. 
-      </p>
-      <h4 class="lm-top-margin">Další licenční klíče</h4>
-      <ul>
-        <li>
-          Jak Vy, tak kdokoliv z Vaší školy si může vyzkoušet kurz. K tomu jsou určeny <i>Licenční klíče</i> pro <i>Návštěvníky</i>.
-          Tyto klíče můžete poskytnout komukoliv - výuka ale tomto případě nebude řízena <i>Učitelem</i>.
-        </li>
-        <li>
-          Dále máte možnost určit další dva <i>Správce</i> (se stejnými pravomocemi jako máte Vy). Předejte mu jeden ze dvou zbylých <i>Licenčních klíčů</i> pro <i>Správce</i>.
-        </li>
-      </ul>
+    <div class="alert help-panel help-success" data-ng-if="ts.wizzardStep==2" collapsablemanager="+managerhelponend">
+      <div class="h4 help-header" ng-click="managerhelponend.collapseToogle()">
+        <div class="more fa fa-question-circle"></div>
+        Rozdání <i>Licenčních klíčů</i> <i>Učitelům</i>
+      </div>
+      <div class="help-content" collapse="managerhelponend.isCollapsed">
+        <div class="help-close" ng-click="managerhelponend.collapseToogle()"><i class="fa fa-times"></i></div>
+        <ul>
+          <li>
+            Pro každou <i>Studijní skupinu</i> máte připraveny 3 <i>Licenční klíče</i> pro <i>Učitele</i>, kteří budou v této skupině řídit výuku studentů.<br />
+            Poznámka: Každá skupina může mít až 3 <i>Učitele</i>, tj. například v případě nepřítomnosti jednoho <i>Učitele</i> může řídit výuku někdo jiný.
+          </li>
+          <li>
+            <b>Postup <i>Učitele</i>:</b> <i>Učitel</i> na hlavní stránce aplikace zadá <i>Licenční klíč</i> (který mu předáte) tak, jako jste Vy zadal <i>Licenční klíč</i>, který jsme Vám předali my.
+            Po jeho zadání bude moci řídit výuku <i>Studentů</i> ve své <i>Studijní skupině</i>.
+          </li>
+          <li>
+            <b>Vysvětlení:</b> Po použití předaného <i>Licenčního klíče</i> <i>Učitelem</i> se jeho údaje (Jméno, Příjmení, EMail) objeví v tabulkách níže podobně, jako jsou v nich nyní uvedeny Vaše údaje.
+          </li>
+        </ul>
+        <h4 class="lm-top-margin">Exporty do excelu</h4>
+        <p>
+          Využijte exportů do Excelu k získání mnoha zajímavých údajů o výuce<br />
+          <b>Poznámka: </b> exporty (mimo prvního) mají význam pouze tehdy, pokud již v nějaké <i>Studijní skupině</i> započala výuka.
+        </p>
+        <h4 class="lm-top-margin">Další licenční klíče</h4>
+        <ul>
+          <li>
+            Jak Vy, tak kdokoliv z Vaší školy si může vyzkoušet kurz. K tomu jsou určeny <i>Licenční klíče</i> pro <i>Hosty</i>.
+            Tyto klíče můžete poskytnout komukoliv - výuka ale tomto případě nebude řízena <i>Učitelem</i>.
+          </li>
+          <li>
+            Dále máte možnost určit další dva <i>Správce</i> (se stejnými pravomocemi jako máte Vy). Předejte mu jeden ze dvou zbylých <i>Licenčních klíčů</i> pro <i>Správce</i>.
+          </li>
+        </ul>
+      </div>
     </div>
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4>Exporty do excelu</h4>
+    <div class="alert help-panel help-default export-table" collapsablemanager="+managerhelpreports">
+      <div class="h4 help-header" ng-click="managerhelpreports.collapseToogle()">
+        <div class="more fa fa-bars"></div>
+        Exporty do excelu
       </div>
-      <table class="table table-bordered export-table">
-        <tr>
-          <td>
+      <div class="help-content" collapse="managerhelpreports.isCollapsed">
+        <div class="help-close" ng-click="managerhelpreports.collapseToogle()"><i class="fa fa-times"></i></div>
+        <div class="row">
+          <div class="col-sm-6">
             <div class="btn btn-success btn-lg" ng-click="::ts.downloadLicenceKeys(false)"><i class="fa fa-file-excel-o"></i> <i>Studijní skupiny</i></div><br />
             Tento export obsahuje data, totožná s obsahem této stránky. Využijte jej pro snažší rozdání <i>Licenčních klíčů</i> učitelům.
-          </td>
-          <td>
+          </div>
+          <div class="col-sm-6">
             <div class="btn btn-success btn-lg" ng-click="::ts.downloadLicenceKeys(true)"><i class="fa fa-file-excel-o"></i> <i>Studijní skupiny</i> (včetně <i>Studentů</i>)</div><br />
             Tento export obsahuje navíc i přehled studentů všech <i>Studijních skupin</i>
-          </td>
-        </tr>
-        <tr>
-          <td>
+          </div>
+        </div>
+        <div class="row lm-top-margin">
+          <div class="col-sm-6">
             <div class="btn btn-success btn-lg" ng-click="::ts.downloadSummary(true)"><i class="fa fa-file-excel-o"></i> Průběžné výsledky studia</div><br />
-            Extrémně detailní přehled o veškeré výuce a to až do takových detailů jako je:
+            Přehledy o výuce a to až do takových detailů jako je:
             <ul>
-              <li>kolik vteřin zvuku student nahrál v rámci audio-orální metody</li>
+              <li>kolik vteřin zvuku který student nahrál v rámci audio-orální metody</li>
               <li>čas, strávený studentem při poslechu nahrávek rodilých mluvčích</li>
               <li>skore, dosažené ve všech cvičeních všech testů a lekcí</li>
               <li>pokrok ve studiu ...a mnoho dalších údajů]</li>
             </ul>
-          </td>
-          <td>
-            <div class="btn btn-success btn-lg" ng-click="::ts.downloadSummary(false)"><i class="fa fa-file-excel-o"></i> Podklady pro <i>Závěrečnou zprávu</i></div><br />
-            Část údajů z detailního přehledu, vyžadovaná Závěrečnou zprávou projektu Výzva 57. Export je možné využít i k průběžnému přehledu o výuce ve škole.
-          </td>
-        </tr>
-      </table>
+          </div>
+          <div class="col-sm-6">
+            <div class="btn btn-success btn-lg" ng-disabled="true"><i class="fa fa-file-excel-o"></i> Podklady pro <i>Závěrečnou zprávu</i></div><br />
+            Údaje, vyžadované Závěrečnou zprávou projektu Výzva 57. Export je dostupný až Závěrečném testu.
+          </div>
+        </div>
+      </div>
     </div>
 
     <div ng-repeat="grp in ::ts.company.studyGroups">
@@ -162,7 +175,7 @@
     <h4 class="primary">Další licenční klíče</h4>
     <div vyzva$managerchool$usekeys items="::ts.company.managerKeys" for="::'Správce'"></div>
     <div ng-repeat="keys in ::ts.company.visitorsKeys">
-      <div vyzva$managerchool$usekeys items="::keys.visitorsKeys" for="::'Návštěvníky (' + (keys.line | lineIdsText) + ')'"></div>
+      <div vyzva$managerchool$usekeys items="::keys.visitorsKeys" for="::'Hosty (' + (keys.line | lineIdsText) + ')'"></div>
     </div>
   </div>
 </div>

@@ -107,11 +107,11 @@ namespace blendedMeta {
     public product product;
 
     public string etapId() {
-      if (upretest == null) return "1. není rozřazovací test";
+      if (upretest == null) return "1. čeká se na rozřazovací test";
       if (ustartTest == null || !ustartTest.done()) return "2. rozřazovací test hotov";
       var actPart = uparts.LastOrDefault(p => p != null && p.done());
       if (actPart == null) return "3. vstupní test hotov";
-      return actPart.part.number == 3 ? "7. kurz hotov" : string.Format("{0}. hotova část {1}", actPart.part.number + 4, Convert.ToChar(Convert.ToInt16('A') + actPart.part.number));
+      return actPart.part.number == 3 ? "7. kurz hotov" : string.Format("{0}. hotov Studijní blok {1}", actPart.part.number + 4, Convert.ToChar(Convert.ToInt16('A') + actPart.part.number));
     }
   }
 

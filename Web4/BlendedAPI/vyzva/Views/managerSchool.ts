@@ -24,8 +24,8 @@
       downloadExcelReport({ type: reportType.managerKeys, companyId: this.ctx.companyid, managerIncludeStudents: managerIncludeStudents });
     }
 
-    downloadSummary(isStudyAll: boolean) {
-      downloadExcelReport({ type: reportType.managerStudy, companyId: this.ctx.companyid, isStudyAll: isStudyAll });
+    downloadSummary() {
+      downloadExcelReport({ type: reportType.managerStudy, companyId: this.ctx.companyid });
     }
 
     addItem(line: LMComLib.LineIds, isPattern3: boolean) {
@@ -33,7 +33,7 @@
         groupId: managerSchool.groupIdCounter++,
         title: isPattern3 ? blended.lineIdToText(line) + ' pro Studující učitele' : 'Pokročilí' + (this.groupNameCounter++).toString() + ' - 3.A (2015/2016)',
         line: line,
-        num: isPattern3 ? 1 : 20,
+        num: isPattern3 ? '1' : '20',
         isPattern3: isPattern3
       };
       this.groups.splice(0, 0, item);

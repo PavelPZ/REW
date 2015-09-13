@@ -9,5 +9,4 @@ blendedapi/vyzva/views/lector.html
 blendedapi/vyzva/views/home.html
 blendedapi/vyzva/views/exercise.html
 blendedapi/vyzva/views/_pagetemplate.html
-blendedapi\vyzva\server\excels\studysmall.xlsx
-blendedapi\vyzva\server\excels\studyall.xlsx
+blendedapi/vyzva/server/excels/studyall.xlsx

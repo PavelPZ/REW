@@ -24,7 +24,7 @@ var vyzva;
             //students keys: pro kazdou line a group a pocet
             var lineGroups = _.groupBy(groups, function (g) { return g.line; });
             _.each(lineGroups, function (lineGroup, line) {
-                var lg = { line: parseInt(line), num: 3 /*3 klice pro Spravce-visitora*/ + Utils.sum(lineGroup, function (grp) { return grp.num + 6; } /*3 pro lector-visitora, 3 pro lektora*/ /*3 pro lector-visitora, 3 pro lektora*/), keys: null };
+                var lg = { line: parseInt(line), num: 3 /*3 klice pro Spravce-visitora*/ + Utils.sum(lineGroup, function (grp) { return parseInt(grp.num) + 6; } /*3 pro lector-visitora, 3 pro lektora*/ /*3 pro lector-visitora, 3 pro lektora*/), keys: null };
                 res.push(lg);
             });
             return res;
@@ -45,7 +45,7 @@ var vyzva;
                 });
             };
             _.each(groups, function (grp) {
-                grp.studentKeys = useKey(grp.line, grp.num);
+                grp.studentKeys = useKey(grp.line, parseInt(grp.num));
                 grp.visitorsKeys = useKey(grp.line, 3);
                 grp.lectorKeys = useKey(grp.line, 3);
             });

@@ -35,6 +35,67 @@
 .bl .lm-top-margin-lg {
   margin-top: 40px;
 }
+.bl .help-panel {
+  padding: 10px;
+}
+.bl .help-panel .help-content {
+  border-top: solid 1px #bbdba1;
+  padding-top: 10px;
+  position: relative;
+}
+.bl .help-panel .help-content .help-close {
+  position: absolute;
+  top: 0px;
+  right: 2px;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  z-index: 10;
+  color: #86be57;
+}
+.bl .help-panel .help-header {
+  position: relative;
+  cursor: pointer;
+}
+.bl .help-panel .help-header.h4,
+.bl .help-panel .help-header.h3 {
+  margin: 8px 0;
+}
+.bl .help-panel .help-header .more {
+  position: absolute;
+  top: 0px;
+  right: 5px;
+  font-size: 20px;
+}
+.bl .help-success {
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3c763d;
+}
+.bl .help-success hr {
+  border-top-color: #c9e2b3;
+}
+.bl .help-success .alert-link {
+  color: #2b542c;
+}
+.bl .help-default {
+  background-color: #f5f5f5;
+  border-color: #dddddd;
+  color: #333333;
+}
+.bl .help-default hr {
+  border-top-color: #d0d0d0;
+}
+.bl .help-default .alert-link {
+  color: #1a1a1a;
+}
+.bl .help-default .help-content {
+  border-top-color: #c4c4c4;
+}
+.bl .help-default .help-content .help-close {
+  color: #919191;
+}
 .bl h3 .flag-small {
   height: 22px;
 }
@@ -105,11 +166,13 @@
 .bl .wizzard .key-table td {
   vertical-align: middle;
 }
-.bl .export-table td {
+.bl .export-table .row {
   font-size: 13px;
-  width: 50%;
 }
-.bl .export-table td .btn {
+.bl .export-table .row .col-sm-6 {
+  margin-top: 10px;
+}
+.bl .export-table .row .btn {
   margin-bottom: 5px;
 }
 .bl .topbar {

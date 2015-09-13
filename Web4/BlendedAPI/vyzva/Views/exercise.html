@@ -17,7 +17,7 @@
 </div>
 <div class="container lm-top-margin">
   <div class="instruction" ng-include="'vyzva$exercise$instruction.html'"></div>
-  <div class="ex-lector-panel" ng-if="::exService.showLectorPanel" ng-include="'vyzva$exercise$lector.html'"></div>
+  <div class="ex-lector-panel" ng-if="::ts.ctx.onbehalfof" ng-include="'vyzva$exercise$lector.html'"></div>
   <div class="new-ea lm-top-margin" data-show-exercise="" ex-service="::exService"></div>
 </div>
 
@@ -113,9 +113,7 @@
 <!--***************** MODAL DIALOGS -->
 <script type="text/ng-template" id="vyzva$exercise$congratulation.html">
   <div class="modal-header">
-    <h3 class="modal-title">Gratulujeme</h3>
-  </div>
-  <div class="modal-body">
+    <h3 class="modal-title">{{::ts.tbCongratulation}}</h3>
   </div>
   <div class="modal-footer">
     <button class="btn btn-primary" type="button" lm-enter-key="::$close()" ng-click="::$close()">OK</button>
@@ -127,6 +125,7 @@
     <h3 class="modal-title">Wrong score</h3>
   </div>
   <div class="modal-body">
+    ???
   </div>
   <div class="modal-footer">
     <button class="btn btn-primary" type="button" lm-enter-key="::$close()" ng-click="::$close()">OK</button>

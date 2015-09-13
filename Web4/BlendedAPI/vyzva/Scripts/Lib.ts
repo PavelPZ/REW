@@ -31,12 +31,12 @@
   }
 
   //musi souhlasit s D:\LMCom\REW\Web4\BlendedAPI\vyzva\Server\ExcelReport.cs
-  export enum reportType { managerKeys, managerStudy, lectorKeys, lectorStudy }
+  export enum reportType { managerKeys, lectorKeys, managerStudy, lectorStudy, finalReport }
   export interface requestPar {
     type: reportType;
     companyId: number;
     managerIncludeStudents? : boolean;
-    isStudyAll?: boolean;
+    //isStudyAll?: boolean;
     groupId?:number;
   }
 

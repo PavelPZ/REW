@@ -54,10 +54,65 @@
     margin-bottom: 30px;
   }
 
-
   .lm-top-margin-lg {
     margin-top: 40px;
   }
+
+  .help-panel {
+    padding: 10px;
+
+    .help-content {
+      border-top: solid 1px darken(@panel-success-border,10);
+      padding-top: 10px;
+      position: relative;
+
+      .help-close {
+        position: absolute;
+        top: 0px;
+        right: 2px;
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        z-index: 10;
+        color: darken(@panel-success-border,30);
+      }
+    }
+
+    .help-header {
+      position: relative;
+      cursor: pointer;
+
+      &.h4, &.h3 {
+        margin: 8px 0;
+      }
+
+      .more {
+        position: absolute;
+        top: 0px;
+        right: 5px;
+        font-size: 20px;
+      }
+    }
+  }
+
+  .help-success {
+    .alert-variant(@alert-success-bg; @alert-success-border; @alert-success-text);
+  }
+
+  .help-default {
+    .alert-variant(@panel-default-heading-bg; @panel-default-border; @panel-default-text);
+
+    .help-content {
+      border-top-color: darken(@panel-default-border,10);
+
+      .help-close {
+        color: darken(@panel-default-border,30);
+      }
+    }
+  }
+
+
 
   h3 .flag-small {
     height: 22px;
@@ -146,12 +201,16 @@
   }
 
   .export-table {
-    td {
+    .row {
+      font-size: 13px;
+
+      .col-sm-6 {
+        margin-top: 10px;
+      }
+
       .btn {
         margin-bottom: 5px;
       }
-      font-size: 13px;
-      width:50%;
     }
   }
 }

@@ -527,6 +527,15 @@ namespace excelReport {
     }
     public const string dDataAll = "all";
 
+    public static ExcelWorksheet prepareSheet2(ExcelPackage package, string name, int rowShift = 0) {
+      ExcelWorksheet sheet = package.Workbook.Worksheets[name];
+      var dim = sheet.Dimension;
+      if (dim != null && dim.Start.Row + rowShift <= dim.End.Row) sheet.Cells[dim.Start.Row + rowShift, dim.Start.Column, dim.End.Row, dim.End.Column].Clear();
+      if (sheet.Names.ContainsKey(name)) sheet.Names.Remove(name);
+      return sheet;
+    }
+
+
     public static Dictionary<int, departmentNode> readDepartment(int companyId, out departmentNode root) {
       var db = Lib.CreateContext(); root = null;
       var allDeps = db.CompanyDepartments.Where(d => d.CompanyId == companyId).ToArray();

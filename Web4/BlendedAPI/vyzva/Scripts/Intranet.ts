@@ -20,7 +20,7 @@
       lectorKeys?: Array<IAlocatedKey>; //licencni klice lektoruu k blended kurzu. Vidi je ADMIN v admin konzoli
       studentKeys?: Array<IAlocatedKey>; //licencni klice studentuu k blended kurzu. Vidi je LEKTOR na home kurzu
       visitorsKeys?: Array<IAlocatedKey>; //licencni klice visitor studentuu k blended kurzu. Vidi je LEKTOR na home kurzu. Visitors se napocitaji do skore, jsou pro navstevniky
-      num: number; //pro create school wizzard - pocet studentu
+      num: string; //pro create school wizzard - pocet studentu (string pro two way binding)
     }
     export interface IAlocatedKey {
       keyStr: string;
@@ -63,7 +63,7 @@
       //students keys: pro kazdou line a group a pocet
       var lineGroups = _.groupBy(groups, g => g.line);
       _.each(lineGroups, (lineGroup, line) => {
-        var lg: ILmAdminCreateLicenceKey = { line: parseInt(line), num: 3 /*3 klice pro Spravce-visitora*/ + Utils.sum(lineGroup, grp => grp.num + 6 /*3 pro lector-visitora, 3 pro lektora*/), keys: null };
+        var lg: ILmAdminCreateLicenceKey = { line: parseInt(line), num: 3 /*3 klice pro Spravce-visitora*/ + Utils.sum(lineGroup, grp => parseInt(grp.num) + 6 /*3 pro lector-visitora, 3 pro lektora*/), keys: null };
         res.push(lg);
       })
       return res;
@@ -80,7 +80,7 @@
         });
       };
       _.each(groups, grp => {
-        grp.studentKeys = useKey(grp.line, grp.num);
+        grp.studentKeys = useKey(grp.line, parseInt(grp.num));
         grp.visitorsKeys = useKey(grp.line, 3);
         grp.lectorKeys = useKey(grp.line, 3);
       });
