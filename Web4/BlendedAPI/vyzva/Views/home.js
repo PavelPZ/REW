@@ -146,7 +146,6 @@ var vyzva;
         function homeTaskController($scope, $state, product, intranetInfo) {
             _super.call(this, $scope, $state, product);
             this.intranetInfo = intranetInfo;
-            //constructor(state: blended.IStateService, resolves: Array<any>) {
             //  super(state, resolves);
             this.productParent = this;
             this.user = blended.getPersistWrapper(this.dataNode, this.ctx.taskid, function () { return { startDate: Utils.nowToNum(), flag: CourseModel.CourseDataFlag.blProductHome }; });

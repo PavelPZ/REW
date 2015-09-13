@@ -145,7 +145,6 @@
 
     constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, product: IBlendedCourseRepository, public intranetInfo: intranet.alocatedKeyRoot) {
       super($scope, $state, product);
-      //constructor(state: blended.IStateService, resolves: Array<any>) {
       //  super(state, resolves);
       this.productParent = this;
       this.user = blended.getPersistWrapper<IBlendedCourseUser>(this.dataNode, this.ctx.taskid, () => { return { startDate: Utils.nowToNum(), flag: CourseModel.CourseDataFlag.blProductHome }; });

@@ -263,6 +263,7 @@
     <None Include="BlendedAPI\Styles\other.less" />
     <None Include="BlendedAPI\Styles\topbar.less" />
     <Content Include="BlendedAPI\Todo.txt" />
+    <Content Include="BlendedAPI\vyzva\Views\FAQ.html" />
     <Content Include="BlendedAPI\vyzva\Views\lector.html" />
     <Content Include="BlendedAPI\vyzva\Views\managerSchool.html" />
     <Content Include="BlendedAPI\vyzva\Views\module.html" />
@@ -1375,6 +1376,7 @@
     <TypeScriptCompile Include="BlendedAPI\vyzva\Scripts\Intranet.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Scripts\Lib.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Tasks.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\FAQ.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\lector\_tabs.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\managerSchool.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\module.ts" />

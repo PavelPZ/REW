@@ -50,6 +50,7 @@ module vyzva {
     shoolManager?: state;
     langmasterManager?: state;
     lectorTask?: state;
+    faq?: state;
   }
   export var stateNames: IStateNames = {}; //taskRoot: 'root', taskCheckTest: 'checktest', taskLesson: 'lesson', taskPretest: 'pretest', taskPretestItem: 'pretestitem' };
 
@@ -121,12 +122,20 @@ module vyzva {
           },
           template: "<div data-ui-view></div>",
           childs: [
-            blended.prodStates.home = stateNames.home = new state({
+            stateNames.faq = new state({
+              name: 'faq',
+              url: "/faq",
+              //layoutSpecial:true,
+              templateUrl: pageTemplate,
+              layoutContentId: 'faq',
+              controller: faqController,
+            }),
+            blended.prodStates.home = new state({
               name: 'home',
               url: "/home",
-              controller: homeViewController,
-              layoutContentId: 'home',
               templateUrl: pageTemplate,
+              layoutContentId: 'home',
+              controller: homeViewController,
             }),
             stateNames.lector = new state({
               name: 'lector',
@@ -185,7 +194,7 @@ module vyzva {
                       controller: pretestExercise,
                       controllerAs: blended.taskContextAs.ex,
                       dataNodeUrlParName: 'Url',
-                      layoutSpecial:true,
+                      layoutSpecial: true,
                       layoutContentId: 'exercise',
                       //layoutToolbarType: 'toolbar/run',
                       ignorePageTitle: true,

@@ -52,6 +52,8 @@ var blended;
         ctx.userDataId = function () { return ctx.onbehalfof || ctx.loginid; };
         if (_.isString(ctx.onbehalfof))
             ctx.onbehalfof = parseInt((ctx.onbehalfof));
+        else if (!ctx.onbehalfof)
+            ctx.onbehalfof = '';
         if (_.isString(ctx.loginid))
             ctx.loginid = parseInt((ctx.loginid));
         if (_.isString(ctx.companyid))

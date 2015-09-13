@@ -13,12 +13,18 @@
     <div ng-include="'vyzva$common$breadcrumb.html'"></div>
     <div data-ng-include="::state.layoutContentId | vyzva$state$viewpath"></div>
   </div>
+  <hr />
+  <div class="container text-center">
+    {{::state.layoutContentId | vyzva$state$viewpath}}
+    Pokud odpověď nenaleznete na stránce <a ui-sref="pg.ajs.vyzva.faq">často kladené dotazy</a>, vaše náměty, připomínky a problémy nám <a href="">napište</a><br />
+    © 2015 LANGMaster.com
+  </div>
 </script>
 
 <script type="text/ng-template" id="vyzva$common$breadcrumb.html">
   <ol class="breadcrumb" ng-if="::!!ts.breadcrumb && ts.breadcrumb.length>0">
     <li data-ng-repeat="item in ::ts.breadcrumb" data-ng-class="::{'active': item.active}">
-      <a data-ng-if="::!item.active" data-ng-href="{{::item.url}}">{{::item.title}}</a>
+      <a data-ng-if="::!item.active" ng-href="{{::item.url}}">{{::item.title}}</a>
       <span data-ng-if="::item.active">{{::item.title}}</span>
     </li>
   </ol>

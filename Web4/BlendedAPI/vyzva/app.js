@@ -97,12 +97,20 @@ var vyzva;
                     },
                     template: "<div data-ui-view></div>",
                     childs: [
-                        blended.prodStates.home = vyzva.stateNames.home = new state({
+                        vyzva.stateNames.faq = new state({
+                            name: 'faq',
+                            url: "/faq",
+                            //layoutSpecial:true,
+                            templateUrl: pageTemplate,
+                            layoutContentId: 'faq',
+                            controller: vyzva.faqController,
+                        }),
+                        blended.prodStates.home = new state({
                             name: 'home',
                             url: "/home",
-                            controller: vyzva.homeViewController,
-                            layoutContentId: 'home',
                             templateUrl: pageTemplate,
+                            layoutContentId: 'home',
+                            controller: vyzva.homeViewController,
                         }),
                         vyzva.stateNames.lector = new state({
                             name: 'lector',

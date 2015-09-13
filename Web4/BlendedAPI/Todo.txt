@@ -1,4 +1,5 @@
-﻿testovací stránka pro nahrávání a přehrávání
+﻿feedback
+testovací stránka pro nahrávání a přehrávání
 Excel exports
 texty do potvrzovacich dialogu a do nápověd
 jak s klíči pro LM lektory šablony č. 3

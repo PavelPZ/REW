@@ -68,7 +68,7 @@
     ctx.productUrl = decodeUrl(ctx.producturl); ctx.Url = decodeUrl(ctx.url);
     ctx.pretestUrl = decodeUrl(ctx.pretesturl); ctx.moduleUrl = decodeUrl(ctx.moduleurl);
     ctx.userDataId = () => ctx.onbehalfof || ctx.loginid;
-    if (_.isString(ctx.onbehalfof)) ctx.onbehalfof = parseInt(<any>(ctx.onbehalfof));
+    if (_.isString(ctx.onbehalfof)) ctx.onbehalfof = parseInt(<any>(ctx.onbehalfof)); else if (!ctx.onbehalfof) ctx.onbehalfof = <any>'';
     if (_.isString(ctx.loginid)) ctx.loginid = parseInt(<any>(ctx.loginid));
     if (_.isString(ctx.companyid)) ctx.companyid = parseInt(<any>(ctx.companyid));
     if (_.isString(ctx.loc)) ctx.loc = parseInt(<any>(ctx.loc));
