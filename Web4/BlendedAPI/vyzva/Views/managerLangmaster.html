@@ -1,0 +1,36 @@
+﻿<div class="container">
+  <h3>Vstupní údaje o škole</h3>
+  <div>
+    <form>
+      <div class="form-group">
+        <label for="exampleInputName2">Název školy</label>
+        <input type="text" class="form-control" id="exampleInputName2" placeholder="Název školy" ng-model="ts.schoolTitle">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail2">Pořadové číslo (jsou jím odlišeny emaily uživatelů, musí být proto jednoznačné)</label>
+        <input type="text" class="form-control" id="exampleInputEmail2" placeholder="Pořadové číslo" ng-model="ts.uniqueId">
+      </div>
+      <button class="btn btn-success" ng-click="::ts.createSchool()">Vygeneruj uživatele</button>
+    </form>
+  </div>
+  <hr />
+  <h3>Vygenerovaní uživatelé</h3>
+  <p>LANGMaster login je Email (viz tabulka) a heslo='heslo'.</p>
+  <table class="table">
+    <tr>
+      <td>Email</td>
+      <td>Jméno</td>
+      <td>Příjmení</td>
+      <td>Id</td>
+      <td>Klíč</td>
+    </tr>
+    <tr ng-repeat="user in ts.allUsers">
+      <td><b>{{user.email}}</b></td>
+      <td>{{user.firstName}}</td>
+      <td>{{user.lastName}}</td>
+      <td>{{user.lmcomId}}</td>
+      <td>{{user.keyStr}}</td>
+    </tr>
+  </table>
+
+</div>

@@ -82,7 +82,7 @@ namespace blended {
         }
       }
 
-      public string lineToText(LineIds line) {
+      public static string lineToText(LineIds line) {
         switch (line) {
           case LineIds.English: return "Angličtina";
           case LineIds.German: return "Němčina";
@@ -149,7 +149,7 @@ namespace blended {
           return new object[] {
               t==null ? "_student" : usr.lastName + " " + usr.firstName,
               t==null ? "_studyGroup" : usr._myGroup.title + " (učitel " + lector.firstName + " " + lector.lastName + ")",
-              t==null ? "_course" : e.lineToText(t.Value.product.line),
+              t==null ? "_course" : exporter.lineToText(t.Value.product.line),
               t==null ? "_learnphase" : t.Value.etapId(),
             };
         });
@@ -194,7 +194,7 @@ namespace blended {
           return new object[] {
               t==null ? "_student" : usr.lastName + " " + usr.firstName,
               t==null ? "_studyGroup" : usr._myGroup.title + " (učitel " + lector.firstName + " " + lector.lastName + ")",
-              t==null ? "_course" : e.lineToText(t.module.product.line),
+              t==null ? "_course" : exporter.lineToText(t.module.product.line),
               t==null ? "_level" : e.levelToText(lev),
               t==null ? "_lesson" : t.module.order + t.module.data.title,
               t==null ? (object)"_maxScore" : t.ms,//new lib.formatedValue(Math.Round(t.ms==0 ? -1 : (decimal)t.s / t.ms, 2), lib.cellFormat.percent),
@@ -235,13 +235,13 @@ namespace blended {
           ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Licenční klíče a Učitelé");
           var firstFreeRow = 0;
           foreach (var grp in data.studyGroups) {
-            firstFreeRow = group(ws, firstFreeRow, grp.line.ToString() + ": " + grp.title, "Licenční klíče pro Učitele", grp.lectorKeys);
+            firstFreeRow = group(ws, firstFreeRow, exporter.lineToText(grp.line) + ": " + grp.title, "Licenční klíče pro Učitele", grp.lectorKeys);
             if (includeStudents) firstFreeRow = group(ws, firstFreeRow, null, "Licenční klíče pro Studenty", grp.studentKeys);
             if (includeStudents) firstFreeRow = group(ws, firstFreeRow, null, "Licenční klíče pro Návštěvníky učitele", grp.visitorsKeys);
           }
           firstFreeRow = group(ws, firstFreeRow, "Další licenční klíče", "Licenční klíče pro Správce", data.managerKeys);
           foreach (var vis in data.visitorsKeys) {
-            firstFreeRow = group(ws, firstFreeRow, "Další licenční klíče", "Licenční klíče pro Návštěvníky (" + vis.line.ToString() + ")", vis.visitorsKeys);
+            firstFreeRow = group(ws, firstFreeRow, "Další licenční klíče", "Licenční klíče pro Návštěvníky (" + exporter.lineToText(vis.line).ToString() + ")", vis.visitorsKeys);
           }
           foreach (var colIdx in Enumerable.Range(1, 4)) ws.Column(colIdx).AutoFit(); //automaticka sirka sloupce
           return pck.GetAsByteArray();
@@ -273,7 +273,7 @@ namespace blended {
         }
         //format druhy radek
         var secondLine = startRow + (title == null ? 1 : 2);
-        fmtHeader(ws.Cells[startRow + 2, 1, startRow + 2, 4].Style);
+        fmtHeader(ws.Cells[secondLine, 1, secondLine, 4].Style);
         return rng.Start.Row + rng.Rows;
       }
       static void fmtTitle(ExcelStyle st) {

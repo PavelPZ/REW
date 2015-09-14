@@ -9898,7 +9898,17 @@ var blended;
                 },
             };
         }])
-        .directive('collapsablemanager', ['$cookies', function (cookies) { return new collapseMan(cookies); }]);
+        .directive('collapsablemanager', ['$cookies', function (cookies) { return new collapseMan(cookies); }])
+        .directive('directive$toc', ['$anchorScroll', function ($anchorScroll) { return new directive$toc($anchorScroll); }]);
+    var directive$toc = (function () {
+        function directive$toc($anchorScroll) {
+            this.link = function (scope, el, attrs) {
+                scope.tocScrollTo = function (id) { return alert(id); };
+            };
+        }
+        return directive$toc;
+    })();
+    blended.directive$toc = directive$toc;
     var collapseMan = (function () {
         function collapseMan(cookies) {
             this.link = function (scope, el, attrs) {
@@ -10839,6 +10849,9 @@ var vyzva;
         appService.prototype.schoolUserInfo = function (lmcomId) {
             return this.home.intranetInfo.userInfo(lmcomId || this.controller.ctx.userDataId());
         };
+        appService.prototype.isLangmasterUser = function () {
+            return _.indexOf(['pzika@langmaster.cz', 'rjeliga@langmaster.cz', 'zzikova@langmaster.cz', 'pjanecek@langmaster.cz'], LMStatus.Cookie.EMail) >= 0;
+        };
         return appService;
     })();
     vyzva.appService = appService;
@@ -10954,11 +10967,12 @@ var vyzva;
         intranet.lmAdminCreateLicenceKeys_reponse = lmAdminCreateLicenceKeys_reponse;
         //******************* zakladni info PO SPUSTENI PRODUKTU
         //informace o licencich a klicich k spustenemu produktu
-        function enteredProductInfo(json, licenceKeysStr /*platne licencni klice k produktu*/, cookie) {
-            if (_.isEmpty(json))
+        function enteredProductInfo(companyData, licenceKeysStr /*platne licencni klice k produktu*/, cookie) {
+            if (!companyData)
                 return null;
-            var licenceKeys = licenceKeysStr.split('#');
-            var companyData = (JSON.parse(json));
+            //if (_.isEmpty(json)) return null;
+            var licenceKeys = licenceKeysStr ? licenceKeysStr.split('#') : [];
+            //var companyData = <ICompanyData>(JSON.parse(json));
             var oldJson = JSON.stringify(companyData);
             //linearizace klicu
             var alocList = [];
@@ -11013,15 +11027,88 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var vyzva;
 (function (vyzva) {
-    var managerLANGMaster = (function (_super) {
-        __extends(managerLANGMaster, _super);
-        function managerLANGMaster(state, resolves) {
-            _super.call(this, state);
-            this.enteredProduct = resolves[0];
+    var managerLangmaster = (function (_super) {
+        __extends(managerLangmaster, _super);
+        function managerLangmaster($scope, $state, intranetInfo) {
+            _super.call(this, $scope, $state);
+            this.intranetInfo = intranetInfo;
+            this.allUsers = [];
         }
-        return managerLANGMaster;
+        managerLangmaster.prototype.createSchool = function () {
+            var _this = this;
+            proxies.vyzva57services.createDemoCompanyStart(this.schoolTitle, this.uniqueId, function (newDataResult) {
+                vyzva.managerSchool.createCompany(newDataResult.companyId, managerLangmaster.groups, null, function (newComp) {
+                    proxies.vyzva57services.loadCompanyData(newDataResult.fromCompanyId, function (str) {
+                        //funkce na doplneni klicu vytvorenych na serveru (createDemoCompanyStart) do nove company
+                        var fillCompUserData = function (id, key) {
+                            var userData = _.find(newDataResult.users, function (u) { return Utils.startsWith(u.email, id + '.'); });
+                            if (!userData)
+                                return;
+                            key.keyStr = keys.toString({ licId: userData.licId, counter: userData.licCounter });
+                            key.firstName = userData.firstName;
+                            key.lastName = userData.lastName;
+                            key.email = userData.email;
+                            key.lmcomId = userData.lmcomId;
+                            return key;
+                        };
+                        //4 pouziti studenti v new Company
+                        var newUsers = [null, null, null, null];
+                        var allUsers = [];
+                        //dopln klice a osobnich udaju do new company
+                        _this.allUsers.push(fillCompUserData('spravce', newComp.managerKeys[0]));
+                        _this.allUsers.push(fillCompUserData('ucitel1', newComp.studyGroups[0].lectorKeys[0]));
+                        _this.allUsers.push(fillCompUserData('ucitel2', newComp.studyGroups[1].lectorKeys[0]));
+                        _this.allUsers.push(fillCompUserData('student1', newUsers[0] = newComp.studyGroups[0].studentKeys[0]));
+                        _this.allUsers.push(fillCompUserData('student2', newUsers[1] = newComp.studyGroups[0].studentKeys[1]));
+                        _this.allUsers.push(fillCompUserData('student3', newUsers[2] = newComp.studyGroups[1].studentKeys[0]));
+                        _this.allUsers.push(fillCompUserData('student4', newUsers[3] = newComp.studyGroups[1].studentKeys[1]));
+                        _this.$scope.$apply();
+                        //najdi 4 pouzite studenty v zdrojove company
+                        var srcComp = (JSON.parse(str));
+                        var srcUsers = _.filter(srcComp.studyGroups[0].studentKeys.slice(0).pushArray(srcComp.studyGroups[1].studentKeys.slice(0)), function (k) { return k.lmcomId > 0; });
+                        //sparovani zdrojovych a novych lmcomid kvuli kopii CourseData
+                        var srcToNewLMComIds = _.map(_.zip(srcUsers, newUsers), function (arr) {
+                            var srcKey = arr[0];
+                            if (!srcKey)
+                                return null;
+                            var newKey = arr[1];
+                            return { fromLmcomId: srcKey.lmcomId, toLmLmcomId: newKey.lmcomId };
+                        });
+                        srcToNewLMComIds = _.filter(srcToNewLMComIds, function (ids) { return !!ids; });
+                        //save nove company
+                        proxies.vyzva57services.writeCompanyData(newDataResult.companyId, JSON.stringify(newComp), function () {
+                            proxies.vyzva57services.createDemoCompanyEnd({
+                                fromCompanyId: newDataResult.fromCompanyId,
+                                toCompanyId: newDataResult.companyId,
+                                users: srcToNewLMComIds,
+                            }, function () {
+                            });
+                        });
+                    });
+                });
+            });
+        };
+        //static ids = [ "spravce", "ucitel1", "ucitel2", "student1", "student2", "student3", "student4" ];
+        //static srcCompanyId = 1;
+        managerLangmaster.groups = [
+            {
+                "groupId": 2,
+                "title": "Třída 3.A",
+                "line": LMComLib.LineIds.English,
+                "num": "20",
+                "isPattern3": false
+            },
+            {
+                "groupId": 1,
+                "title": "Třída 2.B",
+                "line": LMComLib.LineIds.English,
+                "num": "20",
+                "isPattern3": false
+            }
+        ];
+        return managerLangmaster;
     })(blended.controller);
-    vyzva.managerLANGMaster = managerLANGMaster;
+    vyzva.managerLangmaster = managerLangmaster;
 })(vyzva || (vyzva = {}));
 
 var __extends = (this && this.__extends) || function (d, b) {
@@ -11076,18 +11163,26 @@ var vyzva;
                         this.wizzardStep = 1;
                         break;
                     case 1:
-                        var req = vyzva.intranet.lmAdminCreateLicenceKeys_request(this.groups);
-                        proxies.vyzva57services.lmAdminCreateLicenceKeys(this.ctx.companyid, req, function (resp) {
-                            _this.company = vyzva.intranet.lmAdminCreateLicenceKeys_reponse(_this.groups, resp);
-                            /*pred zalozenim company nema sanci mit manager vice klicu. Ten jeden pridej mezi klice spravce*/
-                            var actualManagerKey = _this.ctx.lickeys.split('#')[0];
-                            var cook = LMStatus.Cookie;
-                            _this.company.managerKeys.push({ keyStr: actualManagerKey, email: cook.EMail, firstName: cook.FirstName, lastName: cook.LastName, lmcomId: cook.id });
-                            proxies.vyzva57services.lmAdminCreateCompany(_this.ctx.companyid, JSON.stringify(_this.company), function () {
-                                _this.wizzardStep = 2;
-                                _this.$scope.$apply();
-                            });
+                        var actualManagerKey = this.ctx.lickeys.split('#')[0];
+                        var cook = LMStatus.Cookie;
+                        var managerKey = { keyStr: actualManagerKey, email: cook.EMail, firstName: cook.FirstName, lastName: cook.LastName, lmcomId: cook.id };
+                        managerSchool.createCompany(this.ctx.companyid, this.groups, managerKey, function (comp) {
+                            _this.company = comp;
+                            _this.wizzardStep = 2;
+                            _this.$scope.$apply();
                         });
+                        //var req = intranet.lmAdminCreateLicenceKeys_request(this.groups);
+                        //proxies.vyzva57services.lmAdminCreateLicenceKeys(this.ctx.companyid, req, resp => {
+                        //  this.company = intranet.lmAdminCreateLicenceKeys_reponse(this.groups, resp);
+                        //  /*pred zalozenim company nema sanci mit manager vice klicu. Ten jeden pridej mezi klice spravce*/
+                        //  var actualManagerKey = this.ctx.lickeys.split('#')[0];
+                        //  var cook = LMStatus.Cookie;
+                        //  this.company.managerKeys.push({ keyStr: actualManagerKey, email: cook.EMail, firstName: cook.FirstName, lastName: cook.LastName, lmcomId: cook.id });
+                        //  proxies.vyzva57services.lmAdminCreateCompany(this.ctx.companyid, JSON.stringify(this.company), () => {
+                        //    this.wizzardStep = 2;
+                        //    this.$scope.$apply();
+                        //  });
+                        //});
                         break;
                 }
             else
@@ -11097,6 +11192,20 @@ var vyzva;
                         break;
                 }
             this.adjustWizzardButtons();
+        };
+        managerSchool.createCompany = function (companyId, groups, managerKey, completed) {
+            var req = vyzva.intranet.lmAdminCreateLicenceKeys_request(groups);
+            proxies.vyzva57services.lmAdminCreateLicenceKeys(companyId, req, function (resp) {
+                var comp = vyzva.intranet.lmAdminCreateLicenceKeys_reponse(groups, resp);
+                /*pred zalozenim company nema sanci mit manager vice klicu. Ten jeden pridej mezi klice spravce*/
+                //var actualManagerKey = '';
+                //var cook = LMStatus.Cookie;
+                if (managerKey)
+                    comp.managerKeys.push(managerKey);
+                proxies.vyzva57services.lmAdminCreateCompany(companyId, JSON.stringify(comp), function () {
+                    completed(comp);
+                });
+            });
         };
         managerSchool.prototype.adjustWizzardButtons = function () {
             switch (this.wizzardStep) {
@@ -11513,7 +11622,8 @@ var vyzva;
             var studentGroups = _.map(_.filter(alocatedKeyInfos, function (inf) { return inf.isStudent || inf.isVisitor; }), function (inf) { return inf.group; });
             //this.studentGroup = studentGroups.length > 0 ? studentGroups[0] : null;
             this.showLectorPart = !this.ctx.onbehalfof && this.lectorGroups.length > 0;
-            this.showStudentPart = studentGroups.length > 0;
+            //debugger;
+            this.showStudentPart = studentGroups.length > 0 /*jsem primo student*/ || !!this.ctx.onbehalfof /**/;
         }
         homeTaskController.$inject = ['$scope', '$state', '$loadedProduct', '$intranetInfo'];
         return homeTaskController;
@@ -11611,7 +11721,7 @@ var vyzva;
                     def.resolve(null);
                     return;
                 }
-                var compInfo = vyzva.intranet.enteredProductInfo(res, ctx.lickeys, LMStatus.Cookie);
+                var compInfo = vyzva.intranet.enteredProductInfo((JSON.parse(res)), ctx.lickeys, LMStatus.Cookie);
                 if (compInfo && compInfo.jsonToSave) {
                     proxies.vyzva57services.writeCompanyData(ctx.companyid, compInfo.jsonToSave, function () { return def.resolve(compInfo); });
                 }
@@ -11664,6 +11774,14 @@ var vyzva;
                         $intranetInfo: vyzva.loadIntranetInfo(),
                     },
                     childs: [
+                        vyzva.stateNames.langmasterManager = new state({
+                            name: 'langmastermanager',
+                            url: "/langmastermanager",
+                            templateUrl: pageTemplate,
+                            layoutContentId: 'managerLangmaster',
+                            layoutSpecial: true,
+                            controller: vyzva.managerLangmaster,
+                        }),
                         vyzva.stateNames.shoolManager = new state({
                             name: 'schoolmanager',
                             url: "/schoolmanager",

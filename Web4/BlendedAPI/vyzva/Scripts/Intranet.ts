@@ -97,10 +97,11 @@
 
     //******************* zakladni info PO SPUSTENI PRODUKTU
     //informace o licencich a klicich k spustenemu produktu
-    export function enteredProductInfo(json: string, licenceKeysStr /*platne licencni klice k produktu*/: string, cookie: LMStatus.LMCookie): alocatedKeyRoot {
-      if (_.isEmpty(json)) return null;
-      var licenceKeys = licenceKeysStr.split('#');
-      var companyData = <ICompanyData>(JSON.parse(json));
+    export function enteredProductInfo(companyData: ICompanyData, licenceKeysStr /*platne licencni klice k produktu*/: string, cookie: LMStatus.LMCookie): alocatedKeyRoot {
+      if (!companyData) return null;
+      //if (_.isEmpty(json)) return null;
+      var licenceKeys = licenceKeysStr ? licenceKeysStr.split('#') : [];
+      //var companyData = <ICompanyData>(JSON.parse(json));
       var oldJson = JSON.stringify(companyData);
 
       //linearizace klicu

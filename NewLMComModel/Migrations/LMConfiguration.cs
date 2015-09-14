@@ -12,7 +12,7 @@
 //Get-Migrations -ConfigurationTypeName NewData.Migrations.LMConfiguration -ConnectionStringName Container -ProjectName NewLMComModel
 */
 using LoginNs = Login;
-namespace NewData.Migrations { 
+namespace NewData.Migrations {
   using LMComLib;
   using System;
   using System.Data.Entity;
@@ -52,7 +52,8 @@ namespace NewData.Migrations {
       addAdmin(context, "pjanecek@langmaster.cz", "pj", "Petr", "Janeček");
       addAdmin(context, "zzikova@langmaster.cz", "zz", "Zdenka", "Ziková");
       addAdmin(context, "rjeliga@langmaster.cz", "rj", "Radek", "Jeliga");
-      addAdmin(context, "zikovakaca@seznam.cz", "kz", "Káča", "Ziková");
+      addAdmin(context, "zikovakaca@seznam.cz", "kz", "Káča", "ZikováK");
+      addAdmin(context, "template@langmaster.cz", "tt", "template", "template");
 
       Lib.SaveChanges(context);
       Logger.Log(@"LMConfiguration.cs.LMConfiguration.initDBData: End", true);
@@ -83,9 +84,10 @@ namespace NewData.Migrations {
         //"/skrivanek/prods/etestme-comp/italian/all/","/skrivanek/prods/etestme-comp/spanish/all/",
         //"/lm/prods/etestme/english/a1/", //"/lm/prods/etestme/english/a1_c2/"
         //Blended
-        "/lm/blcourse/schoolmanager.product/", 
+        "/lm/blcourse/schoolmanager.product/",
+        "/lm/blcourse/langmastermanager.product/",
         }.Concat(ignoreUserLic).Select(p => p.ToLower())) {
-          var compLicence = new CompanyLicence() { Company = company, Days = 100, ProductId = prodId, Created = DateTime.UtcNow };
+        var compLicence = new CompanyLicence() { Company = company, Days = 100, ProductId = prodId, Created = DateTime.UtcNow };
         db.CompanyLicences.Add(compLicence);
         var courseUser = new CourseUser() { CompanyUser = compUser, Created = DateTime.UtcNow, ProductId = prodId };
         db.CourseUsers.Add(courseUser);

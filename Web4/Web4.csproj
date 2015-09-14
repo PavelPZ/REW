@@ -265,6 +265,7 @@
     <Content Include="BlendedAPI\Todo.txt" />
     <Content Include="BlendedAPI\vyzva\Views\FAQ.html" />
     <Content Include="BlendedAPI\vyzva\Views\lector.html" />
+    <Content Include="BlendedAPI\vyzva\Views\managerLangmaster.html" />
     <Content Include="BlendedAPI\vyzva\Views\managerSchool.html" />
     <Content Include="BlendedAPI\vyzva\Views\module.html" />
     <Content Include="BlendedAPI\vyzva\Views\pretest.html" />
@@ -1378,6 +1379,7 @@
     <TypeScriptCompile Include="BlendedAPI\Scripts\Tasks.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\FAQ.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\lector\_tabs.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\managerLangmaster.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\managerSchool.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\module.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\exercise.ts" />
@@ -2465,6 +2467,7 @@
     <Compile Include="BlendedAPI\vyzva\Server\ExcelReport.cs" />
     <Compile Include="BlendedAPI\Server\Persistence.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\MetaInfo.cs" />
+    <Compile Include="BlendedAPI\vyzva\Server\PrepareDemoData.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\Vyzva57Services.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\DataModel\Company.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\DataModel\CourseData.cs" />

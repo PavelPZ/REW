@@ -156,7 +156,8 @@
       var studentGroups = _.map(_.filter(alocatedKeyInfos, inf => inf.isStudent || inf.isVisitor), inf => inf.group);
       //this.studentGroup = studentGroups.length > 0 ? studentGroups[0] : null;
       this.showLectorPart = !this.ctx.onbehalfof && this.lectorGroups.length > 0;
-      this.showStudentPart = studentGroups.length > 0;
+      //debugger;
+      this.showStudentPart = studentGroups.length > 0 /*jsem primo student*/ || !!this.ctx.onbehalfof /**/;
     }
     static $inject = ['$scope', '$state', '$loadedProduct', '$intranetInfo'];
 

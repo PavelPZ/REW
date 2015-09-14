@@ -22,7 +22,7 @@ var vyzva;
                     def.resolve(null);
                     return;
                 }
-                var compInfo = vyzva.intranet.enteredProductInfo(res, ctx.lickeys, LMStatus.Cookie);
+                var compInfo = vyzva.intranet.enteredProductInfo((JSON.parse(res)), ctx.lickeys, LMStatus.Cookie);
                 if (compInfo && compInfo.jsonToSave) {
                     proxies.vyzva57services.writeCompanyData(ctx.companyid, compInfo.jsonToSave, function () { return def.resolve(compInfo); });
                 }
@@ -75,6 +75,14 @@ var vyzva;
                         $intranetInfo: vyzva.loadIntranetInfo(),
                     },
                     childs: [
+                        vyzva.stateNames.langmasterManager = new state({
+                            name: 'langmastermanager',
+                            url: "/langmastermanager",
+                            templateUrl: pageTemplate,
+                            layoutContentId: 'managerLangmaster',
+                            layoutSpecial: true,
+                            controller: vyzva.managerLangmaster,
+                        }),
                         vyzva.stateNames.shoolManager = new state({
                             name: 'schoolmanager',
                             url: "/schoolmanager",

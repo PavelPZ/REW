@@ -1,7 +1,8 @@
-﻿<div class="alert help-panel help-success lm-top-margin" collapsablemanager="+homehelpteacher" ng-if="::ts.myTask.showLectorPart">
+﻿<div class="alert help-panel help-warning lm-top-margin" collapsablemanager="+homehelpteacher" ng-if="::ts.myTask.showLectorPart">
   <div class="h4 help-header" ng-click="homehelpteacher.collapseToogle()">
     <div class="more fa fa-question-circle"></div>
-    Řízení výuky <i>Studentů</i> ve studijní skupině
+    Nápověda k "Moje <i>Studijní skupiny</i>"
+    <!--Řízení výuky <i>Studentů</i> ve studijní skupině-->
   </div>
   <div class="help-content" collapse="homehelpteacher.isCollapsed">
     <div class="help-close" ng-click="homehelpteacher.collapseToogle()"><i class="fa fa-times"></i></div>
@@ -25,9 +26,9 @@
   </div>
 </div>
 
-<div class="panel panel-default lm-top-margin" ng-if="::ts.myTask.showLectorPart">
+<div class="panel panel-default" ng-if="::ts.myTask.showLectorPart">
   <div class="panel-heading">
-    <h4>Mnou spravované <i>Studijní skupiny</i></h4>
+    <h4>Moje <i>Studijní skupiny</i></h4>
   </div>
   <div class="list-group">
     <a href="#" class="list-group-item" ng-repeat="group in ts.myTask.lectorGroups" ng-click="ts.gotoLector(group.groupId)">
@@ -45,7 +46,7 @@
 
 <div ng-click="::ts.debugClearProduct()" ng-if="::appService.isLangmasterUser()">del</div>
 
-<div class="alert help-panel help-success" data-ng-if="::ts.ctx.onbehalfof" collapsablemanager="+homehelpstudentsresult">
+<div class="alert help-panel help-warning" data-ng-if="::ts.ctx.onbehalfof" collapsablemanager="+homehelpstudentsresult">
   <div class="h3 help-header" ng-click="homehelpstudentsresult.collapseToogle()">
     <div class="more fa fa-question-circle"></div>
     Výsledky studenta <b>{{::appService.schoolUserInfo().firstName}} {{::appService.schoolUserInfo().lastName}}</b>
@@ -81,10 +82,11 @@
   </div>
 </div>
 
-<div class="alert help-panel help-success" ng-if="::ts.myTask.showStudentPart && !ts.ctx.onbehalfof" collapsablemanager="+homehelpstudent">
-  <div class="h3 help-header" ng-click="homehelpstudent.collapseToogle()">
+<div class="alert help-panel help-warning" ng-if="::ts.myTask.showStudentPart && !ts.ctx.onbehalfof" collapsablemanager="+homehelpstudent">
+  <div class="h4 help-header" ng-click="homehelpstudent.collapseToogle()">
     <div class="more fa fa-question-circle"></div>
-    Jazyková výuka pro <b>Studenty</b> a <b>Studující učitele</b>
+    Nápověda: Průchod kurzem
+    <!--Jazyková výuka pro <b>Studenty</b> a <b>Studující učitele</b>-->
   </div>
   <div class="help-content" collapse="homehelpstudent.isCollapsed">
     <div class="help-close" ng-click="homehelpstudent.collapseToogle()"><i class="fa fa-times"></i></div>
@@ -99,7 +101,7 @@
         <b>Rozřazovací test</b>: určí vaší jazykovou úroveň <br />
         <b>Vstupní test</b>: určí vaši výchozí úroveň v oblasti výslovnosti a pohotové ústní komunikace.<br />
         <b>Lekce</b>: umožňuje vám zdokonalovat se v daném jazyce<br />
-        <b>Kontrolní test</b>: ukáže jak se lepší vaše úroveň v oblasti výslovnosti a pohotové ústní komunikace.<br />
+        <b>Kontrolní test</b>: ukáže, jak se lepší vaše úroveň v oblasti výslovnosti a pohotové ústní komunikace.<br />
         <b>Závěrečný test</b>: určí vaše celkové zlepšení
       </div>
     </div>
@@ -107,7 +109,7 @@
   </div>
 </div>
 
-<div class="panel panel-primary lm-top-margin home-course" ng-if="::ts.myTask.showStudentPart" collapsablemanager="homecollapsable">
+<div class="panel panel-primary xlm-top-margin home-course" ng-if="::ts.myTask.showStudentPart" collapsablemanager="homecollapsable">
   <div class="panel-heading" ng-click="homecollapsable.collapseToogle()">
     <h3>
       <span ng-if="ts.lessons[0].status<=1">Rozřazovací test</span>
@@ -156,7 +158,7 @@
         Rozřazovací test
       </button>
     </p>
-    Rozřazovací test určí vaši jazykovou úroveň (A1, A2, B1 nebo B2), na základě které se zvolí odpovídající pokračování vašeho kurzu.
+    Rozřazovací test určí vaši jazykovou úroveň (A1, A2, B1 nebo B2), na základě které, bude zvoleno odpovídající pokračování vašeho kurzu.
   </div>
   <div data-ng-if="::lesson.status>=2">
     <h4><i class="fa fa-line-chart"></i> Rozřazovací test dokončen: vaše jazyková úroveň je {{::ts.pretestLevel | levelText}}</h4>

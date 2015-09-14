@@ -5,6 +5,7 @@ blendedapi/styles/img/lm-logo-black.png
 blendedapi/vyzva/views/pretest.html
 blendedapi/vyzva/views/module.html
 blendedapi/vyzva/views/managerschool.html
+blendedapi/vyzva/views/managerlangmaster.html
 blendedapi/vyzva/views/lector.html
 blendedapi/vyzva/views/home.html
 blendedapi/vyzva/views/exercise.html

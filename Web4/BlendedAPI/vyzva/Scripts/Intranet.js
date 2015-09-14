@@ -61,11 +61,12 @@ var vyzva;
         intranet.lmAdminCreateLicenceKeys_reponse = lmAdminCreateLicenceKeys_reponse;
         //******************* zakladni info PO SPUSTENI PRODUKTU
         //informace o licencich a klicich k spustenemu produktu
-        function enteredProductInfo(json, licenceKeysStr /*platne licencni klice k produktu*/, cookie) {
-            if (_.isEmpty(json))
+        function enteredProductInfo(companyData, licenceKeysStr /*platne licencni klice k produktu*/, cookie) {
+            if (!companyData)
                 return null;
-            var licenceKeys = licenceKeysStr.split('#');
-            var companyData = (JSON.parse(json));
+            //if (_.isEmpty(json)) return null;
+            var licenceKeys = licenceKeysStr ? licenceKeysStr.split('#') : [];
+            //var companyData = <ICompanyData>(JSON.parse(json));
             var oldJson = JSON.stringify(companyData);
             //linearizace klicu
             var alocList = [];

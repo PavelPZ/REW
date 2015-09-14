@@ -42,7 +42,17 @@ var blended;
                 },
             };
         }])
-        .directive('collapsablemanager', ['$cookies', function (cookies) { return new collapseMan(cookies); }]);
+        .directive('collapsablemanager', ['$cookies', function (cookies) { return new collapseMan(cookies); }])
+        .directive('directive$toc', ['$anchorScroll', function ($anchorScroll) { return new directive$toc($anchorScroll); }]);
+    var directive$toc = (function () {
+        function directive$toc($anchorScroll) {
+            this.link = function (scope, el, attrs) {
+                scope.tocScrollTo = function (id) { return alert(id); };
+            };
+        }
+        return directive$toc;
+    })();
+    blended.directive$toc = directive$toc;
     var collapseMan = (function () {
         function collapseMan(cookies) {
             this.link = function (scope, el, attrs) {

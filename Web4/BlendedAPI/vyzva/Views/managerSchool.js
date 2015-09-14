@@ -50,18 +50,26 @@ var vyzva;
                         this.wizzardStep = 1;
                         break;
                     case 1:
-                        var req = vyzva.intranet.lmAdminCreateLicenceKeys_request(this.groups);
-                        proxies.vyzva57services.lmAdminCreateLicenceKeys(this.ctx.companyid, req, function (resp) {
-                            _this.company = vyzva.intranet.lmAdminCreateLicenceKeys_reponse(_this.groups, resp);
-                            /*pred zalozenim company nema sanci mit manager vice klicu. Ten jeden pridej mezi klice spravce*/
-                            var actualManagerKey = _this.ctx.lickeys.split('#')[0];
-                            var cook = LMStatus.Cookie;
-                            _this.company.managerKeys.push({ keyStr: actualManagerKey, email: cook.EMail, firstName: cook.FirstName, lastName: cook.LastName, lmcomId: cook.id });
-                            proxies.vyzva57services.lmAdminCreateCompany(_this.ctx.companyid, JSON.stringify(_this.company), function () {
-                                _this.wizzardStep = 2;
-                                _this.$scope.$apply();
-                            });
+                        var actualManagerKey = this.ctx.lickeys.split('#')[0];
+                        var cook = LMStatus.Cookie;
+                        var managerKey = { keyStr: actualManagerKey, email: cook.EMail, firstName: cook.FirstName, lastName: cook.LastName, lmcomId: cook.id };
+                        managerSchool.createCompany(this.ctx.companyid, this.groups, managerKey, function (comp) {
+                            _this.company = comp;
+                            _this.wizzardStep = 2;
+                            _this.$scope.$apply();
                         });
+                        //var req = intranet.lmAdminCreateLicenceKeys_request(this.groups);
+                        //proxies.vyzva57services.lmAdminCreateLicenceKeys(this.ctx.companyid, req, resp => {
+                        //  this.company = intranet.lmAdminCreateLicenceKeys_reponse(this.groups, resp);
+                        //  /*pred zalozenim company nema sanci mit manager vice klicu. Ten jeden pridej mezi klice spravce*/
+                        //  var actualManagerKey = this.ctx.lickeys.split('#')[0];
+                        //  var cook = LMStatus.Cookie;
+                        //  this.company.managerKeys.push({ keyStr: actualManagerKey, email: cook.EMail, firstName: cook.FirstName, lastName: cook.LastName, lmcomId: cook.id });
+                        //  proxies.vyzva57services.lmAdminCreateCompany(this.ctx.companyid, JSON.stringify(this.company), () => {
+                        //    this.wizzardStep = 2;
+                        //    this.$scope.$apply();
+                        //  });
+                        //});
                         break;
                 }
             else
@@ -71,6 +79,20 @@ var vyzva;
                         break;
                 }
             this.adjustWizzardButtons();
+        };
+        managerSchool.createCompany = function (companyId, groups, managerKey, completed) {
+            var req = vyzva.intranet.lmAdminCreateLicenceKeys_request(groups);
+            proxies.vyzva57services.lmAdminCreateLicenceKeys(companyId, req, function (resp) {
+                var comp = vyzva.intranet.lmAdminCreateLicenceKeys_reponse(groups, resp);
+                /*pred zalozenim company nema sanci mit manager vice klicu. Ten jeden pridej mezi klice spravce*/
+                //var actualManagerKey = '';
+                //var cook = LMStatus.Cookie;
+                if (managerKey)
+                    comp.managerKeys.push(managerKey);
+                proxies.vyzva57services.lmAdminCreateCompany(companyId, JSON.stringify(comp), function () {
+                    completed(comp);
+                });
+            });
         };
         managerSchool.prototype.adjustWizzardButtons = function () {
             switch (this.wizzardStep) {

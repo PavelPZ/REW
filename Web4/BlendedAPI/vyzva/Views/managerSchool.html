@@ -1,7 +1,7 @@
 ﻿<a href="#" ng-click="ts.debugDeletCompany()" ng-if="::appService.isLangmasterUser()">del</a>
 <div class="wizzard">
   <div ng-if="ts.wizzardStep<2">
-    <div class="alert help-panel help-success" data-ng-if="ts.wizzardStep==0" collapsablemanager="+managerhelponstart">
+    <div class="alert help-panel help-warning" data-ng-if="ts.wizzardStep==0" collapsablemanager="+managerhelponstart">
       <div class="h4 help-header" ng-click="managerhelponstart.collapseToogle()">
         <div class="more fa fa-question-circle"></div>
         Krok číslo 1: Založte <i>Studijní skupiny</i> a upravte jim Název a Počet studentů
@@ -92,7 +92,7 @@
   </div>
 
   <div data-ng-if="ts.wizzardStep==2">
-    <div class="alert help-panel help-success" data-ng-if="ts.wizzardStep==2" collapsablemanager="+managerhelponend">
+    <div class="alert help-panel help-warning" data-ng-if="ts.wizzardStep==2" collapsablemanager="+managerhelponend">
       <div class="h4 help-header" ng-click="managerhelponend.collapseToogle()">
         <div class="more fa fa-question-circle"></div>
         Rozdání <i>Licenčních klíčů</i> <i>Učitelům</i>
@@ -115,16 +115,16 @@
         <h4 class="lm-top-margin">Exporty do excelu</h4>
         <p>
           Využijte exportů do Excelu k získání mnoha zajímavých údajů o výuce<br />
-          <b>Poznámka: </b> exporty (mimo prvního) mají význam pouze tehdy, pokud již v nějaké <i>Studijní skupině</i> započala výuka.
+          <b>Poznámka: </b> exporty (kromě prvních dvou) mají význam pouze tehdy, pokud již v nějaké <i>Studijní skupině</i> započala výuka.
         </p>
         <h4 class="lm-top-margin">Další licenční klíče</h4>
         <ul>
           <li>
             Jak Vy, tak kdokoliv z Vaší školy si může vyzkoušet kurz. K tomu jsou určeny <i>Licenční klíče</i> pro <i>Hosty</i>.
-            Tyto klíče můžete poskytnout komukoliv - výuka ale tomto případě nebude řízena <i>Učitelem</i>.
+            Tyto klíče můžete poskytnout komukoliv - výuka ale v tomto případě nebude řízena <i>Učitelem</i>.
           </li>
           <li>
-            Dále máte možnost určit další dva <i>Správce</i> (se stejnými pravomocemi jako máte Vy). Předejte mu jeden ze dvou zbylých <i>Licenčních klíčů</i> pro <i>Správce</i>.
+            Dále máte možnost určit další dva <i>Správce</i> (se stejnými pravomocemi jako máte Vy). Předejte jim jeden ze dvou zbylých <i>Licenčních klíčů</i> pro <i>Správce</i>.
           </li>
         </ul>
         <div class="when-problem" vyzva$common$whenproblem></div>
@@ -141,22 +141,22 @@
         <div class="row">
           <div class="col-sm-6">
             <div class="btn btn-success btn-lg" ng-click="::ts.downloadLicenceKeys(false)"><i class="fa fa-file-excel-o"></i> <i>Studijní skupiny</i></div><br />
-            Tento export obsahuje data, totožná s obsahem této stránky. Využijte jej pro snažší rozdání <i>Licenčních klíčů</i> učitelům.
+            Tento export obsahuje přehled Studijních skupin a klíčů pro učitele. Využijte jej pro snažší rozdání <i>Licenčních klíčů</i> učitelům.
           </div>
           <div class="col-sm-6">
             <div class="btn btn-success btn-lg" ng-click="::ts.downloadLicenceKeys(true)"><i class="fa fa-file-excel-o"></i> <i>Studijní skupiny</i> (včetně <i>Studentů</i>)</div><br />
-            Tento export obsahuje navíc i přehled studentů všech <i>Studijních skupin</i>
+            Tento export obsahuje přehled Studijních skupin včetně seznamu studentů jednotlivých Studijních skupin a jejich <i>Licenčních klíčů</i>.
           </div>
         </div>
         <div class="row lm-top-margin">
           <div class="col-sm-6">
             <div class="btn btn-success btn-lg" ng-click="::ts.downloadSummary(true)"><i class="fa fa-file-excel-o"></i> Průběžné výsledky studia</div><br />
-            Přehledy o výuce a to až do takových detailů jako je:
+            Přehledy o výuce včetně následujících detailů:
             <ul>
-              <li>kolik vteřin zvuku který student nahrál v rámci audio-orální metody</li>
+              <li>kolik vteřin zvuku student nahrál v rámci audio-orální metody</li>
               <li>čas, strávený studentem při poslechu nahrávek rodilých mluvčích</li>
-              <li>skore, dosažené ve všech cvičeních všech testů a lekcí</li>
-              <li>pokrok ve studiu ...a mnoho dalších údajů]</li>
+              <li>skóre, dosažené ve všech cvičeních všech testů a lekcí</li>
+              <li>pokrok ve studiu a mnoho dalších údajů</li>
             </ul>
           </div>
           <div class="col-sm-6">

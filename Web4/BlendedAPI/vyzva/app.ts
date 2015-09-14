@@ -25,7 +25,7 @@ module vyzva {
     var def = ctx.$q.defer<intranet.alocatedKeyRoot>();
     proxies.vyzva57services.loadCompanyData(ctx.companyid, res => {
       if (!res) { def.resolve(null); return; }
-      var compInfo = intranet.enteredProductInfo(res, ctx.lickeys, LMStatus.Cookie);
+      var compInfo = intranet.enteredProductInfo(<intranet.ICompanyData>(JSON.parse(res)), ctx.lickeys, LMStatus.Cookie);
       if (compInfo && compInfo.jsonToSave) {
         proxies.vyzva57services.writeCompanyData(ctx.companyid, compInfo.jsonToSave, () => def.resolve(compInfo));
       } else
@@ -100,6 +100,14 @@ module vyzva {
             $intranetInfo: loadIntranetInfo(),
           },
           childs: [
+            stateNames.langmasterManager = new state({
+              name: 'langmastermanager',
+              url: "/langmastermanager",
+              templateUrl: pageTemplate,
+              layoutContentId: 'managerLangmaster',
+              layoutSpecial: true,
+              controller: managerLangmaster,
+            }),
             stateNames.shoolManager = new state({
               name: 'schoolmanager',
               url: "/schoolmanager",

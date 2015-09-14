@@ -28,6 +28,8 @@ namespace blended {
     }
     [Route("lmAdminCreateLicenceKeys"), HttpPost]
     public lmAdminCreateLicenceKey[] lmAdminCreateLicenceKeys(int companyid, [FromBody]lmAdminCreateLicenceKey[] requestedKeys) {
+      //debug: pro prepareDemoData.cs: capture requestus
+      var json = JsonConvert.SerializeObject(requestedKeys, Newtonsoft.Json.Formatting.Indented);
       var db = NewData.Lib.CreateContext();
       foreach (var requestedKey in requestedKeys) {
         var prodId = lineToProductId[requestedKey.line];
@@ -73,6 +75,7 @@ namespace blended {
       return null;
     }
 
+    //Napiste nam service - posle email
     [Route("writeUs"), HttpPost]
     public void writeUs([FromBody]string jsonData) {
       var res = JsonConvert.DeserializeObject<IWriteUs>(jsonData);
@@ -98,6 +101,17 @@ namespace blended {
       public string userFirstName;
       public string userLastName;
       public string userJson;
+    }
+
+    //*************** vytvoreni demo company
+    [Route("createDemoCompanyStart"), HttpGet]
+    public vyzva.PrepareDemoData.IPrepareNewDataResult createDemoCompanyStart(string companyTitle, string id) {
+      return vyzva.PrepareDemoData.prepareNewData(companyTitle, id);
+    }
+
+    [Route("createDemoCompanyEnd"), HttpPost]
+    public void createDemoCompanyEnd([FromBody] vyzva.PrepareDemoData.ICopyCourseData data) {
+      vyzva.PrepareDemoData.copyCourseData(data);
     }
 
     //***************************  SCORM

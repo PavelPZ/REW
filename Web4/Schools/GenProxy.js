@@ -211,6 +211,12 @@ var proxies;
         vyzva57services.writeUs = function (jsondata, completed) {
             invoke('vyzva57services/writeus', 'post', null, JSON.stringify(jsondata), completed);
         };
+        vyzva57services.createDemoCompanyStart = function (companytitle, id, completed) {
+            invoke('vyzva57services/createdemocompanystart', 'get', { companytitle: companytitle, id: id }, null, completed);
+        };
+        vyzva57services.createDemoCompanyEnd = function (data, completed) {
+            invoke('vyzva57services/createdemocompanyend', 'post', null, JSON.stringify(data), completed);
+        };
         vyzva57services.deleteDataKeys = function (companyid, lmcomid, producturl, urltaskids, completed) {
             invoke('vyzva57services/deletedatakeys', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, JSON.stringify(urltaskids), completed);
         };

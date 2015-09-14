@@ -41,7 +41,20 @@
       }
     }])
     .directive('collapsablemanager', ['$cookies', (cookies: angular.cookies.ICookiesService) => new collapseMan(cookies)])
+    .directive('directive$toc', ['$anchorScroll', $anchorScroll => new directive$toc($anchorScroll)])
   ;
+
+  export class directive$toc {
+    constructor($anchorScroll: ng.IAnchorScrollService) {
+      this.link = (scope: ITocScope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
+        scope.tocScrollTo = id => alert(id);
+      };
+    }
+    link;
+  }
+  interface ITocScope extends ng.IScope {
+    tocScrollTo: (elementId: string) => void;
+  }
 
 
   export class collapseMan {

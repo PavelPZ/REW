@@ -84,6 +84,7 @@
 
   .help-panel {
     padding: 10px;
+    margin-bottom: 0;
 
     .help-content {
       border-top: solid 1px;
@@ -127,6 +128,18 @@
 
       .help-close {
         color: darken(@panel-success-border,30);
+      }
+    }
+  }
+
+  .help-warning {
+    .alert-variant(@alert-warning-bg; @alert-warning-border; @alert-warning-text);
+
+    .help-content {
+      border-top-color: darken(@panel-warning-border,10);
+
+      .help-close {
+        color: darken(@panel-warning-border,30);
       }
     }
   }
@@ -252,5 +265,19 @@
 
   .copyright {
     color: lighten(gray,15);
+  }
+
+  .faq {
+    .panel {
+      .panel-heading h4 {
+        margin: 0;
+      }
+
+      .panel-body {
+        padding: 10px;
+      }
+      margin-top:20px;
+      margin-bottom:0;
+    }
   }
 }

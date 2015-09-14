@@ -168,6 +168,12 @@ module proxies {
     static writeUs(jsondata: string, completed: () => void): void {
 		  invoke('vyzva57services/writeus', 'post', null, JSON.stringify(jsondata), completed);
 	  } 
+    static createDemoCompanyStart(companytitle: string, id: string, completed: (res: {  fromCompanyId: number;  companyId: number;  users: {  licId: number;  licCounter: number;  lmcomId: number;  email: string;  firstName: string;  lastName: string;  }[];  }) => void): void {
+		  invoke('vyzva57services/createdemocompanystart', 'get', { companytitle: companytitle, id: id }, null, completed);
+	  } 
+    static createDemoCompanyEnd(data: {  fromCompanyId: number;  toCompanyId: number;  users: {  fromLmcomId: number;  toLmLmcomId: number;  }[];  }, completed: () => void): void {
+		  invoke('vyzva57services/createdemocompanyend', 'post', null, JSON.stringify(data), completed);
+	  } 
     static deleteDataKeys(companyid: number, lmcomid: number, producturl: string, urltaskids: {  url: string;  taskId: string;  }[], completed: () => void): void {
 		  invoke('vyzva57services/deletedatakeys', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, JSON.stringify(urltaskids), completed);
 	  } 
