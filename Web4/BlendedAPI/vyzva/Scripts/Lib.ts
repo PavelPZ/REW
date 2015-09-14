@@ -28,16 +28,21 @@
       return this.home.intranetInfo.userInfo(lmcomId || this.controller.ctx.userDataId());
     }
 
+    isLangmasterUser(): boolean {
+      return _.indexOf(['pzika@langmaster.cz', 'rjeliga@langmaster.cz', 'zzikova@langmaster.cz','pjanecek@langmaster.cz'], LMStatus.Cookie.EMail) >= 0;
+    }
   }
+
+  //********** REPORTS
 
   //musi souhlasit s D:\LMCom\REW\Web4\BlendedAPI\vyzva\Server\ExcelReport.cs
   export enum reportType { managerKeys, lectorKeys, managerStudy, lectorStudy, finalReport }
   export interface requestPar {
     type: reportType;
     companyId: number;
-    managerIncludeStudents? : boolean;
+    managerIncludeStudents?: boolean;
     //isStudyAll?: boolean;
-    groupId?:number;
+    groupId?: number;
   }
 
   export function downloadExcelReport(par: requestPar) {
@@ -45,4 +50,57 @@
     blended.downloadExcelFile(url.toLowerCase());
   }
 
+  //********** FOOTER COPYRIGHT
+
+  export class vyzva$common$whenproblem implements ng.IDirective {
+    constructor($modal: angular.ui.bootstrap.IModalService) {
+      this.link = (scope: IVyzva$common$whenproblemScope, el: JQuery, attrs) => {
+        scope.copyrNavigateFaq = () => scope.ts.navigate({ stateName: stateNames.faq.name, pars: <any>{ returnurl: location.hash } });
+        var modalInstance: angular.ui.bootstrap.IModalServiceInstance;
+        scope.copyrShowWriteUs = () => {
+          modalInstance = $modal.open({
+            templateUrl: 'vyzva$common$writeus.html',
+            scope: scope
+          });
+        };
+        scope.copyrShowWriteUsOK = () => {
+
+          //odvod user info
+          var homeCtrl = <homeTaskController>((<blended.taskController>scope.ts).productParent);
+          var info: intranet.alocatedKeyRoot = homeCtrl && homeCtrl.intranetInfo ? homeCtrl.intranetInfo : scope.ts['intranetInfo']; //intranetInfo drzi budto taskControl.productParent nebo managerSchool
+          var userInfo = info ? info.userInfo(scope.ts.ctx.loginid) : null; //dej info o zalogovanem uzivateli
+
+          var req: IWriteUs = {
+            stateName: scope.ts.state.name, stateParsJson: JSON.stringify(scope.ts.$state.params), text: scope.copyrWriteUsText,
+            userJson: JSON.stringify(userInfo), userEmail: userInfo.email, userFirstName: userInfo.firstName, userLastName: userInfo.lastName
+          };
+          proxies.vyzva57services.writeUs(JSON.stringify(req), $.noop);
+          modalInstance.close();
+        };
+      };
+    }
+    link;
+    templateUrl = 'vyzva$common$whenproblem.html';
+  }
+  interface IVyzva$common$whenproblemScope extends ng.IScope {
+    ts: blended.controller;
+    copyrNavigateFaq: () => void;
+    copyrShowWriteUs: () => void;
+    copyrShowWriteUsOK: () => void;
+    copyrWriteUsText: string;
+  }
+  //D:\LMCom\REW\Web4\BlendedAPI\vyzva\Server\Vyzva57Services.cs
+  interface IWriteUs {
+    stateName: string;
+    stateParsJson: string;
+    userJson: string; //
+    userEmail: string;
+    userFirstName: string;
+    userLastName: string;
+    text: string;
+  }
+
+  blended.rootModule
+    .directive('vyzva$common$whenproblem', ['$modal', $modal => new vyzva$common$whenproblem($modal)])
+  ;
 }

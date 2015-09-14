@@ -135,7 +135,7 @@
   }
 
   //****************** TASK
-  export class homeTaskController extends blended.homeTaskController {
+  export class homeTaskController extends blended.homeTaskController{
 
     dataNode: IBlendedCourseRepository;
 

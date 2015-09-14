@@ -3,6 +3,7 @@
 @import "../../bs3/less/mixins/background-variant.less";
 @import "../../bs3/less/mixins/border-radius.less";
 @import "../../bs3/less/mixins/buttons.less";
+@import "../../bs3/less/mixins/tab-focus.less";
 @import "../../bs3/less/variables.less";
 
 .bl {
@@ -11,6 +12,12 @@
 
   .text-small {
     font-size: 13px;
+  }
+
+  .when-problem {
+    margin-top: 5px;
+    text-align: center;
+    font-size: 11px;
   }
 
   .primary {
@@ -58,11 +65,28 @@
     margin-top: 40px;
   }
 
+  .a {
+    color: @link-color;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      color: @link-hover-color;
+      text-decoration: @link-hover-decoration;
+    }
+
+    &:focus {
+      .tab-focus();
+    }
+  }
+
+
   .help-panel {
     padding: 10px;
 
     .help-content {
-      border-top: solid 1px darken(@panel-success-border,10);
+      border-top: solid 1px;
       padding-top: 10px;
       position: relative;
 
@@ -75,7 +99,6 @@
         height: 20px;
         cursor: pointer;
         z-index: 10;
-        color: darken(@panel-success-border,30);
       }
     }
 
@@ -98,6 +121,14 @@
 
   .help-success {
     .alert-variant(@alert-success-bg; @alert-success-border; @alert-success-text);
+
+    .help-content {
+      border-top-color: darken(@panel-success-border,10);
+
+      .help-close {
+        color: darken(@panel-success-border,30);
+      }
+    }
   }
 
   .help-default {
@@ -212,5 +243,14 @@
         margin-bottom: 5px;
       }
     }
+  }
+
+  .write-us-modal {
+    textarea {
+    }
+  }
+
+  .copyright {
+    color: lighten(gray,15);
   }
 }

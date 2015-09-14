@@ -10,6 +10,7 @@ using System.Web.Http;
 using System.Xml;
 using System.Xml.Linq;
 using LMComLib;
+using System.Text;
 
 namespace blended {
 
@@ -68,10 +69,36 @@ namespace blended {
     [Route("reports"), HttpGet]
     public byte[] reports(string reportpar) {
       var par = JsonConvert.DeserializeObject<ExcelReport.requestPar>(reportpar);
-      NewModel.Lib.downloadResponse(ExcelReport.run(par), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "licenceKeys.xlsx");
+      NewModel.Lib.downloadResponse(ExcelReport.run(par), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
       return null;
     }
 
+    [Route("writeUs"), HttpPost]
+    public void writeUs([FromBody]string jsonData) {
+      var res = JsonConvert.DeserializeObject<IWriteUs>(jsonData);
+      Emailer em = new Emailer();
+      StringBuilder sb = new StringBuilder();
+      sb.AppendLine("Od: " + res.userFirstName + " " + res.userLastName);
+      sb.AppendLine(res.text); sb.AppendLine(); sb.AppendLine();
+      res.text = null;
+      sb.AppendLine(JsonConvert.SerializeObject(res));
+      em.PlainText = sb.ToString();
+      //em.AddTo("pzika@langmaster.cz");
+      em.AddTo("support@langmaster.cz");
+      em.Subject = "LANGMaster technická podpora";
+      em.From = res.userEmail;
+      em.SendMail();
+    }
+    //D:\LMCom\REW\Web4\BlendedAPI\vyzva\Scripts\Lib.ts
+    public class IWriteUs {
+      public string stateName;
+      public string stateParsJson;
+      public string text;
+      public string userEmail;
+      public string userFirstName;
+      public string userLastName;
+      public string userJson;
+    }
 
     //***************************  SCORM
     public class IResetData {
@@ -124,7 +151,7 @@ namespace blended {
       if (courseUser == null) db.CourseUsers.Add(courseUser = new blendedData.CourseUser() { CompanyId = companyid, LMComId = lmcomId, ProductUrl = productUrl });
       foreach (var dt in data) {
         var courseData = courseUser.CourseDatas.FirstOrDefault(cd => cd.Key == dt.url && cd.TaskId == dt.taskId);
-        if (courseData == null) db.CourseDatas.Add(courseData = new blendedData.CourseData() { CourseUser = courseUser, Key = dt.url, TaskId = dt.taskId});
+        if (courseData == null) db.CourseDatas.Add(courseData = new blendedData.CourseData() { CourseUser = courseUser, Key = dt.url, TaskId = dt.taskId });
         courseData.ShortData = dt.shortData; courseData.Data = dt.longData; courseData.Flags = (long)dt.flag;
       }
       blendedData.Lib.SaveChanges(db);

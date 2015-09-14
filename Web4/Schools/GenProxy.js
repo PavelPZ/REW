@@ -208,6 +208,9 @@ var proxies;
         vyzva57services.reports = function (reportpar, completed) {
             invoke('vyzva57services/reports', 'get', { reportpar: reportpar }, null, completed);
         };
+        vyzva57services.writeUs = function (jsondata, completed) {
+            invoke('vyzva57services/writeus', 'post', null, JSON.stringify(jsondata), completed);
+        };
         vyzva57services.deleteDataKeys = function (companyid, lmcomid, producturl, urltaskids, completed) {
             invoke('vyzva57services/deletedatakeys', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, JSON.stringify(urltaskids), completed);
         };

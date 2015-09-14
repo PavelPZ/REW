@@ -1,10 +1,5 @@
-﻿feedback
-testovací stránka pro nahrávání a přehrávání
-Excel exports
-texty do potvrzovacich dialogu a do nápověd
+﻿testovací stránka pro nahrávání a přehrávání
 jak s klíči pro LM lektory šablony č. 3
-
-vyhodit DEL ladici akce (2x)
 
 Lesson exercise:
 - reset cviceni, reset lekce

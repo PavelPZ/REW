@@ -31,6 +31,7 @@
     }
 
     //***************** odvozene informace, vhodne pro zobrazeni
+
     export class alocatedKeyRoot {
       constructor(
         public alocatedKeyInfos: Array<IAlocatedKeyInfo>, //dato, odvozene z companyData

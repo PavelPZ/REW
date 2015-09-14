@@ -1,6 +1,6 @@
 ﻿module vyzva {
   export class managerSchool extends blended.controller {
-    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, intranetInfo: intranet.alocatedKeyRoot) {
+    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, public intranetInfo: intranet.alocatedKeyRoot) {
       super($scope, $state);
       this.company = intranetInfo ? intranetInfo.companyData : null;
       this.breadcrumb = breadcrumbBase(this, true);

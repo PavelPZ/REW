@@ -1,4 +1,4 @@
-﻿<a href="#" ng-click="ts.debugDeletCompany()">del</a>
+﻿<a href="#" ng-click="ts.debugDeletCompany()" ng-if="::appService.isLangmasterUser()">del</a>
 <div class="wizzard">
   <div ng-if="ts.wizzardStep<2">
     <div class="alert help-panel help-success" data-ng-if="ts.wizzardStep==0" collapsablemanager="+managerhelponstart">
@@ -22,6 +22,7 @@
             <b><i>Host</i></b>: kdokoliv, kdo si chce prohlédnout kurz, aniž by jeho výuka byla řízena <i>Učitelem</i><br />
           </div>
         </div>
+        <div class="when-problem" vyzva$common$whenproblem></div>
       </div>
     </div>
     <div class="alert alert-success help-panel" data-ng-if="ts.wizzardStep==1">
@@ -126,6 +127,7 @@
             Dále máte možnost určit další dva <i>Správce</i> (se stejnými pravomocemi jako máte Vy). Předejte mu jeden ze dvou zbylých <i>Licenčních klíčů</i> pro <i>Správce</i>.
           </li>
         </ul>
+        <div class="when-problem" vyzva$common$whenproblem></div>
       </div>
     </div>
 
@@ -159,7 +161,7 @@
           </div>
           <div class="col-sm-6">
             <div class="btn btn-success btn-lg" ng-disabled="true"><i class="fa fa-file-excel-o"></i> Podklady pro <i>Závěrečnou zprávu</i></div><br />
-            Údaje, vyžadované Závěrečnou zprávou projektu Výzva 57. Export je dostupný až Závěrečném testu.
+            Údaje, vyžadované Závěrečnou zprávou projektu Výzva 57. Export je dostupný až po Závěrečném testu.
           </div>
         </div>
       </div>

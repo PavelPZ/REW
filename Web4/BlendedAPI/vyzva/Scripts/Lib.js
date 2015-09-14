@@ -28,9 +28,13 @@ var vyzva;
         appService.prototype.schoolUserInfo = function (lmcomId) {
             return this.home.intranetInfo.userInfo(lmcomId || this.controller.ctx.userDataId());
         };
+        appService.prototype.isLangmasterUser = function () {
+            return _.indexOf(['pzika@langmaster.cz', 'rjeliga@langmaster.cz', 'zzikova@langmaster.cz', 'pjanecek@langmaster.cz'], LMStatus.Cookie.EMail) >= 0;
+        };
         return appService;
     })();
     vyzva.appService = appService;
+    //********** REPORTS
     //musi souhlasit s D:\LMCom\REW\Web4\BlendedAPI\vyzva\Server\ExcelReport.cs
     (function (reportType) {
         reportType[reportType["managerKeys"] = 0] = "managerKeys";
@@ -45,4 +49,36 @@ var vyzva;
         blended.downloadExcelFile(url.toLowerCase());
     }
     vyzva.downloadExcelReport = downloadExcelReport;
+    //********** FOOTER COPYRIGHT
+    var vyzva$common$whenproblem = (function () {
+        function vyzva$common$whenproblem($modal) {
+            this.templateUrl = 'vyzva$common$whenproblem.html';
+            this.link = function (scope, el, attrs) {
+                scope.copyrNavigateFaq = function () { return scope.ts.navigate({ stateName: vyzva.stateNames.faq.name, pars: { returnurl: location.hash } }); };
+                var modalInstance;
+                scope.copyrShowWriteUs = function () {
+                    modalInstance = $modal.open({
+                        templateUrl: 'vyzva$common$writeus.html',
+                        scope: scope
+                    });
+                };
+                scope.copyrShowWriteUsOK = function () {
+                    //odvod user info
+                    var homeCtrl = (scope.ts.productParent);
+                    var info = homeCtrl && homeCtrl.intranetInfo ? homeCtrl.intranetInfo : scope.ts['intranetInfo']; //intranetInfo drzi budto taskControl.productParent nebo managerSchool
+                    var userInfo = info ? info.userInfo(scope.ts.ctx.loginid) : null; //dej info o zalogovanem uzivateli
+                    var req = {
+                        stateName: scope.ts.state.name, stateParsJson: JSON.stringify(scope.ts.$state.params), text: scope.copyrWriteUsText,
+                        userJson: JSON.stringify(userInfo), userEmail: userInfo.email, userFirstName: userInfo.firstName, userLastName: userInfo.lastName
+                    };
+                    proxies.vyzva57services.writeUs(JSON.stringify(req), $.noop);
+                    modalInstance.close();
+                };
+            };
+        }
+        return vyzva$common$whenproblem;
+    })();
+    vyzva.vyzva$common$whenproblem = vyzva$common$whenproblem;
+    blended.rootModule
+        .directive('vyzva$common$whenproblem', ['$modal', function ($modal) { return new vyzva$common$whenproblem($modal); }]);
 })(vyzva || (vyzva = {}));

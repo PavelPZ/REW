@@ -165,6 +165,9 @@ module proxies {
     static reports(reportpar: string, completed: (res: Array<number>) => void): void {
 		  invoke('vyzva57services/reports', 'get', { reportpar: reportpar }, null, completed);
 	  } 
+    static writeUs(jsondata: string, completed: () => void): void {
+		  invoke('vyzva57services/writeus', 'post', null, JSON.stringify(jsondata), completed);
+	  } 
     static deleteDataKeys(companyid: number, lmcomid: number, producturl: string, urltaskids: {  url: string;  taskId: string;  }[], completed: () => void): void {
 		  invoke('vyzva57services/deletedatakeys', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, JSON.stringify(urltaskids), completed);
 	  } 

@@ -13,12 +13,7 @@
     <div ng-include="'vyzva$common$breadcrumb.html'"></div>
     <div data-ng-include="::state.layoutContentId | vyzva$state$viewpath"></div>
   </div>
-  <hr />
-  <div class="container text-center">
-    {{::state.layoutContentId | vyzva$state$viewpath}}
-    Pokud odpověď nenaleznete na stránce <a ui-sref="pg.ajs.vyzva.faq">často kladené dotazy</a>, vaše náměty, připomínky a problémy nám <a href="">napište</a><br />
-    © 2015 LANGMaster.com
-  </div>
+  <div ng-include="'vyzva$common$copyright.html'"></div>
 </script>
 
 <script type="text/ng-template" id="vyzva$common$breadcrumb.html">
@@ -72,4 +67,35 @@
       <td colspan="4">&nbsp;</td>
     </tr>
   </table>
+</script>
+
+<script type="text/ng-template" id="vyzva$common$writeus.html">
+  <div class="write-us-modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Napište nám</h3>
+    </div>
+    <div class="modal-body">
+      <p>Popiště prosím Váš námět, připomínku nebo problém a stiskněte <b>Poslat</b>:</p>
+      <textarea class="form-control" rows="10" ng-model="$parent.copyrWriteUsText"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="button" lm-enter-key="::copyrShowWriteUsOK()" ng-click="::copyrShowWriteUsOK()">Poslat</button>
+      <button class="btn btn-default" type="button" ng-click="::$dismiss()">Zrušit</button>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="vyzva$common$whenproblem.html">
+  Využijte též stránky
+  <span class="a" ng-click="copyrNavigateFaq()">často kladené dotazy</span> nebo nám Vaše náměty či připomínky
+  <span class="a" ng-click="copyrShowWriteUs()">napište</span>.
+</script>
+
+
+<script type="text/ng-template" id="vyzva$common$copyright.html">
+  <hr />
+  <div class="container text-center copyright">
+    <span vyzva$common$whenproblem></span><br />
+    © 2015 LANGMaster.com
+  </div>
 </script>

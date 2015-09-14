@@ -10,6 +10,7 @@ var vyzva;
         __extends(managerSchool, _super);
         function managerSchool($scope, $state, intranetInfo) {
             _super.call(this, $scope, $state);
+            this.intranetInfo = intranetInfo;
             this.groupNameCounter = 1;
             this.groups = [];
             this.company = intranetInfo ? intranetInfo.companyData : null;

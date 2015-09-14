@@ -10,7 +10,6 @@ var vyzva;
         __extends(faqController, _super);
         function faqController($scope, $state) {
             _super.call(this, $scope, $state);
-            debugger;
         }
         return faqController;
     })(blended.controller);
