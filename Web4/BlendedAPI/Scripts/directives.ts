@@ -20,7 +20,6 @@
       };
     })
     .filter('levelText', () => (id: number) => ['A1', 'A2', 'B1', 'B2'][id])
-  //.controller('collapsable', function () { this.isCollapsed = true; })
     .filter("rawhtml", ['$sce', $sce => htmlCode => $sce.trustAsHtml(htmlCode)])
     .directive('lmEnterKey', ['$document', $document => {
       return {
@@ -41,21 +40,7 @@
       }
     }])
     .directive('collapsablemanager', ['$cookies', (cookies: angular.cookies.ICookiesService) => new collapseMan(cookies)])
-    .directive('directive$toc', ['$anchorScroll', $anchorScroll => new directive$toc($anchorScroll)])
   ;
-
-  export class directive$toc {
-    constructor($anchorScroll: ng.IAnchorScrollService) {
-      this.link = (scope: ITocScope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
-        scope.tocScrollTo = id => alert(id);
-      };
-    }
-    link;
-  }
-  interface ITocScope extends ng.IScope {
-    tocScrollTo: (elementId: string) => void;
-  }
-
 
   export class collapseMan {
     constructor(cookies: angular.cookies.ICookiesService) {

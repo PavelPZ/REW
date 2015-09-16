@@ -403,6 +403,18 @@ fieldset[disabled] .bl .btn-succes-info.active {
   right: 18px;
   font-size: 24px;
 }
+.bl .home-test-hw {
+  padding: 8px;
+  padding-right: 80px;
+  position: relative;
+  cursor: pointer;
+  background-color: #fcf8e3;
+}
+.bl .home-test-hw > button {
+  position: absolute;
+  right: 10px;
+  top: 18px;
+}
 .bl {
   /*.exercise-place {
     margin-top:20px;

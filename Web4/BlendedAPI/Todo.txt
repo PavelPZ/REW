@@ -1,17 +1,17 @@
 ﻿testovací stránka pro nahrávání a přehrávání
-jak s klíči pro LM lektory šablony č. 3
+
+Help k průchodu cvičením
 
 Lesson exercise:
 - reset cviceni, reset lekce
 
+jak s klíči pro LM lektory šablony č. 3
+
 Business: 
 - kriterium nejnizsi cena a multilicence, poslat partnerum
-- wagner - 16% off
 - pragodata - volat
 
 Zabezpeceni dle roli Admin, Lector.
-
-LM konzole pro založení školy
 
 Cache:
 - cviceni i modul nejsou pod produktem ale mimo nej (neobsahuji user data, jsou spolecna pro vice users)

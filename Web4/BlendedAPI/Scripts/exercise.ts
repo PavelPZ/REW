@@ -175,7 +175,7 @@
     //confirm dialog
     confirmWrongScoreDialog: () => ng.IPromise<any>;
 
-    constructor(exercise: cacheExercise, long: IExLong, public controller: exerciseTaskViewController, modIdx: number) { //, confirmWrongScoreDialog: () => ng.IPromise<any>) {
+    constructor(exercise: cacheExercise, long: IExLong, public controller: exerciseTaskViewController, modIdx: number) {
       this.exercise = exercise; this.modIdx = modIdx; this.confirmWrongScoreDialog = () => controller.confirmWrongScoreDialog();
       this.ctx = controller.ctx; this.product = controller.productParent.dataNode;
       this.isTest = controller.moduleParent.state.moduleType != blended.moduleServiceType.lesson;

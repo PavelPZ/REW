@@ -29,7 +29,7 @@
     }
 
     isLangmasterUser(): boolean {
-      return _.indexOf(['pzika@langmaster.cz', 'rjeliga@langmaster.cz', 'zzikova@langmaster.cz','pjanecek@langmaster.cz'], LMStatus.Cookie.EMail) >= 0;
+      return _.indexOf(['pzika@langmaster.cz', 'rjeliga@langmaster.cz', 'zzikova@langmaster.cz', 'pjanecek@langmaster.cz'], LMStatus.Cookie.EMail) >= 0;
     }
   }
 
@@ -103,4 +103,16 @@
   blended.rootModule
     .directive('vyzva$common$whenproblem', ['$modal', $modal => new vyzva$common$whenproblem($modal)])
   ;
+
+  //********** BACK TOP BAR
+
+  export class vyzva$common$backheader implements ng.IDirective {
+    restrict = 'EA';
+    link = (scope, el, attrs) => scope.title = attrs['title'];
+    templateUrl = 'vyzva$common$backheader.html';
+  }
+  blended.rootModule
+    .directive('vyzva$common$backheader', () => new vyzva$common$backheader())
+  ;
+
 }

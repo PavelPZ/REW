@@ -49,6 +49,7 @@ module vyzva {
     moduleTestTask?: state;
     shoolManager?: state;
     langmasterManager?: state;
+    testhw?: state;
     lectorTask?: state;
     faq?: state;
   }
@@ -118,7 +119,7 @@ module vyzva {
             stateNames.faq = new state({
               name: 'faq',
               url: "/faq",
-              layoutSpecial:true,
+              layoutSpecial: true,
               templateUrl: pageTemplate,
               layoutContentId: 'faq',
               controller: faqController,
@@ -135,6 +136,18 @@ module vyzva {
                 $intranetInfo: loadIntranetInfo(),
               },
               childs: [
+                stateNames.testhw = new state({
+                  name: 'testhw',
+                  url: "/testhw/:url",
+                  templateUrl: pageTemplate,
+                  layoutContentId: 'testHw',
+                  layoutSpecial: true,
+                  controller: testHwController,
+                  resolve: {
+                    $loadedEx: blended.loadEx,
+                    //$loadedExJsonML: blended.loadExSimple,
+                  }
+                }),
                 blended.prodStates.home = stateNames.home = new state({
                   name: 'home',
                   url: "/home",

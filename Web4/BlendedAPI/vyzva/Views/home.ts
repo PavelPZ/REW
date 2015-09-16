@@ -82,6 +82,14 @@
       //this.score = blended.scorePercent(this.user);
     }
 
+    navigateTestHw() {
+      var pars = blended.cloneAndModifyContext(this.ctx, ctx => {
+        ctx.url = blended.encodeUrl('/lm/blcourse/english/hwtest/hwtest');
+        ctx.returnurl = location.hash;
+      });
+      this.navigate({ stateName: stateNames.testhw.name, pars: pars });
+    }
+
     navigateLesson(lesson: homeLesson) {
       //if (lesson.cannotRun) return;
       var service: blended.IStateService = {
@@ -135,7 +143,7 @@
   }
 
   //****************** TASK
-  export class homeTaskController extends blended.homeTaskController{
+  export class homeTaskController extends blended.homeTaskController {
 
     dataNode: IBlendedCourseRepository;
 
@@ -185,7 +193,7 @@
         scope: { user: '&user' },
         templateUrl: 'vyzva$common$summary.html'
       }
-    })  
+    })
   ;
 
 }

@@ -144,7 +144,10 @@ namespace blended {
         foreach (var module in allModules) blendedMeta.MetaInfo.addModule(userProducts, module); //zatrideni existujicich dat
         foreach (var lmcId in e.courseUsers.Keys) blendedMeta.MetaInfo.addDummyUsers(userProducts, lmcId); //doplneni studentu, co jeste nedokoncili nic z kurzu (tj. nemaji zadna DONE data v DB)
         return lib.emptyAndHeader(userProducts.uproducts.Select(kv => new { kv.Key, kv.Value })).Select(t => {
-          IAlocatedKey usr = null; if (t != null) e.courseUsers.TryGetValue(t.Key, out usr);
+          IAlocatedKey usr = null; if (t != null) {
+            e.courseUsers.TryGetValue(t.Key, out usr);
+            if (usr == null) return null;
+          }
           IAlocatedKey lector = usr == null ? null : e.allUsers[usr._myLectorLmcomId];
           return new object[] {
               t==null ? "_student" : usr.lastName + " " + usr.firstName,
@@ -188,7 +191,10 @@ namespace blended {
 
         var sourceData = umodules.umodules.Values.ToArray();
         return lib.emptyAndHeader(sourceData).Select(t => {
-          IAlocatedKey usr = null; if (t != null) e.courseUsers.TryGetValue(new lineUser(t.module.product.line, t.lmcomId), out usr);
+          IAlocatedKey usr = null; if (t != null) {
+            e.courseUsers.TryGetValue(new lineUser(t.module.product.line, t.lmcomId), out usr);
+            if (usr == null) return null;
+          }
           IAlocatedKey lector = usr == null ? null : e.allUsers[usr._myLectorLmcomId];
           int lev = t == null ? 0 : (t.module is pretestItem ? ((pretestItem)t.module).lev : t.module.level.lev);
           return new object[] {

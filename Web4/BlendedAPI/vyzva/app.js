@@ -110,6 +110,17 @@ var vyzva;
                                 $intranetInfo: vyzva.loadIntranetInfo(),
                             },
                             childs: [
+                                vyzva.stateNames.testhw = new state({
+                                    name: 'testhw',
+                                    url: "/testhw/:url",
+                                    templateUrl: pageTemplate,
+                                    layoutContentId: 'testHw',
+                                    layoutSpecial: true,
+                                    controller: vyzva.testHwController,
+                                    resolve: {
+                                        $loadedEx: blended.loadEx,
+                                    }
+                                }),
                                 blended.prodStates.home = vyzva.stateNames.home = new state({
                                     name: 'home',
                                     url: "/home",

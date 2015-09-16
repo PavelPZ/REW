@@ -263,6 +263,7 @@
     <None Include="BlendedAPI\Styles\other.less" />
     <None Include="BlendedAPI\Styles\topbar.less" />
     <Content Include="BlendedAPI\Todo.txt" />
+    <Content Include="BlendedAPI\vyzva\Views\testHw.html" />
     <Content Include="BlendedAPI\vyzva\Views\FAQ.html" />
     <Content Include="BlendedAPI\vyzva\Views\lector.html" />
     <Content Include="BlendedAPI\vyzva\Views\managerLangmaster.html" />
@@ -1367,6 +1368,7 @@
     <TypeScriptCompile Include="BlendedAPI\oldBoot.ts" />
     <TypeScriptCompile Include="BlendedAPI\app.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\directives.ts" />
+    <TypeScriptCompile Include="BlendedAPI\Scripts\exerciseSimple.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Lib.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Module.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\exercise.ts" />
@@ -1377,6 +1379,7 @@
     <TypeScriptCompile Include="BlendedAPI\vyzva\Scripts\Intranet.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Scripts\Lib.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Tasks.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\testHw.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\FAQ.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\lector\_tabs.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\managerLangmaster.ts" />

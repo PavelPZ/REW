@@ -14,7 +14,7 @@ module Login {
 
     doOK() {
       this.error(null);
-      login(this.isEMail, this.email(), this.login(), this.password(), null,
+      login(this.isEMail, this.email().trim(), this.login().trim(), this.password(), null,
         cookie => LMStatus.logged(cookie, false)
         ,(errId, errMsg) => {
           switch (errId) {

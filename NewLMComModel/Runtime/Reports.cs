@@ -595,7 +595,7 @@ namespace excelReport {
 
     public static ExcelRange import(ExcelWorksheet worksheet, IEnumerable<IEnumerable<object>> data, int rowStart = 0, int colStart = 0) {
       var actCol = colStart; var lastRow = rowStart; int lastCol = 0; List<string> colNames = new List<string>();
-      foreach (var row in data) {
+      foreach (var row in data.Where(d => d!=null)) {
         actCol = colStart;
         if (lastRow == rowStart) foreach (var cell in row) colNames.Add((string)cell);
         foreach (var v in row) {

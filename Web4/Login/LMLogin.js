@@ -20,7 +20,7 @@ var Login;
         LMLoginModel.prototype.doOK = function () {
             var _this = this;
             this.error(null);
-            login(this.isEMail, this.email(), this.login(), this.password(), null, function (cookie) { return LMStatus.logged(cookie, false); }, function (errId, errMsg) {
+            login(this.isEMail, this.email().trim(), this.login().trim(), this.password(), null, function (cookie) { return LMStatus.logged(cookie, false); }, function (errId, errMsg) {
                 switch (errId) {
                     case Login.CmdLmLoginError.cannotFindUser:
                         _this.error(CSLocalize('f14d4f45b2184ec2b114ae702e34b8d0', 'Wrong password or login name was not found in the database.'));

@@ -251,6 +251,18 @@ module blended {
       } finally { return deferred.promise; }
     }
 
+    //export function adjustExSimple(ctx: learnContext): ng.IPromise<Array<any>> {
+    //  debugger;
+    //  var deferred = ctx.$q.defer<Array<any>>();
+    //  try {
+    //    var href = baseUrlRelToRoot + ctx.Url + '.js';
+    //    ctx.$http.get(href, { transformResponse: s => CourseMeta.jsonParse(s) }).then(
+    //      (file: ng.IHttpPromiseCallbackArg<Array<any>>) => deferred.resolve(file.data),
+    //      errors => deferred.reject());
+    //  } finally { return deferred.promise; }
+    //}
+
+
     //*************** globalni CACHE produktu
     export interface fromCacheRsult {
       prod?: IProductEx; //!=null => vse OK, vrat produkt

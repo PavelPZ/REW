@@ -81,4 +81,16 @@ var vyzva;
     vyzva.vyzva$common$whenproblem = vyzva$common$whenproblem;
     blended.rootModule
         .directive('vyzva$common$whenproblem', ['$modal', function ($modal) { return new vyzva$common$whenproblem($modal); }]);
+    //********** BACK TOP BAR
+    var vyzva$common$backheader = (function () {
+        function vyzva$common$backheader() {
+            this.restrict = 'EA';
+            this.link = function (scope, el, attrs) { return scope.title = attrs['title']; };
+            this.templateUrl = 'vyzva$common$backheader.html';
+        }
+        return vyzva$common$backheader;
+    })();
+    vyzva.vyzva$common$backheader = vyzva$common$backheader;
+    blended.rootModule
+        .directive('vyzva$common$backheader', function () { return new vyzva$common$backheader(); });
 })(vyzva || (vyzva = {}));

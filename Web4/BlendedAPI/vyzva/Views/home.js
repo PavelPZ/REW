@@ -94,6 +94,13 @@ var vyzva;
             this.user = blended.agregateShorts(users);
             //this.score = blended.scorePercent(this.user);
         }
+        homeViewController.prototype.navigateTestHw = function () {
+            var pars = blended.cloneAndModifyContext(this.ctx, function (ctx) {
+                ctx.url = blended.encodeUrl('/lm/blcourse/english/hwtest/hwtest');
+                ctx.returnurl = location.hash;
+            });
+            this.navigate({ stateName: vyzva.stateNames.testhw.name, pars: pars });
+        };
         homeViewController.prototype.navigateLesson = function (lesson) {
             var _this = this;
             //if (lesson.cannotRun) return;

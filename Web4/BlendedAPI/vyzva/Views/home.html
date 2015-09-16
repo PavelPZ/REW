@@ -124,6 +124,11 @@
     <div vyzva$common$summary user="ts.user"></div>
   </div>
   <ul class="study-plan list-group">
+    <li class="home-test-hw"ng-click="::ts.navigateTestHw()" >
+      <button class="btn btn-warning"><i class="fa fa-volume-off"></i> Provést kontrolu <i class="fa fa-microphone"></i></button>
+      Kurz využívá přehrávání nahrávání zvuku (z/do počítače). Před prvním spuštěním kurzu doporučujeme
+      <h4>Zkontrolovat, zdali Vám mikrofon a sluchátka (reproduktor) fungují správně</h4>
+    </li>
     <li class="list-group-item" ng-repeat="lesson in ::ts.lessons"
         ng-style="::{cursor: lesson.rightButtonType && !lesson.cannotRun ? 'pointer' : 'default'}"
         ng-click="::lesson.rightButtonType && ts.navigateLesson(lesson)"
@@ -135,47 +140,47 @@
 </div>
 
 <script type="text/ng-template" id="vyzva$home$lesson.html">
-  <div ng-include="'vyzva$home$leftmark.html'"></div>
-  <button class="btn btn-info right-mark" ng-if="::lesson.rightButtonType==2">Výsledky <i class="fa fa-eye"></i></button>
-  <button class="btn right-mark"
-          ng-class="::{'btn-success': !lesson.active, 'btn-succes-info': lesson.active}"
-          ng-if="::lesson.rightButtonType==1"
-          ng-disabled="::lesson.cannotRun">
-    Spustit <i class="fa fa-play"></i>
-  </button>
-  <h4>
-    <span ng-if="::lesson.lessonType==1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    <span ng-if="::lesson.lessonType==2"><i class="fa fa-line-chart"></i></span>
-    {{::lesson.node.title}}
-  </h4>
-</script>
+    <div ng-include="'vyzva$home$leftmark.html'"></div>
+    <button class="btn btn-info right-mark" ng-if="::lesson.rightButtonType==2">Výsledky <i class="fa fa-eye"></i></button>
+    <button class="btn right-mark"
+            ng-class="::{'btn-success': !lesson.active, 'btn-succes-info': lesson.active}"
+            ng-if="::lesson.rightButtonType==1"
+            ng-disabled="::lesson.cannotRun">
+      Spustit <i class="fa fa-play"></i>
+    </button>
+    <h4>
+      <span ng-if="::lesson.lessonType==1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      <span ng-if="::lesson.lessonType==2"><i class="fa fa-line-chart"></i></span>
+      {{::lesson.node.title}}
+    </h4>
+  </script>
 
-<script type="text/ng-template" id="vyzva$home$pretest.html">
-  <div ng-include="'vyzva$home$leftmark.html'"></div>
-  <div data-ng-if="::lesson.status<2">
-    <p>
-      <button class="btn btn-success btn-lg" ng-disabled="::lesson.cannotRun" data-ng-click="::ts.navigateLesson(lesson)">
-        Rozřazovací test
-      </button>
-    </p>
-    Rozřazovací test určí vaši jazykovou úroveň (A1, A2, B1 nebo B2), na základě které, bude zvoleno odpovídající pokračování vašeho kurzu.
-  </div>
-  <div data-ng-if="::lesson.status>=2">
-    <h4><i class="fa fa-line-chart"></i> Rozřazovací test dokončen: vaše jazyková úroveň je {{::ts.pretestLevel | levelText}}</h4>
-    <div class="btn-group right-mark">
-      <button type="button" ng-repeat="level in ::ts.pretestLevels" class="btn btn-info btn-sm" ng-click="::ts.navigatePretestLevel(level)">{{level | levelText}} <i class="fa fa-eye"></i></button>
+  <script type="text/ng-template" id="vyzva$home$pretest.html">
+    <div ng-include="'vyzva$home$leftmark.html'"></div>
+    <div data-ng-if="::lesson.status<2">
+      <p>
+        <button class="btn btn-success btn-lg" ng-disabled="::lesson.cannotRun" data-ng-click="::ts.navigateLesson(lesson)">
+          Rozřazovací test
+        </button>
+      </p>
+      Rozřazovací test určí vaši jazykovou úroveň (A1, A2, B1 nebo B2), na základě které, bude zvoleno odpovídající pokračování vašeho kurzu.
     </div>
-  </div>
-</script>
+    <div data-ng-if="::lesson.status>=2">
+      <h4><i class="fa fa-line-chart"></i> Rozřazovací test dokončen: vaše jazyková úroveň je {{::ts.pretestLevel | levelText}}</h4>
+      <div class="btn-group right-mark">
+        <button type="button" ng-repeat="level in ::ts.pretestLevels" class="btn btn-info btn-sm" ng-click="::ts.navigatePretestLevel(level)">{{level | levelText}} <i class="fa fa-eye"></i></button>
+      </div>
+    </div>
+  </script>
 
-<script type="text/ng-template" id="vyzva$home$leftmark.html">
-  <div ng-if="::lesson.leftMarkType==1" class="left-mark icon"><i class="fa fa-hand-o-right"></i></div>
-  <div ng-if="::lesson.leftMarkType==2" class="left-mark level">{{::ts.pretestLevel | levelText}}</div>
-  <div ng-if="::lesson.leftMarkType==4" class="left-mark icon"><i class="fa fa-question"></i></div>
-  <div ng-if="::lesson.leftMarkType==3" class="left-mark percent-mark">
-    <div class="progress-bar">
-      <span ng-style="::lesson.user.score | vyzva$exmodule$percentheight : 32" class="progress-red">{{::lesson.user.score}}%</span>
-      <span>{{::lesson.user.score}}%</span>
+  <script type="text/ng-template" id="vyzva$home$leftmark.html">
+    <div ng-if="::lesson.leftMarkType==1" class="left-mark icon"><i class="fa fa-hand-o-right"></i></div>
+    <div ng-if="::lesson.leftMarkType==2" class="left-mark level">{{::ts.pretestLevel | levelText}}</div>
+    <div ng-if="::lesson.leftMarkType==4" class="left-mark icon"><i class="fa fa-question"></i></div>
+    <div ng-if="::lesson.leftMarkType==3" class="left-mark percent-mark">
+      <div class="progress-bar">
+        <span ng-style="::lesson.user.score | vyzva$exmodule$percentheight : 32" class="progress-red">{{::lesson.user.score}}%</span>
+        <span>{{::lesson.user.score}}%</span>
+      </div>
     </div>
-  </div>
-</script>
+  </script>

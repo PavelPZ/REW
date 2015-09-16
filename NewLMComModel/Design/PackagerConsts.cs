@@ -503,6 +503,7 @@ namespace Packager {
       "blendedapi/scripts/directives.js",
       "blendedapi/scripts/tasks.js",
       "blendedapi/scripts/exercise.js",
+      "blendedapi/scripts/exercisesimple.js",
       "blendedapi/scripts/module.js",
       "blendedapi/scripts/stateman.js",
 
@@ -512,12 +513,13 @@ namespace Packager {
 
       "blendedapi/vyzva/views/managerlangmaster.js",
       "blendedapi/vyzva/views/managerschool.js",
-      "blendedapi/vyzva/views/exercise.js", //***
+      "blendedapi/vyzva/views/exercise.js",
       "blendedapi/vyzva/views/module.js",
       "blendedapi/vyzva/views/pretest.js",
       "blendedapi/vyzva/views/lector.js",
       "blendedapi/vyzva/views/home.js",
       "blendedapi/vyzva/views/faq.js",
+      "blendedapi/vyzva/views/testhw.js",
 
       //"blendedapi/vyzva/views/toolbar/module.js",
       //"blendedapi/vyzva/views/toolbar/run.js",
