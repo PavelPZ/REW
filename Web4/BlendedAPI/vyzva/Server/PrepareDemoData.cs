@@ -15,13 +15,41 @@ using NewData;
 using blended;
 
 namespace vyzva {
+
   public static class PrepareDemoData {
+
+    //vytvori skolu a licencni klic k managerovi
+    public static ICreateEmptySchoolResult createEmptyCompany(string companyTitle) {
+      var db = NewData.Lib.CreateContext();
+      //company
+      var company = new Company() { Title = companyTitle, Created = DateTime.UtcNow };
+      db.Companies.Add(company);
+      var dep = new CompanyDepartment() { Title = company.Title, Company = company };
+      db.CompanyDepartments.Add(dep);
+
+      //products
+      CompanyLicence schoolManLic = null;
+      foreach (var prodId in new string[] { "/lm/blcourse/schoolmanager.product/", "/lm/prods_lm_blcourse_english/", "/lm/prods_lm_blcourse_french/", "/lm/prods_lm_blcourse_german/" }) {
+        var compLicence = new CompanyLicence() { Company = company, Days = 100, ProductId = prodId, Created = DateTime.UtcNow, LastCounter = 2 };
+        if (schoolManLic == null) schoolManLic = compLicence;
+        db.CompanyLicences.Add(compLicence);
+      }
+
+      db.SaveChanges();
+
+      return new ICreateEmptySchoolResult() {licId = schoolManLic.Id, licCounter = 1 };
+    }
+    public class ICreateEmptySchoolResult {
+      public int licId;
+      public int licCounter;
+    }
+
 
     public static IPrepareNewDataResult prepareNewData(string companyTitle, string id) {
 
       var db = NewData.Lib.CreateContext();
 
-      var fromCompanyId = db.Companies.First(c => c.Title == "Company template").Id;
+      if (fromCompanyId == 0) fromCompanyId = db.Companies.First(c => c.Title == "Company template").Id;
 
       //company
       var company = new Company() { Title = companyTitle, Created = DateTime.UtcNow };
@@ -77,6 +105,7 @@ namespace vyzva {
       };
 
     }
+    static int fromCompanyId;
     public class prepareNewDataTemp {
       public CompanyLicence CompanyLicence;
       public UserLicence UserLicence;

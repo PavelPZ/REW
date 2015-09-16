@@ -8,10 +8,6 @@
   }
 
   export class moduleTaskController extends blended.moduleTaskController {
-    //constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService) {
-    //  super($scope, $state);
-    //}
-    //static $inject = ['$scope', '$state', '$modal'];
   }
 
   export class exerciseViewLow extends blended.exerciseTaskViewController implements IToolbarRun {

@@ -1,9 +1,7 @@
-﻿testovací stránka pro nahrávání a přehrávání
+﻿Lesson exercise:
+- reset cviceni, reset lekce
 
 Help k průchodu cvičením
-
-Lesson exercise:
-- reset cviceni, reset lekce
 
 jak s klíči pro LM lektory šablony č. 3
 

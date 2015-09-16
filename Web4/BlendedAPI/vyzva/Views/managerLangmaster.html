@@ -10,25 +10,26 @@
         <label for="exampleInputEmail2">Pořadové číslo (jsou jím odlišeny emaily uživatelů, musí být proto jednoznačné)</label>
         <input type="text" class="form-control" id="exampleInputEmail2" placeholder="Pořadové číslo" ng-model="ts.uniqueId">
       </div>
-      <button class="btn btn-success" ng-click="::ts.createSchool()">Vygeneruj uživatele</button>
+      <button class="btn btn-success btn-lg" ng-click="::ts.createSchool()">Vygeneruj demo účty</button>
+      <button class="btn btn-success btn-lg" ng-click="::ts.createEmptySchool()">Vygeneruj klíč pro správce</button>
     </form>
   </div>
   <hr />
+  <h3>Vygenerovaný klíč pro správce</h3>
+  {{ts.key}}
+  <hr />
   <h3>Vygenerovaní uživatelé</h3>
-  <p>LANGMaster login je Email (viz tabulka) a heslo='heslo'.</p>
-  <table class="table">
+  <table class="table table-bordered">
     <tr>
-      <td>Email</td>
-      <td>Jméno</td>
-      <td>Příjmení</td>
-      <td>Id</td>
-      <td>Klíč</td>
+      <td>Chci si zkusit</td>
+      <td>Přihlašovací E-mail</td>
+      <td>Přihlašovací heslo</td>
+      <td>Licenční klíč</td>
     </tr>
     <tr ng-repeat="user in ts.allUsers">
-      <td><b>{{user.email}}</b></td>
-      <td>{{user.firstName}}</td>
-      <td>{{user.lastName}}</td>
-      <td>{{user.lmcomId}}</td>
+      <td>{{user.role}}</td>
+      <td>{{user.email}}</td>
+      <td>heslo</td>
       <td>{{user.keyStr}}</td>
     </tr>
   </table>

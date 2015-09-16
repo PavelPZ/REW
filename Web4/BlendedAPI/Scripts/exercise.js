@@ -139,7 +139,7 @@ var blended;
             this.greenArrowRoot = controller.pretestParent ? controller.pretestParent : controller.moduleParent;
             //this.refresh();
             this.isLector = !!controller.ctx.onbehalfof;
-            this.showLectorPanel = !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
+            this.showLectorEvaluateRecordingPanel = !!controller.ctx.onbehalfof && !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
         }
         //ICoursePageCallback
         exerciseService.prototype.onRecorder = function (page, msecs) { if (page != this.page)

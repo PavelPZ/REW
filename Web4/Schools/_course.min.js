@@ -10548,6 +10548,70 @@ var blended;
     var maxDelta = 10 * 60; //10 minut
 })(blended || (blended = {}));
 
+var blended;
+(function (blended) {
+    //export var loadExSimple = ['$stateParams', ($stateParams: blended.learnContext) => {
+    //  blended.finishContext($stateParams);
+    //  return blended.loader.adjustExSimple($stateParams);
+    //}];
+    //********************* SHOW EXERCISES DIRECTIVE
+    var showExerciseModelSimple = (function () {
+        function showExerciseModelSimple() {
+            this.restrict = 'EA';
+            this.link = function (scope, el, attrs) {
+                var exService = scope.exService();
+                scope.$on('onStateChangeSuccess', function (ev) { return exService.onDestroy(el); });
+                exService.onDisplay(el, $.noop);
+            };
+            this.scope = { exService: '&exService' };
+        }
+        return showExerciseModelSimple;
+    })();
+    blended.showExerciseModelSimple = showExerciseModelSimple;
+    blended.rootModule
+        .directive('showExerciseSimple', function () { return new showExerciseModelSimple(); });
+    var exerciseServiceSimple = (function () {
+        function exerciseServiceSimple(pageJsonML, loc, userLongData) {
+            this.pageJsonML = pageJsonML;
+            this.loc = loc;
+            this.userLongData = userLongData;
+        }
+        exerciseServiceSimple.prototype.onDisplay = function (el, completed) {
+            var _this = this;
+            var pg = this.page = CourseMeta.extractEx(this.pageJsonML);
+            Course.localize(pg, function (s) { return CourseMeta.localizeString(pg.url, s, _this.loc); });
+            if (!this.userLongData)
+                this.userLongData = {};
+            this.dataNode = { page: pg, result: this.userLongData };
+            pg.finishCreatePage(this.dataNode);
+            pg.callInitProcs(Course.initPhase.beforeRender, function () {
+                var html = JsRenderTemplateEngine.render("c_gen", pg);
+                CourseMeta.actExPageControl = pg; //na chvili: knockout pro cviceni binduje CourseMeta.actExPageControl
+                ko.cleanNode(el[0]);
+                el.html('');
+                el.html(html);
+                ko.applyBindings({}, el[0]);
+                pg.callInitProcs(Course.initPhase.afterRender, function () {
+                    pg.callInitProcs(Course.initPhase.afterRender2, function () {
+                        completed(pg);
+                    });
+                });
+            });
+        };
+        exerciseServiceSimple.prototype.onDestroy = function (el) {
+            if (this.page.sndPage)
+                this.page.sndPage.htmlClearing();
+            if (this.page.sndPage)
+                this.page.sndPage.leave();
+            ko.cleanNode(el[0]);
+            el.html('');
+            delete (this.dataNode).result;
+        };
+        return exerciseServiceSimple;
+    })();
+    blended.exerciseServiceSimple = exerciseServiceSimple;
+})(blended || (blended = {}));
+
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -10892,6 +10956,18 @@ var vyzva;
     vyzva.vyzva$common$whenproblem = vyzva$common$whenproblem;
     blended.rootModule
         .directive('vyzva$common$whenproblem', ['$modal', function ($modal) { return new vyzva$common$whenproblem($modal); }]);
+    //********** BACK TOP BAR
+    var vyzva$common$backheader = (function () {
+        function vyzva$common$backheader() {
+            this.restrict = 'EA';
+            this.link = function (scope, el, attrs) { return scope.title = attrs['title']; };
+            this.templateUrl = 'vyzva$common$backheader.html';
+        }
+        return vyzva$common$backheader;
+    })();
+    vyzva.vyzva$common$backheader = vyzva$common$backheader;
+    blended.rootModule
+        .directive('vyzva$common$backheader', function () { return new vyzva$common$backheader(); });
 })(vyzva || (vyzva = {}));
 
 var vyzva;
@@ -11024,13 +11100,20 @@ var vyzva;
             this.intranetInfo = intranetInfo;
             this.allUsers = [];
         }
+        managerLangmaster.prototype.createEmptySchool = function () {
+            var _this = this;
+            proxies.vyzva57services.createEmptyCompany(this.schoolTitle, function (emptyResult) {
+                _this.key = keys.toString({ licId: emptyResult.licId, counter: emptyResult.licCounter });
+                _this.$scope.$apply();
+            });
+        };
         managerLangmaster.prototype.createSchool = function () {
             var _this = this;
             proxies.vyzva57services.createDemoCompanyStart(this.schoolTitle, this.uniqueId, function (newDataResult) {
                 vyzva.managerSchool.createCompany(newDataResult.companyId, managerLangmaster.groups, null, function (newComp) {
                     proxies.vyzva57services.loadCompanyData(newDataResult.fromCompanyId, function (str) {
                         //funkce na doplneni klicu vytvorenych na serveru (createDemoCompanyStart) do nove company
-                        var fillCompUserData = function (id, key) {
+                        var fillCompUserData = function (id, role, key) {
                             var userData = _.find(newDataResult.users, function (u) { return Utils.startsWith(u.email, id + '.'); });
                             if (!userData)
                                 return;
@@ -11039,19 +11122,20 @@ var vyzva;
                             key.lastName = userData.lastName;
                             key.email = userData.email;
                             key.lmcomId = userData.lmcomId;
+                            key.role = role;
                             return key;
                         };
                         //4 pouziti studenti v new Company
                         var newUsers = [null, null, null, null];
                         var allUsers = [];
                         //dopln klice a osobnich udaju do new company
-                        _this.allUsers.push(fillCompUserData('spravce', newComp.managerKeys[0]));
-                        _this.allUsers.push(fillCompUserData('ucitel1', newComp.studyGroups[0].lectorKeys[0]));
-                        _this.allUsers.push(fillCompUserData('ucitel2', newComp.studyGroups[1].lectorKeys[0]));
-                        _this.allUsers.push(fillCompUserData('student1', newUsers[0] = newComp.studyGroups[0].studentKeys[0]));
-                        _this.allUsers.push(fillCompUserData('student2', newUsers[1] = newComp.studyGroups[0].studentKeys[1]));
-                        _this.allUsers.push(fillCompUserData('student3', newUsers[2] = newComp.studyGroups[1].studentKeys[0]));
-                        _this.allUsers.push(fillCompUserData('student4', newUsers[3] = newComp.studyGroups[1].studentKeys[1]));
+                        _this.allUsers.push(fillCompUserData('spravce', 'Správce', newComp.managerKeys[0]));
+                        _this.allUsers.push(fillCompUserData('ucitel1', 'Učitele, možnost 1', newComp.studyGroups[0].lectorKeys[0]));
+                        _this.allUsers.push(fillCompUserData('ucitel2', 'Učitele, možnost 2', newComp.studyGroups[1].lectorKeys[0]));
+                        _this.allUsers.push(fillCompUserData('student1', 'Studenta, možnost 1', newUsers[0] = newComp.studyGroups[0].studentKeys[0]));
+                        _this.allUsers.push(fillCompUserData('student2', 'Studenta, možnost 2', newUsers[1] = newComp.studyGroups[0].studentKeys[1]));
+                        _this.allUsers.push(fillCompUserData('student3', 'Studenta, možnost 3', newUsers[2] = newComp.studyGroups[1].studentKeys[0]));
+                        _this.allUsers.push(fillCompUserData('student4', 'Studenta, možnost 4', newUsers[3] = newComp.studyGroups[1].studentKeys[1]));
                         _this.$scope.$apply();
                         //najdi 4 pouzite studenty v zdrojove company
                         var srcComp = (JSON.parse(str));
@@ -11548,6 +11632,13 @@ var vyzva;
             this.user = blended.agregateShorts(users);
             //this.score = blended.scorePercent(this.user);
         }
+        homeViewController.prototype.navigateTestHw = function () {
+            var pars = blended.cloneAndModifyContext(this.ctx, function (ctx) {
+                ctx.url = blended.encodeUrl('/lm/blcourse/english/hwtest/hwtest');
+                ctx.returnurl = location.hash;
+            });
+            this.navigate({ stateName: vyzva.stateNames.testhw.name, pars: pars });
+        };
         homeViewController.prototype.navigateLesson = function (lesson) {
             var _this = this;
             //if (lesson.cannotRun) return;
@@ -11687,6 +11778,26 @@ var vyzva;
         return vyzva$faq$toc;
     })();
     vyzva.vyzva$faq$toc = vyzva$faq$toc;
+})(vyzva || (vyzva = {}));
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var vyzva;
+(function (vyzva) {
+    var testHwController = (function (_super) {
+        __extends(testHwController, _super);
+        function testHwController($scope, $state, $loadedEx) {
+            _super.call(this, $scope, $state);
+            this.exService = new blended.exerciseServiceSimple($loadedEx.pageJsonML, $loadedEx.mod.loc, null);
+        }
+        testHwController.$inject = ['$scope', '$state', '$loadedEx'];
+        return testHwController;
+    })(blended.controller);
+    vyzva.testHwController = testHwController;
 })(vyzva || (vyzva = {}));
 
 var vyzva;
@@ -11834,6 +11945,17 @@ var vyzva;
                                 $intranetInfo: vyzva.loadIntranetInfo(),
                             },
                             childs: [
+                                vyzva.stateNames.testhw = new state({
+                                    name: 'testhw',
+                                    url: "/testhw/:url",
+                                    templateUrl: pageTemplate,
+                                    layoutContentId: 'testHw',
+                                    layoutSpecial: true,
+                                    controller: vyzva.testHwController,
+                                    resolve: {
+                                        $loadedEx: blended.loadEx,
+                                    }
+                                }),
                                 blended.prodStates.home = vyzva.stateNames.home = new state({
                                     name: 'home',
                                     url: "/home",

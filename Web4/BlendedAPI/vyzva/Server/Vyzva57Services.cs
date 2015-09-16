@@ -104,6 +104,11 @@ namespace blended {
     }
 
     //*************** vytvoreni demo company
+    [Route("createEmptyCompany"), HttpGet]
+    public vyzva.PrepareDemoData.ICreateEmptySchoolResult createEmptyCompany(string companyTitle) {
+      return vyzva.PrepareDemoData.createEmptyCompany(companyTitle);
+    }
+
     [Route("createDemoCompanyStart"), HttpGet]
     public vyzva.PrepareDemoData.IPrepareNewDataResult createDemoCompanyStart(string companyTitle, string id) {
       return vyzva.PrepareDemoData.prepareNewData(companyTitle, id);

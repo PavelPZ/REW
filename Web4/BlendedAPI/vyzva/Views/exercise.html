@@ -17,7 +17,7 @@
 </div>
 <div class="container lm-top-margin">
   <div class="instruction" ng-include="'vyzva$exercise$instruction.html'"></div>
-  <div class="ex-lector-panel" ng-if="::ts.ctx.onbehalfof" ng-include="'vyzva$exercise$lector.html'"></div>
+  <div class="ex-lector-panel" ng-if="::exService.showLectorEvaluateRecordingPanel" ng-include="'vyzva$exercise$lector.html'"></div>
   <div class="new-ea lm-top-margin" data-show-exercise="" ex-service="::exService"></div>
 </div>
 <div ng-include="'vyzva$common$copyright.html'"></div>

@@ -170,7 +170,7 @@
     modIdx: number; //index cviceni v modulu
     //lector
     isLector: boolean;
-    showLectorPanel: boolean;
+    showLectorEvaluateRecordingPanel: boolean;
 
     //confirm dialog
     confirmWrongScoreDialog: () => ng.IPromise<any>;
@@ -195,7 +195,7 @@
       this.greenArrowRoot = controller.pretestParent ? controller.pretestParent : controller.moduleParent;
       //this.refresh();
       this.isLector = !!controller.ctx.onbehalfof;
-      this.showLectorPanel = !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
+      this.showLectorEvaluateRecordingPanel = !!controller.ctx.onbehalfof && !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
     }
 
     //ICoursePageCallback

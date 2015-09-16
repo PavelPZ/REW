@@ -168,6 +168,9 @@ module proxies {
     static writeUs(jsondata: string, completed: () => void): void {
 		  invoke('vyzva57services/writeus', 'post', null, JSON.stringify(jsondata), completed);
 	  } 
+    static createEmptyCompany(companytitle: string, completed: (res: {  licId: number;  licCounter: number;  }) => void): void {
+		  invoke('vyzva57services/createemptycompany', 'get', { companytitle: companytitle }, null, completed);
+	  } 
     static createDemoCompanyStart(companytitle: string, id: string, completed: (res: {  fromCompanyId: number;  companyId: number;  users: {  licId: number;  licCounter: number;  lmcomId: number;  email: string;  firstName: string;  lastName: string;  }[];  }) => void): void {
 		  invoke('vyzva57services/createdemocompanystart', 'get', { companytitle: companytitle, id: id }, null, completed);
 	  } 
