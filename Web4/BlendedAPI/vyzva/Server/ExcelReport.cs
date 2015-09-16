@@ -230,7 +230,7 @@ namespace blended {
           ExcelWorksheet ws = pck.Workbook.Worksheets.Add(grp.title);
           var firstFreeRow = 0;
           firstFreeRow = group(ws, firstFreeRow, grp.title, "Licenční klíče pro Studenty", grp.studentKeys);
-          firstFreeRow = group(ws, firstFreeRow, "Návštěvníci", "Licenční klíče pro Návštěvníky", grp.visitorsKeys);
+          firstFreeRow = group(ws, firstFreeRow, "Hosté", "Licenční klíče pro Hosty", grp.visitorsKeys);
           foreach (var colIdx in Enumerable.Range(1, 4)) ws.Column(colIdx).AutoFit(); //automaticka sirka sloupce
           return pck.GetAsByteArray();
         }
@@ -243,11 +243,11 @@ namespace blended {
           foreach (var grp in data.studyGroups) {
             firstFreeRow = group(ws, firstFreeRow, exporter.lineToText(grp.line) + ": " + grp.title, "Licenční klíče pro Učitele", grp.lectorKeys);
             if (includeStudents) firstFreeRow = group(ws, firstFreeRow, null, "Licenční klíče pro Studenty", grp.studentKeys);
-            if (includeStudents) firstFreeRow = group(ws, firstFreeRow, null, "Licenční klíče pro Návštěvníky učitele", grp.visitorsKeys);
+            if (includeStudents) firstFreeRow = group(ws, firstFreeRow, null, "Licenční klíče pro Hosty", grp.visitorsKeys);
           }
           firstFreeRow = group(ws, firstFreeRow, "Další licenční klíče", "Licenční klíče pro Správce", data.managerKeys);
           foreach (var vis in data.visitorsKeys) {
-            firstFreeRow = group(ws, firstFreeRow, "Další licenční klíče", "Licenční klíče pro Návštěvníky (" + exporter.lineToText(vis.line).ToString() + ")", vis.visitorsKeys);
+            firstFreeRow = group(ws, firstFreeRow, "Další licenční klíče", "Licenční klíče pro Hosty (" + exporter.lineToText(vis.line).ToString() + ")", vis.visitorsKeys);
           }
           foreach (var colIdx in Enumerable.Range(1, 4)) ws.Column(colIdx).AutoFit(); //automaticka sirka sloupce
           return pck.GetAsByteArray();

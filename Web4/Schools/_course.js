@@ -10391,13 +10391,12 @@ var blended;
                 _.each(_this.product.nodeList, function (it) { return blended.clearPersistData(it, _this.ctx.taskid); });
                 if (newLevel >= 0) {
                     var course = _this.product;
-                    blended.setPersistData(course.pretest, _this.ctx.taskid, function (d) { d.history = []; d.targetLevel = newLevel; flag: CourseModel.CourseDataFlag.blPretest | CourseModel.CourseDataFlag.done; });
+                    //pretest a prvni pretest item se oznaci DONE. Pak se ukazuje lektorovi moznost opet zmenit pomoci A1 pretest item level
+                    blended.setPersistData(course.pretest, _this.ctx.taskid, function (d) { d.history = [0]; d.targetLevel = newLevel; d.lectorSetTarget = true; d.flag = CourseModel.CourseDataFlag.blPretest | CourseModel.CourseDataFlag.done; });
+                    blended.setPersistData(course.pretest.Items[0], _this.ctx.taskid, function (d) { d.flag = CourseModel.CourseDataFlag.blPretestItem | CourseModel.CourseDataFlag.done; d.actChildIdx = 0; });
                 }
-                _this.controller.navigate({ stateName: blended.prodStates.home.name, pars: _this.ctx });
+                _this.product.saveProduct(_this.controller.ctx, function () { return _this.controller.navigate({ stateName: blended.prodStates.home.name, pars: _this.ctx }); });
             });
-            //if (newLevel < 0) {
-            //} else {
-            //}
         };
         exerciseService.prototype.confirmLesson = function (alow) {
             var _this = this;
@@ -10413,7 +10412,7 @@ var blended;
                     blended.clearPersistData(it, _this.ctx.taskid);
                 });
             }
-            this.controller.navigate({ stateName: blended.prodStates.home.name, pars: this.ctx });
+            this.product.saveProduct(this.controller.ctx, function () { return _this.controller.navigate({ stateName: blended.prodStates.home.name, pars: _this.ctx }); });
         };
         //ICoursePageCallback
         exerciseService.prototype.onRecorder = function (page, msecs) { if (page != this.page)
@@ -10715,7 +10714,10 @@ var blended;
             _super.call(this, node, type, controller, false);
             this.exService = exService;
             this.refresh(this.exService.modIdx);
-            this.exShowPanel = blended.persistUserIsDone(this.agregUser) || this.lessonType != blended.moduleServiceType.pretest;
+            var user = blended.getPersistData(node, controller.ctx.taskid);
+            this.agregUser = $.extend(this.agregUser, user);
+            this.moduleDone = blended.persistUserIsDone(this.agregUser);
+            this.exShowPanel = this.moduleDone || this.lessonType != blended.moduleServiceType.pretest;
         }
         moduleService.prototype.showResult = function () {
             var res = this.exService.user && this.exService.user.short && blended.persistUserIsDone(this.exService.user.short) &&
@@ -10725,7 +10727,6 @@ var blended;
         moduleService.prototype.refresh = function (actExIdx) {
             var _this = this;
             _super.prototype.refresh.call(this, actExIdx);
-            this.moduleDone = blended.persistUserIsDone(this.agregUser);
             this.exNoclickable = this.lessonType == blended.moduleServiceType.test && !this.moduleDone && !this.controller.ctx.onbehalfof;
             _.each(this.exercises, function (ex) {
                 //active item: stejny pro vsechny pripady
@@ -11639,6 +11640,8 @@ var vyzva;
                 if (idx == 0) {
                     res.agregUser = blended.pretestScore((node), nodeUser, _this.ctx.taskid);
                     pretestUser = res.agregUser = $.extend(res.agregUser, nodeUser);
+                    if (_.isNumber(pretestUser.targetLevel) && pretestUser.targetLevel >= 0)
+                        pretestUser.flag = CourseModel.CourseDataFlag.done;
                 }
                 else {
                     res.agregUser = blended.agregateShortFromNodes(res.node, _this.ctx.taskid, false); //vysledek modulu ze cviceni

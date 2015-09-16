@@ -126,14 +126,12 @@ var blended;
                 _.each(_this.product.nodeList, function (it) { return blended.clearPersistData(it, _this.ctx.taskid); });
                 if (newLevel >= 0) {
                     var course = _this.product;
+                    //pretest a prvni pretest item se oznaci DONE. Pak se ukazuje lektorovi moznost opet zmenit pomoci A1 pretest item level
                     blended.setPersistData(course.pretest, _this.ctx.taskid, function (d) { d.history = [0]; d.targetLevel = newLevel; d.lectorSetTarget = true; d.flag = CourseModel.CourseDataFlag.blPretest | CourseModel.CourseDataFlag.done; });
                     blended.setPersistData(course.pretest.Items[0], _this.ctx.taskid, function (d) { d.flag = CourseModel.CourseDataFlag.blPretestItem | CourseModel.CourseDataFlag.done; d.actChildIdx = 0; });
                 }
-                _this.controller.navigate({ stateName: blended.prodStates.home.name, pars: _this.ctx });
+                _this.product.saveProduct(_this.controller.ctx, function () { return _this.controller.navigate({ stateName: blended.prodStates.home.name, pars: _this.ctx }); });
             });
-            //if (newLevel < 0) {
-            //} else {
-            //}
         };
         exerciseService.prototype.confirmLesson = function (alow) {
             var _this = this;
@@ -149,7 +147,7 @@ var blended;
                     blended.clearPersistData(it, _this.ctx.taskid);
                 });
             }
-            this.controller.navigate({ stateName: blended.prodStates.home.name, pars: this.ctx });
+            this.product.saveProduct(this.controller.ctx, function () { return _this.controller.navigate({ stateName: blended.prodStates.home.name, pars: _this.ctx }); });
         };
         //ICoursePageCallback
         exerciseService.prototype.onRecorder = function (page, msecs) { if (page != this.page)

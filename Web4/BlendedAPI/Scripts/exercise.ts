@@ -189,14 +189,12 @@
         _.each(this.product.nodeList, it => clearPersistData(it, this.ctx.taskid));
         if (newLevel >= 0) {
           var course = <vyzva.IBlendedCourseRepository>this.product;
+          //pretest a prvni pretest item se oznaci DONE. Pak se ukazuje lektorovi moznost opet zmenit pomoci A1 pretest item level
           setPersistData<IPretestUser>(course.pretest, this.ctx.taskid, d=> { d.history = [0]; d.targetLevel = newLevel; d.lectorSetTarget = true; d.flag = CourseModel.CourseDataFlag.blPretest | CourseModel.CourseDataFlag.done });
           setPersistData<IModuleUser>(course.pretest.Items[0], this.ctx.taskid, d=> { d.flag = CourseModel.CourseDataFlag.blPretestItem | CourseModel.CourseDataFlag.done; d.actChildIdx = 0; });
         }
-        this.controller.navigate({ stateName: prodStates.home.name, pars: this.ctx });
+        this.product.saveProduct(this.controller.ctx, () => this.controller.navigate({ stateName: prodStates.home.name, pars: this.ctx }));
       });
-      //if (newLevel < 0) {
-      //} else {
-      //}
     }
 
     confirmLesson(alow: boolean) { //newLevel<0 => udelej pretest znova
@@ -210,7 +208,7 @@
           clearPersistData(it, this.ctx.taskid);
         });
       }
-      this.controller.navigate({ stateName: prodStates.home.name, pars: this.ctx });
+      this.product.saveProduct(this.controller.ctx, () => this.controller.navigate({ stateName: prodStates.home.name, pars: this.ctx }));
     }
 
     //ICoursePageCallback
