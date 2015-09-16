@@ -51,7 +51,10 @@
       super(node, type, controller, false);
       this.exService = exService;
       this.refresh(this.exService.modIdx);
-      this.exShowPanel = persistUserIsDone(this.agregUser) || this.lessonType != moduleServiceType.pretest;
+      var user = getPersistData(node, controller.ctx.taskid);
+      this.agregUser = $.extend(this.agregUser, user);
+      this.moduleDone = persistUserIsDone(this.agregUser);
+      this.exShowPanel = this.moduleDone || this.lessonType != moduleServiceType.pretest;
     }
 
     showResult(): boolean {
@@ -62,7 +65,6 @@
 
     refresh(actExIdx: number) {
       super.refresh(actExIdx);
-      this.moduleDone = persistUserIsDone(this.agregUser);
       this.exNoclickable = this.lessonType == moduleServiceType.test && !this.moduleDone && !this.controller.ctx.onbehalfof;
       _.each(this.exercises, ex => {
         //active item: stejny pro vsechny pripady

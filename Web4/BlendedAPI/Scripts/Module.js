@@ -52,7 +52,10 @@ var blended;
             _super.call(this, node, type, controller, false);
             this.exService = exService;
             this.refresh(this.exService.modIdx);
-            this.exShowPanel = blended.persistUserIsDone(this.agregUser) || this.lessonType != blended.moduleServiceType.pretest;
+            var user = blended.getPersistData(node, controller.ctx.taskid);
+            this.agregUser = $.extend(this.agregUser, user);
+            this.moduleDone = blended.persistUserIsDone(this.agregUser);
+            this.exShowPanel = this.moduleDone || this.lessonType != blended.moduleServiceType.pretest;
         }
         moduleService.prototype.showResult = function () {
             var res = this.exService.user && this.exService.user.short && blended.persistUserIsDone(this.exService.user.short) &&
@@ -62,7 +65,6 @@ var blended;
         moduleService.prototype.refresh = function (actExIdx) {
             var _this = this;
             _super.prototype.refresh.call(this, actExIdx);
-            this.moduleDone = blended.persistUserIsDone(this.agregUser);
             this.exNoclickable = this.lessonType == blended.moduleServiceType.test && !this.moduleDone && !this.controller.ctx.onbehalfof;
             _.each(this.exercises, function (ex) {
                 //active item: stejny pro vsechny pripady

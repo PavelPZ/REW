@@ -53,6 +53,8 @@ var vyzva;
                 if (idx == 0) {
                     res.agregUser = blended.pretestScore((node), nodeUser, _this.ctx.taskid);
                     pretestUser = res.agregUser = $.extend(res.agregUser, nodeUser);
+                    if (_.isNumber(pretestUser.targetLevel) && pretestUser.targetLevel >= 0)
+                        pretestUser.flag = CourseModel.CourseDataFlag.done;
                 }
                 else {
                     res.agregUser = blended.agregateShortFromNodes(res.node, _this.ctx.taskid, false); //vysledek modulu ze cviceni

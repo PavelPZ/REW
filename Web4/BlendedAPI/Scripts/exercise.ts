@@ -189,7 +189,8 @@
         _.each(this.product.nodeList, it => clearPersistData(it, this.ctx.taskid));
         if (newLevel >= 0) {
           var course = <vyzva.IBlendedCourseRepository>this.product;
-          setPersistData<IPretestUser>(course.pretest, this.ctx.taskid, d=> { d.history = []; d.targetLevel = newLevel; flag: CourseModel.CourseDataFlag.blPretest | CourseModel.CourseDataFlag.done });
+          setPersistData<IPretestUser>(course.pretest, this.ctx.taskid, d=> { d.history = [0]; d.targetLevel = newLevel; d.lectorSetTarget = true; d.flag = CourseModel.CourseDataFlag.blPretest | CourseModel.CourseDataFlag.done });
+          setPersistData<IModuleUser>(course.pretest.Items[0], this.ctx.taskid, d=> { d.flag = CourseModel.CourseDataFlag.blPretestItem | CourseModel.CourseDataFlag.done; d.actChildIdx = 0; });
         }
         this.controller.navigate({ stateName: prodStates.home.name, pars: this.ctx });
       });

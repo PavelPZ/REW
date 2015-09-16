@@ -9545,6 +9545,15 @@ var blended;
         return res ? res.short : null;
     }
     blended.getPersistData = getPersistData;
+    function clearPersistData(dataNode, taskid) {
+        var it = dataNode.userData ? dataNode.userData[taskid] : null;
+        if (!it)
+            return;
+        it.modified = true;
+        delete it.short;
+        delete it.long;
+    }
+    blended.clearPersistData = clearPersistData;
     function setPersistData(dataNode, taskid, modify) {
         var it = dataNode.userData ? dataNode.userData[taskid] : null;
         if (!it) {
@@ -9553,8 +9562,11 @@ var blended;
                 dataNode.userData = {};
             dataNode.userData[taskid] = it;
         }
-        else
+        else {
+            if (!it.short)
+                it.short = {};
             it.modified = true;
+        }
         modify((it.short));
         return (it.short);
     }
@@ -9598,7 +9610,9 @@ var blended;
                         if (!d.modified)
                             return;
                         d.modified = false;
-                        toSave.push({ url: nd.url, taskId: p, shortData: JSON.stringify(d.short), longData: d.long ? JSON.stringify(d.long) : null, flag: d.short.flag });
+                        toSave.push({ url: nd.url, taskId: p, shortData: d.short ? JSON.stringify(d.short) : null, longData: d.long ? JSON.stringify(d.long) : null, flag: d.short ? d.short.flag : 0 });
+                        if (!d.short)
+                            delete nd.userData[p];
                     }
                     finally {
                         delete p.long;
@@ -9814,6 +9828,9 @@ var blended;
                 var defs = resIt.defereds;
                 delete resIt.defereds;
                 _.each(defs, function (def) { return def.resolve(data); });
+            };
+            cacheOfProducts.prototype.remove = function (ctx) {
+                this.products = _.reject(this.products, function (it) { return it.companyid == ctx.companyid && it.onbehalfof == ctx.userDataId() && it.loc == ctx.loc && it.producturl == ctx.producturl; });
             };
             return cacheOfProducts;
         })();
@@ -10289,6 +10306,7 @@ var blended;
             var modIdx = _.indexOf(this.moduleParent.exercises, this.dataNode);
             this.exService = new exerciseService($loadedEx, $loadedLongData, this, modIdx); //, () => this.confirmWrongScoreDialog());
             this.modService = new blended.moduleService(this.moduleParent.dataNode, this.exService, this.moduleParent.state.moduleType, this);
+            this.exService.modService = this.modService;
             var sc = $scope;
             sc.exService = this.exService;
             sc.modService = this.modService;
@@ -10358,37 +10376,45 @@ var blended;
     //********************* EXERCISE SERVICE
     var exerciseService = (function () {
         function exerciseService(exercise, long, controller, modIdx) {
-            var _this = this;
-            this.controller = controller;
             this.exercise = exercise;
+            this.long = long;
+            this.controller = controller;
             this.modIdx = modIdx;
+            //this.exercise = exercise; this.modIdx = modIdx;
             this.confirmWrongScoreDialog = function () { return controller.confirmWrongScoreDialog(); };
             this.ctx = controller.ctx;
             this.product = controller.productParent.dataNode;
-            this.exType = controller.moduleParent.state.moduleType;
-            this.isTest = this.exType != blended.moduleServiceType.lesson;
-            this.moduleUser = controller.moduleParent.user.short;
-            this.user = blended.getPersistWrapper(exercise.dataNode, this.ctx.taskid, function () {
-                var res = $.extend({}, blended.shortDefault);
-                res.ms = exercise.dataNode.ms;
-                res.flag = CourseModel.CourseDataFlag.ex;
-                if (controller.pretestParent)
-                    res.flag |= CourseModel.CourseDataFlag.blPretestEx;
-                else if (_this.isTest)
-                    res.flag |= CourseModel.CourseDataFlag.testEx;
-                return res;
-            });
-            if (!long) {
-                long = {};
-                this.user.modified = true;
-            }
-            this.user.long = long;
-            this.startTime = Utils.nowToNum();
-            //greenArrowRoot
-            this.greenArrowRoot = controller.pretestParent ? controller.pretestParent : controller.moduleParent;
-            this.lectorMode = !!controller.ctx.onbehalfof && blended.persistUserIsDone(this.user.short);
-            this.lectorCanEvaluateRecording = this.lectorMode && !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
         }
+        exerciseService.prototype.resetPretest = function (newLevel) {
+            var _this = this;
+            proxies.vyzva57services.deleteProduct(this.ctx.companyid, this.ctx.userDataId(), this.ctx.productUrl, this.ctx.taskid, function () {
+                _.each(_this.product.nodeList, function (it) { return blended.clearPersistData(it, _this.ctx.taskid); });
+                if (newLevel >= 0) {
+                    var course = _this.product;
+                    blended.setPersistData(course.pretest, _this.ctx.taskid, function (d) { d.history = []; d.targetLevel = newLevel; flag: CourseModel.CourseDataFlag.blPretest | CourseModel.CourseDataFlag.done; });
+                }
+                _this.controller.navigate({ stateName: blended.prodStates.home.name, pars: _this.ctx });
+            });
+            //if (newLevel < 0) {
+            //} else {
+            //}
+        };
+        exerciseService.prototype.confirmLesson = function (alow) {
+            var _this = this;
+            if (alow) {
+                this.saveLectorEvaluation();
+                blended.setPersistData(this.modService.node, this.ctx.taskid, function (modUser) { return modUser.lectorControlTestOK = true; });
+            }
+            else {
+                blended.clearPersistData(this.modService.node, this.ctx.taskid);
+                _.each(this.modService.node.Items, function (it) {
+                    if (!blended.isEx(it))
+                        return;
+                    blended.clearPersistData(it, _this.ctx.taskid);
+                });
+            }
+            this.controller.navigate({ stateName: blended.prodStates.home.name, pars: this.ctx });
+        };
         //ICoursePageCallback
         exerciseService.prototype.onRecorder = function (page, msecs) { if (page != this.page)
             debugger; this.user.modified = true; if (!this.user.short.sRec)
@@ -10418,12 +10444,33 @@ var blended;
             this.user.short.s = score.s;
             this.user.short.flag = Course.setAgregateFlag(this.user.short.flag, score.flag);
         };
-        //lectorEvaluationScore() { return scorePercent(this.user.short); }
         exerciseService.prototype.score = function () {
             return blended.scorePercent(this.user.short);
         };
         exerciseService.prototype.onDisplay = function (el, completed) {
             var _this = this;
+            this.exType = this.modService.lessonType;
+            this.isTest = this.exType != blended.moduleServiceType.lesson;
+            this.user = blended.getPersistWrapper(this.exercise.dataNode, this.ctx.taskid, function () {
+                var res = $.extend({}, blended.shortDefault);
+                res.ms = _this.exercise.dataNode.ms;
+                res.flag = CourseModel.CourseDataFlag.ex;
+                if (_this.controller.pretestParent)
+                    res.flag |= CourseModel.CourseDataFlag.blPretestEx;
+                else if (_this.isTest)
+                    res.flag |= CourseModel.CourseDataFlag.testEx;
+                return res;
+            });
+            if (!this.long) {
+                this.long = {};
+                this.user.modified = true;
+            }
+            this.user.long = this.long;
+            this.startTime = Utils.nowToNum();
+            //greenArrowRoot
+            this.greenArrowRoot = this.controller.pretestParent ? this.controller.pretestParent : this.controller.moduleParent;
+            this.lectorMode = !!this.ctx.onbehalfof && this.modService.moduleDone;
+            this.lectorCanEvaluateRecording = this.lectorMode && !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
             var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
             if (this.lectorMode)
                 this.page.humanEvalMode = true;
@@ -10452,7 +10499,7 @@ var blended;
                 ko.applyBindings({}, el[0]);
                 pg.callInitProcs(Course.initPhase.afterRender, function () {
                     pg.callInitProcs(Course.initPhase.afterRender2, function () {
-                        if (_this.isTest && blended.persistUserIsDone(_this.user.short) && !blended.persistUserIsDone(_this.moduleUser) && !_this.lectorMode) {
+                        if (_this.isTest && blended.persistUserIsDone(_this.user.short) && !_this.modService.moduleDone && !_this.lectorMode) {
                             //test cviceni nesmi byt (pro nedokonceny test) videt ve vyhodnocenem stavu. Do vyhodnoceneho stav se vrati dalsim klikem na zelenou sipku.
                             blended.persistUserIsDone(_this.user.short, false);
                         }
@@ -10466,14 +10513,16 @@ var blended;
             //elapsed
             var now = Utils.nowToNum();
             var delta = Math.min(maxDelta, Math.round(now - this.startTime));
-            var short = this.user.short;
-            if (!short.elapsed)
-                short.elapsed = 0;
-            short.elapsed += delta;
-            short.end = Utils.nowToNum();
-            this.user.modified = true;
-            if (!blended.persistUserIsDone(this.user.short))
-                this.page.provideData(); //prevzeti poslednich dat z kontrolek cviceni
+            if (this.user.short) {
+                var short = this.user.short;
+                if (!short.elapsed)
+                    short.elapsed = 0;
+                short.elapsed += delta;
+                short.end = Utils.nowToNum();
+                this.user.modified = true;
+                if (!blended.persistUserIsDone(this.user.short))
+                    this.page.provideData(); //prevzeti poslednich dat z kontrolek cviceni
+            }
             //uklid
             if (this.page.sndPage)
                 this.page.sndPage.htmlClearing();
@@ -10637,7 +10686,7 @@ var blended;
     })(blended.exItemContent || (blended.exItemContent = {}));
     var exItemContent = blended.exItemContent;
     var moduleServiceLow = (function () {
-        function moduleServiceLow(node, type, controller, forHome) {
+        function moduleServiceLow(node, type, controller, forHome /*konstruktor pro pouziti service na HOME, jinak ve cviceni*/) {
             this.node = node;
             this.controller = controller;
             this.lessonType = type;
@@ -10655,7 +10704,7 @@ var blended;
                     active: idx == actExIdx
                 };
             });
-            this.user = blended.agregateShortFromNodes(this.node, this.controller.ctx.taskid);
+            this.agregUser = blended.agregateShortFromNodes(this.node, this.controller.ctx.taskid);
         };
         return moduleServiceLow;
     })();
@@ -10666,18 +10715,17 @@ var blended;
             _super.call(this, node, type, controller, false);
             this.exService = exService;
             this.refresh(this.exService.modIdx);
-            this.exShowPanel = blended.persistUserIsDone(this.user) || this.lessonType != blended.moduleServiceType.pretest;
+            this.exShowPanel = blended.persistUserIsDone(this.agregUser) || this.lessonType != blended.moduleServiceType.pretest;
         }
         moduleService.prototype.showResult = function () {
             var res = this.exService.user && this.exService.user.short && blended.persistUserIsDone(this.exService.user.short) &&
                 (this.lessonType == blended.moduleServiceType.lesson || this.moduleDone);
             return res;
         };
-        moduleService.prototype.resetExercise = function () { alert('reset'); };
         moduleService.prototype.refresh = function (actExIdx) {
             var _this = this;
             _super.prototype.refresh.call(this, actExIdx);
-            this.moduleDone = blended.persistUserIsDone(this.user);
+            this.moduleDone = blended.persistUserIsDone(this.agregUser);
             this.exNoclickable = this.lessonType == blended.moduleServiceType.test && !this.moduleDone && !this.controller.ctx.onbehalfof;
             _.each(this.exercises, function (ex) {
                 //active item: stejny pro vsechny pripady
@@ -11583,34 +11631,42 @@ var vyzva;
             var pretestItem;
             var pretestUser;
             var firstNotDoneCheckTestIdx; //index prvnio nehotoveho kontrolniho testu
+            var waitForEvalExists = false;
             var fromNode = function (node, idx) {
                 var res = new homeLesson(node, idx == 0 ? blended.moduleServiceType.pretest : (node.url.indexOf('/test') > 0 ? blended.moduleServiceType.test : blended.moduleServiceType.lesson), _this, true);
                 res.idx = idx;
                 var nodeUser = blended.getPersistData(node, _this.ctx.taskid);
                 if (idx == 0) {
-                    res.user = blended.pretestScore((node), nodeUser, _this.ctx.taskid);
-                    pretestUser = res.user = $.extend(res.user, nodeUser);
+                    res.agregUser = blended.pretestScore((node), nodeUser, _this.ctx.taskid);
+                    pretestUser = res.agregUser = $.extend(res.agregUser, nodeUser);
                 }
                 else {
-                    res.user = blended.agregateShortFromNodes(res.node, _this.ctx.taskid, false);
+                    res.agregUser = blended.agregateShortFromNodes(res.node, _this.ctx.taskid, false); //vysledek modulu ze cviceni
+                    res.agregUser = $.extend(res.agregUser, nodeUser);
                 }
-                res.status = !res.user ? homeLessonStates.no : (blended.persistUserIsDone(res.user) ? homeLessonStates.done : homeLessonStates.entered);
-                //rightButtonType management: vsechny nehotove dej RUN a ev. nastav index prvniho nehotoveho check testu
+                res.status = !res.agregUser ? homeLessonStates.no : (blended.persistUserIsDone(res.agregUser) ? homeLessonStates.done : homeLessonStates.entered);
+                //rightButtonType management: vsechny nehotove testy a lekce dej RUN 
                 if (res.lessonType != blended.moduleServiceType.pretest)
                     res.rightButtonType = res.status == homeLessonStates.done ? rightButtonTypes.preview : rightButtonTypes.run;
-                //vyzkum kontrolniho testu: musi byt ohodnoceny alespon na 75%
+                //nastav index prvniho nehotoveho check testu
                 if (!firstNotDoneCheckTestIdx && res.lessonType == blended.moduleServiceType.test) {
-                    //DEBUG
-                    if (true)
-                        firstNotDoneCheckTestIdx = 999;
-                    else if (res.status != homeLessonStates.done)
-                        firstNotDoneCheckTestIdx = idx;
-                    else if (res.user.waitForEvaluation || res.user.score < 75)
+                    res.agregUser.lectorControlTestOK = nodeUser && nodeUser.lectorControlTestOK;
+                    if (!res.agregUser.lectorControlTestOK)
                         firstNotDoneCheckTestIdx = idx;
                 }
                 //left mark
                 if (res.status == homeLessonStates.done) {
-                    res.leftMarkType = res.lessonType == blended.moduleServiceType.pretest ? leftMarkTypes.pretestLevel : (res.user.waitForEvaluation ? leftMarkTypes.waitForEvaluation : leftMarkTypes.progress);
+                    switch (res.lessonType) {
+                        case blended.moduleServiceType.pretest:
+                            res.leftMarkType = leftMarkTypes.pretestLevel;
+                            break;
+                        case blended.moduleServiceType.test:
+                            if (!res.agregUser.lectorControlTestOK)
+                                waitForEvalExists = true; //hotovy test co neni potvrzen ucitelem => ceka se na vyhodnoceni
+                            res.leftMarkType = !res.agregUser.lectorControlTestOK ? leftMarkTypes.waitForEvaluation : leftMarkTypes.progress;
+                            break;
+                        default: res.leftMarkType = leftMarkTypes.progress;
+                    }
                 }
                 return res;
             };
@@ -11624,19 +11680,18 @@ var vyzva;
             //rightButtonType management: vsechna cviceni za firstNotDoneCheckTestIdx dej rightButtonTypes=no
             for (var i = firstNotDoneCheckTestIdx + 1; i < this.lessons.length; i++)
                 this.lessons[i].rightButtonType = rightButtonTypes.no;
-            //prvni nehotovy node je aktivni (pokud to neni nevyhodnoceny nebo spatne provedeny test)
-            _.find(this.lessons, function (pl) {
-                if (pl.user.waitForEvaluation)
+            //pokud se neceka na vyhodnoceni tak prvni nehotovy node je aktivni
+            if (!waitForEvalExists)
+                _.find(this.lessons, function (pl) {
+                    if (pl.status == homeLessonStates.done)
+                        return false;
+                    pl.active = true;
+                    pl.leftMarkType = leftMarkTypes.active;
                     return true;
-                if (!pl.rightButtonType)
-                    return false;
-                pl.active = true;
-                pl.leftMarkType = leftMarkTypes.active;
-                return true;
-            });
+                });
             //skore za cely kurz
-            var users = _.map(this.lessons, function (l) { return l.user; });
-            this.user = blended.agregateShorts(users);
+            var users = _.map(this.lessons, function (l) { return l.agregUser; });
+            this.agregCourseUser = blended.agregateShorts(users);
             //this.score = blended.scorePercent(this.user);
         }
         homeViewController.prototype.navigateTestHw = function () {

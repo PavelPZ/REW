@@ -42,6 +42,7 @@
         if (idx == 0) {
           res.agregUser = blended.pretestScore(<blended.IPretestRepository>(node), <blended.IPretestUser>nodeUser, this.ctx.taskid);
           pretestUser = res.agregUser = $.extend(res.agregUser, nodeUser);
+          if (_.isNumber(pretestUser.targetLevel) && pretestUser.targetLevel >= 0) pretestUser.flag = CourseModel.CourseDataFlag.done;
         } else {
           res.agregUser = blended.agregateShortFromNodes(res.node, this.ctx.taskid, false); //vysledek modulu ze cviceni
           res.agregUser = $.extend(res.agregUser, nodeUser);

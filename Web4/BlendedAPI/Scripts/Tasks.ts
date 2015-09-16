@@ -256,6 +256,7 @@
     history: Array<levelIds>;
     actLevel: levelIds; //aktualne probirany pretest
     targetLevel: levelIds; //vysledek pretestu pro done=true
+    lectorSetTarget?: boolean; //bysledek pretestu nastavi lektor
   }
 
   export function pretestScore(dataNode: IPretestRepository, user: IPretestUser, taskId:string): IExShort {
