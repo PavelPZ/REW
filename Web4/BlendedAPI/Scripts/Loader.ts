@@ -56,14 +56,21 @@ module blended {
     return res ? res.short : null;
   }
 
+  export function clearPersistData(dataNode: CourseMeta.data, taskid: string) {
+    var it = dataNode.userData ? dataNode.userData[taskid] : null; if (!it) return;
+    it.modified = true; delete it.short; delete it.long;
+  }
+
   export function setPersistData<T>(dataNode: CourseMeta.data, taskid: string, modify: (data: T) => void): T {
     var it = dataNode.userData ? dataNode.userData[taskid] : null;
     if (!it) {
       it = { short: <T>{}, modified: true, long: null };
       if (!dataNode.userData) dataNode.userData = {};
       dataNode.userData[taskid] = it;
-    } else
+    } else {
+      if (!it.short) it.short = {};
       it.modified = true;
+    }
     modify(<T>(it.short));
     return <T>(it.short);
   }
@@ -117,7 +124,8 @@ module blended {
           try {
             var d = nd.userData[p]; if (!d.modified) return;
             d.modified = false;
-            toSave.push({ url: nd.url, taskId: p, shortData: JSON.stringify(d.short), longData: d.long ? JSON.stringify(d.long) : null, flag: d.short.flag });
+            toSave.push({ url: nd.url, taskId: p, shortData: d.short ? JSON.stringify(d.short) : null, longData: d.long ? JSON.stringify(d.long) : null, flag: d.short ? d.short.flag : 0 });
+            if (!d.short) delete nd.userData[p];
           } finally { delete p.long; }
         }
       });
@@ -309,6 +317,9 @@ module blended {
       resolveDefereds(resIt: productCacheItem, data: IProductEx) { //na konci nacteni produktu: resolve vsechny defereds, co na nacteni cekaji
         resIt.data = data; var defs = resIt.defereds; delete resIt.defereds;
         _.each(defs, def => def.resolve(data));
+      }
+      remove(ctx: learnContext) {
+        this.products = _.reject(this.products, it => it.companyid == ctx.companyid && it.onbehalfof == ctx.userDataId() && it.loc == ctx.loc && it.producturl == ctx.producturl);
       }
     }
 

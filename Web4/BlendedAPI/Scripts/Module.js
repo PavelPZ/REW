@@ -23,7 +23,7 @@ var blended;
     })(blended.exItemContent || (blended.exItemContent = {}));
     var exItemContent = blended.exItemContent;
     var moduleServiceLow = (function () {
-        function moduleServiceLow(node, type, controller, forHome) {
+        function moduleServiceLow(node, type, controller, forHome /*konstruktor pro pouziti service na HOME, jinak ve cviceni*/) {
             this.node = node;
             this.controller = controller;
             this.lessonType = type;
@@ -41,7 +41,7 @@ var blended;
                     active: idx == actExIdx
                 };
             });
-            this.user = blended.agregateShortFromNodes(this.node, this.controller.ctx.taskid);
+            this.agregUser = blended.agregateShortFromNodes(this.node, this.controller.ctx.taskid);
         };
         return moduleServiceLow;
     })();
@@ -52,18 +52,17 @@ var blended;
             _super.call(this, node, type, controller, false);
             this.exService = exService;
             this.refresh(this.exService.modIdx);
-            this.exShowPanel = blended.persistUserIsDone(this.user) || this.lessonType != blended.moduleServiceType.pretest;
+            this.exShowPanel = blended.persistUserIsDone(this.agregUser) || this.lessonType != blended.moduleServiceType.pretest;
         }
         moduleService.prototype.showResult = function () {
             var res = this.exService.user && this.exService.user.short && blended.persistUserIsDone(this.exService.user.short) &&
                 (this.lessonType == blended.moduleServiceType.lesson || this.moduleDone);
             return res;
         };
-        moduleService.prototype.resetExercise = function () { alert('reset'); };
         moduleService.prototype.refresh = function (actExIdx) {
             var _this = this;
             _super.prototype.refresh.call(this, actExIdx);
-            this.moduleDone = blended.persistUserIsDone(this.user);
+            this.moduleDone = blended.persistUserIsDone(this.agregUser);
             this.exNoclickable = this.lessonType == blended.moduleServiceType.test && !this.moduleDone && !this.controller.ctx.onbehalfof;
             _.each(this.exercises, function (ex) {
                 //active item: stejny pro vsechny pripady

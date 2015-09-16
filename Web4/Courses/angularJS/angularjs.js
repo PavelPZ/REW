@@ -35,7 +35,7 @@ var angular$course;
         function audiocapture$humaneval($scope) {
             _super.call(this, $scope);
         }
-        audiocapture$humaneval.prototype.visible = function () { return this.exService.isLector && this.exService.isTest; };
+        audiocapture$humaneval.prototype.visible = function () { return this.exService.lectorMode && this.exService.isTest; };
         return audiocapture$humaneval;
     })(controller);
     //Direktiva vznika v:

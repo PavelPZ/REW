@@ -39,7 +39,7 @@ module angular$course {
     constructor($scope: IAngularCourseScope) {
       super($scope);
     }
-    visible() { return this.exService.isLector && this.exService.isTest; }
+    visible() { return this.exService.lectorMode && this.exService.isTest; }
     ctrl: Course.audioCaptureImpl;
   }
 

@@ -17,12 +17,12 @@
 
   export class moduleServiceLow {
     node: CourseMeta.data;
-    user: IExShortAgreg;
+    agregUser: IExShortAgreg;
     controller: controller;
     lessonType: moduleServiceType;
     exercises: Array<IExItemProxy>; //info o vsech cvicenich modulu
     onbehalfof: boolean;
-    constructor(node: CourseMeta.data, type: moduleServiceType, controller: controller, forHome: boolean) {
+    constructor(node: CourseMeta.data, type: moduleServiceType, controller: controller, forHome: boolean /*konstruktor pro pouziti service na HOME, jinak ve cviceni*/) {
       this.node = node; this.controller = controller; this.lessonType = type;
       this.onbehalfof = controller.ctx.onbehalfof > 0;
       if (forHome) this.refresh(0);
@@ -36,22 +36,22 @@
           active: idx == actExIdx
         };
       });
-      this.user = agregateShortFromNodes(this.node, this.controller.ctx.taskid);
+      this.agregUser = agregateShortFromNodes(this.node, this.controller.ctx.taskid);
     }
   }
 
   export class moduleService extends moduleServiceLow {
 
-    exService: exerciseService;
+    exService: exerciseService; //napojeny exercise Service
     //stavy
-    exShowPanel: boolean;
-    exNoclickable: boolean;
-    moduleDone: boolean;
+    exShowPanel: boolean; //packy se cvicenimi, nejsou videt pro nedodelany pretest
+    exNoclickable: boolean; //packy nejsou clickable, pro nehotovy test, co neni v LECTOR modu
+    moduleDone: boolean; //modul je hotov
     constructor(node: CourseMeta.data, exService: exerciseService, type: moduleServiceType, controller: exerciseTaskViewController) {
       super(node, type, controller, false);
       this.exService = exService;
       this.refresh(this.exService.modIdx);
-      this.exShowPanel = persistUserIsDone(this.user) || this.lessonType != moduleServiceType.pretest;
+      this.exShowPanel = persistUserIsDone(this.agregUser) || this.lessonType != moduleServiceType.pretest;
     }
 
     showResult(): boolean {
@@ -60,11 +60,9 @@
       return res;
     }
 
-    resetExercise() { alert('reset'); }
-
     refresh(actExIdx: number) {
       super.refresh(actExIdx);
-      this.moduleDone = persistUserIsDone(this.user);
+      this.moduleDone = persistUserIsDone(this.agregUser);
       this.exNoclickable = this.lessonType == moduleServiceType.test && !this.moduleDone && !this.controller.ctx.onbehalfof;
       _.each(this.exercises, ex => {
         //active item: stejny pro vsechny pripady
@@ -101,7 +99,7 @@
 
   export interface IModuleUser extends IPersistNodeUser { //course dato pro test
     actChildIdx: number;
-    //done: boolean;
+    lectorControlTestOK?: boolean; //lektor oznacil Kontrolni test jako provedeny
   }
   export function moduleIsDone(nd: CourseMeta.data, taskId: string): boolean {
     return !_.find(nd.Items, it => { var itUd = blended.getPersistData<IExShort>(it, taskId); return !persistUserIsDone(itUd); });

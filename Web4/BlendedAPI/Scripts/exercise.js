@@ -41,6 +41,7 @@ var blended;
             var modIdx = _.indexOf(this.moduleParent.exercises, this.dataNode);
             this.exService = new exerciseService($loadedEx, $loadedLongData, this, modIdx); //, () => this.confirmWrongScoreDialog());
             this.modService = new blended.moduleService(this.moduleParent.dataNode, this.exService, this.moduleParent.state.moduleType, this);
+            this.exService.modService = this.modService;
             var sc = $scope;
             sc.exService = this.exService;
             sc.modService = this.modService;
@@ -110,37 +111,45 @@ var blended;
     //********************* EXERCISE SERVICE
     var exerciseService = (function () {
         function exerciseService(exercise, long, controller, modIdx) {
-            var _this = this;
-            this.controller = controller;
             this.exercise = exercise;
+            this.long = long;
+            this.controller = controller;
             this.modIdx = modIdx;
+            //this.exercise = exercise; this.modIdx = modIdx;
             this.confirmWrongScoreDialog = function () { return controller.confirmWrongScoreDialog(); };
             this.ctx = controller.ctx;
             this.product = controller.productParent.dataNode;
-            this.isTest = controller.moduleParent.state.moduleType != blended.moduleServiceType.lesson;
-            this.moduleUser = controller.moduleParent.user.short;
-            this.user = blended.getPersistWrapper(exercise.dataNode, this.ctx.taskid, function () {
-                var res = $.extend({}, blended.shortDefault);
-                res.ms = exercise.dataNode.ms;
-                res.flag = CourseModel.CourseDataFlag.ex;
-                if (controller.pretestParent)
-                    res.flag |= CourseModel.CourseDataFlag.blPretestEx;
-                else if (_this.isTest)
-                    res.flag |= CourseModel.CourseDataFlag.testEx;
-                return res;
-            });
-            if (!long) {
-                long = {};
-                this.user.modified = true;
-            }
-            this.user.long = long;
-            this.startTime = Utils.nowToNum();
-            //greenArrowRoot
-            this.greenArrowRoot = controller.pretestParent ? controller.pretestParent : controller.moduleParent;
-            //this.refresh();
-            this.isLector = !!controller.ctx.onbehalfof;
-            this.showLectorEvaluateRecordingPanel = !!controller.ctx.onbehalfof && !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
         }
+        exerciseService.prototype.resetPretest = function (newLevel) {
+            var _this = this;
+            proxies.vyzva57services.deleteProduct(this.ctx.companyid, this.ctx.userDataId(), this.ctx.productUrl, this.ctx.taskid, function () {
+                _.each(_this.product.nodeList, function (it) { return blended.clearPersistData(it, _this.ctx.taskid); });
+                if (newLevel >= 0) {
+                    var course = _this.product;
+                    blended.setPersistData(course.pretest, _this.ctx.taskid, function (d) { d.history = []; d.targetLevel = newLevel; flag: CourseModel.CourseDataFlag.blPretest | CourseModel.CourseDataFlag.done; });
+                }
+                _this.controller.navigate({ stateName: blended.prodStates.home.name, pars: _this.ctx });
+            });
+            //if (newLevel < 0) {
+            //} else {
+            //}
+        };
+        exerciseService.prototype.confirmLesson = function (alow) {
+            var _this = this;
+            if (alow) {
+                this.saveLectorEvaluation();
+                blended.setPersistData(this.modService.node, this.ctx.taskid, function (modUser) { return modUser.lectorControlTestOK = true; });
+            }
+            else {
+                blended.clearPersistData(this.modService.node, this.ctx.taskid);
+                _.each(this.modService.node.Items, function (it) {
+                    if (!blended.isEx(it))
+                        return;
+                    blended.clearPersistData(it, _this.ctx.taskid);
+                });
+            }
+            this.controller.navigate({ stateName: blended.prodStates.home.name, pars: this.ctx });
+        };
         //ICoursePageCallback
         exerciseService.prototype.onRecorder = function (page, msecs) { if (page != this.page)
             debugger; this.user.modified = true; if (!this.user.short.sRec)
@@ -170,14 +179,35 @@ var blended;
             this.user.short.s = score.s;
             this.user.short.flag = Course.setAgregateFlag(this.user.short.flag, score.flag);
         };
-        //lectorEvaluationScore() { return scorePercent(this.user.short); }
         exerciseService.prototype.score = function () {
             return blended.scorePercent(this.user.short);
         };
         exerciseService.prototype.onDisplay = function (el, completed) {
             var _this = this;
+            this.exType = this.modService.lessonType;
+            this.isTest = this.exType != blended.moduleServiceType.lesson;
+            this.user = blended.getPersistWrapper(this.exercise.dataNode, this.ctx.taskid, function () {
+                var res = $.extend({}, blended.shortDefault);
+                res.ms = _this.exercise.dataNode.ms;
+                res.flag = CourseModel.CourseDataFlag.ex;
+                if (_this.controller.pretestParent)
+                    res.flag |= CourseModel.CourseDataFlag.blPretestEx;
+                else if (_this.isTest)
+                    res.flag |= CourseModel.CourseDataFlag.testEx;
+                return res;
+            });
+            if (!this.long) {
+                this.long = {};
+                this.user.modified = true;
+            }
+            this.user.long = this.long;
+            this.startTime = Utils.nowToNum();
+            //greenArrowRoot
+            this.greenArrowRoot = this.controller.pretestParent ? this.controller.pretestParent : this.controller.moduleParent;
+            this.lectorMode = !!this.ctx.onbehalfof && this.modService.moduleDone;
+            this.lectorCanEvaluateRecording = this.lectorMode && !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
             var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
-            if (this.isLector)
+            if (this.lectorMode)
                 this.page.humanEvalMode = true;
             this.recorder = this;
             pg.blendedExtension = this; //navazani rozsireni na Page
@@ -204,7 +234,7 @@ var blended;
                 ko.applyBindings({}, el[0]);
                 pg.callInitProcs(Course.initPhase.afterRender, function () {
                     pg.callInitProcs(Course.initPhase.afterRender2, function () {
-                        if (_this.isTest && blended.persistUserIsDone(_this.user.short) && !blended.persistUserIsDone(_this.moduleUser) && !_this.isLector) {
+                        if (_this.isTest && blended.persistUserIsDone(_this.user.short) && !_this.modService.moduleDone && !_this.lectorMode) {
                             //test cviceni nesmi byt (pro nedokonceny test) videt ve vyhodnocenem stavu. Do vyhodnoceneho stav se vrati dalsim klikem na zelenou sipku.
                             blended.persistUserIsDone(_this.user.short, false);
                         }
@@ -218,14 +248,16 @@ var blended;
             //elapsed
             var now = Utils.nowToNum();
             var delta = Math.min(maxDelta, Math.round(now - this.startTime));
-            var short = this.user.short;
-            if (!short.elapsed)
-                short.elapsed = 0;
-            short.elapsed += delta;
-            short.end = Utils.nowToNum();
-            this.user.modified = true;
-            if (!blended.persistUserIsDone(this.user.short))
-                this.page.provideData(); //prevzeti poslednich dat z kontrolek cviceni
+            if (this.user.short) {
+                var short = this.user.short;
+                if (!short.elapsed)
+                    short.elapsed = 0;
+                short.elapsed += delta;
+                short.end = Utils.nowToNum();
+                this.user.modified = true;
+                if (!blended.persistUserIsDone(this.user.short))
+                    this.page.provideData(); //prevzeti poslednich dat z kontrolek cviceni
+            }
             //uklid
             if (this.page.sndPage)
                 this.page.sndPage.htmlClearing();

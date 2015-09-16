@@ -5084,7 +5084,7 @@ var Course;
             //Aktivni nahravatko:
             var done = this.done();
             if (this.blended) {
-                this.isDone(this.blended.isLector || (this.blended.isTest && done)); //pro blended je stale mozne nahravat jen pro lekci nebo nehotovy test
+                this.isDone(this.blended.lectorMode || (this.blended.isTest && done)); //pro blended je stale mozne nahravat jen pro lekci nebo nehotovy test
             }
             else
                 this.isDone(done && !this.isPassive); //stale je mozne nahravat pro pasivni RECORD kontrolku
@@ -10365,7 +10365,8 @@ var blended;
             this.confirmWrongScoreDialog = function () { return controller.confirmWrongScoreDialog(); };
             this.ctx = controller.ctx;
             this.product = controller.productParent.dataNode;
-            this.isTest = controller.moduleParent.state.moduleType != blended.moduleServiceType.lesson;
+            this.exType = controller.moduleParent.state.moduleType;
+            this.isTest = this.exType != blended.moduleServiceType.lesson;
             this.moduleUser = controller.moduleParent.user.short;
             this.user = blended.getPersistWrapper(exercise.dataNode, this.ctx.taskid, function () {
                 var res = $.extend({}, blended.shortDefault);
@@ -10385,9 +10386,8 @@ var blended;
             this.startTime = Utils.nowToNum();
             //greenArrowRoot
             this.greenArrowRoot = controller.pretestParent ? controller.pretestParent : controller.moduleParent;
-            //this.refresh();
-            this.isLector = !!controller.ctx.onbehalfof;
-            this.showLectorPanel = !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
+            this.lectorMode = !!controller.ctx.onbehalfof && blended.persistUserIsDone(this.user.short);
+            this.lectorCanEvaluateRecording = this.lectorMode && !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
         }
         //ICoursePageCallback
         exerciseService.prototype.onRecorder = function (page, msecs) { if (page != this.page)
@@ -10425,7 +10425,7 @@ var blended;
         exerciseService.prototype.onDisplay = function (el, completed) {
             var _this = this;
             var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
-            if (this.isLector)
+            if (this.lectorMode)
                 this.page.humanEvalMode = true;
             this.recorder = this;
             pg.blendedExtension = this; //navazani rozsireni na Page
@@ -10452,7 +10452,7 @@ var blended;
                 ko.applyBindings({}, el[0]);
                 pg.callInitProcs(Course.initPhase.afterRender, function () {
                     pg.callInitProcs(Course.initPhase.afterRender2, function () {
-                        if (_this.isTest && blended.persistUserIsDone(_this.user.short) && !blended.persistUserIsDone(_this.moduleUser) && !_this.isLector) {
+                        if (_this.isTest && blended.persistUserIsDone(_this.user.short) && !blended.persistUserIsDone(_this.moduleUser) && !_this.lectorMode) {
                             //test cviceni nesmi byt (pro nedokonceny test) videt ve vyhodnocenem stavu. Do vyhodnoceneho stav se vrati dalsim klikem na zelenou sipku.
                             blended.persistUserIsDone(_this.user.short, false);
                         }
@@ -11595,15 +11595,21 @@ var vyzva;
                     res.user = blended.agregateShortFromNodes(res.node, _this.ctx.taskid, false);
                 }
                 res.status = !res.user ? homeLessonStates.no : (blended.persistUserIsDone(res.user) ? homeLessonStates.done : homeLessonStates.entered);
-                //lesson nejde spustit
-                //res.cannotRun = this.ctx.onbehalfof && res.lessonType != blended.moduleServiceType.lesson && res.status != homeLessonStates.done;
                 //rightButtonType management: vsechny nehotove dej RUN a ev. nastav index prvniho nehotoveho check testu
                 if (res.lessonType != blended.moduleServiceType.pretest)
                     res.rightButtonType = res.status == homeLessonStates.done ? rightButtonTypes.preview : rightButtonTypes.run;
-                if (!firstNotDoneCheckTestIdx && res.lessonType == blended.moduleServiceType.test && res.status != homeLessonStates.done)
-                    firstNotDoneCheckTestIdx = idx;
+                //vyzkum kontrolniho testu: musi byt ohodnoceny alespon na 75%
+                if (!firstNotDoneCheckTestIdx && res.lessonType == blended.moduleServiceType.test) {
+                    //DEBUG
+                    if (true)
+                        firstNotDoneCheckTestIdx = 999;
+                    else if (res.status != homeLessonStates.done)
+                        firstNotDoneCheckTestIdx = idx;
+                    else if (res.user.waitForEvaluation || res.user.score < 75)
+                        firstNotDoneCheckTestIdx = idx;
+                }
                 //left mark
-                if (blended.persistUserIsDone(res.user)) {
+                if (res.status == homeLessonStates.done) {
                     res.leftMarkType = res.lessonType == blended.moduleServiceType.pretest ? leftMarkTypes.pretestLevel : (res.user.waitForEvaluation ? leftMarkTypes.waitForEvaluation : leftMarkTypes.progress);
                 }
                 return res;
@@ -11618,16 +11624,17 @@ var vyzva;
             //rightButtonType management: vsechna cviceni za firstNotDoneCheckTestIdx dej rightButtonTypes=no
             for (var i = firstNotDoneCheckTestIdx + 1; i < this.lessons.length; i++)
                 this.lessons[i].rightButtonType = rightButtonTypes.no;
-            //prvni nehotovy node je aktivni
+            //prvni nehotovy node je aktivni (pokud to neni nevyhodnoceny nebo spatne provedeny test)
             _.find(this.lessons, function (pl) {
-                if (pl.status == homeLessonStates.done)
+                if (pl.user.waitForEvaluation)
+                    return true;
+                if (!pl.rightButtonType)
                     return false;
                 pl.active = true;
                 pl.leftMarkType = leftMarkTypes.active;
                 return true;
             });
             //skore za cely kurz
-            //var users = _.map(_.filter(this.lessons, l => /*l.status == homeLessonStates.done &&*/ l.lessonType != blended.moduleServiceType.pretest), l=> l.user);
             var users = _.map(this.lessons, function (l) { return l.user; });
             this.user = blended.agregateShorts(users);
             //this.score = blended.scorePercent(this.user);

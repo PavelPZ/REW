@@ -177,8 +177,8 @@ module proxies {
     static createDemoCompanyEnd(data: {  fromCompanyId: number;  toCompanyId: number;  users: {  fromLmcomId: number;  toLmLmcomId: number;  }[];  }, completed: () => void): void {
 		  invoke('vyzva57services/createdemocompanyend', 'post', null, JSON.stringify(data), completed);
 	  } 
-    static deleteDataKeys(companyid: number, lmcomid: number, producturl: string, urltaskids: {  url: string;  taskId: string;  }[], completed: () => void): void {
-		  invoke('vyzva57services/deletedatakeys', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, JSON.stringify(urltaskids), completed);
+    static deleteProduct(companyid: number, lmcomid: number, producturl: string, taskid: string, completed: () => void): void {
+		  invoke('vyzva57services/deleteproduct', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl, taskid: taskid }, null, completed);
 	  } 
     static getShortProductDatas(companyid: number, lmcomid: number, producturl: string, completed: (res: {  url: string;  taskId: string;  shortData: string;  }[]) => void): void {
 		  invoke('vyzva57services/getshortproductdatas', 'get', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, null, completed);

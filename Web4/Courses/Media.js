@@ -489,7 +489,7 @@ var Course;
             //Aktivni nahravatko:
             var done = this.done();
             if (this.blended) {
-                this.isDone(this.blended.isLector || (this.blended.isTest && done)); //pro blended je stale mozne nahravat jen pro lekci nebo nehotovy test
+                this.isDone(this.blended.lectorMode || (this.blended.isTest && done)); //pro blended je stale mozne nahravat jen pro lekci nebo nehotovy test
             }
             else
                 this.isDone(done && !this.isPassive); //stale je mozne nahravat pro pasivni RECORD kontrolku

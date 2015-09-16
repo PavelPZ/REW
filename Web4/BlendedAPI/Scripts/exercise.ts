@@ -4,7 +4,7 @@
 
   export interface ICoursePageExtension { //blended rozsireni COURSE kontrolek
     isTest: boolean;
-    isLector: boolean;
+    lectorMode: boolean;
     recorder: ICpeRecorder;
   }
   //*** Audio Capture Callback
@@ -40,6 +40,7 @@
     dones?: number; //pocet hotovych cviceni
     finished?: number; //procento hotovych cviceni
     waitForEvaluation?: boolean; //cviceni ceka na vyhodnoceni
+    lectorControlTestOK?: boolean; //lektor oznacil kontrolni test jako hotovy
   }
 
   export interface IEvaluateResult {
@@ -86,6 +87,7 @@
       var modIdx = _.indexOf(this.moduleParent.exercises, this.dataNode);
       this.exService = new exerciseService($loadedEx, $loadedLongData, this, modIdx);//, () => this.confirmWrongScoreDialog());
       this.modService = new moduleService(this.moduleParent.dataNode, this.exService, this.moduleParent.state.moduleType, this);
+      this.exService.modService = this.modService;
 
       var sc = <IExerciseScope>$scope;
       sc.exService = this.exService;
@@ -154,48 +156,60 @@
   ;
   
   //********************* EXERCISE SERVICE
-  export class exerciseService implements ICoursePageExtension, ICpeRecorder{
+  export class exerciseService implements ICoursePageExtension, ICpeRecorder {
 
     page: Course.Page;
     user: IPersistNodeItem<IExShort>;
     startTime: number; //datum vstupu do stranky
     instructionData: IInstructionData;
-    exercise: cacheExercise;
+    //exercise: cacheExercise;
+    modService: moduleService;
     ctx: learnContext;
     product: IProductEx;
-    isTest: boolean;
+    isTest: boolean; //priznak chovani vnitrku cviceni jako test
     greenArrowRoot: taskController; //manager zelene sipky
     //modul
-    moduleUser: IModuleUser; //short data modulu
-    modIdx: number; //index cviceni v modulu
+    //modIdx: number; //index cviceni v modulu
+    exType: moduleServiceType; //lekce, test, pretest
     //lector
-    isLector: boolean;
-    showLectorEvaluateRecordingPanel: boolean;
+    lectorMode: boolean; //onbehalfof a hotová celá kapitola (kurz, test nebo lekce)
+    lectorCanEvaluateRecording: boolean; //aktivní cvičení a pcCannotEvaluate in flag
 
     //confirm dialog
     confirmWrongScoreDialog: () => ng.IPromise<any>;
 
-    constructor(exercise: cacheExercise, long: IExLong, public controller: exerciseTaskViewController, modIdx: number) {
-      this.exercise = exercise; this.modIdx = modIdx; this.confirmWrongScoreDialog = () => controller.confirmWrongScoreDialog();
+    constructor(public exercise: cacheExercise, public long: IExLong, public controller: exerciseTaskViewController, public modIdx: number) {
+      //this.exercise = exercise; this.modIdx = modIdx;
+      this.confirmWrongScoreDialog = () => controller.confirmWrongScoreDialog();
       this.ctx = controller.ctx; this.product = controller.productParent.dataNode;
-      this.isTest = controller.moduleParent.state.moduleType != blended.moduleServiceType.lesson;
-      this.moduleUser = controller.moduleParent.user.short;
-      this.user = getPersistWrapper<IExShort>(exercise.dataNode, this.ctx.taskid, () => {
-        var res: IExShort = $.extend({}, shortDefault); 
-        res.ms = exercise.dataNode.ms;
-        res.flag = CourseModel.CourseDataFlag.ex;
-        if (controller.pretestParent) res.flag |= CourseModel.CourseDataFlag.blPretestEx;
-        else if (this.isTest) res.flag |= CourseModel.CourseDataFlag.testEx;
-        return res;
+    }
+
+    resetPretest(newLevel: number) { //newLevel<0 => udelej pretest znova
+      proxies.vyzva57services.deleteProduct(this.ctx.companyid, this.ctx.userDataId(), this.ctx.productUrl, this.ctx.taskid, () => {
+        _.each(this.product.nodeList, it => clearPersistData(it, this.ctx.taskid));
+        if (newLevel >= 0) {
+          var course = <vyzva.IBlendedCourseRepository>this.product;
+          setPersistData<IPretestUser>(course.pretest, this.ctx.taskid, d=> { d.history = []; d.targetLevel = newLevel; flag: CourseModel.CourseDataFlag.blPretest | CourseModel.CourseDataFlag.done });
+        }
+        this.controller.navigate({ stateName: prodStates.home.name, pars: this.ctx });
       });
-      if (!long) { long = {}; this.user.modified = true; }
-      this.user.long = long
-      this.startTime = Utils.nowToNum();
-      //greenArrowRoot
-      this.greenArrowRoot = controller.pretestParent ? controller.pretestParent : controller.moduleParent;
-      //this.refresh();
-      this.isLector = !!controller.ctx.onbehalfof;
-      this.showLectorEvaluateRecordingPanel = !!controller.ctx.onbehalfof && !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
+      //if (newLevel < 0) {
+      //} else {
+      //}
+    }
+
+    confirmLesson(alow: boolean) { //newLevel<0 => udelej pretest znova
+      if (alow) {
+        this.saveLectorEvaluation();
+        setPersistData<IModuleUser>(this.modService.node, this.ctx.taskid, modUser => modUser.lectorControlTestOK = true);
+      } else {
+        clearPersistData(this.modService.node, this.ctx.taskid);
+        _.each(this.modService.node.Items, it => {
+          if (!isEx(it)) return;
+          clearPersistData(it, this.ctx.taskid);
+        });
+      }
+      this.controller.navigate({ stateName: prodStates.home.name, pars: this.ctx });
     }
 
     //ICoursePageCallback
@@ -221,16 +235,31 @@
       this.user.short.flag = Course.setAgregateFlag(this.user.short.flag, score.flag);
     }
 
-    //lectorEvaluationScore() { return scorePercent(this.user.short); }
-
     score(): number {
       return blended.scorePercent(this.user.short);
     }
 
     onDisplay(el: ng.IAugmentedJQuery, completed: (pg: Course.Page) => void) {
+      this.exType = this.modService.lessonType;
+      this.isTest = this.exType != blended.moduleServiceType.lesson;
+      this.user = getPersistWrapper<IExShort>(this.exercise.dataNode, this.ctx.taskid, () => {
+        var res: IExShort = $.extend({}, shortDefault);
+        res.ms = this.exercise.dataNode.ms;
+        res.flag = CourseModel.CourseDataFlag.ex;
+        if (this.controller.pretestParent) res.flag |= CourseModel.CourseDataFlag.blPretestEx;
+        else if (this.isTest) res.flag |= CourseModel.CourseDataFlag.testEx;
+        return res;
+      });
+      if (!this.long) { this.long = {}; this.user.modified = true; }
+      this.user.long = this.long
+      this.startTime = Utils.nowToNum();
+      //greenArrowRoot
+      this.greenArrowRoot = this.controller.pretestParent ? this.controller.pretestParent : this.controller.moduleParent;
+      this.lectorMode = !!this.ctx.onbehalfof && this.modService.moduleDone;
+      this.lectorCanEvaluateRecording = this.lectorMode && !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
 
       var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
-      if (this.isLector) this.page.humanEvalMode = true;
+      if (this.lectorMode) this.page.humanEvalMode = true;
       this.recorder = this; pg.blendedExtension = this; //navazani rozsireni na Page
       Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, this.exercise.mod.loc));
       var isGramm = CourseMeta.isType(this.exercise.dataNode, CourseMeta.runtimeType.grammar);
@@ -257,7 +286,7 @@
         ko.applyBindings({}, el[0]);
         pg.callInitProcs(Course.initPhase.afterRender, () => {//inicializace kontrolek, 2
           pg.callInitProcs(Course.initPhase.afterRender2, () => {
-            if (this.isTest && persistUserIsDone(this.user.short) && !persistUserIsDone(this.moduleUser) && !this.isLector) {
+            if (this.isTest && persistUserIsDone(this.user.short) && !this.modService.moduleDone && !this.lectorMode) {
               //test cviceni nesmi byt (pro nedokonceny test) videt ve vyhodnocenem stavu. Do vyhodnoceneho stav se vrati dalsim klikem na zelenou sipku.
               persistUserIsDone(this.user.short, false);
             }
@@ -272,13 +301,14 @@
       //elapsed
       var now = Utils.nowToNum();
       var delta = Math.min(maxDelta, Math.round(now - this.startTime));
-      var short = this.user.short;
-      if (!short.elapsed) short.elapsed = 0;
-      short.elapsed += delta;
-      short.end = Utils.nowToNum();
-      this.user.modified = true;
-
-      if (!persistUserIsDone(this.user.short)) this.page.provideData(); //prevzeti poslednich dat z kontrolek cviceni
+      if (this.user.short) { //muze nastat pri RESET lekce  
+        var short = this.user.short;
+        if (!short.elapsed) short.elapsed = 0;
+        short.elapsed += delta;
+        short.end = Utils.nowToNum();
+        this.user.modified = true;
+        if (!persistUserIsDone(this.user.short)) this.page.provideData(); //prevzeti poslednich dat z kontrolek cviceni
+      }
       //uklid
       if (this.page.sndPage) this.page.sndPage.htmlClearing();
       if (this.page.sndPage) this.page.sndPage.leave();
@@ -311,7 +341,7 @@
         if (!isTest) this.page.acceptData(true);
 
         this.user.modified = true;
-        persistUserIsDone(short, true); 
+        persistUserIsDone(short, true);
         if (this.exercise.dataNode.ms != score.ms) { debugger; def.reject("this.maxScore != score.ms"); return null; }
         short.s = score.s;
         short.flag = Course.setAgregateFlag(short.flag, score.flag);

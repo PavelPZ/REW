@@ -45,28 +45,42 @@ var vyzva;
             var pretestItem;
             var pretestUser;
             var firstNotDoneCheckTestIdx; //index prvnio nehotoveho kontrolniho testu
+            var waitForEvalExists = false;
             var fromNode = function (node, idx) {
                 var res = new homeLesson(node, idx == 0 ? blended.moduleServiceType.pretest : (node.url.indexOf('/test') > 0 ? blended.moduleServiceType.test : blended.moduleServiceType.lesson), _this, true);
                 res.idx = idx;
                 var nodeUser = blended.getPersistData(node, _this.ctx.taskid);
                 if (idx == 0) {
-                    res.user = blended.pretestScore((node), nodeUser, _this.ctx.taskid);
-                    pretestUser = res.user = $.extend(res.user, nodeUser);
+                    res.agregUser = blended.pretestScore((node), nodeUser, _this.ctx.taskid);
+                    pretestUser = res.agregUser = $.extend(res.agregUser, nodeUser);
                 }
                 else {
-                    res.user = blended.agregateShortFromNodes(res.node, _this.ctx.taskid, false);
+                    res.agregUser = blended.agregateShortFromNodes(res.node, _this.ctx.taskid, false); //vysledek modulu ze cviceni
+                    res.agregUser = $.extend(res.agregUser, nodeUser);
                 }
-                res.status = !res.user ? homeLessonStates.no : (blended.persistUserIsDone(res.user) ? homeLessonStates.done : homeLessonStates.entered);
-                //lesson nejde spustit
-                //res.cannotRun = this.ctx.onbehalfof && res.lessonType != blended.moduleServiceType.lesson && res.status != homeLessonStates.done;
-                //rightButtonType management: vsechny nehotove dej RUN a ev. nastav index prvniho nehotoveho check testu
+                res.status = !res.agregUser ? homeLessonStates.no : (blended.persistUserIsDone(res.agregUser) ? homeLessonStates.done : homeLessonStates.entered);
+                //rightButtonType management: vsechny nehotove testy a lekce dej RUN 
                 if (res.lessonType != blended.moduleServiceType.pretest)
                     res.rightButtonType = res.status == homeLessonStates.done ? rightButtonTypes.preview : rightButtonTypes.run;
-                if (!firstNotDoneCheckTestIdx && res.lessonType == blended.moduleServiceType.test && res.status != homeLessonStates.done)
-                    firstNotDoneCheckTestIdx = idx;
+                //nastav index prvniho nehotoveho check testu
+                if (!firstNotDoneCheckTestIdx && res.lessonType == blended.moduleServiceType.test) {
+                    res.agregUser.lectorControlTestOK = nodeUser && nodeUser.lectorControlTestOK;
+                    if (!res.agregUser.lectorControlTestOK)
+                        firstNotDoneCheckTestIdx = idx;
+                }
                 //left mark
-                if (blended.persistUserIsDone(res.user)) {
-                    res.leftMarkType = res.lessonType == blended.moduleServiceType.pretest ? leftMarkTypes.pretestLevel : (res.user.waitForEvaluation ? leftMarkTypes.waitForEvaluation : leftMarkTypes.progress);
+                if (res.status == homeLessonStates.done) {
+                    switch (res.lessonType) {
+                        case blended.moduleServiceType.pretest:
+                            res.leftMarkType = leftMarkTypes.pretestLevel;
+                            break;
+                        case blended.moduleServiceType.test:
+                            if (!res.agregUser.lectorControlTestOK)
+                                waitForEvalExists = true; //hotovy test co neni potvrzen ucitelem => ceka se na vyhodnoceni
+                            res.leftMarkType = !res.agregUser.lectorControlTestOK ? leftMarkTypes.waitForEvaluation : leftMarkTypes.progress;
+                            break;
+                        default: res.leftMarkType = leftMarkTypes.progress;
+                    }
                 }
                 return res;
             };
@@ -80,18 +94,18 @@ var vyzva;
             //rightButtonType management: vsechna cviceni za firstNotDoneCheckTestIdx dej rightButtonTypes=no
             for (var i = firstNotDoneCheckTestIdx + 1; i < this.lessons.length; i++)
                 this.lessons[i].rightButtonType = rightButtonTypes.no;
-            //prvni nehotovy node je aktivni
-            _.find(this.lessons, function (pl) {
-                if (pl.status == homeLessonStates.done)
-                    return false;
-                pl.active = true;
-                pl.leftMarkType = leftMarkTypes.active;
-                return true;
-            });
+            //pokud se neceka na vyhodnoceni tak prvni nehotovy node je aktivni
+            if (!waitForEvalExists)
+                _.find(this.lessons, function (pl) {
+                    if (pl.status == homeLessonStates.done)
+                        return false;
+                    pl.active = true;
+                    pl.leftMarkType = leftMarkTypes.active;
+                    return true;
+                });
             //skore za cely kurz
-            //var users = _.map(_.filter(this.lessons, l => /*l.status == homeLessonStates.done &&*/ l.lessonType != blended.moduleServiceType.pretest), l=> l.user);
-            var users = _.map(this.lessons, function (l) { return l.user; });
-            this.user = blended.agregateShorts(users);
+            var users = _.map(this.lessons, function (l) { return l.agregUser; });
+            this.agregCourseUser = blended.agregateShorts(users);
             //this.score = blended.scorePercent(this.user);
         }
         homeViewController.prototype.navigateTestHw = function () {

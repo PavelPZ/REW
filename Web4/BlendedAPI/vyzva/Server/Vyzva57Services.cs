@@ -120,15 +120,23 @@ namespace blended {
     }
 
     //***************************  SCORM
-    public class IResetData {
-      public string url;
-      public string taskId;
-    }
-    [Route("deleteDataKeys"), HttpPost]
-    public void deleteDataKeys(int companyid, long lmcomId, string productUrl, [FromBody]IResetData[] urlTaskIds) {
+    [Route("deleteProduct"), HttpPost]
+    public void deleteProduct(int companyid, long lmcomId, string productUrl, string taskId) {
       var db = blendedData.Lib.CreateContext();
+      db.CourseDatas.RemoveRange(db.CourseDatas.Where(cd => cd.CourseUser.CompanyId == companyid && cd.CourseUser.LMComId == lmcomId && cd.CourseUser.ProductUrl == productUrl && cd.TaskId==taskId));
       blendedData.Lib.SaveChanges(db);
     }
+
+
+    //public class IResetData {
+    //  public string url;
+    //  public string taskId;
+    //}
+    //[Route("deleteDataKeys"), HttpPost]
+    //public void deleteDataKeys(int companyid, long lmcomId, string productUrl, [FromBody]IResetData[] urlTaskIds) {
+    //  var db = blendedData.Lib.CreateContext();
+    //  blendedData.Lib.SaveChanges(db);
+    //}
 
     public class ILoadShortData {
       public string url;
@@ -170,6 +178,7 @@ namespace blended {
       if (courseUser == null) db.CourseUsers.Add(courseUser = new blendedData.CourseUser() { CompanyId = companyid, LMComId = lmcomId, ProductUrl = productUrl });
       foreach (var dt in data) {
         var courseData = courseUser.CourseDatas.FirstOrDefault(cd => cd.Key == dt.url && cd.TaskId == dt.taskId);
+        if (courseData != null && dt.shortData == null) { db.CourseDatas.Remove(courseData); continue; }
         if (courseData == null) db.CourseDatas.Add(courseData = new blendedData.CourseData() { CourseUser = courseUser, Key = dt.url, TaskId = dt.taskId });
         courseData.ShortData = dt.shortData; courseData.Data = dt.longData; courseData.Flags = (long)dt.flag;
       }

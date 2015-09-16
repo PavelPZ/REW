@@ -32,6 +32,15 @@ var blended;
         return res ? res.short : null;
     }
     blended.getPersistData = getPersistData;
+    function clearPersistData(dataNode, taskid) {
+        var it = dataNode.userData ? dataNode.userData[taskid] : null;
+        if (!it)
+            return;
+        it.modified = true;
+        delete it.short;
+        delete it.long;
+    }
+    blended.clearPersistData = clearPersistData;
     function setPersistData(dataNode, taskid, modify) {
         var it = dataNode.userData ? dataNode.userData[taskid] : null;
         if (!it) {
@@ -40,8 +49,11 @@ var blended;
                 dataNode.userData = {};
             dataNode.userData[taskid] = it;
         }
-        else
+        else {
+            if (!it.short)
+                it.short = {};
             it.modified = true;
+        }
         modify((it.short));
         return (it.short);
     }
@@ -85,7 +97,9 @@ var blended;
                         if (!d.modified)
                             return;
                         d.modified = false;
-                        toSave.push({ url: nd.url, taskId: p, shortData: JSON.stringify(d.short), longData: d.long ? JSON.stringify(d.long) : null, flag: d.short.flag });
+                        toSave.push({ url: nd.url, taskId: p, shortData: d.short ? JSON.stringify(d.short) : null, longData: d.long ? JSON.stringify(d.long) : null, flag: d.short ? d.short.flag : 0 });
+                        if (!d.short)
+                            delete nd.userData[p];
                     }
                     finally {
                         delete p.long;
@@ -301,6 +315,9 @@ var blended;
                 var defs = resIt.defereds;
                 delete resIt.defereds;
                 _.each(defs, function (def) { return def.resolve(data); });
+            };
+            cacheOfProducts.prototype.remove = function (ctx) {
+                this.products = _.reject(this.products, function (it) { return it.companyid == ctx.companyid && it.onbehalfof == ctx.userDataId() && it.loc == ctx.loc && it.producturl == ctx.producturl; });
             };
             return cacheOfProducts;
         })();
