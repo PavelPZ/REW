@@ -126,7 +126,7 @@
           res.ms += nd.ms;
         }
       }
-      if (us) { //elapsed, beg a end zapocitej vzdy
+      if (us && us.short) { //elapsed, beg a end zapocitej vzdy
         res.beg = setDate(res.beg, us.short.beg, true); res.end = setDate(res.end, us.short.end, false);
         res.elapsed += us.short.elapsed;
         res.sPlay += us.short.sPlay; res.sPRec += us.short.sPRec; res.sRec += us.short.sRec;

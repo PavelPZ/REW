@@ -48,44 +48,24 @@ namespace blendedMeta {
       if (uless != null) return; upart.ulessons[lesson.idx] = uless = new uModule(lesson); uless.copyFrom(umodule);
     }
 
-    public static void addEx(uDoneModules modules, uEx uex) {
+    public static void addEx(uDoneModules umodules, uEx uex) {
       ex ex = exercises[uex.url];
-      uModule umod;
-      if (!modules.umodules.TryGetValue(ex.module, out umod)) modules.umodules.Add(ex.module, umod = new uModule(ex.module));
+      uModule umod; var urlUser = new urlUser() {lmcomId = uex.lmcomId, url = ex.module.data.url };
+      if (!umodules.umodules.TryGetValue(urlUser, out umod)) umodules.umodules.Add(urlUser, umod = new uModule(ex.module));
       umod.addEx(uex);
     }
-    //public static void addEx(uProducts uproducts, userEx uex) {
-    //  ex ex = exercises[uex.url];
-    //  var uprod = adjustProduct(uproducts, ex.product, uex.lmcomId);
-
-    //  if (ex.pretest != null) {
-    //    if (uprod.upretest == null) uprod.upretest = new uPretest() { pretest = ex.pretest };
-    //    uprod.upretest.addEx(uex);
-    //    return;
-    //  }
-    //  if (ex.startTest != null) {
-    //    if (uprod.ustartTest == null) uprod.ustartTest = new uModule(ex.startTest);
-    //    uprod.ustartTest.addEx(uex);
-    //    return;
-    //  }
-    //  uPart upart = uprod.uparts[ex.part.number];
-    //  if (upart == null) uprod.uparts[ex.part.number] = upart = new uPart() { part = ex.part };
-    //  if (ex.test != null) {
-    //    if (upart.utest == null) upart.utest = new uModule(ex.test);
-    //    upart.utest.addEx(uex);
-    //    return;
-    //  }
-    //  uModule uless = upart.ulessons[ex.lesson.idx];
-    //  if (uless == null) upart.ulessons[ex.lesson.idx] = uless = new uModule(ex.lesson);
-    //  uless.addEx(uex);
-    //}
   }
 
   public struct lineUser { public lineUser(LineIds line, long lmcomId) { this.line = line; this.lmcomId = lmcomId; } public LineIds line; public long lmcomId; }
-
   public class lineUserEqualityComparer : IEqualityComparer<lineUser> {
     public int GetHashCode(lineUser lu) { return LowUtils.computeHashCode(lu.line, lu.lmcomId); }
     public bool Equals(lineUser lu1, lineUser lu2) { return lu1.line == lu2.line && lu1.lmcomId == lu2.lmcomId; }
+  }
+
+  public struct urlUser { public urlUser(string url, long lmcomId) { this.url = url; this.lmcomId = lmcomId; } public string url; public long lmcomId; }
+  public class urlUserEqualityComparer : IEqualityComparer<urlUser> {
+    public int GetHashCode(urlUser lu) { return LowUtils.computeHashCode(lu.url, lu.lmcomId); }
+    public bool Equals(urlUser lu1, urlUser lu2) { return lu1.url == lu2.url && lu1.lmcomId == lu2.lmcomId; }
   }
 
   //*************************** 
@@ -96,7 +76,7 @@ namespace blendedMeta {
   }
 
   public class uDoneModules {
-    public Dictionary<module, uModule> umodules = new Dictionary<module, uModule>();
+    public Dictionary<urlUser, uModule> umodules = new Dictionary<urlUser, uModule>();
   }
 
   public class uProduct : userBase {
@@ -145,6 +125,7 @@ namespace blendedMeta {
     }
     public void addEx(uEx ex) {
       //if (lmcomId>0 && lmcomId!=ex.lmcomId) ;
+      exCount++;
       lmcomId = ex.lmcomId;
       ms += ex.ms; s += ex.s; elapsed += ex.elapsed;
       sPlay += ex.sPlay; sRec += ex.sRec; sPRec += ex.sPRec;
@@ -153,6 +134,7 @@ namespace blendedMeta {
       return (flag & CourseModel.CourseDataFlag.done) != 0;
     }
     //---
+    public int exCount;
     public module module;
   }
 
@@ -174,6 +156,7 @@ namespace blendedMeta {
     public int sPlay; //prehrany nas zvuk (sec)
     public int sRec; //nahrany zvuk  (sec)
     public int sPRec; //prehrano nahravek (sec)
+
     public void copyFrom(userBase from) {
       ms = from.ms; s = from.s; flag = from.flag; elapsed = from.elapsed; beg = from.beg; end = from.end; sPlay = from.sPlay; sRec = from.sRec; sPRec = from.sPRec;
     }
@@ -236,10 +219,12 @@ namespace blendedMeta {
         foreach (var less in part.lessons) less.setOrder(cnt++);
         part.test.setOrder(cnt++);
       }
+      exCount = startTest.exCount + parts.Sum(p => p.exCount);
     }
     public int lev; //identifikace level, 0,1,2,3
     public startTest startTest;
     public part[] parts; //etapy vyuky
+    public int exCount; //pocet cviceni
   }
   public class part : productHolder { //jedna etapa vyuky
     public part(CourseMeta.data[] datas, product product, level level, int number) : base(null, product) {
@@ -247,19 +232,23 @@ namespace blendedMeta {
       int cnt = 0;
       lessons = datas.Take(3).Select(data => new lesson(data, product, level, this, cnt++)).ToArray();
       test = new test(datas.Skip(3).First(), product, level, this);
+      exCount = test.exCount + lessons.Sum(l => l.exCount);
     }
     public int number; //cislo etapy, 0,1,2,3
     public lesson[] lessons; //3 lekce 
     public test test; //test
+    public int exCount; //pocet cviceni
   }
   public class module : partLevelHolder {
     public module(CourseMeta.data data, product product, level level = null, part part = null) : base(data, product, level, part) {
       MetaInfo.modAndPretests.Add(data.url, this);
       exs = data.Items.Select(it => new ex(it, product, level, part, this)).ToArray();
+      exCount = exs.Length;
     }
     public void setOrder(int idx) { order = (idx < 10 ? " " + idx.ToString() : idx.ToString()) + ". "; }
     public string order = "  "; //textovy order aby napr. v reportech fungovalo alphabeticke trideni
     public ex[] exs;
+    public int exCount; //pocet cviceni
   }
   public class lesson : module {
     public lesson(data data, product product, level level, part part, int idx) : base(data, product, level, part) {

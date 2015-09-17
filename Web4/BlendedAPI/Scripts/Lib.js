@@ -130,7 +130,7 @@ var blended;
                     res.ms += nd.ms;
                 }
             }
-            if (us) {
+            if (us && us.short) {
                 res.beg = setDate(res.beg, us.short.beg, true);
                 res.end = setDate(res.end, us.short.end, false);
                 res.elapsed += us.short.elapsed;

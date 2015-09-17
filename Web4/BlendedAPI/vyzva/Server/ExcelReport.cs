@@ -23,7 +23,6 @@ namespace blended {
       public reportType type;
       public int companyId;
       public bool managerIncludeStudents;
-      //public bool isStudyAll;
       public int groupId;
     }
 
@@ -114,7 +113,7 @@ namespace blended {
 
       static IEnumerable<object[]> exportStudyBlocks(exporter e) {
         //nacti z CourseData pretesty, hotove lekce nebo vyhodnocene testy:
-        long validTypes = (long)(CourseModel.CourseDataFlag.blLesson | CourseModel.CourseDataFlag.blTest | CourseModel.CourseDataFlag.blPretest);
+        long validTypes = (long)(CourseModel.CourseDataFlag.blLesson | CourseModel.CourseDataFlag.blTest); // | CourseModel.CourseDataFlag.blPretest);
         var query = e.db.CourseDatas.
           Where(cd =>
             cd.CourseUser.CompanyId == e.companyId &&
@@ -186,12 +185,14 @@ namespace blended {
           }).
           ToArray();
         //merge user data s product sitemap
-        var umodules = new blendedMeta.uDoneModules();
-        foreach (var ex in allExercises) blendedMeta.MetaInfo.addEx(umodules, ex); //zatrideni existujicich dat
+        var umodulesObj = new blendedMeta.uDoneModules();
+        foreach (var uex in allExercises) blendedMeta.MetaInfo.addEx(umodulesObj, uex); //zatrideni existujicich dat
 
-        var sourceData = umodules.umodules.Values.ToArray();
-        return lib.emptyAndHeader(sourceData).Select(t => {
-          IAlocatedKey usr = null; if (t != null) {
+        var umodules = umodulesObj.umodules.Values.ToArray();
+        return lib.emptyAndHeader(umodules).Select(t => {
+          IAlocatedKey usr = null;
+          if (t != null) {
+            if (t.module.level == null) return null; //pretest modul nema level
             e.courseUsers.TryGetValue(new lineUser(t.module.product.line, t.lmcomId), out usr);
             if (usr == null) return null;
           }
@@ -202,6 +203,8 @@ namespace blended {
               t==null ? "_studyGroup" : usr._myGroup.title + " (učitel " + lector.firstName + " " + lector.lastName + ")",
               t==null ? "_course" : exporter.lineToText(t.module.product.line),
               t==null ? "_level" : e.levelToText(lev),
+              t==null ? (object)"_exerciseCount" : t.exCount,
+              t==null ? (object)"_exerciseSum" : t.module.level.exCount,
               t==null ? "_lesson" : t.module.order + t.module.data.title,
               t==null ? (object)"_maxScore" : t.ms,//new lib.formatedValue(Math.Round(t.ms==0 ? -1 : (decimal)t.s / t.ms, 2), lib.cellFormat.percent),
               t==null ? (object)"_score" : t.s,
