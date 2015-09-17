@@ -107,6 +107,29 @@ var blended;
         return res;
     }
     blended.agregateShorts = agregateShorts;
+    function agregateAutoHuman(node, taskId) {
+        var res = { auto: { ms: 0, s: 0, score: 0 }, human: { ms: 0, s: 0, score: 0 } };
+        _.each(node.Items, function (nd) {
+            if (!blended.isEx(nd))
+                return;
+            var us = blended.getPersistWrapper(nd, taskId);
+            var done = us && blended.persistUserIsDone(us.short);
+            if (!done || !nd.ms)
+                return;
+            if (!!(us.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate)) {
+                res.human.ms += nd.ms;
+                res.human.s += us.short.s;
+            }
+            else {
+                res.auto.ms += nd.ms;
+                res.auto.s += us.short.s;
+            }
+        });
+        res.auto.score = res.auto.ms ? Math.round(res.auto.s / res.auto.ms * 100) : -1;
+        res.human.score = res.human.ms ? Math.round(res.human.s / res.human.ms * 100) : -1;
+        return res;
+    }
+    blended.agregateAutoHuman = agregateAutoHuman;
     function agregateShortFromNodes(node, taskId, moduleAlowFinishWhenUndone /*do vyhodnoceni zahrn i nehotova cviceni*/) {
         var res = $.extend({}, blended.shortDefaultAgreg);
         blended.persistUserIsDone(res, true);

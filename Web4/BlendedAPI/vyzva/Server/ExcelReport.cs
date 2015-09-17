@@ -113,7 +113,7 @@ namespace blended {
 
       static IEnumerable<object[]> exportStudyBlocks(exporter e) {
         //nacti z CourseData pretesty, hotove lekce nebo vyhodnocene testy:
-        long validTypes = (long)(CourseModel.CourseDataFlag.blLesson | CourseModel.CourseDataFlag.blTest); // | CourseModel.CourseDataFlag.blPretest);
+        long validTypes = (long)(CourseModel.CourseDataFlag.blLesson | CourseModel.CourseDataFlag.blTest | CourseModel.CourseDataFlag.blPretest);
         var query = e.db.CourseDatas.
           Where(cd =>
             cd.CourseUser.CompanyId == e.companyId &&

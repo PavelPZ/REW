@@ -108,6 +108,24 @@
     res.finished = blended.donesPercent(res);
     return res;
   }
+  export interface IAutoHumanResult{ auto: IExShortAgreg, human: IExShortAgreg; }
+  export function agregateAutoHuman(node: CourseMeta.data, taskId: string): IAutoHumanResult {
+    var res: IAutoHumanResult = <any>{ auto: { ms: 0, s: 0, score: 0 }, human: { ms: 0, s: 0, score: 0 } };
+    _.each(node.Items, nd => {
+      if (!isEx(nd)) return;
+      var us = getPersistWrapper<IExShortAgreg>(nd, taskId);
+      var done = us && persistUserIsDone(us.short);
+      if (!done || !nd.ms) return;
+      if (!!(us.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate)) {
+        res.human.ms += nd.ms; res.human.s += us.short.s;
+      } else {
+        res.auto.ms += nd.ms; res.auto.s += us.short.s;
+      }
+    })
+    res.auto.score = res.auto.ms ? Math.round(res.auto.s / res.auto.ms * 100) : -1;
+    res.human.score = res.human.ms ? Math.round(res.human.s / res.human.ms * 100) : -1;
+    return res;
+  }
   export function agregateShortFromNodes(node: CourseMeta.data, taskId: string, moduleAlowFinishWhenUndone?: boolean /*do vyhodnoceni zahrn i nehotova cviceni*/): IExShortAgreg {
     var res: IExShortAgreg = $.extend({}, shortDefaultAgreg);
     persistUserIsDone(res, true);

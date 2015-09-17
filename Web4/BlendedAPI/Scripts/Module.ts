@@ -47,20 +47,15 @@
     exShowPanel: boolean; //packy se cvicenimi, nejsou videt pro nedodelany pretest
     exNoclickable: boolean; //packy nejsou clickable, pro nehotovy test, co neni v LECTOR modu
     moduleDone: boolean; //modul je hotov
+
     constructor(node: CourseMeta.data, exService: exerciseService, type: moduleServiceType, controller: exerciseTaskViewController) {
       super(node, type, controller, false);
       this.exService = exService;
-      this.refresh(this.exService.modIdx);
       var user = getPersistData(node, controller.ctx.taskid);
+      this.moduleDone = persistUserIsDone(user);
+      this.refresh(this.exService.modIdx);
       this.agregUser = $.extend(this.agregUser, user);
-      this.moduleDone = persistUserIsDone(this.agregUser);
       this.exShowPanel = this.moduleDone || this.lessonType != moduleServiceType.pretest;
-    }
-
-    showResult(): boolean {
-      var res = this.exService.user && this.exService.user.short && persistUserIsDone(this.exService.user.short) &&
-        (this.lessonType == blended.moduleServiceType.lesson || this.moduleDone);
-      return res;
     }
 
     refresh(actExIdx: number) {
@@ -88,6 +83,12 @@
         }
       });
     } 
+
+    showResult(): boolean {
+      var res = this.exService.user && this.exService.user.short && persistUserIsDone(this.exService.user.short) &&
+        (this.lessonType == blended.moduleServiceType.lesson || this.moduleDone);
+      return res;
+    }
 
     //skok na jine cviceni, napr. v module map panelu 
     navigateExercise(idx: number) {

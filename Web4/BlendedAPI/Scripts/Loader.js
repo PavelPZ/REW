@@ -14,7 +14,7 @@ var blended;
             if (!dataNode.userData)
                 dataNode.userData = {};
             var res = dataNode.userData[taskid];
-            if (res)
+            if (res && res.short)
                 return res;
             res = { long: null, short: createProc(), modified: true };
             dataNode.userData[taskid] = res;

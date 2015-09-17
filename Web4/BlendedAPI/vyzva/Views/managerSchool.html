@@ -10,14 +10,14 @@
         <div class="help-close" ng-click="managerhelponstart.collapseToogle()"><i class="fa fa-times"></i></div>
         <div class="row">
           <div class="col-sm-6">
-            Postupně přidávejte <i>Studijní skupiny</i> pro Vaše <i>Studenty</i> (šablona č. 4) a <i>Studující učitele</i> (šablona č. 3). Upravte jim <b>Název studijní skupiny</b> a <b>Počet studentů</b><br />
-            Pro <i>Studující učitele</i> přidejte pouze jednu <i>Studijní skupinu</i> na kurz (například všichni učitelé, co budou studovat angličtinu, budou v jedné <i>Studijní skupině</i>).
+            Postupně přidávejte <i>Studijní skupiny</i> pro vaše <i>Studenty</i> (šablona č. 4) a <i>Studující učitele</i> (šablona č. 3). Upravte jim <b>Název studijní skupiny</b> a <b>Počet studentů</b><br />
+            Pro <i>Studující učitele</i> přidejte pouze jednu <i>Studijní skupinu</i> na kurz (například všichni <i>Učitelé</i>, kteří budou studovat angličtinu, budou v jedné <i>Studijní skupině</i>).
           </div>
           <div class="col-sm-6">
             <h4>Vysvětlení pojmů:</h4>
-            <b><i>Student</i></b>: student nebo žák Vaší školy<br />
-            <b><i>Studující učitel</i></b>: učitel Vaší školy, který se bude sám vyučovat v rámci šablony č.3.<br />
-            <b><i>Učitel</i></b>: učitel Vaší školy, který bude řídit výuku <i>Studentů</i> v rámci šablony č. 4. nebo lektor z LANGMaster, který bude řídit výuku studujících učitelů v rámci šablony č. 3<br />
+            <b><i>Student</i></b>: student nebo žák vaší školy<br />
+            <b><i>Studující učitel</i></b>: učitel vaší školy, který bude sám studovat v rámci v rámci šablony č.3.<br />
+            <b><i>Učitel</i></b>: učitel vaší školy, který bude řídit výuku <i>Studentů</i> v rámci šablony č. 4. nebo lektor z LANGMaster, který bude řídit výuku <i>Studujících učitelů</i> v rámci šablony č. 3<br />
             <b><i>Správce</i></b>: to jste Vy, který spravujete <i>Studijní skupiny</i> a <i>Učitele</i>.<br />
             <b><i>Host</i></b>: kdokoliv, kdo si chce prohlédnout kurz, aniž by jeho výuka byla řízena <i>Učitelem</i><br />
           </div>
@@ -101,7 +101,7 @@
         <div class="help-close" ng-click="managerhelponend.collapseToogle()"><i class="fa fa-times"></i></div>
         <ul>
           <li>
-            Pro každou <i>Studijní skupinu</i> máte připraveny 3 <i>Licenční klíče</i> pro <i>Učitele</i>, kteří budou v této skupině řídit výuku studentů.<br />
+            Pro každou <i>Studijní skupinu</i> máte připraveny 3 <i>Licenční klíče</i> pro <i>Učitele</i>, kteří budou v této skupině řídit výuku <i>Studentů</i>.<br />
             Poznámka: Každá skupina může mít až 3 <i>Učitele</i>, tj. například v případě nepřítomnosti jednoho <i>Učitele</i> může řídit výuku někdo jiný.
           </li>
           <li>
@@ -109,7 +109,7 @@
             Po jeho zadání bude moci řídit výuku <i>Studentů</i> ve své <i>Studijní skupině</i>.
           </li>
           <li>
-            <b>Vysvětlení:</b> Po použití předaného <i>Licenčního klíče</i> <i>Učitelem</i> se jeho údaje (Jméno, Příjmení, EMail) objeví v tabulkách níže podobně, jako jsou v nich nyní uvedeny Vaše údaje.
+            <b>Vysvětlení:</b> Po použití předaného <i>Licenčního klíče</i> <i>Učitelem</i> se jeho údaje (Jméno, Příjmení, EMail) objeví v tabulkách níže podobně, jako jsou v nich nyní uvedeny vaše údaje.
           </li>
         </ul>
         <h4 class="lm-top-margin">Exporty do excelu</h4>
@@ -120,7 +120,7 @@
         <h4 class="lm-top-margin">Další licenční klíče</h4>
         <ul>
           <li>
-            Jak Vy, tak kdokoliv z Vaší školy si může vyzkoušet kurz. K tomu jsou určeny <i>Licenční klíče</i> pro <i>Hosty</i>.
+            Jak Vy, tak kdokoliv z vaší školy si může vyzkoušet kurz. K tomu jsou určeny <i>Licenční klíče</i> pro <i>Hosty</i>.
             Tyto klíče můžete poskytnout komukoliv - výuka ale v tomto případě nebude řízena <i>Učitelem</i>.
           </li>
           <li>
@@ -141,11 +141,11 @@
         <div class="row">
           <div class="col-sm-6">
             <div class="btn btn-success btn-lg" ng-click="::ts.downloadLicenceKeys(false)"><i class="fa fa-file-excel-o"></i> <i>Studijní skupiny</i></div><br />
-            Tento export obsahuje přehled Studijních skupin a klíčů pro učitele. Využijte jej pro snažší rozdání <i>Licenčních klíčů</i> učitelům.
+            Tento export obsahuje přehled Studijních skupin a klíčů pro <i>Učitele</i>. Využijte jej pro snažší rozdání <i>Licenčních klíčů</i> <i>Učitelům</i>.
           </div>
           <div class="col-sm-6">
             <div class="btn btn-success btn-lg" ng-click="::ts.downloadLicenceKeys(true)"><i class="fa fa-file-excel-o"></i> <i>Studijní skupiny</i> (včetně <i>Studentů</i>)</div><br />
-            Tento export obsahuje přehled Studijních skupin včetně seznamu studentů jednotlivých Studijních skupin a jejich <i>Licenčních klíčů</i>.
+            Tento export obsahuje přehled <i>Studijních skupin</i> včetně seznamu <i>Studentů</i> jednotlivých <i>Studijních skupin</i> a jejich <i>Licenčních klíčů</i>.
           </div>
         </div>
         <div class="row lm-top-margin">

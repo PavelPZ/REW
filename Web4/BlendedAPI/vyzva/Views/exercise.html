@@ -63,7 +63,7 @@
 <!--***************** LECTOR PANEL LEKCE -->
 <script type="text/ng-template" id="vyzva$exercise$lectorlesson.html">
   <div class="alert alert-danger">
-    <h4>Celkové skore: <b>{{::modService.agregUser.score}}</b></h4>
+    <h4>Celkové skóre: <b>{{::modService.agregUser.score}}</b></h4>
     <button class="btn btn-danger" ng-click="::exService.confirmLesson()"><i class="fa fa-check"></i>Zopakovat lekci</button>
   </div>
 </script>
@@ -92,7 +92,8 @@
   <div class="alert alert-danger">
     <div class="row" ng-if="::!exService.lectorCanEvaluateRecording">
       <div class="col-sm-offset-2 col-sm-8">
-        <h4>Celkové skóre (bez vyhodnocených nahrávek): <b>{{::modService.agregUser.score}}%</b></h4>
+        <h4>Automatické vyhodnocení (bez nahrávek): <b>{{::exService.lectorAutoScore}}%</b></h4>
+        <h4>Vyhodnocení nahrávek: <b>{{exService.lectorHumanScore>=0 ? exService.lectorHumanScore.toString():'-'}}%</b></h4>
         <button class="btn btn-success" ng-click="::exService.confirmLesson(true)"><i class="fa fa-check"></i> Pokračovat v kurzu</button>
         <button class="btn btn-danger" ng-click="::exService.confirmLesson(false)"><i class="fa fa-remove"></i> Zopakovat test</button>
       </div>
@@ -105,7 +106,9 @@
         <button class="btn btn-success" ng-click="::exService.saveLectorEvaluation()"><i class="fa fa-check"></i> Uložit vyhodnocení</button><br />
       </div>
       <div class="col-sm-6">
-        <h5>Celkové skóre (bez vyhodnocených nahrávek): <b>{{::modService.agregUser.score}}%</b></h5>
+        <h5>Automatické vyhodnocení (bez nahrávek): <b>{{::exService.lectorAutoScore}}%</b></h5>
+        <h5>Vyhodnocení nahrávek: <b>{{exService.lectorHumanScore>=0 ? exService.lectorHumanScore.toString():'-'}}%</b></h5>
+        <!--<h5>Celkové skóre (bez vyhodnocených nahrávek): <b>{{::modService.agregUser.score}}%</b></h5>-->
         <button class="btn btn-success" ng-click="::exService.confirmLesson(true)"><i class="fa fa-check"></i> Pokračovat v kurzu</button><br /><br />
         <button class="btn btn-danger" ng-click="::exService.confirmLesson(false)"><i class="fa fa-remove"></i> Zopakovat test</button>
       </div>
@@ -124,9 +127,9 @@
       Postupujte následovně<br />
       <ol>
         <li>Ohodnoťte nahrávky studenta v testu, pokud ovšem něco nahrál (na poslední stránce, označené v navigaci ikonou <i class="fa fa-question"></i>)</li>
-        <li>Na základě celkového skore studenta pak rozhodněte, zdali může ve výuce dále pokračovat nebo ne</li>
+        <li>Na základě celkového skóre studenta pak rozhodněte, zdali může ve výuce dále pokračovat nebo ne</li>
       </ol>
-      Poznámka: pokud je z dosavadního skore zřejmé, že student test určitě nesplnil, pak nemá význam hodnotit jeho nahrávky.
+      Poznámka: pokud je z dosavadního skóre zřejmé, že student test určitě nesplnil, pak nemá význam hodnotit jeho nahrávky.
       <div class="when-problem lm-top-margin" vyzva$common$whenproblem></div>
     </div>
   </div>
@@ -204,7 +207,10 @@
 <!--***************** MODAL DIALOGS -->
 <script type="text/ng-template" id="vyzva$exercise$congratulation.html">
   <div class="modal-header">
-    <h3 class="modal-title">{{::ts.tbCongratulation}}</h3>
+    <h3 class="modal-title">Gratulace</h3>
+  </div>
+  <div class="modal-body">
+    {{::ts.tbCongratulation}}
   </div>
   <div class="modal-footer">
     <button class="btn btn-primary" type="button" lm-enter-key="::$close()" ng-click="::$close()">OK</button>
@@ -216,7 +222,7 @@
     <h3 class="modal-title">Upozornění</h3>
   </div>
   <div class="modal-body">
-    Vaše odpověď není zcela správná. Opravdu chcete cvičení vyhodnotit?
+    vaše odpověď není zcela správná. Opravdu chcete cvičení vyhodnotit?
   </div>
   <div class="modal-footer">
     <button class="btn btn-primary" type="button" lm-enter-key="::$close()" ng-click="::$close()">OK</button>

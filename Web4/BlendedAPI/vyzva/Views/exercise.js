@@ -77,7 +77,7 @@ var vyzva;
             this.breadcrumb.push({ title: this.title, url: null, active: true });
             this.tbTitle = 'Pokračovat v testu';
             this.tbDoneTitle = 'Test dokončen';
-            this.tbCongratulation = 'Gratulujeme k dokončení testu!';
+            this.tbCongratulation = 'Gratulujeme k dokončení testu! Vzhledem k tomu, že test obsahuje mluvený projev, byl zaslán vašemu Učiteli k vyhodnocení.';
         }
         return lessonTest;
     })(exerciseViewLow);

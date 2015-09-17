@@ -174,6 +174,8 @@
     //lector
     lectorMode: boolean; //onbehalfof a hotová celá kapitola (kurz, test nebo lekce)
     lectorCanEvaluateRecording: boolean; //aktivní cvičení a pcCannotEvaluate in flag
+    lectorAutoScore: number; //skore cviceni bez Human eval
+    lectorHumanScore: number; //skore zbylych viceni
 
     //confirm dialog
     confirmWrongScoreDialog: () => ng.IPromise<any>;
@@ -232,6 +234,7 @@
       var score = this.page.getScore();
       this.user.short.s = score.s;
       this.user.short.flag = Course.setAgregateFlag(this.user.short.flag, score.flag);
+      this.lectorHumanScore = score.ms ? Math.round(score.s / score.ms * 100) : -1;
     }
 
     score(): number {
@@ -257,8 +260,13 @@
       this.lectorMode = !!this.ctx.onbehalfof && this.modService.moduleDone;
       this.lectorCanEvaluateRecording = this.lectorMode && !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
 
+      if (this.lectorMode) {
+        var autoH = agregateAutoHuman(this.modService.node, this.controller.ctx.taskid);
+        this.lectorAutoScore = autoH.auto.score; this.lectorHumanScore = autoH.human.score;
+      }
+
       var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
-      if (this.lectorMode) this.page.humanEvalMode = true;
+      if (this.lectorMode && !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate)) this.page.humanEvalMode = true;
       this.recorder = this; pg.blendedExtension = this; //navazani rozsireni na Page
       Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, this.exercise.mod.loc));
       var isGramm = CourseMeta.isType(this.exercise.dataNode, CourseMeta.runtimeType.grammar);

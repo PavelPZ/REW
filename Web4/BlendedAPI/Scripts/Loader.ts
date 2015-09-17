@@ -42,7 +42,7 @@ module blended {
   export function getPersistWrapper<T extends IPersistNodeUser>(dataNode: CourseMeta.data, taskid: string, createProc?: () => T): IPersistNodeItem<T> {
     if (createProc) {
       if (!dataNode.userData) dataNode.userData = {};
-      var res = dataNode.userData[taskid]; if (res) return <IPersistNodeItem<T>> res;
+      var res = dataNode.userData[taskid]; if (res && res.short) return <IPersistNodeItem<T>> res;
       res = { long: null, short: createProc(), modified: true };
       dataNode.userData[taskid] = res;
       return <IPersistNodeItem<T>> res;

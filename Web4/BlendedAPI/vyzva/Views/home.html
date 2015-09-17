@@ -10,13 +10,13 @@
         Klikněte na tlačítko <b>Studenti <i>Studijní skupiny</i></b> níže. To vám umožní:
         <ul>
           <li>přizvat <i>Studenty</i> k blended learning výuce</li>
-          <li>moci řídit výuku a prohlížet výsledky práce <i>Studentů</i></li>
+          <li>řídit výuku a prohlížet výsledky práce <i>Studentů</i></li>
         </ul>
       </div>
       <div class="col-sm-6">
         <h4>Vysvětlení pojmů:</h4>
-        <b><i>Student</i></b>: student nebo žák Vaší školy<br />
-        <b><i>Studující učitel</i></b>: učitel Vaší školy, který bude sám studovat v rámci šablony č. 3.<br />
+        <b><i>Student</i></b>: student nebo žák vaší školy<br />
+        <b><i>Studující učitel</i></b>: učitel vaší školy, který bude sám studovat v rámci šablony č. 3.<br />
         <b><i>Učitel</i></b>: to jste Vy, který řídí výuku <i>Studentů</i> v rámci šablony č. 4.<br />
         <b><i>Host</i></b>: kdokoliv, kdo si chce prohlédnout kurz, aniž by jeho výuka byla řízena <i>Učitelem</i><br />
       </div>
@@ -54,10 +54,10 @@
     <div class="help-close" ng-click="homehelpstudentsresult.collapseToogle()"><i class="fa fa-times"></i></div>
     <div class="row">
       <div class="col-sm-5">
-        Toto okno umožňuje řídit výuku a prohlížet výsledky vybraného studenta.
+        Toto okno umožňuje řídit výuku a prohlížet výsledky vybraného <i>Studenta</i>.
         <ul>
           <li>
-            <b>Vpravo nahoře</b> vidíte pro orientaci jméno a příjmení studenta, jehož výsledky si prohlížíte.
+            <b>Vpravo nahoře</b> vidíte pro orientaci jméno a příjmení <i>Studenta</i>, jehož výsledky si prohlížíte.
           </li>
           <li>
             <b>Vlevo nahoře</b> tlačítkem <i class="fa fa-arrow-circle-o-left" style="font-size:18px"></i> ukončíte prohlížení výsledků.
@@ -68,12 +68,12 @@
         </ul>
       </div>
       <div class="col-sm-6">
-        Mimo prohlížení detailních informací o studiu můžete ovlivnit průchod kurzem každého studenta následujícími způsoby:
+        Mimo prohlížení detailních informací o studiu můžete ovlivnit průchod kurzem každého <i>Studenta</i> následujícími způsoby:
         <ul>
-          <li>u hotových testů ohodnotit mluvený projev studenta (cvičení s mluveným projevem je vždy poslední cvičení testu)</li>
+          <li>u hotových testů ohodnotit mluvený projev <i>Studenta</i> (cvičení s mluveným projevem je vždy poslední cvičení testu)</li>
           <li>u hotových testů rozhodnout o možnosti pokračovat ve výuce</li>
-          <li>dát studentovi k zopakování každou hotovou lekci nebo test</li>
-          <li>u Rozřazovacího testu změnit jazykovou úrovně kurzu nebo dát studentovi k zopakování celý Rozřazovací test</li>
+          <li>dát <i>Studentovi</i> k zopakování každou hotovou lekci nebo test</li>
+          <li>u Rozřazovacího testu změnit jazykovou úrovně kurzu nebo dát <i>Studentovi</i> k zopakování celý Rozřazovací test</li>
         </ul>
       </div>
     </div>
@@ -93,9 +93,9 @@
         <h4>Postup</h4>
         <ul>
           <li>Průchod celým kurzem je velice snadný: v seznamu níže vyberte řádek, označený ikonkou <i class="fa fa-hand-o-right text-success" style="font-size:18px"></i>, a spusťte odpovídající část kurzu.</li>
-          <li>U splněných částí kurzu si můžete prohlížet výsledky tlačítkem <b>Výsledky</b></li>
+          <li>U splněných částí kurzu si můžete prohlížet výsledky pomocí tlačítka <b>Výsledky</b></li>
           <li>
-            Testy, označené ikonkou <i class="fa fa-line-chart text-success" style="font-size:18px"></i>, vyhodnocuje učitel.
+            Testy, označené ikonkou <i class="fa fa-line-chart text-success" style="font-size:18px"></i>, vyhodnocuje <i>Učitel</i>.
             Do doby než test vyhodnotí nemůžete pokračovat dále (řádek označen ikonkou <i class="fa fa-question text-success" style="font-size:18px"></i>)
           </li>
         </ul>
@@ -104,8 +104,8 @@
         <h4>Podrobnější vysvětlení:</h4>
         <ul>
           <li>Studium zahájíte spuštěním <b>Rozřazovacího testu</b>. Po jeho ukončení se vám zpřístupní kurz vhodné jazykové úrovně.</li>
-          <li>Kurz je rozdělen na Studijní bloky - prvni Studijní blok studujete po splnění Vstupního testu, další Studijní bloky po ukončení předchozího Studijního bloku.</li>
-          <li>Studijní blok je ukončen Kontrolním testem. Poslední Studijní blok je ukončen Závěrečným testem, jehož úspěšným splněním ukončíte celý kurz</li>
+          <li>Kurz je rozdělen na Studijní bloky - prvni Studijní blok studujete po splnění Vstupního testu, další Studijní bloky po ukončení předchozího Studijního bloku a úspěšném absolvování kontrolního testu.</li>
+          <li>Každý Studijní blok je ukončen Kontrolním testem. Poslední Studijní blok je ukončen Závěrečným testem, jehož úspěšným splněním ukončíte celý kurz</li>
         </ul>
       </div>
     </div>
@@ -130,8 +130,8 @@
   <ul class="study-plan list-group">
     <li class="list-group-item home-test-hw" ng-click="::ts.navigateTestHw()">
       <button class="btn btn-warning"><i class="fa fa-volume-off"></i> Provést kontrolu <i class="fa fa-microphone"></i></button>
-      Než se pustíte do výuky, doporučujeme Vám zkontrolovat, zdali Váš počítač umožňuje:
-      <h4>přehrávat zvuk do sluchátek či reprodukotru a nahrávat zvuk do mikrofonu.</h4>
+      Než se pustíte do výuky, doporučujeme Vám zkontrolovat, zdali váš počítač umožňuje
+      <h4>přehrávat zvuk do sluchátek či reproduktoru a nahrávat zvuk do mikrofonu.</h4>
     </li>
     <li class="list-group-item" ng-repeat="lesson in ::ts.lessons"
         ng-style="::{cursor: lesson.rightButtonType ? 'pointer' : 'default'}"

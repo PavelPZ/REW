@@ -177,6 +177,7 @@ var blended;
             var score = this.page.getScore();
             this.user.short.s = score.s;
             this.user.short.flag = Course.setAgregateFlag(this.user.short.flag, score.flag);
+            this.lectorHumanScore = score.ms ? Math.round(score.s / score.ms * 100) : -1;
         };
         exerciseService.prototype.score = function () {
             return blended.scorePercent(this.user.short);
@@ -205,8 +206,13 @@ var blended;
             this.greenArrowRoot = this.controller.pretestParent ? this.controller.pretestParent : this.controller.moduleParent;
             this.lectorMode = !!this.ctx.onbehalfof && this.modService.moduleDone;
             this.lectorCanEvaluateRecording = this.lectorMode && !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
+            if (this.lectorMode) {
+                var autoH = blended.agregateAutoHuman(this.modService.node, this.controller.ctx.taskid);
+                this.lectorAutoScore = autoH.auto.score;
+                this.lectorHumanScore = autoH.human.score;
+            }
             var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
-            if (this.lectorMode)
+            if (this.lectorMode && !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate))
                 this.page.humanEvalMode = true;
             this.recorder = this;
             pg.blendedExtension = this; //navazani rozsireni na Page

@@ -51,17 +51,12 @@ var blended;
         function moduleService(node, exService, type, controller) {
             _super.call(this, node, type, controller, false);
             this.exService = exService;
-            this.refresh(this.exService.modIdx);
             var user = blended.getPersistData(node, controller.ctx.taskid);
+            this.moduleDone = blended.persistUserIsDone(user);
+            this.refresh(this.exService.modIdx);
             this.agregUser = $.extend(this.agregUser, user);
-            this.moduleDone = blended.persistUserIsDone(this.agregUser);
             this.exShowPanel = this.moduleDone || this.lessonType != blended.moduleServiceType.pretest;
         }
-        moduleService.prototype.showResult = function () {
-            var res = this.exService.user && this.exService.user.short && blended.persistUserIsDone(this.exService.user.short) &&
-                (this.lessonType == blended.moduleServiceType.lesson || this.moduleDone);
-            return res;
-        };
         moduleService.prototype.refresh = function (actExIdx) {
             var _this = this;
             _super.prototype.refresh.call(this, actExIdx);
@@ -93,6 +88,11 @@ var blended;
                     ex.content = exItemContent.check;
                 }
             });
+        };
+        moduleService.prototype.showResult = function () {
+            var res = this.exService.user && this.exService.user.short && blended.persistUserIsDone(this.exService.user.short) &&
+                (this.lessonType == blended.moduleServiceType.lesson || this.moduleDone);
+            return res;
         };
         //skok na jine cviceni, napr. v module map panelu 
         moduleService.prototype.navigateExercise = function (idx) {
