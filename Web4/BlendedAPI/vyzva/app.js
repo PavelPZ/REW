@@ -65,6 +65,11 @@ var vyzva;
             onEnter: function () { return anim.inAngularjsGui = true; },
             onExit: function () { return anim.inAngularjsGui = false; },
             childs: [
+                //stateNames.langmasterManager = new state({
+                //  name: 'run',
+                //  url: "/run?key",
+                //  controller: runController,
+                //}),
                 blended.prodStates.homeTask = vyzva.stateNames.homeTask = new state({
                     name: 'vyzva',
                     //lickeys ve formatu <UserLicences.LicenceId>|<UserLicences.Counter>#<UserLicences.LicenceId>|<UserLicences.Counter>...
