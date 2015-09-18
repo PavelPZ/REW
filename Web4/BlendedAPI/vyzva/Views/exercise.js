@@ -77,8 +77,18 @@ var vyzva;
             this.breadcrumb.push({ title: this.title, url: null, active: true });
             this.tbTitle = 'Pokračovat v testu';
             this.tbDoneTitle = 'Test dokončen';
-            this.tbCongratulation = 'Gratulujeme k dokončení testu! Vzhledem k tomu, že test obsahuje mluvený projev, byl zaslán vašemu Učiteli k vyhodnocení.';
         }
+        lessonTest.prototype.congratulationDialog = function () {
+            var ok = this.modService.agregUser.ms ? Math.round(this.modService.agregUser.s / this.modService.agregUser.ms * 100) > 65 : false;
+            if (ok) {
+                this.tbCongratulation = 'Gratulujeme k dokončení testu! Pokud test obsahuje mluvený projev, byl zaslán vašemu Učiteli k vyhodnocení.';
+            }
+            else {
+                this.tbCongratulationTitle = 'Test nesplněn';
+                this.tbCongratulation = 'Skóre, dosažené v testu, je menší než 65%. O dalším pokračování v kurzu musí rozhodnout váš učitel';
+            }
+            return _super.prototype.congratulationDialog.call(this);
+        };
         return lessonTest;
     })(exerciseViewLow);
     vyzva.lessonTest = lessonTest;

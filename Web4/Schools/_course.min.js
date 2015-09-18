@@ -9464,6 +9464,29 @@ var blended;
         return res;
     }
     blended.agregateShorts = agregateShorts;
+    function agregateAutoHuman(node, taskId) {
+        var res = { auto: { ms: 0, s: 0, score: 0 }, human: { ms: 0, s: 0, score: 0 } };
+        _.each(node.Items, function (nd) {
+            if (!blended.isEx(nd))
+                return;
+            var us = blended.getPersistWrapper(nd, taskId);
+            var done = us && blended.persistUserIsDone(us.short);
+            if (!done || !nd.ms)
+                return;
+            if (!!(us.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate)) {
+                res.human.ms += nd.ms;
+                res.human.s += us.short.s;
+            }
+            else {
+                res.auto.ms += nd.ms;
+                res.auto.s += us.short.s;
+            }
+        });
+        res.auto.score = res.auto.ms ? Math.round(res.auto.s / res.auto.ms * 100) : -1;
+        res.human.score = res.human.ms ? Math.round(res.human.s / res.human.ms * 100) : -1;
+        return res;
+    }
+    blended.agregateAutoHuman = agregateAutoHuman;
     function agregateShortFromNodes(node, taskId, moduleAlowFinishWhenUndone /*do vyhodnoceni zahrn i nehotova cviceni*/) {
         var res = $.extend({}, blended.shortDefaultAgreg);
         blended.persistUserIsDone(res, true);
@@ -9487,7 +9510,7 @@ var blended;
                     res.ms += nd.ms;
                 }
             }
-            if (us) {
+            if (us && us.short) {
                 res.beg = setDate(res.beg, us.short.beg, true);
                 res.end = setDate(res.end, us.short.end, false);
                 res.elapsed += us.short.elapsed;
@@ -9527,7 +9550,7 @@ var blended;
             if (!dataNode.userData)
                 dataNode.userData = {};
             var res = dataNode.userData[taskid];
-            if (res)
+            if (res && res.short)
                 return res;
             res = { long: null, short: createProc(), modified: true };
             dataNode.userData[taskid] = res;
@@ -10402,6 +10425,7 @@ var blended;
             var _this = this;
             if (alow) {
                 this.saveLectorEvaluation();
+                //alow se pro lekci nevyuzije => jsem urcite v testu
                 blended.setPersistData(this.modService.node, this.ctx.taskid, function (modUser) { return modUser.lectorControlTestOK = true; });
             }
             else {
@@ -10442,6 +10466,7 @@ var blended;
             var score = this.page.getScore();
             this.user.short.s = score.s;
             this.user.short.flag = Course.setAgregateFlag(this.user.short.flag, score.flag);
+            this.lectorHumanScore = score.ms ? Math.round(score.s / score.ms * 100) : -1;
         };
         exerciseService.prototype.score = function () {
             return blended.scorePercent(this.user.short);
@@ -10470,8 +10495,13 @@ var blended;
             this.greenArrowRoot = this.controller.pretestParent ? this.controller.pretestParent : this.controller.moduleParent;
             this.lectorMode = !!this.ctx.onbehalfof && this.modService.moduleDone;
             this.lectorCanEvaluateRecording = this.lectorMode && !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
+            if (this.lectorMode) {
+                var autoH = blended.agregateAutoHuman(this.modService.node, this.controller.ctx.taskid);
+                this.lectorAutoScore = autoH.auto.score;
+                this.lectorHumanScore = autoH.human.score;
+            }
             var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
-            if (this.lectorMode)
+            if (this.lectorMode && !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate))
                 this.page.humanEvalMode = true;
             this.recorder = this;
             pg.blendedExtension = this; //navazani rozsireni na Page
@@ -10713,17 +10743,12 @@ var blended;
         function moduleService(node, exService, type, controller) {
             _super.call(this, node, type, controller, false);
             this.exService = exService;
-            this.refresh(this.exService.modIdx);
             var user = blended.getPersistData(node, controller.ctx.taskid);
+            this.moduleDone = blended.persistUserIsDone(user);
+            this.refresh(this.exService.modIdx);
             this.agregUser = $.extend(this.agregUser, user);
-            this.moduleDone = blended.persistUserIsDone(this.agregUser);
             this.exShowPanel = this.moduleDone || this.lessonType != blended.moduleServiceType.pretest;
         }
-        moduleService.prototype.showResult = function () {
-            var res = this.exService.user && this.exService.user.short && blended.persistUserIsDone(this.exService.user.short) &&
-                (this.lessonType == blended.moduleServiceType.lesson || this.moduleDone);
-            return res;
-        };
         moduleService.prototype.refresh = function (actExIdx) {
             var _this = this;
             _super.prototype.refresh.call(this, actExIdx);
@@ -10755,6 +10780,11 @@ var blended;
                     ex.content = exItemContent.check;
                 }
             });
+        };
+        moduleService.prototype.showResult = function () {
+            var res = this.exService.user && this.exService.user.short && blended.persistUserIsDone(this.exService.user.short) &&
+                (this.lessonType == blended.moduleServiceType.lesson || this.moduleDone);
+            return res;
         };
         //skok na jine cviceni, napr. v module map panelu 
         moduleService.prototype.navigateExercise = function (idx) {
@@ -11459,8 +11489,18 @@ var vyzva;
             this.breadcrumb.push({ title: this.title, url: null, active: true });
             this.tbTitle = 'Pokračovat v testu';
             this.tbDoneTitle = 'Test dokončen';
-            this.tbCongratulation = 'Gratulujeme k dokončení testu! Test byl předán učiteli ke kontrole.';
         }
+        lessonTest.prototype.congratulationDialog = function () {
+            var ok = this.modService.agregUser.ms ? Math.round(this.modService.agregUser.s / this.modService.agregUser.ms * 100) > 65 : false;
+            if (ok) {
+                this.tbCongratulation = 'Gratulujeme k dokončení testu! Pokud test obsahuje mluvený projev, byl zaslán vašemu Učiteli k vyhodnocení.';
+            }
+            else {
+                this.tbCongratulationTitle = 'Test nesplněn';
+                this.tbCongratulation = 'Skóre, dosažené v testu, je menší než 65%. O dalším pokračování v kurzu musí rozhodnout váš učitel';
+            }
+            return _super.prototype.congratulationDialog.call(this);
+        };
         return lessonTest;
     })(exerciseViewLow);
     vyzva.lessonTest = lessonTest;
@@ -11632,7 +11672,7 @@ var vyzva;
             var pretestItem;
             var pretestUser;
             var firstNotDoneCheckTestIdx; //index prvnio nehotoveho kontrolniho testu
-            var waitForEvalExists = false;
+            var mustWaitForEvaluation = false;
             var fromNode = function (node, idx) {
                 var res = new homeLesson(node, idx == 0 ? blended.moduleServiceType.pretest : (node.url.indexOf('/test') > 0 ? blended.moduleServiceType.test : blended.moduleServiceType.lesson), _this, true);
                 res.idx = idx;
@@ -11651,26 +11691,61 @@ var vyzva;
                 //rightButtonType management: vsechny nehotove testy a lekce dej RUN 
                 if (res.lessonType != blended.moduleServiceType.pretest)
                     res.rightButtonType = res.status == homeLessonStates.done ? rightButtonTypes.preview : rightButtonTypes.run;
-                //nastav index prvniho nehotoveho check testu
-                if (!firstNotDoneCheckTestIdx && res.lessonType == blended.moduleServiceType.test) {
-                    res.agregUser.lectorControlTestOK = nodeUser && nodeUser.lectorControlTestOK;
-                    if (!res.agregUser.lectorControlTestOK)
-                        firstNotDoneCheckTestIdx = idx;
-                }
-                //left mark
-                if (res.status == homeLessonStates.done) {
-                    switch (res.lessonType) {
-                        case blended.moduleServiceType.pretest:
-                            res.leftMarkType = leftMarkTypes.pretestLevel;
-                            break;
-                        case blended.moduleServiceType.test:
-                            if (!res.agregUser.lectorControlTestOK)
-                                waitForEvalExists = true; //hotovy test co neni potvrzen ucitelem => ceka se na vyhodnoceni
-                            res.leftMarkType = !res.agregUser.lectorControlTestOK ? leftMarkTypes.waitForEvaluation : leftMarkTypes.progress;
-                            break;
-                        default: res.leftMarkType = leftMarkTypes.progress;
+                //Pro tests:
+                //ikona "ceka se na vyhodnoceni": done && pcCannotEvaluate && !nodeUser.lectorControlTestOK
+                //nejde pokracovat dal: existuje test s: done && !nodeUser.lectorControlTestOK && score< 65
+                //firstNotDoneCheckTestIdx: prvni test s !done nebo 'nejde pokracovat dal' test
+                if (res.lessonType == blended.moduleServiceType.test) {
+                    if (res.status == homeLessonStates.done) {
+                        var pcCannotEvaluate = nodeUser && !!(nodeUser.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
+                        var lectorControlTestOK = nodeUser && nodeUser.lectorControlTestOK;
+                        var denyNextLessons = !lectorControlTestOK && res.agregUser.score < 65; //nejde pokracovat, skore je mensi nez 65 a lektor jeste nerozohodl
+                        res.leftMarkType = denyNextLessons || (pcCannotEvaluate && !lectorControlTestOK) ? leftMarkTypes.waitForEvaluation : leftMarkTypes.progress;
+                        if (denyNextLessons) {
+                            mustWaitForEvaluation = true;
+                            if (!firstNotDoneCheckTestIdx)
+                                firstNotDoneCheckTestIdx = idx;
+                        }
+                    }
+                    else {
+                        if (!firstNotDoneCheckTestIdx)
+                            firstNotDoneCheckTestIdx = idx; //add: prvni test s !done nebo 'nejde pokracovat dal' test
                     }
                 }
+                else if (res.status == homeLessonStates.done) {
+                    if (res.lessonType == blended.moduleServiceType.pretest)
+                        res.leftMarkType = leftMarkTypes.pretestLevel;
+                    else
+                        res.leftMarkType = leftMarkTypes.progress;
+                }
+                //if (!firstNotDoneCheckTestIdx && res.lessonType == blended.moduleServiceType.test) {
+                //  lcOK = undefined;
+                //  if (nodeUser) {
+                //    if (!(nodeUser.flag & CourseModel.CourseDataFlag.pcCannotEvaluate)) lcOK = true;
+                //    else lcOK = (<blended.IModuleUser>nodeUser).lectorControlTestOK;
+                //  }
+                //  if (lcOK == undefined && res.status == homeLessonStates.done) {
+                //    if (false && res.agregUser.score < 65) firstNotDoneCheckTestIdx = idx;
+                //  } else {
+                //    res.agregUser.lectorControlTestOK = nodeUser && (<blended.IModuleUser>nodeUser).lectorControlTestOK;
+                //    if (!res.agregUser.lectorControlTestOK) firstNotDoneCheckTestIdx = idx;
+                //  }
+                //  res.agregUser.lectorControlTestOK = lcOK;
+                //}
+                //left mark
+                //if (res.status == homeLessonStates.done) {
+                //  switch (res.lessonType) {
+                //    case blended.moduleServiceType.pretest: res.leftMarkType = leftMarkTypes.pretestLevel; break;
+                //    case blended.moduleServiceType.test:
+                //      if (lcOK === false) mustWaitForEvaluation = true; //hotovy test se spatnym score => nejde pokracovat dal
+                //      res.leftMarkType = !res.agregUser.lectorControlTestOK ? leftMarkTypes.waitForEvaluation : leftMarkTypes.progress; break;
+                //    default: res.leftMarkType = leftMarkTypes.progress;
+                //  }
+                //} else {
+                //  switch (res.lessonType) {
+                //    case blended.moduleServiceType.test: if (!firstNotDoneCheckTestIdx) firstNotDoneCheckTestIdx = idx;
+                //  }
+                //}
                 return res;
             };
             this.lessons = [pretestItem = fromNode(this.myTask.dataNode.pretest, 0)];
@@ -11684,7 +11759,7 @@ var vyzva;
             for (var i = firstNotDoneCheckTestIdx + 1; i < this.lessons.length; i++)
                 this.lessons[i].rightButtonType = rightButtonTypes.no;
             //pokud se neceka na vyhodnoceni tak prvni nehotovy node je aktivni
-            if (!waitForEvalExists)
+            if (!mustWaitForEvaluation)
                 _.find(this.lessons, function (pl) {
                     if (pl.status == homeLessonStates.done)
                         return false;
@@ -11698,8 +11773,9 @@ var vyzva;
             //this.score = blended.scorePercent(this.user);
         }
         homeViewController.prototype.navigateTestHw = function () {
+            var _this = this;
             var pars = blended.cloneAndModifyContext(this.ctx, function (ctx) {
-                ctx.url = blended.encodeUrl('/lm/blcourse/english/hwtest/hwtest');
+                ctx.url = blended.encodeUrl('/lm/blcourse/' + LMComLib.LineIds[_this.productParent.dataNode.line].toLowerCase() + '/hwtest/hwtest');
                 ctx.returnurl = location.hash;
             });
             this.navigate({ stateName: vyzva.stateNames.testhw.name, pars: pars });

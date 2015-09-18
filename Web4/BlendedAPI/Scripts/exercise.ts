@@ -199,9 +199,10 @@
       });
     }
 
-    confirmLesson(alow: boolean) { //newLevel<0 => udelej pretest znova
+    confirmLesson(alow: boolean) { //newLevel<0 => udelej cviceni ci test znova
       if (alow) {
         this.saveLectorEvaluation();
+        //alow se pro lekci nevyuzije => jsem urcite v testu
         setPersistData<IModuleUser>(this.modService.node, this.ctx.taskid, modUser => modUser.lectorControlTestOK = true);
       } else {
         clearPersistData(this.modService.node, this.ctx.taskid);

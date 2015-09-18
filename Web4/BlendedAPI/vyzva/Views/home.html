@@ -1,4 +1,4 @@
-﻿<div class="alert help-panel help-warning lm-top-margin" collapsablemanager="+homehelpteacher" ng-if="::ts.myTask.showLectorPart">
+﻿  <div class="alert help-panel help-warning lm-top-margin" collapsablemanager="+homehelpteacher" ng-if="::ts.myTask.showLectorPart">
   <div class="h4 help-header" ng-click="homehelpteacher.collapseToogle()">
     <div class="more fa fa-question-circle"></div>
     Nápověda k "Moje <i>Studijní skupiny</i>"
@@ -73,7 +73,7 @@
           <li>u hotových testů ohodnotit mluvený projev <i>Studenta</i> (cvičení s mluveným projevem je vždy poslední cvičení testu)</li>
           <li>u hotových testů rozhodnout o možnosti pokračovat ve výuce</li>
           <li>dát <i>Studentovi</i> k zopakování každou hotovou lekci nebo test</li>
-          <li>u Rozřazovacího testu změnit jazykovou úrovně kurzu nebo dát <i>Studentovi</i> k zopakování celý Rozřazovací test</li>
+          <li>u <i>Rozřazovacího testu</i> změnit jazykovou úrovně kurzu nebo dát <i>Studentovi</i> k zopakování celý <i>Rozřazovací test</i></li>
         </ul>
       </div>
     </div>
@@ -94,17 +94,17 @@
         <ul>
           <li>Průchod celým kurzem je velice snadný: v seznamu níže vyberte řádek, označený ikonkou <i class="fa fa-hand-o-right text-success" style="font-size:18px"></i>, a spusťte odpovídající část kurzu.</li>
           <li>U splněných částí kurzu si můžete prohlížet výsledky pomocí tlačítka <b>Výsledky</b></li>
-          <li>
+          <!--<li>
             Testy, označené ikonkou <i class="fa fa-line-chart text-success" style="font-size:18px"></i>, vyhodnocuje <i>Učitel</i>.
             Do doby než test vyhodnotí nemůžete pokračovat dále (řádek označen ikonkou <i class="fa fa-question text-success" style="font-size:18px"></i>)
-          </li>
+          </li>-->
         </ul>
       </div>
       <div class="col-sm-6">
         <h4>Podrobnější vysvětlení:</h4>
         <ul>
-          <li>Studium zahájíte spuštěním <b>Rozřazovacího testu</b>. Po jeho ukončení se vám zpřístupní kurz vhodné jazykové úrovně.</li>
-          <li>Kurz je rozdělen na Studijní bloky - prvni Studijní blok studujete po splnění Vstupního testu, další Studijní bloky po ukončení předchozího Studijního bloku a úspěšném absolvování kontrolního testu.</li>
+          <li>Studium zahájíte spuštěním <i>Rozřazovacího testu</i>. Po jeho ukončení se vám zpřístupní kurz vhodné jazykové úrovně.</li>
+          <li>Kurz je rozdělen na Studijní bloky - první Studijní blok studujete po splnění <i>Vstupního testu</i>, další Studijní bloky po ukončení předchozího Studijního bloku a úspěšném absolvování kontrolního testu.</li>
           <li>Každý Studijní blok je ukončen Kontrolním testem. Poslední Studijní blok je ukončen Závěrečným testem, jehož úspěšným splněním ukončíte celý kurz</li>
         </ul>
       </div>
@@ -163,7 +163,7 @@
   <div ng-include="'vyzva$home$leftmark.html'"></div>
   <div data-ng-if="::lesson.status<2">
     <p><button class="btn btn-success btn-lg" ng-disabled="::lesson.cannotRun" ng-click="::ts.navigateLesson(lesson)">Rozřazovací test</button></p>
-    Rozřazovací test určí vaši jazykovou úroveň (A1, A2, B1 nebo B2), na základě které, bude zvoleno odpovídající pokračování vašeho kurzu.
+    <i>Rozřazovací test</i> určí vaši jazykovou úroveň (A1, A2, B1 nebo B2), na základě které, bude zvoleno odpovídající pokračování vašeho kurzu.
   </div>
   <div ng-if="::lesson.status>=2">
     <h4>Rozřazovací test dokončen: vaše jazyková úroveň je {{::ts.pretestLevel | levelText}}</h4>

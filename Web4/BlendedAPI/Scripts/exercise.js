@@ -137,6 +137,7 @@ var blended;
             var _this = this;
             if (alow) {
                 this.saveLectorEvaluation();
+                //alow se pro lekci nevyuzije => jsem urcite v testu
                 blended.setPersistData(this.modService.node, this.ctx.taskid, function (modUser) { return modUser.lectorControlTestOK = true; });
             }
             else {

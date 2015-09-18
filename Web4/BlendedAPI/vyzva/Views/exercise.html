@@ -50,9 +50,9 @@
       <div class="row">
         <div class="col-sm-11">
           <p>
-            Tlačítky níže můžete buďto dát studentovi k zopakování celý Rozřazovací test nebo mu změnit dosažený výsledek testu.
+            Tlačítky níže můžete buďto dát <i>Studentovi</i> k zopakování celý <i>Rozřazovací test</i> nebo mu změnit dosažený výsledek testu.
           </p>
-          Poznámka: po těchto změnách bude student studovat kurz od začátku.
+          Poznámka: po těchto změnách bude <i>Student</i> studovat kurz od začátku.
           <div class="when-problem lm-top-margin" vyzva$common$whenproblem></div>
         </div>
       </div>
@@ -78,7 +78,7 @@
       <div class="help-close" ng-click="exercisehelplesonteacher.collapseToogle()"><i class="fa fa-times"></i></div>
       <div class="row">
         <div class="col-sm-11">
-          Máte kdykoliv možnost dát studentovi lekci k zopakování.
+          Máte kdykoliv možnost dát <i>Studentovi</i> lekci k zopakování.
           Provedete to stisknutím tlačítka <b>Zopakovat lekci</b>
           <div class="when-problem lm-top-margin" vyzva$common$whenproblem></div>
         </div>
@@ -91,7 +91,7 @@
 <script type="text/ng-template" id="vyzva$exercise$lector.html">
   <div class="alert alert-danger">
     <div class="row" ng-if="::!exService.lectorCanEvaluateRecording">
-      <div class="col-sm-offset-2 col-sm-8">
+      <div class="col-sm-12">
         <h4>Automatické vyhodnocení (bez nahrávek): <b>{{::exService.lectorAutoScore}}%</b></h4>
         <h4>Vyhodnocení nahrávek: <b>{{exService.lectorHumanScore>=0 ? exService.lectorHumanScore.toString():'-'}}%</b></h4>
         <button class="btn btn-success" ng-click="::exService.confirmLesson(true)"><i class="fa fa-check"></i> Pokračovat v kurzu</button>
@@ -101,7 +101,7 @@
     <div class="row" ng-if="::exService.lectorCanEvaluateRecording">
       <div class="col-sm-6">
         <h4>Vyhodnocení nahrávek studenta</h4>
-        Poslechněte si nahrávky studenta klikem na modrou šipku níže ve cvičení. Pak vyplňte vyhodnocení v procentech (0-100).
+        Poslechněte si nahrávky <i>Studenta</i> klikem na modrou šipku níže ve cvičení. Pak vyplňte vyhodnocení v procentech (0-100).
         Po vyplnění všech hodnocení stiskněte <i>Uložit vyhodnocení</i>
         <button class="btn btn-success" ng-click="::exService.saveLectorEvaluation()"><i class="fa fa-check"></i> Uložit vyhodnocení</button><br />
       </div>
@@ -126,10 +126,14 @@
       <div class="help-close" ng-click="exercisehelpteacher.collapseToogle()"><i class="fa fa-times"></i></div>
       Postupujte následovně<br />
       <ol>
-        <li>Ohodnoťte nahrávky studenta v testu, pokud ovšem něco nahrál (na poslední stránce, označené v navigaci ikonou <i class="fa fa-question"></i>)</li>
-        <li>Na základě celkového skóre studenta pak rozhodněte, zdali může ve výuce dále pokračovat nebo ne</li>
+        <li>Ohodnoťte nahrávky <i>Studenta</i> v testu, pokud ovšem něco nahrál (na poslední stránce, označené v navigaci ikonou <i class="fa fa-question"></i>)</li>
+        <li>Na základě celkového skóre <i>Studenta</i> pak rozhodněte, zdali může ve výuce dále pokračovat nebo ne</li>
       </ol>
-      Poznámka: pokud je z dosavadního skóre zřejmé, že student test určitě nesplnil, pak nemá význam hodnotit jeho nahrávky.
+      Poznámky:
+      <ul>
+        <li>pokud <i>Student</i> dosáhl skóre alespoň 65% v automaticky vyhodnotitelných cvičeních, bude mu umožněno pokračovat ve studiu do doby, než rozhodnete o dalším postupu.</li>
+        <li>pokud je z dosavadního skóre zřejmé, že <i>Student</i> test určitě nesplnil, pak nemá význam hodnotit jeho nahrávky.</li>
+      </ul>
       <div class="when-problem lm-top-margin" vyzva$common$whenproblem></div>
     </div>
   </div>
@@ -207,7 +211,7 @@
 <!--***************** MODAL DIALOGS -->
 <script type="text/ng-template" id="vyzva$exercise$congratulation.html">
   <div class="modal-header">
-    <h3 class="modal-title">Gratulace</h3>
+    <h3 class="modal-title">{{::ts.tbCongratulationTitle ? ts.tbCongratulationTitle : 'Gratulace'}}</h3>
   </div>
   <div class="modal-body">
     {{::ts.tbCongratulation}}
@@ -222,7 +226,7 @@
     <h3 class="modal-title">Upozornění</h3>
   </div>
   <div class="modal-body">
-    vaše odpověď není zcela správná. Opravdu chcete cvičení vyhodnotit?
+    Vaše odpověď není zcela správná. Opravdu chcete cvičení vyhodnotit?
   </div>
   <div class="modal-footer">
     <button class="btn btn-primary" type="button" lm-enter-key="::$close()" ng-click="::$close()">OK</button>
