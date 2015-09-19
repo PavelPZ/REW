@@ -177,6 +177,12 @@ module proxies {
     static createDemoCompanyEnd(data: {  fromCompanyId: number;  toCompanyId: number;  users: {  fromLmcomId: number;  toLmLmcomId: number;  }[];  }, completed: () => void): void {
 		  invoke('vyzva57services/createdemocompanyend', 'post', null, JSON.stringify(data), completed);
 	  } 
+    static keysFromCompanyTitle(companytitle: string, completed: (res: {  student: {  licId: number;  licCounter: number;  lmcomId: number;  email: string;  firstName: string;  lastName: string;  };  teacher: {  licId: number;  licCounter: number;  lmcomId: number;  email: string;  firstName: string;  lastName: string;  };  admin: {  licId: number;  licCounter: number;  lmcomId: number;  email: string;  firstName: string;  lastName: string;  };  companyTitle: string;  newCompanyId: number;  }) => void): void {
+		  invoke('vyzva57services/keysfromcompanytitle', 'get', { companytitle: companytitle }, null, completed);
+	  } 
+    static runDemoInformation(companylicenceid: number, counter: number, completed: (res: {  email: string;  firstName: string;  lastName: string;  companyId: number;  productUrl: string;  lmcomId: number;  licKeys: Array<string>;  otherType: LMComLib.OtherType;  }) => void): void {
+		  invoke('vyzva57services/rundemoinformation', 'get', { companylicenceid: companylicenceid, counter: counter }, null, completed);
+	  } 
     static deleteProduct(companyid: number, lmcomid: number, producturl: string, taskid: string, completed: () => void): void {
 		  invoke('vyzva57services/deleteproduct', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl, taskid: taskid }, null, completed);
 	  } 

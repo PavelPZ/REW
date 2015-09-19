@@ -56,6 +56,16 @@ var vyzva;
         .filter('vyzva$state$viewpath', function () { return function (id) { return vyzva.vyzvaRoot + 'views/' + id + '.html'; }; });
     var pageTemplate = vyzva.vyzvaRoot + 'views/_pageTemplate.html';
     function initVyzvaStates(params) {
+        params.$stateProvider.state({
+            name: 'vyzvademo',
+            url: "/vyzvademo?teacher&student&admin&studentempty&companytitle",
+            controller: vyzva.runController,
+            templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/vyzvademo.html',
+            resolve: {
+                $checkOldApplicationStart: blended.checkOldApplicationStart,
+                $keysFromCompanyTitle: vyzva.keysFromCompanyTitle
+            }
+        });
         vyzva.stateNames.root = new state({
             name: 'pg.ajs',
             url: '/ajs',
@@ -65,11 +75,6 @@ var vyzva;
             onEnter: function () { return anim.inAngularjsGui = true; },
             onExit: function () { return anim.inAngularjsGui = false; },
             childs: [
-                //stateNames.langmasterManager = new state({
-                //  name: 'run',
-                //  url: "/run?key",
-                //  controller: runController,
-                //}),
                 blended.prodStates.homeTask = vyzva.stateNames.homeTask = new state({
                     name: 'vyzva',
                     //lickeys ve formatu <UserLicences.LicenceId>|<UserLicences.Counter>#<UserLicences.LicenceId>|<UserLicences.Counter>...

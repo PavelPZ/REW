@@ -3919,6 +3919,12 @@ var proxies;
         vyzva57services.createDemoCompanyEnd = function (data, completed) {
             invoke('vyzva57services/createdemocompanyend', 'post', null, JSON.stringify(data), completed);
         };
+        vyzva57services.keysFromCompanyTitle = function (companytitle, completed) {
+            invoke('vyzva57services/keysfromcompanytitle', 'get', { companytitle: companytitle }, null, completed);
+        };
+        vyzva57services.runDemoInformation = function (companylicenceid, counter, completed) {
+            invoke('vyzva57services/rundemoinformation', 'get', { companylicenceid: companylicenceid, counter: counter }, null, completed);
+        };
         vyzva57services.deleteProduct = function (companyid, lmcomid, producturl, taskid, completed) {
             invoke('vyzva57services/deleteproduct', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl, taskid: taskid }, null, completed);
         };

@@ -71,6 +71,17 @@
     }])
   ;
 
+
+  export function checkOldApplicationStart() { //boot nasi technologie
+    if (checkOldApplicationStarted) return; checkOldApplicationStarted = true;
+    return angular.injector(['ng']).invoke(['$q', ($q: ng.IQService) => {
+      var deferred = $q.defer();
+      boot.bootStart(() => deferred.resolve());
+      return deferred.promise;
+    }]);
+  } var checkOldApplicationStarted = false;
+
+
   root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', ( //'$provide', (
     $stateProvider: angular.ui.IStateProvider,
     $urlRouterProvider: angular.route.IRouteProvider,
@@ -90,22 +101,12 @@
 
     $urlRouterProvider.otherwise('/pg/old/school/schoolmymodel');
 
-    function checkOldApplicationStart() { //boot nasi technologie
-      return angular.injector(['ng']).invoke(['$q', ($q: ng.IQService) => {
-        var deferred = $q.defer();
-        boot.bootStart(() => deferred.resolve());
-        return deferred.promise;
-      }]);
-    }
-
     $stateProvider
       .state({ //state root
         name: 'pg',
         url: '/pg',
         abstract: true,
         template: "<div data-ui-view></div>",
-        //***** preload common templates
-        //templateUrl: blended.baseUrlRelToRoot + '/courses/angularjs/angularjs.html',
         resolve: {
           checkOldApplicationStart: checkOldApplicationStart //ceka se na dokonceni inicalizace nasi technologie
         }

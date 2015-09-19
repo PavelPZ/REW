@@ -309,6 +309,10 @@
     <Compile Include="Migrations\201505052135549_azure001.Designer.cs">
       <DependentUpon>201505052135549_azure001.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509191849599_v016.cs" />
+    <Compile Include="Migrations\201509191849599_v016.Designer.cs">
+      <DependentUpon>201509191849599_v016.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\LMConfiguration.cs" />
     <Compile Include="azure\AdminCompany.cs" />
     <Compile Include="azure\AdminProductsAndLicences.cs" />
@@ -519,6 +523,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505052135549_azure001.resx">
       <DependentUpon>201505052135549_azure001.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509191849599_v016.resx">
+      <DependentUpon>201509191849599_v016.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

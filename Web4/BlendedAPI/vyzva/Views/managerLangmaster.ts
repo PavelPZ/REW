@@ -3,16 +3,18 @@
     constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, public intranetInfo: intranet.alocatedKeyRoot) {
       super($scope, $state);
     }
-    allUsers: IDemoItem[] = [];
-    schoolTitle: string;
-    uniqueId: string;
-    key: string;
+    schoolTitle: string; //vstupni dato: titulek skoly
+    key: string; //vystupni dato 1: ostry klic pro spravce skoly
+    uniqueId: string; //vstupni dato2: rozliseni emailu pro seznam demouctu
+    allUsers: IDemoItem[] = []; //vystupni dato 2: seznam demouctu 
+    //ostry klic pro spravce skoly
     createEmptySchool() {
       proxies.vyzva57services.createEmptyCompany(this.schoolTitle, emptyResult => {
         this.key = keys.toString({ licId: emptyResult.licId, counter: emptyResult.licCounter });
         this.$scope.$apply();
       });
     }
+    //seznam demouctu 
     createSchool() {
       proxies.vyzva57services.createDemoCompanyStart(this.schoolTitle, this.uniqueId, newDataResult => { //zalozeni company a vsech licencni v NewData
         managerSchool.createCompany(newDataResult.companyId, managerLangmaster.groups, null, newComp => { //simulace zalozeni studijnich skupin managerem

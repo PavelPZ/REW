@@ -82,6 +82,16 @@ module vyzva {
   var pageTemplate = vyzvaRoot + 'views/_pageTemplate.html';
 
   export function initVyzvaStates(params: blended.createStatePars) {
+    params.$stateProvider.state({
+      name: 'vyzvademo',
+      url: "/vyzvademo?teacher&student&admin&studentempty&companytitle",
+      controller: runController,
+      templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/vyzvademo.html',
+      resolve: {
+        $checkOldApplicationStart: blended.checkOldApplicationStart, //ceka se na dokonceni inicalizace nasi technologie
+        $keysFromCompanyTitle: vyzva.keysFromCompanyTitle
+      }
+    });
     stateNames.root = new state({
       name: 'pg.ajs',
       url: '/ajs',
@@ -91,11 +101,6 @@ module vyzva {
       onEnter: () => anim.inAngularjsGui = true,
       onExit: () => anim.inAngularjsGui = false,
       childs: [
-        //stateNames.langmasterManager = new state({
-        //  name: 'run',
-        //  url: "/run?key",
-        //  controller: runController,
-        //}),
         blended.prodStates.homeTask = stateNames.homeTask = new state({
           name: 'vyzva',
           //lickeys ve formatu <UserLicences.LicenceId>|<UserLicences.Counter>#<UserLicences.LicenceId>|<UserLicences.Counter>...
@@ -150,7 +155,6 @@ module vyzva {
                   controller: testHwController,
                   resolve: {
                     $loadedEx: blended.loadEx,
-                    //$loadedExJsonML: blended.loadExSimple,
                   }
                 }),
                 blended.prodStates.home = stateNames.home = new state({

@@ -140,7 +140,6 @@
     <Content Include="app\Pages\statistics.html" />
     <Content Include="app\Pages\vyzva57.html" />
     <Content Include="app\Pages\contact.html" />
-    <Content Include="app\Pages\index_.html" />
     <Content Include="app\Views\SEO.html" />
     <Content Include="app\Views\TopBar.html" />
     <Content Include="app\Views\TopBarModal.html" />

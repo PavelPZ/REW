@@ -57,6 +57,18 @@ var blended;
                     event.preventDefault();
             });
         }]);
+    function checkOldApplicationStart() {
+        if (checkOldApplicationStarted)
+            return;
+        checkOldApplicationStarted = true;
+        return angular.injector(['ng']).invoke(['$q', function ($q) {
+                var deferred = $q.defer();
+                boot.bootStart(function () { return deferred.resolve(); });
+                return deferred.promise;
+            }]);
+    }
+    blended.checkOldApplicationStart = checkOldApplicationStart;
+    var checkOldApplicationStarted = false;
     blended.root.app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', function (//'$provide', (
             $stateProvider, $urlRouterProvider, $location, $urlMatcherFactoryProvider, $provide) {
             //routerLogging($provide);
@@ -69,21 +81,12 @@ var blended;
             //  //equal: (v1: string, v2: string) => false,
             //});
             $urlRouterProvider.otherwise('/pg/old/school/schoolmymodel');
-            function checkOldApplicationStart() {
-                return angular.injector(['ng']).invoke(['$q', function ($q) {
-                        var deferred = $q.defer();
-                        boot.bootStart(function () { return deferred.resolve(); });
-                        return deferred.promise;
-                    }]);
-            }
             $stateProvider
                 .state({
                 name: 'pg',
                 url: '/pg',
                 abstract: true,
                 template: "<div data-ui-view></div>",
-                //***** preload common templates
-                //templateUrl: blended.baseUrlRelToRoot + '/courses/angularjs/angularjs.html',
                 resolve: {
                     checkOldApplicationStart: checkOldApplicationStart //ceka se na dokonceni inicalizace nasi technologie
                 }

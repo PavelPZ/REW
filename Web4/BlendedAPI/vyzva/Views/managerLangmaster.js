@@ -11,8 +11,9 @@ var vyzva;
         function managerLangmaster($scope, $state, intranetInfo) {
             _super.call(this, $scope, $state);
             this.intranetInfo = intranetInfo;
-            this.allUsers = [];
+            this.allUsers = []; //vystupni dato 2: seznam demouctu 
         }
+        //ostry klic pro spravce skoly
         managerLangmaster.prototype.createEmptySchool = function () {
             var _this = this;
             proxies.vyzva57services.createEmptyCompany(this.schoolTitle, function (emptyResult) {
@@ -20,6 +21,7 @@ var vyzva;
                 _this.$scope.$apply();
             });
         };
+        //seznam demouctu 
         managerLangmaster.prototype.createSchool = function () {
             var _this = this;
             proxies.vyzva57services.createDemoCompanyStart(this.schoolTitle, this.uniqueId, function (newDataResult) {

@@ -119,11 +119,57 @@ namespace blended {
       vyzva.PrepareDemoData.copyCourseData(data);
     }
 
+    //*************** vytvoreni demo company z nazvu company a generace 3 demoklicu (rozlisenim pro emaily je hash nazvu)
+    [Route("keysFromCompanyTitle"), HttpGet]
+    public vyzva.PrepareDemoDataNew.keysFromCompanyTitleResult keysFromCompanyTitle(string companyTitle) {
+      return vyzva.PrepareDemoDataNew.keysFromCompanyTitle(companyTitle);
+    }
+
+    //**** pripravi data pro spusteni aplikace na zaklade licencniho klice (klic = <companyLicenceId,counter>)
+    [Route("runDemoInformation"), HttpGet]
+    public runDemoInformationResult runDemoInformation(int companyLicenceId, int counter) {
+      var db = NewData.Lib.CreateContext();
+      var licInfo = db.UserLicences.Where(u => u.CompanyLicence.Id == companyLicenceId && u.Counter == counter).Select(l => new {
+        companyUserId = l.CourseUser.UserId,
+        lmcomId = l.CourseUser.CompanyUser.UserId,
+        l.CompanyLicence.CompanyId,
+        l.CourseUser.ProductId,
+        l.CourseUser.CompanyUser.User.EMail,
+        l.CourseUser.CompanyUser.User.FirstName,
+        l.CourseUser.CompanyUser.User.LastName,
+        l.CourseUser.CompanyUser.User.OtherType,
+      }).First();
+      var licKeys = db.UserLicences.Where(u => u.CourseUser.UserId == licInfo.companyUserId && u.CourseUser.ProductId == licInfo.ProductId).Select(l => new {
+        l.LicenceId,
+        l.Counter,
+      }).ToArray();
+      return new runDemoInformationResult() {
+        companyId = licInfo.CompanyId,
+        lmcomId = licInfo.lmcomId,
+        productUrl = licInfo.ProductId,
+        licKeys = licKeys.Select(lk => lk.LicenceId.ToString() + "|" + lk.Counter.ToString()).ToArray(),
+        email = licInfo.EMail,
+        firstName = licInfo.FirstName,
+        lastName = licInfo.LastName,
+        otherType = (OtherType)licInfo.OtherType,
+      };
+    }
+    public class runDemoInformationResult {
+      public string email;
+      public string firstName;
+      public string lastName;
+      public int companyId;
+      public string productUrl;
+      public long lmcomId;
+      public string[] licKeys;
+      public OtherType otherType;
+    }
+
     //***************************  SCORM
     [Route("deleteProduct"), HttpPost]
     public void deleteProduct(int companyid, long lmcomId, string productUrl, string taskId) {
       var db = blendedData.Lib.CreateContext();
-      db.CourseDatas.RemoveRange(db.CourseDatas.Where(cd => cd.CourseUser.CompanyId == companyid && cd.CourseUser.LMComId == lmcomId && cd.CourseUser.ProductUrl == productUrl && cd.TaskId==taskId));
+      db.CourseDatas.RemoveRange(db.CourseDatas.Where(cd => cd.CourseUser.CompanyId == companyid && cd.CourseUser.LMComId == lmcomId && cd.CourseUser.ProductUrl == productUrl && cd.TaskId == taskId));
       blendedData.Lib.SaveChanges(db);
     }
 

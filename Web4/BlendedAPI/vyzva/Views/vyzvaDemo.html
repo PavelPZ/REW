@@ -1,0 +1,29 @@
+﻿<div class="container-fluid topbar">
+  <div class="container">
+    <div class="pull-left">
+      <div class="lm-logo-black-small"></div>
+    </div>
+    <div class="pull-left topbar-title" ng-if="::!state.ignorePageTitle">{{::ts.keys.companyTitle}}</div>
+  </div>
+</div>
+<div class="container">
+  <h2>Demoverze výukového systému pro Výzvu 57</h2>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <button ng-click="::ts.navigateKey('student')" class="btn btn-success btn-lg">Spustit jako student</button>
+    </div>
+    <div class="panel-body">...</div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <button ng-click="::ts.navigateKey('teacher')" class="btn btn-warning btn-lg">Spustit jako učitel</button>
+    </div>
+    <div class="panel-body">...</div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <button ng-click="::ts.navigateKey('admin')" class="btn btn-default btn-sm">Spustit jako správce</button>
+    </div>
+    <div class="panel-body">...</div>
+  </div>
+</div>

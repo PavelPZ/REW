@@ -14,6 +14,7 @@ namespace NewData {
 
     public int Id { get; set; }
     public string Title { get; set; }
+    [Index] //kvuli blended demo> host ve tvaru blend.<title.hash> je klicem pro company
     public string ScormHost { get; set; } //identifikace company pro scorm (domena jejich scormu )
     public DateTime Created { get; set; }
     public string IntervalsConfig { get; set; } //JSON serializace Admin.IntervalsConfig

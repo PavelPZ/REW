@@ -451,11 +451,11 @@ namespace NewData {
           Title = cu.Title,
           PublisherOwnerUserId = cu.PublisherOwner == null ? 0 : cu.PublisherOwner.Id,
           Id = cu.CompanyId,
-          Courses = lics.Where(li => li.CompanyId == cu.CompanyId).GroupBy(li => li.ProductId).Select(prodLics => new MyCourse() {
-            ProductId = prodLics.Key,
-            Expired = LowUtils.DateToJsGetTime(prodLics.Select(d => d.Started.AddDays(d.Days)).Max()),
-            LicCount = prodLics.Count(),
-            LicenceKeys = prodLics.Select(l => l.LicenceId.ToString() + "|" + l.Counter.ToString()).ToArray()
+          Courses = lics.Where(li => li.CompanyId == cu.CompanyId).GroupBy(li => li.ProductId).Select(prodLicsGrp => new MyCourse() {
+            ProductId = prodLicsGrp.Key,
+            Expired = LowUtils.DateToJsGetTime(prodLicsGrp.Select(d => d.Started.AddDays(d.Days)).Max()),
+            LicCount = prodLicsGrp.Count(),
+            LicenceKeys = prodLicsGrp.Select(l => l.LicenceId.ToString() + "|" + l.Counter.ToString()).ToArray()
           }).ToArray(),
           DepTree = NewData.AdminServ.GetDepartment(cu.CompanyId),
           DepSelected = cu.DepartmentId
