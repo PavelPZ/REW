@@ -1,4 +1,4 @@
-﻿  <div class="alert help-panel help-warning lm-top-margin" collapsablemanager="+homehelpteacher" ng-if="::ts.myTask.showLectorPart">
+﻿<div class="alert help-panel help-warning lm-top-margin" collapsablemanager="+homehelpteacher" ng-if="::ts.myTask.showLectorPart">
   <div class="h4 help-header" ng-click="homehelpteacher.collapseToogle()">
     <div class="more fa fa-question-circle"></div>
     Nápověda k "Moje <i>Studijní skupiny</i>"
@@ -91,14 +91,20 @@
     <div class="row">
       <div class="col-sm-5">
         <h4>Postup</h4>
-        <ul>
-          <li>Průchod celým kurzem je velice snadný: v seznamu níže vyberte řádek, označený ikonkou <i class="fa fa-hand-o-right text-success" style="font-size:18px"></i>, a spusťte odpovídající část kurzu.</li>
-          <li>U splněných částí kurzu si můžete prohlížet výsledky pomocí tlačítka <b>Výsledky</b></li>
+        Průchod celým kurzem je velice snadný.
+        <ol>
+          <li>
+            V seznamu níže vyberte řádek, označený ikonkou <i class="fa fa-hand-o-right text-success" style="font-size:18px"></i>, a spusťte odpovídající část kurzu, která je práve "nařadě".
+          </li>
+          <li>Objeví se vám test nebo lekce.</li>
+          <li>Postupně plňte jednotlivé úkoly testu nebo lekce</li>
+          <li>Každý z těchto úkolů ukončete klikem na zelenou šipku vlevo nahoře</li>
           <!--<li>
             Testy, označené ikonkou <i class="fa fa-line-chart text-success" style="font-size:18px"></i>, vyhodnocuje <i>Učitel</i>.
             Do doby než test vyhodnotí nemůžete pokračovat dále (řádek označen ikonkou <i class="fa fa-question text-success" style="font-size:18px"></i>)
           </li>-->
-        </ul>
+        </ol>
+        U splněných částí kurzu si můžete prohlížet výsledky pomocí tlačítka <b>Výsledky</b>.
       </div>
       <div class="col-sm-6">
         <h4>Podrobnější vysvětlení:</h4>

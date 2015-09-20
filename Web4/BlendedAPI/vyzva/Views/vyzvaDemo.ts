@@ -4,7 +4,8 @@
   export var keysFromCompanyTitle = ['$stateParams', '$q', (params: {}, def: ng.IQService) => {
     var d = def.defer<keysFromCompanyTitleResult>();
     try {
-      proxies.vyzva57services.keysFromCompanyTitle(params['companytitle'], companyInfo => {
+      var companytitle = params['companytitle'];;
+      proxies.vyzva57services.keysFromCompanyTitle(companytitle, companyInfo => {
         if (companyInfo.newCompanyId > 0) { //vytvoreni nove company
           managerSchool.createCompany(companyInfo.newCompanyId, managerLangmaster.groups, null, newComp => { //zalozeni nove company se studijni grupou
             proxies.vyzva57services.loadCompanyData(companyInfo.newCompanyId, str => { //nacteni nove zalozene company
@@ -32,7 +33,9 @@
     teacher: userItem;
     admin: userItem;
     newCompanyId: number;
-    companyTitle:string;
+    companyTitle: string;
+    masterLicId: number; //hlavni klic pro spravce prazdne skoly
+    masterLLicCounter: number;
   }
   export interface userItem {
     licId: number;
@@ -55,14 +58,16 @@
 
 
   export class runController extends blended.controller {
-    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, public keys: keysFromCompanyTitleResult) {
+    constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, public companyInfo: keysFromCompanyTitleResult) {
       super($scope, $state);
+      this.masterKey = keys.toString({ licId: companyInfo.masterLicId, counter: companyInfo.masterLLicCounter });
       $('#splash').hide();
     }
+    masterKey: string;
     static $inject = ['$scope', '$state', '$keysFromCompanyTitle'];
 
     navigateKey(keyCode: string) {
-      var user: userItem = this.keys[keyCode];
+      var user: userItem = this.companyInfo[keyCode];
       //var key: keys.Key = keys.fromString(this.ctx[keyName].trim());
       var key: keys.Key = { licId: user.licId, counter: user.licCounter };
       proxies.vyzva57services.runDemoInformation(key.licId, key.counter, res => {
@@ -77,7 +82,9 @@
           }).join('#'),
           loc: Trados.actLang,
           persistence: null,
-          taskid: ''
+          taskid: '',
+          homelinktype: 'vyzvademo',
+          vyzvademocompanytitle: this.companyInfo.companyTitle,
         };
         blended.finishContext(ctx);
         //login
@@ -102,4 +109,6 @@
 
 //http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz&#/vyzvademo?teacher=99CE7PA1&admin=9659NKW6&student=9KUV3Z4B&studentempty=9U912GV1
 
-//http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz&#/vyzvademo?companytitle=testcompany1
+//http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz#/vyzvademo?companytitle=asdsadfasdfsadf
+//http://blendedtest.langmaster.cz/schools/index_cs_cz.html#/vyzvademo?companytitle=asdsadfasdfsadf
+//http://blended.langmaster.cz/schools/index_cs_cz.html#/vyzvademo?companytitle=asdsadfasdfsadf

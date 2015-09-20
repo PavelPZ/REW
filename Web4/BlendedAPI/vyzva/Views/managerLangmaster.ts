@@ -3,8 +3,21 @@
     constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, public intranetInfo: intranet.alocatedKeyRoot) {
       super($scope, $state);
     }
+    //************************* NEW
     schoolTitle: string; //vstupni dato: titulek skoly
     key: string; //vystupni dato 1: ostry klic pro spravce skoly
+    sablona4 = 1;
+    sablona3 = 0;
+    sum4(): string { return this.priceToString(this.sablona4 * 18490); }
+    sum3(): string { return this.priceToString(this.sablona3 * 3499); }
+    sum(): string { return this.priceToString(this.sablona4 * 18490 + this.sablona3 * 3499); }
+    priceToString(price: number): string {
+      var s = price.toString(); return s.substr(0, s.length - 3) + ' ' + s.substr(s.length - 3);
+    }
+    encodetitle(): string { return 'http://' + location.href.split('/')[2] + '/schools/index_cs_cz.html#/vyzvademo?companytitle=' + encodeURIComponent(this.schoolTitle); }
+    //encodetitle(): string { return 'http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz#/vyzvademo?companytitle=' + encodeURIComponent('DEMO: ' + this.schoolTitle); }
+
+    //************************* OLD
     uniqueId: string; //vstupni dato2: rozliseni emailu pro seznam demouctu
     allUsers: IDemoItem[] = []; //vystupni dato 2: seznam demouctu 
     //ostry klic pro spravce skoly
@@ -91,5 +104,5 @@
   interface IDemoItem extends intranet.IAlocatedKey {
     role: string;
   }
-  
+
 }

@@ -3,27 +3,123 @@
     <div class="pull-left">
       <div class="lm-logo-black-small"></div>
     </div>
-    <div class="pull-left topbar-title" ng-if="::!state.ignorePageTitle">{{::ts.keys.companyTitle}}</div>
+    <div class="pull-left topbar-title"><a href="mailto:info@langmaster.cz">info@langmaster.cz</a> +420 244 460 807</div>
   </div>
 </div>
-<div class="container">
-  <h2>Demoverze výukového systému pro Výzvu 57</h2>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <button ng-click="::ts.navigateKey('student')" class="btn btn-success btn-lg">Spustit jako student</button>
-    </div>
-    <div class="panel-body">...</div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <button ng-click="::ts.navigateKey('teacher')" class="btn btn-warning btn-lg">Spustit jako učitel</button>
-    </div>
-    <div class="panel-body">...</div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <button ng-click="::ts.navigateKey('admin')" class="btn btn-default btn-sm">Spustit jako správce</button>
-    </div>
-    <div class="panel-body">...</div>
+<div class="container-fluid gray">
+  <div class="container">
+    <!--<h3>Obsah</h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          <li class="a">Vyzkoušení <i>Výukového systému</i> pro Výzvu 57</li>
+          <li class="a" style="color:#a94442;"><b><i>Výukový systém LANGMaster</i> splňuje všechny podmínky Výzvy 57</b></li>
+          <li class="a">Ostrá verze <i>Výukového systému</i></li>
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <ul>
+          <li class="a">Dlouhodobé licence (2-4 roky, licence bez omezení)</li>
+          <li class="a">Aktuální ceník</li>
+          <li class="a">Unikátní metoda na vyhodnocení mluveného projevu studenta</li>
+        </ul>
+      </div>
+    </div>-->
   </div>
 </div>
+<div class="container-fluid">
+  <div class="container">
+    <h2>Vyzkoušení <i>Výukového systému</i> pro Výzvu 57</h2>
+    <h3>Pro: {{::ts.companyInfo.companyTitle}}</h3>
+    <div class="alert alert-warning">
+      <i>Výukový systém</i> využívají hlavně 2 typy uživatelů: <i>Učitel</i> a <i>Student</i>. Pomocí tlačítek níže si vyzkoušejte jak výuku <i>Studenta</i> tak i řízení výuky <i>Učitelem</i>.<br />
+      Zkoušíte v podstatě ostrou verzi, která vás ale nezatěžuje takovými samozřejmými kroky, jako je založení účtu, přihlášení a zadání Licenčního klíče.<br />
+      Poznámka: v kontextové nápovědě Systému se občas dočtete o krocích, které jsou pro účely vyzkoušení již udělány za vás.
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <button ng-click="::ts.navigateKey('student')" class="btn btn-success btn-lg">Spustit jako student</button>
+          </div>
+          <div class="panel-body">Spusťte systém v roli studenta. Pro snadnější seznámení se systémem doporučujeme na každé stránce využívat kontextovou nápovědu.</div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <button ng-click="::ts.navigateKey('teacher')" class="btn btn-warning btn-lg">Spustit jako učitel</button>
+          </div>
+          <div class="panel-body">Spusťte systém v roli učitele. Pro snadnější seznámení se systémem doporučujeme na každé stránce využívat kontextovou nápovědu.</div>
+        </div>
+      </div>
+    </div>
+    <p></p>
+  </div>
+</div>
+
+<div class="container-fluid gray" style="padding-bottom:20px;">
+  <div class="container">
+    <h2><i>Výukový systém LANGMaster</i> splňuje všechny podmínky Výzvy 57</h2>
+    <div class="alert alert-warning">
+      <b>Zajímá-li Vás, jak konkrétně plníme některé vlastnosti z Podmínek Výzvy, obraťte se na nás</b>. Pošleme Vám informaci, jak hledanou vlastnost splňujeme, a jak si ji v systému můžete vyzkoušet.
+    </div>
+    <div class="alert help-panel help-danger" collapsablemanager="+jaksplnujme1">
+      <h4></h4>
+      <div class="help-header" ng-click="jaksplnujme1.collapseToogle()">
+        <div class="more fa fa-bars"></div>
+        <p>Doposud jsme obdrželi tyto dotazy:</p>
+        <span class="badge">1</span><b>&nbsp;&nbsp;Jak prosím splňujete str. 30, bod C, dle kterého je třeba, aby systém postupně odemykal studentovi další látku na základě jeho aktuálních výsledků?</b>
+      </div>
+      <div class="help-content" collapse="jaksplnujme1.isCollapsed">
+        <div class="help-close" ng-click="jaksplnujme1.collapseToogle()"><i class="fa fa-times"></i></div>
+        <h4>Pro ověření splnění této vlastnosti postupuje následovně</h4>
+        <ol>
+          <li>
+            Použijte tlačítko <b>Spustit jako student</b> a projděte nejdříve Rozřazovací test a pak Vstupní test. Ve Vstupním testu záměrně udělejte několik chyb.
+            Pokud bude vaše skóre pod 65%, bude zbytek kurzu pro studenta nepřístupný.
+          </li>
+          <li>
+            Použijte tlačítko <b>Spustit jako učitel</b> a prohlédněte si podrobné výsledky studentova test (včetně jeho ústního projevu) a dejte studentovi vypracovat Vstupní test znova
+          </li>
+          <li>
+            Použijte tlačítko <b>Spustit jako student</b> a projděte Vstupní test znova. Pokud bude skóre vyšší než 65%, zpřístupní se vám kurz až do dalšího Kontrolního testu.
+          </li>
+        </ol>
+        Výzva 57 je zaměřena na nácvik mluvení (audio-orální metodou). Bohužel žádný počítač neumí automaticky vyhodnotit správnost mluveného projevu studenta.
+        Naše unikátní řešení spočívá v tom, že některé dovednosti studenta (gramatika, slovní zásoba, poslech) vyhodnotíme v testech automaticky a
+        mluvení necháme vyhodnotit učiteli.<br />
+        Systém okamžitě zareaguje na automaticky vyhodnocenou část testu. Učitel pak může toto automatické rozhodnutí systému zvrátit.<br />
+        Příklady:
+        <ul>
+          <li>Student provede špatně gramatiku ale mluvení provede dobře. Učitel proto "pustí" studenta dále.</li>
+          <li>
+            Student provede excelentně gramatiku ale u mluvení propadne. Učitel jej tedy dodatečně "nepustí" dále.
+            Může potom dát studentovi zopakovat některé Lekce i Kontrolní test.
+          </li>
+        </ul>
+        <b>Závěr:</b> Náš systém splňuje podmínky výzvy lépe než vyžaduje zadání.
+        Řeší totiž i problém testování mluveného projevu studentů.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--<div class="container-fluid">
+  <div class="container">
+    <h2>Dlouhodobé licence (2-4 roky, licence bez omezení)</h2>
+  </div>
+</div>
+
+<div class="container-fluid gray">
+  <div class="container">
+    <h2>Aktuální ceník</h2>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="container">
+    <h2>Unikátní metoda na vyhodnocení mluveného projevu studenta</h2>
+  </div>
+</div>-->
+

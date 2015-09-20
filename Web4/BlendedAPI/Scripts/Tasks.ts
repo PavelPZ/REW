@@ -89,9 +89,15 @@
       return stateName => self.navigate({ stateName: stateName, pars: self.ctx });
     }
 
-    navigateWebHome() { Pager.gotoHomeUrl(); }
+    navigateWebHome() {
+      if (this.ctx.homelinktype == 'vyzvademo') {
+        this.navigate({ stateName: 'vyzvademo', pars: <any> { companytitle: this.ctx.vyzvademocompanytitle } });
+      } else {
+        Pager.gotoHomeUrl();
+      }
+    }
     navigateReturnUrl() { location.href = this.ctx.returnurl; }
-    getProductHomeUrl(): IStateUrl { return { stateName: prodStates.home.name, pars: this.ctx };}
+    getProductHomeUrl(): IStateUrl { return { stateName: prodStates.home.name, pars: this.ctx }; }
     navigateProductHome() { this.navigate(this.getProductHomeUrl()); }
 
     wrongUrlRedirect(url: IStateUrl) {
@@ -259,7 +265,7 @@
     lectorSetTarget?: boolean; //bysledek pretestu nastavi lektor
   }
 
-  export function pretestScore(dataNode: IPretestRepository, user: IPretestUser, taskId:string): IExShort {
+  export function pretestScore(dataNode: IPretestRepository, user: IPretestUser, taskId: string): IExShort {
     if (!persistUserIsDone(user)) return null;
     var users = _.map(user.history, l => agregateShortFromNodes(dataNode.Items[l], taskId));
     return agregateShorts(users);

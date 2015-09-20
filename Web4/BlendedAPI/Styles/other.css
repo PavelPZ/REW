@@ -122,6 +122,23 @@
 .bl .help-warning .help-content .help-close {
   color: #ebb442;
 }
+.bl .help-danger {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+}
+.bl .help-danger hr {
+  border-top-color: #e4b9c0;
+}
+.bl .help-danger .alert-link {
+  color: #843534;
+}
+.bl .help-danger .help-content {
+  border-top-color: #dca7b0;
+}
+.bl .help-danger .help-content .help-close {
+  color: #c05e6e;
+}
 .bl .help-default {
   background-color: #f5f5f5;
   border-color: #dddddd;
@@ -230,4 +247,11 @@
 }
 .bl .faq .panel .panel-body {
   padding: 10px;
+}
+.bl .container-fluid.gray {
+  background-color: #eeeeee;
+}
+.bl .container-fluid .container > h2,
+.bl .container-fluid .container > h3 {
+  text-align: center;
 }

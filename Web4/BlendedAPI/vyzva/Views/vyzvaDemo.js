@@ -10,7 +10,9 @@ var vyzva;
     vyzva.keysFromCompanyTitle = ['$stateParams', '$q', function (params, def) {
             var d = def.defer();
             try {
-                proxies.vyzva57services.keysFromCompanyTitle(params['companytitle'], function (companyInfo) {
+                var companytitle = params['companytitle'];
+                ;
+                proxies.vyzva57services.keysFromCompanyTitle(companytitle, function (companyInfo) {
                     if (companyInfo.newCompanyId > 0) {
                         vyzva.managerSchool.createCompany(companyInfo.newCompanyId, vyzva.managerLangmaster.groups, null, function (newComp) {
                             proxies.vyzva57services.loadCompanyData(companyInfo.newCompanyId, function (str) {
@@ -51,14 +53,15 @@ var vyzva;
     ];
     var runController = (function (_super) {
         __extends(runController, _super);
-        function runController($scope, $state, keys) {
+        function runController($scope, $state, companyInfo) {
             _super.call(this, $scope, $state);
-            this.keys = keys;
+            this.companyInfo = companyInfo;
+            this.masterKey = keys.toString({ licId: companyInfo.masterLicId, counter: companyInfo.masterLLicCounter });
             $('#splash').hide();
         }
         runController.prototype.navigateKey = function (keyCode) {
             var _this = this;
-            var user = this.keys[keyCode];
+            var user = this.companyInfo[keyCode];
             //var key: keys.Key = keys.fromString(this.ctx[keyName].trim());
             var key = { licId: user.licId, counter: user.licCounter };
             proxies.vyzva57services.runDemoInformation(key.licId, key.counter, function (res) {
@@ -73,7 +76,9 @@ var vyzva;
                     }).join('#'),
                     loc: Trados.actLang,
                     persistence: null,
-                    taskid: ''
+                    taskid: '',
+                    homelinktype: 'vyzvademo',
+                    vyzvademocompanytitle: _this.companyInfo.companyTitle,
                 };
                 blended.finishContext(ctx);
                 //login
@@ -105,4 +110,6 @@ var vyzva;
 })(vyzva || (vyzva = {}));
 //http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz&#/vyzvademo?teacher=9Q1ZNF4V&admin=92XR5UQH&student=9659NYB3&studentempty=9659NYB3
 //http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz&#/vyzvademo?teacher=99CE7PA1&admin=9659NKW6&student=9KUV3Z4B&studentempty=9U912GV1
-//http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz&#/vyzvademo?companytitle=testcompany1 
+//http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz#/vyzvademo?companytitle=asdsadfasdfsadf
+//http://blendedtest.langmaster.cz/schools/index_cs_cz.html#/vyzvademo?companytitle=asdsadfasdfsadf
+//http://blended.langmaster.cz/schools/index_cs_cz.html#/vyzvademo?companytitle=asdsadfasdfsadf 

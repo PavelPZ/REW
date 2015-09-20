@@ -84,7 +84,8 @@ module vyzva {
   export function initVyzvaStates(params: blended.createStatePars) {
     params.$stateProvider.state({
       name: 'vyzvademo',
-      url: "/vyzvademo?teacher&student&admin&studentempty&companytitle",
+      //url: "/vyzvademo?teacher&student&admin&studentempty&companytitle",
+      url: "/vyzvademo?companytitle",
       controller: runController,
       templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/vyzvademo.html',
       resolve: {
@@ -104,7 +105,7 @@ module vyzva {
         blended.prodStates.homeTask = stateNames.homeTask = new state({
           name: 'vyzva',
           //lickeys ve formatu <UserLicences.LicenceId>|<UserLicences.Counter>#<UserLicences.LicenceId>|<UserLicences.Counter>...
-          url: "/vyzva/:companyid/:loginid/:persistence/:loc/:lickeys?returnurl",
+          url: "/vyzva/:companyid/:loginid/:persistence/:loc/:lickeys?returnurl&homelinktype&vyzvademocompanytitle",
           abstract: true,
           template: "<div data-ui-view></div>",
           resolve: {

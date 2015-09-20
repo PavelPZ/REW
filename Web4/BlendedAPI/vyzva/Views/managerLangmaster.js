@@ -11,8 +11,18 @@ var vyzva;
         function managerLangmaster($scope, $state, intranetInfo) {
             _super.call(this, $scope, $state);
             this.intranetInfo = intranetInfo;
+            this.sablona4 = 1;
+            this.sablona3 = 0;
             this.allUsers = []; //vystupni dato 2: seznam demouctu 
         }
+        managerLangmaster.prototype.sum4 = function () { return this.priceToString(this.sablona4 * 18490); };
+        managerLangmaster.prototype.sum3 = function () { return this.priceToString(this.sablona3 * 3499); };
+        managerLangmaster.prototype.sum = function () { return this.priceToString(this.sablona4 * 18490 + this.sablona3 * 3499); };
+        managerLangmaster.prototype.priceToString = function (price) {
+            var s = price.toString();
+            return s.substr(0, s.length - 3) + ' ' + s.substr(s.length - 3);
+        };
+        managerLangmaster.prototype.encodetitle = function () { return 'http://' + location.href.split('/')[2] + '/schools/index_cs_cz.html#/vyzvademo?companytitle=' + encodeURIComponent(this.schoolTitle); };
         //ostry klic pro spravce skoly
         managerLangmaster.prototype.createEmptySchool = function () {
             var _this = this;

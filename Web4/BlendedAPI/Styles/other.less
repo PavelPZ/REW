@@ -144,6 +144,18 @@
     }
   }
 
+  .help-danger {
+    .alert-variant(@alert-danger-bg; @alert-danger-border; @alert-danger-text);
+
+    .help-content {
+      border-top-color: darken(@panel-danger-border,10);
+
+      .help-close {
+        color: darken(@panel-danger-border,30);
+      }
+    }
+  }
+
   .help-default {
     .alert-variant(@panel-default-heading-bg; @panel-default-border; @panel-default-text);
 
@@ -280,4 +292,14 @@
       margin-bottom:0;
     }
   }
+
+.container-fluid {
+  &.gray {
+    background-color: @gray-lighter;
+  }
+  .container > h2, .container > h3 {
+    text-align: center;
+  }
+}
+
 }

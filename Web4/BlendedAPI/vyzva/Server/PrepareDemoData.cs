@@ -24,6 +24,8 @@ namespace vyzva {
       public userItem admin;
       public string companyTitle;
       public int newCompanyId; //zalozena nova company => na klientovi je potreba vytvorit skupinu studentu a priradit klice
+      public int masterLicId; //hlavni klic pro spravce prazdne skoly
+      public int masterLLicCounter;
     }
     public class userItem {
       public int licId;
@@ -36,13 +38,15 @@ namespace vyzva {
 
     public static keysFromCompanyTitleResult keysFromCompanyTitle(string companyTitle) {
       var db = NewData.Lib.CreateContext();
-      long hash = companyTitle.GetHashCode(); var host = "blend." + hash;
+      if (companyTitle.EndsWith(" *")) companyTitle = companyTitle.Substring(0, companyTitle.Length - 2);
+      var demoCompanyTitle = companyTitle + " *";
+      long hash = demoCompanyTitle.GetHashCode(); var host = "blend." + hash;
       var company = db.Companies.FirstOrDefault(c => c.ScormHost == host);
       UserLicence lSpravce = null; UserLicence lStudent = null; UserLicence lUcitel = null;
       User uSpravce = null; User uStudent = null; User uUcitel = null;
-      var result = new keysFromCompanyTitleResult() { companyTitle = companyTitle };
+      var result = new keysFromCompanyTitleResult() { companyTitle = demoCompanyTitle };
       if (company == null) {
-        db.Companies.Add(company = new Company() { Title = companyTitle, Created = DateTime.UtcNow, ScormHost = host });
+        db.Companies.Add(company = new Company() { Title = demoCompanyTitle, Created = DateTime.UtcNow, ScormHost = host });
         var dep = new CompanyDepartment() { Title = company.Title, Company = company };
         db.CompanyDepartments.Add(dep);
 
@@ -88,9 +92,12 @@ namespace vyzva {
         if (user != null) { res.email = user.EMail; res.firstName = user.FirstName; res.lastName = user.LastName; res.lmcomId = user.Id; }
         return res;
       };
+      var master = PrepareDemoData.createEmptyCompany(companyTitle);
       result.admin = createUserItem(lSpravce, uSpravce);
       result.teacher = createUserItem(lUcitel, uUcitel);
       result.student = createUserItem(lStudent, uStudent);
+      result.masterLicId = master.licId;
+      result.masterLLicCounter = master.licCounter;
       return result;
     }
   }
@@ -110,7 +117,7 @@ namespace vyzva {
       //products
       CompanyLicence schoolManLic = null;
       foreach (var prodId in new string[] { "/lm/blcourse/schoolmanager.product/", "/lm/prods_lm_blcourse_english/", "/lm/prods_lm_blcourse_french/", "/lm/prods_lm_blcourse_german/" }) {
-        var compLicence = new CompanyLicence() { Company = company, Days = 100, ProductId = prodId, Created = DateTime.UtcNow, LastCounter = 2 };
+        var compLicence = new CompanyLicence() { Company = company, Days = 1000, ProductId = prodId, Created = DateTime.UtcNow, LastCounter = 2 };
         if (schoolManLic == null) schoolManLic = compLicence;
         db.CompanyLicences.Add(compLicence);
       }

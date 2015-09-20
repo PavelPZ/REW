@@ -67,7 +67,14 @@ var blended;
             var self = this;
             return function (stateName) { return self.navigate({ stateName: stateName, pars: self.ctx }); };
         };
-        controller.prototype.navigateWebHome = function () { Pager.gotoHomeUrl(); };
+        controller.prototype.navigateWebHome = function () {
+            if (this.ctx.homelinktype == 'vyzvademo') {
+                this.navigate({ stateName: 'vyzvademo', pars: { companytitle: this.ctx.vyzvademocompanytitle } });
+            }
+            else {
+                Pager.gotoHomeUrl();
+            }
+        };
         controller.prototype.navigateReturnUrl = function () { location.href = this.ctx.returnurl; };
         controller.prototype.getProductHomeUrl = function () { return { stateName: blended.prodStates.home.name, pars: this.ctx }; };
         controller.prototype.navigateProductHome = function () { this.navigate(this.getProductHomeUrl()); };

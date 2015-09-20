@@ -10042,7 +10042,14 @@ var blended;
             var self = this;
             return function (stateName) { return self.navigate({ stateName: stateName, pars: self.ctx }); };
         };
-        controller.prototype.navigateWebHome = function () { Pager.gotoHomeUrl(); };
+        controller.prototype.navigateWebHome = function () {
+            if (this.ctx.homelinktype == 'vyzvademo') {
+                this.navigate({ stateName: 'vyzvademo', pars: { companytitle: this.ctx.vyzvademocompanytitle } });
+            }
+            else {
+                Pager.gotoHomeUrl();
+            }
+        };
         controller.prototype.navigateReturnUrl = function () { location.href = this.ctx.returnurl; };
         controller.prototype.getProductHomeUrl = function () { return { stateName: blended.prodStates.home.name, pars: this.ctx }; };
         controller.prototype.navigateProductHome = function () { this.navigate(this.getProductHomeUrl()); };
@@ -10967,7 +10974,11 @@ var vyzva;
     }
     vyzva.finishHomeDataNode = finishHomeDataNode;
     function breadcrumbBase(ctrl, homeOnly) {
-        var res = [{ title: 'Moje Online jazykové kurzy a testy', url: '#' + Pager.getHomeUrl() }];
+        var res = [];
+        if (ctrl.ctx.homelinktype == 'vyzvademo')
+            res.push({ title: 'Vyzkoušení', url: '#/vyzvademo?companytitle=' + encodeURIComponent(ctrl.ctx.vyzvademocompanytitle) });
+        else
+            res.push({ title: 'Moje Online jazykové kurzy a testy', url: '#' + Pager.getHomeUrl() });
         if (!homeOnly)
             res.push({ title: ctrl.productParent.dataNode.title, url: ctrl.href(ctrl.getProductHomeUrl() /*{ stateName: stateNames.home.name, pars: ctrl.ctx }*/), active: false });
         return res;
@@ -11177,8 +11188,18 @@ var vyzva;
         function managerLangmaster($scope, $state, intranetInfo) {
             _super.call(this, $scope, $state);
             this.intranetInfo = intranetInfo;
+            this.sablona4 = 1;
+            this.sablona3 = 0;
             this.allUsers = []; //vystupni dato 2: seznam demouctu 
         }
+        managerLangmaster.prototype.sum4 = function () { return this.priceToString(this.sablona4 * 18490); };
+        managerLangmaster.prototype.sum3 = function () { return this.priceToString(this.sablona3 * 3499); };
+        managerLangmaster.prototype.sum = function () { return this.priceToString(this.sablona4 * 18490 + this.sablona3 * 3499); };
+        managerLangmaster.prototype.priceToString = function (price) {
+            var s = price.toString();
+            return s.substr(0, s.length - 3) + ' ' + s.substr(s.length - 3);
+        };
+        managerLangmaster.prototype.encodetitle = function () { return 'http://' + location.href.split('/')[2] + '/schools/index_cs_cz.html#/vyzvademo?companytitle=' + encodeURIComponent(this.schoolTitle); };
         //ostry klic pro spravce skoly
         managerLangmaster.prototype.createEmptySchool = function () {
             var _this = this;
@@ -11955,7 +11976,9 @@ var vyzva;
     vyzva.keysFromCompanyTitle = ['$stateParams', '$q', function (params, def) {
             var d = def.defer();
             try {
-                proxies.vyzva57services.keysFromCompanyTitle(params['companytitle'], function (companyInfo) {
+                var companytitle = params['companytitle'];
+                ;
+                proxies.vyzva57services.keysFromCompanyTitle(companytitle, function (companyInfo) {
                     if (companyInfo.newCompanyId > 0) {
                         vyzva.managerSchool.createCompany(companyInfo.newCompanyId, vyzva.managerLangmaster.groups, null, function (newComp) {
                             proxies.vyzva57services.loadCompanyData(companyInfo.newCompanyId, function (str) {
@@ -11996,14 +12019,15 @@ var vyzva;
     ];
     var runController = (function (_super) {
         __extends(runController, _super);
-        function runController($scope, $state, keys) {
+        function runController($scope, $state, companyInfo) {
             _super.call(this, $scope, $state);
-            this.keys = keys;
+            this.companyInfo = companyInfo;
+            this.masterKey = keys.toString({ licId: companyInfo.masterLicId, counter: companyInfo.masterLLicCounter });
             $('#splash').hide();
         }
         runController.prototype.navigateKey = function (keyCode) {
             var _this = this;
-            var user = this.keys[keyCode];
+            var user = this.companyInfo[keyCode];
             //var key: keys.Key = keys.fromString(this.ctx[keyName].trim());
             var key = { licId: user.licId, counter: user.licCounter };
             proxies.vyzva57services.runDemoInformation(key.licId, key.counter, function (res) {
@@ -12018,7 +12042,9 @@ var vyzva;
                     }).join('#'),
                     loc: Trados.actLang,
                     persistence: null,
-                    taskid: ''
+                    taskid: '',
+                    homelinktype: 'vyzvademo',
+                    vyzvademocompanytitle: _this.companyInfo.companyTitle,
                 };
                 blended.finishContext(ctx);
                 //login
@@ -12050,7 +12076,9 @@ var vyzva;
 })(vyzva || (vyzva = {}));
 //http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz&#/vyzvademo?teacher=9Q1ZNF4V&admin=92XR5UQH&student=9659NYB3&studentempty=9659NYB3
 //http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz&#/vyzvademo?teacher=99CE7PA1&admin=9659NKW6&student=9KUV3Z4B&studentempty=9U912GV1
-//http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz&#/vyzvademo?companytitle=testcompany1 
+//http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz#/vyzvademo?companytitle=asdsadfasdfsadf
+//http://blendedtest.langmaster.cz/schools/index_cs_cz.html#/vyzvademo?companytitle=asdsadfasdfsadf
+//http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz&#/vyzvademo?companytitle=asdsadfasdfsadf 
 
 var vyzva;
 (function (vyzva) {
@@ -12145,7 +12173,8 @@ var vyzva;
     function initVyzvaStates(params) {
         params.$stateProvider.state({
             name: 'vyzvademo',
-            url: "/vyzvademo?teacher&student&admin&studentempty&companytitle",
+            //url: "/vyzvademo?teacher&student&admin&studentempty&companytitle",
+            url: "/vyzvademo?companytitle",
             controller: vyzva.runController,
             templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/vyzvademo.html',
             resolve: {
@@ -12165,7 +12194,7 @@ var vyzva;
                 blended.prodStates.homeTask = vyzva.stateNames.homeTask = new state({
                     name: 'vyzva',
                     //lickeys ve formatu <UserLicences.LicenceId>|<UserLicences.Counter>#<UserLicences.LicenceId>|<UserLicences.Counter>...
-                    url: "/vyzva/:companyid/:loginid/:persistence/:loc/:lickeys?returnurl",
+                    url: "/vyzva/:companyid/:loginid/:persistence/:loc/:lickeys?returnurl&homelinktype&vyzvademocompanytitle",
                     abstract: true,
                     template: "<div data-ui-view></div>",
                     resolve: {

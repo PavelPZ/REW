@@ -40,8 +40,10 @@
     onbehalfof?: number; //id studenta, jehoz data vyuzivam
     returnurl?: string; //return url pro back tlacitko
     //pro intranet:
-    groupid?: string, //identifikace skupiny studentu
+    groupid?: string; //identifikace skupiny studentu
     //lectortab?: string, //tab na lector strance
+    homelinktype?: string; //typ home: mimo undefined (standardni) jeste vyzvademo
+    vyzvademocompanytitle?: string; //companytitle pro homelinktype=vyzvademo
 
     pretesturl?: string; moduleurl?: string; url?: string; 
     //normalizovana url

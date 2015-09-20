@@ -3,18 +3,66 @@
   <div>
     <form>
       <div class="form-group">
-        <label for="exampleInputName2">Název školy</label>
-        <input type="text" class="form-control" id="exampleInputName2" placeholder="Název školy" ng-model="ts.schoolTitle">
+        <label for="schName">Název školy</label>
+        <input type="text" class="form-control" id="schName" placeholder="Název školy" ng-model="ts.schoolTitle">
+        <label for="sabl4">Počet šablon 4</label>
+        <input type="number" class="form-control" id="sabl4" placeholder="Počet šablon 4" ng-model="ts.sablona4">
+        <label for="sabl3">Počet šablon 3</label>
+        <input type="number" class="form-control" id="sabl3" placeholder="Počet šablon 3" ng-model="ts.sablona3">
       </div>
-      <div class="form-group">
+      <!--<div class="form-group">
         <label for="exampleInputEmail2">Pořadové číslo (jsou jím odlišeny emaily uživatelů, musí být proto jednoznačné)</label>
         <input type="text" class="form-control" id="exampleInputEmail2" placeholder="Pořadové číslo" ng-model="ts.uniqueId">
-      </div>
-      <button class="btn btn-success btn-lg" ng-click="::ts.createSchool()">Vygeneruj demo účty</button>
-      <button class="btn btn-success btn-lg" ng-click="::ts.createEmptySchool()">Vygeneruj klíč pro správce</button>
+      </div>-->
+      <!--<button class="btn btn-success btn-lg" ng-click="::ts.createSchool()">Vygeneruj demo účty</button>-->
+      <!--<button class="btn btn-success btn-lg" ng-click="::ts.createEmptySchool()">Vygeneruj klíč pro správce</button>-->
+      <!--<button class="btn btn-success btn-lg" ng-click="::ts.generate()">Generace</button>-->
     </form>
   </div>
+  <hr /><br />
+  <!--<h4>{{ts.encodetitle()}}</h4>-->
+  <p>
+    <b>LANGMaster garantuje <i>splnění všech podmínek Výzvy 57</i></b> (včetně bod C, str. 30, dle kterého je třeba, aby <i>systém postupně odemykal další látku studentovi na základě jeho aktuálních výsledků</i>)<br />
+    Přesvědčte se sami <a href="{{ts.encodetitle()}}"><b>vyzkoušením našeho systému zde</b></a>.
+  </p>
   <hr />
+  Kvůli zdržení projektu a kratší době trvání licence nabízíme <i>nové ceny</i>:<br />
+  <table style="width: 500px; border: 1px solid #ddd;">
+    <tr>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Šablona</td>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Za jednotku</td>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Počet</td>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Cena v Kč s DPH</td>
+    </tr>
+    <tr>
+      <td style="padding:4px; border: 1px solid #ddd;">Studenti (č. 4)</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right">18 490</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right">{{ts.sablona4}}</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right">{{ts.sum4()}}</td>
+    </tr>
+    <tr>
+      <td style="padding:4px; border: 1px solid #ddd;">Učitelé (č. 3)</td>
+      <td style="padding:4px; border: 1px solid #ddd;">3 499</td>
+      <td style="padding:4px; border: 1px solid #ddd;">{{ts.sablona3}}</td>
+      <td style="padding:4px; border: 1px solid #ddd;">{{ts.sum3()}}</td>
+    </tr>
+    <tr>
+      <td style="padding:4px; border: 1px solid #ddd;">Celkem</td>
+      <td style="padding:4px; border: 1px solid #ddd;">&nbsp;</td>
+      <td style="padding:4px; border: 1px solid #ddd;"></td>
+      <td style="padding:4px; border: 1px solid #ddd; font-weight:bold;">{{ts.sum()}}</td>
+    </tr>
+  </table>
+  <div style="font-size:0.9em">
+    Mimo vlastní licence je v ceně:
+    <ul>
+      <li>podpora LANGMaster Hotline po celou dobu trvání projektu</li>
+      <li>zpracování výstupů projektu pro Závěrečnou monitorovací zprávu</li>
+      <li>licence na celý školní rok do 31.8.2016</li>
+    </ul>
+  </div>
+
+  <!--<hr />
   <h3>Vygenerovaný klíč pro správce</h3>
   {{ts.key}}
   <hr />
@@ -24,14 +72,14 @@
       <td>Chci si zkusit</td>
       <td>Přihlašovací E-mail</td>
       <td>Přihlašovací heslo</td>
-      <!--<td>Licenční klíč</td>-->
+      <td>Licenční klíč</td>
     </tr>
     <tr ng-repeat="user in ts.allUsers">
       <td>{{user.role}}</td>
       <td>{{user.email}}</td>
       <td>heslo</td>
-      <!--<td>{{user.keyStr}}</td>-->
+      <td>{{user.keyStr}}</td>
     </tr>
-  </table>
+  </table>-->
 
 </div>
