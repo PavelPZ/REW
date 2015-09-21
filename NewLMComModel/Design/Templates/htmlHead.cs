@@ -58,8 +58,8 @@ namespace NewData.Design.Templates
             #line default
             #line hidden
             this.Write(@".js'></script>
-  <script src=""https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.1.10/es5-shim.js"" type=""text/javascript"" ></script>
-  <script src=""https://code.jquery.com/jquery-1.11.3.min.js"" type=""text/javascript"" ></script>
+  <script src=""../jslib/scripts/es5-shim.js"" type=""text/javascript"" ></script>
+  <script src=""../jslib/scripts/jquery-1.11.3.min.js"" type=""text/javascript"" ></script>
   <script src=""../jslib/scripts/angular-ie8.js"" type=""text/javascript""></script>
   <style>
     .ng-hide, .alert.advertise {
@@ -76,9 +76,9 @@ namespace NewData.Design.Templates
             
             #line default
             #line hidden
-            this.Write(".js\'></script>\r\n  <script src=\"https://ajax.googleapis.com/ajax/libs/angularjs/1." +
-                    "4.2/angular.js\" type=\"text/javascript\"></script>\r\n  <!--<![endif]-->\r\n  <script " +
-                    "type=\'text/javascript\' src=\'../jslib/scripts/underscore");
+            this.Write(".js\'></script>\r\n  <script src=\"../jslib/scripts/angular.js\" type=\"text/javascript" +
+                    "\"></script>\r\n  <!--<![endif]-->\r\n  <script type=\'text/javascript\' src=\'../jslib/" +
+                    "scripts/underscore");
             
             #line 35 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(min));
@@ -88,11 +88,11 @@ namespace NewData.Design.Templates
             this.Write(@".js'></script>
   <script type='text/javascript' src='../jslib/js/lmconsoleinit.js'></script>
 
-  <script src=""https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-route.js"" type=""text/javascript""></script>
-  <script src=""https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-animate.js"" type=""text/javascript""></script>
-  <script src=""https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-cookies.js"" type=""text/javascript""></script>
-  <script src=""https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"" type=""text/javascript""></script>
-  <script src=""https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.3/ui-bootstrap-tpls.js"" type=""text/javascript""></script>
+  <script src=""../jslib/scripts/angular-route.js"" type=""text/javascript""></script>
+  <script src=""../jslib/scripts/angular-animate.js"" type=""text/javascript""></script>
+  <script src=""../jslib/scripts/angular-cookies.js"" type=""text/javascript""></script>
+  <script src=""../jslib/scripts/angular-ui-router.js"" type=""text/javascript""></script>
+  <script src=""../jslib/scripts/ui-bootstrap-tpls.js"" type=""text/javascript""></script>
 
   <link href=""../font-awesome/lm/externals");
             

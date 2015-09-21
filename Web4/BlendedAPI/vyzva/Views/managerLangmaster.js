@@ -18,6 +18,9 @@ var vyzva;
         managerLangmaster.prototype.sum4 = function () { return this.priceToString(this.sablona4 * 18490); };
         managerLangmaster.prototype.sum3 = function () { return this.priceToString(this.sablona3 * 3499); };
         managerLangmaster.prototype.sum = function () { return this.priceToString(this.sablona4 * 18490 + this.sablona3 * 3499); };
+        managerLangmaster.prototype.sum4NoDPH = function () { return this.priceToString(this.sablona4 * 15281); };
+        managerLangmaster.prototype.sum3NoDPH = function () { return this.priceToString(this.sablona3 * 2892); };
+        managerLangmaster.prototype.sumNoDPH = function () { return this.priceToString(this.sablona4 * 15281 + this.sablona3 * 2892); };
         managerLangmaster.prototype.priceToString = function (price) {
             var s = price.toString();
             return s.substr(0, s.length - 3) + ' ' + s.substr(s.length - 3);

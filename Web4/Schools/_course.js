@@ -11195,6 +11195,9 @@ var vyzva;
         managerLangmaster.prototype.sum4 = function () { return this.priceToString(this.sablona4 * 18490); };
         managerLangmaster.prototype.sum3 = function () { return this.priceToString(this.sablona3 * 3499); };
         managerLangmaster.prototype.sum = function () { return this.priceToString(this.sablona4 * 18490 + this.sablona3 * 3499); };
+        managerLangmaster.prototype.sum4NoDPH = function () { return this.priceToString(this.sablona4 * 15281); };
+        managerLangmaster.prototype.sum3NoDPH = function () { return this.priceToString(this.sablona3 * 2892); };
+        managerLangmaster.prototype.sumNoDPH = function () { return this.priceToString(this.sablona4 * 15281 + this.sablona3 * 2892); };
         managerLangmaster.prototype.priceToString = function (price) {
             var s = price.toString();
             return s.substr(0, s.length - 3) + ' ' + s.substr(s.length - 3);
@@ -11974,7 +11977,7 @@ var vyzva;
 (function (vyzva) {
     //********** RUN DEMO controller
     vyzva.keysFromCompanyTitle = ['$stateParams', '$q', function (params, def) {
-            var d = def.defer();
+            var deferred = def.defer();
             try {
                 var companytitle = params['companytitle'];
                 ;
@@ -11995,17 +11998,17 @@ var vyzva;
                                 fillCompUserData(newComp.studyGroups[0].lectorKeys[0], companyInfo.teacher);
                                 fillCompUserData(newComp.studyGroups[0].studentKeys[0], companyInfo.student);
                                 //ulozeni company
-                                proxies.vyzva57services.writeCompanyData(companyInfo.newCompanyId, JSON.stringify(newComp), function () { return d.resolve(companyInfo); });
+                                proxies.vyzva57services.writeCompanyData(companyInfo.newCompanyId, JSON.stringify(newComp), function () { return deferred.resolve(companyInfo); });
                             });
                         });
                     }
                     else {
-                        d.resolve(companyInfo);
+                        deferred.resolve(companyInfo);
                     }
                 });
             }
             finally {
-                return d.promise;
+                return deferred.promise;
             }
         }];
     var groups = [
@@ -12023,6 +12026,8 @@ var vyzva;
             _super.call(this, $scope, $state);
             this.companyInfo = companyInfo;
             this.masterKey = keys.toString({ licId: companyInfo.masterLicId, counter: companyInfo.masterLLicCounter });
+            if (Utils.endWith(companyInfo.companyTitle, ' *'))
+                companyInfo.companyTitle = companyInfo.companyTitle.substr(0, companyInfo.companyTitle.length - 2);
             $('#splash').hide();
         }
         runController.prototype.navigateKey = function (keyCode) {
@@ -12078,7 +12083,7 @@ var vyzva;
 //http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz&#/vyzvademo?teacher=99CE7PA1&admin=9659NKW6&student=9KUV3Z4B&studentempty=9U912GV1
 //http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz#/vyzvademo?companytitle=asdsadfasdfsadf
 //http://blendedtest.langmaster.cz/schools/index_cs_cz.html#/vyzvademo?companytitle=asdsadfasdfsadf
-//http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz&#/vyzvademo?companytitle=asdsadfasdfsadf 
+//http://blended.langmaster.cz/schools/index_cs_cz.html#/vyzvademo?companytitle=asdsadfasdfsadf 
 
 var vyzva;
 (function (vyzva) {

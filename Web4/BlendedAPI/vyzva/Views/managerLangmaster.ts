@@ -11,6 +11,9 @@
     sum4(): string { return this.priceToString(this.sablona4 * 18490); }
     sum3(): string { return this.priceToString(this.sablona3 * 3499); }
     sum(): string { return this.priceToString(this.sablona4 * 18490 + this.sablona3 * 3499); }
+    sum4NoDPH(): string { return this.priceToString(this.sablona4 * 15281); }
+    sum3NoDPH(): string { return this.priceToString(this.sablona3 * 2892); }
+    sumNoDPH(): string { return this.priceToString(this.sablona4 * 15281 + this.sablona3 * 2892); }
     priceToString(price: number): string {
       var s = price.toString(); return s.substr(0, s.length - 3) + ' ' + s.substr(s.length - 3);
     }

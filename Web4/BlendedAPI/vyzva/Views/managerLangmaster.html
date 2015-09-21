@@ -19,38 +19,97 @@
       <!--<button class="btn btn-success btn-lg" ng-click="::ts.generate()">Generace</button>-->
     </form>
   </div>
-  <hr /><br />
-  <!--<h4>{{ts.encodetitle()}}</h4>-->
+  <hr />
+  <h4 class="text-danger">DEMO</h4>
+  <br />
   <p>
-    <b>LANGMaster garantuje <i>splnění všech podmínek Výzvy 57</i></b> (včetně bod C, str. 30, dle kterého je třeba, aby <i>systém postupně odemykal další látku studentovi na základě jeho aktuálních výsledků</i>)<br />
+    Doporučujeme <a href="{{ts.encodetitle()}}"><b>vyzkoušet si hlavní funkce naší aplikace zde</b></a>.
+  </p>
+  <br />
+  <hr />
+  <h4 class="text-danger">DEMO SPLNUJEME</h4>
+  <br />
+  <p>
+    <b>Garantujeme <i>splnění všech podmínek Výzvy 57</i></b><br />
     Přesvědčte se sami <a href="{{ts.encodetitle()}}"><b>vyzkoušením našeho systému zde</b></a>.
   </p>
+  <br />
   <hr />
-  Kvůli zdržení projektu a kratší době trvání licence nabízíme <i>nové ceny</i>:<br />
-  <table style="width: 500px; border: 1px solid #ddd;">
+  <h4 class="text-danger">POSLETE FAKTURA INFO</h4>
+  <br />
+  <p>
+    Pokud se rozhodnete pro naše řešení, prosíme o zaslání fakturačních údajů. 
+    Další postup je již přímočarý: zašleme Vám fakturu, Licenční klíč a další podklady (metodické příručky atd). 
+    Bezprostředně poté budete moci <b>spustit výuku v ostrém provozu.</b>
+  </p>
+  <br />
+  <hr />
+  <h4 class="text-danger">DEMO ODEMYKANI</h4>
+  <br />
+  <p>
+    <b>LANGMaster garantuje <i>splnění všech podmínek Výzvy 57</i></b> (včetně bod C, str. 30, dle kterého je třeba, 
+    aby <i>systém postupně odemykal studentovi další látku na základě jeho aktuálních výsledků</i>)<br />
+    Přesvědčte se sami <a href="{{ts.encodetitle()}}"><b>vyzkoušením našeho systému zde</b></a>.
+  </p>
+  <br />
+  <hr />
+  <h4 class="text-danger">CENA</h4>
+  <br />
+  Kvůli zdržení projektu a tudíž kratší době trvání licence nabízíme <i>nové nižší ceny</i>:<br />
+  <table style="width: 400px; border: 1px solid #ddd;">
     <tr>
       <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Šablona</td>
-      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Za jednotku</td>
-      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Počet</td>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Cena v Kč bez DPH</td>
       <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Cena v Kč s DPH</td>
     </tr>
     <tr>
       <td style="padding:4px; border: 1px solid #ddd;">Studenti (č. 4)</td>
-      <td style="padding:4px; border: 1px solid #ddd; text-align:right">18 490</td>
-      <td style="padding:4px; border: 1px solid #ddd; text-align:right">{{ts.sablona4}}</td>
-      <td style="padding:4px; border: 1px solid #ddd; text-align:right">{{ts.sum4()}}</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right">15 281</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right; font-weight:bold;">18 490</td>
     </tr>
     <tr>
       <td style="padding:4px; border: 1px solid #ddd;">Učitelé (č. 3)</td>
-      <td style="padding:4px; border: 1px solid #ddd;">3 499</td>
-      <td style="padding:4px; border: 1px solid #ddd;">{{ts.sablona3}}</td>
-      <td style="padding:4px; border: 1px solid #ddd;">{{ts.sum3()}}</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right">2 891</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right; font-weight:bold;">3 499</td>
+    </tr>
+  </table>
+  <br />
+  <hr />
+  <h4 class="text-danger">CENA MNOŽSTVÍ</h4>
+  <br />
+  Kvůli zdržení projektu a tudíž kratší době trvání licence nabízíme <i>nové nižší ceny</i>:<br />
+  <table style="width: 700px; border: 1px solid #ddd;">
+    <tr>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Šablona</td>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Za jednotku</td>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Za jednotku bez DPH</td>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Počet</td>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Celkem bez DPH</td>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Celkem s DPH</td>
+    </tr>
+    <tr>
+      <td style="padding:4px; border: 1px solid #ddd;">Studenti (č. 4)</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right">18 490</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right">15 281</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right;">{{ts.sablona4}}</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right;">{{ts.sum4NoDPH()}}</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right;">{{ts.sum4()}}</td>
+    </tr>
+    <tr>
+      <td style="padding:4px; border: 1px solid #ddd;">Učitelé (č. 3)</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right;">3 499</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right;">2 892</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right;">{{ts.sablona3}}</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right;">{{ts.sum3NoDPH()}}</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right;">{{ts.sum3()}}</td>
     </tr>
     <tr>
       <td style="padding:4px; border: 1px solid #ddd;">Celkem</td>
       <td style="padding:4px; border: 1px solid #ddd;">&nbsp;</td>
-      <td style="padding:4px; border: 1px solid #ddd;"></td>
-      <td style="padding:4px; border: 1px solid #ddd; font-weight:bold;">{{ts.sum()}}</td>
+      <td style="padding:4px; border: 1px solid #ddd;">&nbsp;</td>
+      <td style="padding:4px; border: 1px solid #ddd;">&nbsp;</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right;">{{ts.sumNoDPH()}}</td>
+      <td style="padding:4px; border: 1px solid #ddd;  text-align:right; font-weight:bold;">{{ts.sum()}}</td>
     </tr>
   </table>
   <div style="font-size:0.9em">

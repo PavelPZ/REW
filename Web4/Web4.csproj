@@ -278,8 +278,15 @@
     <Content Include="Courses\mediaBackup.html" />
     <Content Include="JsLib\css\flag-mid.css" />
     <Content Include="JsLib\css\flag-small.css" />
+    <Content Include="JsLib\Scripts\angular-animate.js" />
+    <Content Include="JsLib\Scripts\angular-cookies.js" />
     <Content Include="JsLib\Scripts\angular-ie8.js" />
+    <Content Include="JsLib\Scripts\angular-route.js" />
+    <Content Include="JsLib\Scripts\angular-ui-router.js" />
     <Content Include="JsLib\Scripts\angular.js" />
+    <Content Include="JsLib\Scripts\es5-shim.js" />
+    <Content Include="JsLib\Scripts\jquery-1.11.3.min.js" />
+    <Content Include="JsLib\Scripts\ui-bootstrap-tpls.js" />
     <Content Include="links.aspx" />
     <Content Include="packs\repositories.config" />
     <Content Include="Licenses\v8.valgrind.license" />

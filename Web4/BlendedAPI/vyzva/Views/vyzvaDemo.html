@@ -29,8 +29,8 @@
 </div>
 <div class="container-fluid">
   <div class="container">
-    <h2>Vyzkoušení <i>Výukového systému</i> pro Výzvu 57</h2>
-    <h3>Pro: {{::ts.companyInfo.companyTitle}}</h3>
+    <h2 style="margin-bottom:0;">Vyzkoušení <i>Výukového systému</i> pro Výzvu 57 na kurzu angličtiny</h2>
+    <h3 style="margin-top:0;">Pro: {{::ts.companyInfo.companyTitle}}</h3>
     <div class="alert alert-warning">
       <i>Výukový systém</i> využívají hlavně 2 typy uživatelů: <i>Učitel</i> a <i>Student</i>. Pomocí tlačítek níže si vyzkoušejte jak výuku <i>Studenta</i> tak i řízení výuky <i>Učitelem</i>.<br />
       Zkoušíte v podstatě ostrou verzi, která vás ale nezatěžuje takovými samozřejmými kroky, jako je založení účtu, přihlášení a zadání Licenčního klíče.<br />
@@ -54,21 +54,60 @@
         </div>
       </div>
     </div>
-    <p></p>
+    <!--<div class="alert alert-warning">
+      Upozornění: pokud chce více učitelů vaší školy zkoušet připravené uživatele systéme (Student a Učitel), měli by to dělat postupně.
+      Budou-li je zkoušet v jeden časový interval, budou si navzájem přepisovat data.<br />
+      Tento případ v reálném provozu nemůže nastat, protože každý uživatel systém má svůj vlastní účet (login).
+    </div>-->
   </div>
 </div>
 
-<div class="container-fluid gray" style="padding-bottom:20px;">
+<div class="container-fluid gray">
+  <div class="container">
+    <h2 style="margin-bottom:0;">Ostrá verze <i>Výukového systému</i> pro nadstandardní vyzkoušení</h2>
+    <h3 style="margin-top:0;">Pro: {{::ts.companyInfo.companyTitle}}</h3>
+    <div class="alert alert-success">
+      <h4 class="text-center">Vaše škola <b>{{::ts.companyInfo.companyTitle}}</b> má licenční klíč <b>{{::ts.masterKey}}</b></h4>
+    </div>
+    <div class="row">
+      <div class="col-sm-5">
+        <div class="alert alert-warning">
+          <h4>Kdy Licenční klíč použít:</h4>
+          Licenční klíč použijte v nadstandardních požadavcích na vyzkoušení systému, jako jsou například:
+          <ul>
+            <li>vyzkoušení Správce systému (jak zadává a definuje Studijní skupiny pro šablony 3 a 4 apod.)</li>
+            <li>vyzkoušení jak Správce systému poskytuje Licenční klíče učitelům a učitelé poskytují Licenční klíče studentům</li>
+            <li>vyzkoušení jiných jazyků než je angličtina (správce například vytvoří Studijní skupinu pro němčinu a učitelům němčiny rozdá Licenční klíče k německé Studijní skupině)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-7">
+        <div class="alert alert-warning">
+          <h4>Jak Licenční klíč použít:</h4>
+          <ol>
+            <li>Ve webovém prohlížeči spusťte stránku <a href="http://blended.langmaster.cz" target="_blank">http://blended.langmaster.cz</a></li>
+            <li>Vytvořte si uživatelský účet LANGMaster nebo použijte některý z vašich existujících účtů Google, Facebook nebo Microsoft</li>
+            <li>Stiskněte zelené tlačítko <b>Licenční klíč</b> vpravo nahoře</li>
+            <li>Zadejte licenční klíč <b>{{::ts.masterKey}}</b>. Tím se vám zpřístupní školní správcovská konzole <b>Vyzva 57: Správce školy</b></li>
+            <li>Po kliku na <b>Vyzva 57: Správce školy</b> se řiďte kontextovou nápovědou aplikace</li>
+          </ol>
+          <i>Poznámka</i>: hlavním úkolem správce je pro každý kurz (angličtina, němčina, francouzština) založit Studijní skupiny (dle šablon 3. a 4.) a rozdat licenční klíče učitelům, kteří budou řídit výuku studentů.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid" style="padding-bottom:20px;">
   <div class="container">
     <h2><i>Výukový systém LANGMaster</i> splňuje všechny podmínky Výzvy 57</h2>
     <div class="alert alert-warning">
       <b>Zajímá-li Vás, jak konkrétně plníme některé vlastnosti z Podmínek Výzvy, obraťte se na nás</b>. Pošleme Vám informaci, jak hledanou vlastnost splňujeme, a jak si ji v systému můžete vyzkoušet.
     </div>
-    <div class="alert help-panel help-danger" collapsablemanager="+jaksplnujme1">
-      <h4></h4>
+    <h4>Doposud jsme obdrželi tyto dotazy:</h4>
+    <div class="alert help-panel help-success" collapsablemanager="+jaksplnujme1">
       <div class="help-header" ng-click="jaksplnujme1.collapseToogle()">
         <div class="more fa fa-bars"></div>
-        <p>Doposud jsme obdrželi tyto dotazy:</p>
         <span class="badge">1</span><b>&nbsp;&nbsp;Jak prosím splňujete str. 30, bod C, dle kterého je třeba, aby systém postupně odemykal studentovi další látku na základě jeho aktuálních výsledků?</b>
       </div>
       <div class="help-content" collapse="jaksplnujme1.isCollapsed">
@@ -80,7 +119,7 @@
             Pokud bude vaše skóre pod 65%, bude zbytek kurzu pro studenta nepřístupný.
           </li>
           <li>
-            Použijte tlačítko <b>Spustit jako učitel</b> a prohlédněte si podrobné výsledky studentova test (včetně jeho ústního projevu) a dejte studentovi vypracovat Vstupní test znova
+            Použijte tlačítko <b>Spustit jako učitel</b> a prohlédněte si podrobné výsledky studentova testu (včetně jeho ústního projevu) a dejte studentovi vypracovat Vstupní test znova
           </li>
           <li>
             Použijte tlačítko <b>Spustit jako student</b> a projděte Vstupní test znova. Pokud bude skóre vyšší než 65%, zpřístupní se vám kurz až do dalšího Kontrolního testu.
@@ -92,9 +131,9 @@
         Systém okamžitě zareaguje na automaticky vyhodnocenou část testu. Učitel pak může toto automatické rozhodnutí systému zvrátit.<br />
         Příklady:
         <ul>
-          <li>Student provede špatně gramatiku ale mluvení provede dobře. Učitel proto "pustí" studenta dále.</li>
+          <li>Student provede špatně gramatiku, ale mluvení provede dobře. Učitel proto "pustí" studenta dále.</li>
           <li>
-            Student provede excelentně gramatiku ale u mluvení propadne. Učitel jej tedy dodatečně "nepustí" dále.
+            Student provede excelentně gramatiku, ale u mluvení propadne. Učitel jej tedy dodatečně "nepustí" dále.
             Může potom dát studentovi zopakovat některé Lekce i Kontrolní test.
           </li>
         </ul>
@@ -122,4 +161,3 @@
     <h2>Unikátní metoda na vyhodnocení mluveného projevu studenta</h2>
   </div>
 </div>-->
-

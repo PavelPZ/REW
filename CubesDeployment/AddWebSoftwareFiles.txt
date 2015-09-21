@@ -14,3 +14,11 @@ blendedapi/vyzva/views/testhw.html
 blendedapi/vyzva/views/vyzvademo.html
 blendedapi/vyzva/views/_pagetemplate.html
 blendedapi/vyzva/server/excels/studyall.xlsx
+jslib/scripts/es5-shim.js
+jslib/scripts/jquery-1.11.3.min.js
+jslib/scripts/angular.js
+jslib/scripts/angular-route.js
+jslib/scripts/angular-animate.js
+jslib/scripts/angular-cookies.js
+jslib/scripts/angular-ui-router.js
+jslib/scripts/ui-bootstrap-tpls.js

@@ -2,7 +2,7 @@
 
   //********** RUN DEMO controller
   export var keysFromCompanyTitle = ['$stateParams', '$q', (params: {}, def: ng.IQService) => {
-    var d = def.defer<keysFromCompanyTitleResult>();
+    var deferred = def.defer<keysFromCompanyTitleResult>();
     try {
       var companytitle = params['companytitle'];;
       proxies.vyzva57services.keysFromCompanyTitle(companytitle, companyInfo => {
@@ -19,14 +19,14 @@
               fillCompUserData(newComp.studyGroups[0].lectorKeys[0], companyInfo.teacher);
               fillCompUserData(newComp.studyGroups[0].studentKeys[0], companyInfo.student);
               //ulozeni company
-              proxies.vyzva57services.writeCompanyData(companyInfo.newCompanyId, JSON.stringify(newComp), () => d.resolve(companyInfo));
+              proxies.vyzva57services.writeCompanyData(companyInfo.newCompanyId, JSON.stringify(newComp), () => deferred.resolve(companyInfo));
             })
           });
         } else {
-          d.resolve(companyInfo);
+          deferred.resolve(companyInfo);
         }
       });
-    } finally { return d.promise }
+    } finally { return deferred.promise }
   }];
   export interface keysFromCompanyTitleResult {
     student: userItem; //code..licId|counter
@@ -61,6 +61,7 @@
     constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, public companyInfo: keysFromCompanyTitleResult) {
       super($scope, $state);
       this.masterKey = keys.toString({ licId: companyInfo.masterLicId, counter: companyInfo.masterLLicCounter });
+      if (Utils.endWith(companyInfo.companyTitle, ' *')) companyInfo.companyTitle = companyInfo.companyTitle.substr(0, companyInfo.companyTitle.length - 2);
       $('#splash').hide();
     }
     masterKey: string;

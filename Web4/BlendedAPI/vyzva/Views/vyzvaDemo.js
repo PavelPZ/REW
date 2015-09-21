@@ -8,7 +8,7 @@ var vyzva;
 (function (vyzva) {
     //********** RUN DEMO controller
     vyzva.keysFromCompanyTitle = ['$stateParams', '$q', function (params, def) {
-            var d = def.defer();
+            var deferred = def.defer();
             try {
                 var companytitle = params['companytitle'];
                 ;
@@ -29,17 +29,17 @@ var vyzva;
                                 fillCompUserData(newComp.studyGroups[0].lectorKeys[0], companyInfo.teacher);
                                 fillCompUserData(newComp.studyGroups[0].studentKeys[0], companyInfo.student);
                                 //ulozeni company
-                                proxies.vyzva57services.writeCompanyData(companyInfo.newCompanyId, JSON.stringify(newComp), function () { return d.resolve(companyInfo); });
+                                proxies.vyzva57services.writeCompanyData(companyInfo.newCompanyId, JSON.stringify(newComp), function () { return deferred.resolve(companyInfo); });
                             });
                         });
                     }
                     else {
-                        d.resolve(companyInfo);
+                        deferred.resolve(companyInfo);
                     }
                 });
             }
             finally {
-                return d.promise;
+                return deferred.promise;
             }
         }];
     var groups = [
@@ -57,6 +57,8 @@ var vyzva;
             _super.call(this, $scope, $state);
             this.companyInfo = companyInfo;
             this.masterKey = keys.toString({ licId: companyInfo.masterLicId, counter: companyInfo.masterLLicCounter });
+            if (Utils.endWith(companyInfo.companyTitle, ' *'))
+                companyInfo.companyTitle = companyInfo.companyTitle.substr(0, companyInfo.companyTitle.length - 2);
             $('#splash').hide();
         }
         runController.prototype.navigateKey = function (keyCode) {
