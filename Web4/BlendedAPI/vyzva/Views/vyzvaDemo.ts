@@ -7,7 +7,8 @@
       var companytitle = params['companytitle'];;
       proxies.vyzva57services.keysFromCompanyTitle(companytitle, companyInfo => {
         if (companyInfo.newCompanyId > 0) { //vytvoreni nove company
-          managerSchool.createCompany(companyInfo.newCompanyId, managerLangmaster.groups, null, newComp => { //zalozeni nove company se studijni grupou
+          var groups = companyInfo.teacherDe ? groupsBoth : groupsEn;
+          managerSchool.createCompany(companyInfo.newCompanyId, groups, null, newComp => { //zalozeni nove company se studijni grupou
             proxies.vyzva57services.loadCompanyData(companyInfo.newCompanyId, str => { //nacteni nove zalozene company
               //nahrazeni puvodnich klicu nove vygenerovanymi
               var fillCompUserData = (key: intranet.IAlocatedKey, userData: userItem) => {
@@ -18,6 +19,8 @@
               fillCompUserData(newComp.managerKeys[0], companyInfo.admin);
               fillCompUserData(newComp.studyGroups[0].lectorKeys[0], companyInfo.teacher);
               fillCompUserData(newComp.studyGroups[0].studentKeys[0], companyInfo.student);
+              if (companyInfo.teacherDe) fillCompUserData(newComp.studyGroups[1].lectorKeys[0], companyInfo.teacherDe);
+              if (companyInfo.studentDe) fillCompUserData(newComp.studyGroups[1].studentKeys[0], companyInfo.studentDe);
               //ulozeni company
               proxies.vyzva57services.writeCompanyData(companyInfo.newCompanyId, JSON.stringify(newComp), () => deferred.resolve(companyInfo));
             })
@@ -31,6 +34,8 @@
   export interface keysFromCompanyTitleResult {
     student: userItem; //code..licId|counter
     teacher: userItem;
+    studentDe: userItem; 
+    teacherDe: userItem;
     admin: userItem;
     newCompanyId: number;
     companyTitle: string;
@@ -45,11 +50,27 @@
     firstName: string;
     lastName: string;
   }
-  var groups: Array<intranet.IStudyGroup> = [
+  var groupsEn: Array<intranet.IStudyGroup> = [
     {
       "groupId": 1,
-      "title": "Třída 2.B",
+      "title": "Třída 2.B, Angličtina",
       "line": LMComLib.LineIds.English,
+      "num": "20",
+      "isPattern3": false
+    },
+  ];
+  var groupsBoth: Array<intranet.IStudyGroup> = [
+    {
+      "groupId": 1,
+      "title": "Třída 2.B, Angličtina",
+      "line": LMComLib.LineIds.English,
+      "num": "20",
+      "isPattern3": false
+    },
+    {
+      "groupId": 2,
+      "title": "Třída 3.A, Němčina",
+      "line": LMComLib.LineIds.German,
       "num": "20",
       "isPattern3": false
     }
@@ -62,9 +83,11 @@
       super($scope, $state);
       this.masterKey = keys.toString({ licId: companyInfo.masterLicId, counter: companyInfo.masterLLicCounter });
       if (Utils.endWith(companyInfo.companyTitle, ' *')) companyInfo.companyTitle = companyInfo.companyTitle.substr(0, companyInfo.companyTitle.length - 2);
+      this.hashGerman = !!companyInfo.studentDe;
       $('#splash').hide();
     }
     masterKey: string;
+    hashGerman: boolean;
     static $inject = ['$scope', '$state', '$keysFromCompanyTitle'];
 
     navigateKey(keyCode: string) {

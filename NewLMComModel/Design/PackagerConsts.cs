@@ -521,6 +521,7 @@ namespace Packager {
       "blendedapi/vyzva/views/faq.js",
       "blendedapi/vyzva/views/testhw.js",
       "blendedapi/vyzva/views/vyzvademo.js",
+      "blendedapi/vyzva/views/vyzvaprovoz.js",
 
       //"blendedapi/vyzva/views/toolbar/module.js",
       //"blendedapi/vyzva/views/toolbar/run.js",

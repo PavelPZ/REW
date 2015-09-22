@@ -58,13 +58,21 @@ var vyzva;
     function initVyzvaStates(params) {
         params.$stateProvider.state({
             name: 'vyzvademo',
-            //url: "/vyzvademo?teacher&student&admin&studentempty&companytitle",
             url: "/vyzvademo?companytitle",
             controller: vyzva.runController,
             templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/vyzvademo.html',
             resolve: {
                 $checkOldApplicationStart: blended.checkOldApplicationStart,
                 $keysFromCompanyTitle: vyzva.keysFromCompanyTitle
+            }
+        });
+        params.$stateProvider.state({
+            name: 'vyzvaprovoz',
+            url: "/vyzvaprovoz?companytitle",
+            controller: vyzva.vyzvaProvozController,
+            templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/vyzvaprovoz.html',
+            resolve: {
+                $vyzvaProvoz: vyzva.vyzvaProvoz
             }
         });
         vyzva.stateNames.root = new state({

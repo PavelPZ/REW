@@ -21,6 +21,8 @@ namespace vyzva {
     public class keysFromCompanyTitleResult {
       public userItem student; //code..licId|counter
       public userItem teacher;
+      public userItem studentDe;
+      public userItem teacherDe;
       public userItem admin;
       public string companyTitle;
       public int newCompanyId; //zalozena nova company => na klientovi je potreba vytvorit skupinu studentu a priradit klice
@@ -42,8 +44,8 @@ namespace vyzva {
       var demoCompanyTitle = companyTitle + " *";
       long hash = demoCompanyTitle.GetHashCode(); var host = "blend." + hash;
       var company = db.Companies.FirstOrDefault(c => c.ScormHost == host);
-      UserLicence lSpravce = null; UserLicence lStudent = null; UserLicence lUcitel = null;
-      User uSpravce = null; User uStudent = null; User uUcitel = null;
+      UserLicence lSpravce = null; UserLicence lStudent = null; UserLicence lUcitel = null; UserLicence lStudentDe = null; UserLicence lUcitelDe = null;
+      User uSpravce = null; User uStudent = null; User uUcitel = null; User uStudentDe = null; User uUcitelDe = null;
       var result = new keysFromCompanyTitleResult() { companyTitle = demoCompanyTitle };
       if (company == null) {
         db.Companies.Add(company = new Company() { Title = demoCompanyTitle, Created = DateTime.UtcNow, ScormHost = host });
@@ -59,7 +61,7 @@ namespace vyzva {
 
         //users
         int lastCounter = 1;
-        foreach (var userId in new string[] { "spravce", "ucitel", "student" }) {
+        foreach (var userId in new string[] { "spravce", "ucitel", "student", "ucitelde", "studentde" }) {
           var user = new User() { EMail = userId + "@" + hash + ".cz", Password = "heslo", FirstName = userId, LastName = "", Created = DateTime.UtcNow, OtherType = (short)OtherType.LANGMaster };
           db.Users.Add(user);
           var compUser = new CompanyUser() { Company = company, User = user, Created = DateTime.UtcNow, CompanyDepartment = dep };
@@ -71,11 +73,17 @@ namespace vyzva {
             var userLicence = lSpravce = new UserLicence() { CompanyLicence = schoolManLic, CourseUser = courseUser, Started = DateTime.UtcNow, Created = DateTime.UtcNow, Counter = lastCounter++ };
             db.UserLicences.Add(userLicence);
           } else {
-            var courseUser = new CourseUser() { CompanyUser = compUser, Created = DateTime.UtcNow, ProductId = "/lm/prods_lm_blcourse_english/" };
+            var courseId = userId == "ucitel" || userId == "student" ? "english" : "german";
+            var courseUser = new CourseUser() { CompanyUser = compUser, Created = DateTime.UtcNow, ProductId = "/lm/prods_lm_blcourse_" + courseId + "/" };
             db.CourseUsers.Add(courseUser);
             var userLicence = new UserLicence() { CompanyLicence = englishLic, CourseUser = courseUser, Started = DateTime.UtcNow, Created = DateTime.UtcNow, Counter = lastCounter++ };
             db.UserLicences.Add(userLicence);
-            if (userId == "ucitel") { lUcitel = userLicence; uUcitel = user; } else { lStudent = userLicence; ; uStudent = user; };
+            switch (userId) {
+              case "ucitel": lUcitel = userLicence; uUcitel = user; break;
+              case "student": lStudent = userLicence; ; uStudent = user; break;
+              case "ucitelde": lUcitelDe = userLicence; uUcitelDe = user; break;
+              case "studentde": lStudentDe = userLicence; ; uStudentDe = user; break;
+            }
           }
         }
 
@@ -86,8 +94,11 @@ namespace vyzva {
         lSpravce = db.UserLicences.Where(l => l.CourseUser.CompanyUser.Company.ScormHost == host && l.CourseUser.CompanyUser.User.EMail == "spravce@" + hash + ".cz" && l.CourseUser.ProductId == "/lm/blcourse/schoolmanager.product/").First();
         lUcitel = db.UserLicences.Where(l => l.CourseUser.CompanyUser.Company.ScormHost == host && l.CourseUser.CompanyUser.User.EMail == "ucitel@" + hash + ".cz" && l.CourseUser.ProductId == "/lm/prods_lm_blcourse_english/").First();
         lStudent = db.UserLicences.Where(l => l.CourseUser.CompanyUser.Company.ScormHost == host && l.CourseUser.CompanyUser.User.EMail == "student@" + hash + ".cz" && l.CourseUser.ProductId == "/lm/prods_lm_blcourse_english/").First();
+        lUcitelDe = db.UserLicences.Where(l => l.CourseUser.CompanyUser.Company.ScormHost == host && l.CourseUser.CompanyUser.User.EMail == "ucitelde@" + hash + ".cz" && l.CourseUser.ProductId == "/lm/prods_lm_blcourse_german/").FirstOrDefault();
+        lStudentDe = db.UserLicences.Where(l => l.CourseUser.CompanyUser.Company.ScormHost == host && l.CourseUser.CompanyUser.User.EMail == "studentde@" + hash + ".cz" && l.CourseUser.ProductId == "/lm/prods_lm_blcourse_german/").FirstOrDefault();
       }
       Func<UserLicence, User, userItem> createUserItem = (lic, user) => {
+        if (lic == null) return null;
         userItem res = new userItem() { licId = lic.LicenceId, licCounter = lic.Counter };
         if (user != null) { res.email = user.EMail; res.firstName = user.FirstName; res.lastName = user.LastName; res.lmcomId = user.Id; }
         return res;
@@ -96,6 +107,8 @@ namespace vyzva {
       result.admin = createUserItem(lSpravce, uSpravce);
       result.teacher = createUserItem(lUcitel, uUcitel);
       result.student = createUserItem(lStudent, uStudent);
+      result.teacherDe = createUserItem(lUcitelDe, uUcitelDe);
+      result.studentDe = createUserItem(lStudentDe, uStudentDe);
       result.masterLicId = master.licId;
       result.masterLLicCounter = master.licCounter;
       return result;
@@ -108,22 +121,26 @@ namespace vyzva {
     //*********************** vytvori skolu a licencni klic k school manager produktu (= ostry klic pro spravce skoly)
     public static ICreateEmptySchoolResult createEmptyCompany(string companyTitle) {
       var db = NewData.Lib.CreateContext();
-      //company
-      var company = new Company() { Title = companyTitle, Created = DateTime.UtcNow };
-      db.Companies.Add(company);
-      var dep = new CompanyDepartment() { Title = company.Title, Company = company };
-      db.CompanyDepartments.Add(dep);
-
-      //products
+      long hash = companyTitle.GetHashCode(); var host = "blend." + hash;
+      var company = db.Companies.FirstOrDefault(c => c.ScormHost == host);
       CompanyLicence schoolManLic = null;
-      foreach (var prodId in new string[] { "/lm/blcourse/schoolmanager.product/", "/lm/prods_lm_blcourse_english/", "/lm/prods_lm_blcourse_french/", "/lm/prods_lm_blcourse_german/" }) {
-        var compLicence = new CompanyLicence() { Company = company, Days = 1000, ProductId = prodId, Created = DateTime.UtcNow, LastCounter = 2 };
-        if (schoolManLic == null) schoolManLic = compLicence;
-        db.CompanyLicences.Add(compLicence);
+      if (company == null) {
+        //company
+        company = new Company() { Title = companyTitle, Created = DateTime.UtcNow, ScormHost = host };
+        db.Companies.Add(company);
+        var dep = new CompanyDepartment() { Title = company.Title, Company = company };
+        db.CompanyDepartments.Add(dep);
+
+        //products
+        foreach (var prodId in new string[] { "/lm/blcourse/schoolmanager.product/", "/lm/prods_lm_blcourse_english/", "/lm/prods_lm_blcourse_french/", "/lm/prods_lm_blcourse_german/" }) {
+          var compLicence = new CompanyLicence() { Company = company, Days = 1000, ProductId = prodId, Created = DateTime.UtcNow, LastCounter = 2 };
+          if (schoolManLic == null) schoolManLic = compLicence;
+          db.CompanyLicences.Add(compLicence);
+        }
+        db.SaveChanges();
+      } else {
+        schoolManLic = db.CompanyLicences.Where(cl => cl.CompanyId==company.Id && cl.ProductId== "/lm/blcourse/schoolmanager.product/").First();
       }
-
-      db.SaveChanges();
-
       return new ICreateEmptySchoolResult() { licId = schoolManLic.Id, licCounter = 1 };
     }
     public class ICreateEmptySchoolResult {

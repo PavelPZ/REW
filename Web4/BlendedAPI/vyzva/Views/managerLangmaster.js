@@ -25,7 +25,12 @@ var vyzva;
             var s = price.toString();
             return s.substr(0, s.length - 3) + ' ' + s.substr(s.length - 3);
         };
-        managerLangmaster.prototype.encodetitle = function () { return 'http://' + location.href.split('/')[2] + '/schools/index_cs_cz.html#/vyzvademo?companytitle=' + encodeURIComponent(this.schoolTitle); };
+        managerLangmaster.prototype.url = function () {
+            var host = location.href.split('/')[2];
+            return 'http://' + host + (host == 'localhost' ? '/Web4/Schools/NewEA.aspx?lang=cs-cz' : '/schools/index_cs_cz.html');
+        };
+        managerLangmaster.prototype.encodetitle = function () { return this.url() + '#/vyzvademo?companytitle=' + encodeURIComponent(this.schoolTitle); };
+        managerLangmaster.prototype.vyzvaProvoz = function () { return this.url() + '#/vyzvaprovoz?companytitle=' + encodeURIComponent('"' + this.schoolTitle + '"'); };
         //ostry klic pro spravce skoly
         managerLangmaster.prototype.createEmptySchool = function () {
             var _this = this;

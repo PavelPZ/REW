@@ -271,6 +271,7 @@
     <Content Include="BlendedAPI\vyzva\Views\module.html" />
     <Content Include="BlendedAPI\vyzva\Views\pretest.html" />
     <Content Include="BlendedAPI\vyzva\Views\exercise.html" />
+    <Content Include="BlendedAPI\vyzva\Views\vyzvaProvoz.html" />
     <Content Include="BlendedAPI\vyzva\Views\vyzvaDemo.html" />
     <Content Include="BlendedAPI\vyzva\Views\_pageTemplate.html" />
     <Content Include="BlendedAPI\vyzva\Views\home.html" />
@@ -1398,6 +1399,7 @@
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\pretest.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\home.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Views\vyzvaDemo.ts" />
+    <TypeScriptCompile Include="BlendedAPI\vyzva\Views\vyzvaProvoz.ts" />
     <TypeScriptCompile Include="BS3\js\bootstrap.d.ts" />
     <TypeScriptCompile Include="Courses\angularJS\angularjs.ts" />
     <TypeScriptCompile Include="Courses\codes\chinhSpeaking.ts" />

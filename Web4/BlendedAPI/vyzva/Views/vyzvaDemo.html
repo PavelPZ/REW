@@ -29,7 +29,7 @@
 </div>
 <div class="container-fluid">
   <div class="container">
-    <h2 style="margin-bottom:0;">Vyzkoušení <i>Výukového systému</i> pro Výzvu 57 na kurzu angličtiny</h2>
+    <h2 style="margin-bottom:0;">Vyzkoušení <i>Výukového systému</i> pro Výzvu 57</h2>
     <h3 style="margin-top:0;">Pro: {{::ts.companyInfo.companyTitle}}</h3>
     <div class="alert alert-warning">
       <i>Výukový systém</i> využívají hlavně 2 typy uživatelů: <i>Učitel</i> a <i>Student</i>. Pomocí tlačítek níže si vyzkoušejte jak výuku <i>Studenta</i> tak i řízení výuky <i>Učitelem</i>.<br />
@@ -40,25 +40,38 @@
       <div class="col-sm-6">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <button ng-click="::ts.navigateKey('student')" class="btn btn-success btn-lg">Spustit jako student</button>
+            <button ng-click="::ts.navigateKey('student')" class="btn btn-success btn-lg">Spustit jako student angličtiny</button>
           </div>
-          <div class="panel-body">Spusťte systém v roli studenta. Pro snadnější seznámení se systémem doporučujeme na každé stránce využívat kontextovou nápovědu.</div>
+          <div class="panel-body">Spusťte systém v roli studenta angličtiny. Pro snadnější seznámení se systémem doporučujeme na každé stránce využívat kontextovou nápovědu.</div>
         </div>
       </div>
       <div class="col-sm-6">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <button ng-click="::ts.navigateKey('teacher')" class="btn btn-warning btn-lg">Spustit jako učitel</button>
+            <button ng-click="::ts.navigateKey('teacher')" class="btn btn-warning btn-lg">Spustit jako učitel angličtiny</button>
           </div>
-          <div class="panel-body">Spusťte systém v roli učitele. Pro snadnější seznámení se systémem doporučujeme na každé stránce využívat kontextovou nápovědu.</div>
+          <div class="panel-body">Spusťte systém v roli učitele angličtiny. Pro snadnější seznámení se systémem doporučujeme na každé stránce využívat kontextovou nápovědu.</div>
         </div>
       </div>
     </div>
-    <!--<div class="alert alert-warning">
-      Upozornění: pokud chce více učitelů vaší školy zkoušet připravené uživatele systéme (Student a Učitel), měli by to dělat postupně.
-      Budou-li je zkoušet v jeden časový interval, budou si navzájem přepisovat data.<br />
-      Tento případ v reálném provozu nemůže nastat, protože každý uživatel systém má svůj vlastní účet (login).
-    </div>-->
+    <div class="row" ng-if="::ts.hashGerman">
+      <div class="col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <button ng-click="::ts.navigateKey('studentDe')" class="btn btn-success btn-lg">Spustit jako student němčiny</button>
+          </div>
+          <div class="panel-body">Spusťte systém v roli studenta němčiny. Pro snadnější seznámení se systémem doporučujeme na každé stránce využívat kontextovou nápovědu.</div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <button ng-click="::ts.navigateKey('teacherDe')" class="btn btn-warning btn-lg">Spustit jako učitel němčiny</button>
+          </div>
+          <div class="panel-body">Spusťte systém v roli učitele němčiny. Pro snadnější seznámení se systémem doporučujeme na každé stránce využívat kontextovou nápovědu.</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -77,7 +90,6 @@
           <ul>
             <li>vyzkoušení Správce systému (jak zadává a definuje Studijní skupiny pro šablony 3 a 4 apod.)</li>
             <li>vyzkoušení jak Správce systému poskytuje Licenční klíče učitelům a učitelé poskytují Licenční klíče studentům</li>
-            <li>vyzkoušení jiných jazyků než je angličtina (správce například vytvoří Studijní skupinu pro němčinu a učitelům němčiny rozdá Licenční klíče k německé Studijní skupině)</li>
           </ul>
         </div>
       </div>
@@ -101,8 +113,18 @@
 <div class="container-fluid" style="padding-bottom:20px;">
   <div class="container">
     <h2><i>Výukový systém LANGMaster</i> splňuje všechny podmínky Výzvy 57</h2>
-    <div class="alert alert-warning">
-      <b>Zajímá-li Vás, jak konkrétně plníme některé vlastnosti z Podmínek Výzvy, obraťte se na nás</b>. Pošleme Vám informaci, jak hledanou vlastnost splňujeme, a jak si ji v systému můžete vyzkoušet.
+    <div class="row">
+      <div class="col-sm-7">
+        <div class="alert alert-warning">
+          <b>Zajímá-li Vás, jak konkrétně plníme některé vlastnosti z Podmínek Výzvy, obraťte se na nás</b>. Pošleme Vám informaci, jak hledanou vlastnost splňujeme, a jak si ji v systému můžete vyzkoušet.
+        </div>
+      </div>
+      <div class="col-sm-5">
+        <div class="alert alert-danger">
+          <b>NOVINKA</b>
+          Naše řešení vyhrálo již 2 výběrová řízení, během kterých bylo detailně zkoumáno splnění všech podmínek Výzvy.
+        </div>
+      </div>
     </div>
     <h4>Doposud jsme obdrželi tyto dotazy:</h4>
     <div class="alert help-panel help-success" collapsablemanager="+jaksplnujme1">
@@ -112,6 +134,30 @@
       </div>
       <div class="help-content" collapse="jaksplnujme1.isCollapsed">
         <div class="help-close" ng-click="jaksplnujme1.collapseToogle()"><i class="fa fa-times"></i></div>
+        Asi jako jediní na trhu jsme se vyrovnali s rozporem, který je v zadání MŠMT:
+        <ul>
+          <li>Systém musí automaticky vyhodnotit testy a zamezit studentovi pokračovat dál, pokud nesplní test</li>
+          <li>
+            Systém je zaměřen na výuku mluveného projevu audio-orální metodou
+            (<a href="http://www.jazyky-pechova.cz/metody-vyuky-/" target="_blank">více zde...</a>)<br />
+            <b>ALE</b>: žádný počítač na světě neumí automaticky vyhodnotit kvalitu mluveného projevu studenta.
+          </li>
+        </ul>
+        <p>
+          <b>Naše ojedinělé řešení</b> spočívá v tom, že některé dovednosti studenta (gramatika, slovní zásoba, poslech) vyhodnotíme v testech automaticky a mluvení necháme vyhodnotit učiteli. Systém okamžitě zareaguje pouze na automaticky vyhodnocenou část testu.
+          Tím splňujeme podmínku Výzvy: str. 30, bod C.
+        </p>
+        <p>
+          <b>ALE</b>: Učitel pak může toto automatické rozhodnutí systému zvrátit (jedná se přeci o Blended learning, výuku s podporou učitele):
+        </p>
+        <p>
+          Příklady:
+          <ul>
+            <li>Student provede špatně gramatiku, ale mluvení provede dobře. Učitel proto "pustí" studenta dále, i když systém jej na základě automaticky vyhodnotitelných cvičení dál nepustí.</li>
+            <li>Student provede excelentně gramatiku, ale u mluvení propadne. Učitel jej tedy dodatečně "nepustí" dále. Může potom dát studentovi zopakovat některé Lekce i Kontrolní test.</li>
+          </ul>
+          <b>Závěr</b>: Náš systém splňuje podmínky výzvy lépe než vyžaduje zadání. Řeší totiž i problém testování mluveného projevu studentů.
+        </p>
         <h4>Pro ověření splnění této vlastnosti postupuje následovně</h4>
         <ol>
           <li>
@@ -125,24 +171,92 @@
             Použijte tlačítko <b>Spustit jako student</b> a projděte Vstupní test znova. Pokud bude skóre vyšší než 65%, zpřístupní se vám kurz až do dalšího Kontrolního testu.
           </li>
         </ol>
-        Výzva 57 je zaměřena na nácvik mluvení (audio-orální metodou). Bohužel žádný počítač neumí automaticky vyhodnotit správnost mluveného projevu studenta.
-        Naše unikátní řešení spočívá v tom, že některé dovednosti studenta (gramatika, slovní zásoba, poslech) vyhodnotíme v testech automaticky a
-        mluvení necháme vyhodnotit učiteli.<br />
-        Systém okamžitě zareaguje na automaticky vyhodnocenou část testu. Učitel pak může toto automatické rozhodnutí systému zvrátit.<br />
-        Příklady:
-        <ul>
-          <li>Student provede špatně gramatiku, ale mluvení provede dobře. Učitel proto "pustí" studenta dále.</li>
-          <li>
-            Student provede excelentně gramatiku, ale u mluvení propadne. Učitel jej tedy dodatečně "nepustí" dále.
-            Může potom dát studentovi zopakovat některé Lekce i Kontrolní test.
-          </li>
-        </ul>
-        <b>Závěr:</b> Náš systém splňuje podmínky výzvy lépe než vyžaduje zadání.
-        Řeší totiž i problém testování mluveného projevu studentů.
       </div>
     </div>
   </div>
 </div>
+
+<div class="container-fluid gray">
+  <div class="container">
+    <h2>Aktuální ceník</h2>
+    <div class="row">
+      <div class="col-sm-5">
+        <h4>Standardní licence</h4>
+        <table class="table table-bordered">
+          <tr class="success" style="font-weight:bold;">
+            <td>Šablona</td>
+            <td>Cena v Kč s DPH</td>
+          </tr>
+          <tr class="warning">
+            <td>Studenti</td>
+            <td style="text-align:right; font-weight:bold;">18 490</td>
+          </tr>
+          <tr class="warning">
+            <td>Učitelé</td>
+            <td style="text-align:right; font-weight:bold;">3 499</td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-sm-7">
+        <h4>Speciální nabídka dlouhodobých licencí</h4>
+        <table class="table table-bordered">
+          <tr class="success" style="font-weight:bold;">
+            <td>Šablona</td>
+            <td>Licence na...</td>
+            <td>Cena v Kč s DPH</td>
+            <td>Server</td>
+          </tr>
+          <tr class="warning">
+            <td>Studenti</td>
+            <td>2 roky</td>
+            <td style="text-align:right">26 280</td>
+            <td style="text-align:right; font-weight:bold;">LANGMaster</td>
+          </tr>
+          <tr class="warning">
+            <td>Studenti</td>
+            <td>3 roky</td>
+            <td style="text-align:right">32 580</td>
+            <td style="text-align:right; font-weight:bold;">LANGMaster</td>
+          </tr>
+          <tr class="warning">
+            <td>Studenti</td>
+            <td>4 roky</td>
+            <td style="text-align:right">38 880</td>
+            <td style="text-align:right; font-weight:bold;">LANGMaster</td>
+          </tr>
+          <tr class="warning">
+            <td>Studenti</td>
+            <td>neomezeně</td>
+            <td style="text-align:right">38 880</td>
+            <td style="text-align:right; font-weight:bold;">Poskytne škola (*)</td>
+          </tr>
+        </table>
+        <b>(*)</b> poznámky k neomezené licenci:
+        <ul>
+          <li>instalace výukové aplikace na server, poskytnutý školou, je v ceně</li>
+          <li>vyžadován je Microsoft Windows ASP. NET server</li>
+          <li>do 31. 8. 2016 je možný provoz na serverech LANGMaster</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="container">
+    <h2>Objednání a zprovoznění aplikace</h2>
+    <div class="row">
+      <div class="col-sm-offset-2 col-sm-8">
+        <div class="alert alert-warning">
+          Pokud se rozhodnete pro naše řešení, prosíme o zaslání fakturačních údajů a počtu jednotlivých šablon.<br />
+          Další postup je již přímočarý: zašleme Vám fakturu, Licenční klíč a další podklady (metodické příručky atd).
+          <b>Bezprostředně poté budete moci spustit výuku v ostrém provozu.</b>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!--<div class="container-fluid">
   <div class="container">
@@ -150,11 +264,6 @@
   </div>
 </div>
 
-<div class="container-fluid gray">
-  <div class="container">
-    <h2>Aktuální ceník</h2>
-  </div>
-</div>
 
 <div class="container-fluid">
   <div class="container">

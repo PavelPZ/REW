@@ -14,7 +14,8 @@ var vyzva;
                 ;
                 proxies.vyzva57services.keysFromCompanyTitle(companytitle, function (companyInfo) {
                     if (companyInfo.newCompanyId > 0) {
-                        vyzva.managerSchool.createCompany(companyInfo.newCompanyId, vyzva.managerLangmaster.groups, null, function (newComp) {
+                        var groups = companyInfo.teacherDe ? groupsBoth : groupsEn;
+                        vyzva.managerSchool.createCompany(companyInfo.newCompanyId, groups, null, function (newComp) {
                             proxies.vyzva57services.loadCompanyData(companyInfo.newCompanyId, function (str) {
                                 //nahrazeni puvodnich klicu nove vygenerovanymi
                                 var fillCompUserData = function (key, userData) {
@@ -28,6 +29,10 @@ var vyzva;
                                 fillCompUserData(newComp.managerKeys[0], companyInfo.admin);
                                 fillCompUserData(newComp.studyGroups[0].lectorKeys[0], companyInfo.teacher);
                                 fillCompUserData(newComp.studyGroups[0].studentKeys[0], companyInfo.student);
+                                if (companyInfo.teacherDe)
+                                    fillCompUserData(newComp.studyGroups[1].lectorKeys[0], companyInfo.teacherDe);
+                                if (companyInfo.studentDe)
+                                    fillCompUserData(newComp.studyGroups[1].studentKeys[0], companyInfo.studentDe);
                                 //ulozeni company
                                 proxies.vyzva57services.writeCompanyData(companyInfo.newCompanyId, JSON.stringify(newComp), function () { return deferred.resolve(companyInfo); });
                             });
@@ -42,11 +47,27 @@ var vyzva;
                 return deferred.promise;
             }
         }];
-    var groups = [
+    var groupsEn = [
         {
             "groupId": 1,
-            "title": "Třída 2.B",
+            "title": "Třída 2.B, Angličtina",
             "line": LMComLib.LineIds.English,
+            "num": "20",
+            "isPattern3": false
+        },
+    ];
+    var groupsBoth = [
+        {
+            "groupId": 1,
+            "title": "Třída 2.B, Angličtina",
+            "line": LMComLib.LineIds.English,
+            "num": "20",
+            "isPattern3": false
+        },
+        {
+            "groupId": 2,
+            "title": "Třída 3.A, Němčina",
+            "line": LMComLib.LineIds.German,
             "num": "20",
             "isPattern3": false
         }
@@ -59,6 +80,7 @@ var vyzva;
             this.masterKey = keys.toString({ licId: companyInfo.masterLicId, counter: companyInfo.masterLLicCounter });
             if (Utils.endWith(companyInfo.companyTitle, ' *'))
                 companyInfo.companyTitle = companyInfo.companyTitle.substr(0, companyInfo.companyTitle.length - 2);
+            this.hashGerman = !!companyInfo.studentDe;
             $('#splash').hide();
         }
         runController.prototype.navigateKey = function (keyCode) {

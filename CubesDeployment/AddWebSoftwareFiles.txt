@@ -12,6 +12,7 @@ blendedapi/vyzva/views/exercise.html
 blendedapi/vyzva/views/faq.html
 blendedapi/vyzva/views/testhw.html
 blendedapi/vyzva/views/vyzvademo.html
+blendedapi/vyzva/views/vyzvaprovoz.html
 blendedapi/vyzva/views/_pagetemplate.html
 blendedapi/vyzva/server/excels/studyall.xlsx
 jslib/scripts/es5-shim.js

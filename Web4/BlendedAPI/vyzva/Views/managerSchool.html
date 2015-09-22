@@ -85,6 +85,20 @@
       <div class="alert alert-success" data-ng-if="ts.wizzardStep==1">
         Jsou-li údaje v pořádku, stiskněte <b>Údaje v pořádku</b>. Pro opravu údajů stiskněte <b>Opravit údaje</b>.
       </div>
+      <div class="alert alert-danger" data-ng-if="ts.wizzardStep==1">
+        <div class="row">
+          <div class="col-sm-1"><i class="fa fa-exclamation" style="font-size:48px; padding-left:25px;"></i></div>
+          <div class="col-sm-10">
+            <h4 style="margin:0px;margin-bottom:5px;">
+              Opravdu jste zadali <b>všechny</b> potřebné studijní skupiny pro celou školu?<br />
+              Po stisknutí <b>Údaje v pořádku</b> již nebudete moci nic přidat ani opravit.
+            </h4>
+            Poznámka: toto omezení platí do 31.12.2015 a plyne z požadavků výzvy.
+            Následně (od 1.1.2016 do 31.8.2016) budete moci přidávat nové studenty a skupiny bez omezení.
+          </div>
+          <div class="col-sm-1"><i class="fa fa-exclamation" style="font-size:48px; padding-right:25px;"></i></div>
+        </div>
+      </div>
       <button class="btm btn-default btn-lg" ng-if="ts.wizzardStep==1" ng-click="ts.wizzardClick(true)">Opravit údaje</button>
       <button class="btm btn-success btn-lg" ng-disabled="ts.groups.length==0" ng-click="ts.wizzardClick(false)">{{ts.nextTitle}}</button>
     </div>
@@ -112,10 +126,10 @@
             <b>Vysvětlení:</b> Po použití předaného <i>Licenčního klíče</i> <i>Učitelem</i> se jeho údaje (Jméno, Příjmení, EMail) objeví v tabulkách níže podobně, jako jsou v nich nyní uvedeny vaše údaje.
           </li>
         </ul>
-        <h4 class="lm-top-margin">Exporty do excelu</h4>
+        <h4 class="lm-top-margin">Exporty do Excelu</h4>
         <p>
-          Využijte exportů do Excelu k získání mnoha zajímavých údajů o výuce<br />
-          <b>Poznámka: </b> exporty (kromě prvních dvou) mají význam pouze tehdy, pokud již v nějaké <i>Studijní skupině</i> započala výuka.
+          Využijte exportů do Excelu k získání mnoha zajímavých údajů o výuce.<br />
+          <b>Poznámka: </b> Exporty (kromě prvních dvou) mají význam pouze tehdy, pokud již v nějaké <i>Studijní skupině</i> započala výuka.
         </p>
         <h4 class="lm-top-margin">Další licenční klíče</h4>
         <ul>
@@ -134,14 +148,14 @@
     <div class="alert help-panel help-default export-table" collapsablemanager="+managerhelpreports">
       <div class="h4 help-header" ng-click="managerhelpreports.collapseToogle()">
         <div class="more fa fa-bars"></div>
-        Exporty do excelu
+        Exporty do Excelu
       </div>
       <div class="help-content" collapse="managerhelpreports.isCollapsed">
         <div class="help-close" ng-click="managerhelpreports.collapseToogle()"><i class="fa fa-times"></i></div>
         <div class="row">
           <div class="col-sm-6">
             <div class="btn btn-success btn-lg" ng-click="::ts.downloadLicenceKeys(false)"><i class="fa fa-file-excel-o"></i> <i>Studijní skupiny</i></div><br />
-            Tento export obsahuje přehled Studijních skupin a klíčů pro <i>Učitele</i>. Využijte jej pro snazší rozdání <i>Licenčních klíčů</i> <i>Učitelům</i>.
+            Tento export obsahuje přehled <i>Studijních skupin</i> a klíčů pro <i>Učitele</i>. Využijte jej pro snazší rozdání <i>Licenčních klíčů</i> <i>Učitelům</i>.
           </div>
           <div class="col-sm-6">
             <div class="btn btn-success btn-lg" ng-click="::ts.downloadLicenceKeys(true)"><i class="fa fa-file-excel-o"></i> <i>Studijní skupiny</i> (včetně <i>Studentů</i>)</div><br />
@@ -154,14 +168,14 @@
             Přehledy o výuce včetně následujících detailů:
             <ul>
               <li>kolik vteřin zvuku <i>Student</i> nahrál v rámci audio-orální metody</li>
-              <li>čas, strávený <i>Studentem</i> při poslechu nahrávek rodilých mluvčích</li>
-              <li>skóre, dosažené ve všech cvičeních všech testů a lekcí</li>
+              <li>čas strávený <i>Studentem</i> při poslechu nahrávek rodilých mluvčích</li>
+              <li>skóre dosažené ve všech cvičeních všech testů a lekcí</li>
               <li>pokrok ve studiu a mnoho dalších údajů</li>
             </ul>
           </div>
           <div class="col-sm-6">
             <div class="btn btn-success btn-lg" ng-disabled="true"><i class="fa fa-file-excel-o"></i> Podklady pro <i>Závěrečnou zprávu</i></div><br />
-            Údaje, vyžadované Závěrečnou zprávou projektu Výzva 57. Export je dostupný až po Závěrečném testu.
+            Údaje vyžadované Závěrečnou zprávou projektu Výzva 57. Export je dostupný až po Závěrečném testu.
           </div>
         </div>
       </div>
@@ -202,5 +216,4 @@
     <tr ng-repeat="usedKey in ::items()" vyzva$managerschool$usekey="" item="::usedKey"></tr>
   </table>
 </script>
-
 

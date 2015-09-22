@@ -84,13 +84,21 @@ module vyzva {
   export function initVyzvaStates(params: blended.createStatePars) {
     params.$stateProvider.state({
       name: 'vyzvademo',
-      //url: "/vyzvademo?teacher&student&admin&studentempty&companytitle",
       url: "/vyzvademo?companytitle",
       controller: runController,
       templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/vyzvademo.html',
       resolve: {
         $checkOldApplicationStart: blended.checkOldApplicationStart, //ceka se na dokonceni inicalizace nasi technologie
         $keysFromCompanyTitle: vyzva.keysFromCompanyTitle
+      }
+    });
+    params.$stateProvider.state({
+      name: 'vyzvaprovoz',
+      url: "/vyzvaprovoz?companytitle",
+      controller: vyzvaProvozController,
+      templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/vyzvaprovoz.html',
+      resolve: {
+        $vyzvaProvoz: vyzva.vyzvaProvoz
       }
     });
     stateNames.root = new state({

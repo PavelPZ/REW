@@ -10,15 +10,31 @@
         <label for="sabl3">Počet šablon 3</label>
         <input type="number" class="form-control" id="sabl3" placeholder="Počet šablon 3" ng-model="ts.sablona3">
       </div>
-      <!--<div class="form-group">
-        <label for="exampleInputEmail2">Pořadové číslo (jsou jím odlišeny emaily uživatelů, musí být proto jednoznačné)</label>
-        <input type="text" class="form-control" id="exampleInputEmail2" placeholder="Pořadové číslo" ng-model="ts.uniqueId">
-      </div>-->
-      <!--<button class="btn btn-success btn-lg" ng-click="::ts.createSchool()">Vygeneruj demo účty</button>-->
-      <!--<button class="btn btn-success btn-lg" ng-click="::ts.createEmptySchool()">Vygeneruj klíč pro správce</button>-->
-      <!--<button class="btn btn-success btn-lg" ng-click="::ts.generate()">Generace</button>-->
     </form>
   </div>
+  <hr />
+  <h4 class="text-danger">PROVOZ</h4>
+  <br />
+  <p>
+    Dobrý den paní pane XXX,
+  </p>
+  <p>
+    Děkujeme, že jste si vybrali náš systém výuky.<br />
+    Veškeré informace, spojené s rozběhnutím ostrého provozu na Vaší škole <a href="{{ts.vyzvaProvoz()}}"><b>naleznete kliknutím zde</b></a>.
+  </p>
+  <p>
+    V případě jakýchkoliv dotazů mě neváhejte kontaktovat.
+  </p>
+  <p>
+    Děkuji a přeji hezký den
+  </p>
+  <p>
+    Petr Janeček<br />
+    Manažer projektu<br />
+    email: pjanecek@langmaster.cz<br />
+    tel: 733 575 541
+  </p>
+  <br />
   <hr />
   <h4 class="text-danger">DEMO</h4>
   <br />
@@ -38,8 +54,8 @@
   <h4 class="text-danger">POSLETE FAKTURA INFO</h4>
   <br />
   <p>
-    Pokud se rozhodnete pro naše řešení, prosíme o zaslání fakturačních údajů. 
-    Další postup je již přímočarý: zašleme Vám fakturu, Licenční klíč a další podklady (metodické příručky atd). 
+    Pokud se rozhodnete pro naše řešení, prosíme o zaslání fakturačních údajů.
+    Další postup je již přímočarý: zašleme Vám fakturu, Licenční klíč a další podklady (metodické příručky atd).
     Bezprostředně poté budete moci <b>spustit výuku v ostrém provozu.</b>
   </p>
   <br />
@@ -47,7 +63,7 @@
   <h4 class="text-danger">DEMO ODEMYKANI</h4>
   <br />
   <p>
-    <b>LANGMaster garantuje <i>splnění všech podmínek Výzvy 57</i></b> (včetně bod C, str. 30, dle kterého je třeba, 
+    <b>LANGMaster garantuje <i>splnění všech podmínek Výzvy 57</i></b> (včetně bod C, str. 30, dle kterého je třeba,
     aby <i>systém postupně odemykal studentovi další látku na základě jeho aktuálních výsledků</i>)<br />
     Přesvědčte se sami <a href="{{ts.encodetitle()}}"><b>vyzkoušením našeho systému zde</b></a>.
   </p>

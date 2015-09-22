@@ -17,8 +17,16 @@
     priceToString(price: number): string {
       var s = price.toString(); return s.substr(0, s.length - 3) + ' ' + s.substr(s.length - 3);
     }
-    encodetitle(): string { return 'http://' + location.href.split('/')[2] + '/schools/index_cs_cz.html#/vyzvademo?companytitle=' + encodeURIComponent(this.schoolTitle); }
-    //encodetitle(): string { return 'http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz#/vyzvademo?companytitle=' + encodeURIComponent('DEMO: ' + this.schoolTitle); }
+    url(): string {
+      var host = location.href.split('/')[2];
+      return 'http://' + host + (host == 'localhost' ? '/Web4/Schools/NewEA.aspx?lang=cs-cz' : '/schools/index_cs_cz.html');
+    }
+    encodetitle(): string { return this.url() + '#/vyzvademo?companytitle=' + encodeURIComponent(this.schoolTitle); }
+    vyzvaProvoz(): string { return this.url() + '#/vyzvaprovoz?companytitle=' + encodeURIComponent('"' + this.schoolTitle + '"'); }
+    //encodetitle(): string { return 'http://' + location.href.split('/')[2] + '/schools/index_cs_cz.html#/vyzvademo?companytitle=' + encodeURIComponent(this.schoolTitle); }
+    //encodetitle(): string { return 'http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz#/vyzvademo?companytitle=' + encodeURIComponent(this.schoolTitle); }
+    //vyzvaProvoz(): string { return 'http://' + location.href.split('/')[2] + '/schools/index_cs_cz.html#/vyzvaprovoz?companytitle=' + encodeURIComponent('"' + this.schoolTitle + '"'); }
+    //vyzvaProvoz(): string { return 'http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz#/vyzvaprovoz?companytitle=' + encodeURIComponent('"' + this.schoolTitle + '"'); }
 
     //************************* OLD
     uniqueId: string; //vstupni dato2: rozliseni emailu pro seznam demouctu
