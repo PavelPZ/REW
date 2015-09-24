@@ -209,9 +209,6 @@ var Login;
         return loginMode;
     })(Pager.Page);
     Login.loginMode = loginMode;
-    //Init Url
-    //export var initUrl = () => new Url(pageLogin);
-    //export var initHash = getHash(pageLogin);
     function loginUrl() { return getHash(Login.pageLogin); }
     Login.loginUrl = loginUrl;
     if ($.views)

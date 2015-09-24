@@ -109,7 +109,7 @@ var blended;
             //stavy pro novou verzi
             vyzva.initVyzvaStates(params);
             //log vsech validnich routes
-            _.each(blended.debugAllRoutes, function (r) { return Logger.trace("Pager", 'Define:' + r); });
+            //_.each(debugAllRoutes, r => Logger.trace("Pager", 'Define:' + r));
         }]);
     //dokumentace pro dostupne services
     function servicesDocumentation() {

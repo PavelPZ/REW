@@ -61,6 +61,7 @@ module Pager {
           Login.CmdAdjustUser_Type,
           Login.CmdAdjustUser_Create(obj.providerid, obj.id, obj.email, obj.firstName, obj.lastName),
           (res: Login.CmdProfile) => { //dej usera do cookie a proved redirekt
+            blended.checkOldApplicationStart();
             LMStatus.logged(res.Cookie, false);
           });
       });

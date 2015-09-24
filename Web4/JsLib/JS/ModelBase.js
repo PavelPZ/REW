@@ -100,6 +100,7 @@ var Pager;
         if (hash != null && hash.indexOf("access_token=") >= 0) {
             OAuth.checkForToken(function (obj) {
                 Pager.ajaxGet(Pager.pathType.restServices, Login.CmdAdjustUser_Type, Login.CmdAdjustUser_Create(obj.providerid, obj.id, obj.email, obj.firstName, obj.lastName), function (res) {
+                    blended.checkOldApplicationStart();
                     LMStatus.logged(res.Cookie, false);
                 });
             });

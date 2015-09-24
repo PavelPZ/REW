@@ -133,7 +133,7 @@
     vyzva.initVyzvaStates(params);
 
     //log vsech validnich routes
-    _.each(debugAllRoutes, r => Logger.trace("Pager", 'Define:' + r));
+    //_.each(debugAllRoutes, r => Logger.trace("Pager", 'Define:' + r));
   }]);
 
    //dokumentace pro dostupne services

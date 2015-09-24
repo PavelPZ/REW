@@ -4,7 +4,9 @@
   export var keysFromCompanyTitle = ['$stateParams', '$q', (params: {}, def: ng.IQService) => {
     var deferred = def.defer<keysFromCompanyTitleResult>();
     try {
-      var companytitle = params['companytitle'];;
+      var key = params['key'];
+      if (key) { deferred.resolve(null); return; }
+      var companytitle = params['companytitle'];
       proxies.vyzva57services.keysFromCompanyTitle(companytitle, companyInfo => {
         if (companyInfo.newCompanyId > 0) { //vytvoreni nove company
           var groups = companyInfo.teacherDe ? groupsBoth : groupsEn;
@@ -34,7 +36,7 @@
   export interface keysFromCompanyTitleResult {
     student: userItem; //code..licId|counter
     teacher: userItem;
-    studentDe: userItem; 
+    studentDe: userItem;
     teacherDe: userItem;
     admin: userItem;
     newCompanyId: number;
@@ -81,6 +83,12 @@
   export class runController extends blended.controller {
     constructor($scope: ng.IScope | blended.IStateService, $state: angular.ui.IStateService, public companyInfo: keysFromCompanyTitleResult) {
       super($scope, $state);
+      if (!companyInfo) {
+        var keyStr = $state.params['key'];
+        var key = keys.fromString(keyStr);
+        this.navigateLow(key);
+        throw 'vyzvademo.ts, runController ABORT';
+      }
       this.masterKey = keys.toString({ licId: companyInfo.masterLicId, counter: companyInfo.masterLLicCounter });
       if (Utils.endWith(companyInfo.companyTitle, ' *')) companyInfo.companyTitle = companyInfo.companyTitle.substr(0, companyInfo.companyTitle.length - 2);
       this.hashGerman = !!companyInfo.studentDe;
@@ -90,10 +98,7 @@
     hashGerman: boolean;
     static $inject = ['$scope', '$state', '$keysFromCompanyTitle'];
 
-    navigateKey(keyCode: string) {
-      var user: userItem = this.companyInfo[keyCode];
-      //var key: keys.Key = keys.fromString(this.ctx[keyName].trim());
-      var key: keys.Key = { licId: user.licId, counter: user.licCounter };
+    navigateLow(key: keys.Key) {
       proxies.vyzva57services.runDemoInformation(key.licId, key.counter, res => {
         var ctx: blended.learnContext = {
           companyid: res.companyId,
@@ -107,8 +112,8 @@
           loc: Trados.actLang,
           persistence: null,
           taskid: '',
-          homelinktype: 'vyzvademo',
-          vyzvademocompanytitle: this.companyInfo.companyTitle,
+          homelinktype: this.companyInfo ? 'vyzvademo' : '',
+          vyzvademocompanytitle: this.companyInfo ? this.companyInfo.companyTitle : '',
         };
         blended.finishContext(ctx);
         //login
@@ -126,6 +131,44 @@
           this.navigate({ stateName: statName, pars: ctx });
         });
       });
+    }
+    navigateKey(keyCode: string) {
+      var user: userItem = this.companyInfo[keyCode];
+      //var key: keys.Key = keys.fromString(this.ctx[keyName].trim());
+      var key: keys.Key = { licId: user.licId, counter: user.licCounter };
+      this.navigateLow(key);
+      //proxies.vyzva57services.runDemoInformation(key.licId, key.counter, res => {
+      //  var ctx: blended.learnContext = {
+      //    companyid: res.companyId,
+      //    producturl: blended.encodeUrl(res.productUrl),
+      //    loginid: res.lmcomId,
+      //    companyId: res.companyId,
+      //    lickeys: _.map(res.licKeys, key => {
+      //      var parts = key.split('|');
+      //      return keys.toString({ licId: parseInt(parts[0]), counter: parseInt(parts[1]) });
+      //    }).join('#'),
+      //    loc: Trados.actLang,
+      //    persistence: null,
+      //    taskid: '',
+      //    homelinktype: 'vyzvademo',
+      //    vyzvademocompanytitle: this.companyInfo.companyTitle,
+      //  };
+      //  blended.finishContext(ctx);
+      //  //login
+      //  var cookie = <any>{ id: res.lmcomId, EMail: res.email, FirstName: res.firstName, LastName: res.lastName, Type: res.otherType, Roles: 0 };
+      //  LMStatus.setCookie(cookie, false);
+      //  LMStatus.Cookie = cookie;
+      //  LMStatus.onLogged(() => {
+      //    //after login
+      //    var statName: string;
+      //    switch (ctx.productUrl) {
+      //      case '/lm/blcourse/langmastermanager.product/': statName = vyzva.stateNames.langmasterManager.name; break;
+      //      case '/lm/blcourse/schoolmanager.product/': statName = vyzva.stateNames.shoolManager.name; break;
+      //      default: statName = blended.prodStates.home.name; break;
+      //    }
+      //    this.navigate({ stateName: statName, pars: ctx });
+      //  });
+      //});
     }
   }
 }

@@ -36,6 +36,8 @@ namespace CubesDeployment {
 
     static void Main(string[] args) {
 
+      //delUser(263);
+
       //CourseMeta.Lib.init(new LoggerMemory(true), @"d:\lmcom\", false);
       //return;
 
@@ -624,6 +626,18 @@ namespace CubesDeployment {
       } catch (Exception exp) {
         File.WriteAllText(errorFn, LowUtils.ExceptionToString(exp));
       }
+    }
+
+    private static void delUser(long lmcomUserId) {
+      var db = NewData.Lib.CreateContext();
+      db.UserLicences.RemoveRange(db.UserLicences.Where(l => l.CourseUser.CompanyUser.UserId == lmcomUserId));
+      db.SaveChanges();
+      db.CourseUsers.Remove(db.CourseUsers.First(cu => cu.CompanyUser.UserId == lmcomUserId));
+      db.SaveChanges();
+      db.CompanyUsers.RemoveRange(db.CompanyUsers.Where(cu => cu.UserId == lmcomUserId));
+      db.SaveChanges();
+      db.Users.Remove(db.Users.First(cu => cu.Id == lmcomUserId));
+      db.SaveChanges();
     }
 
     //static void buildLow(string oper, string email, bool isRelease) {

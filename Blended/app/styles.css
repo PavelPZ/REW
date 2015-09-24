@@ -324,6 +324,9 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff071018', endColorstr='#ff122b40', GradientType=1);
   border: 0;
 }
+.alert.advertise table * {
+  color: #333;
+}
 .alert.advertise h1 {
   margin: 0;
 }

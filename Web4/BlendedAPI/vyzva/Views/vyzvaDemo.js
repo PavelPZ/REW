@@ -10,8 +10,12 @@ var vyzva;
     vyzva.keysFromCompanyTitle = ['$stateParams', '$q', function (params, def) {
             var deferred = def.defer();
             try {
+                var key = params['key'];
+                if (key) {
+                    deferred.resolve(null);
+                    return;
+                }
                 var companytitle = params['companytitle'];
-                ;
                 proxies.vyzva57services.keysFromCompanyTitle(companytitle, function (companyInfo) {
                     if (companyInfo.newCompanyId > 0) {
                         var groups = companyInfo.teacherDe ? groupsBoth : groupsEn;
@@ -77,17 +81,20 @@ var vyzva;
         function runController($scope, $state, companyInfo) {
             _super.call(this, $scope, $state);
             this.companyInfo = companyInfo;
+            if (!companyInfo) {
+                var keyStr = $state.params['key'];
+                var key = keys.fromString(keyStr);
+                this.navigateLow(key);
+                throw 'vyzvademo.ts, runController ABORT';
+            }
             this.masterKey = keys.toString({ licId: companyInfo.masterLicId, counter: companyInfo.masterLLicCounter });
             if (Utils.endWith(companyInfo.companyTitle, ' *'))
                 companyInfo.companyTitle = companyInfo.companyTitle.substr(0, companyInfo.companyTitle.length - 2);
             this.hashGerman = !!companyInfo.studentDe;
             $('#splash').hide();
         }
-        runController.prototype.navigateKey = function (keyCode) {
+        runController.prototype.navigateLow = function (key) {
             var _this = this;
-            var user = this.companyInfo[keyCode];
-            //var key: keys.Key = keys.fromString(this.ctx[keyName].trim());
-            var key = { licId: user.licId, counter: user.licCounter };
             proxies.vyzva57services.runDemoInformation(key.licId, key.counter, function (res) {
                 var ctx = {
                     companyid: res.companyId,
@@ -101,8 +108,8 @@ var vyzva;
                     loc: Trados.actLang,
                     persistence: null,
                     taskid: '',
-                    homelinktype: 'vyzvademo',
-                    vyzvademocompanytitle: _this.companyInfo.companyTitle,
+                    homelinktype: _this.companyInfo ? 'vyzvademo' : '',
+                    vyzvademocompanytitle: _this.companyInfo ? _this.companyInfo.companyTitle : '',
                 };
                 blended.finishContext(ctx);
                 //login
@@ -126,6 +133,44 @@ var vyzva;
                     _this.navigate({ stateName: statName, pars: ctx });
                 });
             });
+        };
+        runController.prototype.navigateKey = function (keyCode) {
+            var user = this.companyInfo[keyCode];
+            //var key: keys.Key = keys.fromString(this.ctx[keyName].trim());
+            var key = { licId: user.licId, counter: user.licCounter };
+            this.navigateLow(key);
+            //proxies.vyzva57services.runDemoInformation(key.licId, key.counter, res => {
+            //  var ctx: blended.learnContext = {
+            //    companyid: res.companyId,
+            //    producturl: blended.encodeUrl(res.productUrl),
+            //    loginid: res.lmcomId,
+            //    companyId: res.companyId,
+            //    lickeys: _.map(res.licKeys, key => {
+            //      var parts = key.split('|');
+            //      return keys.toString({ licId: parseInt(parts[0]), counter: parseInt(parts[1]) });
+            //    }).join('#'),
+            //    loc: Trados.actLang,
+            //    persistence: null,
+            //    taskid: '',
+            //    homelinktype: 'vyzvademo',
+            //    vyzvademocompanytitle: this.companyInfo.companyTitle,
+            //  };
+            //  blended.finishContext(ctx);
+            //  //login
+            //  var cookie = <any>{ id: res.lmcomId, EMail: res.email, FirstName: res.firstName, LastName: res.lastName, Type: res.otherType, Roles: 0 };
+            //  LMStatus.setCookie(cookie, false);
+            //  LMStatus.Cookie = cookie;
+            //  LMStatus.onLogged(() => {
+            //    //after login
+            //    var statName: string;
+            //    switch (ctx.productUrl) {
+            //      case '/lm/blcourse/langmastermanager.product/': statName = vyzva.stateNames.langmasterManager.name; break;
+            //      case '/lm/blcourse/schoolmanager.product/': statName = vyzva.stateNames.shoolManager.name; break;
+            //      default: statName = blended.prodStates.home.name; break;
+            //    }
+            //    this.navigate({ stateName: statName, pars: ctx });
+            //  });
+            //});
         };
         runController.$inject = ['$scope', '$state', '$keysFromCompanyTitle'];
         return runController;

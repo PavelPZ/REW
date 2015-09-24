@@ -2,7 +2,7 @@
 
 var OAuthDefaultClient = {
   '2': { //facebook
-    'default': '', //http
+    'default': '125816694160413', //http
     'sdefault': '', //https
   },
   '3': { //google

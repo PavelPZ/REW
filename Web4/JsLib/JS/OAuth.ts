@@ -138,7 +138,7 @@ module OAuth {
   addCfg(LMComLib.OtherType.Facebook,
     {
       www_lm: '217099001634050',
-      test_lm: '202002813170094',
+      test_lm: '202002813170094', 
       s_www_lm: '600606046618350',
       s_test_lm: '615996988429168',
       eduland: '491123084355646',
@@ -152,7 +152,7 @@ module OAuth {
 
   //logout http://forums.asp.net/t/1768815.aspx/1
     "https://www.facebook.com/dialog/oauth", "https://graph.facebook.com/me", "email", "https://www.facebook.com", null,
-    (obj: any, providerid: LMComLib.OtherType) => { var res: profile = { id: obj.id, email: obj.email, firstName: obj.first_name, lastName: obj.last_name, providerid: providerid }; return res; });
+    (obj: any, providerid: LMComLib.OtherType) => { var res: profile = { id: obj.id, email: obj.email, firstName: obj.first_name, lastName: obj.last_name ? obj.last_name : obj.name, providerid: providerid }; return res; });
 
 
   /********************* GOOGLE *****************************/
@@ -328,9 +328,9 @@ module OAuth {
       //dataType: 'json',
       dataType: wrongMSIE ? 'jsonp' : 'json',
       success: (data: any) => { Logger.trace_oauth("getData, token" + JSON.stringify(data)); completed(provider.parseProfile(data, provider.providerid)); },
-      data: { access_token: token },
+      data: { access_token: token, fields: 'email,first_name,last_name' },
       error: function (jqXHR, textStatus, errorThrown) {
-        Logger.trace_oauth('*** error: ' + textStatus + ", " + errorThrown);
+        Logger.trace_oauth('*** error: ' + textStatus + ", " + errorThrown + ', ' + url);
         if (jqXHR.status === 401) Logger.trace_oauth("Token expired. About to delete this token");
       }
     });

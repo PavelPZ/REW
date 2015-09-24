@@ -219,10 +219,6 @@ module Login {
     deps: Department[];
   }
 
-  //Init Url
-  //export var initUrl = () => new Url(pageLogin);
-  //export var initHash = getHash(pageLogin);
-
   export function loginUrl() { return getHash(pageLogin); }
 
   if ($.views) $.views.helpers({

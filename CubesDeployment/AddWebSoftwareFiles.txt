@@ -1,4 +1,4 @@
-﻿Schools/SLExtension.xap
+﻿schools/slextension.xap
 jslib/ea/ea.css
 blendedapi/styles/style.css
 blendedapi/styles/img/lm-logo-black.png

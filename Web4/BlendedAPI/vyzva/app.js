@@ -58,7 +58,7 @@ var vyzva;
     function initVyzvaStates(params) {
         params.$stateProvider.state({
             name: 'vyzvademo',
-            url: "/vyzvademo?companytitle",
+            url: "/vyzvademo?companytitle&key",
             controller: vyzva.runController,
             templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/vyzvademo.html',
             resolve: {

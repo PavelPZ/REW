@@ -100,7 +100,7 @@ var OAuth;
     }, 
     //{ www_lm: "600606046618350", test_lm: "600606046618350" },
     //logout http://forums.asp.net/t/1768815.aspx/1
-    "https://www.facebook.com/dialog/oauth", "https://graph.facebook.com/me", "email", "https://www.facebook.com", null, function (obj, providerid) { var res = { id: obj.id, email: obj.email, firstName: obj.first_name, lastName: obj.last_name, providerid: providerid }; return res; });
+    "https://www.facebook.com/dialog/oauth", "https://graph.facebook.com/me", "email", "https://www.facebook.com", null, function (obj, providerid) { var res = { id: obj.id, email: obj.email, firstName: obj.first_name, lastName: obj.last_name ? obj.last_name : obj.name, providerid: providerid }; return res; });
     /********************* GOOGLE *****************************/
     //https://developers.google.com/accounts/docs/OAuth2UserAgent
     //https://code.google.com/apis/console/#project:475616334704:access, langmaster.com@gmail.com / asdfghjkl123_
@@ -256,9 +256,9 @@ var OAuth;
             //dataType: 'json',
             dataType: wrongMSIE ? 'jsonp' : 'json',
             success: function (data) { Logger.trace_oauth("getData, token" + JSON.stringify(data)); completed(provider.parseProfile(data, provider.providerid)); },
-            data: { access_token: token },
+            data: { access_token: token, fields: 'email,first_name,last_name' },
             error: function (jqXHR, textStatus, errorThrown) {
-                Logger.trace_oauth('*** error: ' + textStatus + ", " + errorThrown);
+                Logger.trace_oauth('*** error: ' + textStatus + ", " + errorThrown + ', ' + url);
                 if (jqXHR.status === 401)
                     Logger.trace_oauth("Token expired. About to delete this token");
             }
