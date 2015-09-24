@@ -328,7 +328,7 @@ module OAuth {
       //dataType: 'json',
       dataType: wrongMSIE ? 'jsonp' : 'json',
       success: (data: any) => { Logger.trace_oauth("getData, token" + JSON.stringify(data)); completed(provider.parseProfile(data, provider.providerid)); },
-      data: { access_token: token, fields: 'email,first_name,last_name' },
+      data: provider.providerid == LMComLib.OtherType.Facebook ? { access_token: token, fields: 'email,first_name,last_name' } : { access_token: token },
       error: function (jqXHR, textStatus, errorThrown) {
         Logger.trace_oauth('*** error: ' + textStatus + ", " + errorThrown + ', ' + url);
         if (jqXHR.status === 401) Logger.trace_oauth("Token expired. About to delete this token");

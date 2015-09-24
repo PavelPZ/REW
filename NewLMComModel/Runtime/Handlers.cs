@@ -103,8 +103,9 @@ namespace Handlers {
           throw new Exception("Deserialize error", exp);
         }
 
+        //Odriznuti dvojiho zalogovani kvuli Vyzva 57
         LMComLib.Cmd sessCmd = req as LMComLib.Cmd;
-        if (sessCmd != null && !sessionManager.checkSession(sessCmd.lmcomId, sessCmd.sessionId)) {
+        if (false && sessCmd != null && !sessionManager.checkSession(sessCmd.lmcomId, sessCmd.sessionId)) {
           Logger.Log("Warning: User logged under other account");
           //check session
           var err = new RpcResponse(998, null);
