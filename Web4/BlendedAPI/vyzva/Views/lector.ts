@@ -50,6 +50,22 @@
       });
       this.navigate({ stateName: stateNames.home.name, pars: ctx });
     }
+
+    //POUZE LANGMASTER
+    deleteKey() {
+      this.lectorParent.productParent.intranetInfo.deleteStudentKey(this.lectorParent.lectorGroup.groupId, this.deleteKeyValue);
+      saveCompanyInfo(this.ctx.companyid, this.lectorParent.productParent.intranetInfo.companyData, () => location.reload());
+    } deleteKeyValue: string;
+
+    addKey() {
+      proxies.vyzva57services.lmAdminCreateSingleLicenceKey(this.ctx.companyid, this.productParent.dataNode.url, key => {
+        var parts = key.split('|');
+        var key = keys.toString({ licId: parseInt(parts[0]), counter: parseInt(parts[1]) });
+        this.lectorParent.productParent.intranetInfo.addStudentKey(this.lectorParent.lectorGroup.groupId, key);
+        saveCompanyInfo(this.ctx.companyid, this.lectorParent.productParent.intranetInfo.companyData, () => location.reload());
+      });
+    }
+
     downloadLicenceKeys() {
       downloadExcelReport({ type: reportType.lectorKeys, companyId: this.ctx.companyid, groupId: this.lectorParent.groupId });
     }
@@ -57,6 +73,9 @@
       downloadExcelReport({ type: reportType.lectorStudy, companyId: this.ctx.companyid, groupId: this.lectorParent.groupId });
     }
 
+  }
+  function saveCompanyInfo(companyId: number, company: intranet.ICompanyData, completed: () => void) {
+    proxies.vyzva57services.writeCompanyData(companyId, JSON.stringify(company), () => completed());
   }
 
   blended.rootModule
@@ -68,7 +87,7 @@
     })
     .directive('vyzva$lector$users', () => {
       return {
-        scope: { students: '&students', ts: '&ts' },
+        scope: { students: '=students', ts: '&ts' },
         templateUrl: 'vyzva$lector$users.html'
       }
     })

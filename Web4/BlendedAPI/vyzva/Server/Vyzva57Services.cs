@@ -29,7 +29,7 @@ namespace blended {
     [Route("lmAdminCreateLicenceKeys"), HttpPost]
     public lmAdminCreateLicenceKey[] lmAdminCreateLicenceKeys(int companyid, [FromBody]lmAdminCreateLicenceKey[] requestedKeys) {
       //debug: pro prepareDemoData.cs: capture requestus
-      var json = JsonConvert.SerializeObject(requestedKeys, Newtonsoft.Json.Formatting.Indented);
+      //var json = JsonConvert.SerializeObject(requestedKeys, Newtonsoft.Json.Formatting.Indented);
       var db = NewData.Lib.CreateContext();
       foreach (var requestedKey in requestedKeys) {
         var prodId = lineToProductId[requestedKey.line];
@@ -40,6 +40,16 @@ namespace blended {
       }
       db.SaveChanges();
       return requestedKeys;
+    }
+    [Route("lmAdminCreateSingleLicenceKey"), HttpPost]
+    public string lmAdminCreateSingleLicenceKey(int companyid, string prodId) {
+      var db = NewData.Lib.CreateContext();
+      //var prodId = lineToProductId[line];
+      var lic = db.CompanyLicences.First(c => c.CompanyId == companyid && c.ProductId == prodId);
+      var firstFree = lic.LastCounter + 1;
+      lic.LastCounter += 1;
+      db.SaveChanges();
+      return lic.Id.ToString() + "|" + firstFree.ToString();
     }
     public class lmAdminCreateLicenceKey {
       public LMComLib.LineIds line; //no => school manager produkt

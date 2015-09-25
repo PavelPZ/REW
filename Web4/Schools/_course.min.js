@@ -10994,7 +10994,9 @@ var vyzva;
             return this.home.intranetInfo.userInfo(lmcomId || this.controller.ctx.userDataId());
         };
         appService.prototype.isLangmasterUser = function () {
-            return _.indexOf(['pzika@langmaster.cz', 'rjeliga@langmaster.cz', 'zzikova@langmaster.cz', 'pjanecek@langmaster.cz'], LMStatus.Cookie.EMail) >= 0;
+            var hash = LowUtils.parseQuery(location.search);
+            return hash && hash['lmadmin'] == 'true';
+            //return _.indexOf(['pzika@langmaster.cz', 'rjeliga@langmaster.cz', 'zzikova@langmaster.cz', 'pjanecek@langmaster.cz'], LMStatus.Cookie.EMail) >= 0;
         };
         return appService;
     })();
@@ -11075,6 +11077,20 @@ var vyzva;
             } //null => nezmeneno
             alocatedKeyRoot.prototype.userInfo = function (lmcomId) {
                 return this.userDir[lmcomId.toString()];
+            };
+            //LANGMaster only
+            alocatedKeyRoot.prototype.deleteStudentKey = function (groupId, keyStr) {
+                var grp = _.find(this.companyData.studyGroups, function (g) { return g.groupId == groupId; });
+                for (var i = 0; i < grp.studentKeys.length; i++) {
+                    if (grp.studentKeys[i].keyStr != keyStr)
+                        continue;
+                    grp.studentKeys.splice(i, 1);
+                    break;
+                }
+            };
+            alocatedKeyRoot.prototype.addStudentKey = function (groupId, keyStr) {
+                var grp = _.find(this.companyData.studyGroups, function (g) { return g.groupId == groupId; });
+                grp.studentKeys.push({ keyStr: keyStr });
             };
             return alocatedKeyRoot;
         })();
@@ -11620,6 +11636,20 @@ var vyzva;
             });
             this.navigate({ stateName: vyzva.stateNames.home.name, pars: ctx });
         };
+        //POUZE LANGMASTER
+        lectorViewController.prototype.deleteKey = function () {
+            this.lectorParent.productParent.intranetInfo.deleteStudentKey(this.lectorParent.lectorGroup.groupId, this.deleteKeyValue);
+            saveCompanyInfo(this.ctx.companyid, this.lectorParent.productParent.intranetInfo.companyData, function () { return location.reload(); });
+        };
+        lectorViewController.prototype.addKey = function () {
+            var _this = this;
+            proxies.vyzva57services.lmAdminCreateSingleLicenceKey(this.ctx.companyid, this.productParent.dataNode.url, function (key) {
+                var parts = key.split('|');
+                var key = keys.toString({ licId: parseInt(parts[0]), counter: parseInt(parts[1]) });
+                _this.lectorParent.productParent.intranetInfo.addStudentKey(_this.lectorParent.lectorGroup.groupId, key);
+                saveCompanyInfo(_this.ctx.companyid, _this.lectorParent.productParent.intranetInfo.companyData, function () { return location.reload(); });
+            });
+        };
         lectorViewController.prototype.downloadLicenceKeys = function () {
             vyzva.downloadExcelReport({ type: vyzva.reportType.lectorKeys, companyId: this.ctx.companyid, groupId: this.lectorParent.groupId });
         };
@@ -11629,6 +11659,9 @@ var vyzva;
         return lectorViewController;
     })(lectorViewBase);
     vyzva.lectorViewController = lectorViewController;
+    function saveCompanyInfo(companyId, company, completed) {
+        proxies.vyzva57services.writeCompanyData(companyId, JSON.stringify(company), function () { return completed(); });
+    }
     blended.rootModule
         .directive('vyzva$lector$user', function () {
         return {
@@ -11638,7 +11671,7 @@ var vyzva;
     })
         .directive('vyzva$lector$users', function () {
         return {
-            scope: { students: '&students', ts: '&ts' },
+            scope: { students: '=students', ts: '&ts' },
             templateUrl: 'vyzva$lector$users.html'
         };
     })

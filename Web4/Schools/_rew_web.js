@@ -388,6 +388,11 @@ var Pager;
     function angularJS_OAuthLogin(hash, completed) {
         if (hash != null && hash.indexOf("access_token=") >= 0) {
             OAuth.checkForToken(function (obj) {
+                if (!obj.email) {
+                    alert('Povolte prosím poskytnutí vašeho emailu!');
+                    LMStatus.LogoutLow();
+                    return false;
+                }
                 Pager.ajaxGet(Pager.pathType.restServices, Login.CmdAdjustUser_Type, Login.CmdAdjustUser_Create(obj.providerid, obj.id, obj.email, obj.firstName, obj.lastName), function (res) {
                     blended.checkOldApplicationStart();
                     LMStatus.logged(res.Cookie, false);
@@ -2263,7 +2268,10 @@ var OAuth;
     function addCfg(providerid, client_id, authorizationUrl, ajaxUrl, scopes, logoutUrl, ajaxUrlJsonp, parseProfile, isCode, client_secret) {
         if (isCode === void 0) { isCode = false; }
         if (client_secret === void 0) { client_secret = null; }
-        var c = { providerid: providerid, client_id: client_id, authorizationUrl: authorizationUrl, ajaxUrl: ajaxUrl, scopes: scopes, parseProfile: parseProfile, isCode: isCode, client_secret: client_secret, logoutUrl: logoutUrl, ajaxUrlJsonp: ajaxUrlJsonp };
+        var c = {
+            providerid: providerid, client_id: client_id, authorizationUrl: authorizationUrl, ajaxUrl: ajaxUrl, scopes: scopes,
+            parseProfile: parseProfile, isCode: isCode, client_secret: client_secret, logoutUrl: logoutUrl, ajaxUrlJsonp: ajaxUrlJsonp
+        };
         cfg[c.providerid.toString()] = c;
     }
     /********************* FACEBOOK *****************************/
@@ -2438,8 +2446,11 @@ var OAuth;
             url: url,
             //dataType: 'json',
             dataType: wrongMSIE ? 'jsonp' : 'json',
-            success: function (data) { Logger.trace_oauth("getData, token" + JSON.stringify(data)); completed(provider.parseProfile(data, provider.providerid)); },
-            data: { access_token: token, fields: 'email,first_name,last_name' },
+            success: function (data) {
+                Logger.trace_oauth("getData, token" + JSON.stringify(data));
+                completed(provider.parseProfile(data, provider.providerid));
+            },
+            data: provider.providerid == LMComLib.OtherType.Facebook ? { access_token: token, fields: 'email,first_name,last_name' } : { access_token: token },
             error: function (jqXHR, textStatus, errorThrown) {
                 Logger.trace_oauth('*** error: ' + textStatus + ", " + errorThrown + ', ' + url);
                 if (jqXHR.status === 401)
@@ -3895,6 +3906,9 @@ var proxies;
         };
         vyzva57services.lmAdminCreateLicenceKeys = function (companyid, requestedkeys, completed) {
             invoke('vyzva57services/lmadmincreatelicencekeys', 'post', { companyid: companyid }, JSON.stringify(requestedkeys), completed);
+        };
+        vyzva57services.lmAdminCreateSingleLicenceKey = function (companyid, prodid, completed) {
+            invoke('vyzva57services/lmadmincreatesinglelicencekey', 'post', { companyid: companyid, prodid: prodid }, null, completed);
         };
         vyzva57services.loadCompanyData = function (companyid, completed) {
             invoke('vyzva57services/loadcompanydata', 'get', { companyid: companyid }, null, completed);

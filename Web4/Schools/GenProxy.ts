@@ -156,6 +156,9 @@ module proxies {
     static lmAdminCreateLicenceKeys(companyid: number, requestedkeys: {  line: LMComLib.LineIds;  num: number;  keys: Array<string>;  }[], completed: (res: {  line: LMComLib.LineIds;  num: number;  keys: Array<string>;  }[]) => void): void {
 		  invoke('vyzva57services/lmadmincreatelicencekeys', 'post', { companyid: companyid }, JSON.stringify(requestedkeys), completed);
 	  } 
+    static lmAdminCreateSingleLicenceKey(companyid: number, prodid: string, completed: (res: string) => void): void {
+		  invoke('vyzva57services/lmadmincreatesinglelicencekey', 'post', { companyid: companyid, prodid: prodid }, null, completed);
+	  } 
     static loadCompanyData(companyid: number, completed: (res: string) => void): void {
 		  invoke('vyzva57services/loadcompanydata', 'get', { companyid: companyid }, null, completed);
 	  } 

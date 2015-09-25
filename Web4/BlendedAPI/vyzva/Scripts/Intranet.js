@@ -14,6 +14,20 @@ var vyzva;
             alocatedKeyRoot.prototype.userInfo = function (lmcomId) {
                 return this.userDir[lmcomId.toString()];
             };
+            //LANGMaster only
+            alocatedKeyRoot.prototype.deleteStudentKey = function (groupId, keyStr) {
+                var grp = _.find(this.companyData.studyGroups, function (g) { return g.groupId == groupId; });
+                for (var i = 0; i < grp.studentKeys.length; i++) {
+                    if (grp.studentKeys[i].keyStr != keyStr)
+                        continue;
+                    grp.studentKeys.splice(i, 1);
+                    break;
+                }
+            };
+            alocatedKeyRoot.prototype.addStudentKey = function (groupId, keyStr) {
+                var grp = _.find(this.companyData.studyGroups, function (g) { return g.groupId == groupId; });
+                grp.studentKeys.push({ keyStr: keyStr });
+            };
             return alocatedKeyRoot;
         })();
         intranet.alocatedKeyRoot = alocatedKeyRoot;

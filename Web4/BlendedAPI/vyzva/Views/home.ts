@@ -213,6 +213,7 @@
       //debugger;
       this.showStudentPart = studentGroups.length > 0 /*jsem primo student*/ || !!this.ctx.onbehalfof /**/;
     }
+
     static $inject = ['$scope', '$state', '$loadedProduct', '$intranetInfo'];
 
   }

@@ -199,6 +199,9 @@ var proxies;
         vyzva57services.lmAdminCreateLicenceKeys = function (companyid, requestedkeys, completed) {
             invoke('vyzva57services/lmadmincreatelicencekeys', 'post', { companyid: companyid }, JSON.stringify(requestedkeys), completed);
         };
+        vyzva57services.lmAdminCreateSingleLicenceKey = function (companyid, prodid, completed) {
+            invoke('vyzva57services/lmadmincreatesinglelicencekey', 'post', { companyid: companyid, prodid: prodid }, null, completed);
+        };
         vyzva57services.loadCompanyData = function (companyid, completed) {
             invoke('vyzva57services/loadcompanydata', 'get', { companyid: companyid }, null, completed);
         };

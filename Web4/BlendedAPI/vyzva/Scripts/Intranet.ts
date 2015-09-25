@@ -42,6 +42,20 @@
       userInfo(lmcomId: number): IAlocatedKey {
         return this.userDir[lmcomId.toString()];
       }
+
+      //LANGMaster only
+      deleteStudentKey(groupId: number, keyStr: string) {
+        var grp = _.find(this.companyData.studyGroups, g => g.groupId == groupId);
+        for (var i = 0; i < grp.studentKeys.length; i++) {
+          if (grp.studentKeys[i].keyStr != keyStr) continue;
+          grp.studentKeys.splice(i, 1);
+          break;
+        }
+      }
+      addStudentKey(groupId: number, keyStr: string) {
+        var grp = _.find(this.companyData.studyGroups, g => g.groupId == groupId);
+        grp.studentKeys.push(<any>{ keyStr: keyStr });
+      }
     }
     export interface IAlocatedKeyInfo {
       key: IAlocatedKey;

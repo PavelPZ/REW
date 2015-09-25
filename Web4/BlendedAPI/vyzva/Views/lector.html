@@ -80,12 +80,38 @@
 
 
 <div vyzva$lector$users students="::ts.students" ts="::ts"></div>
+
+<div class="alert alert-default" ng-if="::appService.isLangmasterUser()">
+  <h2>Toto vidí (doufám) jen LANGMaster</h2>
+  <p>Po přidání x ubrání klíčů se musí udělat Refresh. Bojím se nyní udělat výrazné zásahy do aplikace, aby nebyl refresh potřeba.</p>
+  <h4>Nepodařilo se správně použít přidělený počet Licenčních klíčů pro Studenty?...</h4>
+  <p class="lm-bottom-margin">... pak využijte některou z následujících akcí</p>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="btn btn-default btn-sm" ng-click="::ts.addKey()">Nový Licenční klič pro Studenta</div><br />
+      Licenční klíč se objeví v posledním řádku tabulky výše.
+    </div>
+    <div class="col-sm-6">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Licenční klíč..." ng-model="ts.deleteKeyValue">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button" ng-click="::ts.deleteKey()">Odebrat studentovi Licenční klič</button>
+        </span>
+      </div>
+      <i class="fa fa-exclamation-triangle"></i> 
+      Upozornění: odebráním Licenčního klíče vybranému studentovi se přijde o všechny výsledky jeho dosavadního studia.
+    </div>
+  </div>
+</div>
+
 <div vyzva$lector$visitors students="::ts.visitors" ts="::ts"></div>
 
 <script type="text/ng-template" id="vyzva$lector$user.html">
   <td><b>{{::student().key.firstName}} {{::student().key.lastName}} <span ng-if="student().key.email">(<a href="mailto:{{::student().key.email}}">{{::student().key.email}}</a>)</span></b></td>
   <td>{{::student().key.keyStr}}</td>
-  <td><button ng-if="::student().key.lmcomId" class="btn btn-success btn-sm" ng-click="::ts().gotoStudentResult(student())">Výsledky <i class="fa fa-hand-o-right"></i></button>&nbsp;</td>
+  <td>
+    <button ng-if="::student().key.lmcomId" class="btn btn-success btn-sm" ng-click="::ts().gotoStudentResult(student())">Výsledky <i class="fa fa-hand-o-right"></i></button>&nbsp;
+  </td>
 </script>
 
 <script type="text/ng-template" id="vyzva$lector$users.html">
@@ -98,7 +124,7 @@
         <th>Výsledky</th>
       </tr>
     </thead>
-    <tr ng-repeat="student in ::students()" vyzva$lector$user="" student="::student" ts="::ts()"></tr>
+    <tr ng-repeat="student in students" vyzva$lector$user="" student="::student" ts="::ts()"></tr>
   </table>
 </script>
 

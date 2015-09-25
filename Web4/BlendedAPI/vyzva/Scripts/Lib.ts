@@ -31,7 +31,9 @@
     }
 
     isLangmasterUser(): boolean {
-      return _.indexOf(['pzika@langmaster.cz', 'rjeliga@langmaster.cz', 'zzikova@langmaster.cz', 'pjanecek@langmaster.cz'], LMStatus.Cookie.EMail) >= 0;
+      var hash = LowUtils.parseQuery(location.search);      
+      return hash && hash['lmadmin'] == 'true';
+      //return _.indexOf(['pzika@langmaster.cz', 'rjeliga@langmaster.cz', 'zzikova@langmaster.cz', 'pjanecek@langmaster.cz'], LMStatus.Cookie.EMail) >= 0;
     }
   }
 
