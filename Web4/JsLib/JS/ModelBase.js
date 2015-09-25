@@ -99,6 +99,11 @@ var Pager;
     function angularJS_OAuthLogin(hash, completed) {
         if (hash != null && hash.indexOf("access_token=") >= 0) {
             OAuth.checkForToken(function (obj) {
+                if (!obj.email) {
+                    alert('Povolte prosím poskytnutí vašeho emailu!');
+                    LMStatus.LogoutLow();
+                    return false;
+                }
                 Pager.ajaxGet(Pager.pathType.restServices, Login.CmdAdjustUser_Type, Login.CmdAdjustUser_Create(obj.providerid, obj.id, obj.email, obj.firstName, obj.lastName), function (res) {
                     blended.checkOldApplicationStart();
                     LMStatus.logged(res.Cookie, false);

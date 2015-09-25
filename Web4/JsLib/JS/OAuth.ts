@@ -125,9 +125,21 @@ module OAuth {
   }
 
   var cfg: provider[] = [];
-  function addCfg(providerid: LMComLib.OtherType, client_id: client, authorizationUrl: string, ajaxUrl: string, scopes: string, logoutUrl: string, ajaxUrlJsonp: string,
-    parseProfile: (obj: Object, providerid: LMComLib.OtherType) => profile, isCode: boolean = false, client_secret: string = null) {
-    var c: provider = { providerid: providerid, client_id: client_id, authorizationUrl: authorizationUrl, ajaxUrl: ajaxUrl, scopes: scopes, parseProfile: parseProfile, isCode: isCode, client_secret: client_secret, logoutUrl: logoutUrl, ajaxUrlJsonp: ajaxUrlJsonp };
+  function addCfg(
+    providerid: LMComLib.OtherType,
+    client_id: client,
+    authorizationUrl: string,
+    ajaxUrl: string,
+    scopes: string,
+    logoutUrl: string,
+    ajaxUrlJsonp: string,
+    parseProfile: (obj: Object, providerid: LMComLib.OtherType) => profile,
+    isCode: boolean = false,
+    client_secret: string = null) {
+      var c: provider = {
+        providerid: providerid, client_id: client_id, authorizationUrl: authorizationUrl, ajaxUrl: ajaxUrl, scopes: scopes,
+        parseProfile: parseProfile, isCode: isCode, client_secret: client_secret, logoutUrl: logoutUrl, ajaxUrlJsonp: ajaxUrlJsonp
+      };
     cfg[c.providerid.toString()] = c;
   }
 
@@ -138,7 +150,7 @@ module OAuth {
   addCfg(LMComLib.OtherType.Facebook,
     {
       www_lm: '217099001634050',
-      test_lm: '202002813170094', 
+      test_lm: '202002813170094',
       s_www_lm: '600606046618350',
       s_test_lm: '615996988429168',
       eduland: '491123084355646',
@@ -327,7 +339,10 @@ module OAuth {
       url: url,
       //dataType: 'json',
       dataType: wrongMSIE ? 'jsonp' : 'json',
-      success: (data: any) => { Logger.trace_oauth("getData, token" + JSON.stringify(data)); completed(provider.parseProfile(data, provider.providerid)); },
+      success: (data: any) => {
+        Logger.trace_oauth("getData, token" + JSON.stringify(data));
+        completed(provider.parseProfile(data, provider.providerid));
+      },
       data: provider.providerid == LMComLib.OtherType.Facebook ? { access_token: token, fields: 'email,first_name,last_name' } : { access_token: token },
       error: function (jqXHR, textStatus, errorThrown) {
         Logger.trace_oauth('*** error: ' + textStatus + ", " + errorThrown + ', ' + url);

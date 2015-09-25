@@ -80,7 +80,10 @@ var OAuth;
     function addCfg(providerid, client_id, authorizationUrl, ajaxUrl, scopes, logoutUrl, ajaxUrlJsonp, parseProfile, isCode, client_secret) {
         if (isCode === void 0) { isCode = false; }
         if (client_secret === void 0) { client_secret = null; }
-        var c = { providerid: providerid, client_id: client_id, authorizationUrl: authorizationUrl, ajaxUrl: ajaxUrl, scopes: scopes, parseProfile: parseProfile, isCode: isCode, client_secret: client_secret, logoutUrl: logoutUrl, ajaxUrlJsonp: ajaxUrlJsonp };
+        var c = {
+            providerid: providerid, client_id: client_id, authorizationUrl: authorizationUrl, ajaxUrl: ajaxUrl, scopes: scopes,
+            parseProfile: parseProfile, isCode: isCode, client_secret: client_secret, logoutUrl: logoutUrl, ajaxUrlJsonp: ajaxUrlJsonp
+        };
         cfg[c.providerid.toString()] = c;
     }
     /********************* FACEBOOK *****************************/
@@ -255,7 +258,10 @@ var OAuth;
             url: url,
             //dataType: 'json',
             dataType: wrongMSIE ? 'jsonp' : 'json',
-            success: function (data) { Logger.trace_oauth("getData, token" + JSON.stringify(data)); completed(provider.parseProfile(data, provider.providerid)); },
+            success: function (data) {
+                Logger.trace_oauth("getData, token" + JSON.stringify(data));
+                completed(provider.parseProfile(data, provider.providerid));
+            },
             data: provider.providerid == LMComLib.OtherType.Facebook ? { access_token: token, fields: 'email,first_name,last_name' } : { access_token: token },
             error: function (jqXHR, textStatus, errorThrown) {
                 Logger.trace_oauth('*** error: ' + textStatus + ", " + errorThrown + ', ' + url);

@@ -1,4 +1,4 @@
-module schools { export var appId = "school"; }
+﻿module schools { export var appId = "school"; }
 module testMe { export var appId = "test"; }
 module Login { export var appId = "login"; }
 module schoolAdmin { export var appId = "schoolAdmin".toLowerCase(); }
@@ -56,6 +56,11 @@ module Pager {
   export function angularJS_OAuthLogin(hash: string, completed: () => void): boolean {
     if (hash != null && hash.indexOf("access_token=") >= 0) { //navrat z externiho loginu
       OAuth.checkForToken((obj: OAuth.profile) => {
+        if (!obj.email) {
+          alert('Povolte prosím poskytnutí vašeho emailu!');
+          LMStatus.LogoutLow();
+          return false;
+        }
         Pager.ajaxGet( //dle externiho ID zjisti LM Id (a ev. zaloz usera)
           Pager.pathType.restServices,
           Login.CmdAdjustUser_Type,
