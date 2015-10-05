@@ -228,6 +228,9 @@ web4/siteroot.all.js
 
 *.xap
 *.gzip
-*.min.js
 Web4/Schools/SLExtension.dll
 
+*.min.js
+*.js.map
+*.dll
+*.exe
