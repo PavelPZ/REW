@@ -96,6 +96,7 @@
         Pager.gotoHomeUrl();
       }
     }
+    canNavigateReturnUrl() { return this.ctx && this.ctx.returnurl; }
     navigateReturnUrl() { location.href = this.ctx.returnurl; }
     getProductHomeUrl(): IStateUrl { return { stateName: prodStates.home.name, pars: this.ctx }; }
     navigateProductHome() { this.navigate(this.getProductHomeUrl()); }

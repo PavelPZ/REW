@@ -192,7 +192,6 @@ var anim;
         hideMenus(null);
         return false;
     });
-    anim.mousePos; //v mousemove zapamatovana pozice
     //zapamatovani si pozice mysi
     $(document).bind('mousemove', function (ev) { return anim.mousePos = ev; });
     //inicializace (funguje pouze pro existujici elementy)
@@ -393,9 +392,10 @@ var Pager;
                     LMStatus.LogoutLow();
                     return false;
                 }
-                Pager.ajaxGet(Pager.pathType.restServices, Login.CmdAdjustUser_Type, Login.CmdAdjustUser_Create(obj.providerid, obj.id, obj.email, obj.firstName, obj.lastName), function (res) {
-                    blended.checkOldApplicationStart();
+                Pager.ajaxGet(//dle externiho ID zjisti LM Id (a ev. zaloz usera)  
+                Pager.pathType.restServices, Login.CmdAdjustUser_Type, Login.CmdAdjustUser_Create(obj.providerid, obj.id, obj.email, obj.firstName, obj.lastName), function (res) {
                     LMStatus.logged(res.Cookie, false);
+                    blended.checkOldApplicationStart();
                 });
             });
             return true;
@@ -409,7 +409,8 @@ var Pager;
         return;
         if (hash != null && hash.indexOf("access_token=") >= 0) {
             OAuth.checkForToken(function (obj) {
-                Pager.ajaxGet(Pager.pathType.restServices, Login.CmdAdjustUser_Type, Login.CmdAdjustUser_Create(obj.providerid, obj.id, obj.email, obj.firstName, obj.lastName), function (res) {
+                Pager.ajaxGet(//dle externiho ID zjisti LM Id (a ev. zaloz usera)
+                Pager.pathType.restServices, Login.CmdAdjustUser_Type, Login.CmdAdjustUser_Create(obj.providerid, obj.id, obj.email, obj.firstName, obj.lastName), function (res) {
                     LMStatus.logged(res.Cookie, false);
                 });
             });
@@ -445,8 +446,6 @@ var Pager;
         }
         proc(parts.length <= 2 ? null : parts.slice(2), completed);
     }
-    Pager.ActPage;
-    Pager.htmlOwner;
     Pager.ignorePage = new Page(null, null, null);
     Pager.angularPage = new Page(null, null, null);
     $.views.helpers({
@@ -616,8 +615,6 @@ var Pager;
     }
     Pager.renderHtmlEx = renderHtmlEx;
     Pager.rootVM = new ViewModelRoot();
-    Pager.initHash; //inicialni hash URL
-    Pager.afterLoginInit; //sance po zalogovani naladovat zakodovane javascripty
 })(Pager || (Pager = {}));
 
 $.whenall = function (arr) { return $.when.apply($, arr); };
@@ -721,7 +718,7 @@ var LMStatus;
     function getCookie() {
         if (!isLogged()) {
             try {
-                var cookStr = Cook.read(LMComLib.CookieIds.LMTicket);
+                var cookStr = Cook.read(LMComLib.CookieIds.LMJSTicket);
                 if (cookStr != "") {
                     LMStatus.Cookie = FromString(cookStr);
                     if (LMStatus.Cookie.id <= 0)
@@ -738,9 +735,9 @@ var LMStatus;
     function setCookie(cook, persistent) {
         if (persistent === void 0) { persistent = false; }
         if (cook == null)
-            Cook.remove(LMComLib.CookieIds.LMTicket);
+            Cook.remove(LMComLib.CookieIds.LMJSTicket);
         else
-            Cook.write(LMComLib.CookieIds.LMTicket, ToString(cook), persistent);
+            Cook.write(LMComLib.CookieIds.LMJSTicket, ToString(cook), persistent);
         //Cookie = cook;
     }
     LMStatus.setCookie = setCookie;
@@ -1077,7 +1074,8 @@ var Trados;
         } //scorm nebo local: jiz naladovano
         /************ naladovani .JS souboru *****************/
         var spHack = lng == "sp-sp" ? "es-es" : lng;
-        $.when($.ajax({
+        $.when(//ladovani
+        $.ajax({
             cache: true,
             dataType: "script",
             url: Pager.path(Pager.pathType.relPath, Utils.string_format("jslib/scripts/cultures/globalize.culture.{0}.js", [spHack]))
@@ -2310,7 +2308,6 @@ var OAuth;
     //https://github.com/valenting/ffos-google-contact-importer/blob/master/index.html
     "https://accounts.google.com/o/oauth2/auth", "https://www.googleapis.com/oauth2/v1/userinfo", "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile", "http://accounts.google.com/Logout", "https://www.googleapis.com/oauth2/v1/tokeninfo", 
     //"https://accounts.google.com/o/oauth2/auth", "https://www.googleapis.com/oauth2/v1/userinfo", "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile", "http://google.com/",
-    //"https://accounts.google.com/o/oauth2/auth", "https://www.googleapis.com/oauth2/v1/userinfo", "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile", "http://google.com/",
     function (obj, providerid) {
         //debugger;
         //var res: profile = { id: obj.id, email: obj.email, firstName: obj.given_name, lastName: obj.family_name, providerid: providerid }; return res;
@@ -2333,7 +2330,8 @@ var OAuth;
         s_skrivanek: '0000000048135E31',
     }, "https://login.live.com/oauth20_authorize.srf", 
     //"https://apis.live.net/v5.0/me", 
-    "https://apis.live.net/v5.0/me", "wl.signin wl.basic wl.emails", "https://login.live.com/", null, function (obj, providerid) { var res = { id: obj.id, email: _.compact(_.values(obj.emails))[0], firstName: obj.first_name, lastName: obj.last_name, providerid: providerid }; return res; });
+    "https://apis.live.net/v5.0/me", "wl.signin wl.basic wl.emails", "https://login.live.com/", null, //"https://apis.live.net/v5.0/me?method=GET&interface_method=undefined&pretty=false&return_ssl_resources=false&x_http_live_library=Web%2Fie10_5.3&suppress_redirects=true",
+    function (obj, providerid) { var res = { id: obj.id, email: _.compact(_.values(obj.emails))[0], firstName: obj.first_name, lastName: obj.last_name, providerid: providerid }; return res; });
     /********************* LM *****************************/
     addCfg(LMComLib.OtherType.LANGMaster, null, null, null, null, null, null, null);
     addCfg(LMComLib.OtherType.LANGMasterNoEMail, null, null, null, null, null, null, null);
@@ -2385,7 +2383,8 @@ var OAuth;
     }
     OAuth.checkForToken = checkForToken;
     function parseQueryString(qs) {
-        var e, a = /\+/g, r = /([^&;=]+)=?([^&;]*)/g, d = function (s) { return decodeURIComponent(s.replace(a, " ")); }, q = qs, urlParams = {};
+        var e, a = /\+/g, // Regex for replacing addition symbol with a space
+        r = /([^&;=]+)=?([^&;]*)/g, d = function (s) { return decodeURIComponent(s.replace(a, " ")); }, q = qs, urlParams = {};
         while (e = r.exec(q))
             urlParams[d(e[1])] = d(e[2]);
         return urlParams;
@@ -2636,17 +2635,14 @@ var Login;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Login;
 (function (Login) {
-    Login.cfg;
     function getHash(type) {
         return oldPrefix + [Login.appId, type].join(hashDelim);
     }
     Login.getHash = getHash;
-    Login.myData; //info o mojich firmach, produktech a rolich
     //pro Admin.html
     function isSystemAdmin() { return ((Login.myData.Roles & Login.Role.Admin) != 0) || ((Login.myData.Roles & Login.Role.Comps) != 0); }
     Login.isSystemAdmin = isSystemAdmin; //PZ
@@ -2673,7 +2669,6 @@ var Login;
         }
         //info o firmach, produktech a rolich
         Pager.ajaxGet(Pager.pathType.restServices, Login.CmdMyInit_Type, LMStatus.createCmd(function (r) { return r.lmcomId = LMStatus.Cookie.id; }), 
-        //Login.CmdMyInit_Create(LMStatus.Cookie.id),
         //Login.CmdMyInit_Create(LMStatus.Cookie.id),
         function (res) {
             Login.myData = res;
@@ -2881,8 +2876,7 @@ var Login;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Login;
 (function (Login) {
@@ -2926,8 +2920,7 @@ var Login;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Login;
 (function (Login) {
@@ -2963,7 +2956,8 @@ var Login;
     Login.LMLoginModel = LMLoginModel;
     function login(isEMail, email, login, password, ticket, completed, onError) {
         password = _.isEmpty(password) ? null : Utils.encryptStr(password);
-        Pager.ajaxGet(Pager.pathType.restServices, Login.CmdLmLogin_Type, Login.CmdLmLogin_Create(isEMail ? null : login, isEMail ? email : null, password, null, ticket), function (res) { return completed(res.Cookie); }, onError);
+        Pager.ajaxGet(Pager.pathType.restServices, Login.CmdLmLogin_Type, Login.CmdLmLogin_Create(isEMail ? null : login, isEMail ? email : null, password, null, ticket), function (res) { return completed(res.Cookie); }, //dej usera do cookie a proved redirekt
+        onError);
     }
     Login.login = login;
 })(Login || (Login = {}));
@@ -2971,8 +2965,7 @@ var Login;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Login;
 (function (Login) {
@@ -3010,7 +3003,6 @@ var Login;
             this.success(null);
             var cook = LMComLib.LMCookieJS_Create(0, 0, this.isEMail ? this.email() : null, this.isEMail ? null : this.login(), this.isEMail ? null : this.loginEmail(), this.isEMail ? LMComLib.OtherType.LANGMaster : LMComLib.OtherType.LANGMasterNoEMail, null, this.firstName(), this.lastName(), '', 0, 0, null);
             Pager.ajaxGet(Pager.pathType.restServices, Login.CmdRegister_Type, LMStatus.createCmd(function (r) { r.password = Utils.encryptStr(_this.password()); r.Cookie = cook, r.subSite = LMComLib.SubDomains.com; }), 
-            //CmdRegister_Create(Utils.encryptStr(this.password()), LMComLib.SubDomains.com, cook, 0),
             //CmdRegister_Create(Utils.encryptStr(this.password()), LMComLib.SubDomains.com, cook, 0),
             function (res) {
                 if (_this.isEMail) {
@@ -3060,7 +3052,6 @@ var Login;
         return RegisterModel;
     })(Login.loginMode);
     Login.RegisterModel = RegisterModel;
-    Login.testConfirmUrl; //URL pro testovani
 })(Login || (Login = {}));
 
 /// <reference path="../JsLib/jsd/jquery.d.ts" />
@@ -3073,8 +3064,7 @@ var Login;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Login;
 (function (Login) {
@@ -3101,7 +3091,6 @@ var Login;
             else {
                 LMStatus.getCookie();
                 Pager.ajaxGet(Pager.pathType.restServices, Login.CmdChangePassword_Type, LMStatus.createCmd(function (r) { r.oldPassword = _this.oldPassword(); r.newPassword = _this.password(); r.lmcomId = LMStatus.Cookie.id; }), 
-                //CmdChangePassword_Create(this.oldPassword(), this.password(), LMStatus.Cookie.id),
                 //CmdChangePassword_Create(this.oldPassword(), this.password(), LMStatus.Cookie.id),
                 function () {
                     _this.success(CSLocalize('4ec7f9623a684f708844bce43ad51d26', 'Password changed successfully'));
@@ -3135,8 +3124,7 @@ var Login;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Login;
 (function (Login) {
@@ -3196,8 +3184,7 @@ var Login;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Login;
 (function (Login) {
@@ -3240,7 +3227,6 @@ var Login;
                 LMStatus.setCookie(LMStatus.Cookie);
                 Pager.ajaxGet(Pager.pathType.restServices, Login.CmdProfile_Type, LMStatus.createCmd(function (r) { r.Cookie = LMStatus.Cookie, r.lmcomId = LMStatus.Cookie.id; }), 
                 //CmdProfile_Create(LMStatus.Cookie, LMStatus.Cookie.id),
-                //CmdProfile_Create(LMStatus.Cookie, LMStatus.Cookie.id),
                 function () {
                     _this.success(CSLocalize('e56e6bad75e54dea9191cab418eda74d', 'Success'));
                     _this.button(Pager.ButtonType.ok);
@@ -3266,8 +3252,7 @@ var Login;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Login;
 (function (Login) {
@@ -3286,7 +3271,6 @@ var Login;
                 if (Utils.Empty(userId) || userId <= 0)
                     throw "Wrong User id format";
                 Pager.ajaxGet(Pager.pathType.restServices, Login.CmdConfirmRegistration_Type, LMStatus.createCmd(function (r) { r.lmcomId = userId; }), 
-                //CmdConfirmRegistration_Create(userId),
                 //CmdConfirmRegistration_Create(userId),
                 function () {
                     _this.success(CSLocalize('b28146649ad7498cb4109b6b1276fcef', 'Account') + ' ' + CSLocalize('c0b339ea24054072999d990c2e7b8db9', 'was activated.'));
@@ -3901,6 +3885,12 @@ var proxies;
     var vyzva57services = (function () {
         function vyzva57services() {
         }
+        vyzva57services.lmAdminSendOrder = function (jsonorder, completed) {
+            invoke('vyzva57services/lmadminsendorder', 'post', null, JSON.stringify(jsonorder), completed);
+        };
+        vyzva57services.lmLectorExportInfoToXml = function (completed) {
+            invoke('vyzva57services/lmlectorexportinfotoxml', 'get', null, null, completed);
+        };
         vyzva57services.lmAdminCreateCompany = function (companyid, companydata, completed) {
             invoke('vyzva57services/lmadmincreatecompany', 'post', { companyid: companyid }, JSON.stringify(companydata), completed);
         };
@@ -4059,7 +4049,6 @@ var mp3WorkerLib;
 })(mp3WorkerLib || (mp3WorkerLib = {}));
 var mp3Worker;
 (function (mp3Worker) {
-    mp3Worker.worker;
     var cfg;
     var toUploadChunks;
     var toUploadChunksLen;
@@ -4258,8 +4247,7 @@ var mp3Worker;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var SndLow;
 (function (SndLow) {
@@ -4343,8 +4331,6 @@ var SndLow;
         new globalMedia(); return _globalMedia; }
     SndLow.getGlobalMedia = getGlobalMedia;
     var _globalMedia;
-    SndLow.globalAudioPlayer;
-    SndLow.globaRecorder;
     function dummyDriver() {
         if (!_dummyDriver)
             _dummyDriver = new MediaDriver(false, null, null);
@@ -4438,7 +4424,6 @@ var SndLow;
     SndLow.createDriver = createDriver;
     var allDrivers = {}; //evidence vsech driveru.
     var playerType; //v selectDriver(): staticky zjisteny SoundPlayerType
-    SndLow.recordingType;
     //var slInstalled: boolean; //staticky SLInstalled test
     function htmlClearing(id) {
         guiBlocker(false);
@@ -5143,7 +5128,8 @@ var html5Recorder;
             //var alowMicrophoneTimer: number;
             //if (!bowser.agent.firefox)
             //  alowMicrophoneTimer = setTimeout(() => { alert('Allow the microphone, please!\r\n(using the button rigth above the content of the page)'); alowMicrophoneTimer = 0; }, 3000);
-            navigator.getUserMedia({ audio: true, video: false }, function (stream) {
+            navigator.getUserMedia({ audio: true, video: false }, //napoj se na user media
+            function (stream) {
                 //BT 2247 if (alowMicrophoneTimer) clearTimeout(alowMicrophoneTimer); //mikrofon povolen => zrus upozorneni
                 audioContext = new AudioContext();
                 microphoneNode = audioContext.createMediaStreamSource(stream);
@@ -5519,6 +5505,10 @@ var keys;
     }
     keys.toString = toString;
     function fromString(str) {
+        //if (str.indexOf('|') > 0) {
+        //  var parts = str.split('|');
+        //  return { licId: parseInt(parts[0]), counter: parseInt(parts[1]) };
+        //}
         var b3 = Base32.decode(str);
         b3 = LowUtils.decrypt(b3);
         var b2 = [b3[0], b3[1], b3[2], 0, 0, 0, 0, 0];
@@ -5643,7 +5633,6 @@ var DictConnector;
     var isCtrlDown = false; /*ctrl key je stisknut*/
     var keyMousePos; /*souradnice mysi, zkopirovane v key-down z current_ev*/
     var model; //model
-    DictConnector.actDictData; //data Lingea slovniku pro modul, inicializovano v gramatice a modulu
     //var dicts: LMComLib.Dict[];
     function callDict() {
         if (DictConnector.actDictData == null)
@@ -6188,7 +6177,7 @@ var schools;
         TopBarModel.prototype.isTitle = function () { return this.is(schools.tTest); };
         //logo
         TopBarModel.prototype.logoBig = function () { return !this.logoSmall() && !this.is(schools.tEx); }; //this.is(tMy); }
-        TopBarModel.prototype.logoSmall = function () { return this.is(schools.tCourseMeta, schools.tCoursePretest, schools.tGrammFolder, schools.tGrammPage, schools.tGrammContent, schools.tDictInfo, schools.tTest); };
+        TopBarModel.prototype.logoSmall = function () { return this.is(schools.tCourseMeta, schools.tCoursePretest, /*tHome, tCourse, tLess, tMod, tCpv,*/ schools.tGrammFolder, schools.tGrammPage, schools.tGrammContent, schools.tDictInfo, schools.tTest); };
         TopBarModel.prototype.greenArrow = function () { return !this.needsLogin() && this.is(schools.tCourseMeta, schools.tCoursePretest, schools.tEx); };
         TopBarModel.prototype.phoneMore = function () { return !this.needsLogin() && this.is(schools.tMy /*, tHome*/) ? "#collapse-logout" : null; }; //pokud je phone, id DIVu s more informaci, #collapse-more nebo #collapse-more-ex
         //login x logout x profile
@@ -6210,7 +6199,7 @@ var schools;
         //supplements
         TopBarModel.prototype.hasSupl = function () { return true; };
         //suplGrammarLink(): boolean { return !this.needsLogin() && this.is(tCourseMeta, tCourse, tLess, tMod, tEx) && schools.data.crsStatic2.grammar != null; } //pro ne-phone: staticka podminka na nekontextovou gramatika
-        TopBarModel.prototype.suplGrammarLink = function () { return !this.needsLogin() && this.is(schools.tCourseMeta, schools.tEx) && CourseMeta.actGrammar != null; }; //pro ne-phone: staticka podminka na nekontextovou gramatika
+        TopBarModel.prototype.suplGrammarLink = function () { return !this.needsLogin() && this.is(schools.tCourseMeta, /*tCourse, tLess, tMod,*/ schools.tEx) && CourseMeta.actGrammar != null; }; //pro ne-phone: staticka podminka na nekontextovou gramatika
         TopBarModel.prototype.suplDict = function () { return !this.needsLogin() && this.is(schools.tEx, schools.tGrammPage) && DictConnector.actDictData != null; /*cfg.dictType!=schools.dictTypes.no;*/ }; //pomocna stranka s vysvetlenim slovniku
         TopBarModel.prototype.suplEval = function () { return !this.needsLogin() && this.is(schools.tEx); }; //informace o vyhodnocenem cviceni
         TopBarModel.prototype.resetClick = function () { CourseMeta.actEx.reset(); return false; }; //??(<schoolEx.Model>(Pager.ActPage)).reset(); }
@@ -6226,7 +6215,7 @@ var schools;
         TopBarModel.prototype.vocabularyClick = function () { alert("vocabularyClick"); };
         TopBarModel.prototype.suplBreadcrumb = function () { return !this.needsLogin() && this.is(schools.tEx); };
         //navrat do kurzu pro supplements
-        TopBarModel.prototype.backToCourse = function () { return this.is(schools.tDictInfo, schools.tGrammFolder, schools.tGrammPage, schools.tGrammContent, (typeof schoolAdmin == 'undefined' ? '' : schoolAdmin.schoolUserResultsTypeName)) && LMStatus.isReturnUrl(); };
+        TopBarModel.prototype.backToCourse = function () { return this.is(/*tCpv,*/ schools.tDictInfo, schools.tGrammFolder, schools.tGrammPage, schools.tGrammContent, (typeof schoolAdmin == 'undefined' ? '' : schoolAdmin.schoolUserResultsTypeName)) && LMStatus.isReturnUrl(); };
         TopBarModel.prototype.backToCourseClick = function () { LMStatus.gotoReturnUrl(); }; //Pager.navigateTo(getReturnUrl()); }
         return TopBarModel;
     })();
@@ -6236,8 +6225,7 @@ var schools;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var schools;
 (function (schools) {
@@ -6335,7 +6323,8 @@ var schools;
                         CourseMeta.persist = persistNewEA.persistCourse;
                         Trados.adjustLoc(function () {
                             scorm.init(function (compHost, id, firstName, lastName, isFirstEnter) {
-                                Pager.ajaxGet(Pager.pathType.restServices, Login.CmdAdjustScormUser_Type, Login.CmdAdjustScormUser_Create(compHost, id, firstName, lastName, isFirstEnter, cfg.rootProductId), function (res) {
+                                Pager.ajaxGet(//z moodle info adjustuj uzivatele a firmu
+                                Pager.pathType.restServices, Login.CmdAdjustScormUser_Type, Login.CmdAdjustScormUser_Create(compHost, id, firstName, lastName, isFirstEnter, cfg.rootProductId), function (res) {
                                     LMStatus.setCookie(res.Cookie, false);
                                     LMStatus.Cookie = res.Cookie;
                                     setTimeout(LMStatus.loggedBodyClass, 1);
@@ -6564,31 +6553,6 @@ var persistLocal;
         testResults: function (userId, companyId, productId, completed) {
         }
     };
-    //export function Init(target: LMComLib.Targets, completed: () => void ): void {
-    //  schools.resetModules = resetModules;
-    //  schools.readCrsResults = readCrsResults;
-    //  schools.readModuleResult = readModuleResult;
-    //  schools.writeModuleResult = writeModuleResult;
-    //  schools.setMetaCourse = setMetaCourse;
-    //  schools.getMetaCourse = getMetaCourse;
-    //  //schools.createTest = createTest;
-    //  //schools.readTestResults = readTestResults;
-    //  schools.readCrsInfo = schools.libReadCrsInfo;
-    //  switch (target) {
-    //    case LMComLib.Targets.download:
-    //    //case LMComLib.Targets.sl:
-    //      //persistDownload.Init(target == LMComLib.Targets.sl, completed);
-    //      persistDownload.Init(false, completed);
-    //      break;
-    //    case LMComLib.Targets.phoneGap:
-    //      persistPhonegap.Init(completed);
-    //      break;
-    //    default: throw "not implemented";
-    //  }
-    //}
-    persistLocal.readFile;
-    persistLocal.writeFile;
-    persistLocal.deleteFile;
     var modCache = [];
     var fCrsResults = "crs_result.txt";
     var fMetaCourse = "meta_course.txt";
@@ -6646,7 +6610,6 @@ var persistNewEA;
         loadShortUserData: function (userId, companyId, prodUrl, completed) {
             Pager.ajaxGet(Pager.pathType.restServices, scorm.Cmd_readCrsResults_Type, createCmd(userId, companyId, prodUrl), 
             //scorm.Cmd_readCrsResults_Create(companyId, prodUrl, null, userId, 0),
-            //scorm.Cmd_readCrsResults_Create(companyId, prodUrl, null, userId, 0),
             function (res) {
                 Logger.trace_persistNewEA("loadShortUserData: " + res.join(" ### "));
                 var obj = {};
@@ -6657,7 +6620,6 @@ var persistNewEA;
         loadUserData: function (userId, companyId, prodUrl, modUrl, completed) {
             Pager.ajaxGet(Pager.pathType.restServices, scorm.Cmd_readModuleResults_Type, createCmd(userId, companyId, prodUrl, function (r) { r.key = modUrl; }), 
             //scorm.Cmd_readModuleResults_Create(modUrl, userId, companyId, prodUrl, null),
-            //scorm.Cmd_readModuleResults_Create(modUrl, userId, companyId, prodUrl, null),
             function (res) {
                 Logger.trace_persistNewEA("loadUserData resp: " + modUrl + ": " + res);
                 completed(_.isEmpty(res) ? {} : JSON.parse(res));
@@ -6665,7 +6627,6 @@ var persistNewEA;
         },
         saveUserData: function (userId, companyId, prodUrl, data, completed) {
             Pager.ajaxPost(Pager.pathType.restServices, scorm.Cmd_saveUserData_Type, createCmd(userId, companyId, prodUrl, function (r) { r.data = data; }), 
-            //scorm.Cmd_saveUserData_Create(data, userId, companyId, prodUrl, null),
             //scorm.Cmd_saveUserData_Create(data, userId, companyId, prodUrl, null),
             function () {
                 Logger.trace_persistNewEA("saveUserData");
@@ -6691,7 +6652,6 @@ var persistNewEA;
         resetExs: function (userId, companyId, prodUrl, urls, completed) {
             Pager.ajaxPost(Pager.pathType.restServices, scorm.Cmd_resetModules_Type, createCmd(userId, companyId, prodUrl, function (r) { r.modIds = urls; }), 
             //scorm.Cmd_resetModules_Create(urls, userId, companyId, prodUrl, null),
-            //scorm.Cmd_resetModules_Create(urls, userId, companyId, prodUrl, null),
             function (res) {
                 Logger.trace_persistNewEA("resetExs: " + res);
                 completed();
@@ -6700,12 +6660,10 @@ var persistNewEA;
         createArchive: function (userId, companyId, prodUrl, completed) {
             Pager.ajaxGet(Pager.pathType.restServices, scorm.Cmd_createArchive_Type, createCmd(userId, companyId, prodUrl), 
             //scorm.Cmd_createArchive_Create(LMStatus.Cookie.id, companyId, productId, null),
-            //scorm.Cmd_createArchive_Create(LMStatus.Cookie.id, companyId, productId, null),
             function (res) { return completed(res); });
         },
         testResults: function (userId, companyId, prodUrl, completed) {
             Pager.ajaxGet(Pager.pathType.restServices, scorm.Cmd_testResults_Type, createCmd(userId, companyId, prodUrl), 
-            //scorm.Cmd_testResults_Create(LMStatus.Cookie.id, companyId, productId, null),
             //scorm.Cmd_testResults_Create(LMStatus.Cookie.id, companyId, productId, null),
             function (res) { return completed(_.map(res, function (r) { return JSON.parse(r); })); });
         }
@@ -6980,8 +6938,7 @@ var Logger;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 //POUZIVA se pro zobrazeni chyby v JSCrambler ochrane, viz boot.ts,  export function Error(): void { Pager.loadPage(new splash.licenceError());  }
 var splash;
@@ -6996,7 +6953,6 @@ var splash;
         return Page;
     })(Pager.Page);
     splash.Page = Page;
-    splash.error;
     var licenceError = (function (_super) {
         __extends(licenceError, _super);
         function licenceError() {
@@ -7032,8 +6988,7 @@ var splash;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var CourseMeta;
 (function (CourseMeta) {
@@ -7045,9 +7000,6 @@ var CourseMeta;
     CourseMeta.greenIcon = ko.observable(); //ikona buttonu
     CourseMeta.greenCss = ko.observable(); //barva buttonu
     CourseMeta.greenDisabled = ko.observable(); //vse hotovo => disabled
-    CourseMeta.greenClick;
-    CourseMeta.greenArrowDict;
-    CourseMeta.foundGreenEx; //aktualni zelene cviceni
     function doGreenClick() { CourseMeta.lib.keepGreen = CourseMeta.greenCss() == 'success'; CourseMeta.greenClick(); return false; }
     CourseMeta.doGreenClick = doGreenClick; //pres klik na sipku se drzi zelena barva sipky
     function btnClick(url) {
@@ -7088,8 +7040,6 @@ var CourseMeta;
             Pager.reloadPage();
         }
         gui.onReload = onReload;
-        gui.exerciseHtml;
-        gui.exerciseCls;
         function init() { gui.exerciseHtml = $.noop; gui.exerciseCls = $.noop; }
         gui.init = init;
     })(gui = CourseMeta.gui || (CourseMeta.gui = {}));
@@ -7415,8 +7365,7 @@ var Admin;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var schoolAdmin;
 (function (schoolAdmin) {
@@ -7692,8 +7641,7 @@ var schoolAdmin;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var schoolAdmin;
 (function (schoolAdmin) {
@@ -7784,8 +7732,7 @@ var schoolAdmin;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var schoolAdmin;
 (function (schoolAdmin) {
@@ -7899,8 +7846,7 @@ var schoolAdmin;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var schoolAdmin;
 (function (schoolAdmin) {
@@ -8064,8 +8010,7 @@ var schoolAdmin;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var schoolAdmin;
 (function (schoolAdmin) {
@@ -8472,8 +8417,7 @@ var schoolAdmin;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var schoolAdmin;
 (function (schoolAdmin) {
@@ -8572,8 +8516,7 @@ var schoolAdmin;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var schoolAdmin;
 (function (schoolAdmin) {
@@ -8598,8 +8541,7 @@ var schoolAdmin;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var schoolAdmin;
 (function (schoolAdmin) {

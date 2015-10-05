@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var vyzva;
 (function (vyzva) {
@@ -31,6 +30,19 @@ var vyzva;
         };
         managerLangmaster.prototype.encodetitle = function () { return this.url() + '#/vyzvademo?companytitle=' + encodeURIComponent(this.schoolTitle); };
         managerLangmaster.prototype.vyzvaProvoz = function () { return this.url() + '#/vyzvaprovoz?companytitle=' + encodeURIComponent('"' + this.schoolTitle + '"'); };
+        managerLangmaster.prototype.exportLectorInfoToXml = function () {
+            blended.downloadExcelFile(Pager.basicUrl + 'vyzva57services/lmlectorexportinfotoxml');
+            //downloadExcelReport({ type: reportType.managerStudy, companyId: this.ctx.companyid });
+            // invoke('vyzva57services/lmlectorexportinfotoxml', 'get', null, null, completed);
+            //proxies.vyzva57services.lmLectorExportInfoToXml($.noop);
+        };
+        //encodetitle(): string { return 'http://' + location.href.split('/')[2] + '/schools/index_cs_cz.html#/vyzvademo?companytitle=' + encodeURIComponent(this.schoolTitle); }
+        //encodetitle(): string { return 'http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz#/vyzvademo?companytitle=' + encodeURIComponent(this.schoolTitle); }
+        //vyzvaProvoz(): string { return 'http://' + location.href.split('/')[2] + '/schools/index_cs_cz.html#/vyzvaprovoz?companytitle=' + encodeURIComponent('"' + this.schoolTitle + '"'); }
+        //vyzvaProvoz(): string { return 'http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz#/vyzvaprovoz?companytitle=' + encodeURIComponent('"' + this.schoolTitle + '"'); }
+        managerLangmaster.prototype.gotoLicKey = function () {
+            this.navigate({ stateName: 'vyzvademo', pars: { key: this.licKeyForGoto } });
+        };
         //ostry klic pro spravce skoly
         managerLangmaster.prototype.createEmptySchool = function () {
             var _this = this;

@@ -1,4 +1,19 @@
 ﻿<div class="container">
+  <h3>Správa lektorů</h3>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="btn btn-default" ng-click="::ts.exportLectorInfoToXml()">Export lector infos to XML</div>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Licenční klíč..." ng-model="ts.licKeyForGoto">
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="btn btn-default" ng-click="::ts.gotoLicKey()">Login</div>
+    </div>
+  </div>
+
   <h3>Vstupní údaje o škole</h3>
   <div>
     <form>
@@ -15,8 +30,8 @@
   <hr />
   <h4 class="text-danger">PROVOZ</h4>
   <br />
-  <p>Přístup do výukového systému pro ostrý provoz</p>
-  <hr/>
+  <a href="mailto:a@a.cz?subject=Přístup%20do%20výukového%20systému%20pro%20ostrý%20provoz">Přístup do výukového systému pro ostrý provoz</a>
+  <hr />
   <p>
     Dobrý den,
   </p>
@@ -50,10 +65,10 @@
     Hlavní funkce naší aplikace si můžete <a href="{{ts.encodetitle()}}"><b>vyzkoušet kliknutím na tento odkaz</b></a>.
   </p>
   <p>
-    S pozdravem,<br/> 
-    Radek Jeliga<br/> 
-    Projektový manažer<br/> 
-    <a href="http://vyzva57.langmaster.cz">vyzva57.langmaster.cz</a><br/>
+    S pozdravem,<br />
+    Radek Jeliga<br />
+    Projektový manažer<br />
+    <a href="http://vyzva57.langmaster.cz">vyzva57.langmaster.cz</a><br />
     tel. 604 147 031
   </p>
   <br />

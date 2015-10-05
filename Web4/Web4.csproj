@@ -25,7 +25,7 @@
     <TypeScriptModuleKind>none</TypeScriptModuleKind>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
     <IsCompassProject>True</IsCompassProject>
-    <TypeScriptToolsVersion>1.5</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.6</TypeScriptToolsVersion>
     <TargetFrameworkProfile />
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
@@ -302,6 +302,7 @@
     <Content Include="BlendedAPI\vyzva\Server\DataModel\schema\Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>
     </Content>
+    <Content Include="Temp\printPdf.ps1" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -1499,7 +1500,9 @@
     <TypeScriptCompile Include="JsLib\JSD\angularjs\angular-ui-router.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\HtmlAudio\waa.d.ts" />
+    <None Include="JsLib\JSD\jquery-ui.d - Copy.ts_" />
     <TypeScriptCompile Include="JsLib\JSD\jquery-ui.d.ts" />
+    <None Include="JsLib\JSD\jquery.d - Copy.ts_" />
     <TypeScriptCompile Include="JsLib\JSD\lib-lm.d.ts" />
     <TypeScriptCompile Include="Temp\angular\knockout.ts" />
     <TypeScriptCompile Include="Temp\angular\test.ts" />
@@ -2481,6 +2484,7 @@
     <Compile Include="BlendedAPI\vyzva\Server\ExcelReport.cs" />
     <Compile Include="BlendedAPI\Server\Persistence.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\MetaInfo.cs" />
+    <Compile Include="BlendedAPI\vyzva\Server\Lectors.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\PrepareDemoData.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\Vyzva57Services.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\DataModel\Company.cs" />
@@ -2781,7 +2785,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BlendedAPI\views\" />
     <Folder Include="BlendedAPI\vyzva\Pages\" />
     <Folder Include="BlendedAPI\vyzva\Server\Excels\" />
     <Folder Include="BS3\css\" />
@@ -2830,6 +2833,14 @@
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
     <TypeScriptTarget>ES5</TypeScriptTarget>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile>
+    </TypeScriptOutFile>
+    <TypeScriptOutDir />
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" />
   <ProjectExtensions>

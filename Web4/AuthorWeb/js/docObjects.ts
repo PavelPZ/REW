@@ -67,11 +67,11 @@
     });
   }
 
-  var testJson: IItem = {
+  var testJson: IBlock = {
     type: itemType.rootBlock, name: '', pars: '',
     childs: [
       //{ type: itemType.text, text: '{+gap-fill(id=gp; smart-width=sw1;)}' },
-      { type: itemType.text, text: '{+offering(drop-down-mode=discard)}' },
+      <IText>{ type: itemType.text, text: '{+offering(drop-down-mode=discard)}' },
       //{ type: itemType.text, text: 'text {+gap-fill() }' },
     ]
   };

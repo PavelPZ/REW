@@ -12,9 +12,9 @@
 <div class="clearfix lm-bottom-margin"></div>-->
 
 <div class="container">
-  <!--<vyzva$faq$toc></vyzva$faq$toc>-->
+  <vyzva$faq$toc></vyzva$faq$toc>
 
-  <h3>Dotazy Studentů</h3>
+  <h3 class="text-info">Dotazy Studentů</h3>
   <vyzva$faq$item type="Student" title="Učitel mi vyhodnotil test a já jej ve svém webovém prohlížeči vidím stále nevyhodnocený.">
     V tomto případě pomůže stisknout klávesu <b class="text-danger">F5</b><br />
     Váš webový prohlížeč tak ověří, zdali se něco od posledního jeho spuštění nezměnilo. 
@@ -36,10 +36,10 @@
     Pokud žádná z výše uvedených rad nepomůže, obraťte se na správce počítačů ve Vaší škole.
   </vyzva$faq$item>
 
-  <h3>Dotazy Učitelů</h3>
+  <h3 class="text-info">Dotazy Učitelů</h3>
   <vyzva$faq$item type="Učitel" title="Student dokončil test, ale já v jeho výsledních vidím jeho test stále nedokončený.">
-    V tomto případě pomůže stisknout klávesu <b class="text-danger">F5</b><br />
-    Váš webový prohlížeč tak ověří, zdali se něco od posledního jeho spuštění nezměnilo.
+    V tomto případě stiskněte klávesu <b class="text-danger">F5</b> (refresh).<br />
+    Váš webový prohlížeč aktualizuje stránku.
   </vyzva$faq$item>
 
 
@@ -50,8 +50,8 @@
     Ano, samozřejmě.
   </vyzva$faq$item>
 
-  <!--<h3>Dotazy správců</h3>-->
-  <!--<vyzva$faq$item type="Správce" title="co když omylem zadám studijní skupinu navíc?">
+  <!--<h3 class="text-info">Dotazy správců</h3>
+  <vyzva$faq$item type="Správce" title="Co když omylem zadám studijní skupinu navíc?">
     Můžete ji smazat pomocí křížku vpravo
   </vyzva$faq$item>-->
 
@@ -63,14 +63,14 @@
       <div class="panel-body" ng-transclude>
       </div>
     </div>
-    <!--<div class="a text-right">jdi nahoru</div>-->
+    <div class="a text-right lm-bottom-margin"  ng-click="gotoTop()">jdi nahoru <i class="fa fa-level-up "></i></div>
   </script>
 
   <script type="text/ng-template" id="vyzva$faq$toc.html">
     <div ng-repeat="(key,items) in groups">
       <b>{{key}}</b>
       <ul>
-        <li ng-repeat="it in items" class="a">{{it.title}}</li>
+        <li ng-repeat="it in items" class="a" ng-click="click(it)">{{it.title}}</li>
       </ul>
     </div>
     <hr />

@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var waObjs;
 (function (waObjs) {
@@ -30,6 +29,7 @@ var waObjs;
             //*** init focus grid
             _.each(dlg.$mod.find('[data-focus-grid]'), function (el) {
                 var $el = $(el);
+                var $d = $el.data('focusGrid');
                 var d = $el.data('focusGrid').split(':');
                 var row = parseInt(d[0]);
                 var cell = parseInt(d[1]);

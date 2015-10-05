@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var schools;
 (function (schools) {
@@ -100,7 +99,8 @@ var schools;
                         CourseMeta.persist = persistNewEA.persistCourse;
                         Trados.adjustLoc(function () {
                             scorm.init(function (compHost, id, firstName, lastName, isFirstEnter) {
-                                Pager.ajaxGet(Pager.pathType.restServices, Login.CmdAdjustScormUser_Type, Login.CmdAdjustScormUser_Create(compHost, id, firstName, lastName, isFirstEnter, cfg.rootProductId), function (res) {
+                                Pager.ajaxGet(//z moodle info adjustuj uzivatele a firmu
+                                Pager.pathType.restServices, Login.CmdAdjustScormUser_Type, Login.CmdAdjustScormUser_Create(compHost, id, firstName, lastName, isFirstEnter, cfg.rootProductId), function (res) {
                                     LMStatus.setCookie(res.Cookie, false);
                                     LMStatus.Cookie = res.Cookie;
                                     setTimeout(LMStatus.loggedBodyClass, 1);

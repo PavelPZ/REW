@@ -22,4 +22,5 @@ jslib/scripts/angular-route.js
 jslib/scripts/angular-animate.js
 jslib/scripts/angular-cookies.js
 jslib/scripts/angular-ui-router.js
+jslib/scripts/angular-ie8.js
 jslib/scripts/ui-bootstrap-tpls.js

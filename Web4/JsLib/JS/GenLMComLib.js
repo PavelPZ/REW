@@ -10,6 +10,7 @@ var LMComLib;
         CookieIds[CookieIds["oauth"] = 6] = "oauth";
         CookieIds[CookieIds["loginEMail"] = 7] = "loginEMail";
         CookieIds[CookieIds["loginLogin"] = 8] = "loginLogin";
+        CookieIds[CookieIds["LMJSTicket"] = 9] = "LMJSTicket";
     })(LMComLib.CookieIds || (LMComLib.CookieIds = {}));
     var CookieIds = LMComLib.CookieIds;
     (function (CompRole) {
@@ -712,8 +713,8 @@ var LMComLib;
     })(LMComLib.VerifyStates || (LMComLib.VerifyStates = {}));
     var VerifyStates = LMComLib.VerifyStates;
     LMComLib.CmdEMail_Type = 'LMComLib.CmdEMail';
-    function CmdEMail_Create(From, To, Cc, Subject, Html, isForgotPassword, isAtt, attFile, attContent, attContentType) {
-        return { From: From, To: To, Cc: Cc, Subject: Subject, Html: Html, isForgotPassword: isForgotPassword, isAtt: isAtt, attFile: attFile, attContent: attContent, attContentType: attContentType };
+    function CmdEMail_Create(From, To, Cc, Subject, Html, isForgotPassword, isAtt, attFile, attContent, attContentType, emailId) {
+        return { From: From, To: To, Cc: Cc, Subject: Subject, Html: Html, isForgotPassword: isForgotPassword, isAtt: isAtt, attFile: attFile, attContent: attContent, attContentType: attContentType, emailId: emailId };
     }
     LMComLib.CmdEMail_Create = CmdEMail_Create;
     LMComLib.LMCookieJS_Type = 'LMComLib.LMCookieJS';

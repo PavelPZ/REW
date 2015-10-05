@@ -51,7 +51,9 @@ module vyzva {
     langmasterManager?: state;
     testhw?: state;
     lectorTask?: state;
-    faq?: state;
+    //faq?: state;
+    faq?: angular.ui.IState;
+
   }
   export var stateNames: IStateNames = {}; //taskRoot: 'root', taskCheckTest: 'checktest', taskLesson: 'lesson', taskPretest: 'pretest', taskPretestItem: 'pretestitem' };
 
@@ -84,7 +86,7 @@ module vyzva {
   export function initVyzvaStates(params: blended.createStatePars) {
     params.$stateProvider.state({
       name: 'vyzvademo',
-      url: "/vyzvademo?companytitle&key",
+      url: "/vyzvademo?companytitle&key&hideorder",
       controller: runController,
       templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/vyzvademo.html',
       resolve: {
@@ -101,6 +103,14 @@ module vyzva {
         $vyzvaProvoz: vyzva.vyzvaProvoz
       }
     });
+    params.$stateProvider.state(stateNames.faq = {
+        name: 'faq',
+        url: "/faq?returnurl",
+        layoutSpecial: true,
+        templateUrl: pageTemplate,
+        layoutContentId: 'faq',
+        controller: faqController,
+      });
     stateNames.root = new state({
       name: 'pg.ajs',
       url: '/ajs',
@@ -135,14 +145,14 @@ module vyzva {
               layoutContentId: 'managerschool',
               controller: managerSchool,
             }),
-            stateNames.faq = new state({
-              name: 'faq',
-              url: "/faq",
-              layoutSpecial: true,
-              templateUrl: pageTemplate,
-              layoutContentId: 'faq',
-              controller: faqController,
-            }),
+            //stateNames.faq = new state({
+            //  name: 'faq',
+            //  url: "/faq",
+            //  layoutSpecial: true,
+            //  templateUrl: pageTemplate,
+            //  layoutContentId: 'faq',
+            //  controller: faqController,
+            //}),
             new state({
               name: 'prod',
               url: "/prod/:producturl/:taskid/:onbehalfof",

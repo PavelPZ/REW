@@ -1,4 +1,4 @@
-var isLogging = true;
+var isLogging = false;
 var OAuthDefaultClient = {
     '2': {
         'default': '125816694160413',

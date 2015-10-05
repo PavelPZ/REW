@@ -192,7 +192,6 @@ var anim;
         hideMenus(null);
         return false;
     });
-    anim.mousePos; //v mousemove zapamatovana pozice
     //zapamatovani si pozice mysi
     $(document).bind('mousemove', function (ev) { return anim.mousePos = ev; });
     //inicializace (funguje pouze pro existujici elementy)

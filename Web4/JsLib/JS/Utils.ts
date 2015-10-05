@@ -117,7 +117,7 @@ module LMStatus {
   export function getCookie(): LMCookie {
     if (!isLogged()) {
       try {
-        var cookStr = Cook.read(LMComLib.CookieIds.LMTicket);
+        var cookStr = Cook.read(LMComLib.CookieIds.LMJSTicket); 
         if (cookStr != "") {
           Cookie = FromString(cookStr);
           if (Cookie.id <= 0) Cookie = null;
@@ -129,8 +129,8 @@ module LMStatus {
     return Cookie;
   }
   export function setCookie(cook: LMComLib.LMCookieJS, persistent: boolean = false): void {
-    if (cook == null) Cook.remove(LMComLib.CookieIds.LMTicket);
-    else Cook.write(LMComLib.CookieIds.LMTicket, ToString(cook), persistent);
+    if (cook == null) Cook.remove(LMComLib.CookieIds.LMJSTicket);
+    else Cook.write(LMComLib.CookieIds.LMJSTicket, ToString(cook), persistent);
     //Cookie = cook;
   }
 

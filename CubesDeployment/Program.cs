@@ -36,8 +36,6 @@ namespace CubesDeployment {
 
     static void Main(string[] args) {
 
-      //delUser(263);
-
       //CourseMeta.Lib.init(new LoggerMemory(true), @"d:\lmcom\", false);
       //return;
 

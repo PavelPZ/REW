@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var vyzva;
 (function (vyzva) {
@@ -81,6 +80,8 @@ var vyzva;
         function runController($scope, $state, companyInfo) {
             _super.call(this, $scope, $state);
             this.companyInfo = companyInfo;
+            //***** Objednavka
+            this.order = {};
             if (!companyInfo) {
                 var keyStr = $state.params['key'];
                 var key = keys.fromString(keyStr);
@@ -91,6 +92,7 @@ var vyzva;
             if (Utils.endWith(companyInfo.companyTitle, ' *'))
                 companyInfo.companyTitle = companyInfo.companyTitle.substr(0, companyInfo.companyTitle.length - 2);
             this.hashGerman = !!companyInfo.studentDe;
+            this.hideOrder = $state.params['hideorder'] == 'true';
             $('#splash').hide();
         }
         runController.prototype.navigateLow = function (key) {
@@ -100,7 +102,7 @@ var vyzva;
                     companyid: res.companyId,
                     producturl: blended.encodeUrl(res.productUrl),
                     loginid: res.lmcomId,
-                    companyId: res.companyId,
+                    //companyId: res.companyId,
                     lickeys: _.map(res.licKeys, function (key) {
                         var parts = key.split('|');
                         return keys.toString({ licId: parseInt(parts[0]), counter: parseInt(parts[1]) });
@@ -139,43 +141,25 @@ var vyzva;
             //var key: keys.Key = keys.fromString(this.ctx[keyName].trim());
             var key = { licId: user.licId, counter: user.licCounter };
             this.navigateLow(key);
-            //proxies.vyzva57services.runDemoInformation(key.licId, key.counter, res => {
-            //  var ctx: blended.learnContext = {
-            //    companyid: res.companyId,
-            //    producturl: blended.encodeUrl(res.productUrl),
-            //    loginid: res.lmcomId,
-            //    companyId: res.companyId,
-            //    lickeys: _.map(res.licKeys, key => {
-            //      var parts = key.split('|');
-            //      return keys.toString({ licId: parseInt(parts[0]), counter: parseInt(parts[1]) });
-            //    }).join('#'),
-            //    loc: Trados.actLang,
-            //    persistence: null,
-            //    taskid: '',
-            //    homelinktype: 'vyzvademo',
-            //    vyzvademocompanytitle: this.companyInfo.companyTitle,
-            //  };
-            //  blended.finishContext(ctx);
-            //  //login
-            //  var cookie = <any>{ id: res.lmcomId, EMail: res.email, FirstName: res.firstName, LastName: res.lastName, Type: res.otherType, Roles: 0 };
-            //  LMStatus.setCookie(cookie, false);
-            //  LMStatus.Cookie = cookie;
-            //  LMStatus.onLogged(() => {
-            //    //after login
-            //    var statName: string;
-            //    switch (ctx.productUrl) {
-            //      case '/lm/blcourse/langmastermanager.product/': statName = vyzva.stateNames.langmasterManager.name; break;
-            //      case '/lm/blcourse/schoolmanager.product/': statName = vyzva.stateNames.shoolManager.name; break;
-            //      default: statName = blended.prodStates.home.name; break;
-            //    }
-            //    this.navigate({ stateName: statName, pars: ctx });
-            //  });
-            //});
+        };
+        runController.prototype.celkemsablona4 = function () { return (this.order.sablona4 || 0) * 18490; };
+        runController.prototype.celkemsablona3 = function () { return (this.order.sablona3 || 0) * 3499; };
+        runController.prototype.celkembezdph = function () { return Math.round(this.celkembesdph() / 1.21); };
+        runController.prototype.celkembesdph = function () { return this.celkemsablona4() + this.celkemsablona3(); };
+        runController.prototype.sendOrder = function () {
+            proxies.vyzva57services.lmAdminSendOrder(JSON.stringify(this.order), function () { return alert('Děkujeme za vaši objednávku.'); });
         };
         runController.$inject = ['$scope', '$state', '$keysFromCompanyTitle'];
         return runController;
     })(blended.controller);
     vyzva.runController = runController;
+    blended.rootModule
+        .filter('price', function () { return function (value) {
+        var res = value.toString();
+        if (value < 1000)
+            return res;
+        return res.substr(0, res.length - 3) + ' ' + res.substr(res.length - 3);
+    }; });
 })(vyzva || (vyzva = {}));
 //http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz&#/vyzvademo?teacher=9Q1ZNF4V&admin=92XR5UQH&student=9659NYB3&studentempty=9659NYB3
 //http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz&#/vyzvademo?teacher=99CE7PA1&admin=9659NKW6&student=9KUV3Z4B&studentempty=9U912GV1

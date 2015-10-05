@@ -23,10 +23,20 @@
     }
     encodetitle(): string { return this.url() + '#/vyzvademo?companytitle=' + encodeURIComponent(this.schoolTitle); }
     vyzvaProvoz(): string { return this.url() + '#/vyzvaprovoz?companytitle=' + encodeURIComponent('"' + this.schoolTitle + '"'); }
+    exportLectorInfoToXml() {
+      blended.downloadExcelFile(Pager.basicUrl + 'vyzva57services/lmlectorexportinfotoxml');
+      //downloadExcelReport({ type: reportType.managerStudy, companyId: this.ctx.companyid });
+      // invoke('vyzva57services/lmlectorexportinfotoxml', 'get', null, null, completed);
+      //proxies.vyzva57services.lmLectorExportInfoToXml($.noop);
+    }
     //encodetitle(): string { return 'http://' + location.href.split('/')[2] + '/schools/index_cs_cz.html#/vyzvademo?companytitle=' + encodeURIComponent(this.schoolTitle); }
     //encodetitle(): string { return 'http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz#/vyzvademo?companytitle=' + encodeURIComponent(this.schoolTitle); }
     //vyzvaProvoz(): string { return 'http://' + location.href.split('/')[2] + '/schools/index_cs_cz.html#/vyzvaprovoz?companytitle=' + encodeURIComponent('"' + this.schoolTitle + '"'); }
     //vyzvaProvoz(): string { return 'http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz#/vyzvaprovoz?companytitle=' + encodeURIComponent('"' + this.schoolTitle + '"'); }
+    gotoLicKey() {
+      this.navigate({ stateName: 'vyzvademo', pars: <any>{ key: this.licKeyForGoto } });
+    }
+    licKeyForGoto: string;
 
     //************************* OLD
     uniqueId: string; //vstupni dato2: rozliseni emailu pro seznam demouctu

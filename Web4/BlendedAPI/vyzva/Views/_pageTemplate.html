@@ -104,7 +104,8 @@
   <div class="container-fluid topbar">
     <div class="container">
       <div class="pull-left">
-        <div class="onbehav-go-back" ng-click="::ts.navigateReturnUrl()"><i class="fa fa-arrow-circle-o-left"></i></div>
+        <div ng-if="::!ts.canNavigateReturnUrl()" class="lm-logo-black-small" ></div>
+        <div ng-if="::ts.canNavigateReturnUrl()" class="onbehav-go-back" ng-click="::ts.navigateReturnUrl()"><i class="fa fa-arrow-circle-o-left"></i></div>
       </div>
       <div class="pull-left topbar-title">{{title}}</div>
     </div>

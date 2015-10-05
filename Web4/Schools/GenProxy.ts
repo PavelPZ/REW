@@ -150,6 +150,12 @@ module proxies {
    
   };
   export class vyzva57services {
+    static lmAdminSendOrder(jsonorder: string, completed: () => void): void {
+		  invoke('vyzva57services/lmadminsendorder', 'post', null, JSON.stringify(jsonorder), completed);
+	  } 
+    static lmLectorExportInfoToXml(completed: () => void): void {
+		  invoke('vyzva57services/lmlectorexportinfotoxml', 'get', null, null, completed);
+	  } 
     static lmAdminCreateCompany(companyid: number, companydata: string, completed: () => void): void {
 		  invoke('vyzva57services/lmadmincreatecompany', 'post', { companyid: companyid }, JSON.stringify(companydata), completed);
 	  } 

@@ -14,7 +14,6 @@ var persistNewEA;
         loadShortUserData: function (userId, companyId, prodUrl, completed) {
             Pager.ajaxGet(Pager.pathType.restServices, scorm.Cmd_readCrsResults_Type, createCmd(userId, companyId, prodUrl), 
             //scorm.Cmd_readCrsResults_Create(companyId, prodUrl, null, userId, 0),
-            //scorm.Cmd_readCrsResults_Create(companyId, prodUrl, null, userId, 0),
             function (res) {
                 Logger.trace_persistNewEA("loadShortUserData: " + res.join(" ### "));
                 var obj = {};
@@ -25,7 +24,6 @@ var persistNewEA;
         loadUserData: function (userId, companyId, prodUrl, modUrl, completed) {
             Pager.ajaxGet(Pager.pathType.restServices, scorm.Cmd_readModuleResults_Type, createCmd(userId, companyId, prodUrl, function (r) { r.key = modUrl; }), 
             //scorm.Cmd_readModuleResults_Create(modUrl, userId, companyId, prodUrl, null),
-            //scorm.Cmd_readModuleResults_Create(modUrl, userId, companyId, prodUrl, null),
             function (res) {
                 Logger.trace_persistNewEA("loadUserData resp: " + modUrl + ": " + res);
                 completed(_.isEmpty(res) ? {} : JSON.parse(res));
@@ -33,7 +31,6 @@ var persistNewEA;
         },
         saveUserData: function (userId, companyId, prodUrl, data, completed) {
             Pager.ajaxPost(Pager.pathType.restServices, scorm.Cmd_saveUserData_Type, createCmd(userId, companyId, prodUrl, function (r) { r.data = data; }), 
-            //scorm.Cmd_saveUserData_Create(data, userId, companyId, prodUrl, null),
             //scorm.Cmd_saveUserData_Create(data, userId, companyId, prodUrl, null),
             function () {
                 Logger.trace_persistNewEA("saveUserData");
@@ -59,7 +56,6 @@ var persistNewEA;
         resetExs: function (userId, companyId, prodUrl, urls, completed) {
             Pager.ajaxPost(Pager.pathType.restServices, scorm.Cmd_resetModules_Type, createCmd(userId, companyId, prodUrl, function (r) { r.modIds = urls; }), 
             //scorm.Cmd_resetModules_Create(urls, userId, companyId, prodUrl, null),
-            //scorm.Cmd_resetModules_Create(urls, userId, companyId, prodUrl, null),
             function (res) {
                 Logger.trace_persistNewEA("resetExs: " + res);
                 completed();
@@ -68,12 +64,10 @@ var persistNewEA;
         createArchive: function (userId, companyId, prodUrl, completed) {
             Pager.ajaxGet(Pager.pathType.restServices, scorm.Cmd_createArchive_Type, createCmd(userId, companyId, prodUrl), 
             //scorm.Cmd_createArchive_Create(LMStatus.Cookie.id, companyId, productId, null),
-            //scorm.Cmd_createArchive_Create(LMStatus.Cookie.id, companyId, productId, null),
             function (res) { return completed(res); });
         },
         testResults: function (userId, companyId, prodUrl, completed) {
             Pager.ajaxGet(Pager.pathType.restServices, scorm.Cmd_testResults_Type, createCmd(userId, companyId, prodUrl), 
-            //scorm.Cmd_testResults_Create(LMStatus.Cookie.id, companyId, productId, null),
             //scorm.Cmd_testResults_Create(LMStatus.Cookie.id, companyId, productId, null),
             function (res) { return completed(_.map(res, function (r) { return JSON.parse(r); })); });
         }

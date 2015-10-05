@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Course;
 (function (Course) {
@@ -85,7 +84,6 @@ var Course;
             //###jsonML
             this.items = _.map(words, 
             //w=> new choiceItem(<CourseModel.text>{ title: "<span class='c-nowrap'>" + w.replace(/^#/, '') + "</span>", _tg: CourseModel.ttext }, this, cnt++));
-            //w=> new choiceItem(<CourseModel.text>{ title: "<span class='c-nowrap'>" + w.replace(/^#/, '') + "</span>", _tg: CourseModel.ttext }, this, cnt++));
             function (w) { return new choiceItem(w.replace(/^#/, ''), _this, cnt++); });
         }
         wordSelection.prototype.createResult = function (forceEval) { return { ms: 0, s: 0, tg: this._tg, flag: 0, Value: forceEval ? this.correctValue : -1 }; }; //inicializace objektu s vysledkem kontrolky
@@ -134,7 +132,6 @@ var Course;
             var cnt = 0;
             //###jsonML
             this.items = _.map(words, 
-            //w=> new choiceItem(<CourseModel.text>{ title: "<span class='c-nowrap'>" + w.replace(/^#/, '') + "</span>", _tg: CourseModel.ttext }, this, cnt++));
             //w=> new choiceItem(<CourseModel.text>{ title: "<span class='c-nowrap'>" + w.replace(/^#/, '') + "</span>", _tg: CourseModel.ttext }, this, cnt++));
             function (w) { return new choiceItem(w.replace(/^#/, ''), _this, cnt++); });
         }

@@ -109,10 +109,11 @@
     <div class="alert help-panel help-warning" data-ng-if="ts.wizzardStep==2" collapsablemanager="+managerhelponend">
       <div class="h4 help-header" ng-click="managerhelponend.collapseToogle()">
         <div class="more fa fa-question-circle"></div>
-        Rozdání <i>Licenčních klíčů</i> <i>Učitelům</i>
+        Rozdání <i>Licenčních klíčů</i> <i>Učitelům</i> a <i>Studujícím učitelům</i>
       </div>
       <div class="help-content" collapse="managerhelponend.isCollapsed">
         <div class="help-close" ng-click="managerhelponend.collapseToogle()"><i class="fa fa-times"></i></div>
+        <h4><i class="fa fa-hand-o-right "></i> Učitelé (řídí výuku studentů)</h4>
         <ul>
           <li>
             Pro každou <i>Studijní skupinu</i> máte připraveny 3 <i>Licenční klíče</i> pro <i>Učitele</i>, kteří budou v této skupině řídit výuku <i>Studentů</i>.<br />
@@ -122,10 +123,11 @@
             <b>Postup <i>Učitele</i>:</b> <i>Učitel</i> na hlavní stránce aplikace zadá <i>Licenční klíč</i> (který mu předáte) tak, jako jste Vy zadal <i>Licenční klíč</i>, který jsme Vám předali my.
             Po jeho zadání bude moci řídit výuku <i>Studentů</i> ve své <i>Studijní skupině</i>.
           </li>
-          <li>
-            <b>Vysvětlení:</b> Po použití předaného <i>Licenčního klíče</i> <i>Učitelem</i> se jeho údaje (Jméno, Příjmení, EMail) objeví v tabulkách níže podobně, jako jsou v nich nyní uvedeny vaše údaje.
-          </li>
         </ul>
+        <hr />
+        <h4><i class="fa fa-hand-o-right "></i> Studující učitelé (sami se učí)</h4>
+        <p>Rozdejte Licenční líče i Studujícím učitelům, kteří se učí v rámci Šablony č. 3. Jejich výuku bude řídit lektor naší firmy.</p>
+        <hr />
         <h4 class="lm-top-margin">Exporty do Excelu</h4>
         <p>
           Využijte exportů do Excelu k získání mnoha zajímavých údajů o výuce.<br />
@@ -186,7 +188,8 @@
         <span class="flag-small" style="vertical-align:top;" ng-class="::grp.line | lineIdsFlag"></span>
         {{grp.title}} ({{::grp.isPattern3 ? 'šablona č.3' : 'šablona č.4'}})
       </h4>
-      <div vyzva$managerchool$usekeys items="::grp.lectorKeys" for="::'Učitele'"></div>
+      <div ng-if="::!grp.isPattern3" vyzva$managerchool$usekeys items="::grp.lectorKeys" for="::'Učitele'"></div>
+      <div ng-if="::grp.isPattern3" vyzva$managerchool$usekeys items="::grp.studentKeys" for="::'Studující učitele'"></div>
     </div>
     <h4 class="primary">Další licenční klíče</h4>
     <div vyzva$managerchool$usekeys items="::ts.company.managerKeys" for="::'Správce'"></div>

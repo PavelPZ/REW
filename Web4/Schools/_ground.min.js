@@ -524,7 +524,7 @@ var LMStatus;
     function getCookie() {
         if (!isLogged()) {
             try {
-                var cookStr = Cook.read(LMComLib.CookieIds.LMTicket);
+                var cookStr = Cook.read(LMComLib.CookieIds.LMJSTicket);
                 if (cookStr != "") {
                     LMStatus.Cookie = FromString(cookStr);
                     if (LMStatus.Cookie.id <= 0)
@@ -541,9 +541,9 @@ var LMStatus;
     function setCookie(cook, persistent) {
         if (persistent === void 0) { persistent = false; }
         if (cook == null)
-            Cook.remove(LMComLib.CookieIds.LMTicket);
+            Cook.remove(LMComLib.CookieIds.LMJSTicket);
         else
-            Cook.write(LMComLib.CookieIds.LMTicket, ToString(cook), persistent);
+            Cook.write(LMComLib.CookieIds.LMJSTicket, ToString(cook), persistent);
         //Cookie = cook;
     }
     LMStatus.setCookie = setCookie;
@@ -880,7 +880,8 @@ var Trados;
         } //scorm nebo local: jiz naladovano
         /************ naladovani .JS souboru *****************/
         var spHack = lng == "sp-sp" ? "es-es" : lng;
-        $.when($.ajax({
+        $.when(//ladovani
+        $.ajax({
             cache: true,
             dataType: "script",
             url: Pager.path(Pager.pathType.relPath, Utils.string_format("jslib/scripts/cultures/globalize.culture.{0}.js", [spHack]))

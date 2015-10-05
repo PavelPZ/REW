@@ -16320,6 +16320,7 @@ var LMComLib;
         CookieIds[CookieIds["oauth"] = 6] = "oauth";
         CookieIds[CookieIds["loginEMail"] = 7] = "loginEMail";
         CookieIds[CookieIds["loginLogin"] = 8] = "loginLogin";
+        CookieIds[CookieIds["LMJSTicket"] = 9] = "LMJSTicket";
     })(LMComLib.CookieIds || (LMComLib.CookieIds = {}));
     var CookieIds = LMComLib.CookieIds;
     (function (CompRole) {
@@ -17022,8 +17023,8 @@ var LMComLib;
     })(LMComLib.VerifyStates || (LMComLib.VerifyStates = {}));
     var VerifyStates = LMComLib.VerifyStates;
     LMComLib.CmdEMail_Type = 'LMComLib.CmdEMail';
-    function CmdEMail_Create(From, To, Cc, Subject, Html, isForgotPassword, isAtt, attFile, attContent, attContentType) {
-        return { From: From, To: To, Cc: Cc, Subject: Subject, Html: Html, isForgotPassword: isForgotPassword, isAtt: isAtt, attFile: attFile, attContent: attContent, attContentType: attContentType };
+    function CmdEMail_Create(From, To, Cc, Subject, Html, isForgotPassword, isAtt, attFile, attContent, attContentType, emailId) {
+        return { From: From, To: To, Cc: Cc, Subject: Subject, Html: Html, isForgotPassword: isForgotPassword, isAtt: isAtt, attFile: attFile, attContent: attContent, attContentType: attContentType, emailId: emailId };
     }
     LMComLib.CmdEMail_Create = CmdEMail_Create;
     LMComLib.LMCookieJS_Type = 'LMComLib.LMCookieJS';
@@ -17928,7 +17929,6 @@ var LMComLib;
 //http://www.sitepoint.com/building-web-pages-with-local-storage/ 
 var Logger;
 (function (Logger) {
-    Logger.delphiLog;
     var ids = null;
     var logProc;
     var noIds = null;
@@ -18073,7 +18073,6 @@ var Logger;
             return;
         var log = getLog(inf);
         Pager.doAjaxCmd(true, Pager.path(Pager.pathType.loggerService), scorm.Cmd_Logger_Type, JSON.stringify(LMStatus.createCmd(function (r) { r.id = inf.id; r.data = log; })), 
-        //JSON.stringify(scorm.Cmd_Logger_Create(inf.id, log, 0, 0, null, null)),
         //JSON.stringify(scorm.Cmd_Logger_Create(inf.id, log, 0, 0, null, null)),
         function () { alert('Log successfully sent, thank you :-)'); clearLog(inf); refreshButtons(); });
     }

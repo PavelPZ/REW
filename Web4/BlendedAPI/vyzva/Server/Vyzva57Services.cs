@@ -11,11 +11,34 @@ using System.Xml;
 using System.Xml.Linq;
 using LMComLib;
 using System.Text;
+using LMNetLib;
 
 namespace blended {
 
   [RoutePrefix("Vyzva57Services")]
   public class Vyzva57ServicesController : ApiController {
+
+    [Route("lmAdminSendOrder"), HttpPost]
+    public void lmAdminSendOrder([FromBody]string jsonOrder) {
+      var order = JsonConvert.DeserializeObject<IOrder>(jsonOrder);
+      var path = HttpContext.Current.Server.MapPath("~/app_data/orders");
+      LowUtils.AdjustDir(path);
+      try {
+        order.email += ".xml";
+        XmlUtils.ObjectToFile(path + "\\" + order.email + ".xml", order);
+      } catch {
+        XmlUtils.ObjectToFile(path + "\\" + Guid.NewGuid().ToString() + ".xml", order);
+      }
+    }
+    public class IOrder {
+      public int sablona4; public int sablona3; public string schoolName; public string schoolAddress; public string ico;
+      public string name; public string email; public string other;
+    }
+
+    [Route("lmLectorExportInfoToXml"), HttpGet]
+    public void lmLectorExportInfoToXml() {
+      NewModel.Lib.downloadResponse(vyzva.Lectors.exportInfoToXml(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
+    }
 
     [Route("lmAdminCreateCompany"), HttpPost]
     public void lmAdminCreateCompany(int companyid, [FromBody]string companyData) {
@@ -56,7 +79,7 @@ namespace blended {
       public int num;
       public string[] keys; //ve formatu <licenceId>|<counter>
     }
-    static Dictionary<LineIds, string> lineToProductId = new Dictionary<LineIds, string>() {
+    public static Dictionary<LineIds, string> lineToProductId = new Dictionary<LineIds, string>() {
       { LineIds.no, "/lm/blcourse/schoolmanager.product/" },
       { LineIds.English, "/lm/prods_lm_blcourse_english/" },
       { LineIds.German, "/lm/prods_lm_blcourse_german/" },

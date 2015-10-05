@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var testMe;
 (function (testMe) {
@@ -23,8 +22,6 @@ var testMe;
     testMe.tResult = "testResultModel".toLowerCase();
     var greenGreen = 0;
     var greenDone = 1;
-    //var defaultGreenIcon = 'play'; //Trados.isRtl ? "chevron-left" : "chevron-right"; //ikona zelene sipky
-    testMe.alowTestCreate_Url; //priznak, ze je dovoleno vytvorit novy test. Nastavuje se na home pri skoku do testu.
     var notifier = (function () {
         function notifier() {
             this.progressBar = ko.observable(0);
@@ -450,7 +447,7 @@ var testMe;
             //res.push({ title: 'Vysledky', active: this.isResult ? 'active' : '' });
             this.skills = res;
             var act = _.find(res, function (r) { return r.active != ''; });
-            testMe.notify.skillText(act.title);
+            testMe.notify.skillText(/*this.skillSmall =*/ act.title);
             this.skillSmallStatus = act == res[0] ? 0 : (act == res[res.length - 1] ? 2 : 1);
         };
         Model.prototype.clearTimer = function () { if (!this.timer)

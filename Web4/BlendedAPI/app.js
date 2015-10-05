@@ -37,9 +37,6 @@ var blended;
     blended.OldController = OldController;
     blended.prodStates = {};
     blended.root = new Module();
-    blended.rootScope;
-    blended.templateCache;
-    blended.compile;
     blended.rootModule
         .directive('lmInclude', function () {
         return {

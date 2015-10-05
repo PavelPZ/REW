@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var SndLow;
 (function (SndLow) {
@@ -86,8 +85,6 @@ var SndLow;
         new globalMedia(); return _globalMedia; }
     SndLow.getGlobalMedia = getGlobalMedia;
     var _globalMedia;
-    SndLow.globalAudioPlayer;
-    SndLow.globaRecorder;
     function dummyDriver() {
         if (!_dummyDriver)
             _dummyDriver = new MediaDriver(false, null, null);
@@ -181,7 +178,6 @@ var SndLow;
     SndLow.createDriver = createDriver;
     var allDrivers = {}; //evidence vsech driveru.
     var playerType; //v selectDriver(): staticky zjisteny SoundPlayerType
-    SndLow.recordingType;
     //var slInstalled: boolean; //staticky SLInstalled test
     function htmlClearing(id) {
         guiBlocker(false);

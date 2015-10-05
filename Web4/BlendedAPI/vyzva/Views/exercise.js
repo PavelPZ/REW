@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var vyzva;
 (function (vyzva) {
@@ -92,4 +91,44 @@ var vyzva;
         return lessonTest;
     })(exerciseViewLow);
     vyzva.lessonTest = lessonTest;
+    var vyzva$exercise$keyboardkey = (function () {
+        function vyzva$exercise$keyboardkey() {
+            this.scope = { key: '@key' };
+            this.link = function (scope, el, attrs) {
+                el.on('mousedown', function () {
+                    var $focused = $(':focus');
+                    if ($focused[0].tagName.toLowerCase() != 'input')
+                        return;
+                    insertAtCaret($focused[0], scope.key);
+                    return false;
+                });
+            };
+        }
+        return vyzva$exercise$keyboardkey;
+    })();
+    vyzva.vyzva$exercise$keyboardkey = vyzva$exercise$keyboardkey;
+    function insertAtCaret(element, text) {
+        if (document.selection) {
+            element.focus();
+            var sel = document.selection.createRange();
+            sel.text = text;
+            element.focus();
+        }
+        else if (element.selectionStart || element.selectionStart === 0) {
+            var startPos = element.selectionStart;
+            var endPos = element.selectionEnd;
+            var scrollTop = element.scrollTop;
+            element.value = element.value.substring(0, startPos) + text + element.value.substring(endPos, element.value.length);
+            element.focus();
+            element.selectionStart = startPos + text.length;
+            element.selectionEnd = startPos + text.length;
+            element.scrollTop = scrollTop;
+        }
+        else {
+            element.value += text;
+            element.focus();
+        }
+    }
+    blended.rootModule
+        .directive('vyzva$exercise$keyboardkey', function () { return new vyzva$exercise$keyboardkey(); });
 })(vyzva || (vyzva = {}));

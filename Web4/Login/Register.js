@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Login;
 (function (Login) {
@@ -40,7 +39,6 @@ var Login;
             this.success(null);
             var cook = LMComLib.LMCookieJS_Create(0, 0, this.isEMail ? this.email() : null, this.isEMail ? null : this.login(), this.isEMail ? null : this.loginEmail(), this.isEMail ? LMComLib.OtherType.LANGMaster : LMComLib.OtherType.LANGMasterNoEMail, null, this.firstName(), this.lastName(), '', 0, 0, null);
             Pager.ajaxGet(Pager.pathType.restServices, Login.CmdRegister_Type, LMStatus.createCmd(function (r) { r.password = Utils.encryptStr(_this.password()); r.Cookie = cook, r.subSite = LMComLib.SubDomains.com; }), 
-            //CmdRegister_Create(Utils.encryptStr(this.password()), LMComLib.SubDomains.com, cook, 0),
             //CmdRegister_Create(Utils.encryptStr(this.password()), LMComLib.SubDomains.com, cook, 0),
             function (res) {
                 if (_this.isEMail) {
@@ -90,5 +88,4 @@ var Login;
         return RegisterModel;
     })(Login.loginMode);
     Login.RegisterModel = RegisterModel;
-    Login.testConfirmUrl; //URL pro testovani
 })(Login || (Login = {}));

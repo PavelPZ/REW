@@ -112,7 +112,8 @@
   position: absolute;
   right: 3px;
 }
-.bl .instruction .header .more {
+.bl .instruction .header .more,
+.bl .instruction .header .keyboard {
   position: absolute;
   cursor: pointer;
   top: 1px;
@@ -137,4 +138,22 @@
 }
 .bl .instruction .more-body-exercise ol {
   margin: 0 0 10px 25px;
+}
+.bl .keyboard-place {
+  height: 40px;
+}
+.bl .keyboard-fixed {
+  background-color: white;
+  position: fixed;
+  padding-top: 5px;
+  top: 110px;
+}
+.bl .keyboard-fixed span {
+  border: solid #dddddd 1px;
+  background-color: #fcf8e3;
+  font-weight: bold;
+  border-radius: 4px;
+  padding: 4px 7px;
+  font-size: 16px;
+  cursor: pointer;
 }

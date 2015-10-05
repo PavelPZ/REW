@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 // <reference path="../jslib/jsd/knockout.d.ts" />
 var schoolMy;
@@ -35,7 +34,6 @@ var schoolMy;
                     return;
                 }
                 Pager.ajaxGet(Pager.pathType.restServices, Login.CmdEnterLicKey_Type, LMStatus.createCmd(function (r) { r.CompLicId = k.licId; r.Counter = k.counter; }), 
-                //Login.CmdEnterLicKey_Create(LMStatus.Cookie.id, k.licId, k.counter),
                 //Login.CmdEnterLicKey_Create(LMStatus.Cookie.id, k.licId, k.counter),
                 function (res) {
                     switch (res.res) {
@@ -226,8 +224,7 @@ var schoolMy;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var CourseMeta;
 (function (CourseMeta) {
@@ -586,8 +583,7 @@ var Pager;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var CourseMeta;
 (function (CourseMeta) {
@@ -1358,8 +1354,7 @@ var CourseModel;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 /***** nemazat reference, nejde pak prelozit *****/
 var Course;
@@ -2010,26 +2005,6 @@ function gotoHref(event, url) {
 }
 var CourseMeta;
 (function (CourseMeta) {
-    CourseMeta.allProductList; //hlavicky (metadata) vsech produktu
-    CourseMeta.actProduct; //aktualni produkt
-    CourseMeta.actProductPersistence; //persistence pro aktualni produkt VSNET
-    CourseMeta.actProductLmcomId; //uzivatel aktualniho produktu
-    CourseMeta.actNode; //aktualni node
-    CourseMeta.actCompanyId;
-    CourseMeta.actExPageControl; //aktualni model stranky se cvicenim
-    CourseMeta.actInstr; //aktualni instrukce
-    //export var forceEval: boolean;
-    //Kurz
-    CourseMeta.actModule; //aktualni modul
-    CourseMeta.actCourseRoot; //course nebo test
-    CourseMeta.actIsPublIndiv; //course nebo test bezi v 
-    CourseMeta.actEx;
-    CourseMeta.actExModel;
-    //gramatika
-    CourseMeta.actGrammar;
-    CourseMeta.actGrammarEx;
-    CourseMeta.actGrammarModule;
-    CourseMeta.actGrammarExCount;
     //inline contrtols
     var oliReplace = 'olireplace';
     function processInlineControls(scriptId, completed) {
@@ -2694,7 +2669,6 @@ var CourseMeta;
             lib.keepGreen = false;
         }
         lib.fillInfo = fillInfo;
-        lib.keepGreen;
         function fillArrowInfo(info) { fillInfo(info.title, info.disable, info.css, info.iconId, info.greenClick); }
         lib.fillArrowInfo = fillArrowInfo;
     })(lib = CourseMeta.lib || (CourseMeta.lib = {}));
@@ -2970,8 +2944,7 @@ var CourseMeta;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var CourseModel;
 (function (CourseModel) {
@@ -2990,7 +2963,6 @@ var CourseMeta;
 (function (CourseMeta) {
     function finishedAndLocked() { return CourseMeta.actCourseRoot.done && CourseMeta.previewMode; }
     CourseMeta.finishedAndLocked = finishedAndLocked;
-    CourseMeta.previewMode;
     var dataImpl = (function () {
         function dataImpl() {
         }
@@ -3765,8 +3737,7 @@ var CourseMeta;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Course;
 (function (Course) {
@@ -4081,8 +4052,7 @@ var Course;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Course;
 (function (Course) {
@@ -4210,8 +4180,7 @@ var Course;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Course;
 (function (Course) {
@@ -4398,8 +4367,7 @@ var Course;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Course;
 (function (Course) {
@@ -4482,7 +4450,6 @@ var Course;
             //###jsonML
             this.items = _.map(words, 
             //w=> new choiceItem(<CourseModel.text>{ title: "<span class='c-nowrap'>" + w.replace(/^#/, '') + "</span>", _tg: CourseModel.ttext }, this, cnt++));
-            //w=> new choiceItem(<CourseModel.text>{ title: "<span class='c-nowrap'>" + w.replace(/^#/, '') + "</span>", _tg: CourseModel.ttext }, this, cnt++));
             function (w) { return new choiceItem(w.replace(/^#/, ''), _this, cnt++); });
         }
         wordSelection.prototype.createResult = function (forceEval) { return { ms: 0, s: 0, tg: this._tg, flag: 0, Value: forceEval ? this.correctValue : -1 }; }; //inicializace objektu s vysledkem kontrolky
@@ -4531,7 +4498,6 @@ var Course;
             var cnt = 0;
             //###jsonML
             this.items = _.map(words, 
-            //w=> new choiceItem(<CourseModel.text>{ title: "<span class='c-nowrap'>" + w.replace(/^#/, '') + "</span>", _tg: CourseModel.ttext }, this, cnt++));
             //w=> new choiceItem(<CourseModel.text>{ title: "<span class='c-nowrap'>" + w.replace(/^#/, '') + "</span>", _tg: CourseModel.ttext }, this, cnt++));
             function (w) { return new choiceItem(w.replace(/^#/, ''), _this, cnt++); });
         }
@@ -4596,8 +4562,7 @@ var Course;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Course;
 (function (Course) {
@@ -5542,8 +5507,7 @@ var Course;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Course;
 (function (Course) {
@@ -5788,8 +5752,7 @@ var Course;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Course;
 (function (Course) {
@@ -5930,8 +5893,7 @@ var Course;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Course;
 (function (Course) {
@@ -5995,7 +5957,6 @@ var Course;
         return chinhSpeaking;
     })();
     Course.chinhSpeaking = chinhSpeaking;
-    Course.extension;
     var ch_task = (function () {
         function ch_task(json) {
             if (json)
@@ -6119,8 +6080,7 @@ var docreference;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var testMe;
 (function (testMe) {
@@ -6141,8 +6101,6 @@ var testMe;
     testMe.tResult = "testResultModel".toLowerCase();
     var greenGreen = 0;
     var greenDone = 1;
-    //var defaultGreenIcon = 'play'; //Trados.isRtl ? "chevron-left" : "chevron-right"; //ikona zelene sipky
-    testMe.alowTestCreate_Url; //priznak, ze je dovoleno vytvorit novy test. Nastavuje se na home pri skoku do testu.
     var notifier = (function () {
         function notifier() {
             this.progressBar = ko.observable(0);
@@ -6568,7 +6526,7 @@ var testMe;
             //res.push({ title: 'Vysledky', active: this.isResult ? 'active' : '' });
             this.skills = res;
             var act = _.find(res, function (r) { return r.active != ''; });
-            testMe.notify.skillText(act.title);
+            testMe.notify.skillText(/*this.skillSmall =*/ act.title);
             this.skillSmallStatus = act == res[0] ? 0 : (act == res[res.length - 1] ? 2 : 1);
         };
         Model.prototype.clearTimer = function () { if (!this.timer)
@@ -6781,8 +6739,7 @@ var testMe;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var testMe;
 (function (testMe) {
@@ -6929,8 +6886,7 @@ var testMe;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var vsNet;
 (function (vsNet) {
@@ -7029,12 +6985,10 @@ var vsNet;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var doc;
 (function (doc) {
-    doc.actMeta;
     //var actMetaUrl: string;
     function init(completed) {
         if (doc.actMeta)
@@ -7403,14 +7357,10 @@ var doc;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var xref;
 (function (xref) {
-    xref.valToIdx;
-    xref.idxToVal;
-    xref.root;
     function pathToClip(url) { Utils.toClipboard((cfg.basicPath == 'q:\\rew\\alpha\\' ? 'p:\\' : cfg.basicPath) + 'rew\\web4' + url.replace(/\//g, '\\') + '.xml'); return false; }
     xref.pathToClip = pathToClip;
     var sitemap;
@@ -9976,8 +9926,7 @@ var blended;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var blended;
 (function (blended) {
@@ -10050,6 +9999,7 @@ var blended;
                 Pager.gotoHomeUrl();
             }
         };
+        controller.prototype.canNavigateReturnUrl = function () { return this.ctx && this.ctx.returnurl; };
         controller.prototype.navigateReturnUrl = function () { location.href = this.ctx.returnurl; };
         controller.prototype.getProductHomeUrl = function () { return { stateName: blended.prodStates.home.name, pars: this.ctx }; };
         controller.prototype.navigateProductHome = function () { this.navigate(this.getProductHomeUrl()); };
@@ -10296,8 +10246,7 @@ var blended;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var blended;
 (function (blended) {
@@ -10700,8 +10649,7 @@ var blended;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var blended;
 (function (blended) {
@@ -11194,8 +11142,7 @@ var vyzva;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var vyzva;
 (function (vyzva) {
@@ -11224,6 +11171,19 @@ var vyzva;
         };
         managerLangmaster.prototype.encodetitle = function () { return this.url() + '#/vyzvademo?companytitle=' + encodeURIComponent(this.schoolTitle); };
         managerLangmaster.prototype.vyzvaProvoz = function () { return this.url() + '#/vyzvaprovoz?companytitle=' + encodeURIComponent('"' + this.schoolTitle + '"'); };
+        managerLangmaster.prototype.exportLectorInfoToXml = function () {
+            blended.downloadExcelFile(Pager.basicUrl + 'vyzva57services/lmlectorexportinfotoxml');
+            //downloadExcelReport({ type: reportType.managerStudy, companyId: this.ctx.companyid });
+            // invoke('vyzva57services/lmlectorexportinfotoxml', 'get', null, null, completed);
+            //proxies.vyzva57services.lmLectorExportInfoToXml($.noop);
+        };
+        //encodetitle(): string { return 'http://' + location.href.split('/')[2] + '/schools/index_cs_cz.html#/vyzvademo?companytitle=' + encodeURIComponent(this.schoolTitle); }
+        //encodetitle(): string { return 'http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz#/vyzvademo?companytitle=' + encodeURIComponent(this.schoolTitle); }
+        //vyzvaProvoz(): string { return 'http://' + location.href.split('/')[2] + '/schools/index_cs_cz.html#/vyzvaprovoz?companytitle=' + encodeURIComponent('"' + this.schoolTitle + '"'); }
+        //vyzvaProvoz(): string { return 'http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz#/vyzvaprovoz?companytitle=' + encodeURIComponent('"' + this.schoolTitle + '"'); }
+        managerLangmaster.prototype.gotoLicKey = function () {
+            this.navigate({ stateName: 'vyzvademo', pars: { key: this.licKeyForGoto } });
+        };
         //ostry klic pro spravce skoly
         managerLangmaster.prototype.createEmptySchool = function () {
             var _this = this;
@@ -11314,8 +11274,7 @@ var vyzva;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var vyzva;
 (function (vyzva) {
@@ -11460,8 +11419,7 @@ var vyzva;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var vyzva;
 (function (vyzva) {
@@ -11566,8 +11524,7 @@ var vyzva;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var vyzva;
 (function (vyzva) {
@@ -11586,8 +11543,7 @@ var vyzva;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var vyzva;
 (function (vyzva) {
@@ -11692,8 +11648,7 @@ var vyzva;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var vyzva;
 (function (vyzva) {
@@ -11935,8 +11890,7 @@ var vyzva;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var vyzva;
 (function (vyzva) {
@@ -11944,13 +11898,14 @@ var vyzva;
         __extends(faqController, _super);
         function faqController($scope, $state) {
             _super.call(this, $scope, $state);
+            $('#splash').hide();
         }
         return faqController;
     })(blended.controller);
     vyzva.faqController = faqController;
     blended.rootModule
         .directive('vyzva$faq$item', function () { return new vyzva$faq$item(); })
-        .directive('vyzva$faq$toc', function () { return new vyzva$faq$toc(); });
+        .directive('vyzva$faq$toc', ['$anchorScroll', function ($anchorScroll) { return new vyzva$faq$toc($anchorScroll); }]);
     var vyzva$faq$item = (function () {
         function vyzva$faq$item() {
             this.scope = { title: '@title', type: '@type' };
@@ -11961,6 +11916,11 @@ var vyzva;
                 var id = 'tocitem-' + (vyzva$faq$item.count++).toString();
                 scope.datatoc = { id: id, title: scope.title, type: scope.type };
                 scope.id = id;
+                scope.gotoTop = function () {
+                    $('html, body').animate({
+                        scrollTop: $(document.body).offset().top
+                    }, 500);
+                };
             };
         }
         vyzva$faq$item.count = 0;
@@ -11968,13 +11928,20 @@ var vyzva;
     })();
     vyzva.vyzva$faq$item = vyzva$faq$item;
     var vyzva$faq$toc = (function () {
-        function vyzva$faq$toc() {
+        function vyzva$faq$toc($anchorScroll) {
+            this.$anchorScroll = $anchorScroll;
             this.link = function (scope, el) {
                 setTimeout(function () {
                     var items = [];
                     $('[data-toc]').each(function (idx, el) { return items.push($(el).data('toc')); });
                     scope.groups = _.groupBy(items, function (it) { return it.type; });
                     scope.$apply();
+                    scope.click = function (it) {
+                        $('html, body').animate({
+                            scrollTop: $('#' + it.id).offset().top
+                        }, 500);
+                        //this.$anchorScroll.yOffset = $('#' + it.id); this.$anchorScroll();
+                    };
                 });
             };
             this.restrict = 'EA';
@@ -11988,8 +11955,7 @@ var vyzva;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var vyzva;
 (function (vyzva) {
@@ -12008,8 +11974,7 @@ var vyzva;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var vyzva;
 (function (vyzva) {
@@ -12088,6 +12053,8 @@ var vyzva;
         function runController($scope, $state, companyInfo) {
             _super.call(this, $scope, $state);
             this.companyInfo = companyInfo;
+            //***** Objednavka
+            this.order = {};
             if (!companyInfo) {
                 var keyStr = $state.params['key'];
                 var key = keys.fromString(keyStr);
@@ -12098,6 +12065,7 @@ var vyzva;
             if (Utils.endWith(companyInfo.companyTitle, ' *'))
                 companyInfo.companyTitle = companyInfo.companyTitle.substr(0, companyInfo.companyTitle.length - 2);
             this.hashGerman = !!companyInfo.studentDe;
+            this.hideOrder = $state.params['hideorder'] == 'true';
             $('#splash').hide();
         }
         runController.prototype.navigateLow = function (key) {
@@ -12107,7 +12075,7 @@ var vyzva;
                     companyid: res.companyId,
                     producturl: blended.encodeUrl(res.productUrl),
                     loginid: res.lmcomId,
-                    companyId: res.companyId,
+                    //companyId: res.companyId,
                     lickeys: _.map(res.licKeys, function (key) {
                         var parts = key.split('|');
                         return keys.toString({ licId: parseInt(parts[0]), counter: parseInt(parts[1]) });
@@ -12146,43 +12114,25 @@ var vyzva;
             //var key: keys.Key = keys.fromString(this.ctx[keyName].trim());
             var key = { licId: user.licId, counter: user.licCounter };
             this.navigateLow(key);
-            //proxies.vyzva57services.runDemoInformation(key.licId, key.counter, res => {
-            //  var ctx: blended.learnContext = {
-            //    companyid: res.companyId,
-            //    producturl: blended.encodeUrl(res.productUrl),
-            //    loginid: res.lmcomId,
-            //    companyId: res.companyId,
-            //    lickeys: _.map(res.licKeys, key => {
-            //      var parts = key.split('|');
-            //      return keys.toString({ licId: parseInt(parts[0]), counter: parseInt(parts[1]) });
-            //    }).join('#'),
-            //    loc: Trados.actLang,
-            //    persistence: null,
-            //    taskid: '',
-            //    homelinktype: 'vyzvademo',
-            //    vyzvademocompanytitle: this.companyInfo.companyTitle,
-            //  };
-            //  blended.finishContext(ctx);
-            //  //login
-            //  var cookie = <any>{ id: res.lmcomId, EMail: res.email, FirstName: res.firstName, LastName: res.lastName, Type: res.otherType, Roles: 0 };
-            //  LMStatus.setCookie(cookie, false);
-            //  LMStatus.Cookie = cookie;
-            //  LMStatus.onLogged(() => {
-            //    //after login
-            //    var statName: string;
-            //    switch (ctx.productUrl) {
-            //      case '/lm/blcourse/langmastermanager.product/': statName = vyzva.stateNames.langmasterManager.name; break;
-            //      case '/lm/blcourse/schoolmanager.product/': statName = vyzva.stateNames.shoolManager.name; break;
-            //      default: statName = blended.prodStates.home.name; break;
-            //    }
-            //    this.navigate({ stateName: statName, pars: ctx });
-            //  });
-            //});
+        };
+        runController.prototype.celkemsablona4 = function () { return (this.order.sablona4 || 0) * 18490; };
+        runController.prototype.celkemsablona3 = function () { return (this.order.sablona3 || 0) * 3499; };
+        runController.prototype.celkembezdph = function () { return Math.round(this.celkembesdph() / 1.21); };
+        runController.prototype.celkembesdph = function () { return this.celkemsablona4() + this.celkemsablona3(); };
+        runController.prototype.sendOrder = function () {
+            proxies.vyzva57services.lmAdminSendOrder(JSON.stringify(this.order), function () { return alert('Děkujeme za vaši objednávku.'); });
         };
         runController.$inject = ['$scope', '$state', '$keysFromCompanyTitle'];
         return runController;
     })(blended.controller);
     vyzva.runController = runController;
+    blended.rootModule
+        .filter('price', function () { return function (value) {
+        var res = value.toString();
+        if (value < 1000)
+            return res;
+        return res.substr(0, res.length - 3) + ' ' + res.substr(res.length - 3);
+    }; });
 })(vyzva || (vyzva = {}));
 //http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz&#/vyzvademo?teacher=9Q1ZNF4V&admin=92XR5UQH&student=9659NYB3&studentempty=9659NYB3
 //http://localhost/Web4/Schools/NewEA.aspx?lang=cs-cz&#/vyzvademo?teacher=99CE7PA1&admin=9659NKW6&student=9KUV3Z4B&studentempty=9U912GV1
@@ -12193,8 +12143,7 @@ var vyzva;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var vyzva;
 (function (vyzva) {
@@ -12260,8 +12209,7 @@ var vyzva;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var vyzva;
 (function (vyzva) {
@@ -12317,7 +12265,7 @@ var vyzva;
     function initVyzvaStates(params) {
         params.$stateProvider.state({
             name: 'vyzvademo',
-            url: "/vyzvademo?companytitle&key",
+            url: "/vyzvademo?companytitle&key&hideorder",
             controller: vyzva.runController,
             templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/vyzvademo.html',
             resolve: {
@@ -12333,6 +12281,14 @@ var vyzva;
             resolve: {
                 $vyzvaProvoz: vyzva.vyzvaProvoz
             }
+        });
+        params.$stateProvider.state(vyzva.stateNames.faq = {
+            name: 'faq',
+            url: "/faq?returnurl",
+            layoutSpecial: true,
+            templateUrl: pageTemplate,
+            layoutContentId: 'faq',
+            controller: vyzva.faqController,
         });
         vyzva.stateNames.root = new state({
             name: 'pg.ajs',
@@ -12368,14 +12324,14 @@ var vyzva;
                             layoutContentId: 'managerschool',
                             controller: vyzva.managerSchool,
                         }),
-                        vyzva.stateNames.faq = new state({
-                            name: 'faq',
-                            url: "/faq",
-                            layoutSpecial: true,
-                            templateUrl: pageTemplate,
-                            layoutContentId: 'faq',
-                            controller: vyzva.faqController,
-                        }),
+                        //stateNames.faq = new state({
+                        //  name: 'faq',
+                        //  url: "/faq",
+                        //  layoutSpecial: true,
+                        //  templateUrl: pageTemplate,
+                        //  layoutContentId: 'faq',
+                        //  controller: faqController,
+                        //}),
                         new state({
                             name: 'prod',
                             url: "/prod/:producturl/:taskid/:onbehalfof",
@@ -12607,9 +12563,6 @@ var blended;
     blended.OldController = OldController;
     blended.prodStates = {};
     blended.root = new Module();
-    blended.rootScope;
-    blended.templateCache;
-    blended.compile;
     blended.rootModule
         .directive('lmInclude', function () {
         return {

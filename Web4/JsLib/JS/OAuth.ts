@@ -92,10 +92,20 @@ module OAuth {
     logoutUrl: string;
     scopes: string; //povol ziskani emailu apod.
     parseProfile: (obj: Object, providerid: LMComLib.OtherType) => profile; //vytazeni profile informaci z ajaxUrl
+    isCode: boolean;
+    client_secret: string;
   }
   export interface client {
     www_lm: string;
     test_lm: string;
+    s_www_lm: string;
+    s_test_lm: string;
+    eduland: string;
+    s_eduland: string;
+    alan: string;
+    s_alan: string;
+    skrivanek: string;
+    s_skrivanek: string;
   }
 
 

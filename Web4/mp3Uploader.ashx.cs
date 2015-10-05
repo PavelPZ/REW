@@ -69,8 +69,10 @@ namespace mp3Uploader {
             context.Request.InputStream.CopyTo(fs);
           }
           if (phase == "html_init_finish" || phase == "html_finish") {
+            Logger.Error("html_init_finish or html_finish, START: " + tempFn);
             using (var srcStream = File.OpenRead(tempFn)) mp3Compress(context, srcStream, fn);
             File.Delete(tempFn);
+            Logger.Error("html_init_finish or html_finish, DELETED: " + tempFn);
             break;
           }
           break;
@@ -146,11 +148,23 @@ namespace mp3Uploader {
           }
           //mp3 dekomprese
           resLen = Lame.Write(pcm16, samples, mp3Buf, bufLen, Channels == 1);
-          if (resLen <= 0) throw new Exception();
+          if (resLen <= 0) {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("srcStream.length={0}, ", srcStream.Length);
+            sb.AppendFormat("srcStream.Position={0}, ", srcStream.Position);
+            sb.AppendFormat("SamplesPerSecond={0}, ", SamplesPerSecond);
+            sb.AppendFormat("BitsPerSample={0}, ", BitsPerSample);
+            sb.AppendFormat("Channels={0}, ", Channels);
+            Logger.Error(sb.ToString());
+            //throw new Exception(sb.ToString());
+          } else
+            mp3.Write(mp3Buf, 0, resLen);
+        }
+        while (true) {
+          resLen = Lame.Flush(mp3Buf, bufLen);
+          if (resLen == 0) break;
           mp3.Write(mp3Buf, 0, resLen);
         }
-        resLen = Lame.Flush(mp3Buf, bufLen);
-        mp3.Write(mp3Buf, 0, resLen);
       }
     }
 

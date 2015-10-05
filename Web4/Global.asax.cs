@@ -45,8 +45,10 @@ namespace web4 {
 
     protected void Application_Error(object sender, EventArgs e) {
       Exception exc = Server.GetLastError();
+      //vylouceni url=http://blended.langmaster.cz/vyzva57services/reports chyby pro blended
+      if (exc.Message.IndexOf("Server cannot set status after HTTP headers have been sent.") >= 0) return;
       LMComLib.Logger.Error(exc);
-      Server.Transfer("HttpErrorPage.aspx");
+      //Server.Transfer("HttpErrorPage.aspx");
     }
 
     protected void Session_End(object sender, EventArgs e) {

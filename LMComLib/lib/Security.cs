@@ -1021,6 +1021,13 @@ namespace LMComLib {
       return DeserializeCookie(HttpContext.Current);
     }
 
+    public static LMCookie DeserializeJSCookie() {
+      string val = LMCookie.read(CookieIds.LMJSTicket, null);
+      if (val == null) return null;
+      try {
+        return LMCookie.FromString(val);
+      } catch { return null; }
+    }
     public static LMCookie DeserializeCookie(HttpContext ctx) {
       string val = LMCookie.read(CookieIds.LMTicket,null);
       if (val == null || Machines.isBuildEACache_BuildCD_Crawler) return null;

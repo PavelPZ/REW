@@ -1,8 +1,6 @@
 var knockout;
 (function (knockout) {
     knockout.rootModule = angular.module('knockoutApp', []); // [/*'ngLocale', 'ngResource',*/ 'ui.router', 'ngAnimate', 'ui.bootstrap']);
-    knockout.rootScope;
-    knockout.compile;
     knockout.rootModule.run(['$rootScope', '$compile', function ($rootScope, $compile) {
             knockout.rootScope = $rootScope;
             knockout.compile = $compile;

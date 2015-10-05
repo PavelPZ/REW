@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var scorm;
 (function (scorm) {
@@ -65,15 +64,7 @@ var scorm;
         edoceoDriver.prototype.createAttemptIdQueryPar = function () { return 'attemptid=' + Utils.Hash(cfg.rootProductId); };
         return edoceoDriver;
     })(lmsDriver);
-    //http://scorm.com/scorm-explained/scorm-resources/
-    //http://php.langmaster.org/mod/scorm/view.php?id=4, pzika / pzika
-    scorm.inPopup; //scorm je otevren v popup okne
     scorm.apiWin = window; //okno s API
-    scorm.apiUrl; //URL API
-    scorm.apiSignature; //Host a Path URL API
-    scorm.isMoodle;
-    scorm.status;
-    scorm.attemptId;
     scorm.API = new runtimeApi(null);
     //var sessionStart: Date;
     var mode;

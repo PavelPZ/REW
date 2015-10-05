@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var blended;
 (function (blended) {
@@ -231,6 +230,9 @@ var blended;
             exImpl.page = pg;
             exImpl.result = this.user.long;
             pg.finishCreatePage((this.exercise.dataNode));
+            var hasGapFill = _.any(pg.items, function (it) { return it._tg == CourseModel.tgapFill; });
+            if (hasGapFill)
+                this.keyboardLine = this.product.line;
             pg.callInitProcs(Course.initPhase.beforeRender, function () {
                 var html = JsRenderTemplateEngine.render("c_gen", pg);
                 CourseMeta.actExPageControl = pg; //knockout pro cviceni binduje CourseMeta.actExPageControl

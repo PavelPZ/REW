@@ -193,6 +193,12 @@ var proxies;
     var vyzva57services = (function () {
         function vyzva57services() {
         }
+        vyzva57services.lmAdminSendOrder = function (jsonorder, completed) {
+            invoke('vyzva57services/lmadminsendorder', 'post', null, JSON.stringify(jsonorder), completed);
+        };
+        vyzva57services.lmLectorExportInfoToXml = function (completed) {
+            invoke('vyzva57services/lmlectorexportinfotoxml', 'get', null, null, completed);
+        };
         vyzva57services.lmAdminCreateCompany = function (companyid, companydata, completed) {
             invoke('vyzva57services/lmadmincreatecompany', 'post', { companyid: companyid }, JSON.stringify(companydata), completed);
         };

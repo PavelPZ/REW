@@ -6,8 +6,83 @@
     <div class="pull-left topbar-title"><a href="mailto:info@langmaster.cz">info@langmaster.cz</a> +420 244 460 807</div>
   </div>
 </div>
-<div class="container-fluid gray">
+<div class="container-fluid gray" ng-if="::!ts.hideOrder">
   <div class="container">
+    <h2 style="margin-bottom:0;">Snadné objednání</h2>
+    <h4 class="text-danger text-center">Za hodinu od vyplnění následujících údajů můžete ve vaší škole začít systém používat</h4>
+    <div class="row">
+      <div class="col-sm-6">
+        <h3>1. Zadejte počet šablon (celkem pro angličtinu, němčinu i francouzštinu)</h3>
+        <table class="table table-bordered">
+          <tr>
+            <td>Šablona</td>
+            <td>Cena s DPH</td>
+            <td>Počet</td>
+            <td>Celkem s DPH</td>
+          </tr>
+          <tr>
+            <td>č. 4 (studenti)</td>
+            <td class="text-right">18 490</td>
+            <td><input type="number" class="form-control" placeholder="Počet..." style="width:80px;" ng-model="ts.order.sablona4"/></td>
+            <td class="text-right">{{ts.celkemsablona4() | price}}</td>
+          </tr>
+          <tr>
+            <td>č. 3 (učitelé)</td>
+            <td class="text-right">3 499</td>
+            <td><input type="number" class="form-control" placeholder="Počet..." style="width:80px;" ng-model="ts.order.sablona3"/></td>
+            <td class="text-right">{{ts.celkemsablona3() | price}}</td>
+          </tr>
+          <tr>
+            <td>Celkem bez DPH</td>
+            <td class="text-right text-danger"><b>{{ts.celkembezdph() | price}}</b></td>
+            <td>Celkem s DPH</td>
+            <td class="text-right text-danger"><b>{{ts.celkembesdph() | price}}</b></td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-sm-6">
+        <h3>2. Zadejte fakturační údaje</h3>
+        <div class="form-group">
+          <label for="schollname">Název školy</label>
+          <input type="text" class="form-control" id="schollname" placeholder="Zadejte název školy..."  ng-model="ts.order.schoolName"/>
+          <label for="ico">IČO</label>
+          <input type="text" class="form-control" id="ico" placeholder="Zadejte IČO..." ng-model="ts.order.ico" />
+          <label for="address">Adresa</label>
+          <textarea class="form-control" id="address" placeholder="Zadejte adresu..." rows="4" ng-model="ts.order.schoolAddress"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <h3>3. Zadejte kontaktní údaje</h3>
+        <div class="form-group">
+          <label for="name">Titul, jméno, příjmení</label>
+          <input type="text" class="form-control" id="name" placeholder="Zadejte titul, jméno, příjmení..."  ng-model="ts.order.name"/>
+          <label for="email">email pro zaslání Licenčního klíče a faktury</label>
+          <input type="text" class="form-control" id="email" placeholder="Zadejte email..."  ng-model="ts.order.email"/>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <h3>4. Upřesnění</h3>
+        <div class="form-group">
+          <label for="address">... máte-li zájem o dlouhodobé licence (viz níže), máte speciální cenové požadavky (např. "cena do 200tis bez DPH") apod.</label>
+          <textarea class="form-control" id="address" placeholder="Napiště upřesnění..." rows="4" ng-model="ts.order.other"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-9">
+        <div class="alert alert-warning">
+          <ul>
+            <li>Vzápětí po obdržení objednávky vám zašleme Licenční klíč a návod na zprovoznění systému.</li>
+            <li>Následovat bude faktura (se splatností do konce listopadu) a další vámi požadované náležitosti.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="pull-right"><div class="btn btn-success btn-lg" ng-click="::ts.sendOrder()"><i class="fa fa-check"></i> Odeslat objednávku</div></div>
+      </div>
+    </div>
     <!--<h3>Obsah</h3>
     <div class="row">
       <div class="col-sm-6">
@@ -29,7 +104,7 @@
 </div>
 <div class="container-fluid">
   <div class="container">
-    <h2 style="margin-bottom:0;">Vyzkoušení <i>Výukového systému</i> pro Výzvu 57</h2>
+    <h2 style="margin-bottom:0;">Snadné vyzkoušení<!--Vyzkoušení <i>Výukového systému</i> pro Výzvu 57--></h2>
     <h3 style="margin-top:0;">Pro: {{::ts.companyInfo.companyTitle}}</h3>
     <div class="alert alert-warning">
       <i>Výukový systém</i> využívají hlavně 2 typy uživatelů: <i>Učitel</i> a <i>Student</i>. Pomocí tlačítek níže si vyzkoušejte jak výuku <i>Studenta</i> tak i řízení výuky <i>Učitelem</i>.<br />
@@ -242,7 +317,7 @@
   </div>
 </div>
 
-<div class="container-fluid">
+<!--<div class="container-fluid">
   <div class="container">
     <h2>Objednání a zprovoznění aplikace</h2>
     <div class="row">
@@ -255,7 +330,7 @@
       </div>
     </div>
   </div>
-</div>
+</div>-->
 
 
 <!--<div class="container-fluid">

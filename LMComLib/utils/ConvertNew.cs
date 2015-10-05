@@ -3,6 +3,43 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace LMNetLib {
+
+  public static class licKeys {
+    static string alphabet = "0123456789abcdefghjkmnpqrtuvwxyz";
+    static string encode(byte[] input) {
+      var skip = 0; // how many bits we will skip from the first byte
+      var bits = 0; // 5 high bits, carry from one byte to the next
+      var output = "";
+      Func<byte, byte> readByte = bt => {
+        if (skip < 0) { // we have a carry from the previous byte
+          bits |= (bt >> (-skip));
+        } else { // no carry
+          bits = (bt << skip) & 248;
+        }
+        if (skip > 3) {// not enough data to produce a character, get us another one
+          skip -= 8;
+          return 1;
+        }
+        if (skip < 4) { // produce a character
+          output += alphabet[bits >> 3];
+          skip += 5;
+        }
+        return 0;
+      };
+      var i = 0;
+      while (i < input.Length) i += readByte(input[i]);
+      return output;
+    }
+
+    public static string encode(int licId, int counter) {
+      var b1 = BitConverter.GetBytes(licId);
+      var b2 = BitConverter.GetBytes(counter);
+      var b3 = new byte[] { b2[0], b2[1], b2[2], b1[0], b1[1] };
+      b3 = LowUtils.encrypt(b3);
+      return encode(b3).ToUpper();
+    }
+  }
+
   public static class ConvertNew {
     //Pro kodovani useku 5 bitu na znaky
     const string charCodesSrc = "PMF8UKESZ2TC3J76R14YBWDGV5XALNH9";
@@ -79,13 +116,13 @@ namespace LMNetLib {
       byte lastLen = (byte)(data[0] & 0x0F);
       bool incSignature = (data[0] & 0x10) != 0;
       int outputLen = data.Length - (incSignature ? 2 : 1);
-      if (incSignature && !checkCheck(data, 0, outputLen+1, data[outputLen+1]))
+      if (incSignature && !checkCheck(data, 0, outputLen + 1, data[outputLen + 1]))
         throw new Exception();
       int bitsLen = outputLen * 5;
       if (lastLen > 0) bitsLen = bitsLen + lastLen - 5;
       int length = bitsLen / 8;
       byte[] res = new byte[length];
-      Array.ForEach<byte>(res, delegate(byte b) { b = 0; });
+      Array.ForEach<byte>(res, delegate (byte b) { b = 0; });
       int bitStart, bitEnd, byteStart, byteEnd, startIdx, endIdx;
       byte actData;
       for (int resIdx = 0; resIdx < outputLen; resIdx++) {
@@ -199,7 +236,7 @@ namespace LMNetLib {
     }
 
     public static string ToBase32(byte[] data, ushort key, bool incSignature) {
-      return ToBase32 (data, 0, data.Length, key, incSignature);
+      return ToBase32(data, 0, data.Length, key, incSignature);
     }
 
     public static string ToBase32(byte[] data, ushort key) {

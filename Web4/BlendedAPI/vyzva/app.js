@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var vyzva;
 (function (vyzva) {
@@ -58,7 +57,7 @@ var vyzva;
     function initVyzvaStates(params) {
         params.$stateProvider.state({
             name: 'vyzvademo',
-            url: "/vyzvademo?companytitle&key",
+            url: "/vyzvademo?companytitle&key&hideorder",
             controller: vyzva.runController,
             templateUrl: blended.baseUrlRelToRoot + '/blendedapi/vyzva/views/vyzvademo.html',
             resolve: {
@@ -74,6 +73,14 @@ var vyzva;
             resolve: {
                 $vyzvaProvoz: vyzva.vyzvaProvoz
             }
+        });
+        params.$stateProvider.state(vyzva.stateNames.faq = {
+            name: 'faq',
+            url: "/faq?returnurl",
+            layoutSpecial: true,
+            templateUrl: pageTemplate,
+            layoutContentId: 'faq',
+            controller: vyzva.faqController,
         });
         vyzva.stateNames.root = new state({
             name: 'pg.ajs',
@@ -109,14 +116,14 @@ var vyzva;
                             layoutContentId: 'managerschool',
                             controller: vyzva.managerSchool,
                         }),
-                        vyzva.stateNames.faq = new state({
-                            name: 'faq',
-                            url: "/faq",
-                            layoutSpecial: true,
-                            templateUrl: pageTemplate,
-                            layoutContentId: 'faq',
-                            controller: vyzva.faqController,
-                        }),
+                        //stateNames.faq = new state({
+                        //  name: 'faq',
+                        //  url: "/faq",
+                        //  layoutSpecial: true,
+                        //  templateUrl: pageTemplate,
+                        //  layoutContentId: 'faq',
+                        //  controller: faqController,
+                        //}),
                         new state({
                             name: 'prod',
                             url: "/prod/:producturl/:taskid/:onbehalfof",

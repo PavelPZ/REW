@@ -32,6 +32,7 @@ namespace LMComLib {
     public string attFile;
     public string attContent;
     public string attContentType;
+    public string emailId;
   }
 
   public static class LMZipArchive {
@@ -138,7 +139,7 @@ namespace LMComLib {
                 sb.Append("START, url="); sb.AppendLine(req.Url.AbsoluteUri);
                 if (req.UrlReferrer != null) { sb.Append("referer="); sb.AppendLine(req.UrlReferrer.AbsoluteUri); }
                 sb.Append("agent="); sb.AppendLine(req.UserAgent);
-                var cook = LMCookie.DeserializeCookie(); if (cook != null) { sb.Append("cookie="); sb.AppendLine(JsonConvert.SerializeObject(cook)); }
+                var cook = LMCookie.DeserializeJSCookie(); if (cook != null) { sb.Append("cookie="); sb.AppendLine(JsonConvert.SerializeObject(cook)); }
                 sb.AppendLine(null);
               } catch { }
 

@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var blended;
 (function (blended) {
@@ -75,6 +74,7 @@ var blended;
                 Pager.gotoHomeUrl();
             }
         };
+        controller.prototype.canNavigateReturnUrl = function () { return this.ctx && this.ctx.returnurl; };
         controller.prototype.navigateReturnUrl = function () { location.href = this.ctx.returnurl; };
         controller.prototype.getProductHomeUrl = function () { return { stateName: blended.prodStates.home.name, pars: this.ctx }; };
         controller.prototype.navigateProductHome = function () { this.navigate(this.getProductHomeUrl()); };

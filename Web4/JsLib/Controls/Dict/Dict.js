@@ -59,7 +59,6 @@ var DictConnector;
     var isCtrlDown = false; /*ctrl key je stisknut*/
     var keyMousePos; /*souradnice mysi, zkopirovane v key-down z current_ev*/
     var model; //model
-    DictConnector.actDictData; //data Lingea slovniku pro modul, inicializovano v gramatice a modulu
     //var dicts: LMComLib.Dict[];
     function callDict() {
         if (DictConnector.actDictData == null)

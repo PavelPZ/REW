@@ -79,7 +79,48 @@
       }
       return super.congratulationDialog();
     }
-   state: state;
+    state: state;
   }
+
+  export class vyzva$exercise$keyboardkey {
+    constructor() {
+      this.link = (scope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
+        el.on('mousedown', () => {
+          var $focused = $(':focus');
+          if ($focused[0].tagName.toLowerCase() != 'input') return;
+          insertAtCaret($focused[0], scope.key);
+          return false;
+        });
+        
+      }
+    }
+    scope = { key: '@key' };
+    link;
+  }
+
+  function insertAtCaret(element, text) {
+    if (document.selection) {
+      element.focus();
+      var sel = document.selection.createRange();
+      sel.text = text;
+      element.focus();
+    } else if (element.selectionStart || element.selectionStart === 0) {
+      var startPos = element.selectionStart;
+      var endPos = element.selectionEnd;
+      var scrollTop = element.scrollTop;
+      element.value = element.value.substring(0, startPos) + text + element.value.substring(endPos, element.value.length);
+      element.focus();
+      element.selectionStart = startPos + text.length;
+      element.selectionEnd = startPos + text.length;
+      element.scrollTop = scrollTop;
+    } else {
+      element.value += text;
+      element.focus();
+    }
+  }
+
+  blended.rootModule
+    .directive('vyzva$exercise$keyboardkey', () => new vyzva$exercise$keyboardkey())
+  ;
 
 }

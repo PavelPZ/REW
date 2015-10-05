@@ -177,6 +177,8 @@
     lectorAutoScore: number; //skore cviceni bez Human eval
     lectorHumanScore: number; //skore zbylych viceni
 
+    keyboardLine: LMComLib.LineIds; //stranka obsahuje gapfill, kvuli objeveni keyboard
+
     //confirm dialog
     confirmWrongScoreDialog: () => ng.IPromise<any>;
 
@@ -284,6 +286,8 @@
       exImpl.page = pg; exImpl.result = this.user.long;
 
       pg.finishCreatePage(<CourseMeta.exImpl>(this.exercise.dataNode));
+      var hasGapFill = _.any(pg.items, it => it._tg == CourseModel.tgapFill);
+      if (hasGapFill) this.keyboardLine = this.product.line;
 
       pg.callInitProcs(Course.initPhase.beforeRender, () => { //inicializace kontrolek, 1
         var html = JsRenderTemplateEngine.render("c_gen", pg);

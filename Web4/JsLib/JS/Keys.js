@@ -15,6 +15,10 @@ var keys;
     }
     keys.toString = toString;
     function fromString(str) {
+        //if (str.indexOf('|') > 0) {
+        //  var parts = str.split('|');
+        //  return { licId: parseInt(parts[0]), counter: parseInt(parts[1]) };
+        //}
         var b3 = Base32.decode(str);
         b3 = LowUtils.decrypt(b3);
         var b2 = [b3[0], b3[1], b3[2], 0, 0, 0, 0, 0];

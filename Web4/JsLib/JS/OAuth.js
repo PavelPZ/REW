@@ -122,7 +122,6 @@ var OAuth;
     //https://github.com/valenting/ffos-google-contact-importer/blob/master/index.html
     "https://accounts.google.com/o/oauth2/auth", "https://www.googleapis.com/oauth2/v1/userinfo", "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile", "http://accounts.google.com/Logout", "https://www.googleapis.com/oauth2/v1/tokeninfo", 
     //"https://accounts.google.com/o/oauth2/auth", "https://www.googleapis.com/oauth2/v1/userinfo", "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile", "http://google.com/",
-    //"https://accounts.google.com/o/oauth2/auth", "https://www.googleapis.com/oauth2/v1/userinfo", "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile", "http://google.com/",
     function (obj, providerid) {
         //debugger;
         //var res: profile = { id: obj.id, email: obj.email, firstName: obj.given_name, lastName: obj.family_name, providerid: providerid }; return res;
@@ -145,7 +144,8 @@ var OAuth;
         s_skrivanek: '0000000048135E31',
     }, "https://login.live.com/oauth20_authorize.srf", 
     //"https://apis.live.net/v5.0/me", 
-    "https://apis.live.net/v5.0/me", "wl.signin wl.basic wl.emails", "https://login.live.com/", null, function (obj, providerid) { var res = { id: obj.id, email: _.compact(_.values(obj.emails))[0], firstName: obj.first_name, lastName: obj.last_name, providerid: providerid }; return res; });
+    "https://apis.live.net/v5.0/me", "wl.signin wl.basic wl.emails", "https://login.live.com/", null, //"https://apis.live.net/v5.0/me?method=GET&interface_method=undefined&pretty=false&return_ssl_resources=false&x_http_live_library=Web%2Fie10_5.3&suppress_redirects=true",
+    function (obj, providerid) { var res = { id: obj.id, email: _.compact(_.values(obj.emails))[0], firstName: obj.first_name, lastName: obj.last_name, providerid: providerid }; return res; });
     /********************* LM *****************************/
     addCfg(LMComLib.OtherType.LANGMaster, null, null, null, null, null, null, null);
     addCfg(LMComLib.OtherType.LANGMasterNoEMail, null, null, null, null, null, null, null);
@@ -197,7 +197,8 @@ var OAuth;
     }
     OAuth.checkForToken = checkForToken;
     function parseQueryString(qs) {
-        var e, a = /\+/g, r = /([^&;=]+)=?([^&;]*)/g, d = function (s) { return decodeURIComponent(s.replace(a, " ")); }, q = qs, urlParams = {};
+        var e, a = /\+/g, // Regex for replacing addition symbol with a space
+        r = /([^&;=]+)=?([^&;]*)/g, d = function (s) { return decodeURIComponent(s.replace(a, " ")); }, q = qs, urlParams = {};
         while (e = r.exec(q))
             urlParams[d(e[1])] = d(e[2]);
         return urlParams;

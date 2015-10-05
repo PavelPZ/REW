@@ -889,7 +889,6 @@ var LMComLib;
 //http://www.sitepoint.com/building-web-pages-with-local-storage/ 
 var Logger;
 (function (Logger) {
-    Logger.delphiLog;
     var ids = null;
     var logProc;
     var noIds = null;
@@ -1034,7 +1033,6 @@ var Logger;
             return;
         var log = getLog(inf);
         Pager.doAjaxCmd(true, Pager.path(Pager.pathType.loggerService), scorm.Cmd_Logger_Type, JSON.stringify(LMStatus.createCmd(function (r) { r.id = inf.id; r.data = log; })), 
-        //JSON.stringify(scorm.Cmd_Logger_Create(inf.id, log, 0, 0, null, null)),
         //JSON.stringify(scorm.Cmd_Logger_Create(inf.id, log, 0, 0, null, null)),
         function () { alert('Log successfully sent, thank you :-)'); clearLog(inf); refreshButtons(); });
     }
