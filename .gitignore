@@ -215,3 +215,11 @@ FakesAssemblies/
 !web4/app_data/testme/testmecertifikat.pdf
 !web4/app_data/testme/langmaster_pdf.pfx
 
+LMCom/releaseBin/LMComLib.dll.config
+LMCom/releaseBin/Microsoft.VisualStudio.OLE.Interop.xml
+LMCom/releaseBin/Newtonsoft.Json.xml
+LMCom/releaseBin/System.Reactive.Core.xml
+LMCom/releaseBin/System.Reactive.Interfaces.xml
+LMCom/releaseBin/System.Reactive.Linq.xml
+LMCom/releaseBin/System.Reactive.PlatformServices.xml
+LMCom/releaseBin/System.Windows.Interactivity.xml
