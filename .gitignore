@@ -223,3 +223,5 @@ LMCom/releaseBin/System.Reactive.Interfaces.xml
 LMCom/releaseBin/System.Reactive.Linq.xml
 LMCom/releaseBin/System.Reactive.PlatformServices.xml
 LMCom/releaseBin/System.Windows.Interactivity.xml
+
+*.js
