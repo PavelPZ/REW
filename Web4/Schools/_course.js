@@ -6254,7 +6254,9 @@ var testMe;
             });
         };
         Model.prototype.multiTest = function () { return CourseMeta.isType(CourseMeta.actCourseRoot, CourseMeta.runtimeType.multiTest) ? CourseMeta.actCourseRoot : null; };
-        Model.prototype.multiQuestionnaire = function () { return (_.find(this.multiTest().Items, function (it) { return CourseMeta.isType(it, CourseMeta.runtimeType.multiQuestionnaire); }).Items[0]); };
+        Model.prototype.multiQuestionnaire = function () {
+            return (_.find(this.multiTest().Items, function (it) { return CourseMeta.isType(it, CourseMeta.runtimeType.multiQuestionnaire); }).Items[0]);
+        };
         Model.prototype.multiActTest = function () {
             var mt = this.multiTest();
             var end = '/' + mt.level + '/';
@@ -10475,6 +10477,9 @@ var blended;
             exImpl.page = pg;
             exImpl.result = this.user.long;
             pg.finishCreatePage((this.exercise.dataNode));
+            var hasGapFill = _.any(pg.items, function (it) { return it._tg == CourseModel.tgapFill; });
+            if (hasGapFill)
+                this.keyboardLine = this.product.line;
             pg.callInitProcs(Course.initPhase.beforeRender, function () {
                 var html = JsRenderTemplateEngine.render("c_gen", pg);
                 CourseMeta.actExPageControl = pg; //knockout pro cviceni binduje CourseMeta.actExPageControl
@@ -11509,6 +11514,61 @@ var vyzva;
         return lessonTest;
     })(exerciseViewLow);
     vyzva.lessonTest = lessonTest;
+    var vyzva$exercise$keyboard = (function () {
+        function vyzva$exercise$keyboard() {
+            this.link = function (scope, el, attrs) {
+                setTimeout(function () {
+                    el.position();
+                    var pos = $('.keyboard-place').offset();
+                    el.css({ top: pos.top.toString() + 'px' });
+                    //debugger;
+                }, 1);
+            };
+        }
+        return vyzva$exercise$keyboard;
+    })();
+    vyzva.vyzva$exercise$keyboard = vyzva$exercise$keyboard;
+    var vyzva$exercise$keyboardkey = (function () {
+        function vyzva$exercise$keyboardkey() {
+            this.scope = { key: '@key' };
+            this.link = function (scope, el, attrs) {
+                el.on('mousedown', function () {
+                    var $focused = $(':focus');
+                    if ($focused[0].tagName.toLowerCase() != 'input')
+                        return;
+                    insertAtCaret($focused[0], scope.key);
+                    return false;
+                });
+            };
+        }
+        return vyzva$exercise$keyboardkey;
+    })();
+    vyzva.vyzva$exercise$keyboardkey = vyzva$exercise$keyboardkey;
+    function insertAtCaret(element, text) {
+        if (document.selection) {
+            element.focus();
+            var sel = document.selection.createRange();
+            sel.text = text;
+            element.focus();
+        }
+        else if (element.selectionStart || element.selectionStart === 0) {
+            var startPos = element.selectionStart;
+            var endPos = element.selectionEnd;
+            var scrollTop = element.scrollTop;
+            element.value = element.value.substring(0, startPos) + text + element.value.substring(endPos, element.value.length);
+            element.focus();
+            element.selectionStart = startPos + text.length;
+            element.selectionEnd = startPos + text.length;
+            element.scrollTop = scrollTop;
+        }
+        else {
+            element.value += text;
+            element.focus();
+        }
+    }
+    blended.rootModule
+        .directive('vyzva$exercise$keyboardkey', function () { return new vyzva$exercise$keyboardkey(); })
+        .directive('vyzva$exercise$keyboard', function () { return new vyzva$exercise$keyboard(); });
 })(vyzva || (vyzva = {}));
 
 //namespace vyzva {

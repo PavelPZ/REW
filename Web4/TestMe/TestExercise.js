@@ -175,7 +175,9 @@ var testMe;
             });
         };
         Model.prototype.multiTest = function () { return CourseMeta.isType(CourseMeta.actCourseRoot, CourseMeta.runtimeType.multiTest) ? CourseMeta.actCourseRoot : null; };
-        Model.prototype.multiQuestionnaire = function () { return (_.find(this.multiTest().Items, function (it) { return CourseMeta.isType(it, CourseMeta.runtimeType.multiQuestionnaire); }).Items[0]); };
+        Model.prototype.multiQuestionnaire = function () {
+            return (_.find(this.multiTest().Items, function (it) { return CourseMeta.isType(it, CourseMeta.runtimeType.multiQuestionnaire); }).Items[0]);
+        };
         Model.prototype.multiActTest = function () {
             var mt = this.multiTest();
             var end = '/' + mt.level + '/';

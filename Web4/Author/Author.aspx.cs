@@ -102,7 +102,6 @@ namespace Author {
         case authorModes.compileEx:
           var url4 = Request["url"].ToLower();
           Response.ClearContent();
-          //var fn3 = Machines.rootDir + url4.Replace('/', '\\') + ".xml";
           var log5 = new LoggerMemory(true);
           Response.Write(CourseMeta.buildLib.getResponseScript(vsNetServer.buildExFiles(url4, log5)));
           if (log5.hasError) { Response.Clear(); Response.Write(log5.Log().Replace("\r", "<br/>")); Response.End(); }

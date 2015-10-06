@@ -5,13 +5,7 @@
   <meta charset="utf-8" />
 </head>
 <body>
-  <div class="instr hidden-small" data-bind="css: tb.exerciseEvaluated() ? 'hide' : 'hidden-small'">
-    <a class="btn btn-link btn-block btn-default header" data-toggle="collapse" data-target="#collapse-instr2">
-      <span class="fa fa-chevron-down close"></span>
-      <span class="fa fa-info-circle fa-lg"></span>&nbsp;&nbsp;
-      <span data-bind="text: instrTitle">Vyberte správnou možnost.</span>
-    </a>
-    <div class="lm-collapse" id="collapse-instr2" data-bind="html: instrBody" data-role="collapsed"><h1 class="techInstr  ">VÝBĚR Z VÍCE MOŽNOSTÍ - PRÁVĚ JEDNA SPRÁVNÁ</h1><div class="oli-par">Vaším úkolem je z nabízených možností vybrat jednu správnou. Postupujte následovně:</div><ol type="1"><li>Klikněte levým tlačítkem myši na zvolenou možnost.</li><li>Chcete-li svoji volbu změnit, klikněte na nově vybranou možnost.</li></ol></div>
-  </div>
+  <div class="rtl" id="global-media"></div>
+  <div class="bl ng-scope" ng-app="appRoot"></div>
 </body>
 </html>

@@ -528,7 +528,7 @@ module CourseMeta {
   }
 
   export class pretestImpl extends courseNode {
-    //odovozena data
+    //odvozena data
     questionnaire: exImpl;
     result: exImpl;
     pretests: Array<pretestTaskImpl>;

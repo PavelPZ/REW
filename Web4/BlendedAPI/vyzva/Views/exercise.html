@@ -1,5 +1,5 @@
 ﻿<!--***************** LAYOUT -->
-<div class="topbar topbar-exercise" collapsablemanager="modulecollapsable">
+<div class="topbar topbar-exercise position-relative"  style="z-index:10;" collapsablemanager="modulecollapsable">
   <div class="container-fluid">
     <div class="container">
       <div class="pull-left" ng-include="'vyzva$common$topbarinnerleft.html'"></div>
@@ -16,7 +16,7 @@
   <div class="container-fluid" style="background-color:white;" ng-include="'vyzva$exercise$modulemorepanel.html'"></div>
 </div>
 <div class="container lm-top-margin" style="position:relative;">
-  <div class="instruction" ng-include="'vyzva$exercise$instruction.html'" ng-if="::!exService.lectorMode"></div>
+  <div class="instruction position-relative" style="z-index:10;" ng-include="'vyzva$exercise$instruction.html'" ng-if="::!exService.lectorMode"></div>
   <div class="keyboard-place" ng-if="::(exService.keyboardLine==2 || exService.keyboardLine==5) && !modService.showResult()"></div>
   <div ng-include="'vyzva$exercise$lectorhelp.html'" ng-if="::exService.lectorMode && exService.exType==2"></div>
   <div class="ex-lector-panel" ng-include="'vyzva$exercise$lector.html'" ng-if="::exService.lectorMode && exService.exType==2"></div>
@@ -25,13 +25,13 @@
   <div ng-include="'vyzva$exercise$lectorpretesthelp.html'" ng-if="::exService.lectorMode && exService.exType==0"></div>
   <div class="ex-lector-panel" ng-include="'vyzva$exercise$lectorpretest.html'" ng-if="::exService.lectorMode && exService.exType==0"></div>
   <div class="new-ea lm-top-margin" data-show-exercise="" ex-service="::exService"></div>
-  <div class="keyboard-fixed" ng-if="::exService.keyboardLine==2 && !modService.showResult()">
+  <div class="keyboard-fixed" vyzva$exercise$keyboard ng-if="::exService.keyboardLine==2 && !modService.showResult()">
     Speciální znaky pro němčinu:
-    <span ng-repeat="ch in ['a','b','c']" vyzva$exercise$keyboardkey key="{{::ch}}">{{::ch}}</span> 
+    <span ng-repeat="ch in ['ß','Ä','ä','Ü','ü','Ö','ö']" vyzva$exercise$keyboardkey key="{{::ch}}">{{::ch}}</span> 
   </div>
-  <div class="keyboard-fixed" ng-if="::exService.keyboardLine==5 && !modService.showResult()">
+  <div class="keyboard-fixed" vyzva$exercise$keyboard ng-if="::exService.keyboardLine==5 && !modService.showResult()">
     Speciální znaky pro francouzštinu:
-    <span ng-repeat="ch in ['d','e','f']" vyzva$exercise$keyboardkey key="{{::ch}}">{{::ch}}</span> 
+    <span ng-repeat="ch in ['ç','Ç','à','è','â','ê','î','ô','û','ù','Ù']" vyzva$exercise$keyboardkey key="{{::ch}}">{{::ch}}</span> 
   </div>
 </div>
 <div ng-include="'vyzva$common$copyright.html'"></div>

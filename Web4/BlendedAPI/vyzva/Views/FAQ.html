@@ -13,18 +13,9 @@
 
 <div class="container">
   <vyzva$faq$toc></vyzva$faq$toc>
-
-  <h3 class="text-info">Dotazy Studentů</h3>
-  <vyzva$faq$item type="Student" title="Učitel mi vyhodnotil test a já jej ve svém webovém prohlížeči vidím stále nevyhodnocený.">
-    V tomto případě pomůže stisknout klávesu <b class="text-danger">F5</b><br />
-    Váš webový prohlížeč tak ověří, zdali se něco od posledního jeho spuštění nezměnilo. 
-  </vyzva$faq$item>
-
-  <vyzva$faq$item type="Student" title="Nemohu pokračovat ve studiu, protože nemám dostupné tlačítko Spustit u žádné lekce ani testu.">
-    Pravděpodobně jste ve <i>Vstupním</i> nebo <i>Kontrolním testu</i> nedosáhl(a) potřebného skóre. Musíte počkat, dokud <i>Učitel</i> nerozhodne o dalším postupu.
-  </vyzva$faq$item>
-
-  <vyzva$faq$item type="Student" title="Nefunguje mi přehrávání nebo nahrávání zvuku, co mám dělat?">
+  
+  <h3 class="text-info">Obecné dotazy</h3>  
+    <vyzva$faq$item type="Obecné dotazy" title="Nefunguje mi přehrávání nebo nahrávání zvuku, co mám dělat?">
     Před spuštěním výuky máte možnost spustit kontrolu přehrávání a nahrávání zvuku. Pokud se kontrola z nějakého důvodu nezdaří, 
     ověřte zejména následující:
     <ul>
@@ -36,24 +27,81 @@
     Pokud žádná z výše uvedených rad nepomůže, obraťte se na správce počítačů ve Vaší škole.
   </vyzva$faq$item>
 
+  <vyzva$faq$item type="Obecné dotazy" title="Nefunguje mi nahrávání v prohlížeči Google Chrome, Firefox, Opera (využívající HTML5).">
+     Proveďte aktualizaci prohlížeče na poslední verzi. Zkuste ověřit  <a href="http://webaudiodemos.appspot.com/AudioRecorder/index.html" target="_blank">funkčnost nahrávání na této stránce</a>. Pokud nefunguje ani zde, pak je pravděpodobně něco špatně s konfigurací vašeho počítače.  
+  </vyzva$faq$item>
+
+  <vyzva$faq$item type="Obecné dotazy" title="Nefunguje mi nahrávání v iOS Safari.">
+    Podpora nahrávání na této platformě je od verze 6.0. Pokud ji máte, tak zkuste ověřit  <a href="http://webaudiodemos.appspot.com/AudioRecorder/index.html" target="_blank">funkčnost nahrávání na této stránce</a>. Pokud nefunguje ani zde, pak je pravděpodobně něco špatně s konfigurací vašeho počítače.  
+  </vyzva$faq$item>
+
+  <vyzva$faq$item type="Obecné dotazy" title="Nefunguje mi nahrávání v prohlížeči Internet Explorer (využívající Silverlight).">
+     Pro nahrávání je potřeba mít nainstalované rozšíření Silverlight od společnosti Microsoft. Ověřte, zda ho máte správně nainstalované a aplikaci jste povolil přístup k mikrofonu.   
+  </vyzva$faq$item>
+
+
+  <vyzva$faq$item type="Obecné dotazy" title="Nedaří se mi přihlášení nebo spuštění nějaké části a dříve to přitom spolehlivě fungovalo.">
+    Pokud je v pořádku připojení k internetu, zkuste promazat cache prohlížeče (klávesová zkratka ctrl+shift+del), počítač restartujte a zkuste to znovu. Pokud to stále nejde, zkuste jiný prohlížeč na stejném počítači nebo stejnou akci na jiném počítači. Pokud se stále nedaří, kontaktujte naši technickou podporu. 
+  </vyzva$faq$item>
+
+  <vyzva$faq$item type="Obecné dotazy" title="Je možné studovat kurzy ve škole i z domova? Případně - je nějak určené, co se má studovat ve škole a co doma?">
+    Kurzy se na jedné straně dají kompletně studovat doma (s tím, že učitele pouze kontroluje výsledky a doporučuje další postup), na druhé straně je možné je studovat i výhradně ve škole pod přímým dohledem učitele. Vhodný poměr mezi těmito krajními možnostmi může každý učitel stanovit podle vlastních metod výuky a možností školy i jednotlivých žáků.  
+  </vyzva$faq$item>
+
+
+  <h3 class="text-info">Dotazy Studentů</h3>
+
+  <vyzva$faq$item type="Student" title="Učitel mi vyhodnotil test, ale já jej ve svém webovém prohlížeči vidím stále nevyhodnocený.">
+    V tomto případě pomůže stisknout klávesu <b class="text-danger">F5</b><br />
+    Váš webový prohlížeč tak ověří, zdali se něco od jeho posledního spuštění nezměnilo. 
+  </vyzva$faq$item>
+
+  <vyzva$faq$item type="Student" title="Nejsem spokojen s hodnocením v testu/lekci nebo s jazykovou úrovní získanou z rozřazovacího testu. / Kvůli technickým problémům jsem test/lekci pokazil.">
+    Domluvte se se svým <i>Učitelem</i>, tem vám může jakoukoliv část obnovit a vy ji můžete projít znovu.
+  </vyzva$faq$item>
+
+  <vyzva$faq$item type="Student" title="Nemohu pokračovat ve studiu, protože nemám dostupné tlačítko Spustit u žádné lekce ani testu.">
+    Pravděpodobně jste ve <i>Vstupním</i> nebo <i>Kontrolním testu</i> nedosáhl(a) potřebného skóre. Musíte počkat, dokud <i>Učitel</i> nerozhodne o dalším postupu.
+  </vyzva$faq$item>
+
+  <h3 class="text-info">Dotazy Hostů</h3>
+  <vyzva$faq$item type="Host" title="Jakým způsobem mohu projít celý kurz?">
+    Protože účet hosta nemá přiřazeného žádného učitele, je nutné, aby byl každý test splněn alespoň na 65%. V tomto případě se budou automaticky odemykat další Studijní bloky. V opačném případě nebude možné pokračovat ve studiu.
+  </vyzva$faq$item>
+  
   <h3 class="text-info">Dotazy Učitelů</h3>
-  <vyzva$faq$item type="Učitel" title="Student dokončil test, ale já v jeho výsledních vidím jeho test stále nedokončený.">
+  <vyzva$faq$item type="Učitel" title="Student dokončil test, ale já v jeho výsledcích vidím jeho test stále nedokončený.">
     V tomto případě stiskněte klávesu <b class="text-danger">F5</b> (refresh).<br />
     Váš webový prohlížeč aktualizuje stránku.
   </vyzva$faq$item>
 
-
-  <vyzva$faq$item type="Učitel" title="Student zadal licenční klíc a já jeho jméno nevidím v seznamu.">
+  <vyzva$faq$item type="Učitel" title="Student zadal licenční klíc, ale já jeho jméno nevidím v seznamu.">
     <i>Student</i> musí nejen zadat licenční klíč, ale i spustit kurz. Také můžete zkusit provést obnovu stránky (klávesa F5) nebo vypněte a zapněte prohlížeč.
   </vyzva$faq$item>
   <vyzva$faq$item type="Učitel" title="Mohu pro danou skupinu přidělit jen jeden klíč pro Učitele a další až v případě potřeby?">
     Ano, samozřejmě.
   </vyzva$faq$item>
 
-  <!--<h3 class="text-info">Dotazy správců</h3>
-  <vyzva$faq$item type="Správce" title="Co když omylem zadám studijní skupinu navíc?">
-    Můžete ji smazat pomocí křížku vpravo
-  </vyzva$faq$item>-->
+  <vyzva$faq$item type="Učitel" title="Student není spokojen s výsledkem testu/lekce, jak s tím mohu udělat?">
+    Máte možnost každý  test/lekci resetovat a určit k novému projití. Vyberte studijní skupinu, ve které je student přiřazený, klikněte na ikonku s výsledky v pravé části a poté otevřete dotyčný test/lekci. Kromě možnosti ohodnotit mluvení zde můžete danou test/lekci resetovat a student ji pak musí projít znovu. 
+  </vyzva$faq$item>
+
+  <vyzva$faq$item type="Učitel" title="Co bude studovat vyspělý student (nebo studující učitel), když dokončí kurz na úrovni B2?">
+    Takovým studentům poskytneme přístup k našim standardním kurzům. Navíc: bude-li zájem ze strany škol, jsme schopni připravit další kurzy, například na gramatiku, slovní zásobu apod.  
+  </vyzva$faq$item>
+
+  <h3 class="text-info">Dotazy správců</h3>
+  <vyzva$faq$item type="Správce" title="Student nebo Studujícího učitel je zařazen ve špatné studijní skupině nebo student omylem využil dva klíče.">
+    Kontaktujte nás, vše vyřešíme. Je potřeba zaslat: licenční klíč správce studijní skupiny a licenční klíč, který se má nahradit.
+  </vyzva$faq$item>
+
+  <vyzva$faq$item type="Správce" title="Student nebo Studující učitel má špatně vyplněné jméno/příjmení.">
+    Řešení záleží na způsobu přihlášení. Pokud využíváte přihlášení LANGMaster stačí, když se tento uživatel přihlásí, klikne na ikonku vpravo nahoře a jméno/příjmení změní. Pokud pro přihlášení využívá Facebook, Microsoft nebo Google, je třeba změnit jméno na těchto službách a toto se následně přenese k nám.
+  </vyzva$faq$item>
+
+  <vyzva$faq$item type="Správce" title="Budeme moci přidávat, rušit nebo přejmenovávat skupiny? Bude moci studovat víc studentů, než odpovídá zakoupeným šablonám?">
+    Na začátku kalendářního roku 2016 bude v systému možné libovolně zakládat, rušit i upravovat studijní skupiny. Počet studentů nebude nijak omezen. (Současné omezení je vynucené podmínkami Výzvy 57). Pro potřeby výstupů z našeho systému změnu názvů skupin apod. včas umožníme.
+  </vyzva$faq$item>
 
   <script type="text/ng-template" id="vyzva$faq$item.html">
     <div class="panel panel-default" data-toc="{{datatoc}}" id="{{id}}">

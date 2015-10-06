@@ -587,14 +587,14 @@ fieldset[disabled] .bl .btn-succes-info.active {
   background-color: white;
   position: fixed;
   padding-top: 5px;
-  top: 110px;
+  z-index: 0;
 }
 .bl .keyboard-fixed span {
   border: solid #dddddd 1px;
   background-color: #fcf8e3;
   font-weight: bold;
   border-radius: 4px;
-  padding: 4px 7px;
+  padding: 4px 15px;
   font-size: 16px;
   cursor: pointer;
 }

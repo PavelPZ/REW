@@ -91,6 +91,20 @@ var vyzva;
         return lessonTest;
     })(exerciseViewLow);
     vyzva.lessonTest = lessonTest;
+    var vyzva$exercise$keyboard = (function () {
+        function vyzva$exercise$keyboard() {
+            this.link = function (scope, el, attrs) {
+                setTimeout(function () {
+                    el.position();
+                    var pos = $('.keyboard-place').offset();
+                    el.css({ top: pos.top.toString() + 'px' });
+                    //debugger;
+                }, 1);
+            };
+        }
+        return vyzva$exercise$keyboard;
+    })();
+    vyzva.vyzva$exercise$keyboard = vyzva$exercise$keyboard;
     var vyzva$exercise$keyboardkey = (function () {
         function vyzva$exercise$keyboardkey() {
             this.scope = { key: '@key' };
@@ -130,5 +144,6 @@ var vyzva;
         }
     }
     blended.rootModule
-        .directive('vyzva$exercise$keyboardkey', function () { return new vyzva$exercise$keyboardkey(); });
+        .directive('vyzva$exercise$keyboardkey', function () { return new vyzva$exercise$keyboardkey(); })
+        .directive('vyzva$exercise$keyboard', function () { return new vyzva$exercise$keyboard(); });
 })(vyzva || (vyzva = {}));

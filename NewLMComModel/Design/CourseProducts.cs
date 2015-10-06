@@ -85,12 +85,13 @@ namespace CourseMeta {
           node = Lib.publishers.find(rootUrl);
           yield return prodDef.genCourse(Lib.publishers, "skrivanek", "prods/etestme-comp/" + lang.ToString() + "/" + id, lang, true, dictTypes.no, new Langs[] { Langs.cs_cz }, node.title + " (" + transComplete[lang] + ")",
             new ptr(
-              lang != CourseIds.English ? "needs=recording" : string.Format("needs=recording;demoTestUrl=/skrivanek/prods/etestme-comp-demo/{0}/{1}/", lang, id),
-              rootUrl) { takeChilds = childMode.selfChild }
+              //lang != CourseIds.English ? "needs=recording" : string.Format("needs=recording;demoTestUrl=/skrivanek/prods/etestme-comp-demo/{0}/{1}/", lang, id),
+              string.Format("needs=recording;demoTestUrl=/skrivanek/prods/etestme-comp-demo/{0}/{1}/", lang, id), rootUrl) { takeChilds = childMode.selfChild }
           );
           yield return prodDef.genCourse(Lib.publishers, "skrivanek", "prods/etestme-std/" + lang.ToString() + "/" + id, lang, true, dictTypes.no, new Langs[] { Langs.cs_cz }, node.title + " (" + transStandard[lang] + ")",
             new ptr(
-              lang != CourseIds.English ? "needs=playing" : string.Format("needs=playing;demoTestUrl=/skrivanek/prods/etestme-std-demo/{0}/{1}/", lang, id),
+              //lang != CourseIds.English ? "needs=playing" : string.Format("needs=playing;demoTestUrl=/skrivanek/prods/etestme-std-demo/{0}/{1}/", lang, id),
+              string.Format("needs=playing;demoTestUrl=/skrivanek/prods/etestme-std-demo/{0}/{1}/", lang, id),
               rootUrl) { takeChilds = childMode.selfChild, take = 3 }
           );
           yield return prodDef.genCourse(Lib.publishers, "skrivanek", "prods/etestme-comp-demo/" + lang.ToString() + "/" + id, lang, true, dictTypes.no, new Langs[] { Langs.cs_cz }, node.title + " (demo for complete)",

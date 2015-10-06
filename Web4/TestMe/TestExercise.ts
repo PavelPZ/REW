@@ -178,7 +178,9 @@
     }
 
     multiTest(): multiTestImpl { return CourseMeta.isType(CourseMeta.actCourseRoot, CourseMeta.runtimeType.multiTest) ? <multiTestImpl>CourseMeta.actCourseRoot : null; }
-    multiQuestionnaire(): CourseMeta.exImpl { return <CourseMeta.exImpl>(_.find(this.multiTest().Items, it => CourseMeta.isType(it, CourseMeta.runtimeType.multiQuestionnaire)).Items[0]); }
+    multiQuestionnaire(): CourseMeta.exImpl {
+      return <CourseMeta.exImpl>(_.find(this.multiTest().Items, it => CourseMeta.isType(it, CourseMeta.runtimeType.multiQuestionnaire)).Items[0]);
+    }
     multiActTest(): testImpl {
       var mt = this.multiTest();
       var end = '/' + mt.level + '/';

@@ -36,6 +36,9 @@ namespace CubesDeployment {
 
     static void Main(string[] args) {
 
+      CubesDeployment.BlendedBatches.gitNormalize();
+      return;
+
       //CourseMeta.Lib.init(new LoggerMemory(true), @"d:\lmcom\", false);
       //return;
 
@@ -319,12 +322,15 @@ namespace CubesDeployment {
               //CourseMeta.lib.publishers.find("lm/oldea/french2/grammar/sec06/g11").tradosOper1(log);
 
               try {
-                //******* vse
+                //vse
                 CourseMeta.Lib.init(log, @"d:\lmcom\", false);
 
-                //CourseMeta.data.tradosOper1(new CourseMeta.data[] { CourseMeta.lib.publishers.find("/lm/etestme/english/") }, log);
+                //CourseMeta.data.tradosOper1(new CourseMeta.data[] { CourseMeta.Lib.publishers.find("/skrivanek/questionnaire/") }, log);
 
-                //Oper1 na data a instrukce
+                //var pages = CourseMeta.data.tradosOper1Pages(CourseMeta.lib.publishers.finds("lm/oldea/russian1","lm/oldea/russian2","lm/oldea/russian3"), log, true).ToArray();
+                //TradosLib.oper1NewTradosPages(pages, true);
+
+                //Oper1
                 CourseMeta.Lib.publishers.tradosOper1(log);
 
                 //Oper2 na data a instrukce
@@ -365,29 +371,29 @@ namespace CubesDeployment {
               //var files = CourseMeta.WebBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + webBatchId + ".xml").getWebBatchFiles().ToArray();
               //if (files != null) return;
 
-              /***** LM FE5 web ****/
+              /***** LM FE5 web ***
               //CourseMeta.buildLib.writeVirtualFiles(CourseMeta.WebBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\LM_debug.xml").getWebBatchFiles(logger));
 
               /***** ALAN ZIP ****/
-              //webBatchId = "alan_data";
-              //string zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; var tempZip = @"c:\temp\build.zip";
-              //CourseMeta.buildLib.zipVirtualFiles(tempZip, CourseMeta.WebBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + webBatchId + ".xml").getWebBatchFiles(logger), logger);
-              //if (File.Exists(zipFn)) File.Delete(zipFn); File.Move(tempZip, zipFn);
+                //webBatchId = "alan_data";
+                //string zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; var tempZip = @"c:\temp\build.zip";
+                //CourseMeta.buildLib.zipVirtualFiles(tempZip, CourseMeta.WebBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + webBatchId + ".xml").getWebBatchFiles(logger), logger);
+                //if (File.Exists(zipFn)) File.Delete(zipFn); File.Move(tempZip, zipFn);
 
-              /***** GRAFIA ZIP ****/
-              //webBatchId = "grafia_data";
-              //string zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; var tempZip = @"c:\temp\build.zip";
-              //if (File.Exists(tempZip)) File.Delete(tempZip); if (File.Exists(zipFn)) File.Delete(zipFn);
-              //var ignExts = new HashSet<string> { ".webm", ".mp4" };
-              //CourseMeta.buildLib.zipVirtualFiles(
-              //  tempZip,
-              //  CourseMeta.WebBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + webBatchId + ".xml").getWebBatchFiles(logger),
-              //  logger,
-              //  f => !ignExts.Contains(Path.GetExtension(f.srcPath)));
-              //File.Move(tempZip, zipFn);
+                /***** GRAFIA ZIP ****/
+                //webBatchId = "grafia_data";
+                //string zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; var tempZip = @"c:\temp\build.zip";
+                //if (File.Exists(tempZip)) File.Delete(tempZip); if (File.Exists(zipFn)) File.Delete(zipFn);
+                //var ignExts = new HashSet<string> { ".webm", ".mp4" };
+                //CourseMeta.buildLib.zipVirtualFiles(
+                //  tempZip,
+                //  CourseMeta.WebBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + webBatchId + ".xml").getWebBatchFiles(logger),
+                //  logger,
+                //  f => !ignExts.Contains(Path.GetExtension(f.srcPath)));
+                //File.Move(tempZip, zipFn);
 
-              /***** refresh LM web *****/
-              CourseMeta.Lib.init(logger, @"d:\lmcom\", true);
+                /***** refresh LM web *****/
+                CourseMeta.Lib.init(logger, @"d:\lmcom\", true);
               CourseMeta.buildLib.writeVirtualFiles(CourseMeta.WebDataBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\LM_Data_New.xml").getWebBatchFiles(logger));
               break;
             case '8':

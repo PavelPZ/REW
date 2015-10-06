@@ -82,6 +82,20 @@
     state: state;
   }
 
+  export class vyzva$exercise$keyboard {
+    constructor() {
+      this.link = (scope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
+        setTimeout(() => {
+          el.position();
+          var pos = $('.keyboard-place').offset();
+          el.css({ top: pos.top.toString() + 'px' });
+          //debugger;
+        }, 1);
+      }
+    }
+    link;
+  }
+
   export class vyzva$exercise$keyboardkey {
     constructor() {
       this.link = (scope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
@@ -121,6 +135,7 @@
 
   blended.rootModule
     .directive('vyzva$exercise$keyboardkey', () => new vyzva$exercise$keyboardkey())
+    .directive('vyzva$exercise$keyboard', () => new vyzva$exercise$keyboard())
   ;
 
 }

@@ -765,19 +765,21 @@ namespace CourseMeta {
             foreach (var it in res2.Items.Cast<test>()) it.Items = it.Items.OrderBy(d => d.order).Take(3).ToArray();
           //demoTestUrl
           foreach (var it in res2.Items.Cast<test>()) {
-            if (res2.line == LineIds.English) //zatim jen pro anglictinu!!!
-              it.demoTestUrl = (islm ? "/lm" : "/skrivanek") + string.Format("/prods/etestme-{0}-demo/{1}/{2}/", takeChilds == childMode.skrivanek_multiTest_std ? "std" : "comp", res2.line, it.level);
+            //if (res2.line == LineIds.English) //zatim jen pro anglictinu!!!
+            it.demoTestUrl = (islm ? "/lm" : "/skrivanek") + string.Format("/prods/etestme-{0}-demo/{1}/{2}/", takeChilds == childMode.skrivanek_multiTest_std ? "std" : "comp", res2.line, it.level);
             it.needs = isStd ? testNeeds.playing : testNeeds.recording;
           }
           //questionnaire
-          Array.Resize(ref res2.Items, res2.Items.Length + 1);
           data quests = root.find("/skrivanek/questionnaire/", log).clone();
           quests.line = src.getLine();
           quests.type |= runtimeType.multiQuestionnaire;
-          //var url = (res2.url.Replace("/skrivanek/", "/skrivanek/questionnaire/").TrimEnd('/') + (isStd ? "std" : null)).ToLower();
-          //quests.Items = quests.Items.Where(it => it.url == url).ToArray();
-          //quests.Items[0].type |= runtimeType.multiQuestionnaire;
-          res2.Items[res2.Items.Length - 1] = quests;
+          var url = (res2.url.Replace("/skrivanek/", "/skrivanek/questionnaire/").TrimEnd('/') + (isStd ? "std" : null)).ToLower();
+          quests.Items = quests.Items.Where(it => it.url == url).ToArray();
+          if (quests.Items.Length == 1) {
+            quests.Items[0].type |= runtimeType.multiQuestionnaire;
+            Array.Resize(ref res2.Items, res2.Items.Length + 1);
+            res2.Items[res2.Items.Length - 1] = quests;
+          }
           yield return res2;
           break;
       }

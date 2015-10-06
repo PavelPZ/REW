@@ -255,6 +255,7 @@
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.js" />
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.structure.css" />
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.theme.css" />
+    <Content Include="Author\Author.html" />
     <Content Include="BlendedAPI\Doc.txt" />
     <None Include="BlendedAPI\Styles\style.less" />
     <None Include="BlendedAPI\Styles\exercise.less" />
@@ -357,8 +358,6 @@
     <Content Include="Author\xref.html" />
     <Content Include="Author\doc.html" />
     <Content Include="Author\vsNet.html" />
-    <Content Include="Author\xref.xml" />
-    <Content Include="Author\xrefSitemap.js" />
     <Content Include="BS3\js\modal.js" />
     <Content Include="BS3\js\tooltip.js" />
     <Content Include="BS3\less\RTL\button-groups-rtl.css">
