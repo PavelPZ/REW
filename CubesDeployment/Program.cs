@@ -36,9 +36,6 @@ namespace CubesDeployment {
 
     static void Main(string[] args) {
 
-      CubesDeployment.BlendedBatches.gitNormalize();
-      return;
-
       //CourseMeta.Lib.init(new LoggerMemory(true), @"d:\lmcom\", false);
       //return;
 
