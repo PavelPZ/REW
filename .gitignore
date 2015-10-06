@@ -230,7 +230,6 @@ web4/siteroot.all.js
 *.gzip
 Web4/Schools/SLExtension.dll
 
-*.min.js
-*.js.map
+*.js
 *.dll
 *.exe

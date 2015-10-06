@@ -11,12 +11,13 @@ namespace CubesDeployment {
     //projde cisty GIT a vyresi TS x JS duplicity
     public static void gitNormalize() {
       //var basicPath = @"d:\temp\git\Web4"; var toRemove = @"d:\temp\gitremove\Web4";
-      var basicPath = @"d:\LMCom\rew\"; var toRemove = @"d:\temp\gitremove2\Web4";
+      var basicPath = @"d:\LMCom\rew"; var toRemove = @"d:\temp\gitremove2\Web4";
       var allTS = Directory.EnumerateFiles(basicPath, "*.ts", SearchOption.AllDirectories);
       var jsWithTS = allTS.Select(ts => Path.ChangeExtension(ts, ".js")).Where(js => File.Exists(js)).ToArray();
       foreach (var js in jsWithTS) {
         var newJS = toRemove + js.Substring(basicPath.Length);
         LowUtils.AdjustFileDir(newJS);
+        if (File.Exists(newJS)) File.Delete(newJS);
         File.Move(js, newJS);
       }
       //var allTS2 = Directory.EnumerateFiles(basicPath2, "*.ts", SearchOption.AllDirectories);
