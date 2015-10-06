@@ -1,0 +1,156 @@
+﻿<!--<div vyzva$lector$tabs act-idx="ts.tabIdx" do-navigate="ts.navigateWrapper()"></div>-->
+
+<h2><i class="fa fa-user-times"></i> {{::ts.title}}</h2>
+
+<div class="alert help-panel help-warning lm-bottom-margin" collapsablemanager="+lectorhelp">
+  <div class="h3 help-header" ng-click="lectorhelp.collapseToogle()">
+    <div class="more fa fa-question-circle"></div>
+    Zahájení a řízení výuky
+  </div>
+  <div class="help-content" collapse="lectorhelp.isCollapsed">
+    <div class="help-close" ng-click="lectorhelp.collapseToogle()"><i class="fa fa-times"></i></div>
+    <div class="row">
+      <div class="col-sm-6">
+        <h4>Zahájení výuky (tj. rozdání <i>Licenčních klíčů</i>)</h4>
+        <ul>
+          <li>
+            Každému <i>Studentovi</i> vaší <i>Studijní skupiny</i> dejte jeden z <i>Licenčních klíčů</i> ze seznamu níže.
+          </li>
+          <li>
+            <i>Student</i> pak na hlavní stránce aplikace zadá tento <i>Licenční klíč</i> tak, jako jste Vy zadal <i>Licenční klíč</i>, který Vám předal váš <i>Správce</i> výuky.
+          </li>
+          <li>
+            Po zadání <i>Licenčního klíče</i> <i>Studentem</i>:<br />
+            - bude <i>Student</i> moci spustit kurz,<br />
+            - údaje o <i>Studentovi</i> (Jméno, Příjmení, EMail) se objeví v tabulce níže.
+          </li>
+          <li>
+            Jak Vy, tak kdokoliv z vaší školy si může vyzkoušet kurz. K tomu jsou určeny <i>Licenční klíče</i> pro <i>Hosty</i>.
+            Tyto klíče můžete poskytnout komukoliv - výuka ale v tomto případě nebude řízena <i>Učitelem</i>.
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <h4>Řízení výuky</h4>
+        U zvoleného <i>Studenta</i> klikněte na <b>Výsledky</b>. To vám umožní:
+        <ul>
+          <li>prohlížet výsledky práce <i>Studenta</i>, tj. skóre v jednotlivých cvičeních, včetně chyb, které <i>Student</i> udělal,</li>
+          <li>poslouchat nahrávky <i>Studentů</i> v rámci audio-orální metody,</li>
+          <li>ohodnotit kvalitu mluveného projevu <i>Studentů</i> v kontrolních testech, včetně vstupního a závěrečného,</li>
+          <li>změnit jazykovou úroveň kurzu, který <i>Student</i> studuje, tj. A1, A2, B1 nebo B2,</li>
+          <li>řídit <i>Studentův</i> průchod kurzem, tj. <b>Povolit</b>/<b>Nepovolit</b> pokračování v kurzu po absolvování testu a umožnit opakování nepovedené lekce,</li>
+          <li>mít přehled o čase, který <i>Student</i> strávil poslechem nahrávek rodilých mluvčích, o množství jím nahraného zvuku apod.</li>
+        </ul>
+        <h4 class="lm-top-margin">Exporty do Excelu</h4>
+        <p>
+          Využijte exportů do Excelu k získání mnoha zajímavých údajů o výuce.<br />
+          <b>Poznámka: </b> Exporty mají význam pouze tehdy, pokud již ve vaší <i>Studijní skupině</i> započala výuka.
+        </p>
+      </div>
+    </div>
+    <div class="when-problem" vyzva$common$whenproblem></div>
+  </div>
+</div>
+
+<div class="alert help-panel help-default export-table" collapsablemanager="lectorhelpreports">
+  <div class="h3 help-header" ng-click="lectorhelpreports.collapseToogle()">
+    <div class="more fa fa-bars"></div>
+    Exporty do Excelu
+  </div>
+  <div class="help-content" collapse="lectorhelpreports.isCollapsed">
+    <div class="help-close" ng-click="lectorhelpreports.collapseToogle()"><i class="fa fa-times"></i></div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="btn btn-success btn-lg" ng-click="::ts.downloadLicenceKeys()"><i class="fa fa-file-excel-o"></i> Seznam studentů do Excelu</div><br />
+        Tento export obsahuje přehled <i>Studijních skupin</i> včetně seznamu <i>Studentů</i> jednotlivých Studijních skupin a jejich klíčů. Využijte jej pro snazší rozdání <i>Licenčních klíčů</i> <i>Studentům</i>.
+      </div>
+      <div class="col-sm-6">
+        <div class="btn btn-success btn-lg" ng-click="::ts.downloadSummary()"><i class="fa fa-file-excel-o"></i> Průběžné výsledky studia</div><br />
+        Přehledy o výuce včetně následujících detailů:
+        <ul>
+          <li>kolik vteřin zvuku <i>Student</i> nahrál v rámci audio-orální metody</li>
+          <li>čas strávený <i>Studentem</i> při poslechu nahrávek rodilých mluvčích</li>
+          <li>skóre dosažené ve všech cvičeních všech testů a lekcí</li>
+          <li>pokrok ve studiu a mnoho dalších údajů</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div vyzva$lector$users students="::ts.students" ts="::ts"></div>
+
+<div class="alert alert-default" ng-if="::appService.isLangmasterUser()">
+  <h2>Toto vidí (doufám) jen LANGMaster</h2>
+  <p>Po přidání x ubrání klíčů se musí udělat Refresh. Bojím se nyní udělat výrazné zásahy do aplikace, aby nebyl refresh potřeba.</p>
+  <h4>Nepodařilo se správně použít přidělený počet Licenčních klíčů pro Studenty?...</h4>
+  <p class="lm-bottom-margin">... pak využijte některou z následujících akcí</p>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="btn btn-default btn-sm" ng-click="::ts.addKey()">Nový Licenční klič pro Studenta</div><br />
+      Licenční klíč se objeví v posledním řádku tabulky výše.
+    </div>
+    <div class="col-sm-6">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Licenční klíč..." ng-model="ts.deleteKeyValue">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button" ng-click="::ts.deleteKey()">Odebrat studentovi Licenční klič</button>
+        </span>
+      </div>
+      <i class="fa fa-exclamation-triangle"></i> 
+      Upozornění: odebráním Licenčního klíče vybranému studentovi se přijde o všechny výsledky jeho dosavadního studia.
+    </div>
+  </div>
+</div>
+
+<div vyzva$lector$visitors students="::ts.visitors" ts="::ts"></div>
+
+<script type="text/ng-template" id="vyzva$lector$user.html">
+  <td><b>{{::student().key.firstName}} {{::student().key.lastName}} <span ng-if="student().key.email">(<a href="mailto:{{::student().key.email}}">{{::student().key.email}}</a>)</span></b></td>
+  <td>{{::student().key.keyStr}}</td>
+  <td>
+    <button ng-if="::student().key.lmcomId" class="btn btn-success btn-sm" ng-click="::ts().gotoStudentResult(student())">Výsledky <i class="fa fa-hand-o-right"></i></button>&nbsp;
+  </td>
+</script>
+
+<script type="text/ng-template" id="vyzva$lector$users.html">
+  <h3 class="primary">Seznam studentů</h3>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr class="active">
+        <th>Jméno, příjmení, email</th>
+        <th>Licenční klíč</th>
+        <th>Výsledky</th>
+      </tr>
+    </thead>
+    <tr ng-repeat="student in students" vyzva$lector$user="" student="::student" ts="::ts()"></tr>
+  </table>
+</script>
+
+<script type="text/ng-template" id="vyzva$lector$visitors.html">
+  <h3 class="primary">Seznam hostů</h3>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr class="active">
+        <th>Jméno, příjmení, email</th>
+        <th>Licenční klíč</th>
+      </tr>
+    </thead>
+    <tr ng-repeat="student in ::students()" vyzva$lector$visitor="" student="::student" ts="::ts()"></tr>
+  </table>
+</script>
+
+<script type="text/ng-template" id="vyzva$lector$visitor.html">
+  <td><b>{{::student().key.firstName}} {{::student().key.lastName}} <span ng-if="student().key.email">(<a href="mailto:{{::student().key.email}}">{{::student().key.email}}</a>)</span></b></td>
+  <td>{{::student().key.keyStr}}</td>
+</script>
+
+<script type="text/ng-template" id="vyzva$lector$tabs.html">
+  <tabset type="pills" class="lm-top-margin">
+    <tab ng-repeat="it in ::tabs" heading="{{::it.shortTitle}}" select="navigate(it.idx)" active="::it.idx==actIdx()"></tab>
+  </tabset>
+  <div class="lm-tabs-header">
+    <h3>{{::tabs[actIdx()].shortTitle || tabs[actIdx()].longTitle}}</h3>
+  </div>
+</script>

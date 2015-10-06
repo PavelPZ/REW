@@ -23,6 +23,7 @@
       $scope.params = $state.params;
       if (!test.root.$scope) return;
       test.root.$scope.topBarInclude = 'app/views/topbar.html';
+      test.root.$scope.bodyScrollHidden = false;
       var data = <IPageData>($state.current.data);
       if (!data) return;
       if (!data.tabName) data.tabName = $state.current.name;

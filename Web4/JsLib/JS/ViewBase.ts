@@ -17,17 +17,14 @@ module ViewBase {
     });
   } var modelIdToScriptId: string[];
 
-  
+
   export var init = function () {
     Logger.traceMsg('ViewBase.initBootStrapApp');
+    //if (!cfg.noAngularjsApp) return;
+    return;
+    if (!location.hash || location.hash.length < 3) location.hash = '/old/school/schoolmymodel/-1///';
     $(window).hashchange(() => Pager.loadPageHash(location.hash));
-      //Pager.locatePageFromHash(location.hash, (page: Pager.Page) => {
-      //  if (page == null || page == Pager.ignorePage) return;
-      //  Pager.loadPage(page);
-      //});
-    //});
     $(window).hashchange();
   }
-
 }
 

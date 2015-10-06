@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="vyzva57Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Companies">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="LearningData" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="CourseDatas">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TaskId" Type="nvarchar" MaxLength="32" />
+          <Property Name="Key" Type="nvarchar" MaxLength="240" Nullable="false" />
+          <Property Name="Data" Type="nvarchar(max)" />
+          <Property Name="ShortData" Type="nvarchar(max)" />
+          <Property Name="CourseUserId" Type="int" Nullable="false" />
+          <Property Name="Flags" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CourseUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductUrl" Type="nvarchar" MaxLength="120" Nullable="false" />
+          <Property Name="LMComId" Type="bigint" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_dbo_CourseDatas_dbo_CourseUsers_CourseUserId">
+          <End Role="CourseUsers" Type="Self.CourseUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CourseDatas" Type="Self.CourseDatas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourseDatas">
+              <PropertyRef Name="CourseUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_CourseUsers_dbo_Companies_CompanyId">
+          <End Role="Companies" Type="Self.Companies" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CourseUsers" Type="Self.CourseUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourseUsers">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="vyzva57ModelStoreContainer">
+          <EntitySet Name="Companies" EntityType="Self.Companies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourseDatas" EntityType="Self.CourseDatas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourseUsers" EntityType="Self.CourseUsers" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_CourseDatas_dbo_CourseUsers_CourseUserId" Association="Self.FK_dbo_CourseDatas_dbo_CourseUsers_CourseUserId">
+            <End Role="CourseUsers" EntitySet="CourseUsers" />
+            <End Role="CourseDatas" EntitySet="CourseDatas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_CourseUsers_dbo_Companies_CompanyId" Association="Self.FK_dbo_CourseUsers_dbo_Companies_CompanyId">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CourseUsers" EntitySet="CourseUsers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="vyzva57Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Companies" EntityType="vyzva57Model.Company" />
+          <EntitySet Name="CourseDatas" EntityType="vyzva57Model.CourseData" />
+          <EntitySet Name="CourseUsers" EntityType="vyzva57Model.CourseUser" />
+          <AssociationSet Name="FK_dbo_CourseUsers_dbo_Companies_CompanyId" Association="vyzva57Model.FK_dbo_CourseUsers_dbo_Companies_CompanyId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="CourseUser" EntitySet="CourseUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_CourseDatas_dbo_CourseUsers_CourseUserId" Association="vyzva57Model.FK_dbo_CourseDatas_dbo_CourseUsers_CourseUserId">
+            <End Role="CourseUser" EntitySet="CourseUsers" />
+            <End Role="CourseData" EntitySet="CourseDatas" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="LearningData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CourseUsers" Relationship="vyzva57Model.FK_dbo_CourseUsers_dbo_Companies_CompanyId" FromRole="Company" ToRole="CourseUser" />
+        </EntityType>
+        <EntityType Name="CourseData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TaskId" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="Key" Type="String" Nullable="false" MaxLength="240" FixedLength="false" Unicode="true" />
+          <Property Name="Data" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ShortData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Flags" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="CourseUser" Relationship="vyzva57Model.FK_dbo_CourseDatas_dbo_CourseUsers_CourseUserId" FromRole="CourseData" ToRole="CourseUser" />
+        </EntityType>
+        <EntityType Name="CourseUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductUrl" Type="String" Nullable="false" MaxLength="120" FixedLength="false" Unicode="true" />
+          <Property Name="LMComId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Company" Relationship="vyzva57Model.FK_dbo_CourseUsers_dbo_Companies_CompanyId" FromRole="CourseUser" ToRole="Company" />
+          <NavigationProperty Name="CourseDatas" Relationship="vyzva57Model.FK_dbo_CourseDatas_dbo_CourseUsers_CourseUserId" FromRole="CourseUser" ToRole="CourseData" />
+        </EntityType>
+        <Association Name="FK_dbo_CourseUsers_dbo_Companies_CompanyId">
+          <End Type="vyzva57Model.Company" Role="Company" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="vyzva57Model.CourseUser" Role="CourseUser" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_dbo_CourseDatas_dbo_CourseUsers_CourseUserId">
+          <End Type="vyzva57Model.CourseUser" Role="CourseUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="vyzva57Model.CourseData" Role="CourseData" Multiplicity="*" />
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="vyzva57ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="vyzva57Model.Company">
+              <MappingFragment StoreEntitySet="Companies">
+                <ScalarProperty Name="LearningData" ColumnName="LearningData" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourseDatas">
+            <EntityTypeMapping TypeName="vyzva57Model.CourseData">
+              <MappingFragment StoreEntitySet="CourseDatas">
+                <ScalarProperty Name="Flags" ColumnName="Flags" />
+                <ScalarProperty Name="ShortData" ColumnName="ShortData" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourseUsers">
+            <EntityTypeMapping TypeName="vyzva57Model.CourseUser">
+              <MappingFragment StoreEntitySet="CourseUsers">
+                <ScalarProperty Name="LMComId" ColumnName="LMComId" />
+                <ScalarProperty Name="ProductUrl" ColumnName="ProductUrl" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_dbo_CourseUsers_dbo_Companies_CompanyId" TypeName="vyzva57Model.FK_dbo_CourseUsers_dbo_Companies_CompanyId" StoreEntitySet="CourseUsers">
+            <EndProperty Name="CourseUser">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="Company">
+              <ScalarProperty Name="Id" ColumnName="CompanyId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_dbo_CourseDatas_dbo_CourseUsers_CourseUserId" TypeName="vyzva57Model.FK_dbo_CourseDatas_dbo_CourseUsers_CourseUserId" StoreEntitySet="CourseDatas">
+            <EndProperty Name="CourseData">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="CourseUser">
+              <ScalarProperty Name="Id" ColumnName="CourseUserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

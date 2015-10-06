@@ -21,6 +21,12 @@ module CourseMeta {
     url: string;
     name: string;
     ms: number;
+    //specializovane blended AngularJS fields (nepouzivaji se, je kvuli prekladu)
+    other: string;
+    userData: { [taskId: string]: blended.IPersistNodeItem<any>; } //dato pro jednotlive variatny
+    //getPersistData: (taskId: string) => blended.IPersistNodeUser;
+    //setPersistData: (taskId: string, modify: (data: blended.IPersistNodeUser) => void) => void;
+    //myProduct: IProductEx;
     //static, plneno v finishStaticTree
     parent: dataImpl;
     exCount: number; //pocet cviceni
@@ -42,7 +48,7 @@ module CourseMeta {
       return schools.getHash(tp, companyId, productUrl, persistence, this.url);
     }
     href(): string {
-      return this.hrefCompl(CourseMeta.actCompanyId, CourseMeta.actProduct.url, CourseMeta.actProductPersistence);
+      return this.hrefCompl(CourseMeta.actCompanyId, encodeUrlHash(CourseMeta.actProduct.url), CourseMeta.actProductPersistence);
     }
 
     iconId(): string {
@@ -52,6 +58,7 @@ module CourseMeta {
     }
 
   }
+  Utils.applyMixins(dataImpl, []);
 
   export class productImpl extends dataImpl {
 
@@ -461,8 +468,7 @@ module CourseMeta {
       this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
       if (!this.testMode) this.evaluator.acceptData(true, this.result);
       this.done = true;
-      if (this.page.isOldEa) this.ms = score.ms;
-      else if (this.ms != score.ms) { debugger; throw "this.maxScore != score.ms"; }
+      if (this.page.isOldEa) this.ms = score.ms; else if (this.ms != score.ms) { debugger; throw "this.maxScore != score.ms"; }
       this.s = score.s;
       this.flag = score.flag;
       return true;
@@ -522,7 +528,7 @@ module CourseMeta {
   }
 
   export class pretestImpl extends courseNode {
-    //odovozena data
+    //odvozena data
     questionnaire: exImpl;
     result: exImpl;
     pretests: Array<pretestTaskImpl>;

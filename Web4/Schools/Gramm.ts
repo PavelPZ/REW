@@ -59,9 +59,15 @@
 
   }
 
-  Pager.registerAppLocator(schools.appId, schools.tDictInfo, (urlParts, completed) => completed(new DictInfoModel(urlParts)));
-  Pager.registerAppLocator(schools.appId, schools.tGrammFolder, (urlParts, completed) => completed(new GrFolder(urlParts)));
-  Pager.registerAppLocator(schools.appId, schools.tGrammPage, (urlParts, completed) => completed(new GrPage(urlParts)));
-  Pager.registerAppLocator(schools.appId, schools.tGrammContent, (urlParts, completed) => completed(new GrContent(urlParts)));
+  //Pager.registerAppLocator(schools.appId, schools.tDictInfo, (urlParts, completed) => completed(new DictInfoModel(urlParts)));
+  //Pager.registerAppLocator(schools.appId, schools.tGrammFolder, (urlParts, completed) => completed(new GrFolder(urlParts)));
+  //Pager.registerAppLocator(schools.appId, schools.tGrammPage, (urlParts, completed) => completed(new GrPage(urlParts)));
+  //Pager.registerAppLocator(schools.appId, schools.tGrammContent, (urlParts, completed) => completed(new GrContent(urlParts)));
+
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, schools.tDictInfo, schools.appId, schools.tDictInfo, 4, urlParts => new DictInfoModel(urlParts)));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, schools.tGrammFolder, schools.appId, schools.tGrammFolder, 4, urlParts => new GrFolder(urlParts)));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, schools.tGrammPage, schools.appId, schools.tGrammPage, 4, urlParts => new GrPage(urlParts)));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, schools.tGrammContent, schools.appId, schools.tGrammContent, 4, urlParts => new GrContent(urlParts)));
+
 }
 

@@ -12,7 +12,7 @@ c_mediatext
 ###
 <!-- ko with: getItem('{{:id}}') -->
 {{if isOldToNew}}
-  {{include tmpl=~T("c_genitemsex")/}}
+{{include tmpl=~T("c_genitemsex")/}}
 {{else}}
 <div class="{{:~classes(#data)}} " data-bind="css: {loading: loading, 'is-passive': passive }">
   {{include tmpl=~T("c_genitemsex")/}}
@@ -125,20 +125,22 @@ c_recording
 ###
 <!-- ko with: getItem('{{:id}}') -->
 <div class="oli-audio-capture" data-bind="css: {'human-eval-mode' : isRecorded() && isDone(), 'is-recorded': isRecorded, 'oli-hide-progress-bar': !recording(), recording: recording, playing: playing }" id="{{:id}}">
+  <!--<div data-bind="angularjs: 'course$audiocapture$humaneval'"></div>-->
   {{if !recordInDialog || isHumanEvalMode()}}
   {{if isHumanEvalMode()}}
-  <div>
-    {{:~CSLocalize('99eed25487184fe195aa42fa3b390d4f', 'Test level')}}: <b><span data-bind="text:humanLevel"></span></b><br />
-    {{:~CSLocalize('5598d88071e7473c81f51a42a5f689eb', 'Recorded (recommended / actual):')}} <b><span data-bind="text:humanHelpTxt"></span></b>
+  <div class="alert alert-default lector">
+    <form id="form-{{:id}}" class="human-form form-inline has-error">
+      <div data-bind="visible: !_myPage.blendedExtension">
+        <div data-bind="visible:humanLevel">{{:~CSLocalize('99eed25487184fe195aa42fa3b390d4f', 'Test level')}}: <b><span data-bind="text:humanLevel"></span></b></div>
+        <div data-bind="visible:humanHelpTxt">{{:~CSLocalize('5598d88071e7473c81f51a42a5f689eb', 'Recorded (recommended / actual):')}} <b><span data-bind="text:humanHelpTxt"></span></b></div>
+      </div>
+      <div class="input-group">
+        <span class="input-group-addon">Hodnocení:</span>
+        <input type="text" class="form-control" id="human-ed-{{:id}}" name="human-ed-{{:id}}" placeholder="0-100" data-bind="textInput:human" />
+        <!--<span class="input-group-addon">0-100</span>-->
+      </div>
+    </form>
   </div>
-  <form id="form-{{:id}}" class="human-form form-inline has-error">
-    <div class="input-group">
-      <span class="input-group-addon">Hodnoceni:</span>
-      <input type="text" class="form-control" id="human-ed-{{:id}}" name="human-ed-{{:id}}" placeholder="0-{{:scoreWeight}}" data-bind="textInput:human" />
-      <span class="input-group-addon">0-{{:scoreWeight}}</span>
-    </div>
-  </form>
-  <br />
   {{/if}}
   <div class="ff-content-progress">
     <div class="content-inner">

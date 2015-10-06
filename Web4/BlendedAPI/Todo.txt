@@ -1,0 +1,16 @@
+﻿Lesson exercise:
+- reset cviceni, reset lekce
+
+Help k průchodu cvičením
+
+jak s klíči pro LM lektory šablony č. 3
+
+Business: 
+- kriterium nejnizsi cena a multilicence, poslat partnerum
+- pragodata - volat
+
+Zabezpeceni dle roli Admin, Lector.
+
+Cache:
+- cviceni i modul nejsou pod produktem ale mimo nej (neobsahuji user data, jsou spolecna pro vice users)
+

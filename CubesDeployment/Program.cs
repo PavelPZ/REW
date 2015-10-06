@@ -319,12 +319,15 @@ namespace CubesDeployment {
               //CourseMeta.lib.publishers.find("lm/oldea/french2/grammar/sec06/g11").tradosOper1(log);
 
               try {
-                //******* vse
+                //vse
                 CourseMeta.Lib.init(log, @"d:\lmcom\", false);
 
-                //CourseMeta.data.tradosOper1(new CourseMeta.data[] { CourseMeta.lib.publishers.find("/lm/etestme/english/") }, log);
+                //CourseMeta.data.tradosOper1(new CourseMeta.data[] { CourseMeta.Lib.publishers.find("/skrivanek/questionnaire/") }, log);
 
-                //Oper1 na data a instrukce
+                //var pages = CourseMeta.data.tradosOper1Pages(CourseMeta.lib.publishers.finds("lm/oldea/russian1","lm/oldea/russian2","lm/oldea/russian3"), log, true).ToArray();
+                //TradosLib.oper1NewTradosPages(pages, true);
+
+                //Oper1
                 CourseMeta.Lib.publishers.tradosOper1(log);
 
                 //Oper2 na data a instrukce
@@ -365,29 +368,29 @@ namespace CubesDeployment {
               //var files = CourseMeta.WebBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + webBatchId + ".xml").getWebBatchFiles().ToArray();
               //if (files != null) return;
 
-              /***** LM FE5 web ****/
+              /***** LM FE5 web ***
               //CourseMeta.buildLib.writeVirtualFiles(CourseMeta.WebBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\LM_debug.xml").getWebBatchFiles(logger));
 
               /***** ALAN ZIP ****/
-              //webBatchId = "alan_data";
-              //string zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; var tempZip = @"c:\temp\build.zip";
-              //CourseMeta.buildLib.zipVirtualFiles(tempZip, CourseMeta.WebBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + webBatchId + ".xml").getWebBatchFiles(logger), logger);
-              //if (File.Exists(zipFn)) File.Delete(zipFn); File.Move(tempZip, zipFn);
+                //webBatchId = "alan_data";
+                //string zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; var tempZip = @"c:\temp\build.zip";
+                //CourseMeta.buildLib.zipVirtualFiles(tempZip, CourseMeta.WebBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + webBatchId + ".xml").getWebBatchFiles(logger), logger);
+                //if (File.Exists(zipFn)) File.Delete(zipFn); File.Move(tempZip, zipFn);
 
-              /***** GRAFIA ZIP ****/
-              //webBatchId = "grafia_data";
-              //string zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; var tempZip = @"c:\temp\build.zip";
-              //if (File.Exists(tempZip)) File.Delete(tempZip); if (File.Exists(zipFn)) File.Delete(zipFn);
-              //var ignExts = new HashSet<string> { ".webm", ".mp4" };
-              //CourseMeta.buildLib.zipVirtualFiles(
-              //  tempZip,
-              //  CourseMeta.WebBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + webBatchId + ".xml").getWebBatchFiles(logger),
-              //  logger,
-              //  f => !ignExts.Contains(Path.GetExtension(f.srcPath)));
-              //File.Move(tempZip, zipFn);
+                /***** GRAFIA ZIP ****/
+                //webBatchId = "grafia_data";
+                //string zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; var tempZip = @"c:\temp\build.zip";
+                //if (File.Exists(tempZip)) File.Delete(tempZip); if (File.Exists(zipFn)) File.Delete(zipFn);
+                //var ignExts = new HashSet<string> { ".webm", ".mp4" };
+                //CourseMeta.buildLib.zipVirtualFiles(
+                //  tempZip,
+                //  CourseMeta.WebBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + webBatchId + ".xml").getWebBatchFiles(logger),
+                //  logger,
+                //  f => !ignExts.Contains(Path.GetExtension(f.srcPath)));
+                //File.Move(tempZip, zipFn);
 
-              /***** refresh LM web *****/
-              CourseMeta.Lib.init(logger, @"d:\lmcom\", true);
+                /***** refresh LM web *****/
+                CourseMeta.Lib.init(logger, @"d:\lmcom\", true);
               CourseMeta.buildLib.writeVirtualFiles(CourseMeta.WebDataBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\LM_Data_New.xml").getWebBatchFiles(logger));
               break;
             case '8':
@@ -445,6 +448,18 @@ namespace CubesDeployment {
                   //  getWebBatchFiles(lg3, true), lg3, f => !ignExts.Contains(Path.GetExtension(f.srcPath)));
                   //File.Move(tempZip, zipFn);
 
+                  //*************** Blended
+                  webBatchId = "blended_software";
+                  Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
+                    actBatchVersion = Packager.batchVersion.release,
+                    version = schools.versions.debug,
+                    //version = schools.versions.minified,
+                    persistType = schools.persistTypes.persistNewEA,
+                    testGroup_debug = false,
+                  });
+                  zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; if (File.Exists(zipFn)) File.Delete(zipFn);
+                  File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
+
                   //*************** Skrivanek
                   //webBatchId = "skrivanek_software";
                   //Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
@@ -456,14 +471,6 @@ namespace CubesDeployment {
                   //});
                   //zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; if (File.Exists(zipFn)) File.Delete(zipFn);
                   //File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
-                  //webBatchId = "skrivanek_data-globals";
-                  //zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; tempZip = @"c:\temp\build.zip";
-                  //if (File.Exists(tempZip)) File.Delete(tempZip); if (File.Exists(zipFn)) File.Delete(zipFn);
-                  //CourseMeta.buildLib.zipVirtualFiles(
-                  //  tempZip,
-                  //  CourseMeta.WebDataBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + webBatchId + ".xml").
-                  //  getWebBatchFiles(lg3), lg3, f => !ignExts.Contains(Path.GetExtension(f.srcPath)));
-                  //File.Move(tempZip, zipFn);
 
                   //*************** FE3
                   //webBatchId = "LM_Software";
@@ -488,15 +495,6 @@ namespace CubesDeployment {
                   //});
                   //zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; if (File.Exists(zipFn)) File.Delete(zipFn);
                   //File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
-
-                  //webBatchId = "chinhTestvn_data-globals";
-                  //zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; tempZip = @"c:\temp\build.zip";
-                  //if (File.Exists(tempZip)) File.Delete(tempZip); if (File.Exists(zipFn)) File.Delete(zipFn);
-                  //CourseMeta.buildLib.zipVirtualFiles(
-                  //  tempZip,
-                  //  CourseMeta.WebDataBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + webBatchId + ".xml").
-                  //  getWebBatchFiles(lg3), lg3, f => !ignExts.Contains(Path.GetExtension(f.srcPath)));
-                  //File.Move(tempZip, zipFn);
 
                   //webBatchId = "chinhtestvn_software";
                   //Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
@@ -629,6 +627,18 @@ namespace CubesDeployment {
       } catch (Exception exp) {
         File.WriteAllText(errorFn, LowUtils.ExceptionToString(exp));
       }
+    }
+
+    private static void delUser(long lmcomUserId) {
+      var db = NewData.Lib.CreateContext();
+      db.UserLicences.RemoveRange(db.UserLicences.Where(l => l.CourseUser.CompanyUser.UserId == lmcomUserId));
+      db.SaveChanges();
+      db.CourseUsers.Remove(db.CourseUsers.First(cu => cu.CompanyUser.UserId == lmcomUserId));
+      db.SaveChanges();
+      db.CompanyUsers.RemoveRange(db.CompanyUsers.Where(cu => cu.UserId == lmcomUserId));
+      db.SaveChanges();
+      db.Users.Remove(db.Users.First(cu => cu.Id == lmcomUserId));
+      db.SaveChanges();
     }
 
     //static void buildLow(string oper, string email, bool isRelease) {

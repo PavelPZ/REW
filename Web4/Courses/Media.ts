@@ -99,7 +99,7 @@ module Course {
                 var grp = vid.myGrp(); grp._player = dr;
                 this.adjustMediaUrl(dr); //spocti mediaUrl, videoRatio
                 _.each(allVids, v => v.ratioClass('embed-responsive-' + this.videoRatio)); //nastav velikost videa na strance
-                this.driverLoaded(dr,() => { //proved open media (=> naladovani dat do cache) a odblokovani media wait stavu media kontrolek
+                this.driverLoaded(dr, () => { //proved open media (=> naladovani dat do cache) a odblokovani media wait stavu media kontrolek
                   _.each(_.rest(allVids), subVid => SndLow.createDriver(true, subVid.id, '#' + subVid.id, null, false, subDr => { //drivery pro ostatni videa
                     var subGrp = subVid.myGrp(); subGrp._player = subDr;
                     subDr.openPlay(this.mediaUrl, -1, 0);
@@ -248,28 +248,6 @@ module Course {
         self.progressBarValue((actMWords > words ? actMWords % words : actMWords) / words * 100);
         self.result.text = value; self.result.words = actMWords;
       });
-
-      //var self = this;
-      //this.textInput = ko.computed({
-      //  read: function () {
-      //    return self.result ? self.result.text : '';
-      //  },
-      //  write: function (value) {
-      //    var actMWords = _.filter(DictConnector.startSplitWord(value), w => !_.isEmpty(w.trim())).length;
-      //    var words = Math.max(self.wordsMin, self.wordsMax); if (!words) words = 100;
-      //    var txt = 'written ' + Math.round(actMWords) + ' words';
-      //    if (self.wordsMin > 0 && self.wordsMax > 0) txt += ' (min ' + self.wordsMin.toString() + ', max ' + self.wordsMax.toString() + ' words)';
-      //    else if (self.wordsMin > 0) txt += ' (min ' + self.wordsMin.toString() + ' words)';
-      //    else if (self.wordsMax > 0) txt += ' (max ' + self.wordsMax.toString() + ' words)';
-      //    self.progressText(txt);
-      //    self.progressBarLimetExceeded(self.wordsMax && actMWords > self.wordsMax);
-      //    if (!self.progressBarLimetExceeded() && actMWords > words) self.progressBarFrom(0);
-      //    self.progressBarValue((actMWords > words ? actMWords % words : actMWords) / words * 100);
-      //    self.result.text = value; self.result.words = actMWords;
-      //  },
-      //  owner: this,
-      //  pure: true,
-      //});
     }
 
     limitRecommend: number;
@@ -280,8 +258,6 @@ module Course {
     result: CourseModel.WritingResult;
     textInput = ko.observable<string>();
 
-    //humanHelpTxt = ko.observable('');
-
     createResult(forceEval: boolean): CourseModel.WritingResult { this.done(false); return { ms: 0, s: 0, tg: this._tg, flag: CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate, text: null, words: forceEval ? (this.limitMin ? this.limitMin : 0) : 0, hPercent: -1, hEmail: null, hDate: 0, hLmcomId: 0, hLevel: this.acTestLevel(), hRecommendMin: this.limitRecommend, hMax: this.limitMax, hMin: this.limitMin }; }
     provideData(): void { //predani dat z kontrolky do persistence
       //this.result.text = this.textInput();
@@ -291,33 +267,34 @@ module Course {
     acceptData(done: boolean): void {//zmena stavu kontrolky na zaklade persistentnich dat
       super.acceptData(done);
       this.textInput(this.result.text ? this.result.text : '');
-      //var txt = this.result.text ? this.result.text : '';
-      //$('#' + this.id).find('textarea').val(txt);
-      //this.textInput(txt);
       this.human(this.result.hPercent < 0 ? '' : this.result.hPercent.toString());
       var tostr = this.limitMax ? ' - ' + this.limitMax.toString() : '';
       this.humanHelpTxt(this.limitRecommend ? this.limitRecommend.toString() + tostr + ' / ' + this.result.words.toString() : '');
       this.humanLevel(this.result.hLevel);
-      //this.textInput.evaluateImmediate();
-      //this.textInput.valueHasMutated();
-      //var t = this.textInput();
-      //if (!t) return;
-      //this.textInput.notifySubscribers();
       this.isDone(this.done());
     }
-    setScore(): void {
-      if ((this.result.flag & CourseModel.CourseDataFlag.needsEval) == 0 && (this.result.flag & CourseModel.CourseDataFlag.pcCannotEvaluate) != 0) {
-        this.result.ms = this.scoreWeight;
-        this.result.s = Math.round(this.result.hPercent);
-        return;
-      }
-      var c = this.limitMin && (this.result.words >= this.limitMin); this.result.ms = this.scoreWeight;
-      this.result.s = c ? this.scoreWeight : 0;
-      if (c) this.result.flag |= CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate;
-      else this.result.flag &= ~(CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate) & CourseModel.CourseDataFlag.all;
+    isKBeforeHumanEval(): boolean { return this.limitMin && (this.result.words >= this.limitMin); }
 
-      //this.result.flag = !c ? 0 : CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.needsEval;
-    }
+    //setScore(): void {
+    //  if ((this.result.flag & CourseModel.CourseDataFlag.needsEval) == 0 && (this.result.flag & CourseModel.CourseDataFlag.pcCannotEvaluate) != 0) {
+    //    this.result.ms = this.scoreWeight;
+    //    this.result.s = Math.round(this.result.hPercent);
+    //    return;
+    //  }
+    //  var c = this.limitMin && (this.result.words >= this.limitMin);
+    //  //Oprava 9.9.2015 kvuli Blended. 
+    //  //this.result.ms = this.scoreWeight;
+    //  //this.result.s = c ? this.scoreWeight : 0;
+    //  if (c) {
+    //    this.result.flag |= CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate;
+    //    this.result.ms = this.result.s = 0;
+    //  } else {
+    //    this.result.flag &= ~(CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate) & CourseModel.CourseDataFlag.all;
+    //    this.result.ms = this.scoreWeight; this.result.s = 0;
+    //  }
+
+    //  //this.result.flag = !c ? 0 : CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.needsEval;
+    //}
 
     progressBarValue = ko.observable(0);
     progressBarFrom = ko.observable(0);
@@ -377,7 +354,7 @@ module Course {
         if (this.limitMax && actMsecs >= this.limitMax * 1000) { //preteceno speakSecondsTo => konec nahravani
           if (this.modalDialog) this.modalDialog.modal('hide');
           this.driver.recordEnd(true);
-          anim.alert().show(CSLocalize('9259ce32c3a14bb29b657b9430be2f83', 'Maximum time limit reached. Your recording was finished and saved.'), $.noop,() => anim.alert().isCancelVisible(false));
+          anim.alert().show(CSLocalize('9259ce32c3a14bb29b657b9430be2f83', 'Maximum time limit reached. Your recording was finished and saved.'), $.noop, () => anim.alert().isCancelVisible(false));
           return 100;
         }
         var msecs = Math.max(this.limitMin, this.limitMax) * 1000;
@@ -399,12 +376,12 @@ module Course {
             if (this.recordInDialog) {
               this.modalDialog = $('#modal-' + this.id);
               this.modalContent = this.modalDialog.find('.modal-header');
-              this.modalDialog.on('hide.bs.modal',() => {
+              this.modalDialog.on('hide.bs.modal', () => {
                 console.log('audioCaptureImpl: hide.bs.modal');
                 anim.onModalHide(this.modalDialog);
                 SndLow.Stop(null);
                 delete audioCaptureImpl.activeAudioCapture;
-              }).on('show.bs.modal',() => {
+              }).on('show.bs.modal', () => {
                 console.log('audioCaptureImpl: show.bs.modal');
                 anim.onModalShow(this.modalDialog);
                 audioCaptureImpl.activeAudioCapture = this;
@@ -412,7 +389,7 @@ module Course {
               //this.modalDialog.modal({ backdrop: 'static', keyboard: true, show: false });
             }
             if (this.driver) { completed(); return; }
-            SndLow.getGlobalMedia().adjustGlobalDriver(true,(dr, disabled) => {
+            SndLow.getGlobalMedia().adjustGlobalDriver(true, (dr, disabled) => {
               this.driver = dr;
               this.allDisabled(disabled);
               completed();
@@ -449,31 +426,53 @@ module Course {
     allDisabled = ko.observable(true);
 
     //Eval control
-    createResult(forceEval: boolean): CourseModel.audioCaptureResult { this.done(false); return { ms: 0, s: 0, tg: this._tg, flag: 0, audioUrl: createMediaUrl(this.id), recordedMilisecs: forceEval ? (this.limitMin ? this.limitMin * 1000 : 0) : 0, hPercent: -1, hEmail: null, hDate: 0, hLevel: this.acTestLevel(), hLmcomId: 0, hFrom: this.limitMin, hTo: this.limitMax, hRecommendFrom: this.limitRecommend }; }
+    createResult(forceEval: boolean): CourseModel.audioCaptureResult {
+      this.done(false);
+      return {
+        ms: 0, s: 0, tg: this._tg, flag: 0,
+        audioUrl: createMediaUrl(this.id),
+        recordedMilisecs: forceEval ? (this.limitMin ? this.limitMin * 1000 : 0) : 0,
+        hPercent: -1, hEmail: null, hDate: 0, hLevel: this.acTestLevel(), hLmcomId: 0, hFrom: this.limitMin, hTo: this.limitMax, hRecommendFrom: this.limitRecommend
+      };
+    }
     provideData(): void { //predani dat z kontrolky do persistence
     }
     acceptData(done: boolean): void {//zmena stavu kontrolky na zaklade persistentnich dat
       super.acceptData(done);
       this.isRecorded(this.isRecordLengthCorrect());
-      this.isDone(this.done());
+      //Aktivni nahravatko:
+      var done = this.done();
+      if (this.blended) {
+        this.isDone(this.blended.lectorMode || (this.blended.isTest && done)); //pro blended je stale mozne nahravat jen pro lekci nebo nehotovy test
+      } else
+        this.isDone(done && !this.isPassive); //stale je mozne nahravat pro pasivni RECORD kontrolku
       this.human(this.result.hPercent < 0 ? '' : this.result.hPercent.toString());
-      var tostr = this.limitMax ? ' - ' + Utils.formatTimeSpan(this.limitMax) : '';;
+      var tostr = this.limitMax ? ' - ' + Utils.formatTimeSpan(this.limitMax) : '';
       this.humanHelpTxt(this.limitRecommend ? Utils.formatTimeSpan(this.limitRecommend) + tostr + ' / ' + Utils.formatTimeSpan(Math.round(this.result.recordedMilisecs / 1000)) : '');
       this.humanLevel(this.result.hLevel);
       //CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate
     }
-    setScore(): void {
-      if ((this.result.flag & CourseModel.CourseDataFlag.needsEval) == 0 && (this.result.flag & CourseModel.CourseDataFlag.pcCannotEvaluate) != 0) {
-        this.result.ms = this.scoreWeight;
-        this.result.s = Math.round(this.result.hPercent);
-        return;
-      }
-      var c = this.isRecordLengthCorrect();
-      this.result.ms = this.scoreWeight;
-      this.result.s = c ? this.scoreWeight : 0;
-      if (c) this.result.flag |= CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.hasExternalAttachments;
-      else this.result.flag &= ~(CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.hasExternalAttachments) & CourseModel.CourseDataFlag.all;
-    }
+
+    isKBeforeHumanEval(): boolean { return this.isRecordLengthCorrect(); }
+
+    //setScore(): void {
+    //  if ((this.result.flag & CourseModel.CourseDataFlag.needsEval) == 0 && (this.result.flag & CourseModel.CourseDataFlag.pcCannotEvaluate) != 0) {
+    //    this.result.ms = this.scoreWeight;
+    //    this.result.s = Math.round(this.result.hPercent);
+    //    return;
+    //  }
+    //  var c = this.isRecordLengthCorrect();
+    //  //Oprava 9.9.2015 kvuli Blended. 
+    //  //this.result.ms = this.scoreWeight;
+    //  //this.result.s = c ? this.scoreWeight : 0;
+    //  if (c) {
+    //    this.result.flag |= CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.hasExternalAttachments;
+    //    this.result.ms = this.result.s = 0;
+    //  } else {
+    //    this.result.flag &= ~(CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.hasExternalAttachments) & CourseModel.CourseDataFlag.all;
+    //    this.result.ms = this.scoreWeight; this.result.s = 0;
+    //  }
+    //}
 
 
     isRecordLengthCorrect(): boolean { return this.result.recordedMilisecs > 0 && (!this.limitMin || (this.result.recordedMilisecs >= this.limitMin * 1000)); } //pro 0 x 1 score
@@ -489,6 +488,11 @@ module Course {
     isDone = ko.observable(false);
 
     private recorderSound: SndLow.recordedSound;
+
+    //isHumanEvalMode(): boolean {
+    //  if (!this._myPage.blendedPageCallback) return super.isHumanEvalMode();
+    //  return this._myPage.blendedPageCallback.isHumanEvalMode();
+    //}
     setRecorderSound(recorderSound: SndLow.recordedSound): void {
       this.driver.openFile(null); //reset driveru
       if (this.recorderSound) this.recorderSound.close();
@@ -498,9 +502,16 @@ module Course {
       var c = this.isRecordLengthCorrect(); if (!c) this.result.recordedMilisecs = 0;
       this.isRecorded(c);
       //vyjimka pro tuto kontrolku: save stavu cviceni
-      this.doProvideData();
-      this._myPage.result.userPending = true;
-      CourseMeta.lib.saveProduct($.noop);
+      //if (!cfg.noAngularjsApp) return;
+      //this.doProvideData();
+      //this._myPage.result.userPending = true;
+      //CourseMeta.lib.saveProduct($.noop);
+      //angularJS
+      if (this.blended) this.blended.recorder.onRecorder(this._myPage, this.result.recordedMilisecs);
+      //var us = <blended.IPersistNodeItem<blended.IExShort>>(this._myPage.result.userData['']);
+      //us.modified = true;
+      //if (!us.short.sumRecord) us.short.sumRecord = 0;
+      //if (this.result.recordedMilisecs) us.short.sumRecord += Math.round(this.result.recordedMilisecs / 1000);
     }
     play() {
       var wasPaused = this.driver.handler.paused;
@@ -508,8 +519,22 @@ module Course {
       this.playing(false);
       if (!wasPaused) return;
       var url = this.recorderSound ? this.recorderSound.url : ((cfg.baseTagUrl ? cfg.baseTagUrl : Pager.basicDir) + this.result.audioUrl).toLowerCase();
-      this.driver.play(url + '?stamp=' + (audioCaptureImpl.playCnt++).toString(), 0, msec => this.playing(msec >= 0));
+      this.blendedCallbackMax = 0;
+      this.driver.play(url + '?stamp=' + (audioCaptureImpl.playCnt++).toString(), 0, msec => {
+        if (msec > 0) {
+          //console.log(msec.toString());
+          this.blendedCallbackMax = Math.max(this.blendedCallbackMax, msec);
+        } else { //angularJS
+          if (this.blended) this.blended.recorder.onPlayRecorder(this._myPage, this.blendedCallbackMax);
+          //var us = <blended.IPersistNodeItem<blended.IExShort>>(this._myPage.result.userData['']);
+          //us.modified = true;
+          //if (!us.short.sumPlayRecord) us.short.sumPlayRecord = 0;
+          //us.short.sumPlayRecord += Math.round(this.maxPlayProgress / 1000);
+        }
+        this.playing(msec >= 0);
+      });
     }
+    blendedCallbackMax = 0;
     static playCnt = 0;
     stopRecording() {
       setTimeout(() => this.driver.recordEnd(true), 500);
@@ -629,11 +654,25 @@ module Course {
 
     private playInt(interv: sndIntervalImpl, begPos: number) {
       var self = this; //var intVar = interv; var bp = begPos;
+      this.blendedCallbackMax = 0;
       interv._owner.player().openPlay(interv._owner._owner.mediaUrl, begPos, interv.endPos).
-        progress((msec: number) => self.onPlaying(interv, msec < begPos ? begPos : msec /*pri zacatku hrani muze byt notifikovana pozice kousek pred zacatkem*/, progressType.progress)). //pokracovani v hrani intervalu
-        done(() => self.onPlaying(interv, -1, progressType.done)). //konec prehrani intervalu
+        progress((msec: number) => { //pokracovani v hrani intervalu
+          if (msec > 0) { //angularJS
+            this.blendedCallbackMax = Math.max(this.blendedCallbackMax, msec);
+          }
+          self.onPlaying(interv, msec < begPos ? begPos : msec /*pri zacatku hrani muze byt notifikovana pozice kousek pred zacatkem*/, progressType.progress);
+        }).
+        done(() => { //angularJS //konec prehrani intervalu
+        if (this.blended) this.blended.recorder.onPlayed(this._myPage, this.blendedCallbackMax - begPos);
+          //var us = <blended.IPersistNodeItem<blended.IExShort>>(this._myPage.result.userData['']);
+          //us.modified = true;
+          //if (!us.short.sumPlay) us.short.sumPlay = 0;
+          //us.short.sumPlay += Math.round((this.maxPlayProgress - begPos) / 1000);
+          self.onPlaying(interv, -1, progressType.done);
+        }).
         always(() => self.onPlaying(interv, -1, progressType.always)); //uplny konec
     }
+    blendedCallbackMax = 0;
 
     //***** ACTIVE management
     private actSent: sndSentImpl = null; //aktualni veta

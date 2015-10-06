@@ -2,6 +2,8 @@
 
 module test {
 
+  export function encodeUrl(url: string): string { return url.replace(/\//g, '@');  }
+
   export interface IConfig { //config v app/config.js
     runExMask: { [lang: string]: string; };
   }
@@ -41,7 +43,7 @@ module test {
 
   root.app.factory('exportService', ['$http', (http: ng.IHttpService) => new exportService(http)]);
 
-  root.app.directive('iframedirective', iframeDirective);
+  root.app.directive('iframeDirective', iframeDirective);
 
   export class exportService {
     public getData<T>(url: string, cache?: boolean): ng.IPromise<T> { return this.$http.get(url, { cache: cache ? true : false }); }

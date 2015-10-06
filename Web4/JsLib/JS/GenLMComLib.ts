@@ -9,6 +9,7 @@ export enum CookieIds {
   oauth = 6,
   loginEMail = 7,
   loginLogin = 8,
+  LMJSTicket = 9,  
 }
 
 export enum CompRole {
@@ -725,10 +726,11 @@ export interface CmdEMail {
   attFile: string;
   attContent: string;
   attContentType: string;
+  emailId: string;
 }
 export var CmdEMail_Type = 'LMComLib.CmdEMail';
-export function CmdEMail_Create (From: string, To: string, Cc: string, Subject: string, Html: string, isForgotPassword: boolean, isAtt: boolean, attFile: string, attContent: string, attContentType: string): CmdEMail{
-  return {From: From, To: To, Cc: Cc, Subject: Subject, Html: Html, isForgotPassword: isForgotPassword, isAtt: isAtt, attFile: attFile, attContent: attContent, attContentType: attContentType};
+export function CmdEMail_Create (From: string, To: string, Cc: string, Subject: string, Html: string, isForgotPassword: boolean, isAtt: boolean, attFile: string, attContent: string, attContentType: string, emailId: string): CmdEMail{
+  return {From: From, To: To, Cc: Cc, Subject: Subject, Html: Html, isForgotPassword: isForgotPassword, isAtt: isAtt, attFile: attFile, attContent: attContent, attContentType: attContentType, emailId: emailId};
 }
 export interface LMCookieJS {
   id: number;
@@ -767,6 +769,7 @@ export interface MyCourse {
   ProductId: string;
   Expired: number;
   LicCount: number;
+  LicenceKeys: Array<string>;
 }
 export interface RpcResponse {
   errorText: string;

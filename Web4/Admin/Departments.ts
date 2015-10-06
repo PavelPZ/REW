@@ -238,7 +238,8 @@ module schoolAdmin {
       return min.toString() + ' - ' + max.toString() + '%';
     }
   }
-  Pager.registerAppLocator(appId, editDepartmentTypeName, (urlParts, completed) => completed(new Departments(urlParts)));
-  //Pager.registerAppLocator(editDepartmentTypeName, (url: CompIdUrl, completed: (pg: Pager.Page) => void) => completed(new Departments(url.CompanyId)));
+  //Pager.registerAppLocator(appId, editDepartmentTypeName, (urlParts, completed) => completed(new Departments(urlParts)));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, editDepartmentTypeName, appId, editDepartmentTypeName, 1, urlParts => new Departments(urlParts)));
+
 }
 

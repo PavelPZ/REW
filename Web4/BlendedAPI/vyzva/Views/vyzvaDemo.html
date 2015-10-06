@@ -1,0 +1,347 @@
+﻿<div class="container-fluid topbar">
+  <div class="container">
+    <div class="pull-left">
+      <div class="lm-logo-black-small"></div>
+    </div>
+    <div class="pull-left topbar-title"><a href="mailto:info@langmaster.cz">info@langmaster.cz</a> +420 244 460 807</div>
+  </div>
+</div>
+<div class="container-fluid gray" ng-if="::!ts.hideOrder">
+  <div class="container">
+    <h2 style="margin-bottom:0;">Snadné objednání</h2>
+    <h4 class="text-danger text-center">Za hodinu od vyplnění následujících údajů můžete ve vaší škole začít systém používat</h4>
+    <div class="row">
+      <div class="col-sm-6">
+        <h3>1. Zadejte počet šablon (celkem pro angličtinu, němčinu i francouzštinu)</h3>
+        <table class="table table-bordered">
+          <tr>
+            <td>Šablona</td>
+            <td>Cena s DPH</td>
+            <td>Počet</td>
+            <td>Celkem s DPH</td>
+          </tr>
+          <tr>
+            <td>č. 4 (studenti)</td>
+            <td class="text-right">18 490</td>
+            <td><input type="number" class="form-control" placeholder="Počet..." style="width:80px;" ng-model="ts.order.sablona4"/></td>
+            <td class="text-right">{{ts.celkemsablona4() | price}}</td>
+          </tr>
+          <tr>
+            <td>č. 3 (učitelé)</td>
+            <td class="text-right">3 499</td>
+            <td><input type="number" class="form-control" placeholder="Počet..." style="width:80px;" ng-model="ts.order.sablona3"/></td>
+            <td class="text-right">{{ts.celkemsablona3() | price}}</td>
+          </tr>
+          <tr>
+            <td>Celkem bez DPH</td>
+            <td class="text-right text-danger"><b>{{ts.celkembezdph() | price}}</b></td>
+            <td>Celkem s DPH</td>
+            <td class="text-right text-danger"><b>{{ts.celkembesdph() | price}}</b></td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-sm-6">
+        <h3>2. Zadejte fakturační údaje</h3>
+        <div class="form-group">
+          <label for="schollname">Název školy</label>
+          <input type="text" class="form-control" id="schollname" placeholder="Zadejte název školy..."  ng-model="ts.order.schoolName"/>
+          <label for="ico">IČO</label>
+          <input type="text" class="form-control" id="ico" placeholder="Zadejte IČO..." ng-model="ts.order.ico" />
+          <label for="address">Adresa</label>
+          <textarea class="form-control" id="address" placeholder="Zadejte adresu..." rows="4" ng-model="ts.order.schoolAddress"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <h3>3. Zadejte kontaktní údaje</h3>
+        <div class="form-group">
+          <label for="name">Titul, jméno, příjmení</label>
+          <input type="text" class="form-control" id="name" placeholder="Zadejte titul, jméno, příjmení..."  ng-model="ts.order.name"/>
+          <label for="email">email pro zaslání Licenčního klíče a faktury</label>
+          <input type="text" class="form-control" id="email" placeholder="Zadejte email..."  ng-model="ts.order.email"/>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <h3>4. Upřesnění</h3>
+        <div class="form-group">
+          <label for="address">... máte-li zájem o dlouhodobé licence (viz níže), máte speciální cenové požadavky (např. "cena do 200tis bez DPH") apod.</label>
+          <textarea class="form-control" id="address" placeholder="Napiště upřesnění..." rows="4" ng-model="ts.order.other"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-9">
+        <div class="alert alert-warning">
+          <ul>
+            <li>Vzápětí po obdržení objednávky vám zašleme Licenční klíč a návod na zprovoznění systému.</li>
+            <li>Následovat bude faktura (se splatností do konce listopadu) a další vámi požadované náležitosti.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="pull-right"><div class="btn btn-success btn-lg" ng-click="::ts.sendOrder()"><i class="fa fa-check"></i> Odeslat objednávku</div></div>
+      </div>
+    </div>
+    <!--<h3>Obsah</h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul>
+          <li class="a">Vyzkoušení <i>Výukového systému</i> pro Výzvu 57</li>
+          <li class="a" style="color:#a94442;"><b><i>Výukový systém LANGMaster</i> splňuje všechny podmínky Výzvy 57</b></li>
+          <li class="a">Ostrá verze <i>Výukového systému</i></li>
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <ul>
+          <li class="a">Dlouhodobé licence (2-4 roky, licence bez omezení)</li>
+          <li class="a">Aktuální ceník</li>
+          <li class="a">Unikátní metoda na vyhodnocení mluveného projevu studenta</li>
+        </ul>
+      </div>
+    </div>-->
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="container">
+    <h2 style="margin-bottom:0;">Snadné vyzkoušení<!--Vyzkoušení <i>Výukového systému</i> pro Výzvu 57--></h2>
+    <h3 style="margin-top:0;">Pro: {{::ts.companyInfo.companyTitle}}</h3>
+    <div class="alert alert-warning">
+      <i>Výukový systém</i> využívají hlavně 2 typy uživatelů: <i>Učitel</i> a <i>Student</i>. Pomocí tlačítek níže si vyzkoušejte jak výuku <i>Studenta</i> tak i řízení výuky <i>Učitelem</i>.<br />
+      Zkoušíte v podstatě ostrou verzi, která vás ale nezatěžuje takovými samozřejmými kroky, jako je založení účtu, přihlášení a zadání Licenčního klíče.<br />
+      Poznámka: v kontextové nápovědě Systému se občas dočtete o krocích, které jsou pro účely vyzkoušení již udělány za vás.
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <button ng-click="::ts.navigateKey('student')" class="btn btn-success btn-lg">Spustit jako student angličtiny</button>
+          </div>
+          <div class="panel-body">Spusťte systém v roli studenta angličtiny. Pro snadnější seznámení se systémem doporučujeme na každé stránce využívat kontextovou nápovědu.</div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <button ng-click="::ts.navigateKey('teacher')" class="btn btn-warning btn-lg">Spustit jako učitel angličtiny</button>
+          </div>
+          <div class="panel-body">Spusťte systém v roli učitele angličtiny. Pro snadnější seznámení se systémem doporučujeme na každé stránce využívat kontextovou nápovědu.</div>
+        </div>
+      </div>
+    </div>
+    <div class="row" ng-if="::ts.hashGerman">
+      <div class="col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <button ng-click="::ts.navigateKey('studentDe')" class="btn btn-success btn-lg">Spustit jako student němčiny</button>
+          </div>
+          <div class="panel-body">Spusťte systém v roli studenta němčiny. Pro snadnější seznámení se systémem doporučujeme na každé stránce využívat kontextovou nápovědu.</div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <button ng-click="::ts.navigateKey('teacherDe')" class="btn btn-warning btn-lg">Spustit jako učitel němčiny</button>
+          </div>
+          <div class="panel-body">Spusťte systém v roli učitele němčiny. Pro snadnější seznámení se systémem doporučujeme na každé stránce využívat kontextovou nápovědu.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid gray">
+  <div class="container">
+    <h2 style="margin-bottom:0;">Ostrá verze <i>Výukového systému</i> pro nadstandardní vyzkoušení</h2>
+    <h3 style="margin-top:0;">Pro: {{::ts.companyInfo.companyTitle}}</h3>
+    <div class="alert alert-success">
+      <h4 class="text-center">Vaše škola <b>{{::ts.companyInfo.companyTitle}}</b> má licenční klíč <b>{{::ts.masterKey}}</b></h4>
+    </div>
+    <div class="row">
+      <div class="col-sm-5">
+        <div class="alert alert-warning">
+          <h4>Kdy Licenční klíč použít:</h4>
+          Licenční klíč použijte v nadstandardních požadavcích na vyzkoušení systému, jako jsou například:
+          <ul>
+            <li>vyzkoušení Správce systému (jak zadává a definuje Studijní skupiny pro šablony 3 a 4 apod.)</li>
+            <li>vyzkoušení jak Správce systému poskytuje Licenční klíče učitelům a učitelé poskytují Licenční klíče studentům</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-7">
+        <div class="alert alert-warning">
+          <h4>Jak Licenční klíč použít:</h4>
+          <ol>
+            <li>Ve webovém prohlížeči spusťte stránku <a href="http://blended.langmaster.cz" target="_blank">http://blended.langmaster.cz</a></li>
+            <li>Vytvořte si uživatelský účet LANGMaster nebo použijte některý z vašich existujících účtů Google, Facebook nebo Microsoft</li>
+            <li>Stiskněte zelené tlačítko <b>Licenční klíč</b> vpravo nahoře</li>
+            <li>Zadejte licenční klíč <b>{{::ts.masterKey}}</b>. Tím se vám zpřístupní školní správcovská konzole <b>Vyzva 57: Správce školy</b></li>
+            <li>Po kliku na <b>Vyzva 57: Správce školy</b> se řiďte kontextovou nápovědou aplikace</li>
+          </ol>
+          <i>Poznámka</i>: hlavním úkolem správce je pro každý kurz (angličtina, němčina, francouzština) založit Studijní skupiny (dle šablon 3. a 4.) a rozdat licenční klíče učitelům, kteří budou řídit výuku studentů.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid" style="padding-bottom:20px;">
+  <div class="container">
+    <h2><i>Výukový systém LANGMaster</i> splňuje všechny podmínky Výzvy 57</h2>
+    <div class="row">
+      <div class="col-sm-7">
+        <div class="alert alert-warning">
+          <b>Zajímá-li Vás, jak konkrétně plníme některé vlastnosti z Podmínek Výzvy, obraťte se na nás</b>. Pošleme Vám informaci, jak hledanou vlastnost splňujeme, a jak si ji v systému můžete vyzkoušet.
+        </div>
+      </div>
+      <div class="col-sm-5">
+        <div class="alert alert-danger">
+          <b>NOVINKA</b>
+          Naše řešení vyhrálo již 2 výběrová řízení, během kterých bylo detailně zkoumáno splnění všech podmínek Výzvy.
+        </div>
+      </div>
+    </div>
+    <h4>Doposud jsme obdrželi tyto dotazy:</h4>
+    <div class="alert help-panel help-success" collapsablemanager="+jaksplnujme1">
+      <div class="help-header" ng-click="jaksplnujme1.collapseToogle()">
+        <div class="more fa fa-bars"></div>
+        <span class="badge">1</span><b>&nbsp;&nbsp;Jak prosím splňujete str. 30, bod C, dle kterého je třeba, aby systém postupně odemykal studentovi další látku na základě jeho aktuálních výsledků?</b>
+      </div>
+      <div class="help-content" collapse="jaksplnujme1.isCollapsed">
+        <div class="help-close" ng-click="jaksplnujme1.collapseToogle()"><i class="fa fa-times"></i></div>
+        Asi jako jediní na trhu jsme se vyrovnali s rozporem, který je v zadání MŠMT:
+        <ul>
+          <li>Systém musí automaticky vyhodnotit testy a zamezit studentovi pokračovat dál, pokud nesplní test</li>
+          <li>
+            Systém je zaměřen na výuku mluveného projevu audio-orální metodou
+            (<a href="http://www.jazyky-pechova.cz/metody-vyuky-/" target="_blank">více zde...</a>)<br />
+            <b>ALE</b>: žádný počítač na světě neumí automaticky vyhodnotit kvalitu mluveného projevu studenta.
+          </li>
+        </ul>
+        <p>
+          <b>Naše ojedinělé řešení</b> spočívá v tom, že některé dovednosti studenta (gramatika, slovní zásoba, poslech) vyhodnotíme v testech automaticky a mluvení necháme vyhodnotit učiteli. Systém okamžitě zareaguje pouze na automaticky vyhodnocenou část testu.
+          Tím splňujeme podmínku Výzvy: str. 30, bod C.
+        </p>
+        <p>
+          <b>ALE</b>: Učitel pak může toto automatické rozhodnutí systému zvrátit (jedná se přeci o Blended learning, výuku s podporou učitele):
+        </p>
+        <p>
+          Příklady:
+          <ul>
+            <li>Student provede špatně gramatiku, ale mluvení provede dobře. Učitel proto "pustí" studenta dále, i když systém jej na základě automaticky vyhodnotitelných cvičení dál nepustí.</li>
+            <li>Student provede excelentně gramatiku, ale u mluvení propadne. Učitel jej tedy dodatečně "nepustí" dále. Může potom dát studentovi zopakovat některé Lekce i Kontrolní test.</li>
+          </ul>
+          <b>Závěr</b>: Náš systém splňuje podmínky výzvy lépe než vyžaduje zadání. Řeší totiž i problém testování mluveného projevu studentů.
+        </p>
+        <h4>Pro ověření splnění této vlastnosti postupuje následovně</h4>
+        <ol>
+          <li>
+            Použijte tlačítko <b>Spustit jako student</b> a projděte nejdříve Rozřazovací test a pak Vstupní test. Ve Vstupním testu záměrně udělejte několik chyb.
+            Pokud bude vaše skóre pod 65%, bude zbytek kurzu pro studenta nepřístupný.
+          </li>
+          <li>
+            Použijte tlačítko <b>Spustit jako učitel</b> a prohlédněte si podrobné výsledky studentova testu (včetně jeho ústního projevu) a dejte studentovi vypracovat Vstupní test znova
+          </li>
+          <li>
+            Použijte tlačítko <b>Spustit jako student</b> a projděte Vstupní test znova. Pokud bude skóre vyšší než 65%, zpřístupní se vám kurz až do dalšího Kontrolního testu.
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid gray">
+  <div class="container">
+    <h2>Aktuální ceník</h2>
+    <div class="row">
+      <div class="col-sm-5">
+        <h4>Standardní licence</h4>
+        <table class="table table-bordered">
+          <tr class="success" style="font-weight:bold;">
+            <td>Šablona</td>
+            <td>Cena v Kč s DPH</td>
+          </tr>
+          <tr class="warning">
+            <td>Studenti</td>
+            <td style="text-align:right; font-weight:bold;">18 490</td>
+          </tr>
+          <tr class="warning">
+            <td>Učitelé</td>
+            <td style="text-align:right; font-weight:bold;">3 499</td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-sm-7">
+        <h4>Speciální nabídka dlouhodobých licencí</h4>
+        <table class="table table-bordered">
+          <tr class="success" style="font-weight:bold;">
+            <td>Šablona</td>
+            <td>Licence na...</td>
+            <td>Cena v Kč s DPH</td>
+            <td>Server</td>
+          </tr>
+          <tr class="warning">
+            <td>Studenti</td>
+            <td>2 roky</td>
+            <td style="text-align:right">26 280</td>
+            <td style="text-align:right; font-weight:bold;">LANGMaster</td>
+          </tr>
+          <tr class="warning">
+            <td>Studenti</td>
+            <td>3 roky</td>
+            <td style="text-align:right">32 580</td>
+            <td style="text-align:right; font-weight:bold;">LANGMaster</td>
+          </tr>
+          <tr class="warning">
+            <td>Studenti</td>
+            <td>4 roky</td>
+            <td style="text-align:right">38 880</td>
+            <td style="text-align:right; font-weight:bold;">LANGMaster</td>
+          </tr>
+          <tr class="warning">
+            <td>Studenti</td>
+            <td>neomezeně</td>
+            <td style="text-align:right">38 880</td>
+            <td style="text-align:right; font-weight:bold;">Poskytne škola (*)</td>
+          </tr>
+        </table>
+        <b>(*)</b> poznámky k neomezené licenci:
+        <ul>
+          <li>instalace výukové aplikace na server, poskytnutý školou, je v ceně</li>
+          <li>vyžadován je Microsoft Windows ASP. NET server</li>
+          <li>do 31. 8. 2016 je možný provoz na serverech LANGMaster</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--<div class="container-fluid">
+  <div class="container">
+    <h2>Objednání a zprovoznění aplikace</h2>
+    <div class="row">
+      <div class="col-sm-offset-2 col-sm-8">
+        <div class="alert alert-warning">
+          Pokud se rozhodnete pro naše řešení, prosíme o zaslání fakturačních údajů a počtu jednotlivých šablon.<br />
+          Další postup je již přímočarý: zašleme Vám fakturu, Licenční klíč a další podklady (metodické příručky atd).
+          <b>Bezprostředně poté budete moci spustit výuku v ostrém provozu.</b>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>-->
+
+
+<!--<div class="container-fluid">
+  <div class="container">
+    <h2>Dlouhodobé licence (2-4 roky, licence bez omezení)</h2>
+  </div>
+</div>
+
+
+<div class="container-fluid">
+  <div class="container">
+    <h2>Unikátní metoda na vyhodnocení mluveného projevu studenta</h2>
+  </div>
+</div>-->

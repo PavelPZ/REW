@@ -281,6 +281,7 @@ namespace schools
     public licenceConfig licenceConfig; //config licence
 
     public bool vocabulary; //kurz s rewise apod. slovnickem. Nejedna se o Dictionary (= slovnik)
+
     public config copyTo(config cfg) {
       cfg.dataBatchUrl = dataBatchUrl;
       cfg.failLimit = failLimit;
@@ -360,11 +361,9 @@ namespace schools
   public class Dict {
     public Langs crsLang;
     public Langs natLang;
-    public Dictionary<string, string> Tags; //prevod cislo tagu => tak name pro DictItemtag
-    public Dictionary<string, int> Keys; //prevod slovo v kurzy => jednoznacny key Lingea hesla
+    public Dictionary<string, string> Tags; //prevod cislo tagu => tak name pro DictItemTag
+    public Dictionary<string, int> Keys; //prevod slovo v kurzu => jednoznacny key Lingea hesla
     public Dictionary<string, DictItemRoot> Entries; //prevod Key => zakodovane HTML s heslem
-    //[JsonIgnore]
-    //public XElement Dupls;
   }
   public enum DictEntryType { lingeaOld, rj, Wiktionary }
   public class DictItemRoot: DictItem {
@@ -374,7 +373,6 @@ namespace schools
   public class DictItem {
     public short tag;
     public string urls; //zakodovany seznam URL do slovniku dictTypes:value|..., napr. 0:http://www.lingea.cz/ilex51/lms/t/aenru80000001664.mp3|1:ru_ru/arucz103a708
-    //public string offurl; //offline Url, napr. ru_ru/arucz103a708
     public DictItem[] items;
     public string text;
   }

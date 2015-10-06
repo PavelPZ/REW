@@ -104,6 +104,8 @@ module schoolAdmin {
     title: string;
   }
 
-  Pager.registerAppLocator(appId, compAdminsTypeName,(urlParts, completed) => completed(new CompAdmins(urlParts)));
+  //Pager.registerAppLocator(appId, compAdminsTypeName, (urlParts, completed) => completed(new CompAdmins(urlParts)));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, compAdminsTypeName, appId, compAdminsTypeName, 1, urlParts => new CompAdmins(urlParts)));
+
 }
 

@@ -168,8 +168,11 @@ module anim {
 
   $(document).on('click', '[data-toggle=menu], [data-toggle=menu] *', toggleMenuLow);
 
+  //zabrani odchyceni KEY events pro angularjs GUI
+  export var inAngularjsGui = false;
   //uzavri menu
-  $(document).on('keydown', '*',(ev: JQueryEventObject) => {
+  $(document).on('keydown', '*', (ev: JQueryEventObject) => {
+    if (inAngularjsGui) return true;
     stopAnim();
     if (ev.keyCode != 27) return;
     hideMenus(null);

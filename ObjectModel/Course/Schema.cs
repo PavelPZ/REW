@@ -44,6 +44,15 @@ namespace CourseModel {
     multiTestImpl = 0x1000, //multiTestImpl
     testEx = 0x2000, //rozsireni informace o "ex": navic cviceni testu
 
+    blPretestItem = 0x4000,
+    blLesson = 0x8000,
+    blTest = 0x10000,
+
+    blPretest = 0x20000,
+    blProductHome = 0x40000,
+
+    blPretestEx = 0x80000,
+
     //allSpecialTypes = testImpl_result | testImpl | testSkillImpl,
 
     all = needsEval | pcCannotEvaluate | hasExternalAttachments | done | passive | testImpl_result | testImpl | testSkillImpl | testEx | skipAbleRoot | modImpl | pretestImp | multiTestImpl | testEx,
@@ -794,6 +803,11 @@ namespace CourseModel {
   [tgAt(tgSt.docIgnore | tgSt.xsdIgnore)]
   [XmlType(TypeName = "human-eval")]
   public abstract partial class humanEval : evalControl {
+    [tgAt(0), XmlAttribute(AttributeName = "is-passive"), DefaultValue(false)]
+    public bool isPassive;
+    //AngularJS
+    //public humanEval() { isPassive = true; }
+    public override int getMaxScore() { return isPassive ? 0 : base.getMaxScore(); }
   }
 
   [tgAt(tgSt.jsCtrl | tgSt.csControl | tgSt.xsdHtmlEl)]
@@ -812,7 +826,7 @@ namespace CourseModel {
     public int numberOfRows;
   }
 
-  [tgAt(tgSt.jsCtrl | tgSt.csControl | tgSt.xsdHtmlEl, _oldName = "audio-capture")]
+  [tgAt(tgSt.jsCtrl | tgSt.csControl | tgSt.xsdHtmlEl)]
   [XmlType(TypeName = "recording")]
   public partial class recording : humanEval {
 

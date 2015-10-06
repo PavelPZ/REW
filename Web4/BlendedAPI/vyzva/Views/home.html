@@ -1,0 +1,192 @@
+﻿<div class="alert help-panel help-warning lm-top-margin" collapsablemanager="+homehelpteacher" ng-if="::ts.myTask.showLectorPart">
+  <div class="h4 help-header" ng-click="homehelpteacher.collapseToogle()">
+    <div class="more fa fa-question-circle"></div>
+    Nápověda k "Moje <i>Studijní skupiny</i>"
+  </div>
+  <div class="help-content" collapse="homehelpteacher.isCollapsed">
+    <div class="help-close" ng-click="homehelpteacher.collapseToogle()"><i class="fa fa-times"></i></div>
+    <div class="row">
+      <div class="col-sm-6">
+        Klikněte na tlačítko <b>Studenti <i>Studijní skupiny</i></b> níže. To vám umožní:
+        <ul>
+          <li>přizvat <i>Studenty</i> k blended learning výuce</li>
+          <li>řídit výuku a prohlížet výsledky práce <i>Studentů</i></li>
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <h4>Vysvětlení pojmů:</h4>
+        <b><i>Student</i></b>: student nebo žák vaší školy<br />
+        <b><i>Studující učitel</i></b>: učitel vaší školy, který bude sám studovat v rámci šablony č. 3.<br />
+        <b><i>Učitel</i></b>: to jste Vy, který řídí výuku <i>Studentů</i> v rámci šablony č. 4.<br />
+        <b><i>Host</i></b>: kdokoliv, kdo si chce prohlédnout kurz, aniž by jeho výuka byla řízena <i>Učitelem</i><br />
+      </div>
+    </div>
+    <div class="when-problem" vyzva$common$whenproblem></div>
+  </div>
+</div>
+
+<div class="panel panel-default" ng-if="::ts.myTask.showLectorPart">
+  <div class="panel-heading">
+    <h4>Moje <i>Studijní skupiny</i></h4>
+  </div>
+  <div class="list-group">
+    <a href="#" class="list-group-item" ng-repeat="group in ts.myTask.lectorGroups" ng-click="ts.gotoLector(group.groupId)">
+      <div class="row">
+        <div class="col-sm-10">
+          <h4><span class="flag-small" style="vertical-align:top" ng-class="group.line | lineIdsFlag"></span> {{::group.title}}</h4>
+        </div>
+        <div class="col-sm-2">
+          <div class="btn btn-success pull-right">Studenti <i>Studijní skupiny</i> <i class="fa fa-play"></i></div>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div ng-click="::ts.debugClearProduct()" ng-if="::appService.isLangmasterUser()">del</div>
+
+<div class="alert help-panel help-warning" data-ng-if="::ts.ctx.onbehalfof" collapsablemanager="+homehelpstudentsresult">
+  <div class="h3 help-header" ng-click="homehelpstudentsresult.collapseToogle()">
+    <div class="more fa fa-question-circle"></div>
+    Výsledky studenta: <b>{{::appService.schoolUserInfo().firstName}} {{::appService.schoolUserInfo().lastName}}</b>
+  </div>
+  <div class="help-content" collapse="homehelpstudentsresult.isCollapsed">
+    <div class="help-close" ng-click="homehelpstudentsresult.collapseToogle()"><i class="fa fa-times"></i></div>
+    <div class="row">
+      <div class="col-sm-5">
+        Toto okno umožňuje řídit výuku a prohlížet výsledky vybraného <i>Studenta</i>.
+        <ul>
+          <li>
+            <b>Vpravo nahoře</b> vidíte pro orientaci jméno a příjmení <i>Studenta</i>, jehož výsledky si prohlížíte.
+          </li>
+          <li>
+            <b>Vlevo nahoře</b> tlačítkem <i class="fa fa-arrow-circle-o-left" style="font-size:18px"></i> ukončíte prohlížení výsledků.
+          </li>
+          <li>
+            Níže si vyberte hotovou či rozpracovanou lekci či test a zobrazte podrobnosti.
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        Mimo prohlížení detailních informací o studiu můžete ovlivnit průchod kurzem každého <i>Studenta</i> následujícími způsoby:
+        <ul>
+          <li>u hotových testů ohodnotit mluvený projev <i>Studenta</i> (cvičení s mluveným projevem je vždy poslední cvičení testu)</li>
+          <li>u hotových testů rozhodnout o možnosti pokračovat ve výuce</li>
+          <li>dát <i>Studentovi</i> k zopakování každou hotovou lekci nebo test</li>
+          <li>u <i>Rozřazovacího testu</i> změnit jazykovou úroveň kurzu nebo dát <i>Studentovi</i> k zopakování celý <i>Rozřazovací test</i></li>
+        </ul>
+      </div>
+    </div>
+    <div class="when-problem" vyzva$common$whenproblem></div>
+  </div>
+</div>
+
+<div class="alert help-panel help-warning" ng-if="::ts.myTask.showStudentPart && !ts.ctx.onbehalfof" collapsablemanager="+homehelpstudent">
+  <div class="h4 help-header" ng-click="homehelpstudent.collapseToogle()">
+    <div class="more fa fa-question-circle"></div>
+    Nápověda: Průchod kurzem
+  </div>
+  <div class="help-content" collapse="homehelpstudent.isCollapsed">
+    <div class="help-close" ng-click="homehelpstudent.collapseToogle()"><i class="fa fa-times"></i></div>
+    <div class="row">
+      <div class="col-sm-5">
+        <h4>Postup</h4>
+        Průchod celým kurzem je velice snadný.
+        <ol>
+          <li>
+            V seznamu níže vyberte řádek, označený ikonkou <i class="fa fa-hand-o-right text-success" style="font-size:18px"></i>, a spusťte odpovídající část kurzu, která je práve "nařadě".
+          </li>
+          <li>Objeví se vám test nebo lekce.</li>
+          <li>Postupně plňte jednotlivé úkoly testu nebo lekce</li>
+          <li>Každý z těchto úkolů ukončete klikem na zelenou šipku vlevo nahoře</li>
+          <!--<li>
+            Testy, označené ikonkou <i class="fa fa-line-chart text-success" style="font-size:18px"></i>, vyhodnocuje <i>Učitel</i>.
+            Do doby než test vyhodnotí nemůžete pokračovat dále (řádek označen ikonkou <i class="fa fa-question text-success" style="font-size:18px"></i>)
+          </li>-->
+        </ol>
+        U splněných částí kurzu si můžete prohlížet výsledky pomocí tlačítka <b>Výsledky</b>.
+      </div>
+      <div class="col-sm-6">
+        <h4>Podrobnější vysvětlení:</h4>
+        <ul>
+          <li>Studium zahájíte spuštěním <i>Rozřazovacího testu</i>. Po jeho ukončení se vám zpřístupní kurz odpovídající jazykové úrovně.</li>
+          <li>Kurz je rozdělen na Studijní bloky - první Studijní blok studujete po splnění <i>Vstupního testu</i>, další Studijní bloky po ukončení předchozího Studijního bloku a úspěšném absolvování <i>Kontrolního testu</i>.</li>
+          <li>Po každém Studijním bloku následuje Kontrolní test. Po posledním Studijním bloku následuje <i>Závěrečný test</i>, jehož úspěšným splněním ukončíte celý kurz.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="when-problem" vyzva$common$whenproblem></div>
+  </div>
+</div>
+
+<div class="panel panel-primary xlm-top-margin home-course" ng-if="::ts.myTask.showStudentPart" collapsablemanager="homecollapsable">
+  <div class="panel-heading" ng-click="homecollapsable.collapseToogle()">
+    <h3>
+      <span ng-if="ts.lessons[0].status<=1">Rozřazovací test</span>
+      <b ng-if="ts.lessons[0].status>1">Kurz úrovně {{::ts.pretestLevel | levelText}}</b>
+    </h3>
+    <div ng-if="ts.lessons[0].status>1" class="more fa fa-bars fa-lg"></div>
+  </div>
+  <div collapse="homecollapsable.isCollapsed" class="position-relative home-more-panel">
+    <div class="clearfix"></div>
+    <div class="close-panel fa fa-times" ng-click="homecollapsable.collapseToogle()"></div>
+    <h4>{{::ts.title}}, podrobné informace:</h4>
+    <div vyzva$common$summary user="ts.agregCourseUser"></div>
+  </div>
+  <ul class="study-plan list-group">
+    <li class="list-group-item home-test-hw" ng-click="::ts.navigateTestHw()">
+      <button class="btn btn-warning"><i class="fa fa-volume-off"></i> Provést kontrolu <i class="fa fa-microphone"></i></button>
+      Než se pustíte do výuky, doporučujeme Vám zkontrolovat, zdali váš počítač umožňuje
+      <h4>přehrávat zvuk do sluchátek či reproduktoru a nahrávat zvuk do mikrofonu.</h4>
+    </li>
+    <li class="list-group-item" ng-repeat="lesson in ::ts.lessons"
+        ng-style="::{cursor: lesson.rightButtonType ? 'pointer' : 'default'}"
+        ng-click="::lesson.rightButtonType && ts.navigateLesson(lesson)"
+        ng-class="::lesson | vyzva$home$nodeclass">
+      <div ng-if="::!lesson.lessonType" ng-include="'vyzva$home$pretest.html'"></div>
+      <div ng-if="::lesson.lessonType" ng-include="'vyzva$home$lesson.html'"></div>
+    </li>
+  </ul>
+</div>
+
+<script type="text/ng-template" id="vyzva$home$lesson.html">
+  <div ng-include="'vyzva$home$leftmark.html'"></div>
+  <button class="btn btn-info right-mark" ng-if="::lesson.rightButtonType==2">Výsledky <i class="fa fa-eye"></i></button>
+  <button class="btn right-mark"
+          ng-class="::{'btn-success': !lesson.active, 'btn-succes-info': lesson.active}"
+          ng-if="::lesson.rightButtonType==1"
+          ng-disabled="::lesson.cannotRun">
+    Spustit <i class="fa fa-play"></i>
+  </button>
+  <h4>
+    <span ng-if="::lesson.lessonType==1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <span ng-if="::lesson.lessonType==2"><i class="fa fa-line-chart"></i></span>
+    {{::lesson.node.title}}
+  </h4>
+</script>
+
+<script type="text/ng-template" id="vyzva$home$pretest.html">
+  <div ng-include="'vyzva$home$leftmark.html'"></div>
+  <div data-ng-if="::lesson.status<2">
+    <p><button class="btn btn-success btn-lg" ng-disabled="::lesson.cannotRun" ng-click="::ts.navigateLesson(lesson)">Rozřazovací test</button></p>
+    <i>Rozřazovací test</i> určí vaši jazykovou úroveň (A1, A2, B1 nebo B2), na základě které, bude zvoleno odpovídající pokračování vašeho kurzu.
+  </div>
+  <div ng-if="::lesson.status>=2">
+    <h4>Rozřazovací test dokončen: vaše jazyková úroveň je {{::ts.pretestLevel | levelText}}</h4>
+    <div class="btn-group right-mark">
+      <button type="button" ng-repeat="level in ::ts.pretestLevels" class="btn btn-info btn-sm" ng-click="::ts.navigatePretestLevel(level)">{{level | levelText}} <i class="fa fa-eye"></i></button>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="vyzva$home$leftmark.html">
+  <div ng-if="::lesson.leftMarkType==1" class="left-mark icon"><i class="fa fa-hand-o-right"></i></div>
+  <div ng-if="::lesson.leftMarkType==2" class="left-mark level">{{::ts.pretestLevel | levelText}}</div>
+  <div ng-if="::lesson.leftMarkType==4" class="left-mark icon"><i class="fa fa-question"></i></div>
+  <div ng-if="::lesson.leftMarkType==3" class="left-mark percent-mark">
+    <div class="progress-bar">
+      <span ng-style="::lesson.agregUser.score | vyzva$exmodule$percentheight : 32" class="progress-red">{{::lesson.agregUser.score}}%</span>
+      <span>{{::lesson.agregUser.score}}%</span>
+    </div>
+  </div>
+</script>

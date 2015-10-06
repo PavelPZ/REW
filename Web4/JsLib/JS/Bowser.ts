@@ -170,6 +170,57 @@ module bowser {
 
 module Utils {
 
+  export function sum<T>(list: _.Dictionary<T> | _.List<T>, getNumber: (item: T) => number): number {
+    var res = 0;
+    _.each(<_.Dictionary<T>>list, item => res += getNumber(item));
+    return res;
+  }
+
+  export function getObjectClassName(obj) {
+    if (obj && obj.constructor && obj.constructor.toString()) {
+
+      /*
+       *  for browsers which have name property in the constructor
+       *  of the object,such as chrome 
+       */
+      if (obj.constructor.name) {
+        return obj.constructor.name;
+      }
+      var str = obj.constructor.toString();
+      /*
+       * executed if the return of object.constructor.toString() is 
+       * "[object objectClass]"
+       */
+
+      if (str.charAt(0) == '[') {
+        var arr = str.match(/\[\w+\s*(\w+)\]/);
+      } else {
+        /*
+         * executed if the return of object.constructor.toString() is 
+         * "function objectClass () {}"
+         * for IE Firefox
+         */
+        var arr = str.match(/function\s*(\w+)/);
+      }
+      if (arr && arr.length == 2) {
+        return arr[1];
+      }
+    }
+    return undefined;
+  };
+
+
+  export function applyMixins(derivedCtor: any, baseCtors: any[]) {
+    baseCtors.forEach(baseCtor => {
+      Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+        if (name !== 'constructor') {
+          derivedCtor.prototype[name] = baseCtor.prototype[name];
+        }
+      });
+    });
+  }
+  //applyMixins (srcType, [copyFrom1, copyFrom2,...]);
+
   export function longLog(lines: string) { _.each(lines.split('\n'), l => console.log(l)); }
 
   export function extendJsonDataByClass(jsonData: Object, cls: Object) {
@@ -423,16 +474,17 @@ module Utils {
   var localOffset = new Date().getTimezoneOffset() * 60000;
   export function toUtcTime(dt: Date): Date { return new Date(dt.getTime() + localOffset); }
 
-  export function nowToInt(): number { return dateToInt(new Date()); }
-  export function nowToNum(): number { return dateToNum(new Date()); }
-  export function nowToDay(): number { return dayToInt(new Date()); }
+
+  export function nowToInt(): number { return dateToInt(new Date()); } //milivteriny
+  export function nowToNum(): number { return dateToNum(new Date()); } //vteriny
+  export function nowToDay(): number { return dayToInt(new Date()); } //dny
   export function formatDateLow(dt: Date): string { return Globalize.format(dt, 'd'); }
   export function formatTimeLow(dt: Date): string { return Globalize.format(dt, ', H:m:s'); }
 
   //vteriny
   export function dateToNum(dt: Date): number { return Math.floor(dateToInt(dt) / 1000); }
   export function numToDate(num: number): Date { return new Date(num * 1000); }
-  export function formatDate(sec: number) { return formatTimeLow(numToDate(sec)); }
+  export function formatDate(sec: number) { return formatDateLow(numToDate(sec)); }
   export function formatDateTime(sec: number) { return formatDate(sec) + formatTimeLow(numToDate(sec)); }
 
   //miliseconds
@@ -453,7 +505,7 @@ module Utils {
     var s = Math.floor(secs % 60); secs = secs / 60;
     var m = Math.floor(secs % 60);
     var h = Math.floor(secs / 60);
-    return (h==0 ? '' : (h.toString() + ":")) + (m < 10 ? "0" : "") + m.toString() + ":" + (s < 10 ? "0" : "") + s.toString();
+    return (h == 0 ? '' : (h.toString() + ":")) + (m < 10 ? "0" : "") + m.toString() + ":" + (s < 10 ? "0" : "") + s.toString();
   }
   export function IsTheSameDay(date1: Date, date2: Date): boolean {
     return date1.setHours(0, 0, 0, 0) == date2.setHours(0, 0, 0, 0);
@@ -819,7 +871,7 @@ module Logger {
   }
   export var delphiLog: logger;
 
-  var ids = null; 
+  var ids = null;
   var logProc: (msg: string, appId: string) => void;
   var noIds = null;
 

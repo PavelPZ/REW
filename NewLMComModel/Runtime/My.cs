@@ -30,7 +30,7 @@ namespace Login {
     public MyCourse[] Courses;
     public Admin.CmdGetDepartmentResult DepTree; //tree s company departments
     public int? DepSelected; //selected department
-    public CourseMeta.product[] companyProducts; //kurzy, vyrtvorene pod hlavickou company
+    public CourseMeta.product[] companyProducts; //kurzy, vyrtvorene pod hlavickou company v LM Authorovi
     public Int64 PublisherOwnerUserId; //pro pripad, ze tato company je fake company individualniho publishear - jeho User.compId 
   }
 
@@ -266,7 +266,7 @@ namespace NewData {
     /******** REPORT *******************************************************************************************/
     static bool report(CmdReport par) {
       string fileName;
-      byte[] data = excelReport.lib.getResponse(par, out fileName);
+      byte[] data = excelReport.lib2.getResponse(par, out fileName);
       NewModel.Lib.downloadResponse(data, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName + ".xlsx");
       return true;
     }
@@ -431,7 +431,9 @@ namespace NewData {
         l.UserId,
         l.CompanyLicence.Days,
         l.CompanyLicence.CompanyId,
-        l.CourseUser.ProductId
+        l.CourseUser.ProductId,
+        l.LicenceId,
+        l.Counter,
       }).ToArray();
 
       var compUserInfo = db.Users.Include("CompanyUsers").Where(u => u.Id == userId).Select(u => new {
@@ -449,10 +451,11 @@ namespace NewData {
           Title = cu.Title,
           PublisherOwnerUserId = cu.PublisherOwner == null ? 0 : cu.PublisherOwner.Id,
           Id = cu.CompanyId,
-          Courses = lics.Where(li => li.CompanyId == cu.CompanyId).GroupBy(li => li.ProductId).Select(prodLics => new MyCourse() {
-            ProductId = prodLics.Key,
-            Expired = LowUtils.DateToJsGetTime(prodLics.Select(d => d.Started.AddDays(d.Days)).Max()),
-            LicCount = prodLics.Count()
+          Courses = lics.Where(li => li.CompanyId == cu.CompanyId).GroupBy(li => li.ProductId).Select(prodLicsGrp => new MyCourse() {
+            ProductId = prodLicsGrp.Key,
+            Expired = LowUtils.DateToJsGetTime(prodLicsGrp.Select(d => d.Started.AddDays(d.Days)).Max()),
+            LicCount = prodLicsGrp.Count(),
+            LicenceKeys = prodLicsGrp.Select(l => l.LicenceId.ToString() + "|" + l.Counter.ToString()).ToArray()
           }).ToArray(),
           DepTree = NewData.AdminServ.GetDepartment(cu.CompanyId),
           DepSelected = cu.DepartmentId

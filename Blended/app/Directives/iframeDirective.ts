@@ -2,10 +2,9 @@
 
   export function iframeDirective(): ng.IDirective {
     return {
-      restrict: 'A',
       link: (scope: IFrameScope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
         scope.id = 'id-' + (frameId++).toString();
-        el.attr('src', attrs['iframedirective']);
+        el.attr('src', attrs['iframeSrc']);
         el.css('width', '100%');
         el.attr('width', '100%');
         el.attr('frameBorder', '0');

@@ -103,8 +103,9 @@ namespace Handlers {
           throw new Exception("Deserialize error", exp);
         }
 
+        //Odriznuti dvojiho zalogovani kvuli Vyzva 57
         LMComLib.Cmd sessCmd = req as LMComLib.Cmd;
-        if (sessCmd != null && !sessionManager.checkSession(sessCmd.lmcomId, sessCmd.sessionId)) {
+        if (false && sessCmd != null && !sessionManager.checkSession(sessCmd.lmcomId, sessCmd.sessionId)) {
           Logger.Log("Warning: User logged under other account");
           //check session
           var err = new RpcResponse(998, null);
@@ -417,7 +418,7 @@ namespace Handlers {
       }
       if (!File.Exists(fn + ".gzip")) {
         if (makeGZip == null) {
-          if (!File.Exists(fn) && localizedFileMask.IsMatch(fn)) resp.Write("{}"); //neni lokalizovany soubor => vrat {}
+          if (!File.Exists(fn) && (localizedFileMask.IsMatch(fn) || instructionFileMask.IsMatch(fn))) resp.Write("{}"); //neni lokalizovany soubor => vrat {}
           else resp.WriteFile(fn);
           resp.End();
         }
@@ -428,6 +429,7 @@ namespace Handlers {
       resp.End();
     }
     static Regex localizedFileMask = new Regex(@"\w+\.\w{2}_\w{2}\.js$"); //maska pro lokalizovane JS soubory, napr. xxx.cs-cz.js
+    static Regex instructionFileMask = new Regex(@"_instrs.js$"); //maska pro instrukce (kvuli fake produktum), napr. _instrs.js
 
     static string dataPath(string fn) {
       var rp = Machines.rootPath;

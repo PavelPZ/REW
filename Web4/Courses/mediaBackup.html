@@ -1,0 +1,258 @@
+﻿c__sndPage
+###
+###
+
+c_mediatitle
+###
+<h3>mediatitle</h3>
+{{include tmpl=~T("c_genitems")/}}
+###
+
+c_mediatext
+###
+<!-- ko with: getItem('{{:id}}') -->
+{{if isOldToNew}}
+{{include tmpl=~T("c_genitemsex")/}}
+{{else}}
+<div class="{{:~classes(#data)}} " data-bind="css: {loading: loading, 'is-passive': passive }">
+  {{include tmpl=~T("c_genitemsex")/}}
+</div>
+{{/if}}
+<!-- /ko -->
+###
+
+c__mediasent
+###
+{{!--'is-hidden': myText().hidden je kvuli oldToNew--}}
+<span class="oli-sent" data-bind="css: { active: active, passive: myText().passive, 'is-hidden': myText().hidden }, click:play, clickBubble:false">
+  {{if !myText().passive}}
+  <i class="actor fa"></i>
+  {{/if}}
+  {{include tmpl=~T("c_genitemsex")/}}
+</span>
+###
+
+c__mediareplica
+###
+<div class="oli-replica {{:css()}}">
+  {{if actor}}<b>{{:actor}}</b>:{{/if}}
+  {{include tmpl=~T("c_genitemsex")/}}
+</div>
+###
+
+c_mediabigmark
+###
+<!-- ko with: getItem('{{:id}}') -->
+<span class="{{:~classes(#data)}}" data-bind="css: { loading: loading, active: active }"><i class="fa fa-volume-off" data-bind="css: { active: active }, click: play"></i></span>
+<!-- /ko -->
+###
+
+c_mediavideo
+###
+<!-- ko with: getItem('{{:id}}') -->
+<div id="{{:id}}" class="{{:~classes(#data)}} embed-responsive" data-bind="css2:ratioClass, css: { loading: loading }">
+  <div class="video-loading">
+    <i class="fa fa-spin fa-spinner"></i>
+  </div>
+</div>
+<!-- /ko -->
+###
+
+c_mediaplayer
+###
+<!-- ko with: getItem('{{:id}}') -->
+<div class="{{:~classes(#data)}}" data-bind="css: {'notext-visible': !textVisible(), active: active, 'without-cut': withoutCut(), loading: loading}">
+  <div class="alert alert-warning">
+    {{if withoutCut()}}
+    <i class="fa fa-border fa-3x fa-fw fa-play play" data-bind="click: playStop, clickBubble: false"></i>
+    <i class="spinner fa fa-spin fa-spinner"></i>
+    <div class="slider-div">
+      <div id="{{:id}}-slider" class="slider"></div>
+    </div>
+    {{else}}
+    <div class="slider-div">
+      <div id="{{:id}}-slider" class="slider"></div>
+    </div>
+    <div class="buttons">
+      <div class="content">
+        <span class="fa fa-lg fa-eye-slash text-btn btn-icon" data-bind="click: toogleText, clickBubble: false"></span>
+        <i class="fa fa-backward fa-lg btn-icon" data-bind="click: prevSent, clickBubble: false"></i>
+        <i class="fa fa-border fa-3x fa-fw fa-play play" data-bind="click: playStop, clickBubble: false"></i>
+        <i class="fa fa-forward fa-lg btn-icon" data-bind="click: nextSent, clickBubble: false"></i>
+      </div>
+    </div>
+    <div class="text-area">
+      <div class="video-loading">
+        <i class="fa fa-spin fa-spinner"></i>
+      </div>
+      <span class="actor-text" data-bind="text: actor"></span>
+      <span class="speech-text" data-bind="text: speech"></span>
+    </div>
+    {{/if}}
+    <div class="clearfix"></div>
+  </div>
+</div>
+<!-- /ko -->
+###
+
+c_mediabar
+###
+<!-- ko with: getItem('{{:id}}') -->
+<div id="{{:id}}" class="{{:~classes(#data)}}" data-bind="css: {loading: loading}">
+  <div class="buttons">
+    <div class="content">
+      <!--<i class="fa fa-border fa-3x fa-fw fa-play play" data-bind="click: playStop, clickBubble: false"></i>-->
+    </div>
+  </div>
+  <div class="slider-div">
+    <div id="{{:id}}-slider" class="slider"></div>
+  </div>
+</div>
+<!-- /ko -->
+###
+
+
+Xc_ttssound
+###
+<!-- ko with: getItem('{{:id}}') -->
+<div class="oli-dialog" {{:style()}}>
+  {{for Items tmpl=~T('c_gen')/}}
+</div>
+<!-- /ko -->
+###
+
+c_recording
+###
+<!-- ko with: getItem('{{:id}}') -->
+<div class="oli-audio-capture" data-bind="css: {'human-eval-mode' : isRecorded() && isDone(), 'is-recorded': isRecorded, 'oli-hide-progress-bar': !recording(), recording: recording, playing: playing }" id="{{:id}}">
+  <!--<div data-bind="angularjs: 'course$audiocapture$humaneval'"></div>-->
+  {{if !recordInDialog || isHumanEvalMode()}}
+  {{if isHumanEvalMode()}}
+  <div class="alert alert-default lector">
+    <form id="form-{{:id}}" class="human-form form-inline has-error">
+      <h5>{{:~CSLocalize(null, 'Lector evaluation')}}:</h5>
+      <div>
+        <div data-bind="visible:humanLevel">{{:~CSLocalize('99eed25487184fe195aa42fa3b390d4f', 'Test level')}}: <b><span data-bind="text:humanLevel"></span></b></div>
+        <div data-bind="visible:humanHelpTxt">{{:~CSLocalize('5598d88071e7473c81f51a42a5f689eb', 'Recorded (recommended / actual):')}} <b><span data-bind="text:humanHelpTxt"></span></b></div>
+      </div>
+      <div class="input-group">
+        <span class="input-group-addon">Hodnocení:</span>
+        <input type="text" class="form-control" id="human-ed-{{:id}}" name="human-ed-{{:id}}" placeholder="0-{{:scoreWeight}}" data-bind="textInput:human" />
+        <span class="input-group-addon">0-{{:scoreWeight}}</span>
+      </div>
+    </form>
+  </div>
+  <br />
+  {{/if}}
+  <div class="ff-content-progress">
+    <div class="content-inner">
+      <div class="oli-progress-bar">
+        <div class="left" data-bind="style: {width:progressBarFrom() + '%'}"></div>
+        <div class="bar" data-bind="style: {width:progressBarValue() + '%'}"></div>
+        <div class="text" data-bind="text:progressText"></div>
+      </div>
+      <div class="play btn btn-large btn-default pull-left" data-bind="click: play, clickBubble:false">
+        <span class="fa fa-spinner fa-spin"></span>
+        <span class="fa fa-2x fa-play"></span>
+      </div>
+      <div class="empty">
+        &nbsp;
+      </div>
+    </div>
+  </div>
+  <div class="ff-left-progress">
+    <div class="recorded-icon pull-left">
+      <i class="fa fa-check"></i>
+    </div>
+    <div class="record btn btn-large btn-default pull-left" data-bind="click: record, clickBubble:false, css: {disabled: allDisabled() || isDone() || (singleAttempt && isRecorded())}">
+      <span class="fa fa-spinner fa-spin"></span>
+      <span class="fa fa-2x fa-circle"></span>
+      <span class="fa fa-2x fa-stop"></span>
+    </div>
+  </div>
+  {{else}}
+  <div>
+    <div class="recorded-icon pull-left">
+      <i class="fa fa-check"></i>
+    </div>
+    <div class="record btn btn-large btn-default pull-left" data-bind="click: record, clickBubble:false, css: {disabled: isDone() || (singleAttempt && isRecorded())}">
+      <span class="fa fa-2x fa-circle"></span>
+      <span class="fa fa-2x fa-stop"></span>
+    </div>
+    <div class="play btn btn-large btn-default pull-left" data-bind="click: play, clickBubble:false">
+      <span class="fa fa-spinner fa-spin"></span>
+      <span class="fa fa-2x fa-play"></span>
+    </div>
+  </div>
+  {{/if}}
+</div>
+<div class="clearfix"></div>
+{{if recordInDialog}}
+<div id="modal-{{:id}}" class="modal fade oli-audio-capture recording" role="dialog" data-bind="click: $.noop, clickBubble:false" data-backdrop="static" data-show="false">
+  <div class="modal-dialog {{:modalDialogSizeCss()}} ">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <div class="oli-progress-bar">
+          <div class="left" data-bind="style: {width:progressBarFrom() + '%'}"></div>
+          <div class="bar" data-bind="style: {width:progressBarValue() + '%'}"></div>
+          <div class="text" data-bind="text:progressText"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="pull-left test-notify" data-bind="visible: testMe && testMe.notify && testMe.notify.active">
+          <!--todo - nešlo by následující section remaining time dát do jednoho překladového řetězce?-->
+          {{:~CSLocalize('d52e817f6ba641e8942e4f002e92cbba', 'Time for this')}}
+          <br />
+          {{:~CSLocalize('0678a00299d94c5687550cf14a6de9a6', 'section:')}}<b><span data-bind="text: testMe.notify.progressText"></span></b>
+        </div>
+        <button type="button" class="btn btn-success" data-bind="click: stopRecording, css: { disabled: saveRecordingDisabled }">{{:~CSLocalize('28f5255b167040b1a3eeaffb75868b00', 'Finish and save recording')}}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{:~CSLocalize('80a6c3eec76f4d49a4964fda77142f7f', 'Cancel recording')}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{{/if}}
+<!-- /ko -->
+###
+
+c_writing
+###
+<!-- ko with: getItem('{{:id}}') -->
+<div class="oli-writing" id="{{:id}}" data-bind="css: {'human-eval-mode' : isDone()}">
+  <div class=" oli-progress-bar" data-bind="css: {exceeded:progressBarLimetExceeded}, visible:!isDone()">
+    <div class="left" data-bind="style: {width:progressBarFrom() + '%'}"></div>
+    <div class="bar" data-bind="style: {width:progressBarValue() + '%'}"></div>
+    <div class="text" data-bind="text:progressText"></div>
+  </div>
+  {{if isHumanEvalMode()}}
+  <div>
+    {{:~CSLocalize('970fc05ef14441cb8fa9189c6df41c5d', 'Test level')}}: <b><span data-bind="text:humanLevel"></span></b><br />
+    {{:~CSLocalize('2edc33573a70474bbb6214ebb672dacf', 'Number of written words (recommended / actual):')}} <b><span data-bind="text:humanHelpTxt"></span></b>
+  </div>
+  <form id="form-{{:id}}" class="human-form form-inline has-error">
+    <div class="input-group">
+      <span class="input-group-addon">{{:~CSLocalize('9f25fd96c2444cbd9d716114dc526e36', 'Evaluation:')}}</span>
+      <input type="text" class="form-control" id="human-ed-{{:id}}" name="human-ed-{{:id}}" placeholder="0-{{:scoreWeight}}" data-bind="textInput:human" />
+      <span class="input-group-addon">0-{{:scoreWeight}}</span>
+    </div>
+  </form>
+  <p class="clearfix"></p>
+  {{/if}}
+  <textarea rows="{{:numberOfRows}}" data-bind="disable: isDone(), textInput:textInput"></textarea>
+</div>
+<!-- /ko -->
+###
+
+
+install_sl
+###
+<div class="alert alert-danger text-center" role="alert" data-bind="css: { show: needInstall(), hide: !needInstall() }">
+  <!-- TODO -->
+  {{:~CSLocalize('7093100fa5354430a34c608be34e4adc', 'To play or record sound it is necessary')}}
+  <a href="{{:~SndLow.slInstallUrl}}"><b>{{:~CSLocalize('81796d7f94e34f90bc2cf18680715b62', 'to Install Silverlight')}}</b></a>
+  {{:~CSLocalize('1d981d749c974f918008f57e77cf6b6d', 'or to use the latest version of ')}} <a href="https://www.google.com/chrome"><b>Google Chrome</b></a>, <a href="http://www.opera.com"><b>Opera</b></a>
+  , <a href="https://www.mozilla.org/en-US/firefox/new/"><b>Mozilla Firefox</b></a>.
+</div>
+###

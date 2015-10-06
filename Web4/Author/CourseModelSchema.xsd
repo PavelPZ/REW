@@ -2117,6 +2117,7 @@
     <xs:attribute default="0" name="limit-min" type="xs:int" />
     <xs:attribute default="0" name="limit-max" type="xs:int" />
     <xs:attribute default="0" name="number-of-rows" type="xs:int" />
+    <xs:attribute default="false" name="is-passive" type="xs:boolean" />
     <xs:attribute name="eval-group" type="eval-group-type" />
     <xs:attribute default="0" name="score-weight" type="xs:int" />
     <xs:attribute name="eval-button-id" type="xs:IDREF" />
@@ -2136,6 +2137,7 @@
     <xs:attribute name="dialog-header-id" type="xs:IDREF" />
     <xs:attribute default="normal" name="dialog-size" type="modalSize" />
     <xs:attribute default="false" name="single-attempt" type="xs:boolean" />
+    <xs:attribute default="false" name="is-passive" type="xs:boolean" />
     <xs:attribute name="eval-group" type="eval-group-type" />
     <xs:attribute default="0" name="score-weight" type="xs:int" />
     <xs:attribute name="eval-button-id" type="xs:IDREF" />

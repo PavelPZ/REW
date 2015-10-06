@@ -12,7 +12,7 @@
 //Get-Migrations -ConfigurationTypeName NewData.Migrations.LMConfiguration -ConnectionStringName Container -ProjectName NewLMComModel
 */
 using LoginNs = Login;
-namespace NewData.Migrations { 
+namespace NewData.Migrations {
   using LMComLib;
   using System;
   using System.Data.Entity;
@@ -52,7 +52,8 @@ namespace NewData.Migrations {
       addAdmin(context, "pjanecek@langmaster.cz", "pj", "Petr", "Janeček");
       addAdmin(context, "zzikova@langmaster.cz", "zz", "Zdenka", "Ziková");
       addAdmin(context, "rjeliga@langmaster.cz", "rj", "Radek", "Jeliga");
-      addAdmin(context, "zikovakaca@seznam.cz", "kz", "Káča", "Ziková");
+      addAdmin(context, "zikovakaca@seznam.cz", "kz", "Káča", "ZikováK");
+      addAdmin(context, "template@langmaster.cz", "tt", "template", "template");
 
       Lib.SaveChanges(context);
       Logger.Log(@"LMConfiguration.cs.LMConfiguration.initDBData: End", true);
@@ -70,24 +71,30 @@ namespace NewData.Migrations {
       var compUser = new CompanyUser() { Company = company, User = user, Created = DateTime.UtcNow, RolesEx = (long)CompRole.All, CompanyDepartment = dep };
       db.CompanyUsers.Add(compUser);
       //@PRODID
+      string[] ignoreUserLic = new string[] { "/lm/prods_lm_blcourse_english/", "/lm/prods_lm_blcourse_french/", "/lm/prods_lm_blcourse_german/" };
       foreach (var prodId in new string[] { 
         //"/data/xmlsource/simpleenglish/", "/data/xmlsource/simplespanish/", 
-        "/data/xmlsource/docexamples/", "/data/xmlsource/TestProduct/",
-        "/lm/EnglishE_0_10/", "/lm/English_0_10/", "/lm/German_0_5/", "/lm/Spanish_0_6/", "/lm/French_0_6/", "/lm/Italian_0_6/", "/lm/Russian_0_3/",
-        "/lm/EnglishE_0_1/", "/lm/Spanish_0_1/", 
-        "/grafia/od1_8/", "/grafia/od1_administrativ/",
-        "/skrivanek/prods/etestme-std/english/a1/", "/skrivanek/prods/etestme-comp/english/a1/", "/skrivanek/prods/etestme-comp/english/all/", 
-        "/skrivanek/prods/etestme-comp/french/all/",
-        "/skrivanek/prods/etestme-comp/german/all/","/skrivanek/prods/etestme-comp/russian/all/",
-        "/skrivanek/prods/etestme-comp/italian/all/","/skrivanek/prods/etestme-comp/spanish/all/",
-        "/lm/prods/etestme/english/a1/", //"/lm/prods/etestme/english/a1_c2/"
-        }.Select(p => p.ToLower())) {
-          var compLicence = new CompanyLicence() { Company = company, Days = 100, ProductId = prodId, Created = DateTime.UtcNow };
+        //"/data/xmlsource/docexamples/", "/data/xmlsource/TestProduct/",
+        //"/lm/EnglishE_0_10/", "/lm/English_0_10/", "/lm/German_0_5/", "/lm/Spanish_0_6/", "/lm/French_0_6/", "/lm/Italian_0_6/", "/lm/Russian_0_3/",
+        //"/lm/EnglishE_0_1/", "/lm/Spanish_0_1/", 
+        //"/grafia/od1_8/", "/grafia/od1_administrativ/",
+        //"/skrivanek/prods/etestme-std/english/a1/", "/skrivanek/prods/etestme-comp/english/a1/", "/skrivanek/prods/etestme-comp/english/all/", 
+        //"/skrivanek/prods/etestme-comp/french/all/",
+        //"/skrivanek/prods/etestme-comp/german/all/","/skrivanek/prods/etestme-comp/russian/all/",
+        //"/skrivanek/prods/etestme-comp/italian/all/","/skrivanek/prods/etestme-comp/spanish/all/",
+        //"/lm/prods/etestme/english/a1/", //"/lm/prods/etestme/english/a1_c2/"
+        //Blended
+        "/lm/blcourse/schoolmanager.product/",
+        "/lm/blcourse/langmastermanager.product/",
+        }.Concat(ignoreUserLic).Select(p => p.ToLower())) {
+        var compLicence = new CompanyLicence() { Company = company, Days = 100, ProductId = prodId, Created = DateTime.UtcNow };
         db.CompanyLicences.Add(compLicence);
         var courseUser = new CourseUser() { CompanyUser = compUser, Created = DateTime.UtcNow, ProductId = prodId };
         db.CourseUsers.Add(courseUser);
-        var userLicence = new UserLicence() { CompanyLicence = compLicence, CourseUser = courseUser, Started = DateTime.UtcNow, Created = DateTime.UtcNow };
-        db.UserLicences.Add(userLicence);
+        if (!ignoreUserLic.Contains(prodId)) {
+          var userLicence = new UserLicence() { CompanyLicence = compLicence, CourseUser = courseUser, Started = DateTime.UtcNow, Created = DateTime.UtcNow };
+          db.UserLicences.Add(userLicence);
+        }
       }
     }
   }

@@ -45,19 +45,5 @@ namespace NewData.Design.jsWebApiProxy {
       return string.Format("{0}, '{1}', {2}, {3}, completed", invokePar.url, invokePar.method, invokePar.queryPars ?? "null", invokePar.body);
     }
 
-    //static string LMParseType(Type type) {
-    //  if (type == null) return "";
-    //  if (type.ToString() == "System.Void") return "void";
-    //  if (type.FullName.StartsWith("System.") || !type.IsClass || allTypes.Contains(type.FullName))
-    //    return LMComLib.CSharpToTypeScript.fieldTypeForProxy(type);
-    //  else if (type.IsArray) {
-    //    var tp = type.GetElementType();
-    //    if (tp.FullName.StartsWith("System.") || !tp.IsClass || allTypes.Contains(tp.FullName))
-    //      return LMComLib.CSharpToTypeScript.fieldTypeForProxy(tp) + "[]";
-    //    else
-    //      return LMComLib.CSharpToTypeScript.GenInlineTypeForProxy(tp, allTypes) + "[]";
-    //  } else
-    //    return LMComLib.CSharpToTypeScript.GenInlineTypeForProxy(type, allTypes);
-    //}
   }
 }

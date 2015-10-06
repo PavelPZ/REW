@@ -1,0 +1,112 @@
+﻿@import "../../bs3/less/mixins/alerts.less";
+@import "../../bs3/less/mixins/gradients.less";
+@import "../../bs3/less/mixins/list-group.less";
+@import "../../bs3/less/mixins/background-variant.less";
+@import "../../bs3/less/mixins/border-radius.less";
+@import "../../bs3/less/mixins/buttons.less";
+@import "../../bs3/less/variables.less";
+
+.bl {
+
+  @oli-red: #ff6022;
+
+  .list-group-item-variant(success-primary; @btn-success-bg; @btn-success-color);
+
+  .btn-succes-info {
+    .button-variant(@state-success-text; @state-success-bg; @btn-success-bg);
+  }
+
+  .home-more-panel {
+    padding: 10px;
+  }
+
+  .study-plan {
+    > li {
+      position: relative;
+      padding-left: 60px;
+      padding-right: 120px;
+
+      h4 {
+        margin: 8px 0;
+      }
+
+      .left-mark, .right-mark, .percent-mark {
+        position: absolute;
+        text-align: center;
+      }
+
+      .left-mark {
+        left: 0;
+        top: 10px;
+        width: 50px;
+        border-right: solid 1px transparent;
+        font-size: 24px;
+      }
+
+      .right-mark {
+        top: 10px;
+        right: 10px;
+      }
+
+      .percent-mark {
+        padding-left: 5px;
+
+        .progress-bar {
+          position: relative;
+          width: 38px;
+          height: 32px;
+          font-size: 12px;
+          background-color: @btn-success-bg;
+          border-radius: @alert-border-radius;
+          line-height: 34px;
+
+          .progress-red {
+            position: absolute;
+            background-color: @oli-red;
+            border-radius: @alert-border-radius;
+            left: 0;
+            right: 0;
+            top: 0;
+          }
+        }
+      }
+    }
+
+    .list-group-item-success-primary .left-mark {
+      border-right-color: @state-success-bg;
+    }
+
+    .list-group-item-success .left-mark {
+      border-right-color: darken(@state-success-bg, 25);
+    }
+  }
+
+
+  .home-course {
+    .panel-heading {
+      position: relative;
+
+      .more {
+        position: absolute;
+        cursor: pointer;
+        top: 24px;
+        right: 18px;
+        font-size: 24px;
+      }
+    }
+  }
+
+  .home-test-hw {
+    > button {
+      position:absolute;
+      right:10px;
+      top:18px;
+    }
+
+    padding: 8px;
+    padding-right:80px;
+    position:relative;
+    cursor: pointer;
+    background-color: @alert-warning-bg;
+  }
+}

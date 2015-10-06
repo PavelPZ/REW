@@ -1,0 +1,192 @@
+﻿@import "../../bs3/less/mixins/alerts.less";
+@import "../../bs3/less/mixins/gradients.less";
+@import "../../bs3/less/mixins/background-variant.less";
+@import "../../bs3/less/mixins/border-radius.less";
+@import "../../bs3/less/mixins/buttons.less";
+@import "../../bs3/less/variables.less";
+
+.bl {
+
+  @oli-red: #ff6022;
+
+  .ex-lector-panel {
+    padding-top: 10px;
+  }
+  /*.exercise-place {
+    margin-top:20px;
+    border: solid 1px @panel-default-border;
+    padding:10px;
+  }*/
+  .topbar-exercise {
+    height: auto; //prepsany styl difotniho top baru
+    padding-top: 2px;
+
+    .module-finished {
+      margin-right: 10px;
+      color: lightgray;
+      font-size: @font-size-h3;
+      margin-top: 6px;
+    }
+
+    .btn-finish {
+      margin-left: 5px;
+      margin-right: 15px;
+      margin-top: 6px;
+      background-color: @panel-default-heading-bg;
+    }
+
+    .lm-logo-black-small {
+      margin-top: 8px;
+      margin-right: 10px;
+    }
+
+    .more {
+      color: white;
+      font-size: 20px;
+      margin-top: 12px;
+      margin-right: 12px;
+      cursor: pointer;
+    }
+
+    .ex-items {
+      margin-top: 5px;
+    }
+
+    .ex-item {
+      display: inline-block;
+      position: relative;
+      width: 38px;
+      height: 32px;
+      font-size: 12px;
+      border: solid 0 black; //@panel-default-border;
+      border-width: 0 2px 4px 2px;
+      /*border-top-width: 0px;
+      border-bottom-width: 4px;
+      border-left-width:1px;
+      border-right-width:1px;*/
+      //border-bottom-width: 0;
+      background-color: darken(@panel-default-heading-bg, 20);
+      .border-top-radius(@alert-border-radius);
+      cursor: pointer;
+      line-height: 34px;
+      text-align: center;
+
+      &.active {
+        border-bottom-width: 0;
+      }
+
+      &.success {
+        background-color: @btn-success-bg;
+        color: white;
+      }
+
+      &.danger {
+        background-color: @btn-danger-bg;
+        color: white;
+      }
+
+      &.warning {
+        background-color: white;
+      }
+
+      .progress-red {
+        position: absolute;
+        background-color: @oli-red;
+        .border-top-radius(@alert-border-radius);
+        left: 0;
+        right: 0;
+        top: 0;
+      }
+    }
+
+    .more-body-module {
+      background-color: @panel-default-heading-bg;
+      padding: 0 15px;
+      padding-bottom: 20px;
+      border: 1px solid @panel-default-border;
+      border-radius: @alert-border-radius;
+      .border-top-radius(0);
+    }
+  }
+
+  .instruction {
+    /*background-color: @alert-success-bg;
+    border: 1px solid @alert-success-border;*/
+    background-color: @panel-default-heading-bg;
+    border: 1px solid @panel-default-border;
+    border-radius: @alert-border-radius;
+    padding-left: 15px;
+
+    .header {
+      position: relative;
+      cursor: pointer;
+
+      h4 {
+        margin: 0;
+      }
+
+      &.header-done {
+        height: 34px;
+      }
+
+      .reset-btn {
+        margin: 2px 0;
+        position: absolute;
+        right: 3px;
+      }
+
+      .more, .keyboard {
+        position: absolute;
+        cursor: pointer;
+        top: 1px;
+        right: 10px;
+        font-size: 20px;
+      }
+    }
+
+    .more-body-exercise {
+      //color: @alert-success-text;
+      padding-bottom: 10px;
+
+      h1 {
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+
+      .btn-link {
+        text-align: left;
+        text-decoration: none;
+        white-space: normal;
+        font-weight: bold;
+        font-size: 16px;
+      }
+
+      ol {
+        margin: 0 0 10px 25px;
+      }
+    }
+  }
+
+  .keyboard-place {
+    height: 40px;
+  }
+
+  .keyboard-fixed {
+    background-color:white;
+    position: fixed;
+    padding-top:5px;
+    //top: 150px;
+    z-index:0;
+    span {
+      border:solid @panel-default-border 1px;
+      background-color:@alert-warning-bg;
+      font-weight:bold;
+      border-radius:4px;
+      padding:4px 15px;
+      font-size:16px;
+      cursor:pointer;
+    }
+  }
+}

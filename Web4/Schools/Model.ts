@@ -16,7 +16,7 @@ module schools {
   export var memoryPersistId = 'memory';
 
   export function getHash(type: string, companyId: number, productUrl: string, persistence: string, url: string): string {
-    return [appId, type, companyId.toString(), productUrl, persistence, url].join('@');
+    return oldPrefix + [appId, type, companyId.toString(), encodeUrlHash(productUrl), persistence, encodeUrlHash(url)].join(hashDelim);
   }
 
   export function InitModel(compl: () => void): void {
@@ -189,9 +189,9 @@ module schools {
     constructor(typeName: string, urlParts: string[]/*companyId: number, productUrl: string, url: string*/) {
       super(appId, typeName, urlParts);
       CourseMeta.actCompanyId = this.copmanyId = urlParts && urlParts.length >= 1 ? parseInt(urlParts[0]) : -1;
-      this.productUrl = urlParts && urlParts.length >= 2 ? urlParts[1] : null;
+      this.productUrl = decodeUrlHash(urlParts && urlParts.length >= 2 ? urlParts[1] : null);
       this.persistence = urlParts && urlParts.length >= 3 ? urlParts[2] : null;
-      this.url = urlParts && urlParts.length >= 4 ? urlParts[3] : null;
+      this.url = decodeUrlHash (urlParts && urlParts.length >= 4 ? urlParts[3] : null);
       DictConnector.actDictData = null;
       this.tb = new TopBarModel(this);
     }
@@ -218,7 +218,7 @@ module schools {
   var offlineCompanyId = 0x4FFFFFFF;
   var offlineCookie: LMStatus.LMCookie = { id: 0x4FFFFFFF, EMail: null, Login: "localUser", LoginEMail: null, Type: 0, TypeId: null, FirstName: null, LastName: null, OtherData:null, Company: null, created:0, Roles:null, VerifyStatus:0 };
 
-  export function createGrammUrl(type: string, url: string): string { return getHash(type, CourseMeta.actCompanyId, CourseMeta.actProduct.url, CourseMeta.actProductPersistence, url); }
+  export function createGrammUrl(type: string, url: string): string { return getHash(type, CourseMeta.actCompanyId, encodeUrlHash(CourseMeta.actProduct.url), CourseMeta.actProductPersistence, encodeUrlHash(url)); }
   export function createDictIntroUrl(): string { return getHash(tDictInfo, 0, '', null, null); }
   //export function createHomeUrlStd(): string { return false ? getHash(tCourseMeta, CourseMeta.actCompanyId, CourseMeta.actProduct.url, "") : getHash(tMy, -1, null, null); }
   export function createHomeUrlStd(): string { return getHash(tMy, -1, null, null, null); }

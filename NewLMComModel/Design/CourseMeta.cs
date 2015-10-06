@@ -637,14 +637,14 @@ namespace CourseMeta {
             //type = runtimeType.products,
             //items = new data[0]
             Items = Enumerable.Empty<data>().
-              //Concat(OldLangCourses.generateStandard()).
-              //Concat(LangCourses.generateExamplesProduct()).
-              //Concat(LangCourses.generateGrafiaProducts()).
-              //Concat(OldLangCourses.generateA1_C2()).
-              ////Concat(LangCourses.generateTestMeProduct()).
-              //Concat(LangCourses.generateJJN()).
-              //Concat(LangCourses.generateSkrivanekProduct()).
-              //Concat(LangCourses.generateEdusoftProduct()).
+              Concat(OldLangCourses.generateStandard()).
+              Concat(LangCourses.generateExamplesProduct()).
+              Concat(LangCourses.generateGrafiaProducts()).
+              Concat(OldLangCourses.generateA1_C2()).
+              Concat(LangCourses.generateTestMeProduct()).
+              Concat(LangCourses.generateJJN()).
+              Concat(LangCourses.generateSkrivanekProduct()).
+              Concat(LangCourses.generateEdusoftProduct()).
               Concat(LangCourses.generateBlendedProduct()).
               ToArray()
           };
@@ -665,6 +665,8 @@ namespace CourseMeta {
           "/lm/blended/english/blended.product",
           "/lm/blended/german/blended.product",
           "/lm/blended/french/blended.product",
+          "/lm/blcourse/langmastermanager.product",
+          "/lm/blcourse/schoolmanager.product",
         };
         //var addInProds = Directory.EnumerateFiles(Machines.dataPath + @"xmlsource", "*.xml").Select(fn => data.readObject<data>(fn)).ToArray();
         var addInProds = addInProductUrls.Select(pr => Machines.rootDir + pr.Replace('/', '\\')).Select(fn => data.readObject<data>(fn)).ToArray();
@@ -739,6 +741,7 @@ namespace CourseMeta {
         sitemap.fromFileSystem("/lm/author/", log),
         sitemap.fromFileSystem("/lm/blended/", log),
         sitemap.fromFileSystem("/lm/ea/", log),
+        sitemap.fromFileSystem("/lm/blcourse/", log),
       };
 
       //nove kurzy a return

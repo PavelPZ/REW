@@ -10,7 +10,7 @@ module schoolMy {
 
     constructor() {
       super(schools.tMy, null);
-      this.licKey = validate.create(validate.types.rangelength,(prop) => {
+      this.licKey = validate.create(validate.types.rangelength, (prop) => {
         prop.min = 8;
         prop.max = 8;
       });
@@ -18,7 +18,9 @@ module schoolMy {
         this.licKey.message('');
         if (!validate.isPropsValid([this.licKey])) return;
         var k: keys.Key;
-        try { k = keys.fromString(this.licKey()); } catch (err) {
+        var key: string = this.licKey();
+        key = key.trim();
+        try { k = keys.fromString(key); } catch (err) {
           this.licKey.message(errWrongFormat());
           return;
         }
@@ -32,7 +34,7 @@ module schoolMy {
               case Login.EnterLicenceResult.ok:
                 //this.licKey.message(errOK());
                 this.licKey("");
-                Login.adjustMyData(true,() => Pager.reloadPage(this));
+                Login.adjustMyData(true, () => Pager.reloadPage(this));
                 anim.collapseExpanded();
                 //Pager.closePanels();
                 return;
@@ -46,14 +48,14 @@ module schoolMy {
     }
 
     doUpdate(completed: () => void): void {
-      this.systemAdmin = Login.isSystemAdmin() ? () => LMStatus.setReturnUrlAndGoto("schoolAdmin@schoolAdminModel") : null;
+      this.systemAdmin = Login.isSystemAdmin() ? () => LMStatus.setReturnUrlAndGoto(oldPrefix + "schoolAdmin" + hashDelim + "schoolAdminModel") : null;
       //var hasCompany = /*this.systemAdmin != null || Login.companyExists();
       if (Login.companyExists()) {
         this.companies = _.map(Login.myData.Companies, c => {
           TreeView.adjustParents(c.DepTree.Departments);
           var comp: Company = {
             title: c.Title, items: [], courses: null, data: c,
-            department: ko.observable<Admin.Department>(c.PublisherOwnerUserId != 0 ? null : <Admin.Department>TreeView.findNode(c.DepTree.Departments,(d: Admin.Department) => d.Id == c.DepSelected)),
+            department: ko.observable<Admin.Department>(c.PublisherOwnerUserId != 0 ? null : <Admin.Department>TreeView.findNode(c.DepTree.Departments, (d: Admin.Department) => d.Id == c.DepSelected)),
             treeViewModel: null
           };
           if (c.DepTree.Departments) comp.treeViewModel = new TreeView.Model(c.DepTree.Departments, false, null, {
@@ -63,7 +65,7 @@ module schoolMy {
               Pager.ajaxGet(
                 Pager.pathType.restServices,
                 Login.CmdSaveDepartment_Type,
-                Login.CmdSaveDepartment_Create(LMStatus.Cookie.id, c.Id,(<Admin.Department>(nd.data)).Id),
+                Login.CmdSaveDepartment_Create(LMStatus.Cookie.id, c.Id, (<Admin.Department>(nd.data)).Id),
                 (res) => {
                   comp.department(<any>(nd.data));
                   anim.collapseExpanded();
@@ -74,37 +76,37 @@ module schoolMy {
           if ((c.RoleEx.Role & LMComLib.CompRole.Admin) != 0) comp.items.push(it = {
             id: 'manage_admin',
             title: CSLocalize('7dbd71d1e623446e884febbd07c72f9f', 'Manage administrators and their roles'),
-            gotoItem: () => location.hash = schoolAdmin.getHash(schoolAdmin.compAdminsTypeName, c.Id)
+            gotoItem: () => Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.compAdminsTypeName, c.Id))
           });
           if ((c.RoleEx.Role & LMComLib.CompRole.Products) != 0) comp.items.push(it = {
             id: 'manage_products',
             title: CSLocalize('fd0acec43f7d487ba635b4a55343b23a', 'Manage products'),
-            gotoItem: () => location.hash = schoolAdmin.getHash(schoolAdmin.productsTypeName, c.Id)
+            gotoItem: () => Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.productsTypeName, c.Id))
           });
           if ((c.RoleEx.Role & LMComLib.CompRole.Keys) != 0) comp.items.push(it = {
             id: 'gen_keys',
             title: CSLocalize('643da9a0b02b4e209e26e20ca620f54c', 'Generate license keys'),
-            gotoItem: () => location.hash = schoolAdmin.getHash(schoolAdmin.keyGenTypeName, c.Id)
+            gotoItem: () => Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.keyGenTypeName, c.Id))
           });
           if ((c.RoleEx.Role & LMComLib.CompRole.Department) != 0) comp.items.push(it = {
             id: 'edit_criteria',
             title: CSLocalize('9231de5764184fd7a75389aa2ecfdad5', 'Edit Department structure and criteria for tracking study results'),
-            gotoItem: () => location.hash = schoolAdmin.getHash(schoolAdmin.editDepartmentTypeName, c.Id)
+            gotoItem: () => Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.editDepartmentTypeName, c.Id))
           });
           if ((c.RoleEx.Role & LMComLib.CompRole.Results) != 0) comp.items.push(it = {
             id: 'view_students_results',
             title: CSLocalize('2fb8a691d86e4f4181dba3f48708a363', 'View Student results'),
-            gotoItem: () => location.hash = schoolAdmin.getHash(schoolAdmin.schoolUserResultsTypeName, c.Id)
+            gotoItem: () => Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.schoolUserResultsTypeName, c.Id))
           });
           if ((c.RoleEx.Role & LMComLib.CompRole.HumanEvalator) != 0) comp.items.push(it = {
             id: 'human_eval',
             title: CSLocalize('f8fce20059f24b5e82b52bd41fef4bd4', 'Evaluate Speaking and Writing skills'),
-            gotoItem: () => location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalTypeName, c.Id)
+            gotoItem: () => Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.humanEvalTypeName, c.Id))
           });
           if ((c.RoleEx.Role & LMComLib.CompRole.HumanEvalManager) != 0) comp.items.push(it = {
             id: 'human_eval_manager',
             title: CSLocalize('e72a70b3d05244759ea5469440921ff2', 'Assign Tests to Evaluators'),
-            gotoItem: () => location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalManagerLangsTypeName, c.Id)
+            gotoItem: () => Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.humanEvalManagerLangsTypeName, c.Id))
           });
           //if ((c.RoleEx.Role & LMComLib.CompRole.HumanEvalManager) != 0) comp.items.push(it = {
           //  id: 'human_eval_manager',
@@ -114,7 +116,7 @@ module schoolMy {
           if ((c.RoleEx.Role & LMComLib.CompRole.HumanEvalManager) != 0) comp.items.push(it = {
             id: 'human_evaluators',
             title: CSLocalize('bce009c57f4b418c9ff42e30c7998479', 'Configure Evaluators'),
-            gotoItem: () => location.hash = schoolAdmin.getHash(schoolAdmin.humanEvalManagerEvsTypeName, c.Id)
+            gotoItem: () => Pager.navigateToHash(schoolAdmin.getHash(schoolAdmin.humanEvalManagerEvsTypeName, c.Id))
           });
           comp.courses = [];
           //kurzy, k nimz mam licenci
@@ -137,15 +139,37 @@ module schoolMy {
         //isPublIndiv: crs==null,
         expired: crs.Expired <= 0 ? new Date() : Utils.intToDate(crs.Expired),
         line: pr.line, title: pr.title, prodId: pr.url, isTest: CourseMeta.lib.isTest(pr),
-        isAngularJS: CourseMeta.lib.isAngularJS(pr),
+        isVyzvaProduct: CourseMeta.lib.isVyzvaProduct(pr),
         data: crs,
         myCompany: comp,
         gotoUrl: (dt: courseLink) => {
+
+          //nove AngularJS produkty
+          if (dt.isVyzvaProduct) {
+
+            var licenceKeysStr: Array<string> = _.map(crs.LicenceKeys, licenceKey => {
+              var parts = licenceKey.split('|');
+              var key: keys.Key = { licId: parseInt(parts[0]), counter: parseInt(parts[1]) };
+              return keys.toString(key);
+            });
+
+            var ctx: blended.learnContext = {
+              producturl: blended.encodeUrl(pr.url), companyid: comp.data.Id, loginid: LMStatus.Cookie.id,
+              /*userdataid: LMStatus.Cookie.id,*/ loc: LMComLib.Langs.cs_cz /*Trados.actLang*/, taskid: '', persistence: null, /*TODO*/
+              lickeys: licenceKeysStr.join('#')
+            };
+            var hash: string;
+            switch (pr.url) {
+              case '/lm/blcourse/langmastermanager.product/': hash = blended.root.href(vyzva.stateNames.langmasterManager.name, ctx); break;
+              case '/lm/blcourse/schoolmanager.product/': hash = blended.root.href(vyzva.stateNames.shoolManager.name, ctx); break;
+              default: hash = blended.root.href(blended.prodStates.home.name, ctx); break;
+            }
+            Pager.navigateToHash(hash);
+            return;
+          } //window.location.hash = '/pg/ajs/vyzvaproduct/xxx'; return; }
+          //stare produkty
           if (dt.isTest && dt.data.LicCount == 0) return;
           if (comp.data.PublisherOwnerUserId == 0 && /*!dt.data.isAuthoredCourse &&*/ dt.myCompany.data.DepTree && dt.myCompany.data.DepTree.Departments && !dt.myCompany.department()) { alert(CSLocalize('a85c8a527bb44bda9a7ee0721707d2ef', 'Choose company department (by clicking on [Change] link above)')); return; }
-          //if (dt.isAngularJS) {
-          //  blended.rootState.go('ajs.vyzvaproduct', { producturl: encodeURIComponent(pr.url) }); return;
-          //}
           var hash = dt.isTest ? testMe.createUrlPersist(testMe.tEx, comp.data.Id, pr.url, persistence) : new CourseMeta.dataImpl().hrefCompl(comp.data.Id, pr.url, persistence);
           if (dt.isTest) testMe.alowTestCreate_Url = pr.url;
           window.location.hash = hash;
@@ -185,7 +209,7 @@ module schoolMy {
     prodId: string;
     expired: Date;
     isTest: boolean;
-    isAngularJS: boolean; //nova verze
+    isVyzvaProduct: boolean; //nova verze
     line: LMComLib.LineIds;
     gotoUrl: (data: courseLink) => void;
     gotoArchive: (data: courseLink) => void;
@@ -200,5 +224,10 @@ module schoolMy {
     department: KnockoutObservable<Admin.Department>;
     treeViewModel: TreeView.Model;
   }
-  Pager.registerAppLocator(schools.appId, schools.tMy,(urlParts, completed) => completed(new schoolMy.Model()));
+
+  //Pager.registerAppLocator(schools.appId, schools.tMy, (urlParts, completed) => completed(new schoolMy.Model()));
+
+  export var myStateName = 'schoolMy_Model'.toLowerCase();
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, myStateName, schools.appId, schools.tMy, 0, urlParts => new schoolMy.Model()));
+
 }

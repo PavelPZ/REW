@@ -1,0 +1,113 @@
+﻿<div ng-if="!state.layoutSpecial" ng-include="'vyzva$common$layout.html'"></div>
+<div ng-if="state.layoutSpecial" ng-include="::state.layoutContentId | vyzva$state$viewpath"></div>
+
+<script type="text/ng-template" id="vyzva$common$layout.html">
+  <div class="container-fluid topbar">
+    <div class="container">
+      <div class="pull-left" ng-include="'vyzva$common$topbarinnerleft.html'"></div>
+      <div class="pull-left topbar-title" ng-if="::!state.ignorePageTitle">{{::ts.title}}</div>
+      <div ng-include="'vyzva$common$topbarinnerright.html'"></div>
+    </div>
+  </div>
+  <div class="container">
+    <div ng-include="'vyzva$common$breadcrumb.html'"></div>
+    <div data-ng-include="::state.layoutContentId | vyzva$state$viewpath"></div>
+  </div>
+  <div ng-include="'vyzva$common$copyright.html'"></div>
+</script>
+
+<script type="text/ng-template" id="vyzva$common$breadcrumb.html">
+  <ol class="breadcrumb" ng-if="::!!ts.breadcrumb && ts.breadcrumb.length>0">
+    <li data-ng-repeat="item in ::ts.breadcrumb" data-ng-class="::{'active': item.active}">
+      <a data-ng-if="::!item.active" ng-href="{{::item.url}}">{{::item.title}}</a>
+      <span data-ng-if="::item.active">{{::item.title}}</span>
+    </li>
+  </ol>
+</script>
+
+<script type="text/ng-template" id="vyzva$common$topbarinnerleft.html">
+  <div ng-if="::!ts.ctx.onbehalfof" class="lm-logo-black-small" ng-click="ts.navigateWebHome()"></div>
+  <div ng-if="::ts.ctx.onbehalfof" class="onbehav-go-back" ng-click="::ts.navigateReturnUrl()"><i class="fa fa-arrow-circle-o-left"></i></div>
+</script>
+
+<script type="text/ng-template" id="vyzva$common$topbarinnerright.html">
+  <div ng-if="::ts.ctx.onbehalfof" class="pull-right onbehav-right-part-name">{{::appService.schoolUserInfo().firstName}}<br />{{::appService.schoolUserInfo().lastName}}</div>
+  <div ng-if="::ts.ctx.onbehalfof" class="pull-right onbehav-right-part-at"><i class="fa fa-at"></i></div>
+</script>
+
+<script type="text/ng-template" id="vyzva$common$summary.html">
+  <table class="table">
+    <tr>
+      <td>Skóre:</td>
+      <td><span ng-if="user().score>=0"><span vyzva$exmodule$scoreprogress value="{{user().score}}"></span></span></td>
+      <td>První interakce:</td>
+      <td><b>{{(user().beg | vyzva$exmodule$sec) || '-'}}</b></td>
+      <td>Přehráno zvuku:</td>
+      <td><b>{{(user().sPlay | vyzva$exmodule$time) || '-'}}</b></td>
+    </tr>
+    <tr>
+      <td>Dokončeno:</td>
+      <td><span vyzva$exmodule$scoreprogress value="{{user().finished}}" colors="score-bar learn-progress"></span></td>
+      <td>Poslední interakce:</td>
+      <td><b>{{(user().end | vyzva$exmodule$sec) || '-'}}</b></td>
+      <td>Vlastní nahrávky</td>
+      <td><b>{{(user().sRec | vyzva$exmodule$time) || '-'}}</b></td>
+    </tr>
+    <tr>
+      <td>Počet cvičení</td>
+      <td><b>{{user().count}}</b></td>
+      <td>Strávený čas</td>
+      <td><b>{{(user().elapsed | vyzva$exmodule$time) || '-'}}</b></td>
+      <td>Přehráno nahrávek</td>
+      <td><b>{{(user().sPRec | vyzva$exmodule$time) || '-'}}</b></td>
+    </tr>
+    <tr>
+      <td>Dokončených cvičení</td>
+      <td><b>{{user().dones}}</b></td>
+      <td colspan="4">&nbsp;</td>
+    </tr>
+  </table>
+</script>
+
+<script type="text/ng-template" id="vyzva$common$writeus.html">
+  <div class="write-us-modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Napište nám</h3>
+    </div>
+    <div class="modal-body">
+      <p>Popište prosím váš námět, připomínku nebo problém a stiskněte <b>Poslat</b>:</p>
+      <textarea class="form-control" rows="10" ng-model="$parent.copyrWriteUsText"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="button" lm-enter-key="::copyrShowWriteUsOK()" ng-click="::copyrShowWriteUsOK()">Poslat</button>
+      <button class="btn btn-default" type="button" ng-click="::$dismiss()">Zrušit</button>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="vyzva$common$whenproblem.html">
+  Využijte též stránky
+  <span class="a" ng-click="copyrNavigateFaq()">Často kladené dotazy (FAQ)</span> nebo nám vaše náměty či připomínky
+  <span class="a" ng-click="copyrShowWriteUs()">napište</span>.
+</script>
+
+
+<script type="text/ng-template" id="vyzva$common$copyright.html">
+  <hr />
+  <div class="container text-center copyright">
+    <span vyzva$common$whenproblem></span><br />
+    © 2015 LANGMaster.com
+  </div>
+</script>
+
+<script type="text/ng-template" id="vyzva$common$backheader.html">
+  <div class="container-fluid topbar">
+    <div class="container">
+      <div class="pull-left">
+        <div ng-if="::!ts.canNavigateReturnUrl()" class="lm-logo-black-small" ></div>
+        <div ng-if="::ts.canNavigateReturnUrl()" class="onbehav-go-back" ng-click="::ts.navigateReturnUrl()"><i class="fa fa-arrow-circle-o-left"></i></div>
+      </div>
+      <div class="pull-left topbar-title">{{title}}</div>
+    </div>
+  </div>
+</script>

@@ -1,0 +1,190 @@
+﻿<div class="container">
+  <h3>Správa lektorů</h3>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="btn btn-default" ng-click="::ts.exportLectorInfoToXml()">Export lector infos to XML</div>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Licenční klíč..." ng-model="ts.licKeyForGoto">
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="btn btn-default" ng-click="::ts.gotoLicKey()">Login</div>
+    </div>
+  </div>
+
+  <h3>Vstupní údaje o škole</h3>
+  <div>
+    <form>
+      <div class="form-group">
+        <label for="schName">Název školy</label>
+        <input type="text" class="form-control" id="schName" placeholder="Název školy" ng-model="ts.schoolTitle">
+        <label for="sabl4">Počet šablon 4</label>
+        <input type="number" class="form-control" id="sabl4" placeholder="Počet šablon 4" ng-model="ts.sablona4">
+        <label for="sabl3">Počet šablon 3</label>
+        <input type="number" class="form-control" id="sabl3" placeholder="Počet šablon 3" ng-model="ts.sablona3">
+      </div>
+    </form>
+  </div>
+  <hr />
+  <h4 class="text-danger">PROVOZ</h4>
+  <br />
+  <a href="mailto:a@a.cz?subject=Přístup%20do%20výukového%20systému%20pro%20ostrý%20provoz">Přístup do výukového systému pro ostrý provoz</a>
+  <hr />
+  <p>
+    Dobrý den,
+  </p>
+  <p>
+    děkujeme, že jste si vybrali náš systém výuky.<br />
+    Veškeré informace, spojené s rozběhnutím ostrého provozu na Vaší škole <a href="{{ts.vyzvaProvoz()}}"><b>naleznete kliknutím zde</b></a>.
+  </p>
+  <p>
+    V případě jakýchkoliv dotazů mě neváhejte kontaktovat.
+  </p>
+  <p>
+    Děkuji a přeji hezký den
+  </p>
+  <p>
+    Petr Janeček<br />
+    Manažer projektu<br />
+    email: pjanecek@langmaster.cz<br />
+    tel: 733 575 541
+  </p>
+  <br />
+  <hr />
+  <h4 class="text-danger">DEMO</h4>
+  <br />
+  <p>
+    Dobrý den,
+  </p>
+  <p>
+    děkujeme za Váš zájem.
+  </p>
+  <p>
+    Hlavní funkce naší aplikace si můžete <a href="{{ts.encodetitle()}}"><b>vyzkoušet kliknutím na tento odkaz</b></a>.
+  </p>
+  <p>
+    S pozdravem,<br />
+    Radek Jeliga<br />
+    Projektový manažer<br />
+    <a href="http://vyzva57.langmaster.cz">vyzva57.langmaster.cz</a><br />
+    tel. 604 147 031
+  </p>
+  <br />
+  <hr />
+  <h4 class="text-danger">DEMO SPLNUJEME</h4>
+  <br />
+  <p>
+    <b>Garantujeme <i>splnění všech podmínek Výzvy 57</i></b><br />
+    Přesvědčte se sami <a href="{{ts.encodetitle()}}"><b>vyzkoušením našeho systému zde</b></a>.
+  </p>
+  <br />
+  <hr />
+  <h4 class="text-danger">POSLETE FAKTURA INFO</h4>
+  <br />
+  <p>
+    Pokud se rozhodnete pro naše řešení, prosíme o zaslání fakturačních údajů.
+    Další postup je již přímočarý: zašleme Vám fakturu, Licenční klíč a další podklady (metodické příručky atd).
+    Bezprostředně poté budete moci <b>spustit výuku v ostrém provozu.</b>
+  </p>
+  <br />
+  <hr />
+  <h4 class="text-danger">DEMO ODEMYKANI</h4>
+  <br />
+  <p>
+    <b>LANGMaster garantuje <i>splnění všech podmínek Výzvy 57</i></b> (včetně bod C, str. 30, dle kterého je třeba,
+    aby <i>systém postupně odemykal studentovi další látku na základě jeho aktuálních výsledků</i>)<br />
+    Přesvědčte se sami <a href="{{ts.encodetitle()}}"><b>vyzkoušením našeho systému zde</b></a>.
+  </p>
+  <br />
+  <hr />
+  <h4 class="text-danger">CENA</h4>
+  <br />
+  Kvůli zdržení projektu a tudíž kratší době trvání licence nabízíme <i>nové nižší ceny</i>:<br />
+  <table style="width: 400px; border: 1px solid #ddd;">
+    <tr>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Šablona</td>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Cena v Kč bez DPH</td>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Cena v Kč s DPH</td>
+    </tr>
+    <tr>
+      <td style="padding:4px; border: 1px solid #ddd;">Studenti (č. 4)</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right">15 281</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right; font-weight:bold;">18 490</td>
+    </tr>
+    <tr>
+      <td style="padding:4px; border: 1px solid #ddd;">Učitelé (č. 3)</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right">2 891</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right; font-weight:bold;">3 499</td>
+    </tr>
+  </table>
+  <br />
+  <hr />
+  <h4 class="text-danger">CENA MNOŽSTVÍ</h4>
+  <br />
+  Kvůli zdržení projektu a tudíž kratší době trvání licence nabízíme <i>nové nižší ceny</i>:<br />
+  <table style="width: 700px; border: 1px solid #ddd;">
+    <tr>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Šablona</td>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Za jednotku</td>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Za jednotku bez DPH</td>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Počet</td>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Celkem bez DPH</td>
+      <td style="padding:4px; border: 1px solid #ddd; background-color:#fcf8e3; font-weight:bold;">Celkem s DPH</td>
+    </tr>
+    <tr>
+      <td style="padding:4px; border: 1px solid #ddd;">Studenti (č. 4)</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right">18 490</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right">15 281</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right;">{{ts.sablona4}}</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right;">{{ts.sum4NoDPH()}}</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right;">{{ts.sum4()}}</td>
+    </tr>
+    <tr>
+      <td style="padding:4px; border: 1px solid #ddd;">Učitelé (č. 3)</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right;">3 499</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right;">2 892</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right;">{{ts.sablona3}}</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right;">{{ts.sum3NoDPH()}}</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right;">{{ts.sum3()}}</td>
+    </tr>
+    <tr>
+      <td style="padding:4px; border: 1px solid #ddd;">Celkem</td>
+      <td style="padding:4px; border: 1px solid #ddd;">&nbsp;</td>
+      <td style="padding:4px; border: 1px solid #ddd;">&nbsp;</td>
+      <td style="padding:4px; border: 1px solid #ddd;">&nbsp;</td>
+      <td style="padding:4px; border: 1px solid #ddd; text-align:right;">{{ts.sumNoDPH()}}</td>
+      <td style="padding:4px; border: 1px solid #ddd;  text-align:right; font-weight:bold;">{{ts.sum()}}</td>
+    </tr>
+  </table>
+  <div style="font-size:0.9em">
+    Mimo vlastní licence je v ceně:
+    <ul>
+      <li>podpora LANGMaster Hotline po celou dobu trvání projektu</li>
+      <li>zpracování výstupů projektu pro Závěrečnou monitorovací zprávu</li>
+      <li>licence na celý školní rok do 31.8.2016</li>
+    </ul>
+  </div>
+
+  <!--<hr />
+  <h3>Vygenerovaný klíč pro správce</h3>
+  {{ts.key}}
+  <hr />
+  <h3>Vygenerovaní uživatelé</h3>
+  <table class="table table-bordered">
+    <tr>
+      <td>Chci si zkusit</td>
+      <td>Přihlašovací E-mail</td>
+      <td>Přihlašovací heslo</td>
+      <td>Licenční klíč</td>
+    </tr>
+    <tr ng-repeat="user in ts.allUsers">
+      <td>{{user.role}}</td>
+      <td>{{user.email}}</td>
+      <td>heslo</td>
+      <td>{{user.keyStr}}</td>
+    </tr>
+  </table>-->
+
+</div>

@@ -51,7 +51,7 @@
 //  });
 //}
 
-
+//declare var OAuthDefaultClient: 
 
 module OAuth {
 
@@ -72,7 +72,8 @@ module OAuth {
       client_type = location.protocol == "http:" ? "skrivanek" : "s_skrivanek"; break;
     //case "localhost": client_type = "localhost"; break;
 
-    default: client_type = null; break;
+    default:
+      client_type = location.protocol == "http:" ? 'default' : 'hdefault'; break; //app keys musi byt ulozeny v OAuthDefaultClient (v JsLib\JS\lmconsoleinit.js)
   }
 
   //obsah cookie pro redirekt na provider a zpet
@@ -91,10 +92,20 @@ module OAuth {
     logoutUrl: string;
     scopes: string; //povol ziskani emailu apod.
     parseProfile: (obj: Object, providerid: LMComLib.OtherType) => profile; //vytazeni profile informaci z ajaxUrl
+    isCode: boolean;
+    client_secret: string;
   }
   export interface client {
     www_lm: string;
     test_lm: string;
+    s_www_lm: string;
+    s_test_lm: string;
+    eduland: string;
+    s_eduland: string;
+    alan: string;
+    s_alan: string;
+    skrivanek: string;
+    s_skrivanek: string;
   }
 
 
@@ -124,9 +135,21 @@ module OAuth {
   }
 
   var cfg: provider[] = [];
-  function addCfg(providerid: LMComLib.OtherType, client_id: client, authorizationUrl: string, ajaxUrl: string, scopes: string, logoutUrl: string, ajaxUrlJsonp: string,
-    parseProfile: (obj: Object, providerid: LMComLib.OtherType) => profile, isCode: boolean = false, client_secret: string = null) {
-    var c: provider = { providerid: providerid, client_id: client_id, authorizationUrl: authorizationUrl, ajaxUrl: ajaxUrl, scopes: scopes, parseProfile: parseProfile, isCode: isCode, client_secret: client_secret, logoutUrl: logoutUrl, ajaxUrlJsonp: ajaxUrlJsonp };
+  function addCfg(
+    providerid: LMComLib.OtherType,
+    client_id: client,
+    authorizationUrl: string,
+    ajaxUrl: string,
+    scopes: string,
+    logoutUrl: string,
+    ajaxUrlJsonp: string,
+    parseProfile: (obj: Object, providerid: LMComLib.OtherType) => profile,
+    isCode: boolean = false,
+    client_secret: string = null) {
+      var c: provider = {
+        providerid: providerid, client_id: client_id, authorizationUrl: authorizationUrl, ajaxUrl: ajaxUrl, scopes: scopes,
+        parseProfile: parseProfile, isCode: isCode, client_secret: client_secret, logoutUrl: logoutUrl, ajaxUrlJsonp: ajaxUrlJsonp
+      };
     cfg[c.providerid.toString()] = c;
   }
 
@@ -151,7 +174,7 @@ module OAuth {
 
   //logout http://forums.asp.net/t/1768815.aspx/1
     "https://www.facebook.com/dialog/oauth", "https://graph.facebook.com/me", "email", "https://www.facebook.com", null,
-    (obj: any, providerid: LMComLib.OtherType) => { var res: profile = { id: obj.id, email: obj.email, firstName: obj.first_name, lastName: obj.last_name, providerid: providerid }; return res; });
+    (obj: any, providerid: LMComLib.OtherType) => { var res: profile = { id: obj.id, email: obj.email, firstName: obj.first_name, lastName: obj.last_name ? obj.last_name : obj.name, providerid: providerid }; return res; });
 
 
   /********************* GOOGLE *****************************/
@@ -206,6 +229,15 @@ module OAuth {
   /********************* LM *****************************/
   addCfg(LMComLib.OtherType.LANGMaster, null, null, null, null, null, null, null);
   addCfg(LMComLib.OtherType.LANGMasterNoEMail, null, null, null, null, null, null, null);
+
+  if (OAuthDefaultClient) {
+    for (var p in OAuthDefaultClient) {
+      var clients = OAuthDefaultClient[p];
+      for (var pp in clients) {
+        cfg[p].client_id[pp] = clients[pp];
+      }
+    }
+  }
 
   //https://developer.linkedin.com/documents/authentication
   //addCfg(LMComLib.OtherType.LinkedIn, "bbeqjmfcikpm", "https://www.linkedin.com/uas/oauth2/authorization", "http://api.linkedin.com/v1/people/~:(id,first-name,last-name,email-address)", "r_basicprofile,r_emailaddress",
@@ -287,6 +319,7 @@ module OAuth {
     Logger.trace_oauth("checkfortoken, hash: " + h);
     if (h == null) { callback(null, null, true, "missing hash"); return; }
     while (h.indexOf('#') >= 0) h = h.substring(h.indexOf('#') + 1);
+    if (h.indexOf('/') >= 0) h = h.substring(1);
     if (h.indexOf("access_token") === -1) { callback(null, null, true, "missing access token"); return; }
 
     //parse hash
@@ -316,10 +349,13 @@ module OAuth {
       url: url,
       //dataType: 'json',
       dataType: wrongMSIE ? 'jsonp' : 'json',
-      success: (data: any) => { Logger.trace_oauth("getData, token" + JSON.stringify(data)); completed(provider.parseProfile(data, provider.providerid)); },
-      data: { access_token: token },
+      success: (data: any) => {
+        Logger.trace_oauth("getData, token" + JSON.stringify(data));
+        completed(provider.parseProfile(data, provider.providerid));
+      },
+      data: provider.providerid == LMComLib.OtherType.Facebook ? { access_token: token, fields: 'email,first_name,last_name' } : { access_token: token },
       error: function (jqXHR, textStatus, errorThrown) {
-        Logger.trace_oauth('*** error: ' + textStatus + ", " + errorThrown);
+        Logger.trace_oauth('*** error: ' + textStatus + ", " + errorThrown + ', ' + url);
         if (jqXHR.status === 401) Logger.trace_oauth("Token expired. About to delete this token");
       }
     });

@@ -166,6 +166,10 @@ namespace LMComLib {
       mailman.SmtpHost = SmtpHost;
       mailman.SmtpUsername = SmtpUsername;
       mailman.SmtpPassword = SmtpPassword;
+      mailman.SmtpSsl = SmtpSsl;
+      mailman.StartTLS = StartTLS;
+      mailman.SmtpPort = SmtpPort;
+
       if (!mailman.SendEmail(email)) {
         string err = mailman.LastErrorText;
         if (err != null) return err;
@@ -180,6 +184,9 @@ namespace LMComLib {
     static string SmtpHost = System.Configuration.ConfigurationManager.AppSettings["Email.SmtpHost"];
     static string SmtpUsername = System.Configuration.ConfigurationManager.AppSettings["Email.SmtpUsername"];
     static string SmtpPassword = System.Configuration.ConfigurationManager.AppSettings["Email.SmtpPassword"];
+    static bool SmtpSsl = System.Configuration.ConfigurationManager.AppSettings["Email.SmtpSsl"]=="true";
+    static bool StartTLS = System.Configuration.ConfigurationManager.AppSettings["Email.StartTLS"] == "true";
+    static int SmtpPort = int.Parse(System.Configuration.ConfigurationManager.AppSettings["Email.SmtpPort"] ?? "0");
 
     public string Html2Text(string source) {
       try {

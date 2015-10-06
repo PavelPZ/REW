@@ -105,7 +105,7 @@ module schoolAdmin {
     return error ? ' ' : null;
   }
 
-  Pager.registerAppLocator(appId, productsTypeName,(urlParts, completed) => completed(new Products(urlParts)));
-  //Pager.registerAppLocator(productsTypeName, (url: CompIdUrl, completed: (pg: Pager.Page) => void ) => completed(new Products(url.CompanyId)));
+  //Pager.registerAppLocator(appId, productsTypeName,(urlParts, completed) => completed(new Products(urlParts)));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, productsTypeName, appId, productsTypeName, 1, urlParts => new Products(urlParts)));
 }
 

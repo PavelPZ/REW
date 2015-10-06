@@ -247,7 +247,7 @@ module SndLow {
     //driver events:
     onCanplaythrough: () => void;
     onPaused: () => void;
-    timeupdate: (msec: number) => void;
+    timeupdate: (msec: number) => void; //callback od driveru o progresu rehravani
     loading: (isStart: boolean) => void;
 
     htmlClearing() { try { this.stop(); /*this.setTimer(null);*/ delete allDrivers[this.id]; if (!this.htmlElement) return; this.htmlElement.remove(); this.htmlElement = null; } catch (msg) { } }
@@ -260,7 +260,13 @@ module SndLow {
       var def = th.actPlayer = $.Deferred<number>();
       th.onPaused = () => { if (th.onCanplaythrough) return /*jeste neni opened => ignoruj pause*/; th.onPaused = null; th.timeupdate = null; def.resolve(); };
       th.timeupdate = msec => {
-        if (endMsec > 0 && msec > endMsec) th.handler.pause(); else def.notify(msec);
+        if (endMsec > 0 && msec > endMsec) {
+          Logger.trace_lmsnd('soundnew.ts timeupdate pause');
+          th.handler.pause();
+        } else {
+          //Logger.trace_lmsnd('soundnew.ts timeupdate: ' + msec.toString());
+          def.notify(msec);
+        }
       }
       th.onCanplaythrough = () => {
         th.onCanplaythrough = null;
@@ -275,8 +281,8 @@ module SndLow {
     }
 
     doTimeupdate() { if (!this.timeupdate) return; try { this.timeupdate(Math.round(this.handler.currentTime * 1000)); } catch (msg) { } }
-    doPaused() { Logger.trace_lmsnd('soundnew.ts: MediaDriver.doPaused'); if (!this.onPaused) return; try { this.onPaused(); } catch (msg) { } }
-    doCanplaythrough() { guiBlocker(false); Logger.trace_lmsnd('soundnew.ts: MediaDriver.doCanplaythrough'); if (!this.onCanplaythrough) return; try { this.onCanplaythrough(); } catch (msg) { } }
+    doPaused() { /*Logger.trace_lmsnd('soundnew.ts: MediaDriver.doPaused');*/ if (!this.onPaused) return; try { this.onPaused(); } catch (msg) { } }
+    doCanplaythrough() { guiBlocker(false); /*Logger.trace_lmsnd('soundnew.ts: MediaDriver.doCanplaythrough');*/ if (!this.onCanplaythrough) return; try { this.onCanplaythrough(); } catch (msg) { } }
     doLoading(isStart: boolean) { Logger.trace_lmsnd('soundnew.ts: MediaDriver.doLoading'); if (!this.loading) return; try { this.loading(isStart); } catch (msg) { } }
 
     onError(err: string): void {
@@ -737,7 +743,7 @@ module LMSnd {
             onStoped();
             Logger.trace_lmsnd('soundnew.ts: LMSnd.Player.playFile stoped');
           } else {
-            Logger.trace_lmsnd('****** ' + msec.toString());
+            //Logger.trace_lmsnd('****** ' + msec.toString());
             if (file) file.onPlaying(msec);
           }
         });

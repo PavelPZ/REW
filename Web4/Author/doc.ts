@@ -153,7 +153,7 @@ declare var prettyPrint;module doc {
   export class propModel extends memberModel {
     constructor(urlParts: string[]) {
       super(true, propType, urlParts);
-      this.backUrl = appId + '@' + urlParts[1].replace(/~/g, '@');
+      this.backUrl = oldPrefix + appId + hashDelim + urlParts[1].replace(/~/g, hashDelim);
     }
     createModel(completed: () => void) {
       this.actDocNamedImpl = this.actImpl = actMeta.propDir[this.memberId];
@@ -340,7 +340,7 @@ declare var prettyPrint;module doc {
 
   //**************
   function getHash(type: string, url1: string = null, url2: string = null):string { //, url2: string = null, url3: string = null): string {
-    return [appId, type, url1, url2].join('@');
+    return oldPrefix + [appId, type, url1, url2].join(hashDelim);
   }
 
   export function Start() {

@@ -117,7 +117,7 @@ module LMStatus {
   export function getCookie(): LMCookie {
     if (!isLogged()) {
       try {
-        var cookStr = Cook.read(LMComLib.CookieIds.LMTicket);
+        var cookStr = Cook.read(LMComLib.CookieIds.LMJSTicket); 
         if (cookStr != "") {
           Cookie = FromString(cookStr);
           if (Cookie.id <= 0) Cookie = null;
@@ -129,8 +129,8 @@ module LMStatus {
     return Cookie;
   }
   export function setCookie(cook: LMComLib.LMCookieJS, persistent: boolean = false): void {
-    if (cook == null) Cook.remove(LMComLib.CookieIds.LMTicket);
-    else Cook.write(LMComLib.CookieIds.LMTicket, ToString(cook), persistent);
+    if (cook == null) Cook.remove(LMComLib.CookieIds.LMJSTicket);
+    else Cook.write(LMComLib.CookieIds.LMJSTicket, ToString(cook), persistent);
     //Cookie = cook;
   }
 
@@ -146,8 +146,9 @@ module LMStatus {
   export function setReturnUrlAndGoto(newHash: string = null): void {
     setReturnUrl();
     if (newHash == null) return;
-    if (newHash.charAt(0) != "#") newHash = "#" + newHash;
-    location.hash = newHash;
+    Pager.navigateToHash(newHash);
+    //if (newHash.charAt(0) != "#") newHash = "#" + newHash;
+    //location.hash = newHash;
   }
   export function setReturnUrl(newHash: string= null): void {
     Cook.write(LMComLib.CookieIds.returnUrl, newHash ? newHash : location.hash);
@@ -160,13 +161,13 @@ module LMStatus {
   }
   export function getReturnUrl(): string {
     var url = Cook.read(LMComLib.CookieIds.returnUrl); if (_.isEmpty(url) || url == '#') return null;
-    if (url.charAt(0) != "#") url = "#" + url;
-    return url;
+    if (url.charAt(0) == "#") url = url.substr(1);
+    return oldPrefix + url;
   }
   export function gotoReturnUrl(): void {
     var url = getReturnUrl();
-    if (_.isEmpty(url)) url = schools.createHomeUrlStd();
-    location.hash = url;
+    if (_.isEmpty(url)) Pager.gotoHomeUrl();
+    else Pager.navigateToHash(url);
   }
 
   export var Cookie: LMStatus.LMCookie = null;
@@ -239,7 +240,7 @@ module LMStatus {
   export function LogoutLow() {
     //binec, setCookie nastavi pouze browser cookie a ponecha LMStatus.Cookie
     LMStatus.setCookie(null); LMStatus.Cookie = null;
-    Pager.loadPageHash(null);
+    Pager.gotoHomeUrl();
   }
 
   export function Logout(obj, ev: JQueryEventObject) {
@@ -247,7 +248,7 @@ module LMStatus {
     try {
       if (!isLMComCookie()) {
         var a = <HTMLAnchorElement>ev.currentTarget;
-        if (a.tagName.toLowerCase() != CourseModel.ta) throw "OAuth.logoutEx";
+        if (a.tagName.toLowerCase() != CourseModel.ta) return false; //throw "OAuth.logoutEx";
         a.href = OAuth.logoutUrl(Cookie.Type);
         return true;
       } else {

@@ -94,7 +94,6 @@ namespace Packager {
             case "LANGMaster": smtp = "Chilkat.MailMan=SGORDICMAILQ_tPNaZl6U8K3D;Chilkat.Mht=SGORDICMHT_TQ85okoF8B4v;Email.SmtpHost=medea.inway.cz;Email.SmtpUsername=obchod@langmaster.cz;Email.SmtpPassword=lmobchodlm"; break;
             case "Chinh": smtp = "Chilkat.MailMan=SGORDICMAILQ_tPNaZl6U8K3D;Chilkat.Mht=SGORDICMHT_TQ85okoF8B4v;Email.SmtpHost=pop.edusoft.com.vn;Email.SmtpUsername=etestme@edusoft.com.vn;Email.SmtpPassword=langmaster2015"; break;
           }
-          //if (smtp == "LANGMaster") smtp = "Chilkat.MailMan=SGORDICMAILQ_tPNaZl6U8K3D;Chilkat.Mht=SGORDICMHT_TQ85okoF8B4v;Email.SmtpHost=medea.inway.cz;Email.SmtpUsername=obchod@langmaster.cz;Email.SmtpPassword=lmobchodlm";
           if (!string.IsNullOrEmpty(smtp))
             root.Add(smtp.Split(';').Select(nv => nv.Split('=')).Select(nv => new XElement("add", new XAttribute("key", nv[0]), new XAttribute("value", nv[1]))));
           if (!string.IsNullOrEmpty(basicPath))
@@ -279,12 +278,17 @@ namespace Packager {
       foreach (var f in publisherSkinCss(cfg).Concat(jsNewEA(cfg, false)).Concat(jsNewEA(cfg, true)).Concat(imgFontsEtc(cfg)).SelectMany(s => s).Distinct().Select(fn => new Consts.file(fn)))
         yield return f;
       string min = cfg.version == versions.minified ? ".min" : null;
-      yield return new Consts.file("Schools/SLExtension.xap");
+
+      //rucne pridavane soubory, jejichz seznam je v AddWebSoftwareFiles.txt
+      foreach (var fn in File.ReadAllLines(@"D:\LMCom\REW\CubesDeployment\AddWebSoftwareFiles.txt")) yield return new Consts.file(fn);
+      //yield return new Consts.file("Schools/SLExtension.xap");
+      //yield return new Consts.file("jslib/js/lmconsoleinit.js");
+      //yield return new Consts.file("jslib/ea/ea.css");
+      //yield return new Consts.file("blendedapi/styles/style.less");
+
       yield return new Consts.file("jslib/scripts/jquery" + min + ".js");
       yield return new Consts.file("jslib/scripts/jquery2" + min + ".js");
-      yield return new Consts.file("jslib/js/lmconsoleinit.js");
       yield return new Consts.file("font-awesome/lm/externals" + cfg.themeId + ".css");
-      yield return new Consts.file("jslib/ea/ea.css");
       yield return new Consts.file("jslib/css/lm" + cfg.themeId + ".css");
       //if (cfg.version == versions.minified) {
       //  yield return new Consts.file("jslib/js/sound/libmp3lame.js", File.ReadAllBytes(@"d:\LMCom\rew\Web4\Schools\_lame.charMin.js"));
@@ -450,6 +454,7 @@ namespace Packager {
         yield return Consts.jsSchoolEnd;
         yield return Consts.jsCourse;
         yield return Consts.jsAuthorWeb;
+        yield return Consts.angularJS;
       }
 
     }
@@ -495,7 +500,8 @@ namespace Packager {
       jsMinify(debugMinIsBig, jsCourse, err,
         Consts.jsSchoolEnd,
         Consts.jsCourse,
-        Consts.jsAuthorWeb
+        Consts.jsAuthorWeb,
+        Consts.angularJS
       );
       //jsMinify(debugMinIsBig, jsLame, err,
       //  Consts.jsLame);
@@ -638,6 +644,7 @@ namespace Packager {
       //if (cfg.target == Targets.web || cfg.target == Targets.author) yield return Consts.htmlAuthor;
       yield return Consts.htmlCourse;
       yield return Consts.htmlSchool;
+      //yield return Consts.angularHtml;
       var skinHtml = string.Format(Machines.rootPath + @"JsLib\skins\{0}\html.html", cfg.designId);
       if (File.Exists(skinHtml)) yield return new string[] { string.Format(@"JsLib/skins/{0}/html.html", cfg.designId) };
 

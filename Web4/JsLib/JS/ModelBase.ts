@@ -1,4 +1,4 @@
-module schools { export var appId = "school"; }
+﻿module schools { export var appId = "school"; }
 module testMe { export var appId = "test"; }
 module Login { export var appId = "login"; }
 module schoolAdmin { export var appId = "schoolAdmin".toLowerCase(); }
@@ -7,6 +7,13 @@ module doc { export var appId = "doc"; }
 module vsNet { export var appId = "vsNet".toLowerCase(); }
 module grafia { export var appId = "grafia"; }
 module skrivanek { export var appId = "skrivanek"; }
+
+var hashDelim = '/';
+var oldPrefix = '/pg/old/';
+var encMask = new RegExp('/', 'g');
+var decMask = new RegExp('@', 'g');
+function encodeUrlHash(url: string): string { return url ? url.replace(encMask, '@') : ''; }
+function decodeUrlHash(url: string): string { return url ? url.replace(decMask, '/') : null; }
 
 module Pager {
 
@@ -27,7 +34,7 @@ module Pager {
     loaded(): void { } //naladovani HTML stranky
     leave() { } //pred opustenim stranky
     htmlClearing() { } //pred zrusenim HTML se strankou
-    getHash(): string { return [this.appId, this.type].concat(this.urlParts).join('@'); } //my hash
+    getHash(): string { return [this.appId, this.type].concat(this.urlParts).join(hashDelim); } //my hash
   }
 
   export function registerAppLocator(appId: string, type: string, pageCreator: (urlParts: string[], completed: (pg: Page) => void) => void): void {
@@ -36,6 +43,8 @@ module Pager {
   } var regApps: { [appId: string]: { [type: string]: (urlParts: string[], completed: (pg: Page) => void) => void; } } = {};
 
   export function locatePageFromHash(hash: string, completed: (pg: Page) => void): void {
+    //if (!cfg.noAngularjsApp) { alert('locatePageFromHash cannot be called'); return; }
+    alert('locatePageFromHash cannot be called'); return;
     locatePageFromHashLow(hash, pg => {
       if (pg) { completed(pg); return; }
       if (!hash || hash.length < 2) locatePageFromHashLow(initHash(), completed);
@@ -43,7 +52,32 @@ module Pager {
     });
   }
 
+  //reakce na callback z OAuth2 login
+  export function angularJS_OAuthLogin(hash: string, completed: () => void): boolean {
+    if (hash != null && hash.indexOf("access_token=") >= 0) { //navrat z externiho loginu
+      OAuth.checkForToken((obj: OAuth.profile) => {
+        if (!obj.email) {
+          alert('Povolte prosím poskytnutí vašeho emailu!');
+          LMStatus.LogoutLow();
+          return false;
+        }
+        Pager.ajaxGet( //dle externiho ID zjisti LM Id (a ev. zaloz usera)  
+          Pager.pathType.restServices,
+          Login.CmdAdjustUser_Type,
+          Login.CmdAdjustUser_Create(obj.providerid, obj.id, obj.email, obj.firstName, obj.lastName),
+          (res: Login.CmdProfile) => { //dej usera do cookie a proved redirekt
+            LMStatus.logged(res.Cookie, false);
+            blended.checkOldApplicationStart();
+          });
+      });
+      return true;
+    }
+    return false;
+  }
+
   function locatePageFromHashLow(hash: string, completed: (pg: Page) => void): void {
+    //if (!cfg.noAngularjsApp) { alert('locatePageFromHash cannot be called'); return; }
+    alert('locatePageFromHash cannot be called'); return;
     if (hash != null && hash.indexOf("access_token=") >= 0) { //navrat z externiho loginu
       OAuth.checkForToken((obj: OAuth.profile) => {
         Pager.ajaxGet( //dle externiho ID zjisti LM Id (a ev. zaloz usera)
@@ -60,7 +94,12 @@ module Pager {
     //if (blended.isAngularHash(hash)) { completed(angularPage); return; }
     if (!hash || hash.length < 3) { completed(null); return; }
     //hash = hash.toLowerCase();
-    var parts = hash.split("@"); if (parts.length < 2) { completed(null); return; }
+    var parts = hash.split(hashDelim);
+    if (parts[0] == 'old' || parts[1] == 'old') {
+      var removeNum = parts[0] == 'old' ? 1 : 2;
+      parts.splice(0, removeNum);
+    }
+    if (parts.length < 2) { completed(null); return; }
     var app = regApps[parts[0].toLowerCase()]; if (!app) { completed(null); return; }
     var proc = app[parts[1].toLowerCase()]; if (!proc) { completed(null); return; }
     proc(parts.length <= 2 ? null : parts.slice(2), completed);
@@ -73,12 +112,21 @@ module Pager {
 
   $.views.helpers({
     ActPage: () => Pager.ActPage,
+    Pager: Pager,
     //HomeUrl: () => initHash, //initUrl.toString(),
   });
 
   //export function HomeUrl(): string { return "#"; }
 
-  export function navigateToHash(hash: string) { location.hash = '#' + hash; }
+  export function getHomeUrl() { return LMStatus.isLogged() ? Pager.initHash() : Login.loginUrl(); }
+  export function gotoHomeUrl() { navigateToHash(getHomeUrl()); }
+
+  export function navigateToHash(hash: string) {
+    if (!hash) hash = '';
+    if (hash.length > 0 && hash.charAt(0) != '#') hash = '#' + hash;
+    Logger.trace('Pager', 'navigateToHash: ' + hash);
+    location.hash = hash;
+  }
 
   export function closePanels() { anim.collapseExpanded(); }
 
@@ -87,6 +135,7 @@ module Pager {
   //}
 
   export function loadPageHash(hash: string) {
+    debugger;
     locatePageFromHash(hash, pg => loadPage(pg));
   }
 
@@ -98,7 +147,7 @@ module Pager {
       if (oldPg != null) oldPg.leave();
       rootVM.pageChanged(oldPg, ActPage);
     }
-    if (page == angularPage) { renderTemplate('Dummy'); return;}
+    if (page == angularPage) { renderTemplate('Dummy'); return; }
     reloadPage();
   }
 

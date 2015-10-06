@@ -63,7 +63,10 @@ module CourseMeta {
     }
   }
 
-  Pager.registerAppLocator(schools.appId, schools.tEx, (urlParts, completed) => completed(new ModelEx(urlParts)));
+  //Pager.registerAppLocator(schools.appId, schools.tEx, (urlParts, completed) => completed(new ModelEx(urlParts)));
+
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, schools.tEx, schools.appId, schools.tEx, 4, urlParts => new ModelEx(urlParts)));
+
 }
 
 //xx/#DEBUG

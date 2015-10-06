@@ -238,8 +238,12 @@ namespace NewData {
           case VerifyStates.ok:
             if (usr.OtherType == (short)OtherType.LANGMaster || usr.OtherType == (short)OtherType.LANGMasterNoEMail)
               return -1; //user already registered
-            else {
+            else { //zmena z FB, Google apod. login na LM login
               usr.Password = psw;
+              usr.OtherType = (short)OtherType.LANGMaster;
+              usr.OtherId = null;
+              usr.FirstName = cook.FirstName;
+              usr.LastName = cook.LastName;
               Lib.SaveChanges(db);
               return usr.Id;
             }

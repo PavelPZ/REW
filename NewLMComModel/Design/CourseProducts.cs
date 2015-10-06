@@ -85,12 +85,13 @@ namespace CourseMeta {
           node = Lib.publishers.find(rootUrl);
           yield return prodDef.genCourse(Lib.publishers, "skrivanek", "prods/etestme-comp/" + lang.ToString() + "/" + id, lang, true, dictTypes.no, new Langs[] { Langs.cs_cz }, node.title + " (" + transComplete[lang] + ")",
             new ptr(
-              lang != CourseIds.English ? "needs=recording" : string.Format("needs=recording;demoTestUrl=/skrivanek/prods/etestme-comp-demo/{0}/{1}/", lang, id),
-              rootUrl) { takeChilds = childMode.selfChild }
+              //lang != CourseIds.English ? "needs=recording" : string.Format("needs=recording;demoTestUrl=/skrivanek/prods/etestme-comp-demo/{0}/{1}/", lang, id),
+              string.Format("needs=recording;demoTestUrl=/skrivanek/prods/etestme-comp-demo/{0}/{1}/", lang, id), rootUrl) { takeChilds = childMode.selfChild }
           );
           yield return prodDef.genCourse(Lib.publishers, "skrivanek", "prods/etestme-std/" + lang.ToString() + "/" + id, lang, true, dictTypes.no, new Langs[] { Langs.cs_cz }, node.title + " (" + transStandard[lang] + ")",
             new ptr(
-              lang != CourseIds.English ? "needs=playing" : string.Format("needs=playing;demoTestUrl=/skrivanek/prods/etestme-std-demo/{0}/{1}/", lang, id),
+              //lang != CourseIds.English ? "needs=playing" : string.Format("needs=playing;demoTestUrl=/skrivanek/prods/etestme-std-demo/{0}/{1}/", lang, id),
+              string.Format("needs=playing;demoTestUrl=/skrivanek/prods/etestme-std-demo/{0}/{1}/", lang, id),
               rootUrl) { takeChilds = childMode.selfChild, take = 3 }
           );
           yield return prodDef.genCourse(Lib.publishers, "skrivanek", "prods/etestme-comp-demo/" + lang.ToString() + "/" + id, lang, true, dictTypes.no, new Langs[] { Langs.cs_cz }, node.title + " (demo for complete)",
@@ -123,10 +124,24 @@ namespace CourseMeta {
           var prodId = url.Replace('/', '_');
           url += "/";
           node = Lib.publishers.find(url);
-          yield return prodDef.genCourse(Lib.publishers, "lm", "prods" + prodId, langProds.Key, id != "lessons/lesson_a1_1", dictTypes.no, new Langs[] { Langs.cs_cz, Langs.en_gb }, node.title,
+          var res = prodDef.genCourse(Lib.publishers, "lm", "prods" + prodId, langProds.Key, id != "lessons/lesson_a1_1", dictTypes.no, new Langs[] { Langs.cs_cz, Langs.en_gb }, node.title,
             new ptr(true, url) { takeChilds = childMode.selfChild }
           );
+          yield return res;
         }
+      }
+      CourseIds[] vyzva57 = new CourseIds[] { CourseIds.English, CourseIds.German, CourseIds.French };
+      //CourseIds[] vyzva57 = new CourseIds[] { CourseIds.English };
+      foreach (var lang in vyzva57) {
+        var url = ("/lm/BLCourse/" + lang.ToString()).ToLower();
+        var prodId = url.Replace('/', '_');
+        url += "/";
+        node = Lib.publishers.find(url);
+        var res = prodDef.genCourse(Lib.publishers, "lm", "prods" + prodId, lang, false, dictTypes.L, new Langs[] { Langs.cs_cz, Langs.en_gb }, node.title,
+          new ptr(true, url) { takeChilds = childMode.child }
+        );
+        res.other = node.other; res.type = runtimeType.product | runtimeType.productNew;
+        yield return res;
       }
     }
 

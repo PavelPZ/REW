@@ -92,20 +92,21 @@ if (cfg.noCpv) Write("class='hide-cpv'");
   <div id='lm-alert-place' class='rtl'></div>
   <div id='lm-console-place' class='rtl'></div>
   <div id='lm-docdlg-place' class='rtl'></div>
+  <div ng-app=""appRoot"" class=""bl""><div data-ui-view></div></div>
   <div id='root'></div>
   <script id='dummy' type='text/x-jsrender' data-for='Dummy'>
     {{for ~ActPage()}}{{/for}}
   </script>
   ");
             
-            #line 51 "D:\LMCom\REW\NewLMComModel\Design\Templates\html.tt"
+            #line 52 "D:\LMCom\REW\NewLMComModel\Design\Templates\html.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(MainPage.htmls(RewApp.htmlNewEA(cfg))));
             
             #line default
             #line hidden
             this.Write("\r\n  ");
             
-            #line 52 "D:\LMCom\REW\NewLMComModel\Design\Templates\html.tt"
+            #line 53 "D:\LMCom\REW\NewLMComModel\Design\Templates\html.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(serverScript??""));
             
             #line default

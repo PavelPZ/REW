@@ -1,3 +1,4 @@
+//##GOTO
 function gotoHref(event: Event, url: string) {
   if (_.isEmpty(url)) url = $(event.currentTarget).attr('href');
   url = Utils.combineUrl(CourseMeta.actNode.url, url);
@@ -230,6 +231,7 @@ module CourseMeta {
     export function onChangeUrl(prodUrl: string, persistence: string, nodeUrl: string, completed: (loadedEx: exImpl) => void) {
       foundGreenEx = null;
       if (_.isEmpty(prodUrl)) { completed(null); return; }
+      prodUrl = decodeURIComponent(prodUrl);
       adjustProduct(prodUrl, persistence,() => {
         if (actNode && actNode.url == nodeUrl) { completed(isType(actNode, runtimeType.ex) ? <exImpl>actNode : null); return; } //zadna zmena aktualniho node
         var oldEx = actEx; var oldMod = actModule; var oldNode = actNode; var oldGrammarEx = actGrammarEx; var oldGrammarModule = actGrammarModule;
@@ -334,7 +336,7 @@ module CourseMeta {
       return prod && CourseMeta.isType(prod, CourseMeta.runtimeType.test);
     }
 
-    export function isAngularJS(prod: CourseMeta.data): boolean {
+    export function isVyzvaProduct(prod: CourseMeta.data): boolean {
       return prod && CourseMeta.isType(prod, CourseMeta.runtimeType.productNew);
     }
 
@@ -678,7 +680,8 @@ module CourseMeta {
   }
 
 
-  function loadLocalizedProductAndInstrs(url: string, completed: (prod: productImpl) => void) {
+  export function loadLocalizedProductAndInstrs(url: string, completed: (prod: productImpl) => void) {
+    url = decodeURIComponent(url);
     var href = urlStripLast(url);
     href = '..' + (href[0] == '/' ? '' : '/') + href;
     loadFiles([href + jsExt, href + '.' + Trados.actLangStr + jsExt, href + '_instrs.js'], ress => {
@@ -734,7 +737,7 @@ module CourseMeta {
     end: number;
     elapsed: number;
     //testSkiped: boolean;
-    result: { [exId: string]: CourseModel.Result; };
+    result: { [ctrlId: string]: CourseModel.Result; };
     //pro design mode - zobraz cviceni vyhodnocene na 100%
     designForceEval: boolean;
   }
@@ -748,7 +751,7 @@ module CourseMeta {
 
   //sluzby, ktere CourseMeta poskytuje persistent layer
   export interface IPersistence {
-    loadShortUserData: (userId: number, companyId: number, prodUrl: string, completed: (data: { [url: string]: Object; }) => void) => void;
+    loadShortUserData: (userId: number, companyId: number, prodUrl: string, completed: (data: { [url: string]: any; }) => void) => void;
     loadUserData: (userId: number, companyId: number, prodUrl: string, modUrl: string, completed: (data: Object) => void) => void;
     //data ve formatu [[key,short,long],...], long muze chybet
     saveUserData: (userId: number, companyId: number, prodUrl: string, data: Array<Array<string>>, completed: () => void) => void;

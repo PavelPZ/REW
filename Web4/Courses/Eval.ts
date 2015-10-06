@@ -13,7 +13,7 @@
       if (this.radioGroups) {
         //provazani radiobutton nebo wordSelection s radio grupou
         var radGrps: { [grp: string]: radioEvalImpl[]; } = {};
-        _.each(_.map(this.radioGroups.split('|'), str => str.split(':')),(kv: Array<string>) => radGrps[kv[0]] = _.map(kv[1].split(','), id => <radioEvalImpl>(this._myPage.tags[id])));
+        _.each(_.map(this.radioGroups.split('|'), str => str.split(':')), (kv: Array<string>) => radGrps[kv[0]] = _.map(kv[1].split(','), id => <radioEvalImpl>(this._myPage.tags[id])));
         _.each(radGrps, radios => _.each(radios, r => r.myEvalGroup = radios));
       }
     }
@@ -169,8 +169,18 @@
     onBehavMap: { [edId: string]: string; };
   }
 
+  //k SUM prida agregatabe priznaky
+  export function agregateFlag(sum: CourseModel.CourseDataFlag, flag: CourseModel.CourseDataFlag): CourseModel.CourseDataFlag {
+    return sum | (flag & addAbleFlags) /*k sum prida addAbleTags z flag*/;
+  }
+  //do SUM nastavi agregatabe priznaky
+  export function setAgregateFlag(sum: CourseModel.CourseDataFlag, flag: CourseModel.CourseDataFlag): CourseModel.CourseDataFlag {
+    return (sum & ~addAbleFlags /*v sum vynuluje addAbleTags*/) | (flag & addAbleFlags /*prida addAbleTags z flag do sum*/);
+  }
+  var addAbleFlags: CourseModel.CourseDataFlag = CourseModel.CourseDataFlag.needsEval | CourseModel.CourseDataFlag.pcCannotEvaluate | CourseModel.CourseDataFlag.hasExternalAttachments;
+
   function addORScore(res: CourseModel.Score, sc: CourseModel.Score) {
-    res.ms += sc.ms; res.s += sc.s; res.flag |= sc.flag;
+    res.ms += sc.ms; res.s += sc.s; res.flag = agregateFlag(res.flag, sc.flag);
   }
 
   function createORScoreObj(scs: CourseModel.Score[]) {
@@ -184,14 +194,14 @@
     //return { ms: 1, s: allOK ? 1 : 0, flag: 0 };
     var res: CourseModel.Score = { ms: 1, s: 1, flag: 0 };
     var hasWrong = false;
-    _.each(scs, sc => { hasWrong = hasWrong || sc.ms != sc.s; res.flag |= sc.flag });
+    _.each(scs, sc => { hasWrong = hasWrong || sc.ms != sc.s; res.flag = agregateFlag(res.flag, sc.flag) });
     if (hasWrong) res.s = 0;
     return res;
   }
 
   function createAndScoreObj(scs: CourseModel.Score[]) {
     var res: CourseModel.Score = { ms: 0, s: 0, flag: 0 }; var cnt = 0;
-    _.each(scs, sc => { res.ms += sc.ms; res.s += sc.s; res.flag |= sc.flag; cnt++; });
+    _.each(scs, sc => { res.ms += sc.ms; res.s += sc.s; res.flag = agregateFlag(res.flag, sc.flag); cnt++; });
     var ok = res.ms == res.s;
     res.ms = Math.round(res.ms / cnt); res.s = ok ? res.ms : 0;
     return res;

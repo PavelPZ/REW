@@ -76,7 +76,7 @@ namespace CourseMeta {
     multiQuestionnaire = 0x8000000, //dotaznik multitestu
     testDemo = 0x10000000, //demo test
     //runtimePage = 0x400000,
-    productNew = 0x20000000, //novy produkt pomoci AngularJS
+    productNew = 0x20000000, //novy produkt pomoci AngularJS. Příznak slouží k modifikaci skoku z hlavní obrazovky webu na produkt.
   }
 
   [XmlInclude(typeof(data)), XmlInclude(typeof(products)), XmlInclude(typeof(publisher)), XmlInclude(typeof(project)), XmlInclude(typeof(sitemap)), XmlInclude(typeof(ex)),
@@ -87,36 +87,41 @@ namespace CourseMeta {
     public string title;
     [XmlAttribute, DefaultValue(0), JsonIgnore]
     public int order;
+    [XmlAttribute, JsonGenOnly]
+    public string url;
+    [XmlAttribute, DefaultValue(0)]
+    public LineIds line; //line dat
+    [XmlAttribute, DefaultValue(0)]
+    public runtimeType type;
+    [XmlAttribute]
+    public string name;
+    [XmlAttribute]
+    public string other; //muze byt JSON s ostatnimi informacemi
+
+    [XmlAttribute, DefaultValue(0)]
+    public int ms;
+
+
     //fake udaje pro prevod z OldEA formatu. V novem formatu je nahrazeno url.
     [XmlIgnore, JsonIgnore]
-    public string spaceId { get { return _spaceId; } set { _spaceId = value; setUrl(); } } string _spaceId;
+    public string spaceId { get { return _spaceId; } set { _spaceId = value; setUrl(); } }
+    string _spaceId;
     [XmlIgnore, JsonIgnore]
-    public string globalId { get { return _globalId; } set { _globalId = value; setUrl(); } } string _globalId;
+    public string globalId { get { return _globalId; } set { _globalId = value; setUrl(); } }
+    string _globalId;
     string setUrl() {
       url = (spaceId == null && globalId == null ? null : (string.IsNullOrEmpty(spaceId) || string.IsNullOrEmpty(globalId) ? spaceId + globalId : spaceId + "/" + globalId).Replace("/home.htm", null));
       if (this is ex || url.EndsWith("/")) return url;
       url += "/";
       return url;
     }
-    [XmlAttribute, JsonGenOnly]
-    public string url;
     static public string urlStripLast(string url) { return url[url.Length - 1] == '/' ? url.Substring(0, url.Length - 1) : url; }
-    [XmlAttribute, DefaultValue(0)]
-    public LineIds line; //line dat
     [XmlAttribute, JsonIgnore]
     public Langs[] allLocs; //vsechny dostupne lokalizace
-    [XmlAttribute, DefaultValue(0)]
-    public runtimeType type;
 
 
     [XmlAttribute, JsonIgnore]
     public string styleSheet; //data, vytazena z .css
-
-    [XmlAttribute]
-    public string name;
-
-    [XmlAttribute, DefaultValue(0)]
-    public int ms;
 
     public void modifyUrls(string prefix, string localVsNetPublisherId) {
       foreach (var d in scan())
@@ -146,7 +151,8 @@ namespace CourseMeta {
         return _style;
       }
       set { _style = value; }
-    } string _style = "?";
+    }
+    string _style = "?";
 
     public bool isType(runtimeType tp) { return (type & tp) == tp; }
     //[XmlAttribute, JsonIgnore]
@@ -194,7 +200,8 @@ namespace CourseMeta {
 
 
     public IEnumerable<data> parents(bool withSelf = true) { var p = this; while (p != null) { if (withSelf) yield return p; withSelf = true; p = p.parent; } }
-    public LineIds getLine() { if (_line == null) { var par = parents().FirstOrDefault(p => p.line != LineIds.no); _line = par == null ? LineIds.no : par.line; } return (LineIds)_line; } LineIds? _line;
+    public LineIds getLine() { if (_line == null) { var par = parents().FirstOrDefault(p => p.line != LineIds.no); _line = par == null ? LineIds.no : par.line; } return (LineIds)_line; }
+    LineIds? _line;
     public string getTradosPage() {
       if (url.StartsWith("/data/instr/")) return "/data/instr/";
       else return getLine() == LineIds.no || pathParts.Length < 2 ? null : "/" + pathParts[0] + "/" + pathParts[1] + "/" + getLine().ToString().ToLower() + "/";
@@ -241,6 +248,7 @@ namespace CourseMeta {
         _style = _style,
         styleSheet = styleSheet,
         ms = ms,
+        other = other,
       };
       if (finish != null) finish(res);
       if (deep) {
@@ -269,7 +277,8 @@ namespace CourseMeta {
     public XElement readXml() { return XElement.Load(fileName()); }
     public string readString() { return File.ReadAllText(fileName(), Encoding.UTF8); }
     [JsonIgnore]
-    public string[] pathParts { get { return _pathParts ?? (_pathParts = url.Substring(1).Split('/')); } } string[] _pathParts;
+    public string[] pathParts { get { return _pathParts ?? (_pathParts = url.Substring(1).Split('/')); } }
+    string[] _pathParts;
 
     public static IEnumerable<TradosLib.tradosPage> tradosOper1Pages(IEnumerable<data> nodes, LoggerMemory log, bool isFakeRussian) {
       return nodes.SelectMany(n => n.scan()).GroupBy(dt => dt.getTradosPage()).
@@ -305,7 +314,8 @@ namespace CourseMeta {
           res.url = fn.Substring(Machines.rootDir.Length).Replace('\\', '/').Replace("/meta.xml", "/").Replace(".xml", null);
           return res;
         }
-      } catch (Exception exp) {
+      }
+      catch (Exception exp) {
         throw new Exception(fn, exp);
       }
     }
@@ -362,7 +372,8 @@ namespace CourseMeta {
         var cssFn = Path.ChangeExtension(fn, ".css");
         if (File.Exists(cssFn)) r.styleSheet = File.ReadAllText(cssFn, Encoding.UTF8);
         return r;
-      } catch (Exception e) { throw new Exception(fn, e); }
+      }
+      catch (Exception e) { throw new Exception(fn, e); }
     }
 
     public static data readExForSitemap(string fn, LoggerMemory logger) {
@@ -371,7 +382,8 @@ namespace CourseMeta {
         XElement root;
         try {
           root = XElement.Load(fn);
-        } catch (Exception exp) {
+        }
+        catch (Exception exp) {
           if (logger == null) throw exp;
           logger.ErrorLineFmt(url, "wrong XML format, {1}", fn, exp.Message);
           return null;
@@ -394,7 +406,8 @@ namespace CourseMeta {
           return new data { url = url, type = runtimeType.mediaCutFile, title = "Media cut file" };
         else
           return new data { url = url, type = runtimeType.error, title = "Error file" };
-      } catch (Exception e) {
+      }
+      catch (Exception e) {
         logger.ErrorLine(url, LowUtils.ExceptionToString(e));
         return null;
       }
@@ -679,7 +692,8 @@ namespace CourseMeta {
         data res;
         if (pattern != null) {
           res = pattern.clone(); dt.AssignTo(res); res.Items = dt.clone().Items;
-        } else {
+        }
+        else {
           res = dt.clone();
           if (modify != null) {
             foreach (var par in modify.Split(';').Select(p => p.Split('='))) {
@@ -690,7 +704,8 @@ namespace CourseMeta {
                   case "needs": t.needs = LowUtils.EnumParse<testNeeds>(par[1]); break;
                   default: throw new Exception("Canot use test par: " + par[0]);
                 }
-              } else throw new Exception("Canot use ptr.modify par: " + par[0]);
+              }
+              else throw new Exception("Canot use ptr.modify par: " + par[0]);
             }
           }
         }
@@ -750,19 +765,21 @@ namespace CourseMeta {
             foreach (var it in res2.Items.Cast<test>()) it.Items = it.Items.OrderBy(d => d.order).Take(3).ToArray();
           //demoTestUrl
           foreach (var it in res2.Items.Cast<test>()) {
-            if (res2.line == LineIds.English) //zatim jen pro anglictinu!!!
-              it.demoTestUrl = (islm ? "/lm" : "/skrivanek") + string.Format("/prods/etestme-{0}-demo/{1}/{2}/", takeChilds == childMode.skrivanek_multiTest_std ? "std" : "comp", res2.line, it.level);
+            //if (res2.line == LineIds.English) //zatim jen pro anglictinu!!!
+            it.demoTestUrl = (islm ? "/lm" : "/skrivanek") + string.Format("/prods/etestme-{0}-demo/{1}/{2}/", takeChilds == childMode.skrivanek_multiTest_std ? "std" : "comp", res2.line, it.level);
             it.needs = isStd ? testNeeds.playing : testNeeds.recording;
           }
           //questionnaire
-          Array.Resize(ref res2.Items, res2.Items.Length + 1);
           data quests = root.find("/skrivanek/questionnaire/", log).clone();
           quests.line = src.getLine();
           quests.type |= runtimeType.multiQuestionnaire;
-          //var url = (res2.url.Replace("/skrivanek/", "/skrivanek/questionnaire/").TrimEnd('/') + (isStd ? "std" : null)).ToLower();
-          //quests.Items = quests.Items.Where(it => it.url == url).ToArray();
-          //quests.Items[0].type |= runtimeType.multiQuestionnaire;
-          res2.Items[res2.Items.Length - 1] = quests;
+          var url = (res2.url.Replace("/skrivanek/", "/skrivanek/questionnaire/").TrimEnd('/') + (isStd ? "std" : null)).ToLower();
+          quests.Items = quests.Items.Where(it => it.url == url).ToArray();
+          if (quests.Items.Length == 1) {
+            quests.Items[0].type |= runtimeType.multiQuestionnaire;
+            Array.Resize(ref res2.Items, res2.Items.Length + 1);
+            res2.Items[res2.Items.Length - 1] = quests;
+          }
           yield return res2;
           break;
       }
@@ -775,12 +792,9 @@ namespace CourseMeta {
     public static data genCourse(sitemap publishers, string publisherId, string prodId, CourseIds crsId, bool isTest, dictTypes defaultDictType, Langs[] defaultLocs, params object[] data) {
       var tasks = flateArrays(data).OfType<data>().Where(d => !(d is ptr) || !((ptr)d).isGramm).ToArray();
       if (tasks.Length == 0) throw new Exception("tasks.Length == 0");
-      //var ptrs = flateArrays(data).OfType<ptr>().Where(p => !p.isGramm).ToArray();
       var gramPtrs = flateArrays(data).OfType<ptr>().Where(p => p.isGramm).ToArray();
-      //var tasks = flateArrays(data).Where(d => d.GetType() == typeof(data)).Cast<data>().ToArray();
       var tit = flateArrays(data).OfType<string>().FirstOrDefault();
       if (tit == null) throw new Exception("Missing Product title");
-      //tit = tit ?? tasks[0].title; // ?? publishers.find(tasks[0].items[0].url ?? ((ptr)tasks[0].items[0]).urls[0]).title;
       if (tasks.Length == 1 && tasks[0].title == null) tasks[0].title = tit;
       var url = ("/" + publisherId + "/" + prodId + "/").ToLower();
       product res = new product {
@@ -815,6 +829,13 @@ namespace CourseMeta {
     }
     public static void addInstructions(data self, LoggerMemory log) {
       if (self.Items == null) return;
+      var q1 = self.scan().OfType<ex>().
+          Where(e => e.instrs != null).
+          SelectMany(e => e.instrs).ToArray();
+      var q2 = q1.Select(i => i.StartsWith("/") ? i : "/data/instr/std/" + i).
+          Distinct().
+          Select(url => new ex { url = url }).
+          ToArray();
       self.Items = self.Items.Concat(XExtension.Create(new mod {
         title = "Instructions",
         url = self.url.Substring(0, self.url.Length - 1) + "_instrs/",
@@ -1012,7 +1033,8 @@ namespace CourseMeta {
         var crsStr = root.Parent.AttributeValue("id");
         var idx = root.Parent.Elements("folder").IndexOf(el => el == root);
         res.globalId = oldGramm.pathName(crsStr, idx);
-      } else
+      }
+      else
         res.globalId = res.globalId = cnt++.ToString();
       if (deep == 1) res.type = res.type | runtimeType.mod;
       //res2.type = runtimeType.lesson;
@@ -1032,7 +1054,8 @@ namespace CourseMeta {
       res.Items = root.Elements().Select(el => fromSitemapLesson(res, el)).ToArray();
       //res.ms = res.Items.Sum(it => it.ms);
       return res;
-    } static Regex removeNum = new Regex(@"\d");
+    }
+    static Regex removeNum = new Regex(@"\d");
 
     static data fromSitemapLesson(data parent, XElement root) {
       var res = new data { spaceId = parent.spaceId };
@@ -1058,7 +1081,8 @@ namespace CourseMeta {
         res.isOldEaPassive = oldEx.AttributeValue("old-ea-is-passive") == "true";
         //res.ms = oldEx.AttributeValue("old-ea-is-passive") == "true" ? 0 : 1;
         fromSitemapLow(res, parent, root, null);
-      } else {
+      }
+      else {
         res.title = getLocOldGrammTitle(root);
         fromSitemapLow(res, parent, root, null);
         res.spaceId = "/lm/oldea/" + res.spaceId;
@@ -1229,7 +1253,8 @@ namespace CourseMeta {
         }
         return _stdStyle;
       }
-    } static string _stdStyle;
+    }
+    static string _stdStyle;
 
 
   }

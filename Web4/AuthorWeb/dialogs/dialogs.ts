@@ -26,6 +26,7 @@
       //*** init focus grid
       _.each(dlg.$mod.find('[data-focus-grid]'),(el: HTMLElement) => {
         var $el = $(el);
+        var $d = $el.data('focusGrid');
         var d = $el.data('focusGrid').split(':');
         var row = parseInt(d[0]); var cell = parseInt(d[1]);
         if (!dlg.btnGrid[row]) dlg.btnGrid[row] = [];

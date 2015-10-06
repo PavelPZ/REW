@@ -108,7 +108,7 @@ module schoolAdmin {
     productName: string;
   }
 
-  Pager.registerAppLocator(appId, keyGenTypeName, (urlParts, completed) => completed(new KeyGenModel(urlParts)));
-  //Pager.registerAppLocator(keyGenTypeName, (url: CompIdUrl, completed: (pg: Pager.Page) => void ) => completed(new KeyGenModel(url.CompanyId)));
+  //Pager.registerAppLocator(appId, keyGenTypeName, (urlParts, completed) => completed(new KeyGenModel(urlParts)));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, keyGenTypeName, appId, keyGenTypeName, 1, urlParts => new KeyGenModel(urlParts)));
 }
 

@@ -1,13 +1,452 @@
-﻿<product title="English Courses" url="/lm/english_0_10/" line="English" type="product" defaultdicttype="L">
-  <data title="English Courses" url="/lm/english_0_10/crs/" type="multiTask">
-    <taskCourse title="Beginners part 1 (A1)" url="/lm/oldea/english1_0/" type="taskCourse">
-      <data title="Greetings, Meeting people, Days of the week" url="/lm/oldea/english1/l01/">
-        <mod title="Chapter A" url="/lm/oldea/english1/l01/a/" type="mod">
-          <ex title="Fiona and Her English Class" url="/lm/oldea/english1/l01/a/hueex0_l01_a01" type="ex" isOldEa="true" isOldEaPassive="true" />
-          <ex title="In a Café" url="/lm/oldea/english1/l01/a/hueex0_l01_a02" type="ex" isOldEa="true" isOldEaPassive="true" />
-          <ex title="Nicole and Fiona" url="/lm/oldea/english1/l01/a/hueex0_l01_a03" type="ex" isOldEa="true" />
-        </mod>
+﻿<product title="Vyzva 57 MŠMT: Angličtina" url="/lm/prods_lm_blcourse_english/" line="English" type="product" other="{'loader':'vyzva57'}" defaultDictType="L" defaultLocs="cs_cz en_gb">
+  <data title="A1" url="/lm/blcourse/english/a1/">
+    <mod title="Test1" url="/lm/blcourse/english/a1/test1/" type="mod">
+      <data url="/lm/blcourse/english/a1/test1/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a1/test1/media/dlg_a" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/a1/test1/media/dlg_b" type="mediaCutFile" />
       </data>
-    </taskCourse>
+      <ex title="Dialogue" url="/lm/blcourse/english/a1/test1/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson1" url="/lm/blcourse/english/a1/lesson1/" type="mod">
+      <data url="/lm/blcourse/english/a1/lesson1/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson1/media/dlg" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson1/media/dlg_parts" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson1/media/dlg_roleplaying" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson1/media/dlg_sentenceordering" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a1/lesson1/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson2" url="/lm/blcourse/english/a1/lesson2/" type="mod">
+      <data url="/lm/blcourse/english/a1/lesson2/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson2/media/alldlg" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson2/media/dlg_1" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson2/media/dlg_2" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson2/media/dlg_3" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson2/media/dlg_4" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a1/lesson2/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson3" url="/lm/blcourse/english/a1/lesson3/" type="mod">
+      <data url="/lm/blcourse/english/a1/lesson3/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson3/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a1/lesson3/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson4" url="/lm/blcourse/english/a1/lesson4/" type="mod">
+      <data url="/lm/blcourse/english/a1/lesson4/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson4/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a1/lesson4/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Test2" url="/lm/blcourse/english/a1/test2/" type="mod">
+      <data url="/lm/blcourse/english/a1/test2/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a1/test2/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a1/test2/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson5" url="/lm/blcourse/english/a1/lesson5/" type="mod">
+      <data url="/lm/blcourse/english/a1/lesson5/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson5/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a1/lesson5/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson6" url="/lm/blcourse/english/a1/lesson6/" type="mod">
+      <data url="/lm/blcourse/english/a1/lesson6/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson6/media/dlg_a" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson6/media/dlg_b" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a1/lesson6/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Test3" url="/lm/blcourse/english/a1/test3/" type="mod">
+      <data url="/lm/blcourse/english/a1/test3/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a1/test3/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a1/test3/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson7" url="/lm/blcourse/english/a1/lesson7/" type="mod">
+      <data url="/lm/blcourse/english/a1/lesson7/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson7/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a1/lesson7/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson8" url="/lm/blcourse/english/a1/lesson8/" type="mod">
+      <data url="/lm/blcourse/english/a1/lesson8/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson8/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a1/lesson8/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson9" url="/lm/blcourse/english/a1/lesson9/" type="mod">
+      <data url="/lm/blcourse/english/a1/lesson9/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson9/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a1/lesson9/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Test4" url="/lm/blcourse/english/a1/test4/" type="mod">
+      <data url="/lm/blcourse/english/a1/test4/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a1/test4/media/dlg_1" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/a1/test4/media/dlg_2" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a1/test4/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson10" url="/lm/blcourse/english/a1/lesson10/" type="mod">
+      <data url="/lm/blcourse/english/a1/lesson10/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson10/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a1/lesson10/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson11" url="/lm/blcourse/english/a1/lesson11/" type="mod">
+      <data url="/lm/blcourse/english/a1/lesson11/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson11/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a1/lesson11/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson12" url="/lm/blcourse/english/a1/lesson12/" type="mod">
+      <data url="/lm/blcourse/english/a1/lesson12/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson12/media/dlg_a" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/a1/lesson12/media/dlg_b" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a1/lesson12/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Test5" url="/lm/blcourse/english/a1/test5/" type="mod">
+      <data url="/lm/blcourse/english/a1/test5/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a1/test5/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a1/test5/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
   </data>
+  <data title="A2" url="/lm/blcourse/english/a2/">
+    <mod title="Test1" url="/lm/blcourse/english/a2/test1/" type="mod">
+      <data url="/lm/blcourse/english/a2/test1/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a2/test1/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a2/test1/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson1" url="/lm/blcourse/english/a2/lesson1/" type="mod">
+      <data url="/lm/blcourse/english/a2/lesson1/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a2/lesson1/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a2/lesson1/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson2" url="/lm/blcourse/english/a2/lesson2/" type="mod">
+      <data url="/lm/blcourse/english/a2/lesson2/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a2/lesson2/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a2/lesson2/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson3" url="/lm/blcourse/english/a2/lesson3/" type="mod">
+      <data url="/lm/blcourse/english/a2/lesson3/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a2/lesson3/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a2/lesson3/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson4" url="/lm/blcourse/english/a2/lesson4/" type="mod">
+      <data url="/lm/blcourse/english/a2/lesson4/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a2/lesson4/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a2/lesson4/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Test2" url="/lm/blcourse/english/a2/test2/" type="mod">
+      <data url="/lm/blcourse/english/a2/test2/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a2/test2/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a2/test2/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson5" url="/lm/blcourse/english/a2/lesson5/" type="mod">
+      <data url="/lm/blcourse/english/a2/lesson5/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a2/lesson5/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a2/lesson5/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson6" url="/lm/blcourse/english/a2/lesson6/" type="mod">
+      <data url="/lm/blcourse/english/a2/lesson6/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a2/lesson6/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a2/lesson6/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Test3" url="/lm/blcourse/english/a2/test3/" type="mod">
+      <data url="/lm/blcourse/english/a2/test3/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a2/test3/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a2/test3/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson7" url="/lm/blcourse/english/a2/lesson7/" type="mod">
+      <data url="/lm/blcourse/english/a2/lesson7/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a2/lesson7/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a2/lesson7/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson8" url="/lm/blcourse/english/a2/lesson8/" type="mod">
+      <data url="/lm/blcourse/english/a2/lesson8/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a2/lesson8/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a2/lesson8/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson9" url="/lm/blcourse/english/a2/lesson9/" type="mod">
+      <data url="/lm/blcourse/english/a2/lesson9/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a2/lesson9/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a2/lesson9/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Test4" url="/lm/blcourse/english/a2/test4/" type="mod">
+      <data url="/lm/blcourse/english/a2/test4/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a2/test4/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a2/test4/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson10" url="/lm/blcourse/english/a2/lesson10/" type="mod">
+      <data url="/lm/blcourse/english/a2/lesson10/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a2/lesson10/media/dlg_1" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/a2/lesson10/media/dlg_2" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a2/lesson10/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson11" url="/lm/blcourse/english/a2/lesson11/" type="mod">
+      <data url="/lm/blcourse/english/a2/lesson11/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a2/lesson11/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a2/lesson11/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson12" url="/lm/blcourse/english/a2/lesson12/" type="mod">
+      <data url="/lm/blcourse/english/a2/lesson12/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a2/lesson12/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a2/lesson12/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Test5" url="/lm/blcourse/english/a2/test5/" type="mod">
+      <data url="/lm/blcourse/english/a2/test5/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/a2/test5/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/a2/test5/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+  </data>
+  <data title="B1" url="/lm/blcourse/english/b1/">
+    <mod title="Test1" url="/lm/blcourse/english/b1/test1/" type="mod">
+      <data url="/lm/blcourse/english/b1/test1/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b1/test1/media/dlg_1" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/b1/test1/media/dlg_2" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/b1/test1/media/dlg_3" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/b1/test1/media/dlg_4" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/b1/test1/media/dlg_5" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b1/test1/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson1" url="/lm/blcourse/english/b1/lesson1/" type="mod">
+      <data url="/lm/blcourse/english/b1/lesson1/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b1/lesson1/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b1/lesson1/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson2" url="/lm/blcourse/english/b1/lesson2/" type="mod">
+      <data url="/lm/blcourse/english/b1/lesson2/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b1/lesson2/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b1/lesson2/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson3" url="/lm/blcourse/english/b1/lesson3/" type="mod">
+      <data url="/lm/blcourse/english/b1/lesson3/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b1/lesson3/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b1/lesson3/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson4" url="/lm/blcourse/english/b1/lesson4/" type="mod">
+      <data url="/lm/blcourse/english/b1/lesson4/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b1/lesson4/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b1/lesson4/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Test2" url="/lm/blcourse/english/b1/test2/" type="mod">
+      <data url="/lm/blcourse/english/b1/test2/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b1/test2/media/dlg_1" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/b1/test2/media/dlg_2" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/b1/test2/media/dlg_3" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b1/test2/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson5" url="/lm/blcourse/english/b1/lesson5/" type="mod">
+      <data url="/lm/blcourse/english/b1/lesson5/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b1/lesson5/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b1/lesson5/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson6" url="/lm/blcourse/english/b1/lesson6/" type="mod">
+      <data url="/lm/blcourse/english/b1/lesson6/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b1/lesson6/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b1/lesson6/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Test3" url="/lm/blcourse/english/b1/test3/" type="mod">
+      <data url="/lm/blcourse/english/b1/test3/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b1/test3/media/dlg_1" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/b1/test3/media/dlg_2" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/b1/test3/media/dlg_3" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/b1/test3/media/dlg_4" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b1/test3/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson7" url="/lm/blcourse/english/b1/lesson7/" type="mod">
+      <data url="/lm/blcourse/english/b1/lesson7/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b1/lesson7/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b1/lesson7/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson8" url="/lm/blcourse/english/b1/lesson8/" type="mod">
+      <data url="/lm/blcourse/english/b1/lesson8/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b1/lesson8/media/dlg_1" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/b1/lesson8/media/dlg_2" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b1/lesson8/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson9" url="/lm/blcourse/english/b1/lesson9/" type="mod">
+      <data url="/lm/blcourse/english/b1/lesson9/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b1/lesson9/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b1/lesson9/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Test4" url="/lm/blcourse/english/b1/test4/" type="mod">
+      <data url="/lm/blcourse/english/b1/test4/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b1/test4/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b1/test4/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson10" url="/lm/blcourse/english/b1/lesson10/" type="mod">
+      <data url="/lm/blcourse/english/b1/lesson10/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b1/lesson10/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b1/lesson10/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson11" url="/lm/blcourse/english/b1/lesson11/" type="mod">
+      <data url="/lm/blcourse/english/b1/lesson11/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b1/lesson11/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b1/lesson11/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson12" url="/lm/blcourse/english/b1/lesson12/" type="mod">
+      <data url="/lm/blcourse/english/b1/lesson12/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b1/lesson12/media/dlg_1" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/b1/lesson12/media/dlg_2" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/b1/lesson12/media/dlg_3" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/b1/lesson12/media/dlg_4" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b1/lesson12/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Test5" url="/lm/blcourse/english/b1/test5/" type="mod">
+      <data url="/lm/blcourse/english/b1/test5/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b1/test5/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b1/test5/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+  </data>
+  <data title="B2" url="/lm/blcourse/english/b2/">
+    <mod title="Test1" url="/lm/blcourse/english/b2/test1/" type="mod">
+      <data url="/lm/blcourse/english/b2/test1/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b2/test1/media/dlg_1" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/b2/test1/media/dlg_2" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/b2/test1/media/dlg_3" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b2/test1/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson1" url="/lm/blcourse/english/b2/lesson1/" type="mod">
+      <data url="/lm/blcourse/english/b2/lesson1/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b2/lesson1/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b2/lesson1/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson2" url="/lm/blcourse/english/b2/lesson2/" type="mod">
+      <data url="/lm/blcourse/english/b2/lesson2/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b2/lesson2/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b2/lesson2/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson3" url="/lm/blcourse/english/b2/lesson3/" type="mod">
+      <data url="/lm/blcourse/english/b2/lesson3/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b2/lesson3/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b2/lesson3/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson4" url="/lm/blcourse/english/b2/lesson4/" type="mod">
+      <data url="/lm/blcourse/english/b2/lesson4/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b2/lesson4/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b2/lesson4/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Test2" url="/lm/blcourse/english/b2/test2/" type="mod">
+      <data url="/lm/blcourse/english/b2/test2/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b2/test2/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b2/test2/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson5" url="/lm/blcourse/english/b2/lesson5/" type="mod">
+      <data url="/lm/blcourse/english/b2/lesson5/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b2/lesson5/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b2/lesson5/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson6" url="/lm/blcourse/english/b2/lesson6/" type="mod">
+      <data url="/lm/blcourse/english/b2/lesson6/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b2/lesson6/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b2/lesson6/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Test3" url="/lm/blcourse/english/b2/test3/" type="mod">
+      <data url="/lm/blcourse/english/b2/test3/media/" type="mod" />
+    </mod>
+    <mod title="Lesson8" url="/lm/blcourse/english/b2/lesson8/" type="mod">
+      <data url="/lm/blcourse/english/b2/lesson8/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b2/lesson8/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b2/lesson8/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Test4" url="/lm/blcourse/english/b2/test4/" type="mod">
+      <data url="/lm/blcourse/english/b2/test4/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b2/test4/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b2/test4/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson10" url="/lm/blcourse/english/b2/lesson10/" type="mod">
+      <data url="/lm/blcourse/english/b2/lesson10/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b2/lesson10/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b2/lesson10/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson11" url="/lm/blcourse/english/b2/lesson11/" type="mod">
+      <data url="/lm/blcourse/english/b2/lesson11/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b2/lesson11/media/dlg_1" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/b2/lesson11/media/dlg_2" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/b2/lesson11/media/dlg_3" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b2/lesson11/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Lesson12" url="/lm/blcourse/english/b2/lesson12/" type="mod">
+      <data url="/lm/blcourse/english/b2/lesson12/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b2/lesson12/media/dlg_1" type="mediaCutFile" />
+        <data title="Media cut file" url="/lm/blcourse/english/b2/lesson12/media/dlg_2" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b2/lesson12/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+    <mod title="Test5" url="/lm/blcourse/english/b2/test5/" type="mod">
+      <data url="/lm/blcourse/english/b2/test5/media/" type="mod">
+        <data title="Media cut file" url="/lm/blcourse/english/b2/test5/media/dlg" type="mediaCutFile" />
+      </data>
+      <ex title="Dialogue" url="/lm/blcourse/english/b2/test5/dlg_play" type="ex" instrs="/data/instr/std/sound_playback" />
+    </mod>
+  </data>
+  <data title="Pretests" url="/lm/blcourse/english/pretests/">
+    <data title="Blended Learning: Pretest A1" url="/lm/blcourse/english/pretests/pretesta1/" other="{'min':75, 'max':92, level: 0}">
+      <ex title="GapFill" url="/lm/blcourse/english/pretests/pretesta1/grammar1" type="ex" ms="100" instrs="/data/instr/std/filling_in" />
+    </data>
+    <data title="Blended Learning: Pretest A2" url="/lm/blcourse/english/pretests/pretesta2/" other="{'min':75, 'max':92, level: 1}">
+      <ex title="Single Choice" url="/lm/blcourse/english/pretests/pretesta2/grammar2" type="ex" ms="100" instrs="/data/instr/std/single_choice" />
+    </data>
+    <data title="Blended Learning: Pretest B1" url="/lm/blcourse/english/pretests/pretestb1/" other="{'min':75, 'max':92, level: 2}">
+      <ex title="Single Choice" url="/lm/blcourse/english/pretests/pretestb1/grammar4" type="ex" ms="100" instrs="/data/instr/std/single_choice" />
+    </data>
+    <data title="Blended Learning: Pretest B2" url="/lm/blcourse/english/pretests/pretestb2/" other="{'min':75, 'max':92, level: 3}">
+      <ex title="GapFill" url="/lm/blcourse/english/pretests/pretestb2/grammar3" type="ex" ms="100" instrs="/data/instr/std/filling_in" />
+    </data>
+  </data>
+  <mod title="Instructions" url="/lm/prods_lm_blcourse_english_instrs/" type="mod instrs noDict">
+    <ex url="/data/instr/std/sound_playback" type="ex" />
+    <ex url="/data/instr/std/filling_in" type="ex" />
+    <ex url="/data/instr/std/single_choice" type="ex" />
+  </mod>
 </product>

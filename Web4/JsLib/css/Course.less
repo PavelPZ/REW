@@ -1097,16 +1097,24 @@ input {
   }
 }
 /********************** MEDIA ***********************/
-@oli-dialog-a: #A6D711;
+/*@oli-dialog-a: #A6D711;
 @oli-dialog-b: #FDAC19;
 @oli-dialog-c: #B9DEFA;
 @oli-dialog-d: #FF575E;
 @oli-dialog-e: #9382FF;
-@oli-dialog-f: #E3B8F8;
+@oli-dialog-f: #E3B8F8;*/
+
+@oli-dialog-a: #B1F1B4;
+@oli-dialog-b: #FFDBB7;
+@oli-dialog-c: #B9DEFA;
+@oli-dialog-d: #FFFF84;
+@oli-dialog-e: #DAD5FF;
+@oli-dialog-f: #FFC1C1;
+
 
 .oli-sent {
   cursor: pointer;
-  padding:3px 0;
+  padding: 3px 0;
 
   > .actor {
     //vertical-align: bottom;
@@ -1820,6 +1828,15 @@ input {
 .oli-audio-capture {
   .column-fixed-fluid (progress, 210);
 
+  .lector {
+    &.alert {
+      padding: 0;
+      margin: 5px 0;
+      padding-bottom: 10px;
+      display:none;
+    }
+  }
+
   .test-notify {
     color: @brand-danger;
     text-align: left;
@@ -1929,7 +1946,7 @@ input {
   }
 
   &.human-eval-mode {
-    .human-form {
+    .human-form, .lector {
       display: block;
     }
   }
@@ -2265,8 +2282,12 @@ input {
       }
     }
   }
+
   .info {
-    color:lightgray;
-    span {color:@brand-success;}
+    color: lightgray;
+
+    span {
+      color: @brand-success;
+    }
   }
 }

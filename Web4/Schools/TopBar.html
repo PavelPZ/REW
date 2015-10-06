@@ -5,9 +5,9 @@ TTopBarNew
     <%-- ******************* LEVA CAST ************* --%>
     <%-- logo --%>
     {{if tb.logoBig()}}
-    <a href="#" class="navbar-brand lm-logo-black" onmousedown="lmConsole.sendStart(this)" onmouseup="lmConsole.sendEnd(this)"></a>
+    <a href="#" class="navbar-brand lm-logo-black" onmousedown="lmConsole.sendStart(this)" onmouseup="lmConsole.sendEnd(this)" data-bind="click: Pager.gotoHomeUrl"></a>
     {{else tb.logoSmall()}}
-    <a href="#" class="navbar-brand lm-logo-black lm-logo-black-small"></a>
+    <a href="#" class="navbar-brand lm-logo-black lm-logo-black-small" data-bind="click: Pager.gotoHomeUrl"></a>
     {{/if}}
 
     <%-- back to course --%>

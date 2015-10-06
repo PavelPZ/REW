@@ -2,7 +2,7 @@
   export var home = "grafia_homeModel".toLowerCase();
   export class skin extends Gui2.skin {
     bodyClass(): string { return $(document).width() <= 960 ? 'screen-width-small' : ''; }
-    getHome(): string { return [appId, home].join('@'); }
+    getHome(): string { return oldPrefix + [appId, home].join(hashDelim); }
   }
 
   export class homeModel extends Pager.Page {
@@ -13,5 +13,7 @@
     tb;
   }
   Gui2.skin.instance = new skin();
-  Pager.registerAppLocator(appId, home, (urlParts, completed) => completed(new homeModel()));
+  //Pager.registerAppLocator(appId, home, (urlParts, completed) => completed(new homeModel()));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, home, appId, home, 0, urlParts => new homeModel()));
+
 }

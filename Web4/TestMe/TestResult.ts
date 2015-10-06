@@ -161,7 +161,11 @@ module testMe {
     elapsed: number;
   }
 
-  Pager.registerAppLocator(appId, tResult,(urlParts, completed) => completed(new Result(urlParts)));
-  Pager.registerAppLocator(appId, tResults,(urlParts, completed) => completed(new Results(urlParts)));
+  //Pager.registerAppLocator(appId, tResult,(urlParts, completed) => completed(new Result(urlParts)));
+  //Pager.registerAppLocator(appId, tResults, (urlParts, completed) => completed(new Results(urlParts)));
+
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, tResult, appId, tResult, 3, urlParts => new Result(urlParts)));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, tResults, appId, tResults, 3, urlParts => new Results(urlParts)));
+
 }
 

@@ -7,9 +7,9 @@
     dictNoSound = false,
     dictOfflineId = "L",
     startProcName = "boot.Start", //nemusi byt, difotni hodnota
-    //testGroup_debug = true,
-    //humanEvalMode = true,
-    //logins = new LMComLib.OtherType[] {LMComLib.OtherType.LANGMaster, LMComLib.OtherType.LANGMasterNoEMail},
+                                  //testGroup_debug = true,
+                                  //humanEvalMode = true,
+                                  //logins = new LMComLib.OtherType[] {LMComLib.OtherType.LANGMaster, LMComLib.OtherType.LANGMasterNoEMail},
 
     //themeId = "-bootswatch-flatly",
     //themeDefauleNavbar = true,
@@ -20,7 +20,9 @@
     designId = "",
 
     //dataBatchUrl = "/lm/lm_data_new/",
-    dataBatchUrl = "/lm/lm_data/",
+    //dataBatchUrl = "/lm/lm_data/",
+    dataBatchUrl = "/skrivanek",
+    //dataBatchUrl = "/siteroot.all",
     //forceServiceUrl = LMComLib.Machines.isFE5() ? "http://test.langmaster.com/alpha/service.ashx" : "http://localhost/rew/service.ashx",
     //forceServiceUrl = "http://services.langmaster.com/services/service.ashx",
 

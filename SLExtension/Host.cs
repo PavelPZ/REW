@@ -39,13 +39,15 @@ namespace SLPlayer {
           case MediaElementState.Paused:
           case MediaElementState.Closed:
           case MediaElementState.Stopped:
-            trace("stoped");
-            if (timer != null) { timer.Stop(); timer = null; }
-            if (onPaused != null) onPaused(null, null);
+            trace("callback " + player.CurrentState.ToString());
+            if (timer != null) {
+              timer.Stop(); timer = null;
+              if (onPaused != null) onPaused(null, null);
+            }
             break;
           case MediaElementState.Playing:
             if (timer == null) {
-              trace("playing, new timer");
+              trace("callback.playing, new timer, timeupdate" + (timeupdate!=null ? "!=" : "==") + "null");
               timer = new System.Windows.Threading.DispatcherTimer();
               timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
               timer.Tick += new EventHandler((o, a2) => {
@@ -80,7 +82,7 @@ namespace SLPlayer {
     }
 
     public void trace(string msg) {
-      JSLog.Write(msg);
+      JSLog.Write(DateTime.Now.ToString("s.fff") + ": " + msg);
       //if (OnTrace != null) OnTrace(null, new StringEventArgument("Silverlight: " + msg)); 
     }
 
@@ -97,7 +99,7 @@ namespace SLPlayer {
       try {
         LMMedia.Recorder.RecordEnd();
         if (playUrl == null) { player.Stop(); url = null; }
-        trace("openFile start, oldUrl=" + url + ", newUrl=" + playUrl);
+        trace("js.openFile start, oldUrl=" + url + ", newUrl=" + playUrl);
         MemoryStream mem;
         if (url != playUrl) {
           _duration = -1.0;
@@ -150,9 +152,9 @@ namespace SLPlayer {
     public event EventHandler<NumberEventArgument> OnRecordedMilisecs;
 
     [ScriptableMember()]
-    public void play() { trace("play"); if (player.CurrentState != MediaElementState.Playing) player.Play(); }
+    public void play() { trace("js.play, CurrentState=" + player.CurrentState.ToString()); if (player.CurrentState != MediaElementState.Playing) player.Play(); }
     [ScriptableMember()]
-    public void pause() { trace("pause"); player.Pause(); }
+    public void pause() { trace("js.pause"); player.Pause(); }
     [ScriptableMember()]
     public string url { get; set; }
 
@@ -160,7 +162,7 @@ namespace SLPlayer {
     public double currentTime {
       get { return player.CurrentState == MediaElementState.Playing || player.CurrentState == MediaElementState.Paused ? (double)player.Position.Ticks / 10000000 : 0.0; }
       set {
-        trace("set currentTime " + value.ToString());
+        trace("js.set currentTime " + value.ToString());
         if (player.CurrentState != MediaElementState.Playing && player.CurrentState != MediaElementState.Paused) trace("**** Error: player.CurrentState != MediaElementState.Playing && player.CurrentState != MediaElementState.Paused");
         player.Position = new TimeSpan((Int64)(value * 10000000));
       }

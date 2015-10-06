@@ -20,6 +20,7 @@ namespace LMComLib {
     oauth,
     loginEMail,
     loginLogin,
+    LMJSTicket,
   }
 
 
@@ -75,6 +76,7 @@ namespace LMComLib {
     public string ProductId; //@PRODID
     public Int64 Expired; //-1 (pouze pro isTest): jiz neni licence k testu, je tedy mozne prohlizet jen archiv
     public int LicCount; //pocet licenci pro eTestMe produkt
+    public string[] LicenceKeys; //licencni klice: seznam "<UserLicences.LicenceId>|<UserLicences.Counter>"
   }
 
   public enum VerifyStates {

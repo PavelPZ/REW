@@ -15,7 +15,7 @@ module Login {
   export var cfg: Config;
 
   export function getHash(type: string): string {
-    return [appId, type].join('@');
+    return oldPrefix + [appId, type].join(hashDelim);
   }
 
   //export class RootModel extends Pager.RootModelEx {
@@ -32,7 +32,7 @@ module Login {
   //pro Admin.html
   export function isSystemAdmin(): boolean { return ((myData.Roles & Login.Role.Admin) != 0) || ((myData.Roles & Login.Role.Comps) != 0); } //PZ
   export function isRoleComps() { return (myData.Roles & Login.Role.Comps) != 0; } //ZZ, RJ, PJ, ktere PZ urci 
-  export function companyExists() { return _.any(myData.Companies,(c: Login.MyCompany) => (c.RoleEx.Role == LMComLib.CompRole.Admin) || ((c.RoleEx.Role & ~LMComLib.CompRole.Admin) != 0) || (c.Courses != null && c.Courses.length > 0)); }
+  export function companyExists() { return _.any(myData.Companies, (c: Login.MyCompany) => (c.RoleEx.Role == LMComLib.CompRole.Admin) || ((c.RoleEx.Role & ~LMComLib.CompRole.Admin) != 0) || (c.Courses != null && c.Courses.length > 0)); }
   //export function isCompAdmin() { return _.any(myData.Companies, (c: Login.MyCompany) => (c.Roles & ~Login.CompRole.Admin) != 0); } //Chinh povoli nejakou company roli (products nebo key)
   //export function isCompStudent() { return _.any(myData.Companies, (c: Login.MyCompany) => (c.Courses != null && c.Courses.length > 0)); } //existuje nejaky prirazeny kurz
 
@@ -67,6 +67,7 @@ module Login {
   //}
 
   export function finishMyData() {
+     //myData vznikaji v CSharp v NewData.My.Init. Kurzy jsou v myData.Companies.Courses. comp.companyProducts comp.companyProducts jsou LM Author produkty
     if (!myData || myData.finished) return;
     myData.finished = true;
     var res = myData;
@@ -78,12 +79,13 @@ module Login {
       } else {
         if ((comp.RoleEx.Role && LMComLib.CompRole.Publisher) == 0) return;
       }
-      _.each(comp.companyProducts, p => comp.Courses.push({
+      _.each(comp.companyProducts, p => comp.Courses.push({ //pridani LMAuthor produktuu
         Expired: -1,
         Archives: null,
         isAuthoredCourse: true,
         LicCount: 1,
-        ProductId: p.url
+        ProductId: p.url,
+        LicenceKeys: null,
       }));
     });
     //agreguj archivy testu a dosad isTest
@@ -108,6 +110,7 @@ module Login {
             Archives: [],
             LicCount: 0,
             isAuthoredCourse: isAuthoredCourse,
+            LicenceKeys: null,
           };
           _.each(prodGroup, it => {
             var parts = it.ProductId.split('|'); //productId je url|archiveId
@@ -216,9 +219,7 @@ module Login {
     deps: Department[];
   }
 
-  //Init Url
-  //export var initUrl = () => new Url(pageLogin);
-  //export var initHash = getHash(pageLogin);
+  export function loginUrl() { return getHash(pageLogin); }
 
   if ($.views) $.views.helpers({
     loginUrl: (par) => "#" + getHash(_.isEmpty(par) ? pageLogin : par),
@@ -228,31 +229,29 @@ module Login {
     LMStatus.setReturnUrlAndGoto(getHash(pageProfile));
   }
 
-  export var pageDict: { [type: string]: (urlParts: string[], completed: (pg: Pager.Page) => void) => void } = {};
-  pageDict[pageLogin] = (urlParts, completed) => completed(new LoginModel(pageLogin));
-  pageDict[pageLmLogin] = (urlParts, completed) => completed(new LMLoginModel(pageLmLogin, true));
-  pageDict[pageLmLoginNoEMail] = (urlParts, completed) => completed(new LMLoginModel(pageLmLoginNoEMail, false));
-  pageDict[pageRegister] = (urlParts, completed) => completed(new RegisterModel(pageRegister, true));
-  pageDict[pageRegisterNoEMail] = (urlParts, completed) => completed(new RegisterModel(pageRegisterNoEMail, false));
-  pageDict[pageConfirmRegistration] = (urlParts, completed) => completed(new ConfirmRegistrationModel(pageConfirmRegistration));
-  pageDict[pageChangePassword] = (urlParts, completed) => completed(new ChangePassworModel(pageChangePassword));
-  pageDict[pageForgotPassword] = (urlParts, completed) => completed(new ForgotPasswordModel(pageForgotPassword));
-  pageDict[pageProfile] = (urlParts, completed) => completed(new ProfileModel(pageProfile));
+  //export var pageDict: { [type: string]: (urlParts: string[], completed: (pg: Pager.Page) => void) => void } = {};
+  //pageDict[pageLogin] = (urlParts, completed) => completed(new LoginModel(pageLogin));
+  //pageDict[pageLmLogin] = (urlParts, completed) => completed(new LMLoginModel(pageLmLogin, true));
+  //pageDict[pageLmLoginNoEMail] = (urlParts, completed) => completed(new LMLoginModel(pageLmLoginNoEMail, false));
+  //pageDict[pageRegister] = (urlParts, completed) => completed(new RegisterModel(pageRegister, true));
+  //pageDict[pageRegisterNoEMail] = (urlParts, completed) => completed(new RegisterModel(pageRegisterNoEMail, false));
+  //pageDict[pageConfirmRegistration] = (urlParts, completed) => completed(new ConfirmRegistrationModel(pageConfirmRegistration));
+  //pageDict[pageChangePassword] = (urlParts, completed) => completed(new ChangePassworModel(pageChangePassword));
+  //pageDict[pageForgotPassword] = (urlParts, completed) => completed(new ForgotPasswordModel(pageForgotPassword));
+  //pageDict[pageProfile] = (urlParts, completed) => completed(new ProfileModel(pageProfile));
 
   //Registrace lokatoru
-  for (var p in pageDict)
-    Pager.registerAppLocator(appId, p, pageDict[p]);
-  //_.each(pageDict, (t: IPageDict) => Pager.registerAppLocator2(
-  //  appId,
-  //  t.type,
-  //  (urlParts, completed) => {
-  //    //var hash = url.locator.toLowerCase();
-  //    //var page: IPageDict = _.find(pageDict, (t: IPageDict) => t.type == hash);
-  //    //completed(page.create(page.type));
-  //  })
-  //  );
-  //registrace Url.fromString funkce
-  //Pager.registerApp(appId, Url.fromString);
+  //for (var p in pageDict)
+  //  Pager.registerAppLocator(appId, p, pageDict[p]);
 
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, pageLogin, appId, pageLogin, 0, (urlParts) => new LoginModel(pageLogin), false));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, pageLmLogin, appId, pageLmLogin, 0, (urlParts) => new LMLoginModel(pageLmLogin, true), false));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, pageLmLoginNoEMail, appId, pageLmLoginNoEMail, 0, (urlParts) => new LMLoginModel(pageLmLoginNoEMail, false), false));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, pageRegister, appId, pageRegister, 0, (urlParts) => new RegisterModel(pageRegister, true), false));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, pageRegisterNoEMail, appId, pageRegisterNoEMail, 0, (urlParts) => new RegisterModel(pageRegisterNoEMail, false), false));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, pageConfirmRegistration, appId, pageConfirmRegistration, 0, (urlParts) => new ConfirmRegistrationModel(pageConfirmRegistration), false));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, pageChangePassword, appId, pageChangePassword, 0, (urlParts) => new ChangePassworModel(pageChangePassword), false));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, pageForgotPassword, appId, pageForgotPassword, 0, (urlParts) => new ForgotPasswordModel(pageForgotPassword), false));
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, pageProfile, appId, pageProfile, 0, (urlParts) => new ProfileModel(pageProfile), false));
 }
 

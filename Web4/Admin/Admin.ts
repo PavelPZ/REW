@@ -39,7 +39,7 @@ module schoolAdmin {
   export function returnFalse(): boolean { return false; }
   export function returnTrue(): boolean { return true; }
 
-  export function getHash(type: string, companyId: number) { return [appId, type, companyId.toString()].join('@'); }
+  export function getHash(type: string, companyId: number) { return oldPrefix + [appId, type, companyId.toString()].join(hashDelim); }
 
   export var adminTypeName = "schoolAdminModel".toLowerCase(); //System administrator, dovoluje pridat dalsi system administrators a dalsi firmy
   export var keyGenTypeName = "schoolKeyGenModel".toLowerCase();
@@ -277,7 +277,10 @@ module schoolAdmin {
   }
 
   //Pager.registerAppLocator(adminTypeName, (url: Url, completed: (pg: Pager.Page) => void) => completed(new AdminModel()));
-  Pager.registerAppLocator(appId, adminTypeName,(urlParts, completed) => completed(new AdminModel()));
+  //Pager.registerAppLocator(appId, adminTypeName, (urlParts, completed) => completed(new AdminModel()));
+
+  blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, adminTypeName, appId, adminTypeName, 0, urlParts => new AdminModel()));
+
 
   //registrace Url.fromString funkce
   //Pager.registerApp(appId, Url.fromString);

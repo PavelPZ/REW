@@ -1,0 +1,245 @@
+﻿<!--***************** LAYOUT -->
+<div class="topbar topbar-exercise position-relative"  style="z-index:10;" collapsablemanager="modulecollapsable">
+  <div class="container-fluid">
+    <div class="container">
+      <div class="pull-left" ng-include="'vyzva$common$topbarinnerleft.html'"></div>
+      <button class="pull-left btn btn-success btn-lg" ng-disabled="modService.onbehalfof" ng-if="::!modService.moduleDone" ng-click="::ts.tbClick()">{{::ts.tbTitle}} <i class="fa fa-hand-o-right"></i></button>
+      <div class="pull-left module-finished" ng-if="::modService.moduleDone"><i class="fa fa-checked"></i> {{::ts.tbDoneTitle}}</div>
+      <button class="btn-finish pull-left btn btn-default" ng-click="::ts.tbNavigateProductHome()">Zpět na kurz <i class="fa fa-level-up"></i></button>
+      <div class="pull-left topbar-title" ng-if="::!state.ignorePageTitle">{{::modService.node.title}}</div>
+      <div class="pull-right more fa fa-bars" ng-if="::!(exService.isTest && !modService.moduleDone)" ng-click="modulecollapsable.collapseToogle()"></div>
+      <div class="pull-right" ng-include="'vyzva$common$topbarinnerright.html'"></div>
+      <div class="clearfix"></div>
+      <div class="ex-items" ng-if="::modService.exShowPanel" ng-include="'vyzva$exercise$moduleheaderitem.html'"></div>
+    </div>
+  </div>
+  <div class="container-fluid" style="background-color:white;" ng-include="'vyzva$exercise$modulemorepanel.html'"></div>
+</div>
+<div class="container lm-top-margin" style="position:relative;">
+  <div class="instruction position-relative" style="z-index:10;" ng-include="'vyzva$exercise$instruction.html'" ng-if="::!exService.lectorMode"></div>
+  <div class="keyboard-place" ng-if="::(exService.keyboardLine==2 || exService.keyboardLine==5) && !modService.showResult()"></div>
+  <div ng-include="'vyzva$exercise$lectorhelp.html'" ng-if="::exService.lectorMode && exService.exType==2"></div>
+  <div class="ex-lector-panel" ng-include="'vyzva$exercise$lector.html'" ng-if="::exService.lectorMode && exService.exType==2"></div>
+  <div ng-include="'vyzva$exercise$lectorlessonhelp.html'" ng-if="::exService.lectorMode && exService.exType==1"></div>
+  <div class="ex-lector-panel" ng-include="'vyzva$exercise$lectorlesson.html'" ng-if="::exService.lectorMode && exService.exType==1"></div>
+  <div ng-include="'vyzva$exercise$lectorpretesthelp.html'" ng-if="::exService.lectorMode && exService.exType==0"></div>
+  <div class="ex-lector-panel" ng-include="'vyzva$exercise$lectorpretest.html'" ng-if="::exService.lectorMode && exService.exType==0"></div>
+  <div class="new-ea lm-top-margin" data-show-exercise="" ex-service="::exService"></div>
+  <div class="keyboard-fixed" vyzva$exercise$keyboard ng-if="::exService.keyboardLine==2 && !modService.showResult()">
+    Speciální znaky pro němčinu:
+    <span ng-repeat="ch in ['ß','Ä','ä','Ü','ü','Ö','ö']" vyzva$exercise$keyboardkey key="{{::ch}}">{{::ch}}</span> 
+  </div>
+  <div class="keyboard-fixed" vyzva$exercise$keyboard ng-if="::exService.keyboardLine==5 && !modService.showResult()">
+    Speciální znaky pro francouzštinu:
+    <span ng-repeat="ch in ['ç','Ç','à','è','â','ê','î','ô','û','ù','Ù']" vyzva$exercise$keyboardkey key="{{::ch}}">{{::ch}}</span> 
+  </div>
+</div>
+<div ng-include="'vyzva$common$copyright.html'"></div>
+
+<!--***************** LECTOR PANEL PRETEST -->
+<script type="text/ng-template" id="vyzva$exercise$lectorpretest.html">
+  <div class="alert alert-danger">
+    <button class="btn btn-danger" ng-click="::exService.resetPretest(-1)"><i class="fa fa-check"></i> Zopakovat Rozřazovací test</button>
+    nebo změnit úroveň na:
+    <button class="btn btn-danger" ng-click="::exService.resetPretest(0)">A1</button>
+    <button class="btn btn-danger" ng-click="::exService.resetPretest(1)">A2</button>
+    <button class="btn btn-danger" ng-click="::exService.resetPretest(2)">B1</button>
+    <button class="btn btn-danger" ng-click="::exService.resetPretest(3)">B2</button>
+  </div>
+</script>
+
+<script type="text/ng-template" id="vyzva$exercise$lectorpretesthelp.html">
+  <div class="alert help-panel help-warning" collapsablemanager="+exercisehelppretestteacher">
+    <div class="h4 help-header" ng-click="exercisehelppretestteacher.collapseToogle()">
+      <div class="more fa fa-question-circle"></div>
+      Ovlivnit výsledek Rozřazovacího testu
+    </div>
+    <div class="help-content" collapse="exercisehelppretestteacher.isCollapsed">
+      <div class="help-close" ng-click="exercisehelppretestteacher.collapseToogle()"><i class="fa fa-times"></i></div>
+      <div class="row">
+        <div class="col-sm-11">
+          <p>
+            Tlačítky níže můžete buďto dát <i>Studentovi</i> k zopakování celý <i>Rozřazovací test</i> nebo mu změnit dosažený výsledek testu.
+          </p>
+          Poznámka: po těchto změnách bude <i>Student</i> studovat kurz od začátku.
+          <div class="when-problem lm-top-margin" vyzva$common$whenproblem></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<!--***************** LECTOR PANEL LEKCE -->
+<script type="text/ng-template" id="vyzva$exercise$lectorlesson.html">
+  <div class="alert alert-danger">
+    <h4>Celkové skóre: <b>{{::modService.agregUser.score}}</b></h4>
+    <button class="btn btn-danger" ng-click="::exService.confirmLesson()"><i class="fa fa-check"></i>Zopakovat lekci</button>
+  </div>
+</script>
+
+<script type="text/ng-template" id="vyzva$exercise$lectorlessonhelp.html">
+  <div class="alert help-panel help-warning" collapsablemanager="+exercisehelplesonteacher">
+    <div class="h4 help-header" ng-click="exercisehelplesonteacher.collapseToogle()">
+      <div class="more fa fa-question-circle"></div>
+      Zopakovat lekci
+    </div>
+    <div class="help-content" collapse="exercisehelplesonteacher.isCollapsed">
+      <div class="help-close" ng-click="exercisehelplesonteacher.collapseToogle()"><i class="fa fa-times"></i></div>
+      <div class="row">
+        <div class="col-sm-11">
+          Máte kdykoliv možnost dát <i>Studentovi</i> lekci k zopakování.
+          Provedete to stisknutím tlačítka <b>Zopakovat lekci</b>
+          <div class="when-problem lm-top-margin" vyzva$common$whenproblem></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<!--***************** LECTOR PANEL TEST -->
+<script type="text/ng-template" id="vyzva$exercise$lector.html">
+  <div class="alert alert-danger">
+    <div class="row" ng-if="::!exService.lectorCanEvaluateRecording">
+      <div class="col-sm-12">
+        <h4>Automatické vyhodnocení (bez nahrávek): <b>{{::exService.lectorAutoScore}}%</b></h4>
+        <h4>Vyhodnocení nahrávek: <b>{{exService.lectorHumanScore>=0 ? exService.lectorHumanScore.toString():'-'}}%</b></h4>
+        <button class="btn btn-success" ng-click="::exService.confirmLesson(true)"><i class="fa fa-check"></i> Pokračovat v kurzu</button>
+        <button class="btn btn-danger" ng-click="::exService.confirmLesson(false)"><i class="fa fa-remove"></i> Zopakovat test</button>
+      </div>
+    </div>
+    <div class="row" ng-if="::exService.lectorCanEvaluateRecording">
+      <div class="col-sm-6">
+        <h4>Vyhodnocení nahrávek studenta</h4>
+        Poslechněte si nahrávky <i>Studenta</i> klikem na modrou šipku níže ve cvičení. Pak vyplňte vyhodnocení v procentech (0-100).
+        Po vyplnění všech hodnocení stiskněte <i>Uložit vyhodnocení</i>
+        <button class="btn btn-success" ng-click="::exService.saveLectorEvaluation()"><i class="fa fa-check"></i> Uložit vyhodnocení</button><br />
+      </div>
+      <div class="col-sm-6">
+        <h5>Automatické vyhodnocení (bez nahrávek): <b>{{::exService.lectorAutoScore}}%</b></h5>
+        <h5>Vyhodnocení nahrávek: <b>{{exService.lectorHumanScore>=0 ? exService.lectorHumanScore.toString():'-'}}%</b></h5>
+        <!--<h5>Celkové skóre (bez vyhodnocených nahrávek): <b>{{::modService.agregUser.score}}%</b></h5>-->
+        <button class="btn btn-success" ng-click="::exService.confirmLesson(true)"><i class="fa fa-check"></i> Pokračovat v kurzu</button><br /><br />
+        <button class="btn btn-danger" ng-click="::exService.confirmLesson(false)"><i class="fa fa-remove"></i> Zopakovat test</button>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="vyzva$exercise$lectorhelp.html">
+  <div class="alert help-panel help-warning" collapsablemanager="+exercisehelpteacher">
+    <div class="h4 help-header" ng-click="exercisehelpteacher.collapseToogle()">
+      <div class="more fa fa-question-circle"></div>
+      Ohodnocení Kontrolního testu
+    </div>
+    <div class="help-content" collapse="exercisehelpteacher.isCollapsed">
+      <div class="help-close" ng-click="exercisehelpteacher.collapseToogle()"><i class="fa fa-times"></i></div>
+      Postupujte následovně<br />
+      <ol>
+        <li>Ohodnoťte nahrávky <i>Studenta</i> v testu, pokud ovšem něco nahrál (na poslední stránce, označené v navigaci ikonou <i class="fa fa-question"></i>).</li>
+        <li>Na základě celkového skóre <i>Studenta</i> pak rozhodněte, zdali může ve výuce dále pokračovat nebo ne.</li>
+      </ol>
+      Poznámky:
+      <ul>
+        <li>pokud <i>Student</i> dosáhl skóre alespoň 65% v automaticky vyhodnotitelných cvičeních, bude mu umožněno pokračovat ve studiu do doby, než rozhodnete o dalším postupu.</li>
+        <li>pokud je z dosavadního skóre zřejmé, že <i>Student</i> test nesplnil, pak nemá význam hodnotit jeho nahrávky.</li>
+      </ul>
+      <div class="when-problem lm-top-margin" vyzva$common$whenproblem></div>
+    </div>
+  </div>
+</script>
+
+<!--***************** MODULE HEADER ITEM -->
+<script type="text/ng-template" id="vyzva$exercise$moduleheaderitem.html">
+  <div ng-repeat="it in ::modService.exercises" class="ex-item"
+       ng-class="{warning:it.background==1, success: it.background==2, danger: it.background==3, 'no-clickable': modService.exNoclickable, active: it.active}"
+       ng-style="{cursor: modService.exNoclickable ? 'default' : 'pointer'}"
+       ng-click="modService.exNoclickable ? null : modService.navigateExercise(it.idx)">
+    <span ng-if="it.content==1" class="fa fa-check"></span>
+    <span ng-if="it.content==2 || it.content==3">{{it.idx+1}}.</span>
+    <span ng-if="it.content==5" class="fa fa-question"></span>
+    <span ng-if="it.content==4" ng-style="it.percent | vyzva$exmodule$percentheight : 28" class="progress-red">{{it.percent}}%</span>
+    <span ng-if="it.content==4">{{it.percent}}%</span>
+  </div>
+</script>
+
+<!--***************** MOULE MORE PANEL -->
+<script type="text/ng-template" id="vyzva$exercise$modulemorepanel.html">
+  <div collapse="modulecollapsable.isCollapsed" class="container ">
+    <div class="more-body-module position-relative">
+      <div class="close-panel fa fa-times" ng-click="modulecollapsable.collapseToogle()"></div>
+      <h4>{{::modService.node.title}}, podrobné informace:</h4>
+      <div vyzva$common$summary user="modService.agregUser"></div>
+    </div>
+  </div>
+</script>
+
+<!--***************** INSTRUCTION -->
+<script type="text/ng-template" id="vyzva$exercise$instruction.html">
+  <!--{{modService.showInstruction}}-->
+  <div collapsablemanager="excollapsed" ng-if="modService.showResult()">
+    <div class="header h4" ng-click="excollapsed.collapseToogle()">
+      <div class="more fa fa-bars"></div>
+      <span class="fa fa-check"></span>
+      Cvičení "{{::ts.title}}" dokončeno: <span ng-if="exService.score()>=0"> skóre <span vyzva$exmodule$scoreprogress value="{{exService.score()}}"></span></span>
+    </div>
+    <div collapse="excollapsed.isCollapsed" class="more-body-exercise position-relative">
+      <div class="close-panel fa fa-times" ng-click="excollapsed.collapseToogle()"></div>
+      <div class="row">
+        <div class="col-sm-5">
+          <table class="table">
+            <tr>
+              <td>První interakce:</td>
+              <td><b>{{(exService.user.short.beg | vyzva$exmodule$sec) || '-'}}</b></td>
+            </tr>
+            <tr>
+              <td>Poslední interakce:</td>
+              <td><b>{{(exService.user.short.end | vyzva$exmodule$sec) || '-'}}</b></td>
+            </tr>
+            <tr>
+              <td>Strávený čas:</td>
+              <td><b>{{(exService.user.short.elapsed | vyzva$exmodule$time) || '-'}}</b></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div collapsablemanager="excollapsed" ng-if="!modService.showResult()">
+    <div ng-click="excollapsed.collapseToogle()" class="header h4">
+      {{::exService.instructionData.title}}
+      <!--<div class="keyboard fa fa-keyboard-o" ng-if="::exService.keyboardLine==2 || exService.keyboardLine==5"></div>-->
+      <div class="more fa fa-question-circle"></div>
+    </div>
+    <div collapse="excollapsed.isCollapsed" class="more-body-exercise position-relative">
+      <div class="close-panel fa fa-times" ng-click="excollapsed.collapseToogle()"></div>
+      <hr />
+      <div ng-bind-html="::exService.instructionData.body | rawhtml"></div>
+    </div>
+  </div>
+</script>
+
+<!--***************** MODAL DIALOGS -->
+<script type="text/ng-template" id="vyzva$exercise$congratulation.html">
+  <div class="modal-header">
+    <h3 class="modal-title">{{::ts.tbCongratulationTitle ? ts.tbCongratulationTitle : 'Gratulace'}}</h3>
+  </div>
+  <div class="modal-body">
+    {{::ts.tbCongratulation}}
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="button" lm-enter-key="::$close()" ng-click="::$close()">OK</button>
+  </div>
+</script>
+
+<script type="text/ng-template" id="vyzva$exercise$wrongscore.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Upozornění</h3>
+  </div>
+  <div class="modal-body">
+    Vaše odpověď není zcela správná. Opravdu chcete cvičení vyhodnotit?
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="button" lm-enter-key="::$close()" ng-click="::$close()">OK</button>
+    <button class="btn btn-default" type="button" ng-click="::$dismiss()">Cancel</button>
+  </div>
+</script>

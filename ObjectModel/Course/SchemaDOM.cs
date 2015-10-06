@@ -597,8 +597,10 @@ namespace CourseModel {
 
     static void postProcess_Evals(body pg, LoggerMemory sb) {
       pg.evalPage = new _evalPage();
-      //if (pg.isOldEa) { pg.evalPage.maxScore = pg.oldEaIsPassive ? 0 : 1; return; }
+      //AngularJS
       var allEvals = pg.scan().OfType<evalControl>().ToArray(); if (allEvals.Length == 0) return;
+      //var allEvals = pg.scan().OfType<evalControl>().Where (c => !(c is writing) && !(c is recording)).ToArray();
+      if (allEvals.Length == 0) return;
       foreach (var rd in allEvals.OfType<radioButton>().Where(rb => string.IsNullOrEmpty(rb.evalGroup))) rd.evalGroup = "and-_frb";
       //kontrola: jedna eval grupa = jeden evalBtn
       var wrongs = allEvals.Where(t => !string.IsNullOrEmpty(t.evalGroup) && !(t is evalButton)).GroupBy(e => e.evalGroup).Where(grp => grp.Select(t => t.evalButtonId).Distinct().Count() > 1).ToArray();
@@ -2043,3 +2045,4 @@ namespace CourseModel {
 
 
 }
+
