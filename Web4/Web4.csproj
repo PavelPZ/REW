@@ -1370,6 +1370,7 @@
     <TypeScriptCompile Include="AuthorWeb\js\marksInline.ts" />
     <TypeScriptCompile Include="AuthorWeb\js\metaMarks.ts" />
     <TypeScriptCompile Include="AuthorWeb\KnowHow\smartText\smartText.ts" />
+    <TypeScriptCompile Include="Author\author.ts" />
     <TypeScriptCompile Include="Author\xref.ts" />
     <TypeScriptCompile Include="Author\doc.ts" />
     <TypeScriptCompile Include="Author\GenerateReflection.ts" />

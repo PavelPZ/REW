@@ -54,12 +54,14 @@ namespace CourseModel {
         parts = regExItem.Parse(val, splitNumbers).Where(r => !r.IsMatch).Select(r => trimEx(r.Value)).ToArray();
       }
       return parts;
-    } static Regex splitNumbers = new Regex(@"\s*(\w|\d{1,2})\)\s+", RegexOptions.Singleline);
+    }
+    static Regex splitNumbers = new Regex(@"\s*(\w|\d{1,2})\)\s+", RegexOptions.Singleline);
 
     //*** split dle cr x lf. Difotne odstrani prazdne radky.
     public static string[] splitLines(string val, bool removeEmptyLines = true) {
       return splitCrLf.Split(val).Select(s => trimEx(s)).Where(l => removeEmptyLines ? !string.IsNullOrEmpty(l) : true).ToArray();
-    } static Regex splitCrLf = new Regex(@"\r\n|\n|\r");
+    }
+    static Regex splitCrLf = new Regex(@"\r\n|\n|\r");
 
     static IEnumerable<tag> replaceMacroSoftReturn(string str, LoggerMemory wr, inlineElementTypes type) {
       if (string.IsNullOrEmpty(str)) yield return new text() { title = str };
@@ -111,7 +113,8 @@ namespace CourseModel {
           default: throw new NotImplementedException();
         }
       }
-    } static Regex regExtractInlineControls = new Regex(@"{.*?}", RegexOptions.Singleline); //parse stringu na {} avorky
+    }
+    static Regex regExtractInlineControls = new Regex(@"{.*?}", RegexOptions.Singleline); //parse stringu na {} avorky
   }
 
   //k vyhozeni
@@ -177,12 +180,14 @@ namespace CourseModel {
         parts = regExItem.Parse(val, splitNumbers).Where(r => !r.IsMatch).Select(r => trimEx(r.Value)).ToArray();
       }
       return parts;
-    } static Regex splitNumbers = new Regex(@"\s*(\w|\d{1,2})\)\s+", RegexOptions.Singleline);
+    }
+    static Regex splitNumbers = new Regex(@"\s*(\w|\d{1,2})\)\s+", RegexOptions.Singleline);
 
     //*** split dle cr x lf. Difotne odstrani prazdne radky.
     public static string[] splitLines(string val, bool removeEmptyLines = true) {
       return splitCrLf.Split(val).Select(s => trimEx(s)).Where(l => removeEmptyLines ? !string.IsNullOrEmpty(l) : true).ToArray();
-    } static Regex splitCrLf = new Regex(@"\r\n|\n|\r");
+    }
+    static Regex splitCrLf = new Regex(@"\r\n|\n|\r");
 
     static IEnumerable<tag> replaceMacroSoftReturn(string str, LoggerMemory wr, inlineControlTypes type) {
       if (string.IsNullOrEmpty(str)) yield return new text() { title = str };
@@ -198,7 +203,7 @@ namespace CourseModel {
     static IEnumerable<tag> replaceInlineControl(string str, LoggerMemory wr, inlineControlTypes type) {
       if (string.IsNullOrEmpty(str)) yield break;
       foreach (var ri in regExItem.Parse(str, regExtractInlineControls)) {
-        if (!ri.IsMatch) { yield return new text() { title = ri.Value }; continue; } //not match => text
+        if (!ri.IsMatch) { foreach (var tg in formatedText(ri.Value)) yield return tg; continue; } //not match => text
         inlineField fld = new inlineField(ri.Value.Substring(1, ri.Value.Length - 2), type, s => splitEx(s, type == inlineControlTypes.WordSelection));
         //Func<IEnumerable<string>, string> agr = lst => fld.Values.DefaultIfEmpty().Aggregate((r, i) => r + "|" + i);
         switch (type) {
@@ -215,7 +220,21 @@ namespace CourseModel {
           default: throw new NotImplementedException();
         }
       }
-    } static Regex regExtractInlineControls = new Regex(@"{.*?}", RegexOptions.Singleline); //parse stringu na {} zavorky
+    }
+    static Regex regExtractInlineControls = new Regex(@"{.*?}", RegexOptions.Singleline); //parse stringu na {} zavorky
+
+    public static IEnumerable<tag> formatedText(string txt) {
+      //empty string or not HTML string
+      if (string.IsNullOrEmpty(txt)) { yield return new text() { title = txt }; yield break; }
+      var isOpen = false; var isHtml = false;
+      foreach (var ch in txt) { if (ch == '<' && !isOpen) isOpen = true; else if (ch == '>' && isOpen) { isHtml = true; break; } }
+      if (!isHtml) { yield return new text() { title = txt }; yield break; }
+      //html string:
+      XElement xml = XElement.Parse("<div>" + txt + "</div>");
+      //try { xml = XElement.Parse("<div>" + txt + "</div>"); } catch { xml = null; }
+      if (xml == null) { yield return new text() { title = txt }; yield break; }
+      foreach (var tg in CourseModel.tag.FromElementNoCopy(xml).Items) yield return tg;
+    }
 
   }
 
@@ -291,7 +310,7 @@ namespace CourseModel {
       //Props = match.Groups["id"].Captures.Cast<Capture>().Zip(match.Groups["value"].Captures.Cast<Capture>(), (i, v) => new prop() { Name = i.Value, Value = v.Value }).ToArray();
       var vals = match.Groups["value"].Captures.OfType<Capture>().ToArray();
       Values = vals.Length == 1 ? vals[0].Value.Split('|') : null;// match.Groups["value"].Captures.OfType<Capture>().Select(c => c.Value).SingleOrDefault().Split('|');
-      //Values = nameStr != null || Props.Length > 0 ? parts.Skip(1).ToArray() : parts;
+                                                                  //Values = nameStr != null || Props.Length > 0 ? parts.Skip(1).ToArray() : parts;
       Name = nameStr == null ? type : LowUtils.EnumParse<inlineElementTypes>(nameStr);
     }
     public string Text;
@@ -626,7 +645,7 @@ namespace CourseModel {
           if (radios.Any(r => r.skipEvaluation)) { isReadOnlyEtc = true; foreach (var r in radios) r.skipEvaluation = true; }
           if (radios.Any(r => r.readOnly)) { isReadOnlyEtc = true; foreach (var r in radios) { r.readOnly = true; r.skipEvaluation = false; } }//readonly ma prednost
           if (!isReadOnlyEtc && radios.Where(r => r.correctValue).Count() != 1) sb.ErrorLineFmt(pg.url, "Just one radio-button with correct-value==true required (id={0})", ev.id);
-          
+
           //foreach (var r in radios) r.group = groupId;
           if (ctrls.Length > 0) {
             if (pg.evalPage.radioGroupsObj == null) pg.evalPage.radioGroupsObj = new Dictionary<string, string[]>();
@@ -943,11 +962,11 @@ namespace CourseModel {
 
     public void checkAndAdjustUrls(body pg, LoggerMemory sb, bool isCutFile) {
       mediaTag mt = this as mediaTag; _sndFile sf = this as _sndFile;
-      var notEmpties = new bool[] { 
+      var notEmpties = new bool[] {
         mediaUrl != null, 
         //audioUrl != null, 
-        (mt != null ? mt.cutUrl : null) != null, 
-        (mt != null ? mt.shareMediaId : null) != null, 
+        (mt != null ? mt.cutUrl : null) != null,
+        (mt != null ? mt.shareMediaId : null) != null,
         (mt != null ? mt.file != null : sf.file!=null) }.
         Select(t => t ? 1 : 0).Sum();
       var cutMsg = mt != null ? ", cut-url, share-id" : null;
@@ -983,7 +1002,7 @@ namespace CourseModel {
     }
 
 
-    public static Dictionary<string, string> lmFormats = new Dictionary<string, string>() { 
+    public static Dictionary<string, string> lmFormats = new Dictionary<string, string>() {
       { "std-4","16by9:*-webm,mp4|640-small.webm,small.mp4"},
       { "std-2","16by9:*-webm,mp4"}
     };
@@ -1078,7 +1097,7 @@ namespace CourseModel {
         var dlgIcons = repls.Where(r => string.IsNullOrEmpty(r.actor)).Select(r => r.iconId).Distinct().ToArray(); //all dlg icons
         var usedIcons = new HashSet<IconIds>(); //used dlg icons
         var overFlowIdx = 0; //v pripade vice nez 6 aktoru na dialog - ikony se opakuji
-        //prirad icony actorum, prednost ma globalni prirazeni
+                             //prirad icony actorum, prednost ma globalni prirazeni
         var actorMap = new Dictionary<string, IconIds>();
         foreach (var act in dlgActors) {
           var ic = allActorsMap[act];
@@ -1167,7 +1186,8 @@ namespace CourseModel {
 
     public XElement ToElement() {
       XElement el;
-      using (var ms = new MemoryStream()) using (var wr = XmlWriter.Create(ms, new XmlWriterSettings { Indent = false })) {
+      using (var ms = new MemoryStream())
+      using (var wr = XmlWriter.Create(ms, new XmlWriterSettings { Indent = false })) {
         var ser = new XmlSerializer(this.GetType());
         ser.Serialize(wr, this);
         //XmlUtils.ObjectToStream(this, ms);
@@ -1242,7 +1262,7 @@ namespace CourseModel {
     static Regex blanks = new Regex(@"^(?<lblanks>(\s|`)*)(?<cont>.*?)(?<rblanks>(\s|`)*)$");
 
     static bool isInline(XElement el) { return inlines.Contains(el.Name.LocalName) || (el.Name.LocalName == "html-tag" && inlines.Contains(el.AttributeValue("tag-name"))); }
-    static HashSet<string> inlines = new HashSet<string>() { 
+    static HashSet<string> inlines = new HashSet<string>() {
       "drag-target", "gap-fill", "smart-element", "smart-tag", "word-selection", 
       //https://developer.mozilla.org/en-US/docs/Web/HTML/Inline_elemente
       "b", "big", "i", "small", "tt", "abbr", "acronym", "cite", "code", "dfn", "em", "kbd", "strong", "samp", "var", "u", "s",
@@ -1583,7 +1603,7 @@ namespace CourseModel {
       if (mode != offeringDropDownMode.gapFillIgnore) {
         var allEdits = pg.scan().OfType<edit>().ToArray();
         edit[] myEdits = allEdits.Where(e => e.offeringId == id).ToArray(); //my gapfills nebo dropdowns
-        //hack pro nejjednodussi cviceni, obsahujici pouze jedno offering - vsechny dropDowns a gapfill dej pod offering
+                                                                            //hack pro nejjednodussi cviceni, obsahujici pouze jedno offering - vsechny dropDowns a gapfill dej pod offering
         if (myEdits.Length == 0) {
           foreach (var ed in allEdits.Where(e => string.IsNullOrEmpty(e.offeringId))) ed.offeringId = id;
           myEdits = allEdits.Where(e => e.offeringId == id).ToArray(); //my gapfills nebo dropdowns
@@ -1593,7 +1613,7 @@ namespace CourseModel {
         //mix?
         var gapFills = myEdits.OfType<gapFill>().Count();
         if (gapFills > 0 && gapFills != myEdits.Length) { wr.ErrorLine(pg.url, " gap-fill x drop-down mix for offering.id=" + id); return; } //mix => error
-        //dropdown check
+                                                                                                                                             //dropdown check
         if (myEdits.OfType<dropDown>().Any()) {
           if (mode == offeringDropDownMode.dropDownKeep) foreach (var dd in myEdits.Cast<dropDown>()) dd.gapFillLike = true;
           else {

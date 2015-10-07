@@ -12,6 +12,7 @@ using System.Xml.Linq;
 using LMComLib;
 using System.Text;
 using LMNetLib;
+using Author;
 
 namespace blended {
 
@@ -112,12 +113,12 @@ namespace blended {
     [Route("writeUs"), HttpPost]
     public void writeUs([FromBody]string jsonData) {
       var res = JsonConvert.DeserializeObject<IWriteUs>(jsonData);
-      Emailer em = new Emailer();
       StringBuilder sb = new StringBuilder();
       sb.AppendLine("Od: " + res.userFirstName + " " + res.userLastName);
       sb.AppendLine(res.text); sb.AppendLine(); sb.AppendLine();
       res.text = null;
       sb.AppendLine(JsonConvert.SerializeObject(res));
+      Emailer em = new Emailer();
       em.PlainText = sb.ToString();
       //em.AddTo("pzika@langmaster.cz");
       em.AddTo("support@langmaster.cz");
@@ -134,6 +135,16 @@ namespace blended {
       public string userFirstName;
       public string userLastName;
       public string userJson;
+    }
+
+    //*************** AUTHOR
+    //cviceni a instrukce, zakodovane do <url>|<jsonml>###...
+    [Route("authorGetExJsonML"), HttpGet]
+    public string authorGetExJsonML(string url) {
+      var log = new LoggerMemory(true) { isVsNet = true };
+      var pages = vsNetServer.buildExFiles(url, log).ToArray();
+      if (log.hasError) throw new Exception(log.Log());
+      return CourseMeta.buildLib.getBlendedScript(pages);
     }
 
     //*************** vytvoreni demo company
@@ -205,7 +216,6 @@ namespace blended {
       db.CourseDatas.RemoveRange(db.CourseDatas.Where(cd => cd.CourseUser.CompanyId == companyid && cd.CourseUser.LMComId == lmcomId && cd.CourseUser.ProductUrl == productUrl && cd.TaskId == taskId));
       blendedData.Lib.SaveChanges(db);
     }
-
 
     //public class IResetData {
     //  public string url;

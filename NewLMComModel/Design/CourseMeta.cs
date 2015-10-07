@@ -149,6 +149,16 @@ namespace CourseMeta {
     public static string getServerScript(string url, string content) {
       return "<script type=\"text/inpagefiles\" data-id=\"" + url + "\">" + content + "</script>";
     }
+    public static string getBlendedScript(IEnumerable<Packager.Consts.file> files) {
+      StringBuilder sb = new StringBuilder();
+      foreach (var file in files.Where(f => f != null).Distinct(constsFileComparer)) {
+        var data = file.srcData; if (data == null || !file.name.EndsWith(".js")) continue; //preskoc vse, mimo vytvorenych souboru (.js)
+        var url = "/" + file.destDir.Replace('\\', '/') + "/" + file.name.Replace(".js",null);
+        var js = Encoding.UTF8.GetString(file.srcData);
+        sb.Append(url); sb.Append("|"); sb.Append(js); sb.Append("###");
+      }
+      return sb.ToString();
+    }
     public static StringBuilder getServerScript(IEnumerable<Packager.Consts.file> files) {
       StringBuilder sb = new StringBuilder();
       foreach (var file in files.Where(f => f != null).Distinct(constsFileComparer)) {

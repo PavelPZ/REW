@@ -21,6 +21,7 @@
   <a href=" logins.html">logins</a><br /><br />
   <a href="http://test.langmaster.com/alpha/links.html">FE5 links</a><br /><br />
   <a runat="server" href="~/author/author.aspx">Author</a><br />
+  <a runat="server" href="~/author/author.html#/authorex/!lm!examples!temp_pj!macros!table_no">Author NEW</a><br />
   <a href="http://test.langmaster.com/alpha/author/author.aspx">Author FE5</a><br /><br />
   <a href="http://elearning.odbornanemcina.cz/schools/index_cs_cz.html?lang=cs-cz&a1y=b2c">Grafia FE3</a><br /><br />
   <a runat="server" href="~/Schools/Statistics.aspx">Local Statistics</a><br /><br />

@@ -177,6 +177,9 @@ module proxies {
     static writeUs(jsondata: string, completed: () => void): void {
 		  invoke('vyzva57services/writeus', 'post', null, JSON.stringify(jsondata), completed);
 	  } 
+    static authorGetExJsonML(url: string, completed: (res: string) => void): void {
+		  invoke('vyzva57services/authorgetexjsonml', 'get', { url: url }, null, completed);
+	  } 
     static createEmptyCompany(companytitle: string, completed: (res: {  licId: number;  licCounter: number;  }) => void): void {
 		  invoke('vyzva57services/createemptycompany', 'get', { companytitle: companytitle }, null, completed);
 	  } 

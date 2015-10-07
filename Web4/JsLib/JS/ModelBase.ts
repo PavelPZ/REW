@@ -206,7 +206,7 @@ module Pager {
   }
 
   export function renderTemplate(templateId: string) {
-    var root = $('#root');
+    var root = $('#root'); if (!root.length) return;
     if (templateId == 'Dummy') {
       ko.cleanNode(root[0]);
       clearNode(); root.html('');
