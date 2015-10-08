@@ -1,4 +1,4 @@
-!schoolMy
+﻿!schoolMy
 ###
 <div data-bind="with: Pager.ActPage, delegatedHandler: ['click'], test:'my'" class="app-school rtl">
   {{for #data tmpl=~T('TTopBarNew')/}}
@@ -23,6 +23,13 @@
     </div>
     {{if licKeyMsg()}}
     <div class="alert alert-info" style="margin: 15px 0;">{{:licKeyMsg()}}</div>
+    {{/if}}
+    {{if isBlended() && tb.logoutAndProfile}}
+    <div class="alert alert-warning">
+      <h2 style="margin-top:0;">{{:~userName()}}, vítejte</h2>
+      Nejste to vy? V tom případě se někdo zapomněl odhlásit. Přejděte na jednu ze stránek <a href="">Facebook</a>, <a href="">Google</a> nebo <a href="">Microsoft</a> a proveďte odhlášení. 
+      Následně aktualizujte tuto stránku (tlačítkem F5) a přihlašte se pod vaším účtem.
+    </div>
     {{/if}}
     {{for companies}}
     <div class="panel panel-{{if data.PublisherOwnerUserId==~Cookie().id}}danger{{else}}default{{/if}}" data-bind="with: companies[{{:#index}}], test:'comp-{{:#index}}'">

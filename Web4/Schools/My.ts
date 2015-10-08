@@ -190,6 +190,11 @@ module schoolMy {
       }
     }
 
+    isBlended(): boolean {
+      var lh = location.hostname.toLowerCase();
+      return lh.indexOf('blended') >= 0 || lh.indexOf('localhost') >= 0;
+    }
+
     companies: Company[];
   }
 

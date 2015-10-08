@@ -461,16 +461,16 @@ namespace CubesDeployment {
                   File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
 
                   //*************** Skrivanek
-                  //webBatchId = "skrivanek_software";
-                  //Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
-                  //  actBatchVersion = Packager.batchVersion.release,
-                  //  version = schools.versions.debug,
-                  //  //version = schools.versions.minified,
-                  //  persistType = schools.persistTypes.persistNewEA,
-                  //  testGroup_debug = false,
-                  //});
-                  //zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; if (File.Exists(zipFn)) File.Delete(zipFn);
-                  //File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
+                  webBatchId = "skrivanek_software";
+                  Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
+                    actBatchVersion = Packager.batchVersion.release,
+                    version = schools.versions.debug,
+                    //version = schools.versions.minified,
+                    persistType = schools.persistTypes.persistNewEA,
+                    testGroup_debug = false,
+                  });
+                  zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; if (File.Exists(zipFn)) File.Delete(zipFn);
+                  File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
 
                   //*************** FE3
                   //webBatchId = "LM_Software";

@@ -121,9 +121,10 @@ namespace blended {
       Emailer em = new Emailer();
       em.PlainText = sb.ToString();
       //em.AddTo("pzika@langmaster.cz");
+      //em.From = "pzika@langmaster.com";
       em.AddTo("support@langmaster.cz");
-      em.Subject = "LANGMaster technická podpora";
       em.From = res.userEmail;
+      em.Subject = "LANGMaster technická podpora";
       em.SendMail();
     }
     //D:\LMCom\REW\Web4\BlendedAPI\vyzva\Scripts\Lib.ts
@@ -135,6 +136,7 @@ namespace blended {
       public string userFirstName;
       public string userLastName;
       public string userJson;
+      public string groupJson;
     }
 
     //*************** AUTHOR
