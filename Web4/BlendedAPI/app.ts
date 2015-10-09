@@ -12,9 +12,6 @@
     href(stateName: string, params?: Object, options?: angular.ui.IHrefOptions): string {
       return this.$oldActState.href(stateName, params)
     }
-    //go(stateName: string, params?: Object, options?: angular.ui.IHrefOptions): string {
-    //  return this.$actState.go(stateName, params)
-    //}
 
   }
 

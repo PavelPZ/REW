@@ -770,7 +770,9 @@ namespace CourseMeta {
             it.needs = isStd ? testNeeds.playing : testNeeds.recording;
           }
           //questionnaire
+          int moduleCount; lock (typeof(ptr)) moduleCount = questionnaireCount++;
           data quests = root.find("/skrivanek/questionnaire/", log).clone();
+          quests.url += moduleCount.ToString() + "/"; //kvuli lokalizaci musi byt URL modulu jednoznacne
           quests.line = src.getLine();
           quests.type |= runtimeType.multiQuestionnaire;
           var url = (res2.url.Replace("/skrivanek/", "/skrivanek/questionnaire/").TrimEnd('/') + (isStd ? "std" : null)).ToLower();
@@ -784,6 +786,7 @@ namespace CourseMeta {
           break;
       }
     }
+    static int questionnaireCount = 0;
     public override data clone() { return cloneLow<ptr>(p => { p.modify = modify; p.isGramm = isGramm; p.pattern = pattern; p.takeChilds = takeChilds; p.skip = skip; p.take = take; p.urls = urls == null ? null : urls.ToArray(); }); }
 
   }

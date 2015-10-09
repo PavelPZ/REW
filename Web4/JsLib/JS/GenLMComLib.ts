@@ -9,7 +9,7 @@ export enum CookieIds {
   oauth = 6,
   loginEMail = 7,
   loginLogin = 8,
-  LMJSTicket = 9,  
+  LMJSTicket = 9,
 }
 
 export enum CompRole {

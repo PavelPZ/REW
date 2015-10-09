@@ -149,12 +149,444 @@
   <script type='text/javascript' src='../blendedapi/vyzva/views/vyzvademo.js'></script>
   <script type='text/javascript' src='../blendedapi/vyzva/views/vyzvaprovoz.js'></script>
   <script type='text/javascript' src='../blendedapi/vyzva/views/lector/_tabs.js'></script>
+  <script type='text/javascript' src='../author/author.js'></script>
   <script type='text/javascript' src='../blendedapi/vyzva/app.js'></script>
   <script type='text/javascript' src='../blendedapi/app.js'></script>
+
   <script type='text/javascript' src='../schools/loc/tradosdata.en-gb.js'></script>
   <script type='text/javascript' src='../jslib/scripts/cultures/globalize.culture.en-gb.js'></script>
 </head>
 <body>
+  <div ng-app="appRoot" class="bl"><div data-ui-view></div></div>
 
+  <script id="c_gen" type="text/x-jsrender">
+    {{include tmpl=~cT(#data)/}}
+  </script>
+  <script id="c_genitems" type="text/x-jsrender">
+    {{for Items}}{{include tmpl=~cT(#data)/}}{{/for}}
+  </script>
+  <script id="c_genitemsex" type="text/x-jsrender">
+    {{for Items}}<!-- ko with: Items[{{:#index}}] -->{{include tmpl=~T("c_gen")/}}<!-- /ko -->{{/for}}
+  </script>
+  <script id="c_tag" type="text/x-jsrender">
+    {{:~c_tagstart(#data)}}{{include tmpl=~T("c_genitems")/}}{{:~c_tagend(#data)}}
+  </script>
+  <script id="c_body" type="text/x-jsrender">
+    <div class="{{:~classes(#data)}}" data-bind="with: CourseMeta.actExPageControl">
+      {{include tmpl=~T("c_genitems")/}}
+    </div>
+  </script>
+  <script id="c_blended_body" type="text/x-jsrender">
+    <div class="{{:~classes(#data)}}">
+      {{include tmpl=~T("c_genitems")/}}
+    </div>
+  </script>
+  <script id="c_textnew" type="text/x-jsrender">
+    {{:~c_unescape(#data)}}
+  </script>
+  <script id="c_evalbutton" type="text/x-jsrender">
+    <!-- ko with: getItem('{{:id}}') -->
+    <div class="btn btn-success oli-cancel-stop-sound {{:~classes(#data)}}" data-bind="click:click, css:st" {{:srcPosition()}}>
+      <b class="example-txt">Evaluate</b>
+      <div class="fa"></div>
+      <div class="score" data-bind="text:scoreText"></div>
+    </div>
+    <!-- /ko -->
+  </script>
+  <script id="c_smartelement" type="text/x-jsrender">
+    {{include tmpl=~T("c_genitems")/}}
+
+  </script>
+  <script id="c_extension" type="text/x-jsrender">
+    <!-- ko with: getItem('{{:id}}').myExtension -->{{for myExtension}}{{include tmpl=~T(getTemplateId())/}}{{/for}}<!-- /ko -->
+  </script>
+  <script id="dummyextension" type="text/x-jsrender">
+    <!--dummy-->
+  </script>
+  <script id="c_gapfill" type="text/x-jsrender">
+    <!-- ko with: getItem('{{:id}}') -->
+    <div class="oli-edit {{:~classes(#data)}} oli-cancel-stop-sound" data-bind="css:st" id="{{:id}}" {{:srcPosition()}}>
+      <input class="user-input form-control gap-fill-ctrl" type="text" placeholder="{{>hint}}" data-bind="value: user, valueUpdate: 'afterkeydown', clickBubble: false, click: $.noop" />
+      <div class="teacher" data-bind="html: teacher"></div>
+      <div class="user-res" data-bind="html: user"></div>
+    </div>
+    <!-- /ko -->
+  </script>
+  <script id="c_offering" type="text/x-jsrender">
+    <!-- ko with: getItem('{{:id}}') -->
+    <div class="{{:~classes(#data)}} {{if passive}}passive{{/if}}" id="{{:id}}" {{:srcPosition()}}>
+      {{for wordItems}}
+      <!-- ko with: wordItems[{{:#index}}] -->
+      <span data-bind="css: st"><i class="fa fa-check"></i>{{:title()}}</span>
+      <!-- /ko -->
+      {{/for}}
+    </div>
+    <div class="dropdown-menu oli-drag-popup  oli-cancel-stop-sound {{if passive}}passive{{/if}}" data-role="menu" id="menu{{:id}}">
+      {{for wordItems}}
+      <!-- ko with: wordItems[{{:#index}}] -->
+      <button class="btn btn-primary" data-bind="css: st, click: click"><i class="fa fa-check"></i>ec&nbsp;<span>{{:title()}}</span></button>
+      <!-- /ko -->
+      {{/for}}
+    </div>
+    <!-- /ko -->
+  </script>
+  <script id="c_dropdown" type="text/x-jsrender">
+    <!-- ko with: getItem('{{:id}}') -->
+    <div class="oli-edit {{:~classes(#data)}} oli-cancel-stop-sound" data-bind="css: st" id="{{:id}}" {{:srcPosition()}}>
+      <div class="user-input oli-drag-btn" data-bind="click: click" data-toggle="menu" data-target="#menu{{:source.id}}">
+        <div class="pull-right"><i class="fa fa-chevron-down"></i></div><div data-bind="html: userText, click: click"></div>
+      </div>
+      <div class="teacher" data-bind="html: teacher"></div>
+      <div class="user-res" data-bind="html: userText"></div>
+    </div>
+    <!-- /ko -->
+  </script>
+  <script id="c_pairing" type="text/x-jsrender">
+    <!-- ko with: getItem('{{:id}}') -->
+    <div class="{{:~classes(#data)}} oli-cancel-stop-sound {{:leftWidthCls()}}" data-bind="css: { 'left-selected': leftSelected, 'noleft-selected': !leftSelected(), normal: !done(), evaluated: done }" {{:srcPosition()}}>
+      <table>
+        <tr class="help">
+          <td>
+            <div class="help-left alert alert-info">
+              <i class="fa fa-arrow-down info"></i>&nbsp;{{:~CSLocalize('8ea9f179b07244ca9523580477681b08', 'Click on')}}<i class="fa fa-hand-o-right fa-border hand"></i>&nbsp;{{:~CSLocalize('64d35057f86a49b184cca73e5eaeebee', 'to select a left item')}}
+            </div>
+          </td>
+          <td>
+            <div class="middle">&nbsp;</div>
+          </td>
+          <td>
+            <div class="help-right alert alert-info">
+              <i class="fa fa-arrow-down info"></i>&nbsp;{{:~CSLocalize('ae36fa97f71d41519956897d24660aa7', 'Select the right item matching the selected left item')}}
+            </div>
+          </td>
+        </tr>
+        {{for actItems()}}
+        <!-- ko with: Items[{{:selfIdx}}] -->
+        <tr class="pairing-item" data-bind="css: { 'act_left': leftSelected, 'noact_left': !leftSelected() }">
+          <td class="left-cell">
+            <div class="left-cell-div">
+              <div class="sel-btn" data-bind="click:select_left"><i class="fa fa-hand-o-right fa-2x fa-border"></i></div>
+              <div class="left-content">
+                {{for Items}}{{include tmpl=~cT(#data)/}}{{/for}}
+              </div>
+            </div>
+          </td>
+          <td class="middle" data-bind="css: { 'join-line': ok, 'not-join-line': !ok() }">
+            <div class="content">
+              <div class="left-end fa fa-circle-o"></div>
+              <div class="line"></div>
+              <div class="right-end fa fa-circle-o"></div>
+            </div>
+          </td>
+          <td class="right-cell" data-bind="click:select_right">
+            <div class="oli-edit right-pair" data-bind="css: st">
+              <div class="user-input" data-bind="html: userText"></div>
+              <div class="teacher" data-bind="html: teacherTxt"></div>
+              <div class="user-res" data-bind="html: userText"></div>
+            </div>
+          </td>
+        </tr>
+        <!-- /ko -->
+        {{/for}}
+      </table>
+    </div>
+    <!-- /ko -->
+  </script>
+  <script id="c_wordordering" type="text/x-jsrender">
+    <!-- ko with: getItem('{{:id}}') -->
+    <div id="ordering-{{:id}}" class="{{:~classes(#data)}} oli-cancel-stop-sound oli-ordering" data-bind="css: {evaluated:evaluated}">
+      <div class="edit-block">
+        <div class="dest-block">
+        </div>
+        <div class="src-block">
+          {{for randomItems}}<!-- ko with: randomItems[{{:#index}}] --><div class="item" data-bind="click:click, clickBubble: false"><i class="fa fa-chevron-left icon-left"></i> {{:~c_unescape(text)}} <i class="fa fa-chevron-right icon-right"></i></div><!-- /ko -->{{/for}}
+        </div>
+      </div>
+      <div class="eval-block" data-bind="css: evalStatus">
+        <div class="teacher" data-bind="html: teacher"></div>
+        <div class="user-res" data-bind="html: user"></div>
+      </div>
+    </div>
+    <!-- /ko -->
+  </script>
+  <script id="c_sentenceordering" type="text/x-jsrender">
+    <!-- ko with: getItem('{{:id}}') -->
+    <div id="ordering-{{:id}}" class="{{:~classes(#data)}} oli-cancel-stop-sound oli-ordering" data-bind="css: {evaluated:evaluated}">
+      <div class="dest-block">
+      </div>
+      <div class="src-block">
+        {{for randomItems}}
+        <div data-bind="with:randomItems[{{:#index}}]">
+          <div class="item" data-bind="click:click, clickBubble: false">
+            <i class="fa fa-chevron-up icon-left"></i>
+            <i class="fa fa-chevron-down icon-right"></i>
+            {{:~c_unescape(text)}}
+          </div>
+          <div class="eval-block" data-bind="css: evalStatus">
+            <div class="teacher" data-bind="html: teacher"></div>
+            <div class="user-res" data-bind="html: text"></div>
+          </div>
+        </div>
+        {{/for}}
+      </div>
+    </div>
+    <!-- /ko -->
+  </script>
+  <script id="c_radiobutton" type="text/x-jsrender">
+    <div class="clearfix {{:~classes(#data)}}" {{:srcPosition()}}>
+      <!-- ko with: getItem('{{:id}}') -->
+      <div class="oli-cancel-stop-sound ctrl" data-bind="css: { selected: selected, noselected: !selected(), normal: !done(), evaluated: done }">
+        <div class="left-normal" data-bind="click:click">
+          <i class="fa fa-2x fa-border fa-circle-o"></i>
+        </div>
+        <div class="left-eval" data-bind="css: myCss">
+          <span class="no-strike-part fa fa-2x fa-border fa-circle-o" />
+          <span class="strike-part fa fa-2x fa-border fa-circle-o" />
+        </div>
+      </div>
+      <!-- /ko -->
+      <div class="oli-cancel-stop-sound content">
+        <div>
+          {{if !#data.Items}}&nbsp;{{else}}{{for #data tmpl=~T('c_genitems')/}}{{/if}}
+        </div>
+      </div>
+    </div>
+  </script>
+  <script id="c_wordselection" type="text/x-jsrender">
+    <!-- ko with: getItem('{{:id}}') -->
+    <div class="oli-wordselection oli-cancel-stop-sound" data-bind="delegatedHandler: ['click_item'], css: { normal: !done(), evaluated: done }" {{:srcPosition()}}>
+      {{for items}}
+      <!-- ko with: items[{{:#index}}] -->
+      <div class="item" data-bind="css: { selected: selected, noselected: !selected() }, click:click, clickBubble: false">
+        <div class="text" data-bind="css: myCss">{{:content}}</div>
+      </div>
+      <!-- /ko -->
+      {{/for}}
+    </div>
+    <!-- /ko -->
+  </script>
+  <script id="c_wordmultiselection" type="text/x-jsrender">
+    {{include tmpl=~T("c_wordselection")/}}
+  </script>
+  <script id="c__sndpage" type="text/x-jsrender">
+  </script>
+  <script id="c_mediatitle" type="text/x-jsrender">
+    <h3>mediatitle</h3>
+    {{include tmpl=~T("c_genitems")/}}
+  </script>
+  <script id="c_mediatext" type="text/x-jsrender">
+    <!-- ko with: getItem('{{:id}}') -->
+    {{if isOldToNew}}
+    {{include tmpl=~T("c_genitemsex")/}}
+    {{else}}
+    <div class="{{:~classes(#data)}} " data-bind="css: {loading: loading, 'is-passive': passive }">
+      {{include tmpl=~T("c_genitemsex")/}}
+    </div>
+    {{/if}}
+    <!-- /ko -->
+  </script>
+  <script id="c__mediasent" type="text/x-jsrender">
+    {{!--'is-hidden': myText().hidden je kvuli oldToNew--}}
+    <span class="oli-sent" data-bind="css: { active: active, passive: myText().passive, 'is-hidden': myText().hidden }, click:play, clickBubble:false">
+      {{if !myText().passive}}
+      <i class="actor fa"></i>
+      {{/if}}
+      {{include tmpl=~T("c_genitemsex")/}}
+    </span>
+  </script>
+  <script id="c__mediareplica" type="text/x-jsrender">
+    <div class="oli-replica {{:css()}}">
+      {{if actor}}<b>{{:actor}}</b>:{{/if}}
+      {{include tmpl=~T("c_genitemsex")/}}
+    </div>
+  </script>
+  <script id="c_mediabigmark" type="text/x-jsrender">
+    <!-- ko with: getItem('{{:id}}') -->
+    <span class="{{:~classes(#data)}}" data-bind="css: { loading: loading, active: active }"><i class="fa fa-volume-off" data-bind="css: { active: active }, click: play"></i></span>
+    <!-- /ko -->
+  </script>
+  <script id="c_mediavideo" type="text/x-jsrender">
+    <!-- ko with: getItem('{{:id}}') -->
+    <div id="{{:id}}" class="{{:~classes(#data)}} embed-responsive" data-bind="css2:ratioClass, css: { loading: loading }">
+      <div class="video-loading">
+        <i class="fa fa-spin fa-spinner"></i>
+      </div>
+    </div>
+    <!-- /ko -->
+  </script>
+  <script id="c_mediaplayer" type="text/x-jsrender">
+    <!-- ko with: getItem('{{:id}}') -->
+    <div class="{{:~classes(#data)}}" data-bind="css: {'notext-visible': !textVisible(), active: active, 'without-cut': withoutCut(), loading: loading}">
+      <div class="alert alert-warning">
+        {{if withoutCut()}}
+        <i class="fa fa-border fa-3x fa-fw fa-play play" data-bind="click: playStop, clickBubble: false"></i>
+        <i class="spinner fa fa-spin fa-spinner"></i>
+        <div class="slider-div">
+          <div id="{{:id}}-slider" class="slider"></div>
+        </div>
+        {{else}}
+        <div class="slider-div">
+          <div id="{{:id}}-slider" class="slider"></div>
+        </div>
+        <div class="buttons">
+          <div class="content">
+            <span class="fa fa-lg fa-eye-slash text-btn btn-icon" data-bind="click: toogleText, clickBubble: false"></span>
+            <i class="fa fa-backward fa-lg btn-icon" data-bind="click: prevSent, clickBubble: false"></i>
+            <i class="fa fa-border fa-3x fa-fw fa-play play" data-bind="click: playStop, clickBubble: false"></i>
+            <i class="fa fa-forward fa-lg btn-icon" data-bind="click: nextSent, clickBubble: false"></i>
+          </div>
+        </div>
+        <div class="text-area">
+          <div class="video-loading">
+            <i class="fa fa-spin fa-spinner"></i>
+          </div>
+          <span class="actor-text" data-bind="text: actor"></span>
+          <span class="speech-text" data-bind="text: speech"></span>
+        </div>
+        {{/if}}
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <!-- /ko -->
+  </script>
+  <script id="c_mediabar" type="text/x-jsrender">
+    <!-- ko with: getItem('{{:id}}') -->
+    <div id="{{:id}}" class="{{:~classes(#data)}}" data-bind="css: {loading: loading}">
+      <div class="buttons">
+        <div class="content">
+          <!--<i class="fa fa-border fa-3x fa-fw fa-play play" data-bind="click: playStop, clickBubble: false"></i>-->
+        </div>
+      </div>
+      <div class="slider-div">
+        <div id="{{:id}}-slider" class="slider"></div>
+      </div>
+    </div>
+    <!-- /ko -->
+  </script>
+  <script id="xc_ttssound" type="text/x-jsrender">
+    <!-- ko with: getItem('{{:id}}') -->
+    <div class="oli-dialog" {{:style()}}>
+      {{for Items tmpl=~T('c_gen')/}}
+    </div>
+    <!-- /ko -->
+  </script>
+  <script id="c_recording" type="text/x-jsrender">
+    <!-- ko with: getItem('{{:id}}') -->
+    <div class="oli-audio-capture" data-bind="css: {'human-eval-mode' : isRecorded() && isDone(), 'is-recorded': isRecorded, 'oli-hide-progress-bar': !recording(), recording: recording, playing: playing }" id="{{:id}}">
+      <!--<div data-bind="angularjs: 'course$audiocapture$humaneval'"></div>-->
+      {{if !recordInDialog || isHumanEvalMode()}}
+      {{if isHumanEvalMode()}}
+      <div class="alert alert-default lector">
+        <form id="form-{{:id}}" class="human-form form-inline has-error">
+          <div data-bind="visible: !_myPage.blendedExtension">
+            <div data-bind="visible:humanLevel">{{:~CSLocalize('99eed25487184fe195aa42fa3b390d4f', 'Test level')}}: <b><span data-bind="text:humanLevel"></span></b></div>
+            <div data-bind="visible:humanHelpTxt">{{:~CSLocalize('5598d88071e7473c81f51a42a5f689eb', 'Recorded (recommended / actual):')}} <b><span data-bind="text:humanHelpTxt"></span></b></div>
+          </div>
+          <div class="input-group">
+            <span class="input-group-addon">Hodnocení:</span>
+            <input type="text" class="form-control" id="human-ed-{{:id}}" name="human-ed-{{:id}}" placeholder="0-100" data-bind="textInput:human" />
+            <!--<span class="input-group-addon">0-100</span>-->
+          </div>
+        </form>
+      </div>
+      {{/if}}
+      <div class="ff-content-progress">
+        <div class="content-inner">
+          <div class="oli-progress-bar">
+            <div class="left" data-bind="style: {width:progressBarFrom() + '%'}"></div>
+            <div class="bar" data-bind="style: {width:progressBarValue() + '%'}"></div>
+            <div class="text" data-bind="text:progressText"></div>
+          </div>
+          <div class="play btn btn-large btn-default pull-left" data-bind="click: play, clickBubble:false">
+            <span class="fa fa-spinner fa-spin"></span>
+            <span class="fa fa-2x fa-play"></span>
+          </div>
+          <div class="empty">
+            &nbsp;
+          </div>
+        </div>
+      </div>
+      <div class="ff-left-progress">
+        <div class="recorded-icon pull-left">
+          <i class="fa fa-check"></i>
+        </div>
+        <div class="record btn btn-large btn-default pull-left" data-bind="click: record, clickBubble:false, css: {disabled: allDisabled() || isDone() || (singleAttempt && isRecorded())}">
+          <span class="fa fa-spinner fa-spin"></span>
+          <span class="fa fa-2x fa-circle"></span>
+          <span class="fa fa-2x fa-stop"></span>
+        </div>
+      </div>
+      {{else}}
+      <div>
+        <div class="recorded-icon pull-left">
+          <i class="fa fa-check"></i>
+        </div>
+        <div class="record btn btn-large btn-default pull-left" data-bind="click: record, clickBubble:false, css: {disabled: isDone() || (singleAttempt && isRecorded())}">
+          <span class="fa fa-2x fa-circle"></span>
+          <span class="fa fa-2x fa-stop"></span>
+        </div>
+        <div class="play btn btn-large btn-default pull-left" data-bind="click: play, clickBubble:false">
+          <span class="fa fa-spinner fa-spin"></span>
+          <span class="fa fa-2x fa-play"></span>
+        </div>
+      </div>
+      {{/if}}
+    </div>
+    <div class="clearfix"></div>
+    {{if recordInDialog}}
+    <div id="modal-{{:id}}" class="modal fade oli-audio-capture recording" role="dialog" data-bind="click: $.noop, clickBubble:false" data-backdrop="static" data-show="false">
+      <div class="modal-dialog {{:modalDialogSizeCss()}} ">
+        <div class="modal-content">
+          <div class="modal-header">
+          </div>
+          <div class="modal-body">
+            <div class="oli-progress-bar">
+              <div class="left" data-bind="style: {width:progressBarFrom() + '%'}"></div>
+              <div class="bar" data-bind="style: {width:progressBarValue() + '%'}"></div>
+              <div class="text" data-bind="text:progressText"></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="pull-left test-notify" data-bind="visible: testMe && testMe.notify && testMe.notify.active">
+              <!--todo - nešlo by následující section remaining time dát do jednoho překladového řetězce?-->
+              {{:~CSLocalize('d52e817f6ba641e8942e4f002e92cbba', 'Time for this')}}
+              <br />
+              {{:~CSLocalize('0678a00299d94c5687550cf14a6de9a6', 'section:')}}<b><span data-bind="text: testMe.notify.progressText"></span></b>
+            </div>
+            <button type="button" class="btn btn-success" data-bind="click: stopRecording, css: { disabled: saveRecordingDisabled }">{{:~CSLocalize('28f5255b167040b1a3eeaffb75868b00', 'Finish and save recording')}}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{:~CSLocalize('80a6c3eec76f4d49a4964fda77142f7f', 'Cancel recording')}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/if}}
+    <!-- /ko -->
+  </script>
+  <script id="c_writing" type="text/x-jsrender">
+    <!-- ko with: getItem('{{:id}}') -->
+    <div class="oli-writing" id="{{:id}}" data-bind="css: {'human-eval-mode' : isDone()}">
+      <div class=" oli-progress-bar" data-bind="css: {exceeded:progressBarLimetExceeded}, visible:!isDone()">
+        <div class="left" data-bind="style: {width:progressBarFrom() + '%'}"></div>
+        <div class="bar" data-bind="style: {width:progressBarValue() + '%'}"></div>
+        <div class="text" data-bind="text:progressText"></div>
+      </div>
+      {{if isHumanEvalMode()}}
+      <div>
+        {{:~CSLocalize('970fc05ef14441cb8fa9189c6df41c5d', 'Test level')}}: <b><span data-bind="text:humanLevel"></span></b><br />
+        {{:~CSLocalize('2edc33573a70474bbb6214ebb672dacf', 'Number of written words (recommended / actual):')}} <b><span data-bind="text:humanHelpTxt"></span></b>
+      </div>
+      <form id="form-{{:id}}" class="human-form form-inline has-error">
+        <div class="input-group">
+          <span class="input-group-addon">{{:~CSLocalize('9f25fd96c2444cbd9d716114dc526e36', 'Evaluation:')}}</span>
+          <input type="text" class="form-control" id="human-ed-{{:id}}" name="human-ed-{{:id}}" placeholder="0-{{:scoreWeight}}" data-bind="textInput:human" />
+          <span class="input-group-addon">0-{{:scoreWeight}}</span>
+        </div>
+      </form>
+      <p class="clearfix"></p>
+      {{/if}}
+      <textarea rows="{{:numberOfRows}}" data-bind="disable: isDone(), textInput:textInput"></textarea>
+    </div>
+    <!-- /ko -->
+  </script>
 </body>
 </html>

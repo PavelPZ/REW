@@ -242,7 +242,7 @@ namespace CourseModel {
         isStriped = isStriped,
         icon = icon,
         color = color,
-        Items = lines.Select(l => smartElement.removeNums(l).Trim()).Select(l => htmlTag.create(htmlTag.li, new text() { title = l })).ToArray()
+        Items = lines.Select(l => smartElement.removeNums(l).Trim()).Select(l => htmlTag.create(htmlTag.li, smartTag.formatedText(l))).ToArray()
       };
       return (res as IMacroTemplate).Generate(pg, wr);
     }

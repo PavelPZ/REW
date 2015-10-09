@@ -85,6 +85,16 @@ module vyzva {
 
   export function initVyzvaStates(params: blended.createStatePars) {
     params.$stateProvider.state({
+      name: 'authorex',
+      url: "/authorex/:url",
+      controller: blended.authorExController, 
+      template: '<div class="container"><show-exercise-simple ex-service="::ts.exService"></show-exercise-simple></div>',
+      resolve: {
+        $getExJsonML: blended.$getExJsonML, //dynamicke naladovani JSONML se cvicenim
+        //$checkOldApplicationStart: blended.checkOldApplicationStart, //ceka se na dokonceni inicalizace nasi technologie
+      }
+    });
+    params.$stateProvider.state({
       name: 'vyzvademo',
       url: "/vyzvademo?companytitle&key&hideorder",
       controller: runController,

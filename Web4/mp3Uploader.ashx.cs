@@ -41,7 +41,10 @@ namespace mp3Uploader {
         case "sl_init":
         case "sl_encode":
           tempFn = Path.ChangeExtension(fn, ".raw");
-          if (phase == "sl_init") File.Create(tempFn).Close();
+          if (phase == "sl_init") {
+            File.Create(tempFn).Close();
+            Logger.Error("sl_init, START: " + tempFn);
+          }
           using (TextReader rdr = new StreamReader(context.Request.InputStream)) {
             var str = rdr.ReadToEnd();
             byte[] data = Convert.FromBase64String(str);
@@ -53,6 +56,7 @@ namespace mp3Uploader {
           break;
         case "sl_finish":
           tempFn = Path.ChangeExtension(fn, ".raw");
+          Logger.Error("sl_finish, END: " + tempFn);
           using (var srcStream = File.OpenRead(tempFn)) mp3Compress(context, srcStream, fn);
           File.Delete(tempFn);
           break;

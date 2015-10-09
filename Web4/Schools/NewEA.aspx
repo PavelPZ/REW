@@ -20,8 +20,8 @@
     designId = "",
 
     //dataBatchUrl = "/lm/lm_data_new/",
-    //dataBatchUrl = "/lm/lm_data/",
-    dataBatchUrl = "/skrivanek",
+    dataBatchUrl = "/lm/lm_data/",
+    //dataBatchUrl = "/skrivanek",
     //dataBatchUrl = "/siteroot.all",
     //forceServiceUrl = LMComLib.Machines.isFE5() ? "http://test.langmaster.com/alpha/service.ashx" : "http://localhost/rew/service.ashx",
     //forceServiceUrl = "http://services.langmaster.com/services/service.ashx",

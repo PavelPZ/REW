@@ -149,6 +149,16 @@ namespace CourseMeta {
     public static string getServerScript(string url, string content) {
       return "<script type=\"text/inpagefiles\" data-id=\"" + url + "\">" + content + "</script>";
     }
+    public static string getBlendedScript(IEnumerable<Packager.Consts.file> files) {
+      StringBuilder sb = new StringBuilder();
+      foreach (var file in files.Where(f => f != null).Distinct(constsFileComparer)) {
+        var data = file.srcData; if (data == null || !file.name.EndsWith(".js")) continue; //preskoc vse, mimo vytvorenych souboru (.js)
+        var url = "/" + file.destDir.Replace('\\', '/') + "/" + file.name.Replace(".js",null);
+        var js = Encoding.UTF8.GetString(file.srcData);
+        sb.Append(url); sb.Append("|"); sb.Append(js); sb.Append("###");
+      }
+      return sb.ToString();
+    }
     public static StringBuilder getServerScript(IEnumerable<Packager.Consts.file> files) {
       StringBuilder sb = new StringBuilder();
       foreach (var file in files.Where(f => f != null).Distinct(constsFileComparer)) {
@@ -372,6 +382,7 @@ namespace CourseMeta {
       }
 
       //words a trans
+      //LOCDEBUG
       if (!logger.isVsNet) {
         words = page.dictSentences().SelectMany(s => DictLib.wordsForDesignTime(s, crsLang)).Distinct().ToArray();
         transSentences = page.toTransSentences(logger).ToArray();
@@ -495,7 +506,9 @@ namespace CourseMeta {
       });
 
       //zajisteni nacteni vsech prekladu z Tradosu
-      if (!logger.isVsNet) locStringsFromTrados(prod.scan().OfType<ex>());
+      //LOCDEBUG
+      if (!logger.isVsNet)
+        locStringsFromTrados(prod.scan().OfType<ex>());
 
       //priprav moduly produku (obsahuji url, nactene stranky a lokalizace)
       List<buildModule> resList = new List<buildModule>();

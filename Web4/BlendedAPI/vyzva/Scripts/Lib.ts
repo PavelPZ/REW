@@ -73,12 +73,15 @@
           var homeCtrl = <homeTaskController>((<blended.taskController>scope.ts).productParent);
           var info: intranet.alocatedKeyRoot = homeCtrl && homeCtrl.intranetInfo ? homeCtrl.intranetInfo : scope.ts['intranetInfo']; //intranetInfo drzi budto taskControl.productParent nebo managerSchool
           var userInfo = info ? info.userInfo(scope.ts.ctx.loginid) : null; //dej info o zalogovanem uzivateli
+          var alocInfo = info ? _.find(info.alocatedKeyInfos, inf => inf.key.keyStr == userInfo.keyStr) : null;
+          var grp = alocInfo ? { isPattern3: alocInfo.group.isPattern3, lectorKeys: _.map(alocInfo.group.lectorKeys, k => k.keyStr).join(',') } : null;
 
           var req: IWriteUs = {
             stateName: scope.ts.state.name, stateParsJson: JSON.stringify(scope.ts.$state.params), text: scope.copyrWriteUsText,
+            groupJson: JSON.stringify(grp),
             userJson: JSON.stringify(userInfo), userEmail: userInfo.email, userFirstName: userInfo.firstName, userLastName: userInfo.lastName
           };
-          proxies.vyzva57services.writeUs(JSON.stringify(req), $.noop);
+          proxies.vyzva57services.writeUs(JSON.stringify(req), () => alert('Váš vzkaz byl úspěšně odeslán, děkujeme.'));
           modalInstance.close();
         };
       };
@@ -102,6 +105,7 @@
     userFirstName: string;
     userLastName: string;
     text: string;
+    groupJson: string;
   }
 
   blended.rootModule
