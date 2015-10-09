@@ -1,4 +1,4 @@
-rem del d:\LMCom\rew\Web4\Data\buildLogs\*.* /q
+del d:\LMCom\rew\Web4\Data\buildLogs\*.* /q
 call d:\LMCom\rew\Web4\Data\DelJS.cmd
 d:\LMCom\rew\CubesDeployment\bin\Debug\CubesDeployment.exe -8LM_Data_Blended
 rem d:\LMCom\rew\CubesDeployment\bin\Debug\CubesDeployment.exe -8LM_Data_New-italian

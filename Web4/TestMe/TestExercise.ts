@@ -304,8 +304,8 @@
         //var selected: { [grpId: string]: string; } = {};
         var levToScore: { [lev: string]: number; } = { 'a1': 1, 'a2': 2, 'b1': 3, 'b2': 4, 'c1': 5, 'c2': 6 };
         var numToLev: Array<string> = ['a1', 'a2', 'b1', 'b2', 'c1', 'c2'];
-        var levComplBoundary = [6, 10, 14, 18, 22, 24];
-        var levStdBoundary = [3, 5, 7, 9, 11, 12];
+        var levComplBoundary = [7, 12, 17, 22, 27, 30];
+        var levStdBoundary = [4, 7, 10, 13, 16, 18];
         var score = 0; var isAll = true; var singleSels = multiEx.page.evalPage.Items[0].Items;
         _.each(singleSels, grp => { //<_eval-group id="and-screading" eval-control-ids="ra1 ra2 rb1 rb2 rc1 rc2" is-and="true"/>
           var ctrl = <Course.radioButton>(_.find(grp.evalControls, (r: Course.radioButton) => r.selected()));
@@ -316,7 +316,8 @@
           anim.alert().show(CSLocalize('5ae8d0cbcd5e44b68843f2010ec215b7', 'Fill in all parts of the self-evaluation form'), $.noop, () => anim.alert().isCancelVisible(false));
           return;
         }
-        var boundaries = singleSels.length == 4 ? levComplBoundary : levStdBoundary; //aktualni hranice pro skore
+        //singleSels.length je pocet casti testu, 3 pro standardni, 5 pro kompletni
+        var boundaries = singleSels.length == 5 ? levComplBoundary : levStdBoundary; //aktualni hranice pro skore
         var multiTest = this.multiTest();
         for (var i = 0; i < boundaries.length; i++) if (score <= boundaries[i]) { multiTest.level = numToLev[i]; break; }
         anim.alert().show(CSLocalize('8f8d748c9209489b8710fa30b10905d3', 'The following test will be started now') + ':<p class="text-info"><b>' + this.multiActTest().title + '</b></p>', () => {

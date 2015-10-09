@@ -382,6 +382,7 @@ namespace CourseMeta {
       }
 
       //words a trans
+      //LOCDEBUG
       if (!logger.isVsNet) {
         words = page.dictSentences().SelectMany(s => DictLib.wordsForDesignTime(s, crsLang)).Distinct().ToArray();
         transSentences = page.toTransSentences(logger).ToArray();
@@ -505,7 +506,9 @@ namespace CourseMeta {
       });
 
       //zajisteni nacteni vsech prekladu z Tradosu
-      if (!logger.isVsNet) locStringsFromTrados(prod.scan().OfType<ex>());
+      //LOCDEBUG
+      if (!logger.isVsNet)
+        locStringsFromTrados(prod.scan().OfType<ex>());
 
       //priprav moduly produku (obsahuji url, nactene stranky a lokalizace)
       List<buildModule> resList = new List<buildModule>();
