@@ -155,15 +155,15 @@ namespace blended {
       return vyzva.PrepareDemoData.createEmptyCompany(companyTitle);
     }
 
-    [Route("createDemoCompanyStart"), HttpGet]
-    public vyzva.PrepareDemoData.IPrepareNewDataResult createDemoCompanyStart(string companyTitle, string id) {
-      return vyzva.PrepareDemoData.prepareNewData(companyTitle, id);
-    }
+    //[Route("createDemoCompanyStart"), HttpGet]
+    //public vyzva.PrepareDemoData.IPrepareNewDataResult createDemoCompanyStart(string companyTitle, string id) {
+    //  return vyzva.PrepareDemoData.prepareNewData(companyTitle, id);
+    //}
 
-    [Route("createDemoCompanyEnd"), HttpPost]
-    public void createDemoCompanyEnd([FromBody] vyzva.PrepareDemoData.ICopyCourseData data) {
-      vyzva.PrepareDemoData.copyCourseData(data);
-    }
+    //[Route("createDemoCompanyEnd"), HttpPost]
+    //public void createDemoCompanyEnd([FromBody] vyzva.PrepareDemoData.ICopyCourseData data) {
+    //  vyzva.PrepareDemoData.copyCourseData(data);
+    //}
 
     //*************** vytvoreni demo company z nazvu company a generace 3 demoklicu (rozlisenim pro emaily je hash nazvu)
     [Route("keysFromCompanyTitle"), HttpGet]
@@ -246,14 +246,14 @@ namespace blended {
       return db.CourseDatas.Where(cd => cd.CourseUser.CompanyId == companyid && cd.CourseUser.LMComId == lmcomId && cd.CourseUser.ProductUrl == productUrl && cd.Key == key).Select(cd => cd.Data).FirstOrDefault();
     }
 
-    [Route("debugClearProduct"), HttpGet]
-    public void debugClearProduct(int companyid, long lmcomId, string productUrl) {
-      var db = blendedData.Lib.CreateContext();
-      var cu = db.CourseUsers.Where(cd => cd.CompanyId == companyid && cd.LMComId == lmcomId && cd.ProductUrl == productUrl).FirstOrDefault();
-      if (cu == null) return;
-      db.CourseUsers.Remove(cu);
-      db.SaveChanges();
-    }
+    //[Route("debugClearProduct"), HttpGet]
+    //public void debugClearProduct(int companyid, long lmcomId, string productUrl) {
+    //  var db = blendedData.Lib.CreateContext();
+    //  var cu = db.CourseUsers.Where(cd => cd.CompanyId == companyid && cd.LMComId == lmcomId && cd.ProductUrl == productUrl).FirstOrDefault();
+    //  if (cu == null) return;
+    //  db.CourseUsers.Remove(cu);
+    //  db.SaveChanges();
+    //}
 
     public class ISaveData {
       public string url;
