@@ -183,12 +183,6 @@ module proxies {
     static createEmptyCompany(companytitle: string, completed: (res: {  licId: number;  licCounter: number;  }) => void): void {
 		  invoke('vyzva57services/createemptycompany', 'get', { companytitle: companytitle }, null, completed);
 	  } 
-    static createDemoCompanyStart(companytitle: string, id: string, completed: (res: {  fromCompanyId: number;  companyId: number;  users: {  licId: number;  licCounter: number;  lmcomId: number;  email: string;  firstName: string;  lastName: string;  }[];  }) => void): void {
-		  invoke('vyzva57services/createdemocompanystart', 'get', { companytitle: companytitle, id: id }, null, completed);
-	  } 
-    static createDemoCompanyEnd(data: {  fromCompanyId: number;  toCompanyId: number;  users: {  fromLmcomId: number;  toLmLmcomId: number;  }[];  }, completed: () => void): void {
-		  invoke('vyzva57services/createdemocompanyend', 'post', null, JSON.stringify(data), completed);
-	  } 
     static keysFromCompanyTitle(companytitle: string, completed: (res: {  student: {  licId: number;  licCounter: number;  lmcomId: number;  email: string;  firstName: string;  lastName: string;  };  teacher: {  licId: number;  licCounter: number;  lmcomId: number;  email: string;  firstName: string;  lastName: string;  };  studentDe: {  licId: number;  licCounter: number;  lmcomId: number;  email: string;  firstName: string;  lastName: string;  };  teacherDe: {  licId: number;  licCounter: number;  lmcomId: number;  email: string;  firstName: string;  lastName: string;  };  admin: {  licId: number;  licCounter: number;  lmcomId: number;  email: string;  firstName: string;  lastName: string;  };  companyTitle: string;  newCompanyId: number;  masterLicId: number;  masterLLicCounter: number;  }) => void): void {
 		  invoke('vyzva57services/keysfromcompanytitle', 'get', { companytitle: companytitle }, null, completed);
 	  } 
@@ -203,9 +197,6 @@ module proxies {
 	  } 
     static getLongData(companyid: number, lmcomid: number, producturl: string, taskid: string, key: string, completed: (res: string) => void): void {
 		  invoke('vyzva57services/getlongdata', 'get', { companyid: companyid, lmcomid: lmcomid, producturl: producturl, taskid: taskid, key: key }, null, completed);
-	  } 
-    static debugClearProduct(companyid: number, lmcomid: number, producturl: string, completed: () => void): void {
-		  invoke('vyzva57services/debugclearproduct', 'get', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, null, completed);
 	  } 
     static saveUserData(companyid: number, lmcomid: number, producturl: string, data: {  url: string;  taskId: string;  flag: CourseModel.CourseDataFlag;  shortData: string;  longData: string;  }[], completed: () => void): void {
 		  invoke('vyzva57services/saveuserdata', 'post', { companyid: companyid, lmcomid: lmcomid, producturl: producturl }, JSON.stringify(data), completed);

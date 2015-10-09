@@ -182,9 +182,9 @@
       this.navigate({ stateName: stateNames.lectorHome.name, pars: <any>{ groupid: groupId } });
     }
 
-    debugClearProduct() {
-      proxies.vyzva57services.debugClearProduct(this.ctx.companyid, this.ctx.userDataId(), this.ctx.productUrl, () => location.reload());
-    }
+    //debugClearProduct() {
+    //  proxies.vyzva57services.debugClearProduct(this.ctx.companyid, this.ctx.userDataId(), this.ctx.productUrl, () => location.reload());
+    //}
 
   }
 
