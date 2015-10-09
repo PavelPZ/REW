@@ -236,6 +236,7 @@ Web4/Schools/SLExtension.dll
 *.exe
 *.zip
 Web4/_bin_deployableAssemblies/
+dll/
 
 Web4/Data/buildLogs/
 Web4/Data/instr/
