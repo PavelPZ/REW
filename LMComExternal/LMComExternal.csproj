@@ -96,12 +96,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LinqKit\ExpandableQuery.cs" />
-    <Compile Include="LinqKit\ExpressionExpander.cs" />
-    <Compile Include="LinqKit\ExpressionVisitor.cs" />
-    <Compile Include="LinqKit\Extensions.cs" />
-    <Compile Include="LinqKit\Linq.cs" />
-    <Compile Include="LinqKit\PredicateBuilder.cs" />
     <Compile Include="ZLib\Adler32.cs" />
     <Compile Include="ZLib\BZip2.cs" />
     <Compile Include="ZLib\BZip2Constants.cs" />
@@ -151,9 +145,6 @@
     <Compile Include="ZLib\ZipInputStream.cs" />
     <Compile Include="ZLib\ZipNameTransform.cs" />
     <Compile Include="ZLib\ZipOutputStream.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="LinqKit\ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
