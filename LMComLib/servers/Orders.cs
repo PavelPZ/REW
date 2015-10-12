@@ -20,41 +20,41 @@ using System.Globalization;
 
 namespace LMComData2 {
   public partial class Comm_Order {
-    public byte[] ProformaX {
-      get {
-        if (string.IsNullOrEmpty(ProformaNew)) {
-          if (Proforma == null) return null;
-          return Proforma.ToArray();
-        } else {
-          XInvoice inv = XmlUtils.StringToObject<XInvoice>(ProformaNew);
-          return ProsperLib.printInvoiceNew(inv);
-        }
-      }
-    }
-    public byte[] InvoiceX {
-      get {
-        if (string.IsNullOrEmpty(InvoiceNew)) {
-          if (Invoice == null) return null;
-          return Invoice.ToArray();
-        } else {
-          XInvoice inv = XmlUtils.StringToObject<XInvoice>(InvoiceNew);
-          return ProsperLib.printInvoiceNew(inv);
-        }
-      }
-    }
-    public byte[] AdviceX {
-      get {
-        if (string.IsNullOrEmpty(AdviceNew)) {
-          if (Invoice == null) return null;
-          return Advice.ToArray();
-        } else {
-          XInvoice inv = XmlUtils.StringToObject<XInvoice>(AdviceNew);
-          return ProsperLib.printInvoiceNew(inv);
-        }
-      }
-    }
-    public bool HasInvoiceX { get { return !string.IsNullOrEmpty(InvoiceNew) || Invoice != null; } }
-    public bool HasProformaX { get { return !string.IsNullOrEmpty(ProformaNew) || Proforma != null; } }
+    //public byte[] ProformaX {
+    //  get {
+    //    if (string.IsNullOrEmpty(ProformaNew)) {
+    //      if (Proforma == null) return null;
+    //      return Proforma.ToArray();
+    //    } else {
+    //      XInvoice inv = XmlUtils.StringToObject<XInvoice>(ProformaNew);
+    //      return ProsperLib.printInvoiceNew(inv);
+    //    }
+    //  }
+    //}
+    //public byte[] InvoiceX {
+    //  get {
+    //    if (string.IsNullOrEmpty(InvoiceNew)) {
+    //      if (Invoice == null) return null;
+    //      return Invoice.ToArray();
+    //    } else {
+    //      XInvoice inv = XmlUtils.StringToObject<XInvoice>(InvoiceNew);
+    //      return ProsperLib.printInvoiceNew(inv);
+    //    }
+    //  }
+    //}
+    //public byte[] AdviceX {
+    //  get {
+    //    if (string.IsNullOrEmpty(AdviceNew)) {
+    //      if (Invoice == null) return null;
+    //      return Advice.ToArray();
+    //    } else {
+    //      XInvoice inv = XmlUtils.StringToObject<XInvoice>(AdviceNew);
+    //      return ProsperLib.printInvoiceNew(inv);
+    //    }
+    //  }
+    //}
+    //public bool HasInvoiceX { get { return !string.IsNullOrEmpty(InvoiceNew) || Invoice != null; } }
+    //public bool HasProformaX { get { return !string.IsNullOrEmpty(ProformaNew) || Proforma != null; } }
   }
 }
 
@@ -1187,27 +1187,27 @@ namespace LMComLib {
         default: throw new Exception("Missing code here");
       }
     }
-    public void setPdfDocumentNew(OrderDBContext context, DocumentType docType) {
-      XInvoice val = ProsperLib.createXInvoice(context.Order, new XCustommer(context.Profile), docType);
-      string valStr = val == null ? null : XmlUtils.ObjectToString(val);
-      switch (docType) {
-        case DocumentType.invoice: OrderDb.InvoiceNew = valStr; return;
-        case DocumentType.proforma: OrderDb.ProformaNew = valStr; return;
-        case DocumentType.adviceOfCredit: OrderDb.AdviceNew = valStr; return;
-        default: throw new Exception("Missing code here");
-      }
-    }
-    public static byte[] loadPdf(int orderId, DocumentType docType) {
-      LMComData2.LMComDataContext db = Machines.getContext();
-      LMComData2.Comm_Order ord = db.Comm_Orders.FirstOrDefault(o => o.Id == orderId);
-      switch (docType) {
-        case DocumentType.invoice: return ord.InvoiceX;
-        case DocumentType.proforma: return ord.ProformaX;
-        default: throw new Exception();
-      }
-      //string invStr = pdfDocumentNew(db.Comm_Orders.FirstOrDefault(o => o.Id == orderId), docType);
-      //return ProsperLib.printInvoiceNew(XmlUtils.StringToObject<XInvoice>(invStr));
-    }
+    //public void setPdfDocumentNew(OrderDBContext context, DocumentType docType) {
+    //  XInvoice val = ProsperLib.createXInvoice(context.Order, new XCustommer(context.Profile), docType);
+    //  string valStr = val == null ? null : XmlUtils.ObjectToString(val);
+    //  switch (docType) {
+    //    case DocumentType.invoice: OrderDb.InvoiceNew = valStr; return;
+    //    case DocumentType.proforma: OrderDb.ProformaNew = valStr; return;
+    //    case DocumentType.adviceOfCredit: OrderDb.AdviceNew = valStr; return;
+    //    default: throw new Exception("Missing code here");
+    //  }
+    //}
+    //public static byte[] loadPdf(int orderId, DocumentType docType) {
+    //  LMComData2.LMComDataContext db = Machines.getContext();
+    //  LMComData2.Comm_Order ord = db.Comm_Orders.FirstOrDefault(o => o.Id == orderId);
+    //  switch (docType) {
+    //    case DocumentType.invoice: return ord.InvoiceX;
+    //    case DocumentType.proforma: return ord.ProformaX;
+    //    default: throw new Exception();
+    //  }
+    //  //string invStr = pdfDocumentNew(db.Comm_Orders.FirstOrDefault(o => o.Id == orderId), docType);
+    //  //return ProsperLib.printInvoiceNew(XmlUtils.StringToObject<XInvoice>(invStr));
+    //}
     public void setPdfDocumentId(DocumentType docType, int value) {
       switch (docType) {
         case DocumentType.invoice: OrderDb.InvoiceId = value; return;
