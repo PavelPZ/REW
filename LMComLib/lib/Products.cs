@@ -52,135 +52,135 @@ namespace LMComLib {
   /// <summary>
   /// Statické informace o produktech z pohledu vyukovych dat kurzech
   /// </summary>
-  public class ProductInfos {
-    public ProductInfo[] Items;
-    public int Version;
-    public int BasicVersion;
-    [XmlIgnore]
-    Dictionary<string, ProductInfo> SpaceToProduct = new Dictionary<string, ProductInfo>();
-    [XmlIgnore]
-    Dictionary<string, CourseInfo> SpaceToCourse = new Dictionary<string, CourseInfo>();
-    [XmlIgnore]
-    Dictionary<CourseIds, ProductInfo> ProductIdToProduct = new Dictionary<CourseIds, ProductInfo>();
-    [XmlIgnore]
-    Dictionary<CourseIds, CourseInfo> CourseIdToCourseInfo = new Dictionary<CourseIds, CourseInfo>();
-    static ProductInfos instance;
-    public static ProductInfo GetProduct(string spaceId) {
-      ProductInfo res;
-      if (spaceId != null && Instance.SpaceToProduct.TryGetValue(spaceId.ToLowerInvariant(), out res)) return res;
-      return Instance.Items[0];
-    }
-    public static ProductInfo GetProduct(CourseIds prodId) {
-      ProductInfo res;
-      if (Instance.ProductIdToProduct.TryGetValue(prodId, out res)) return res;
-      return Instance.Items[0];
-    }
-    public static ProductInfo GetProductEx(CourseIds prodOrCourseId) {
-      ProductInfo res;
-      CourseInfo crsInfo;
-      if (Instance.ProductIdToProduct.TryGetValue(prodOrCourseId, out res)) return res;
-      if (Instance.CourseIdToCourseInfo.TryGetValue(prodOrCourseId, out crsInfo)) return crsInfo.Owner;
-      return null;
-    }
-    public static CourseInfo GetCourse(string spaceId) {
-      CourseInfo res;
-      if (spaceId != null && Instance.SpaceToCourse.TryGetValue(spaceId.ToLowerInvariant(), out res)) return res;
-      return Instance.Items[0].Courses[0];
-    }
-    public static CourseIds SpaceIdToCourseId(string spaceId) {
-      return GetCourse(spaceId).Id;
-    }
-    public static CourseInfo GetCourse(CourseIds courseId) {
-      CourseInfo res;
-      if (Instance.CourseIdToCourseInfo.TryGetValue(courseId, out res)) return res;
-      throw new Exception("Cannot find course " + courseId.ToString());
-    }
-    static CourseIds[] DuplicatedSpacesIgnores;
-    public static ProductInfos Instance {
-      get {
-        lock (typeof(ProductInfos)) {
-          if (instance != null) return instance;
-          string igns = System.Configuration.ConfigurationManager.AppSettings["DuplicatedSpacesIgnores"];
-          if (igns != null) DuplicatedSpacesIgnores = igns.Split(',').Select(s => (CourseIds)Enum.Parse(typeof(CourseIds), s)).ToArray();
-          //SpaceToProductIgnores
-          //instance = (ProductInfos)XmlUtils.FileToObject(System.Configuration.ConfigurationManager.AppSettings["courseInfo"], typeof(ProductInfos));
-          //string ignoreProduct = 
-          instance = (ProductInfos)XmlUtils.FileToObject(Machines.basicPath + @"rew\LMCom\App_Data\Products.xml", typeof(ProductInfos));
-          foreach (ProductInfo prod in instance.Items) {
-            try {
-              prod.owner = instance;
-              instance.ProductIdToProduct.Add(prod.Id, prod);
-              if (prod.Courses != null)
-                foreach (CourseInfo crs in prod.Courses) {
-                  crs.Owner = prod;
-                  instance.CourseIdToCourseInfo.Add(crs.Id, crs);
-                  if (DuplicatedSpacesIgnores != null && !DuplicatedSpacesIgnores.Contains(prod.Id))
-                    foreach (string sp in crs.Spaces) {
-                      instance.SpaceToProduct.Add(sp.ToLowerInvariant(), prod);
-                      instance.SpaceToCourse.Add(sp.ToLowerInvariant(), crs);
-                    }
-                }
-            } catch (Exception e) {
-              throw new Exception(prod.Id.ToString(), e);
-            }
-          }
-          return instance;
-        }
-      }
-    }
-  }
+  //public class ProductInfos {
+  //  public ProductInfo[] Items;
+  //  public int Version;
+  //  public int BasicVersion;
+  //  [XmlIgnore]
+  //  Dictionary<string, ProductInfo> SpaceToProduct = new Dictionary<string, ProductInfo>();
+  //  [XmlIgnore]
+  //  Dictionary<string, CourseInfo> SpaceToCourse = new Dictionary<string, CourseInfo>();
+  //  [XmlIgnore]
+  //  Dictionary<CourseIds, ProductInfo> ProductIdToProduct = new Dictionary<CourseIds, ProductInfo>();
+  //  [XmlIgnore]
+  //  Dictionary<CourseIds, CourseInfo> CourseIdToCourseInfo = new Dictionary<CourseIds, CourseInfo>();
+  //  static ProductInfos instance;
+  //  public static ProductInfo GetProduct(string spaceId) {
+  //    ProductInfo res;
+  //    if (spaceId != null && Instance.SpaceToProduct.TryGetValue(spaceId.ToLowerInvariant(), out res)) return res;
+  //    return Instance.Items[0];
+  //  }
+  //  public static ProductInfo GetProduct(CourseIds prodId) {
+  //    ProductInfo res;
+  //    if (Instance.ProductIdToProduct.TryGetValue(prodId, out res)) return res;
+  //    return Instance.Items[0];
+  //  }
+  //  public static ProductInfo GetProductEx(CourseIds prodOrCourseId) {
+  //    ProductInfo res;
+  //    CourseInfo crsInfo;
+  //    if (Instance.ProductIdToProduct.TryGetValue(prodOrCourseId, out res)) return res;
+  //    if (Instance.CourseIdToCourseInfo.TryGetValue(prodOrCourseId, out crsInfo)) return crsInfo.Owner;
+  //    return null;
+  //  }
+  //  public static CourseInfo GetCourse(string spaceId) {
+  //    CourseInfo res;
+  //    if (spaceId != null && Instance.SpaceToCourse.TryGetValue(spaceId.ToLowerInvariant(), out res)) return res;
+  //    return Instance.Items[0].Courses[0];
+  //  }
+  //  public static CourseIds SpaceIdToCourseId(string spaceId) {
+  //    return GetCourse(spaceId).Id;
+  //  }
+  //  public static CourseInfo GetCourse(CourseIds courseId) {
+  //    CourseInfo res;
+  //    if (Instance.CourseIdToCourseInfo.TryGetValue(courseId, out res)) return res;
+  //    throw new Exception("Cannot find course " + courseId.ToString());
+  //  }
+  //  static CourseIds[] DuplicatedSpacesIgnores;
+  //  public static ProductInfos Instance {
+  //    get {
+  //      lock (typeof(ProductInfos)) {
+  //        if (instance != null) return instance;
+  //        string igns = System.Configuration.ConfigurationManager.AppSettings["DuplicatedSpacesIgnores"];
+  //        if (igns != null) DuplicatedSpacesIgnores = igns.Split(',').Select(s => (CourseIds)Enum.Parse(typeof(CourseIds), s)).ToArray();
+  //        //SpaceToProductIgnores
+  //        //instance = (ProductInfos)XmlUtils.FileToObject(System.Configuration.ConfigurationManager.AppSettings["courseInfo"], typeof(ProductInfos));
+  //        //string ignoreProduct = 
+  //        instance = (ProductInfos)XmlUtils.FileToObject(Machines.basicPath + @"rew\LMCom\App_Data\Products.xml", typeof(ProductInfos));
+  //        foreach (ProductInfo prod in instance.Items) {
+  //          try {
+  //            prod.owner = instance;
+  //            instance.ProductIdToProduct.Add(prod.Id, prod);
+  //            if (prod.Courses != null)
+  //              foreach (CourseInfo crs in prod.Courses) {
+  //                crs.Owner = prod;
+  //                instance.CourseIdToCourseInfo.Add(crs.Id, crs);
+  //                if (DuplicatedSpacesIgnores != null && !DuplicatedSpacesIgnores.Contains(prod.Id))
+  //                  foreach (string sp in crs.Spaces) {
+  //                    instance.SpaceToProduct.Add(sp.ToLowerInvariant(), prod);
+  //                    instance.SpaceToCourse.Add(sp.ToLowerInvariant(), crs);
+  //                  }
+  //              }
+  //          } catch (Exception e) {
+  //            throw new Exception(prod.Id.ToString(), e);
+  //          }
+  //        }
+  //        return instance;
+  //      }
+  //    }
+  //  }
+  //}
 
-  /// <summary>
-  /// Jedna informace o kurzu, ulozena v /CourseConfig.xml
-  /// </summary>
-  public class ProductInfo {
-    public CourseIds Id; //identifikace kurzu
-    public CourseInfo[] Courses;
-    public LineIds Line; //obor kurzu
-    public bool HasRightPanel = true; //ma pravy panel
-    public string Icon = null; //identifikace ikony pro run.exe, setup.exe apod.
-    public string ProducerCss = null; //class vlevo do chladice
-    public string HomeUrl; //hlavni stranka pro CD ROM
-    public string OnlineHomeUrl; //hlavni stranka pro online
-    public string Footnote; //typ paticky
-    public string Lang = "en-GB"; //difotni jazyk jako zdroj pro lokalizaci
-    public int RegTrial; //delka trial doby ve dnech
-    public CourseIds[] RegAlso; //produkty, ktere se s timto produktem licencuji
-    public bool RegLimitedFree; //Limited verze je zadarmo
-    public string RunExeTabs; // konfigurace Tabu v run.exe
-    //parametrizace setupu, viz Framework/Deployment/setup_download.iss.aspx
-    public string Inst_path;
-    public string Inst_product;
-    public string Inst_productId;
-    public string Inst_productLong;
-    public string Inst_groupName;
-    public string Inst_splashSmallImage;
-    public string Inst_setupIcon;
+  ///// <summary>
+  ///// Jedna informace o kurzu, ulozena v /CourseConfig.xml
+  ///// </summary>
+  //public class ProductInfo {
+  //  public CourseIds Id; //identifikace kurzu
+  //  public CourseInfo[] Courses;
+  //  public LineIds Line; //obor kurzu
+  //  public bool HasRightPanel = true; //ma pravy panel
+  //  public string Icon = null; //identifikace ikony pro run.exe, setup.exe apod.
+  //  public string ProducerCss = null; //class vlevo do chladice
+  //  public string HomeUrl; //hlavni stranka pro CD ROM
+  //  public string OnlineHomeUrl; //hlavni stranka pro online
+  //  public string Footnote; //typ paticky
+  //  public string Lang = "en-GB"; //difotni jazyk jako zdroj pro lokalizaci
+  //  public int RegTrial; //delka trial doby ve dnech
+  //  public CourseIds[] RegAlso; //produkty, ktere se s timto produktem licencuji
+  //  public bool RegLimitedFree; //Limited verze je zadarmo
+  //  public string RunExeTabs; // konfigurace Tabu v run.exe
+  //  //parametrizace setupu, viz Framework/Deployment/setup_download.iss.aspx
+  //  public string Inst_path;
+  //  public string Inst_product;
+  //  public string Inst_productId;
+  //  public string Inst_productLong;
+  //  public string Inst_groupName;
+  //  public string Inst_splashSmallImage;
+  //  public string Inst_setupIcon;
 
-    public IEnumerable<CourseIds> RegAlsoAll(bool incSelf) {
-      if (incSelf) yield return Id;
-      if (RegAlso == null) yield break;
-      foreach (CourseIds crs in RegAlso)
-        foreach (CourseIds subCrs in ProductInfos.GetProduct(crs).RegAlsoAll(true))
-          yield return subCrs;
-    }
+  //  public IEnumerable<CourseIds> RegAlsoAll(bool incSelf) {
+  //    if (incSelf) yield return Id;
+  //    if (RegAlso == null) yield break;
+  //    foreach (CourseIds crs in RegAlso)
+  //      foreach (CourseIds subCrs in ProductInfos.GetProduct(crs).RegAlsoAll(true))
+  //        yield return subCrs;
+  //  }
 
-    public bool IsOldToNew; //jedna se o kurzy prevadene ze stare technologie
-    int version;
-    public int Version //aktualni verze
-    {
-      get { return owner == null || version > 0 ? version : owner.Version; }
-      set { version = value; }
-    }
-    int basicVersion;
-    public int BasicVersion //verze, ze ktere se dela aktualizace
-    {
-      get { return owner == null || basicVersion > 0 ? basicVersion : owner.BasicVersion; }
-      set { basicVersion = value; }
-    }
-    [XmlIgnore]
-    public ProductInfos owner;
-  }
+  //  public bool IsOldToNew; //jedna se o kurzy prevadene ze stare technologie
+  //  int version;
+  //  public int Version //aktualni verze
+  //  {
+  //    get { return owner == null || version > 0 ? version : owner.Version; }
+  //    set { version = value; }
+  //  }
+  //  int basicVersion;
+  //  public int BasicVersion //verze, ze ktere se dela aktualizace
+  //  {
+  //    get { return owner == null || basicVersion > 0 ? basicVersion : owner.BasicVersion; }
+  //    set { basicVersion = value; }
+  //  }
+  //  [XmlIgnore]
+  //  public ProductInfos owner;
+  //}
 
   /************************** AppData databaze: informace o produktech z pohledu commerce **************************/
   /// <summary>
@@ -669,253 +669,253 @@ namespace LMComLib {
   /// <summary>
   /// Produkt ma vice variant dle licence: jedna licence (dava se napr. do kosiku apod.)
   /// </summary>
-  public class ProductLicence : ICloneable {
+  //public class ProductLicence : ICloneable {
 
-    public ProductLicenceType Licence;
+  //  public ProductLicenceType Licence;
 
-    public Currency LicPrice;
+  //  public Currency LicPrice;
 
-    public SubDomains[] SubSites;
+  //  public SubDomains[] SubSites;
 
-    //public CurrencyEx[] LicPriceEx;
+  //  //public CurrencyEx[] LicPriceEx;
 
-    //Identifikace online kurzu
-    public CourseIds CourseId;
+  //  //Identifikace online kurzu
+  //  public CourseIds CourseId;
 
-    public object Clone() {
-      ProductLicence res = new ProductLicence();
-      res.Licence = Licence; res.LicPrice = LicPrice; res.CourseId = CourseId; if (SubSites != null) res.SubSites = SubSites.ToArray();
-      return res;
-    }
+  //  public object Clone() {
+  //    ProductLicence res = new ProductLicence();
+  //    res.Licence = Licence; res.LicPrice = LicPrice; res.CourseId = CourseId; if (SubSites != null) res.SubSites = SubSites.ToArray();
+  //    return res;
+  //  }
 
-    //[XmlIgnore]
-    //public ProductCatalogueItem MyProd;
+  //  //[XmlIgnore]
+  //  //public ProductCatalogueItem MyProd;
 
-    //[XmlIgnore]
-    //LMComLib.Cms.Product cmsProd;
-    //public LMComLib.Cms.Product CmsProd {
-    //  get {
-    //    if (cmsProd == null) cmsProd = (LMComLib.Cms.Product)LMComLib.CacheItems.GetTemplate(MyProd.ProductId);
-    //    return cmsProd;
-    //  }
-    //}
-    //[XmlIgnore]
-    //public string Title { get { return MyProd != null ? MyProd.Title : CmsProd.Title; } }
-    //[XmlIgnore]
-    //public string Perex { get { return MyProd != null ? MyProd.Perex : CmsProd.Perex; } }
-    //[XmlIgnore]
-    //public int CommerceId { get { return MyProd != null ? MyProd.CommerceId : (int)CmsProd.CommerceId; } }
-    //[XmlIgnore]
-    //public Currency Discount { get { return MyProd != null ? MyProd.Discount : (Currency)CmsProd.Discount; } }
-    //[XmlIgnore]
-    //public bool StockAble { get { return MyProd != null ? MyProd.StockAble : (CmsProd.StockAble == null ? false : (bool)CmsProd.StockAble); } }
-    //[XmlIgnore]
-    //public Currency ProductionCost { get { return MyProd != null ? MyProd.ProductionCost : (CmsProd.ProductionCost == null ? new Currency(CurrencyType.csk, 0.0) : (Currency)CmsProd.ProductionCost); } }
-    ///*[XmlIgnore]
-    //public CourseIds CourseId { get { return MyProd != null ? MyProd.CourseId : (CmsProd.CourseId == CourseIds.no ? 0 : (CourseIds)CmsProd.CourseId); } }*/
-    //[XmlIgnore]
-    //public bool LicenceOnly { get { return CourseId != CourseIds.no; } }
-    //[XmlIgnore]
-    //public int ProductId { get { return MyProd != null ? MyProd.ProductId : CmsProd.Info.dbId; } }
-    //[XmlIgnore]
-    //public ProductRoyality[] Licencors { get { return MyProd != null ? MyProd.ProductRoyalities : CmsProd.ProductRoyalities; } }
+  //  //[XmlIgnore]
+  //  //LMComLib.Cms.Product cmsProd;
+  //  //public LMComLib.Cms.Product CmsProd {
+  //  //  get {
+  //  //    if (cmsProd == null) cmsProd = (LMComLib.Cms.Product)LMComLib.CacheItems.GetTemplate(MyProd.ProductId);
+  //  //    return cmsProd;
+  //  //  }
+  //  //}
+  //  //[XmlIgnore]
+  //  //public string Title { get { return MyProd != null ? MyProd.Title : CmsProd.Title; } }
+  //  //[XmlIgnore]
+  //  //public string Perex { get { return MyProd != null ? MyProd.Perex : CmsProd.Perex; } }
+  //  //[XmlIgnore]
+  //  //public int CommerceId { get { return MyProd != null ? MyProd.CommerceId : (int)CmsProd.CommerceId; } }
+  //  //[XmlIgnore]
+  //  //public Currency Discount { get { return MyProd != null ? MyProd.Discount : (Currency)CmsProd.Discount; } }
+  //  //[XmlIgnore]
+  //  //public bool StockAble { get { return MyProd != null ? MyProd.StockAble : (CmsProd.StockAble == null ? false : (bool)CmsProd.StockAble); } }
+  //  //[XmlIgnore]
+  //  //public Currency ProductionCost { get { return MyProd != null ? MyProd.ProductionCost : (CmsProd.ProductionCost == null ? new Currency(CurrencyType.csk, 0.0) : (Currency)CmsProd.ProductionCost); } }
+  //  ///*[XmlIgnore]
+  //  //public CourseIds CourseId { get { return MyProd != null ? MyProd.CourseId : (CmsProd.CourseId == CourseIds.no ? 0 : (CourseIds)CmsProd.CourseId); } }*/
+  //  //[XmlIgnore]
+  //  //public bool LicenceOnly { get { return CourseId != CourseIds.no; } }
+  //  //[XmlIgnore]
+  //  //public int ProductId { get { return MyProd != null ? MyProd.ProductId : CmsProd.Info.dbId; } }
+  //  //[XmlIgnore]
+  //  //public ProductRoyality[] Licencors { get { return MyProd != null ? MyProd.ProductRoyalities : CmsProd.ProductRoyalities; } }
 
-    //public IEnumerable<ProductRoyality> getRoyalities(Langs lng, ProductLicenceType type) {
-    //  if (Licencors == null || Licencors.Length == 0) yield break;
-    //  int maxType = Licencors.Select(l => l.Type == ProductLicenceType.fake ? (string.IsNullOrEmpty(l.Langs) ? 1 : 2) : (string.IsNullOrEmpty(l.Langs) ? 3 : 4)).Max();
-    //  switch (maxType) {
-    //    case 1: foreach (ProductRoyality pr in Licencors) yield return pr; break;
-    //    case 2: foreach (ProductRoyality pr in Licencors.Where(p => p.Langs.IndexOf(lng.ToString()) >= 0)) yield return pr; break;
-    //    case 3: foreach (ProductRoyality pr in Licencors.Where(p => p.Type == type)) yield return pr; break;
-    //    case 4: foreach (ProductRoyality pr in Licencors.Where(p => p.Langs.IndexOf(lng.ToString()) >= 0 && p.Type == type)) yield return pr; break;
-    //  }
-    //}
+  //  //public IEnumerable<ProductRoyality> getRoyalities(Langs lng, ProductLicenceType type) {
+  //  //  if (Licencors == null || Licencors.Length == 0) yield break;
+  //  //  int maxType = Licencors.Select(l => l.Type == ProductLicenceType.fake ? (string.IsNullOrEmpty(l.Langs) ? 1 : 2) : (string.IsNullOrEmpty(l.Langs) ? 3 : 4)).Max();
+  //  //  switch (maxType) {
+  //  //    case 1: foreach (ProductRoyality pr in Licencors) yield return pr; break;
+  //  //    case 2: foreach (ProductRoyality pr in Licencors.Where(p => p.Langs.IndexOf(lng.ToString()) >= 0)) yield return pr; break;
+  //  //    case 3: foreach (ProductRoyality pr in Licencors.Where(p => p.Type == type)) yield return pr; break;
+  //  //    case 4: foreach (ProductRoyality pr in Licencors.Where(p => p.Langs.IndexOf(lng.ToString()) >= 0 && p.Type == type)) yield return pr; break;
+  //  //  }
+  //  //}
 
-    [XmlIgnore]
-    public string ShortTitle {
-      get { return GetTitle((OrderItem)null); }
-    }
-    public string GetTitle(OrderItem oi) {
-      return GetTitle(oi == null ? (Currency?)null : oi.ExternalPrice);
-    }
+  //  [XmlIgnore]
+  //  public string ShortTitle {
+  //    get { return GetTitle((OrderItem)null); }
+  //  }
+  //  public string GetTitle(OrderItem oi) {
+  //    return GetTitle(oi == null ? (Currency?)null : oi.ExternalPrice);
+  //  }
 
-    public string GetTitle(Currency? externalPrice) {
-      return null;
-      //string st = MyProd != null ? MyProd.ShortTitle : CmsProd.ShortTitle;
-      //switch (Licence) {
-      //  case ProductLicenceType.box:
-      //  case ProductLicenceType.multiPrice:
-      //    return st;
-      //  case ProductLicenceType.download:
-      //    return st + " (" + CSLocalize.localize("e359c155905a43759cfbbd39aa3c5807", LocPageGroup.LMComLib, "Licenční klíč") + ")";
-      //  case ProductLicenceType.fixStartDate:
-      //    return st + (externalPrice == null ? null : " (" + "začátek kurzu" + " " + FixDateStart(Convert.ToInt32(((Currency)externalPrice).Amount)).ToShortDateString() + ")");
-      //  default:
-      //    return st + " (" + EnumDescrAttribute.getDescr(typeof(ProductLicenceType), (int)Licence) + ")";
-      //}
-    }
-    public static DateTime FixDateStart(int weekNum) {
-      return LowUtils.startDate.AddDays(weekNum * 7);
-    }
-    public int ProsperId {
-      get {
-        return 0; // getProsperId(CommerceId, Licence);
-      }
-    }
-    public double NormalPrice(SubDomains subSite) {
-      return Order.RoundCurrency(LicPrice.Price(Order.ActTaxPercent, subSite, Licence));
-    }
-    public double NormalPriceTax(SubDomains subSite) {
-      return Order.RoundCurrency(LicPrice.PriceTax(Order.ActTaxPercent, subSite, Licence));
-    }
-    public double NormalTax(SubDomains subSite) {
-      return Order.RoundCurrency(LicPrice.Tax(Order.ActTaxPercent, subSite, Licence));
-    }
+  //  public string GetTitle(Currency? externalPrice) {
+  //    return null;
+  //    //string st = MyProd != null ? MyProd.ShortTitle : CmsProd.ShortTitle;
+  //    //switch (Licence) {
+  //    //  case ProductLicenceType.box:
+  //    //  case ProductLicenceType.multiPrice:
+  //    //    return st;
+  //    //  case ProductLicenceType.download:
+  //    //    return st + " (" + CSLocalize.localize("e359c155905a43759cfbbd39aa3c5807", LocPageGroup.LMComLib, "Licenční klíč") + ")";
+  //    //  case ProductLicenceType.fixStartDate:
+  //    //    return st + (externalPrice == null ? null : " (" + "začátek kurzu" + " " + FixDateStart(Convert.ToInt32(((Currency)externalPrice).Amount)).ToShortDateString() + ")");
+  //    //  default:
+  //    //    return st + " (" + EnumDescrAttribute.getDescr(typeof(ProductLicenceType), (int)Licence) + ")";
+  //    //}
+  //  }
+  //  public static DateTime FixDateStart(int weekNum) {
+  //    return LowUtils.startDate.AddDays(weekNum * 7);
+  //  }
+  //  public int ProsperId {
+  //    get {
+  //      return 0; // getProsperId(CommerceId, Licence);
+  //    }
+  //  }
+  //  public double NormalPrice(SubDomains subSite) {
+  //    return Order.RoundCurrency(LicPrice.Price(Order.ActTaxPercent, subSite, Licence));
+  //  }
+  //  public double NormalPriceTax(SubDomains subSite) {
+  //    return Order.RoundCurrency(LicPrice.PriceTax(Order.ActTaxPercent, subSite, Licence));
+  //  }
+  //  public double NormalTax(SubDomains subSite) {
+  //    return Order.RoundCurrency(LicPrice.Tax(Order.ActTaxPercent, subSite, Licence));
+  //  }
 
-    public static int getProsperId(int commerceId, ProductLicenceType licence) {
-      //int pi = courseId * 100 + (ushort)licence;
-      //ProductLicenceType lt = getLicenceType(pi);
-      //int crs = getCourseId(pi);
-      if (licence == ProductLicenceType.fake) throw new Exception();
-      return commerceId * 100 + (ushort)licence;
-    }
-    public static ProductLicenceType getLicenceType(int prosperId) {
-      ProductLicenceType res = (ProductLicenceType)(prosperId % 100);
-      if (res == ProductLicenceType.fake) throw new Exception();
-      return res;
-    }
-    public static int getCommerceId(int prosperId) {
-      return prosperId / 100;
-    }
+  //  public static int getProsperId(int commerceId, ProductLicenceType licence) {
+  //    //int pi = courseId * 100 + (ushort)licence;
+  //    //ProductLicenceType lt = getLicenceType(pi);
+  //    //int crs = getCourseId(pi);
+  //    if (licence == ProductLicenceType.fake) throw new Exception();
+  //    return commerceId * 100 + (ushort)licence;
+  //  }
+  //  public static ProductLicenceType getLicenceType(int prosperId) {
+  //    ProductLicenceType res = (ProductLicenceType)(prosperId % 100);
+  //    if (res == ProductLicenceType.fake) throw new Exception();
+  //    return res;
+  //  }
+  //  public static int getCommerceId(int prosperId) {
+  //    return prosperId / 100;
+  //  }
 
-    /*public static ProductLicence fincLicence(int prosperId) {
-      return null;
-    }*/
+  //  /*public static ProductLicence fincLicence(int prosperId) {
+  //    return null;
+  //  }*/
 
-    public static bool isPoslechy(CourseIds crsId) {
-      return crsId == CourseIds.EnglishPoslechy || crsId == CourseIds.FrenchPoslechy
-        || crsId == CourseIds.GermanPoslechy || crsId == CourseIds.ItalianPoslechy
-        || crsId == CourseIds.SpanishPoslechy;
-    }
-  }
+  //  public static bool isPoslechy(CourseIds crsId) {
+  //    return crsId == CourseIds.EnglishPoslechy || crsId == CourseIds.FrenchPoslechy
+  //      || crsId == CourseIds.GermanPoslechy || crsId == CourseIds.ItalianPoslechy
+  //      || crsId == CourseIds.SpanishPoslechy;
+  //  }
+  //}
 
   /// <summary>
   /// Byvale LicenceItem
   /// Informace o royalities u produtu v katalogu
   /// </summary>
-  public class ProductRoyality {
+  //public class ProductRoyality {
 
-    public ProductRoyality() { }
+  //  public ProductRoyality() { }
 
-    public ProductRoyality(string licencor, double percent) {
-      RoyalityTableItemId = licencor; Percent = percent;
-    }
-    /// <summary>
-    /// ID licencora v ciselniku (odpovida RoyalityTableItem.Id)
-    /// </summary>
-    public string RoyalityTableItemId;
-    /// <summary>
-    /// Kolikatina produktu odpovida licencovanemu produktu
-    /// </summary>
-    public double Percent;
+  //  public ProductRoyality(string licencor, double percent) {
+  //    RoyalityTableItemId = licencor; Percent = percent;
+  //  }
+  //  /// <summary>
+  //  /// ID licencora v ciselniku (odpovida RoyalityTableItem.Id)
+  //  /// </summary>
+  //  public string RoyalityTableItemId;
+  //  /// <summary>
+  //  /// Kolikatina produktu odpovida licencovanemu produktu
+  //  /// </summary>
+  //  public double Percent;
 
-    /// <summary>
-    /// Pro jakou lokalizaci se royality plati. Comma delimited seznam jazyku. Empty: pro ostatni.
-    /// </summary>
-    public string Langs;
+  //  /// <summary>
+  //  /// Pro jakou lokalizaci se royality plati. Comma delimited seznam jazyku. Empty: pro ostatni.
+  //  /// </summary>
+  //  public string Langs;
 
-    /// <summary>
-    /// Pro jaky typ licence se royality plati
-    /// </summary>
-    public ProductLicenceType Type;
-    //public double AmountKc;
-    //public bool SubstractProductCost;
+  //  /// <summary>
+  //  /// Pro jaky typ licence se royality plati
+  //  /// </summary>
+  //  public ProductLicenceType Type;
+  //  //public double AmountKc;
+  //  //public bool SubstractProductCost;
 
-  }
+  //}
 
   /// <summary>
   /// Prvek tabulky royalities (na ktery se z produktu odkazuje z LicencItem.Licencor)
   /// Byvale Licencor
   /// </summary>
-  public class RoyalityTableItem {
-    public int Id;
-    public string FriendlyId;
-    public string Licencor;
-    public double Percent;
-    //public double AmountKc;
-    public bool SubstractProductCost;
-    public string Title {
-      get { return string.Format("{0}: {1}%", Licencor, Percent); }
-    }
-  }
+  //public class RoyalityTableItem {
+  //  public int Id;
+  //  public string FriendlyId;
+  //  public string Licencor;
+  //  public double Percent;
+  //  //public double AmountKc;
+  //  public bool SubstractProductCost;
+  //  public string Title {
+  //    get { return string.Format("{0}: {1}%", Licencor, Percent); }
+  //  }
+  //}
 
   /// <summary>
   /// Byvale Licencors
   /// </summary>
-  public class RoyalityTable {
-    static RoyalityTable() {
-      try {
-        //Instance = (RoyalityTable)XmlUtils.FileToObject(string.Format("{0}app_data/Licencors.xml", HostingEnvironment.ApplicationPhysicalPath), typeof(RoyalityTable));
-        Instance = XmlUtils.FileToObject<RoyalityTable>(Machines.basicPath + @"rew\LMCom\App_Data\Licencors.xml");
-      } catch (Exception exp) {
-        throw new Exception("XmlUtils.FileToObject", exp);
-      }
-      try {
-        Instance.Finish();
-      } catch (Exception exp) {
-        throw new Exception("Instance.Finish", exp);
-      }
-    }
-    public static RoyalityTable Instance;
+  //public class RoyalityTable {
+  //  static RoyalityTable() {
+  //    try {
+  //      //Instance = (RoyalityTable)XmlUtils.FileToObject(string.Format("{0}app_data/Licencors.xml", HostingEnvironment.ApplicationPhysicalPath), typeof(RoyalityTable));
+  //      Instance = XmlUtils.FileToObject<RoyalityTable>(Machines.basicPath + @"rew\LMCom\App_Data\Licencors.xml");
+  //    } catch (Exception exp) {
+  //      throw new Exception("XmlUtils.FileToObject", exp);
+  //    }
+  //    try {
+  //      Instance.Finish();
+  //    } catch (Exception exp) {
+  //      throw new Exception("Instance.Finish", exp);
+  //    }
+  //  }
+  //  public static RoyalityTable Instance;
 
-    public RoyalityTableItem[] Items;
-    [XmlIgnore]
-    Dictionary<string, RoyalityTableItem> titles;
-    [XmlIgnore]
-    Dictionary<int, RoyalityTableItem> ids;
-    [XmlIgnore]
-    Dictionary<string, RoyalityTableItem> friendlyIds;
-    public void Finish() {
-      titles = new Dictionary<string, RoyalityTableItem>();
-      ids = new Dictionary<int, RoyalityTableItem>();
-      friendlyIds = new Dictionary<string, RoyalityTableItem>();
-      foreach (RoyalityTableItem lic in Items) {
-        try {
-          titles.Add(lic.Title, lic);
-          friendlyIds.Add(lic.FriendlyId, lic);
-          ids.Add(lic.Id, lic);
-        } catch (Exception exp) {
-          throw new Exception(string.Format("Error in licencors.xml, title={0}, id={1}", lic.Title, lic.Id), exp);
-        }
-      }
-    }
+  //  //public RoyalityTableItem[] Items;
+  //  //[XmlIgnore]
+  //  //Dictionary<string, RoyalityTableItem> titles;
+  //  //[XmlIgnore]
+  //  //Dictionary<int, RoyalityTableItem> ids;
+  //  //[XmlIgnore]
+  //  //Dictionary<string, RoyalityTableItem> friendlyIds;
+  //  //public void Finish() {
+  //  //  titles = new Dictionary<string, RoyalityTableItem>();
+  //  //  ids = new Dictionary<int, RoyalityTableItem>();
+  //  //  friendlyIds = new Dictionary<string, RoyalityTableItem>();
+  //  //  foreach (RoyalityTableItem lic in Items) {
+  //  //    try {
+  //  //      titles.Add(lic.Title, lic);
+  //  //      friendlyIds.Add(lic.FriendlyId, lic);
+  //  //      ids.Add(lic.Id, lic);
+  //  //    } catch (Exception exp) {
+  //  //      throw new Exception(string.Format("Error in licencors.xml, title={0}, id={1}", lic.Title, lic.Id), exp);
+  //  //    }
+  //  //  }
+  //  //}
 
-    public static IEnumerable<string> allRoyalityTableItems() {
-      foreach (RoyalityTableItem lic in Instance.Items) yield return lic.Title;
-    }
+  //  //public static IEnumerable<string> allRoyalityTableItems() {
+  //  //  foreach (RoyalityTableItem lic in Instance.Items) yield return lic.Title;
+  //  //}
 
-    public static int licencor(string licText) {
-      return Instance.titles[licText].Id;
-    }
+  //  public static int licencor(string licText) {
+  //    return Instance.titles[licText].Id;
+  //  }
 
-    public static string licencorName(string licText) {
-      return Instance.titles[licText].FriendlyId;
-    }
+  //  public static string licencorName(string licText) {
+  //    return Instance.titles[licText].FriendlyId;
+  //  }
 
-    public static RoyalityTableItem royalityTableItem(int id) {
-      return Instance.ids[id];
-    }
+  //  public static RoyalityTableItem royalityTableItem(int id) {
+  //    return Instance.ids[id];
+  //  }
 
-    public static RoyalityTableItem royalityTableItem(string friendlyId) {
-      try {
-        return Instance.friendlyIds[friendlyId];
-      } catch (Exception exp) {
-        throw new Exception(friendlyId, exp);
-      }
+  //  public static RoyalityTableItem royalityTableItem(string friendlyId) {
+  //    try {
+  //      return Instance.friendlyIds[friendlyId];
+  //    } catch (Exception exp) {
+  //      throw new Exception(friendlyId, exp);
+  //    }
 
-    }
+  //  }
 
-  }
+  //}
 
 
 }

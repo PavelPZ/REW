@@ -61,7 +61,7 @@ namespace LMComLib {
       dod4 = ConfigurationManager.AppSettings["Fact.dod4." + langStr];
       ico = ConfigurationManager.AppSettings["Fact.ico"];
       taxpoint = ConfigurationManager.AppSettings["Fact.taxpoint." + langStr];
-      account = Order.Account;// ConfigurationManager.AppSettings["Fact.account"];
+      //account = Order.Account;// ConfigurationManager.AppSettings["Fact.account"];
       return this;
     }
     public Langs lng;

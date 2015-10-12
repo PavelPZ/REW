@@ -96,277 +96,277 @@ namespace LMComLib.Cms {
   //  public string LocDownloadUrl;
   //}
 
-  [CmsPageAttribute(PageType.Page, "Produkt")]
-  public class Product : LMPageTemplate {
+  //[CmsPageAttribute(PageType.Page, "Produkt")]
+  //public class Product : LMPageTemplate {
 
-    //Seznam ruznych licenci s cenami
-    public ProductLicence[] LicenceList;
+  //  //Seznam ruznych licenci s cenami
+  //  public ProductLicence[] LicenceList;
 
-    public double PADUsdPrice;
-    public double PADEurPrice;
-    public string COMScreenShot;
-    public bool HideOnLmcom;
+  //  public double PADUsdPrice;
+  //  public double PADEurPrice;
+  //  public string COMScreenShot;
+  //  public bool HideOnLmcom;
 
-    //Identifikace stranky v download centru (napr. Anglictina-Cambridge oznacuje ~/site/web/lang/pages/Download/Anglictina-Cambridge.aspx). 
-    //Chybi-li, bere se stejne jmeno jako je jmeno LMP souboru.
-    public string DownloadCentrumUrl;
+  //  //Identifikace stranky v download centru (napr. Anglictina-Cambridge oznacuje ~/site/web/lang/pages/Download/Anglictina-Cambridge.aspx). 
+  //  //Chybi-li, bere se stejne jmeno jako je jmeno LMP souboru.
+  //  public string DownloadCentrumUrl;
 
-    //kvuli Gopasu: explicitne zadane nelokalizovatelne hodnoty
-    public string Url;
-    public string BuyUrl;
+  //  //kvuli Gopasu: explicitne zadane nelokalizovatelne hodnoty
+  //  public string Url;
+  //  public string BuyUrl;
 
-    public ProductIcons Icons;
+  //  public ProductIcons Icons;
 
-    //Identifikace stranky s popisem produktu. 
-    //Chybi-li, bere se stejne jmeno jako je jmeno LMP souboru.
-    //public string ProductUrl;
+  //  //Identifikace stranky s popisem produktu. 
+  //  //Chybi-li, bere se stejne jmeno jako je jmeno LMP souboru.
+  //  //public string ProductUrl;
 
-    //Identifikace online kurzu
-    //public CourseIds CourseId;
+  //  //Identifikace online kurzu
+  //  //public CourseIds CourseId;
 
-    /// <summary>
-    /// Identifikac produktu pro eCommerce
-    /// </summary>
-    [IntAttribute(90, "ID pro eCommerce", Default = 0)]
-    public int? CommerceId;
+  //  /// <summary>
+  //  /// Identifikac produktu pro eCommerce
+  //  /// </summary>
+  //  [IntAttribute(90, "ID pro eCommerce", Default = 0)]
+  //  public int? CommerceId;
 
-    public bool pageOnly() {
-      return CommerceId != null && (int)CommerceId == -1;
-    }
+  //  public bool pageOnly() {
+  //    return CommerceId != null && (int)CommerceId == -1;
+  //  }
 
-    /// <summary>
-    /// "Vase cena": v podstate plati tato cena, UnitPrice se pouze zobrazuje
-    /// </summary>
-    [CurrencyAttribute(110, "Vaše cena", DefaultAmount = 0, DefaultTyp = CurrencyType.csk, DefaultWithWat = true)]
-    public Currency? Discount;
+  //  /// <summary>
+  //  /// "Vase cena": v podstate plati tato cena, UnitPrice se pouze zobrazuje
+  //  /// </summary>
+  //  [CurrencyAttribute(110, "Vaše cena", DefaultAmount = 0, DefaultTyp = CurrencyType.csk, DefaultWithWat = true)]
+  //  public Currency? Discount;
 
-    /// <summary>
-    /// Pro ucetnictvi: obsahuje skladovou kartu
-    /// </summary>
-    [BoolAttribute(180, "Účtuje se do skladu", Default = false)]
-    public bool? StockAble;
+  //  /// <summary>
+  //  /// Pro ucetnictvi: obsahuje skladovou kartu
+  //  /// </summary>
+  //  [BoolAttribute(180, "Účtuje se do skladu", Default = false)]
+  //  public bool? StockAble;
 
-    /// <summary>
-    /// Vyrobni naklady
-    /// </summary>
-    [CurrencyAttribute(112, "Výrobní náklady", DefaultTyp = CurrencyType.csk, DefaultWithWat = true)]
-    public Currency? ProductionCost;
+  //  /// <summary>
+  //  /// Vyrobni naklady
+  //  /// </summary>
+  //  [CurrencyAttribute(112, "Výrobní náklady", DefaultTyp = CurrencyType.csk, DefaultWithWat = true)]
+  //  public Currency? ProductionCost;
 
-    /// <summary>
-    /// Informace o licencnich poplatcich
-    /// </summary>
-    [LicenceFeeAttribute(170, "Licenční poplatky")]
-    public ProductRoyality[] ProductRoyalities;
+  //  /// <summary>
+  //  /// Informace o licencnich poplatcich
+  //  /// </summary>
+  //  //[LicenceFeeAttribute(170, "Licenční poplatky")]
+  //  //public ProductRoyality[] ProductRoyalities;
 
-    [StringAttribute(78, "Krátký titulek", Type = StringType.SingleLine)]
-    public string ShortTitle;
+  //  [StringAttribute(78, "Krátký titulek", Type = StringType.SingleLine)]
+  //  public string ShortTitle;
 
-    [StringAttribute(80, "Perex", Type = StringType.Html)]
-    public string Perex;
+  //  [StringAttribute(80, "Perex", Type = StringType.Html)]
+  //  public string Perex;
 
-    public LineIds Line; //zatrideni do skupiny produktu
-    public Langs[] LocalizedTo; //produkt je lokalizovan do jazyku...
-    public Langs[] LocalizedToFake; //Fake lokalizace, pouze kvuli SEO
-    public bool? WithDict; //priznak - produkt se slovnikem
+  //  public LineIds Line; //zatrideni do skupiny produktu
+  //  public Langs[] LocalizedTo; //produkt je lokalizovan do jazyku...
+  //  public Langs[] LocalizedToFake; //Fake lokalizace, pouze kvuli SEO
+  //  public bool? WithDict; //priznak - produkt se slovnikem
 
-    public ET_SiteMapId ET_SiteMapId; //pro ET produkty: typ produktu
+  //  public ET_SiteMapId ET_SiteMapId; //pro ET produkty: typ produktu
 
-    /// <summary>
-    /// Jedna se pouze o prodej licence, nikoliv krabice apod.
-    /// </summary>
-    /*public bool LicenceOnly {
-      get { return CourseId != CourseIds.no; }
-    }*/
+  //  /// <summary>
+  //  /// Jedna se pouze o prodej licence, nikoliv krabice apod.
+  //  /// </summary>
+  //  /*public bool LicenceOnly {
+  //    get { return CourseId != CourseIds.no; }
+  //  }*/
 
-    void adjustLicenceList() {
-      if (LicenceList != null && LicenceList.Length > 0) return;
-      LicenceList = new ProductLicence[] { 
-        new ProductLicence() {
-          Licence = ProductLicenceType.box,
-          LicPrice = (Currency)Discount
-        }
-      };
-    }
+  //  void adjustLicenceList() {
+  //    if (LicenceList != null && LicenceList.Length > 0) return;
+  //    LicenceList = new ProductLicence[] { 
+  //      new ProductLicence() {
+  //        Licence = ProductLicenceType.box,
+  //        LicPrice = (Currency)Discount
+  //      }
+  //    };
+  //  }
 
-    [XmlIgnore]
-    Dictionary<ProductLicenceType, ProductLicence> licences;
-    [XmlIgnore]
-    public Dictionary<ProductLicenceType, ProductLicence> Licences {
-      get {
-        return null;
-        //if (licences == null)
-        //  try {
-        //    licences = new Dictionary<ProductLicenceType, ProductLicence>();
-        //    adjustLicenceList();
-        //    /*if (LicenceList == null || LicenceList.Length <= 0) {
-        //      ProductLicence noLic = new ProductLicence();
-        //      noLic.MyProd = ProductCatalogue.get(Info.dbId, Langs.cs_cz);
-        //      noLic.Licence = ProductLicenceType.box;
-        //      noLic.LicPrice = (Currency)Discount;
-        //      licences.Add(noLic.Licence, noLic);
-        //    } else*/
-        //    foreach (ProductLicence lic in LicenceList) {
-        //      lic.MyProd = ProductCatalogue.get(Info.dbId, Langs.cs_cz);
-        //      licences.Add(lic.Licence, lic);
-        //    }
+  //  [XmlIgnore]
+  //  Dictionary<ProductLicenceType, ProductLicence> licences;
+  //  [XmlIgnore]
+  //  public Dictionary<ProductLicenceType, ProductLicence> Licences {
+  //    get {
+  //      return null;
+  //      //if (licences == null)
+  //      //  try {
+  //      //    licences = new Dictionary<ProductLicenceType, ProductLicence>();
+  //      //    adjustLicenceList();
+  //      //    /*if (LicenceList == null || LicenceList.Length <= 0) {
+  //      //      ProductLicence noLic = new ProductLicence();
+  //      //      noLic.MyProd = ProductCatalogue.get(Info.dbId, Langs.cs_cz);
+  //      //      noLic.Licence = ProductLicenceType.box;
+  //      //      noLic.LicPrice = (Currency)Discount;
+  //      //      licences.Add(noLic.Licence, noLic);
+  //      //    } else*/
+  //      //    foreach (ProductLicence lic in LicenceList) {
+  //      //      lic.MyProd = ProductCatalogue.get(Info.dbId, Langs.cs_cz);
+  //      //      licences.Add(lic.Licence, lic);
+  //      //    }
 
-        //  } catch (Exception exp) {
-        //    throw new Exception(string.Format("DBId={0}, CommerceId={1}", Info.dbId, CommerceId), exp);
-        //  }
-        //return licences;
-      }
-    }
+  //      //  } catch (Exception exp) {
+  //      //    throw new Exception(string.Format("DBId={0}, CommerceId={1}", Info.dbId, CommerceId), exp);
+  //      //  }
+  //      //return licences;
+  //    }
+  //  }
 
-    public double ProductPriceTax() {
-      return Order.RoundCurrency(((Currency)Discount).PriceTax(Order.ActTaxPercent, SubDomains.no, ProductLicenceType.box));
-    }
+  //  public double ProductPriceTax() {
+  //    return Order.RoundCurrency(((Currency)Discount).PriceTax(Order.ActTaxPercent, SubDomains.no, ProductLicenceType.box));
+  //  }
 
-    //public UniversalDataItem getData() {
-    //  UniversalDataItem res = new UniversalDataItem(this, Perex, Info.AbsVisibleUrl(), middleImg());
-    //  res.price = ProductPriceTax();
-    //  res.pageOnly = pageOnly();
-    //  return res;
-    //}
+  //  //public UniversalDataItem getData() {
+  //  //  UniversalDataItem res = new UniversalDataItem(this, Perex, Info.AbsVisibleUrl(), middleImg());
+  //  //  res.price = ProductPriceTax();
+  //  //  res.pageOnly = pageOnly();
+  //  //  return res;
+  //  //}
 
-    /*Properties, "zdedene" od predchudcu
-    string Title; //Jmeno produktu
-    int dbId; //Identifikace produktu
-    this.Info.Url() //URL s produktem
-    */
-    [StringAttribute(85, "Body", Type = StringType.Html)]
-    public string Body;
+  //  /*Properties, "zdedene" od predchudcu
+  //  string Title; //Jmeno produktu
+  //  int dbId; //Identifikace produktu
+  //  this.Info.Url() //URL s produktem
+  //  */
+  //  [StringAttribute(85, "Body", Type = StringType.Html)]
+  //  public string Body;
 
-    /// <summary>
-    /// Cena produktu: soucasti Currency je i měna a zdali se jedná o cenu s daní či bez daně.
-    /// </summary>
-    [CurrencyAttribute(100, "Cena", DefaultAmount = 0, DefaultTyp = CurrencyType.csk, DefaultWithWat = true)]
-    public Currency? UnitPrice;
+  //  /// <summary>
+  //  /// Cena produktu: soucasti Currency je i měna a zdali se jedná o cenu s daní či bez daně.
+  //  /// </summary>
+  //  [CurrencyAttribute(100, "Cena", DefaultAmount = 0, DefaultTyp = CurrencyType.csk, DefaultWithWat = true)]
+  //  public Currency? UnitPrice;
 
-    /// <summary>
-    /// Ukazatel na obrazek s produktem. Jeho URL je napr. v Image.Info.Url()
-    /// </summary>
-    [PointerAttributes(140, "3 boxy (od největšího)", FilterType = PageFilter.Img)]
-    public int[] boxImg;
-    [XmlIgnore]
-    public CacheNode[] BoxImg;
+  //  /// <summary>
+  //  /// Ukazatel na obrazek s produktem. Jeho URL je napr. v Image.Info.Url()
+  //  /// </summary>
+  //  [PointerAttributes(140, "3 boxy (od největšího)", FilterType = PageFilter.Img)]
+  //  public int[] boxImg;
+  //  [XmlIgnore]
+  //  public CacheNode[] BoxImg;
 
-    public CacheNode smallImg() {
-      if (BoxImg == null || BoxImg.Length < 3) return null;
-      return BoxImg[2];
-    }
-    public CacheNode middleImg() {
-      if (BoxImg == null || BoxImg.Length < 2) return null;
-      return BoxImg[1];
-    }
-    public CacheNode bigImg() {
-      if (BoxImg == null || BoxImg.Length < 1) return null;
-      return BoxImg[0];
-    }
+  //  public CacheNode smallImg() {
+  //    if (BoxImg == null || BoxImg.Length < 3) return null;
+  //    return BoxImg[2];
+  //  }
+  //  public CacheNode middleImg() {
+  //    if (BoxImg == null || BoxImg.Length < 2) return null;
+  //    return BoxImg[1];
+  //  }
+  //  public CacheNode bigImg() {
+  //    if (BoxImg == null || BoxImg.Length < 1) return null;
+  //    return BoxImg[0];
+  //  }
 
 
-    ///// Screenshoty
-    ///// </summary>
-    //[PointerAttributes(142, "Screenshoty", FilterType = PageFilter.Img)]
-    //public int[] screenShots;
-    //[XmlIgnore]
-    //public CacheNode[] ScreenShots;
+  //  ///// Screenshoty
+  //  ///// </summary>
+  //  //[PointerAttributes(142, "Screenshoty", FilterType = PageFilter.Img)]
+  //  //public int[] screenShots;
+  //  //[XmlIgnore]
+  //  //public CacheNode[] ScreenShots;
 
-    ///// <summary>
-    ///// Svazane produkty. Pristup je pres Product pr = (Product) Related[i].getTemplate();
-    ///// </summary>
-    //[PointerAttributes(150, "'Viz též produtky", Classes = new Type[] { typeof(Product) })]
-    //public int[] related;
-    //[XmlIgnore]
-    //public CacheNode[] Related;
+  //  ///// <summary>
+  //  ///// Svazane produkty. Pristup je pres Product pr = (Product) Related[i].getTemplate();
+  //  ///// </summary>
+  //  //[PointerAttributes(150, "'Viz též produtky", Classes = new Type[] { typeof(Product) })]
+  //  //public int[] related;
+  //  //[XmlIgnore]
+  //  //public CacheNode[] Related;
 
-    ///// <summary>
-    ///// Svazane produkty
-    ///// </summary>
-    //[PointerAttributes(160, "'Viz též' komplety", Classes = new Type[] { typeof(Product) })]
-    //public int[] packages;
-    //[XmlIgnore]
-    //public CacheNode[] Packages;
+  //  ///// <summary>
+  //  ///// Svazane produkty
+  //  ///// </summary>
+  //  //[PointerAttributes(160, "'Viz též' komplety", Classes = new Type[] { typeof(Product) })]
+  //  //public int[] packages;
+  //  //[XmlIgnore]
+  //  //public CacheNode[] Packages;
 
-    ///// <summary>
-    ///// Ocenění
-    ///// </summary>
-    //[PointerAttributes(162, "Ocenění", Classes = new Type[] { typeof(UniversalItem) })]
-    //public int[] prices;
-    //[XmlIgnore]
-    //public CacheNode[] Prices;
+  //  ///// <summary>
+  //  ///// Ocenění
+  //  ///// </summary>
+  //  //[PointerAttributes(162, "Ocenění", Classes = new Type[] { typeof(UniversalItem) })]
+  //  //public int[] prices;
+  //  //[XmlIgnore]
+  //  //public CacheNode[] Prices;
 
-    ///// <summary>
-    ///// Ocenění
-    ///// </summary>
-    //[PointerAttributes(163, "Partneři", Classes = new Type[] { typeof(UniversalItem) })]
-    //public int[] partners;
-    //[XmlIgnore]
-    //public CacheNode[] Partners;
+  //  ///// <summary>
+  //  ///// Ocenění
+  //  ///// </summary>
+  //  //[PointerAttributes(163, "Partneři", Classes = new Type[] { typeof(UniversalItem) })]
+  //  //public int[] partners;
+  //  //[XmlIgnore]
+  //  //public CacheNode[] Partners;
 
-    //[IntAttribute(165, "Pořadí v obsahu kompletů", Default = 0)]
-    //public int? KompletOrder;
+  //  //[IntAttribute(165, "Pořadí v obsahu kompletů", Default = 0)]
+  //  //public int? KompletOrder;
 
-    ///// <summary>
-    ///// Další informace pro AppData databazi
-    ///// </summary>
-    //public ProductAppDataItem AppDataItem;
+  //  ///// <summary>
+  //  ///// Další informace pro AppData databazi
+  //  ///// </summary>
+  //  //public ProductAppDataItem AppDataItem;
 
-    //public double ListPrice() {
-    //  return Order.RoundCurrency(((Currency)UnitPrice).Price(Order.ActTaxPercent, SubDomains.no, ProductLicenceType.box));
-    //}
+  //  //public double ListPrice() {
+  //  //  return Order.RoundCurrency(((Currency)UnitPrice).Price(Order.ActTaxPercent, SubDomains.no, ProductLicenceType.box));
+  //  //}
 
-    //public double ListPriceTax() {
-    //  return Order.RoundCurrency(((Currency)UnitPrice).PriceTax(Order.ActTaxPercent, SubDomains.no, ProductLicenceType.box));
-    //}
-    ///*public double Price() {
-    //  return Order.RoundCurrency(((Currency)Discount).Price(Order.ActTaxPercent));
-    //}
-    //public double Tax() {
-    //  return Order.RoundCurrency(((Currency)Discount).Tax(Order.ActTaxPercent));
-    //}*/
+  //  //public double ListPriceTax() {
+  //  //  return Order.RoundCurrency(((Currency)UnitPrice).PriceTax(Order.ActTaxPercent, SubDomains.no, ProductLicenceType.box));
+  //  //}
+  //  ///*public double Price() {
+  //  //  return Order.RoundCurrency(((Currency)Discount).Price(Order.ActTaxPercent));
+  //  //}
+  //  //public double Tax() {
+  //  //  return Order.RoundCurrency(((Currency)Discount).Tax(Order.ActTaxPercent));
+  //  //}*/
 
-    //public override string ContentControlUrl() {
-    //  return "~/cz/Web/Controls/Products/Product.ascx";
-    //}
+  //  //public override string ContentControlUrl() {
+  //  //  return "~/cz/Web/Controls/Products/Product.ascx";
+  //  //}
 
-    /*public ProductCatalogueItem CreateProductCatalogue(Domains site) {
-      ProductCatalogueItem res = AppDataItem != null ? AppDataItem : new ProductCatalogueItem();
-      res.ProductId = Info.dbId;
-      res.site = site;
-      res.LicenceList = LicenceList;
-      res.seeAlso = related;
-      res.CommerceId = (int)CommerceId;
-      res.Discount = (Currency)Discount;
-      res.StockAble = StockAble == null ? false : (bool)StockAble;
-      res.ProductionCost = ProductionCost == null ? new Currency(CurrencyType.csk, 0.0) : (Currency)ProductionCost;
-      res.ProductRoyalities = ProductRoyalities;
-      return res;
-    }*/
+  //  /*public ProductCatalogueItem CreateProductCatalogue(Domains site) {
+  //    ProductCatalogueItem res = AppDataItem != null ? AppDataItem : new ProductCatalogueItem();
+  //    res.ProductId = Info.dbId;
+  //    res.site = site;
+  //    res.LicenceList = LicenceList;
+  //    res.seeAlso = related;
+  //    res.CommerceId = (int)CommerceId;
+  //    res.Discount = (Currency)Discount;
+  //    res.StockAble = StockAble == null ? false : (bool)StockAble;
+  //    res.ProductionCost = ProductionCost == null ? new Currency(CurrencyType.csk, 0.0) : (Currency)ProductionCost;
+  //    res.ProductRoyalities = ProductRoyalities;
+  //    return res;
+  //  }*/
 
-    //public DsgnProduct dsgnCreateProduct(Domains site) {
-    //  DsgnProduct res = new DsgnProduct();
-    //  res.ProductId = Info.dbId;
-    //  res.site = site;
-    //  res.HideOnLmcom = HideOnLmcom;
-    //  adjustLicenceList();
-    //  res.LicenceList = LicenceList.Where(lic => lic.LicPrice.Amount > 0 || lic.LicPrice.Ptr != null || lic.LicPrice.SubSites != null).ToArray();// LicenceList;
-    //  //res.LicenceList = Licences.Values.Where(lic => lic.LicPrice.Amount > 0 || lic.LicPrice.Ptr != null).ToArray();// LicenceList;
-    //  if (res.LicenceList == null || res.LicenceList.Length == 0)
-    //    return null;
-    //  res.seeAlso = related;
-    //  res.CommerceId = (int)CommerceId;
-    //  res.Discount = (Currency)Discount;
-    //  res.StockAble = StockAble == null ? false : (bool)StockAble;
-    //  res.ProductionCost = ProductionCost == null ? new Currency(CurrencyType.csk, 0.0) : (Currency)ProductionCost;
-    //  res.ProductRoyalities = ProductRoyalities;
-    //  res.PADUsdPrice = PADUsdPrice;
-    //  res.Icons = Icons;
-    //  res.PADEurPrice = PADEurPrice;
-    //  res.COMScreenShot = COMScreenShot;
-    //  res.ET_SiteMapId = ET_SiteMapId;
-    //  return res;
-    //}
-  }
+  //  //public DsgnProduct dsgnCreateProduct(Domains site) {
+  //  //  DsgnProduct res = new DsgnProduct();
+  //  //  res.ProductId = Info.dbId;
+  //  //  res.site = site;
+  //  //  res.HideOnLmcom = HideOnLmcom;
+  //  //  adjustLicenceList();
+  //  //  res.LicenceList = LicenceList.Where(lic => lic.LicPrice.Amount > 0 || lic.LicPrice.Ptr != null || lic.LicPrice.SubSites != null).ToArray();// LicenceList;
+  //  //  //res.LicenceList = Licences.Values.Where(lic => lic.LicPrice.Amount > 0 || lic.LicPrice.Ptr != null).ToArray();// LicenceList;
+  //  //  if (res.LicenceList == null || res.LicenceList.Length == 0)
+  //  //    return null;
+  //  //  res.seeAlso = related;
+  //  //  res.CommerceId = (int)CommerceId;
+  //  //  res.Discount = (Currency)Discount;
+  //  //  res.StockAble = StockAble == null ? false : (bool)StockAble;
+  //  //  res.ProductionCost = ProductionCost == null ? new Currency(CurrencyType.csk, 0.0) : (Currency)ProductionCost;
+  //  //  res.ProductRoyalities = ProductRoyalities;
+  //  //  res.PADUsdPrice = PADUsdPrice;
+  //  //  res.Icons = Icons;
+  //  //  res.PADEurPrice = PADEurPrice;
+  //  //  res.COMScreenShot = COMScreenShot;
+  //  //  res.ET_SiteMapId = ET_SiteMapId;
+  //  //  return res;
+  //  //}
+  //}
 
   public enum UniversalCategory {
     no,

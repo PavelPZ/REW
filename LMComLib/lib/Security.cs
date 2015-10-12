@@ -74,12 +74,12 @@ namespace LMComLib {
     /// <summary>
     /// Vola se vzdy, kdyz uzivatel pomoci GUI provedl Logout
     /// </summary>
-    public static void logout() {
-      trace(null, "LMCookie.logout Start: {0}", HttpContext.Current.User.Identity.Name);
-      loginLogout(null, null);
-      Order.ClearInstance();
-      //HttpContext.Current.Response.Redirect(urlInfo.HomeUrl());
-    }
+    //public static void logout() {
+    //  trace(null, "LMCookie.logout Start: {0}", HttpContext.Current.User.Identity.Name);
+    //  loginLogout(null, null);
+    //  Order.ClearInstance();
+    //  //HttpContext.Current.Response.Redirect(urlInfo.HomeUrl());
+    //}
 
     /*public static void logoutNew() {
       trace(null, "LMCookie.logout Start: {0}", HttpContext.Current.User.Identity.Name);

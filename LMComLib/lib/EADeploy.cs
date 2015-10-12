@@ -79,7 +79,7 @@ namespace LMComLib {
   }
 
   public class CourseInfo {
-    public ProductInfo Owner;
+    //public ProductInfo Owner;
     public LineIds Line; //obor kurzu
     public CourseIds Id;
     public string[] Spaces;
@@ -277,18 +277,18 @@ namespace LMComLib {
 
     public Domains Domain;
     public CourseIds ProductId;
-    ProductInfo prodInfo;
-    [XmlIgnore]
-    public ProductInfo ProdInfo {
-      get {
-        if (prodInfo != null) return prodInfo;
-        foreach (ProductInfo prod in ProductInfos.Instance.Items)
-          if (prod.Id == ProductId) { prodInfo = prod; return prodInfo; }
-        //throw new Exception (ProductInfos.Instance.Items.Select(pr => pr.Id.ToString()).Aggregate((r,i) => r + ", " + i));
-        //throw new Exception("Cannot find ProdInfo: " + ProductId.ToString() + "(ProductInfos.Instance.Items.Length=" + ProductInfos.Instance.Items.Length + ")");
-        throw new Exception("Cannot find ProdInfo: " + ProductId.ToString());
-      }
-    }
+    //ProductInfo prodInfo;
+    //[XmlIgnore]
+    //public ProductInfo ProdInfo {
+    //  get {
+    //    if (prodInfo != null) return prodInfo;
+    //    foreach (ProductInfo prod in ProductInfos.Instance.Items)
+    //      if (prod.Id == ProductId) { prodInfo = prod; return prodInfo; }
+    //    //throw new Exception (ProductInfos.Instance.Items.Select(pr => pr.Id.ToString()).Aggregate((r,i) => r + ", " + i));
+    //    //throw new Exception("Cannot find ProdInfo: " + ProductId.ToString() + "(ProductInfos.Instance.Items.Length=" + ProductInfos.Instance.Items.Length + ")");
+    //    throw new Exception("Cannot find ProdInfo: " + ProductId.ToString());
+    //  }
+    //}
     public override string fileName(string ext) {
       return string.Format(@"{0}\{1}\{2}{3}", LMS, Lang, ProductId, ext == null ? ".zip" : ext);
     }
@@ -368,11 +368,11 @@ namespace LMComLib {
     public bool firstModule = true;
     [XmlIgnore]
     public List<ConfigTitle> Titles = new List<ConfigTitle>();
-    public void finish() {
-      foreach (CourseInfo crs in ProdInfo.Courses)
-        foreach (string sp in crs.Spaces)
-          Titles.Add(new ConfigTitle(this, sp) { IsExternalGrammar = IsExternalGrammar, IsExternalDict = IsExternalDict, IsListenTalk = IsListenTalk });
-    }
+    //public void finish() {
+    //  foreach (CourseInfo crs in ProdInfo.Courses)
+    //    foreach (string sp in crs.Spaces)
+    //      Titles.Add(new ConfigTitle(this, sp) { IsExternalGrammar = IsExternalGrammar, IsExternalDict = IsExternalDict, IsListenTalk = IsListenTalk });
+    //}
   }
   /// <summary>
   /// Titul jako seznam modulu, pro MOODLE, LMS

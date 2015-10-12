@@ -274,20 +274,21 @@ namespace LMComLib.Admin {
     }
 
     static ProfileData profile(LMComData2.Comm_Order ordDb) {
-      string data = ordDb.Data; Order ord; 
-      try {
-        ord = XmlUtils.StringToObject<Order>(ordDb.Data);
-      } catch (Exception exp){
-        if (exp == null) return null;
-        string[] parts = data.Split(new string[] { "<title>", "</title>", "<raw>", "</raw>" }, StringSplitOptions.RemoveEmptyEntries);
-        ord = XmlUtils.StringToObject<Order>(parts[0] + parts[2] + parts[4]);
-      }
-      if (ord.Profile != null) return ord.Profile;
-      if (ordDb.InvoiceNew != null) {
-        XInvoice inv = XmlUtils.StringToObject<XInvoice>(ordDb.InvoiceNew);
-        return new ProfileData() { Email = inv.pri2, Address = new Address() { FirstName = inv.pri1 } };
-      }
-      return new ProfileData();
+      return null;
+      //string data = ordDb.Data; Order ord; 
+      //try {
+      //  ord = XmlUtils.StringToObject<Order>(ordDb.Data);
+      //} catch (Exception exp){
+      //  if (exp == null) return null;
+      //  string[] parts = data.Split(new string[] { "<title>", "</title>", "<raw>", "</raw>" }, StringSplitOptions.RemoveEmptyEntries);
+      //  ord = XmlUtils.StringToObject<Order>(parts[0] + parts[2] + parts[4]);
+      //}
+      //if (ord.Profile != null) return ord.Profile;
+      //if (ordDb.InvoiceNew != null) {
+      //  XInvoice inv = XmlUtils.StringToObject<XInvoice>(ordDb.InvoiceNew);
+      //  return new ProfileData() { Email = inv.pri2, Address = new Address() { FirstName = inv.pri1 } };
+      //}
+      //return new ProfileData();
     }
 
     public static IQueryable linqQueryLow(Expression<Func<LMComData2.Comm_Order, bool>> q, QueryPar par) {
@@ -559,19 +560,20 @@ namespace LMComLib.Admin {
   public abstract class LicencorsPar : DatePar {
 
     public override IQueryable linqQueryExcel() {
-      LMComData2.LMComDataContext db = Machines.getContext();
-      return db.Comm_Orders.Where(orderWhereCondition()).
-        SelectMany(o => o.Licencors).
-        Select(l => new {
-          VarSymb = l.Comm_Order.Id,
-          Site = l.Comm_Order.Site.ToString(),
-          Licencor = l.LicencorId,
-          Percent = RoyalityTable.royalityTableItem(l.LicencorId).Percent,
-          Product = l.ProductId,
-          Quantity = l.Quantity,
-          Sum = l.Kc,
-          Fee = l.FeeKc
-        });
+      return null;
+      //LMComData2.LMComDataContext db = Machines.getContext();
+      //return db.Comm_Orders.Where(orderWhereCondition()).
+      //  SelectMany(o => o.Licencors).
+      //  Select(l => new {
+      //    VarSymb = l.Comm_Order.Id,
+      //    Site = l.Comm_Order.Site.ToString(),
+      //    Licencor = l.LicencorId,
+      //    Percent = RoyalityTable.royalityTableItem(l.LicencorId).Percent,
+      //    Product = l.ProductId,
+      //    Quantity = l.Quantity,
+      //    Sum = l.Kc,
+      //    Fee = l.FeeKc
+      //  });
     }
 
     public override IQueryable linqQuery() {

@@ -84,21 +84,21 @@ namespace LMComLib {
     }
   }
 
-  public struct OrderInvoice {
-    public Order order;
-    public XInvoice invoice;
-  }
+  //public struct OrderInvoice {
+  //  public Order order;
+  //  public XInvoice invoice;
+  //}
 
-  public struct SendDiscountPar {
-    public SendDiscountPar(OrderDBContext ctx, string discount, double amount) {
-      Discount = discount;
-      Amount = amount;
-      Context = ctx;
-    }
-    public string Discount;
-    public double Amount;
-    public OrderDBContext Context;
-  }
+  //public struct SendDiscountPar {
+  //  public SendDiscountPar(OrderDBContext ctx, string discount, double amount) {
+  //    Discount = discount;
+  //    Amount = amount;
+  //    Context = ctx;
+  //  }
+  //  public string Discount;
+  //  public double Amount;
+  //  public OrderDBContext Context;
+  //}
 
   public struct SendLicenceKeyPar {
     /*public SendLicenceKeyPar(OrderItem orderItem, RegLicenceObj regObj, string key, OrderDBContext ctx) {

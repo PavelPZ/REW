@@ -180,7 +180,7 @@ namespace LMComLib {
           //DEBUG:
           //SiteId = Domains.com; LangId = Langs.fr_fr;
           Security = SecurityDir.Pages;
-          EACourse = ProductInfos.SpaceIdToCourseId(parts[2]);
+          //EACourse = ProductInfos.SpaceIdToCourseId(parts[2]);
           RelativePath = VirtualPathUtility.ToAppRelative(url.ToLower());
           break;
       }
