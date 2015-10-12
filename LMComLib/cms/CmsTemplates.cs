@@ -710,42 +710,42 @@ namespace LMComLib.Cms {
 
   }
 
-  [CmsPageAttribute(PageType.Page, "Popis")]
-  public class ImgTemplate : Template {
-    public override byte[] SerializeToUtf8String() {
-      return null;
-    }
-    [StringAttribute(20, "Url path", Type = StringType.ImgUrl, CanInherit = false, Required = true, regExpr = @"([;:@&=a-zA-Z0-9\$\-_\+\*\',\(\)!]|(\%[0-9a-fA-F][0-9a-fA-F]))+(/([;:@&=a-zA-Z0-9\$\-_\+\*\',\(\)!]|(\%[0-9a-fA-F][0-9a-fA-F]))+)*")]
-    [XmlIgnore]
-    public override string Name {
-      get { return cmsNode != null ? cmsNode.urlInfo.Name + "." + cmsNode.urlInfo.Ext : null; }
-      set {
-        if (cmsNode == null) return;
-        int idx = value.LastIndexOf('.');
-        cmsNode.urlInfo.Name = value.Substring(0, idx);
-        cmsNode.urlInfo.Ext = value.Substring(idx + 1);
-      }
-    }
-    [UploadAttribute(30, "upload img", CanInherit = false)]
-    [XmlIgnore]
-    public object Upload {
-      get { return null; }
-      set { ;}
-    }
+  //[CmsPageAttribute(PageType.Page, "Popis")]
+  //public class ImgTemplate : Template {
+  //  public override byte[] SerializeToUtf8String() {
+  //    return null;
+  //  }
+  //  [StringAttribute(20, "Url path", Type = StringType.ImgUrl, CanInherit = false, Required = true, regExpr = @"([;:@&=a-zA-Z0-9\$\-_\+\*\',\(\)!]|(\%[0-9a-fA-F][0-9a-fA-F]))+(/([;:@&=a-zA-Z0-9\$\-_\+\*\',\(\)!]|(\%[0-9a-fA-F][0-9a-fA-F]))+)*")]
+  //  [XmlIgnore]
+  //  public override string Name {
+  //    get { return cmsNode != null ? cmsNode.urlInfo.Name + "." + cmsNode.urlInfo.Ext : null; }
+  //    set {
+  //      if (cmsNode == null) return;
+  //      int idx = value.LastIndexOf('.');
+  //      cmsNode.urlInfo.Name = value.Substring(0, idx);
+  //      cmsNode.urlInfo.Ext = value.Substring(idx + 1);
+  //    }
+  //  }
+  //  [UploadAttribute(30, "upload img", CanInherit = false)]
+  //  [XmlIgnore]
+  //  public object Upload {
+  //    get { return null; }
+  //    set { ;}
+  //  }
 
-    public static void assignToAspImg(CacheNode obj, Image aspImg) {
-      if (obj == null) { aspImg.Visible = false; return; }
-      urlInfoLow inf = obj.getTemplate().Info;
-      aspImg.ImageUrl = inf.Url();
-      aspImg.Width = inf.imgWidth();
-      aspImg.Height = inf.imgHeight();
-    }
+  //  public static void assignToAspImg(CacheNode obj, Image aspImg) {
+  //    if (obj == null) { aspImg.Visible = false; return; }
+  //    urlInfoLow inf = obj.getTemplate().Info;
+  //    aspImg.ImageUrl = inf.Url();
+  //    aspImg.Width = inf.imgWidth();
+  //    aspImg.Height = inf.imgHeight();
+  //  }
 
-    public UniversalDataItem getData() {
-      return new UniversalDataItem(this, null, null, Info);
-    }
+  //  public UniversalDataItem getData() {
+  //    return new UniversalDataItem(this, null, null, Info);
+  //  }
 
-  }
+  //}
 
   public abstract class PageTemplate : Template {
     [StringAttribute(20, "Url cesta", Type = StringType.LmpUrl, CanInherit = false)]

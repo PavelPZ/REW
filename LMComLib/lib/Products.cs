@@ -699,37 +699,37 @@ namespace LMComLib {
         return cmsProd;
       }
     }
-    [XmlIgnore]
-    public string Title { get { return MyProd != null ? MyProd.Title : CmsProd.Title; } }
-    [XmlIgnore]
-    public string Perex { get { return MyProd != null ? MyProd.Perex : CmsProd.Perex; } }
-    [XmlIgnore]
-    public int CommerceId { get { return MyProd != null ? MyProd.CommerceId : (int)CmsProd.CommerceId; } }
-    [XmlIgnore]
-    public Currency Discount { get { return MyProd != null ? MyProd.Discount : (Currency)CmsProd.Discount; } }
-    [XmlIgnore]
-    public bool StockAble { get { return MyProd != null ? MyProd.StockAble : (CmsProd.StockAble == null ? false : (bool)CmsProd.StockAble); } }
-    [XmlIgnore]
-    public Currency ProductionCost { get { return MyProd != null ? MyProd.ProductionCost : (CmsProd.ProductionCost == null ? new Currency(CurrencyType.csk, 0.0) : (Currency)CmsProd.ProductionCost); } }
-    /*[XmlIgnore]
-    public CourseIds CourseId { get { return MyProd != null ? MyProd.CourseId : (CmsProd.CourseId == CourseIds.no ? 0 : (CourseIds)CmsProd.CourseId); } }*/
-    [XmlIgnore]
-    public bool LicenceOnly { get { return CourseId != CourseIds.no; } }
-    [XmlIgnore]
-    public int ProductId { get { return MyProd != null ? MyProd.ProductId : CmsProd.Info.dbId; } }
-    [XmlIgnore]
-    public ProductRoyality[] Licencors { get { return MyProd != null ? MyProd.ProductRoyalities : CmsProd.ProductRoyalities; } }
+    //[XmlIgnore]
+    //public string Title { get { return MyProd != null ? MyProd.Title : CmsProd.Title; } }
+    //[XmlIgnore]
+    //public string Perex { get { return MyProd != null ? MyProd.Perex : CmsProd.Perex; } }
+    //[XmlIgnore]
+    //public int CommerceId { get { return MyProd != null ? MyProd.CommerceId : (int)CmsProd.CommerceId; } }
+    //[XmlIgnore]
+    //public Currency Discount { get { return MyProd != null ? MyProd.Discount : (Currency)CmsProd.Discount; } }
+    //[XmlIgnore]
+    //public bool StockAble { get { return MyProd != null ? MyProd.StockAble : (CmsProd.StockAble == null ? false : (bool)CmsProd.StockAble); } }
+    //[XmlIgnore]
+    //public Currency ProductionCost { get { return MyProd != null ? MyProd.ProductionCost : (CmsProd.ProductionCost == null ? new Currency(CurrencyType.csk, 0.0) : (Currency)CmsProd.ProductionCost); } }
+    ///*[XmlIgnore]
+    //public CourseIds CourseId { get { return MyProd != null ? MyProd.CourseId : (CmsProd.CourseId == CourseIds.no ? 0 : (CourseIds)CmsProd.CourseId); } }*/
+    //[XmlIgnore]
+    //public bool LicenceOnly { get { return CourseId != CourseIds.no; } }
+    //[XmlIgnore]
+    //public int ProductId { get { return MyProd != null ? MyProd.ProductId : CmsProd.Info.dbId; } }
+    //[XmlIgnore]
+    //public ProductRoyality[] Licencors { get { return MyProd != null ? MyProd.ProductRoyalities : CmsProd.ProductRoyalities; } }
 
-    public IEnumerable<ProductRoyality> getRoyalities(Langs lng, ProductLicenceType type) {
-      if (Licencors == null || Licencors.Length == 0) yield break;
-      int maxType = Licencors.Select(l => l.Type == ProductLicenceType.fake ? (string.IsNullOrEmpty(l.Langs) ? 1 : 2) : (string.IsNullOrEmpty(l.Langs) ? 3 : 4)).Max();
-      switch (maxType) {
-        case 1: foreach (ProductRoyality pr in Licencors) yield return pr; break;
-        case 2: foreach (ProductRoyality pr in Licencors.Where(p => p.Langs.IndexOf(lng.ToString()) >= 0)) yield return pr; break;
-        case 3: foreach (ProductRoyality pr in Licencors.Where(p => p.Type == type)) yield return pr; break;
-        case 4: foreach (ProductRoyality pr in Licencors.Where(p => p.Langs.IndexOf(lng.ToString()) >= 0 && p.Type == type)) yield return pr; break;
-      }
-    }
+    //public IEnumerable<ProductRoyality> getRoyalities(Langs lng, ProductLicenceType type) {
+    //  if (Licencors == null || Licencors.Length == 0) yield break;
+    //  int maxType = Licencors.Select(l => l.Type == ProductLicenceType.fake ? (string.IsNullOrEmpty(l.Langs) ? 1 : 2) : (string.IsNullOrEmpty(l.Langs) ? 3 : 4)).Max();
+    //  switch (maxType) {
+    //    case 1: foreach (ProductRoyality pr in Licencors) yield return pr; break;
+    //    case 2: foreach (ProductRoyality pr in Licencors.Where(p => p.Langs.IndexOf(lng.ToString()) >= 0)) yield return pr; break;
+    //    case 3: foreach (ProductRoyality pr in Licencors.Where(p => p.Type == type)) yield return pr; break;
+    //    case 4: foreach (ProductRoyality pr in Licencors.Where(p => p.Langs.IndexOf(lng.ToString()) >= 0 && p.Type == type)) yield return pr; break;
+    //  }
+    //}
 
     [XmlIgnore]
     public string ShortTitle {
@@ -758,7 +758,7 @@ namespace LMComLib {
     }
     public int ProsperId {
       get {
-        return getProsperId(CommerceId, Licence);
+        return 0; // getProsperId(CommerceId, Licence);
       }
     }
     public double NormalPrice(SubDomains subSite) {

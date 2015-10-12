@@ -93,43 +93,44 @@ namespace LMComLib {
       return VirtualPathUtility.MakeRelative(actUi.RelativePath, url);
     }
 
-    public static Product GetProduct(SiteMapNode nd) {
-      if (nd.Url.IndexOf(".lmp") < 0) throw new Exception("nd.Url.IndexOf(.lmp) < 0");
-      if (nd["className"] != "LMComLib.Cms.Product") throw new Exception("nd[className] != LMComLib.Cms.Product");
-      CacheNode item = new CacheNode(nd);
-      Template res = Template.Load(item.FileName, nd["className"]);
-      res.node = nd;
-      res.Info = new urlInfoLow(nd);
-      return (LMComLib.Cms.Product) res;
-    }
+    //public static Product GetProduct(SiteMapNode nd) {
+    //  if (nd.Url.IndexOf(".lmp") < 0) throw new Exception("nd.Url.IndexOf(.lmp) < 0");
+    //  if (nd["className"] != "LMComLib.Cms.Product") throw new Exception("nd[className] != LMComLib.Cms.Product");
+    //  CacheNode item = new CacheNode(nd);
+    //  Template res = Template.Load(item.FileName, nd["className"]);
+    //  res.node = nd;
+    //  res.Info = new urlInfoLow(nd);
+    //  return (LMComLib.Cms.Product) res;
+    //}
 
-    public static Template GetTemplate(SiteMapNode nd) {
-      LibConfig.DesignTimeEq(false); //nesmi byt designtime
-      if (nd.Url.IndexOf(".lmp") < 0) {
-        string s = nd.Url;
-        if (s.IndexOf(".jpg") > 0 || s.IndexOf(".bmp") > 0 || s.IndexOf(".png") > 0 || s.IndexOf(".gif") > 0) {
-          Template img = new ImgTemplate();
-          img.Info = new urlInfoLow(nd);
-          return img;
-        } else {
-          return null;
-        }
-      }
-      int dbId;
-      if (!int.TryParse(nd["dbId"], out dbId)) return null;
-      Cache cache = HttpContext.Current.Cache;
-      string key = Thread.CurrentThread.CurrentUICulture.Name + nd.Url;
-      Template res = (Template)cache.Get(key);
-      if (res == null)
-        lock (typeof(CacheItems)) {
-          CacheNode item = CacheItems.GetNode(dbId);
-          res = Template.Load(item.FileName, nd["className"]);
-          res.node = nd;
-          res.Info = new urlInfoLow(nd);
-          cache.Insert(key, res, new CacheDependency(item.FileName));
-        }
-      return res;
-    }
+    public static Template GetTemplate(SiteMapNode nd) { return null; }
+    //public static Template GetTemplate(SiteMapNode nd) {
+    //  LibConfig.DesignTimeEq(false); //nesmi byt designtime
+    //  if (nd.Url.IndexOf(".lmp") < 0) {
+    //    string s = nd.Url;
+    //    if (s.IndexOf(".jpg") > 0 || s.IndexOf(".bmp") > 0 || s.IndexOf(".png") > 0 || s.IndexOf(".gif") > 0) {
+    //      Template img = new ImgTemplate();
+    //      img.Info = new urlInfoLow(nd);
+    //      return img;
+    //    } else {
+    //      return null;
+    //    }
+    //  }
+    //  int dbId;
+    //  if (!int.TryParse(nd["dbId"], out dbId)) return null;
+    //  Cache cache = HttpContext.Current.Cache;
+    //  string key = Thread.CurrentThread.CurrentUICulture.Name + nd.Url;
+    //  Template res = (Template)cache.Get(key);
+    //  if (res == null)
+    //    lock (typeof(CacheItems)) {
+    //      CacheNode item = CacheItems.GetNode(dbId);
+    //      res = Template.Load(item.FileName, nd["className"]);
+    //      res.node = nd;
+    //      res.Info = new urlInfoLow(nd);
+    //      cache.Insert(key, res, new CacheDependency(item.FileName));
+    //    }
+    //  return res;
+    //}
 
     public static Template GetTemplate(int id) {
       return GetTemplate(GetNode(id).Node);
@@ -167,22 +168,22 @@ namespace LMComLib {
     //  return res;
     //}
 
-    public static Template GetTemplate(CmsSiteMapNode nd) {
-      return null;
-      //LibConfig.DesignTimeEq(true); //musi byt designtine
-      //Cache cache = HttpContext.Current.Cache;
-      //string key = string.Format("temp_{0}", nd.dbId);
-      //Template res = (Template)cache.Get(key);
-      //if (res == null)
-      //  lock (typeof(CacheItems)) {
-      //    string fn = nd.urlInfo.getFileName();
-      //    res = nd.urlInfo.Type == SiteMapNodeType.img ? new ImgTemplate() : Template.Load(fn, nd.className);
-      //    res.dbId = nd.dbId;
-      //    res.cmsFile.Init();
-      //    cache.Insert(key, res, new CacheDependency(fn));
-      //  }
-      //return res;
-    }
+    //public static Template GetTemplate(CmsSiteMapNode nd) {
+    //  return null;
+    //  //LibConfig.DesignTimeEq(true); //musi byt designtine
+    //  //Cache cache = HttpContext.Current.Cache;
+    //  //string key = string.Format("temp_{0}", nd.dbId);
+    //  //Template res = (Template)cache.Get(key);
+    //  //if (res == null)
+    //  //  lock (typeof(CacheItems)) {
+    //  //    string fn = nd.urlInfo.getFileName();
+    //  //    res = nd.urlInfo.Type == SiteMapNodeType.img ? new ImgTemplate() : Template.Load(fn, nd.className);
+    //  //    res.dbId = nd.dbId;
+    //  //    res.cmsFile.Init();
+    //  //    cache.Insert(key, res, new CacheDependency(fn));
+    //  //  }
+    //  //return res;
+    //}
 
   }
 }

@@ -94,9 +94,9 @@ namespace LMComLib {
 
     public OrderItem(Order ord, ProductLicence licObj)
       : base() {
-      ProsperId = licObj.ProsperId;
-      dbId = licObj.ProductId;
-      MyOrder = ord;
+      //ProsperId = licObj.ProsperId;
+      //dbId = licObj.ProductId;
+      //MyOrder = ord;
     }
     /// <summary>
     /// Identifikace produktu v ucetnictvi (skladajici se z ProductId a z Licence)
@@ -306,27 +306,27 @@ namespace LMComLib {
     /// <summary>
     /// Typ obsah objednaky
     /// </summary>
-    public OrderContentType ContentType {
-      get {
-        if (Items.Count == 0)
-          return OrderContentType.Electronic;
-        OrderContentType res = OrderContentType.Both;
-        foreach (OrderItem oItem in Items) {
-          if (oItem.Licence.LicenceOnly) {
-            if (res == OrderContentType.Both)
-              res = OrderContentType.Electronic;
-            else if (res == OrderContentType.Box)
-              return OrderContentType.Both;
-          } else {
-            if (res == OrderContentType.Both)
-              res = OrderContentType.Box;
-            else if (res == OrderContentType.Electronic)
-              return OrderContentType.Both;
-          }
-        }
-        return res;
-      }
-    }
+    //public OrderContentType ContentType {
+    //  get {
+    //    if (Items.Count == 0)
+    //      return OrderContentType.Electronic;
+    //    OrderContentType res = OrderContentType.Both;
+    //    foreach (OrderItem oItem in Items) {
+    //      if (oItem.Licence.LicenceOnly) {
+    //        if (res == OrderContentType.Both)
+    //          res = OrderContentType.Electronic;
+    //        else if (res == OrderContentType.Box)
+    //          return OrderContentType.Both;
+    //      } else {
+    //        if (res == OrderContentType.Both)
+    //          res = OrderContentType.Box;
+    //        else if (res == OrderContentType.Electronic)
+    //          return OrderContentType.Both;
+    //      }
+    //    }
+    //    return res;
+    //  }
+    //}
 
     /// <summary>
     /// Pridani slevoveho kuponu
@@ -874,11 +874,11 @@ namespace LMComLib {
       ord.Provision = getKc(Provision);
       ord.Status = (short)status;
       ord.StatusDate = DateTime.UtcNow;
-      ord.ContentType = (short)ContentType;
+      //ord.ContentType = (short)ContentType;
       ord.Lang = (short)Lang;
 
       //ulozeni ProductInfos a Licencors
-      RefreshOrderData(db);
+      //RefreshOrderData(db);
 
       return ord;
     }
@@ -953,83 +953,83 @@ namespace LMComLib {
       public CourseIds CrsId { get; set; }
     }
 
-    public IEnumerable<RoyalityItem> Royality(DateTime date) {
-      double provision = (double)ProvisionPercent / 100;
-      foreach (OrderItem it in Items) {
-        if (it.Licence == null) continue;
-        double productPrice = getKc(it.Price());
-        double ListPrice = productPrice * it.Quantity;
-        double Discount = ListPrice * (1 - DiscountRatio);
-        double Provision = (ListPrice - Discount) * provision;
-        double actPrice = ListPrice - Discount - Provision - getKc(PaymentFee);
-        double Cost = it.LicenceType == ProductLicenceType.download ? 0.0 : (double)it.Quantity * ((Currency)it.Licence.ProductionCost).Amount;
-        //try { if (it.Licence.Licencors == null) continue; } catch { continue; }
-        if (it.Licence.Licencors != null)
-          foreach (ProductRoyality li in it.Licence.getRoyalities(Lang, it.LicenceType)) {
-            RoyalityItem res = new RoyalityItem() {
-              OrderId = Id,
-              Payed = date,
-              Customer = Profile.Email,
-              Currency = CurrType.ToString().ToUpper()
-            };
-            res.CrsId = it.Licence.CourseId;
-            res.Quantity = it.Quantity;
-            res.Title = ProductCatalogueItems.Instance.getBestTitle(it.dbId, new Langs[] { Langs.en_gb, Langs.cs_cz }); //ProductCatalogueItems.Instance.getEx(it.dbId);
-            RoyalityTableItem licData = RoyalityTable.royalityTableItem(li.RoyalityTableItemId);
-            res.LicencorId = licData.Id;
-            res.LicenceType = licData.FriendlyId;
-            //Odecteni nakladu na vyrobu z ceny produktu (pouze pro nektere licencory)
-            res.NetPrice = getOrig(licData.SubstractProductCost ? actPrice - Cost : actPrice);
-            //Zaklad pro vypocet licence
-            res.NetLicPrice = res.NetPrice * (double)li.Percent / 100;
-            //Licencni poplatek
-            res.LicFee = res.NetLicPrice * (double)licData.Percent / 100;
-            yield return res;
-          }
-      }
-    }
+    //public IEnumerable<RoyalityItem> Royality(DateTime date) {
+    //  double provision = (double)ProvisionPercent / 100;
+    //  foreach (OrderItem it in Items) {
+    //    if (it.Licence == null) continue;
+    //    double productPrice = getKc(it.Price());
+    //    double ListPrice = productPrice * it.Quantity;
+    //    double Discount = ListPrice * (1 - DiscountRatio);
+    //    double Provision = (ListPrice - Discount) * provision;
+    //    double actPrice = ListPrice - Discount - Provision - getKc(PaymentFee);
+    //    double Cost = it.LicenceType == ProductLicenceType.download ? 0.0 : (double)it.Quantity * ((Currency)it.Licence.ProductionCost).Amount;
+    //    //try { if (it.Licence.Licencors == null) continue; } catch { continue; }
+    //    if (it.Licence.Licencors != null)
+    //      foreach (ProductRoyality li in it.Licence.getRoyalities(Lang, it.LicenceType)) {
+    //        RoyalityItem res = new RoyalityItem() {
+    //          OrderId = Id,
+    //          Payed = date,
+    //          Customer = Profile.Email,
+    //          Currency = CurrType.ToString().ToUpper()
+    //        };
+    //        res.CrsId = it.Licence.CourseId;
+    //        res.Quantity = it.Quantity;
+    //        res.Title = ProductCatalogueItems.Instance.getBestTitle(it.dbId, new Langs[] { Langs.en_gb, Langs.cs_cz }); //ProductCatalogueItems.Instance.getEx(it.dbId);
+    //        RoyalityTableItem licData = RoyalityTable.royalityTableItem(li.RoyalityTableItemId);
+    //        res.LicencorId = licData.Id;
+    //        res.LicenceType = licData.FriendlyId;
+    //        //Odecteni nakladu na vyrobu z ceny produktu (pouze pro nektere licencory)
+    //        res.NetPrice = getOrig(licData.SubstractProductCost ? actPrice - Cost : actPrice);
+    //        //Zaklad pro vypocet licence
+    //        res.NetLicPrice = res.NetPrice * (double)li.Percent / 100;
+    //        //Licencni poplatek
+    //        res.LicFee = res.NetLicPrice * (double)licData.Percent / 100;
+    //        yield return res;
+    //      }
+    //  }
+    //}
 
-    public void RefreshOrderData(LMComData2.LMComDataContext db) {
-      double provision = (double)ProvisionPercent / 100;
-      foreach (OrderItem it in Items) {
-        LMComData2.ProductInfo pi = new LMComData2.ProductInfo();
-        db.ProductInfos.InsertOnSubmit(pi);
-        double productPrice = getKc(it.Price());
-        pi.ListPrice = productPrice * it.Quantity;
-        pi.Discount = pi.ListPrice * (1 - DiscountRatio);
-        pi.Provision = (pi.ListPrice - pi.Discount) * provision;
-        pi.Cost = it.LicenceType == ProductLicenceType.download ? 0.0 : (double)it.Quantity * ((Currency)it.Licence.ProductionCost).Amount;
-        double actPrice = pi.ListPrice - pi.Discount - pi.Provision - getKc(PaymentFee);
-        pi.OrderId = Id;
-        pi.ProductId = it.ProsperId;
-        pi.Quantity = (short)it.Quantity;
-        double licenceAll = 0;
-        if (it.Licence.Licencors != null)
-          foreach (ProductRoyality li in it.Licence.getRoyalities(Lang, it.LicenceType)) {
-            RoyalityTableItem licData = RoyalityTable.royalityTableItem(li.RoyalityTableItemId);
-            //Odecteni nakladu na vyrobu z ceny produktu (pouze pro nektere licencory)
-            double basePrice = licData.SubstractProductCost ? actPrice - pi.Cost : actPrice;
-            //Zaklad pro vypocet licence
-            double newVal = basePrice * (double)li.Percent / 100;
-            //Pridani do licInfos
-            double feeVal = newVal * (double)licData.Percent / 100;
+    //public void RefreshOrderData(LMComData2.LMComDataContext db) {
+    //  double provision = (double)ProvisionPercent / 100;
+    //  foreach (OrderItem it in Items) {
+    //    LMComData2.ProductInfo pi = new LMComData2.ProductInfo();
+    //    db.ProductInfos.InsertOnSubmit(pi);
+    //    double productPrice = getKc(it.Price());
+    //    pi.ListPrice = productPrice * it.Quantity;
+    //    pi.Discount = pi.ListPrice * (1 - DiscountRatio);
+    //    pi.Provision = (pi.ListPrice - pi.Discount) * provision;
+    //    pi.Cost = it.LicenceType == ProductLicenceType.download ? 0.0 : (double)it.Quantity * ((Currency)it.Licence.ProductionCost).Amount;
+    //    double actPrice = pi.ListPrice - pi.Discount - pi.Provision - getKc(PaymentFee);
+    //    pi.OrderId = Id;
+    //    pi.ProductId = it.ProsperId;
+    //    pi.Quantity = (short)it.Quantity;
+    //    double licenceAll = 0;
+    //    if (it.Licence.Licencors != null)
+    //      foreach (ProductRoyality li in it.Licence.getRoyalities(Lang, it.LicenceType)) {
+    //        RoyalityTableItem licData = RoyalityTable.royalityTableItem(li.RoyalityTableItemId);
+    //        //Odecteni nakladu na vyrobu z ceny produktu (pouze pro nektere licencory)
+    //        double basePrice = licData.SubstractProductCost ? actPrice - pi.Cost : actPrice;
+    //        //Zaklad pro vypocet licence
+    //        double newVal = basePrice * (double)li.Percent / 100;
+    //        //Pridani do licInfos
+    //        double feeVal = newVal * (double)licData.Percent / 100;
 
-            Licencor lic = new Licencor();
-            db.Licencors.InsertOnSubmit(lic);
-            lic.OrderId = Id;
-            lic.LicencorId = (short)licData.Id;
-            lic.Quantity = pi.Quantity;
-            lic.Kc = newVal;
-            lic.FeeKc = feeVal;
-            lic.ProductId = it.dbId;
-            lic.Licence = (short)ProductLicence.getLicenceType(it.ProsperId);
+    //        Licencor lic = new Licencor();
+    //        db.Licencors.InsertOnSubmit(lic);
+    //        lic.OrderId = Id;
+    //        lic.LicencorId = (short)licData.Id;
+    //        lic.Quantity = pi.Quantity;
+    //        lic.Kc = newVal;
+    //        lic.FeeKc = feeVal;
+    //        lic.ProductId = it.dbId;
+    //        lic.Licence = (short)ProductLicence.getLicenceType(it.ProsperId);
 
-            licenceAll += feeVal;
-          }
-        pi.Licence = licenceAll;
-        pi.Profit = pi.ListPrice - pi.Discount - pi.Cost - pi.Provision - pi.Licence;
-      }
-    }
+    //        licenceAll += feeVal;
+    //      }
+    //    pi.Licence = licenceAll;
+    //    pi.Profit = pi.ListPrice - pi.Discount - pi.Cost - pi.Provision - pi.Licence;
+    //  }
+    //}
 
 
     public bool Save(OrderDBContext ctx) {

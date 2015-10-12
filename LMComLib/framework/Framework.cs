@@ -527,7 +527,7 @@ namespace LMComLib {
     public string AbsoluteUri; //Info z puvodniho requestu pred RewritePath
     public SubDomains SubSite;
     public string AbsolutePath; //Info z puvodniho requestu pred RewritePath
-    public LMComLib.Cms.Template CmsTemplate; //Template, zjistovany v runtime v AuthenticateRequest
+    //public LMComLib.Cms.Template CmsTemplate; //Template, zjistovany v runtime v AuthenticateRequest
     public SiteMapNode Node; //SiteMapNode, zjistovany v runtime v AuthenticateRequest
     public bool isLMP; //LMP nebo ASPX soubor. Zjistovano z existence prislusneho souboru
 

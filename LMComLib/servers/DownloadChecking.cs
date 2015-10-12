@@ -371,76 +371,76 @@ namespace LMComLib {
     public delegate Currency GetProductPriceEvent(ET_Lib.CourseInfo crsInfo);
     public static GetProductPriceEvent OnGetProductPrice;
 
-    public static void Lmp(TextWriter log) {
-      ET_Lib.logHeader(log, "DownloadFileGenerator.lmp");
-      //foreach (var grp in ET_Lib.allCourses(false).GroupBy(ci => ci.CrsId)) {
-      foreach (var grp in ET_Lib.allCourses(true).GroupBy(ci => ci.CrsId)) {
-        ET_Lib.CourseInfo first = grp.First();
-        Product prod = new Product();
-        prod.LicenceList = new ProductLicence[] {
-          new ProductLicence() {
-            CourseId = first.CrsId,
-            Licence = ProductLicenceType.download,
-            LicPrice = OnGetProductPrice!=null ? OnGetProductPrice(first) : new Currency() {
-              Typ = CurrencyType.eur,
-              WithVat = true,
-              Amount = 29
-            }
-          }
-        };
-        prod.Line = CommonLib.CourseIdToLineId(first.CrsId);
-        prod.ET_SiteMapId = first.CourseType;
-        prod.HideOnLmcom = false;
-        string fn;
-        if (first.CourseType == ET_SiteMapId.talknow) {
-          prod.Icons = ProductIcons.Download | ProductIcons.Course1 | ProductIcons.Dict3000;
-          bool hasDict = grp.Any(crs => crs.WithDict);
-          if (hasDict) {
-            prod.WithDict = true;
-            prod.LocalizedTo = grp.Where(ci => ci.WithDict && ci.Loc != Langs.en_nz).Select(ci => ci.Loc).ToArray();
-            prod.ProductRoyalities = new ProductRoyality[] {
-              new ProductRoyality() {RoyalityTableItemId = "Lingea_50", Percent = 15.0, Type = ProductLicenceType.download},
-              new ProductRoyality() {RoyalityTableItemId = "EuroTalk_50", Percent = 85.0, Type = ProductLicenceType.download}
-            };
-            LowUtils.AdjustFileDir(fn = first.FilePath(ET_Lib.SitemapNodeType.lmp));
-            prod.CommerceId = int.Parse(getUniqueId(first.CrsId, prod.WithDict ?? false));
-            Cms.PageTemplate.Save(prod, fn);
-            prod.LocalizedTo = grp.Where(ci => !ci.WithDict && ci.Loc != Langs.en_nz).Select(ci => ci.Loc).Concat(new Langs[] { Langs.en_nz }).ToArray(); //;
-            prod.WithDict = false;
-            prod.ProductRoyalities = new ProductRoyality[] { new ProductRoyality() { RoyalityTableItemId = "EuroTalk_50", Percent = 100.0, Type = ProductLicenceType.download } };
-            LowUtils.AdjustFileDir(fn = first.FilePath(ET_Lib.SitemapNodeType.lmp_nodict));
-            prod.CommerceId = int.Parse(getUniqueId(first.CrsId, prod.WithDict ?? false));
-            prod.Icons &= ~ProductIcons.Dict3000;
-            Cms.PageTemplate.Save(prod, fn);
-          } else {
-            prod.LocalizedTo = grp.Select(ci => ci.Loc).ToArray();
-            prod.WithDict = false;
-            prod.ProductRoyalities = new ProductRoyality[] { new ProductRoyality() { RoyalityTableItemId = "EuroTalk_50", Percent = 100.0, Type = ProductLicenceType.download } };
-            LowUtils.AdjustFileDir(fn = first.FilePath(ET_Lib.SitemapNodeType.lmp_nodict));
-            prod.CommerceId = int.Parse(getUniqueId(first.CrsId, prod.WithDict ?? false));
-            prod.Icons &= ~ProductIcons.Dict3000;
-            Cms.PageTemplate.Save(prod, fn);
-          }
-        } else {
-          prod.LocalizedTo = grp.Select(ci => ci.Loc).ToArray();
-          LowUtils.AdjustFileDir(fn = first.FilePath(ET_Lib.SitemapNodeType.lmp));
-          switch (first.CourseType) {
-            case ET_SiteMapId.lingea:
-              prod.Icons = ProductIcons.Download | (ET_Lib.getDictType(first.CrsId) == ET_Lib.DictType.StudyDict ? ProductIcons.Dict3000 : ProductIcons.Dict15000);
-              prod.ProductRoyalities = new ProductRoyality[] { new ProductRoyality() { RoyalityTableItemId = "Lingea_50", Percent = 100.0, Type = ProductLicenceType.download } };
-              break;
-            case ET_SiteMapId.talknowaudio:
-              prod.Icons = ProductIcons.Download | ProductIcons.Mp31;
-              prod.ProductRoyalities = new ProductRoyality[] { new ProductRoyality() { RoyalityTableItemId = "EuroTalk_25", Percent = 100.0, Type = ProductLicenceType.download } };
-              break;
-            default:
-              throw new NotImplementedException();
-          }
-          prod.CommerceId = int.Parse(getUniqueId(first.CrsId, prod.WithDict ?? false));
-          Cms.PageTemplate.Save(prod, fn);
-        }
-      }
-    }
+    //public static void Lmp(TextWriter log) {
+    //  ET_Lib.logHeader(log, "DownloadFileGenerator.lmp");
+    //  //foreach (var grp in ET_Lib.allCourses(false).GroupBy(ci => ci.CrsId)) {
+    //  foreach (var grp in ET_Lib.allCourses(true).GroupBy(ci => ci.CrsId)) {
+    //    ET_Lib.CourseInfo first = grp.First();
+    //    Product prod = new Product();
+    //    prod.LicenceList = new ProductLicence[] {
+    //      new ProductLicence() {
+    //        CourseId = first.CrsId,
+    //        Licence = ProductLicenceType.download,
+    //        LicPrice = OnGetProductPrice!=null ? OnGetProductPrice(first) : new Currency() {
+    //          Typ = CurrencyType.eur,
+    //          WithVat = true,
+    //          Amount = 29
+    //        }
+    //      }
+    //    };
+    //    prod.Line = CommonLib.CourseIdToLineId(first.CrsId);
+    //    prod.ET_SiteMapId = first.CourseType;
+    //    prod.HideOnLmcom = false;
+    //    string fn;
+    //    if (first.CourseType == ET_SiteMapId.talknow) {
+    //      prod.Icons = ProductIcons.Download | ProductIcons.Course1 | ProductIcons.Dict3000;
+    //      bool hasDict = grp.Any(crs => crs.WithDict);
+    //      if (hasDict) {
+    //        prod.WithDict = true;
+    //        prod.LocalizedTo = grp.Where(ci => ci.WithDict && ci.Loc != Langs.en_nz).Select(ci => ci.Loc).ToArray();
+    //        prod.ProductRoyalities = new ProductRoyality[] {
+    //          new ProductRoyality() {RoyalityTableItemId = "Lingea_50", Percent = 15.0, Type = ProductLicenceType.download},
+    //          new ProductRoyality() {RoyalityTableItemId = "EuroTalk_50", Percent = 85.0, Type = ProductLicenceType.download}
+    //        };
+    //        LowUtils.AdjustFileDir(fn = first.FilePath(ET_Lib.SitemapNodeType.lmp));
+    //        prod.CommerceId = int.Parse(getUniqueId(first.CrsId, prod.WithDict ?? false));
+    //        Cms.PageTemplate.Save(prod, fn);
+    //        prod.LocalizedTo = grp.Where(ci => !ci.WithDict && ci.Loc != Langs.en_nz).Select(ci => ci.Loc).Concat(new Langs[] { Langs.en_nz }).ToArray(); //;
+    //        prod.WithDict = false;
+    //        prod.ProductRoyalities = new ProductRoyality[] { new ProductRoyality() { RoyalityTableItemId = "EuroTalk_50", Percent = 100.0, Type = ProductLicenceType.download } };
+    //        LowUtils.AdjustFileDir(fn = first.FilePath(ET_Lib.SitemapNodeType.lmp_nodict));
+    //        prod.CommerceId = int.Parse(getUniqueId(first.CrsId, prod.WithDict ?? false));
+    //        prod.Icons &= ~ProductIcons.Dict3000;
+    //        Cms.PageTemplate.Save(prod, fn);
+    //      } else {
+    //        prod.LocalizedTo = grp.Select(ci => ci.Loc).ToArray();
+    //        prod.WithDict = false;
+    //        prod.ProductRoyalities = new ProductRoyality[] { new ProductRoyality() { RoyalityTableItemId = "EuroTalk_50", Percent = 100.0, Type = ProductLicenceType.download } };
+    //        LowUtils.AdjustFileDir(fn = first.FilePath(ET_Lib.SitemapNodeType.lmp_nodict));
+    //        prod.CommerceId = int.Parse(getUniqueId(first.CrsId, prod.WithDict ?? false));
+    //        prod.Icons &= ~ProductIcons.Dict3000;
+    //        Cms.PageTemplate.Save(prod, fn);
+    //      }
+    //    } else {
+    //      prod.LocalizedTo = grp.Select(ci => ci.Loc).ToArray();
+    //      LowUtils.AdjustFileDir(fn = first.FilePath(ET_Lib.SitemapNodeType.lmp));
+    //      switch (first.CourseType) {
+    //        case ET_SiteMapId.lingea:
+    //          prod.Icons = ProductIcons.Download | (ET_Lib.getDictType(first.CrsId) == ET_Lib.DictType.StudyDict ? ProductIcons.Dict3000 : ProductIcons.Dict15000);
+    //          prod.ProductRoyalities = new ProductRoyality[] { new ProductRoyality() { RoyalityTableItemId = "Lingea_50", Percent = 100.0, Type = ProductLicenceType.download } };
+    //          break;
+    //        case ET_SiteMapId.talknowaudio:
+    //          prod.Icons = ProductIcons.Download | ProductIcons.Mp31;
+    //          prod.ProductRoyalities = new ProductRoyality[] { new ProductRoyality() { RoyalityTableItemId = "EuroTalk_25", Percent = 100.0, Type = ProductLicenceType.download } };
+    //          break;
+    //        default:
+    //          throw new NotImplementedException();
+    //      }
+    //      prod.CommerceId = int.Parse(getUniqueId(first.CrsId, prod.WithDict ?? false));
+    //      Cms.PageTemplate.Save(prod, fn);
+    //    }
+    //  }
+    //}
 
 
     public static void Aspx(TextWriter log) {
