@@ -8,7 +8,7 @@ using System.Text;
 using System.Web;
 using System.Web.SessionState;
 using LMComData2;
-using LMComLib.Cms;
+//using LMComLib.Cms;
 using LMNetLib;
 
 namespace LMComLib {

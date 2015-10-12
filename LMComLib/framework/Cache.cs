@@ -19,7 +19,7 @@ using System.Threading;
 using System.Globalization;
 using System.Web.Hosting;
 
-using LMComLib.Cms;
+//using LMComLib.Cms;
 using LMNetLib;
 
 namespace LMComLib {
