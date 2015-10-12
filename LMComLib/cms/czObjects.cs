@@ -567,50 +567,50 @@ namespace LMComLib.Cms {
 
   //}
 
-  public abstract class LMPageTemplate : PageTemplate {
+  //public abstract class LMPageTemplate : PageTemplate {
 
-    static LMPageTemplate() {
-      if (LibConfig.Usage == LibUsage.LMComWebAdmin) return;
-      loadMasters();
-    }
+  //  static LMPageTemplate() {
+  //    if (LibConfig.Usage == LibUsage.LMComWebAdmin) return;
+  //    loadMasters();
+  //  }
 
-    static void loadMasters() {
-      blankAspx = StringUtils.FileToString(HostingEnvironment.ApplicationPhysicalPath + @"cz\Blank.aspx");
-      twoColumnAspx = StringUtils.FileToString(HostingEnvironment.ApplicationPhysicalPath + @"cz\TwoColumns.aspx");
-      threeColumnAspx = StringUtils.FileToString(HostingEnvironment.ApplicationPhysicalPath + @"cz\ThreeColumns.aspx");
-    }
+  //  static void loadMasters() {
+  //    blankAspx = StringUtils.FileToString(HostingEnvironment.ApplicationPhysicalPath + @"cz\Blank.aspx");
+  //    twoColumnAspx = StringUtils.FileToString(HostingEnvironment.ApplicationPhysicalPath + @"cz\TwoColumns.aspx");
+  //    threeColumnAspx = StringUtils.FileToString(HostingEnvironment.ApplicationPhysicalPath + @"cz\ThreeColumns.aspx");
+  //  }
 
-    public static string twoColumnAspx = null;
-    public static string threeColumnAspx = null;
-    public static string blankAspx = null;
+  //  public static string twoColumnAspx = null;
+  //  public static string threeColumnAspx = null;
+  //  public static string blankAspx = null;
 
-    //public override string PageAspx() {
-    //  loadMasters();
-    //  if (this is HomePage)
-    //    return threeColumnAspx;
-    //  SiteMapNode nd = urlInfo.GetUrlInfo().Node;
-    //  while (true) {
-    //    string dbId = nd["dbId"];
-    //    if (string.IsNullOrEmpty(dbId)) break;
-    //    if (PageRanges.hasBlankPageMaster(int.Parse(dbId)))
-    //      return blankAspx;
-    //    nd = nd.ParentNode;
-    //    if (nd == null)
-    //      break;
-    //  }
-    //  return twoColumnAspx;
-    //  //return isHome() ? threeColumnAspx : twoColumnAspx;
-    //}
+  //  //public override string PageAspx() {
+  //  //  loadMasters();
+  //  //  if (this is HomePage)
+  //  //    return threeColumnAspx;
+  //  //  SiteMapNode nd = urlInfo.GetUrlInfo().Node;
+  //  //  while (true) {
+  //  //    string dbId = nd["dbId"];
+  //  //    if (string.IsNullOrEmpty(dbId)) break;
+  //  //    if (PageRanges.hasBlankPageMaster(int.Parse(dbId)))
+  //  //      return blankAspx;
+  //  //    nd = nd.ParentNode;
+  //  //    if (nd == null)
+  //  //      break;
+  //  //  }
+  //  //  return twoColumnAspx;
+  //  //  //return isHome() ? threeColumnAspx : twoColumnAspx;
+  //  //}
 
-    /*public virtual bool isHome() {
-      return false;
-    }*/
+  //  /*public virtual bool isHome() {
+  //    return false;
+  //  }*/
 
-    //public static void Init() {
-    //  Template.InitTypes(typeof(Test), typeof(ImgTemplate), typeof(Product), typeof(UniversalItem), typeof(HelpItem),
-    //    typeof(TopTenBox), typeof(SubsiteMapBox), typeof(Master), typeof(HomePage), typeof(UniversalItemBox));
-    //}
-  }
+  //  //public static void Init() {
+  //  //  Template.InitTypes(typeof(Test), typeof(ImgTemplate), typeof(Product), typeof(UniversalItem), typeof(HelpItem),
+  //  //    typeof(TopTenBox), typeof(SubsiteMapBox), typeof(Master), typeof(HomePage), typeof(UniversalItemBox));
+  //  //}
+  //}
 
   //[CmsPageAttribute(PageType.Page, "Hlavní stránka")]
   //public class HomePage : LMPageTemplate {

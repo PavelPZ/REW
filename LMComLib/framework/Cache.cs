@@ -34,9 +34,9 @@ namespace LMComLib {
     public SiteMapNode Node;
     public urlInfoLow Info;
     public string FileName;
-    public Template getTemplate() {
-      return CacheItems.GetTemplate(Node);
-    }
+    //public Template getTemplate() {
+    //  return CacheItems.GetTemplate(Node);
+    //}
     public static bool isTemplate(SiteMapNode nd) {
       CacheNode cacheNd = CacheItems.GetNode(nd);
       if (cacheNd == null || cacheNd.Info==null) return false;
@@ -103,7 +103,7 @@ namespace LMComLib {
     //  return (LMComLib.Cms.Product) res;
     //}
 
-    public static Template GetTemplate(SiteMapNode nd) { return null; }
+    //public static Template GetTemplate(SiteMapNode nd) { return null; }
     //public static Template GetTemplate(SiteMapNode nd) {
     //  LibConfig.DesignTimeEq(false); //nesmi byt designtime
     //  if (nd.Url.IndexOf(".lmp") < 0) {
@@ -132,9 +132,9 @@ namespace LMComLib {
     //  return res;
     //}
 
-    public static Template GetTemplate(int id) {
-      return GetTemplate(GetNode(id).Node);
-    }
+    //public static Template GetTemplate(int id) {
+    //  return GetTemplate(GetNode(id).Node);
+    //}
 
     //public static CmsSiteMap GetSiteMap(Domains Site) {
     //  //LibConfig.DesignTimeEq(true); //musi byt designtine
