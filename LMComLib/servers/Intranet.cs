@@ -672,7 +672,8 @@ namespace LMComLib {
                   hal = hal % 100;
                   ExcelExport.DataItem(taskWr, ExcelFormat.Number, price);
                   ExcelExport.DataItem(taskWr, ExcelFormat.Number, hal);
-                  ExcelExport.DataItem(taskWr, ExcelFormat.String, NumberToText.fncNum2Text(price));
+                  //LM16
+                  //ExcelExport.DataItem(taskWr, ExcelFormat.String, NumberToText.fncNum2Text(price));
                 }
               }
               ExcelExport.RowEnd(taskWr);
