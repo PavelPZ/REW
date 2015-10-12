@@ -2794,10 +2794,6 @@
     <Folder Include="Temp\Sql\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EduAuthor\EduAuthor.csproj">
-      <Project>{0e71cdce-d1c8-459e-ac82-2869f3200953}</Project>
-      <Name>EduAuthor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EPPlus\EPPlus.csproj">
       <Project>{7b288026-5502-4a39-bf41-77e086f3e4a3}</Project>
       <Name>EPPlus</Name>

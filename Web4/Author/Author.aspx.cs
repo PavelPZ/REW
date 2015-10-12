@@ -47,7 +47,7 @@ namespace Author {
           hash = "#" + XExtension.Create("vsNet".ToLower(), "vsNetExModel".ToLower(), url).Aggregate((r, i) => r + "@" + i);
           //old to new
           CourseMeta.oldeaDataType oldEaType = LowUtils.EnumParse<CourseMeta.oldeaDataType>(Request["oldEaType"] ?? CourseMeta.oldeaDataType.xml.ToString());
-          if (oldEaType != CourseMeta.oldeaDataType.xml) serverScript = OldToNew.exFile.getServerScript(url, oldEaType, log);
+          //LM16 if (oldEaType != CourseMeta.oldeaDataType.xml) serverScript = OldToNew.exFile.getServerScript(url, oldEaType, log);
           //no server script
           if (string.IsNullOrEmpty(serverScript)) {
             serverScript = CourseMeta.buildLib.getServerScript(vsNetServer.buildExFiles(url, log)).ToString();

@@ -60,12 +60,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Course\Smart\MarkDownObject.cs" />
-    <Compile Include="Course\Smart\MarkdownOther.cs" />
-    <Compile Include="Course\Smart\MarkdownTable.cs" />
     <Compile Include="Course\XSDforJS.cs" />
     <Compile Include="Model\Books.cs" />
-    <Compile Include="Course\Smart\SmartTags.cs" />
     <Compile Include="Course\Macro.cs" />
     <Compile Include="Course\Meta.cs" />
     <Compile Include="Course\ModifyXsd.cs" />
@@ -76,7 +72,6 @@
     <Compile Include="Course\SchemaDoc.cs" />
     <Compile Include="Model\Exercises.cs" />
     <Compile Include="Model\LicenceConsts.cs" />
-    <Compile Include="Course\Smart\Markdown.cs" />
     <Compile Include="Model\MembershipConsts.cs" />
     <Compile Include="Model\Objects.cs" />
     <Compile Include="Model\SchoolsRewModel.cs" />
@@ -92,10 +87,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CommonMark\CommonMark.Base.csproj">
-      <Project>{0fd4b1dd-45a8-4f02-beb0-5881cd512573}</Project>
-      <Name>CommonMark.Base</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LMComExternal\LMComExternal.csproj">
       <Project>{a0024fc2-c528-45f8-9391-4b45889e53d9}</Project>
       <Name>LMComExternal</Name>
@@ -107,6 +98,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Course\Smart\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
