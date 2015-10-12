@@ -52,7 +52,7 @@
   if (!string.IsNullOrEmpty(url)) {
     CourseMeta.oldeaDataType oldEaType = LMNetLib.LowUtils.EnumParse<CourseMeta.oldeaDataType>(Request["oldEaType"] ?? CourseMeta.oldeaDataType.xml.ToString());
     LMNetLib.LoggerMemory log = new LMNetLib.LoggerMemory(false) { isVsNet = true };
-    serverScript = oldEaType != CourseMeta.oldeaDataType.xml ? OldToNew.exFile.getServerScript(url, oldEaType, log) : null;
+    //serverScript = oldEaType != CourseMeta.oldeaDataType.xml ? OldToNew.exFile.getServerScript(url, oldEaType, log) : null;
     if (oldEaType != CourseMeta.oldeaDataType.xml) cfg.noOldEA = true;
     if (serverScript != null) {
       //var log = new LMNetLib.LoggerMemory(true) { isVsNet = true };

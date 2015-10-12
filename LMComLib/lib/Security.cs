@@ -416,30 +416,30 @@ namespace LMComLib {
       return cook;
     }
 
-    static void refreshLastRequest(HttpContext ctx, LMCookie cook) {
-      HttpCookie lastReqSaveCook = ctx.Request.Cookies["LastReqSave"];
-      DateTime now = DateTime.UtcNow; //aktualizace data posledniho requestu
-      DateTime lastReqSave = DateTime.MinValue; string crs = null;
-      if (lastReqSaveCook != null) {
-        try {
-          string[] parts = lastReqSaveCook.Value.Split('|');
-          lastReqSave = DateTime.Parse(parts[0]); crs = parts[1];
-          Int64 lastReqUserId = Int64.Parse(parts[2]);
-          if (lastReqUserId != cook.id) lastReqSave = DateTime.MinValue;
-        } catch {
-          lastReqSave = DateTime.MinValue; crs = null;
-        }
-      }
-      TimeSpan ts = now - lastReqSave;
-      urlInfo ui = urlInfo.GetUrlInfo();
-      CourseIds crsId = ui == null ? CourseIds.no : ui.EACourse;
-      if (crsId == CourseIds.no) crsId = cook.getCourseId();
-      if (lastReqSaveCook == null || ts > Persistence.c_RefreshLastRequestInterval || crsId.ToString() != crs) { //... nejcasteji kazdych 3 minuty
-        ctx.Response.Cookies["LastReqSave"].Value = now.ToString() + "|" + crsId.ToString() + "|" + cook.id.ToString();
-        //ctx.Response.Cookies[LMStatus.c_cookieName].Value = JSON.ObjectToJSON(cook);
-        Persistence.setLastRequest(ctx, cook, crsId);
-      }
-    }
+    //static void refreshLastRequest(HttpContext ctx, LMCookie cook) {
+    //  HttpCookie lastReqSaveCook = ctx.Request.Cookies["LastReqSave"];
+    //  DateTime now = DateTime.UtcNow; //aktualizace data posledniho requestu
+    //  DateTime lastReqSave = DateTime.MinValue; string crs = null;
+    //  if (lastReqSaveCook != null) {
+    //    try {
+    //      string[] parts = lastReqSaveCook.Value.Split('|');
+    //      lastReqSave = DateTime.Parse(parts[0]); crs = parts[1];
+    //      Int64 lastReqUserId = Int64.Parse(parts[2]);
+    //      if (lastReqUserId != cook.id) lastReqSave = DateTime.MinValue;
+    //    } catch {
+    //      lastReqSave = DateTime.MinValue; crs = null;
+    //    }
+    //  }
+    //  TimeSpan ts = now - lastReqSave;
+    //  urlInfo ui = urlInfo.GetUrlInfo();
+    //  CourseIds crsId = ui == null ? CourseIds.no : ui.EACourse;
+    //  if (crsId == CourseIds.no) crsId = cook.getCourseId();
+    //  if (lastReqSaveCook == null || ts > Persistence.c_RefreshLastRequestInterval || crsId.ToString() != crs) { //... nejcasteji kazdych 3 minuty
+    //    ctx.Response.Cookies["LastReqSave"].Value = now.ToString() + "|" + crsId.ToString() + "|" + cook.id.ToString();
+    //    //ctx.Response.Cookies[LMStatus.c_cookieName].Value = JSON.ObjectToJSON(cook);
+    //    Persistence.setLastRequest(ctx, cook, crsId);
+    //  }
+    //}
 
     public delegate string getOtherData(object obj);
 
