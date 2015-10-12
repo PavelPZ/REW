@@ -84,28 +84,28 @@ namespace LMComLib {
     //}
 
     //DB LAYER
-    const sbyte runTestVersion = 1;
-    public static string EncodeRunTestRequest(string companyEMail, string userEMail, CourseIds crsId, Levels level, Guid invitationId, int dbTestId) {
-      using (MemoryStream ms = new MemoryStream()) using (BinaryWriter wr = new BinaryWriter(ms)) {
-        wr.Write(companyEMail); wr.Write(userEMail); wr.Write((byte)crsId); wr.Write((byte)level); wr.Write(invitationId);
-        wr.Write(runTestVersion);
-        wr.Write(dbTestId);
-        return Convert.ToBase64String(EncryptionUtility.Encrypt(ms.ToArray(), enc_pasword));
-      }
-    } const string enc_pasword = "ty%s7&ks";
+    //const sbyte runTestVersion = 1;
+    //public static string EncodeRunTestRequest(string companyEMail, string userEMail, CourseIds crsId, Levels level, Guid invitationId, int dbTestId) {
+    //  using (MemoryStream ms = new MemoryStream()) using (BinaryWriter wr = new BinaryWriter(ms)) {
+    //    wr.Write(companyEMail); wr.Write(userEMail); wr.Write((byte)crsId); wr.Write((byte)level); wr.Write(invitationId);
+    //    wr.Write(runTestVersion);
+    //    wr.Write(dbTestId);
+    //    return Convert.ToBase64String(EncryptionUtility.Encrypt(ms.ToArray(), enc_pasword));
+    //  }
+    //} const string enc_pasword = "ty%s7&ks";
 
-    public static void DecodeRunTestRequest(string data, out string companyEMail, out string userEMail, out CourseIds crsId, out Levels level, out Guid invitationId, out int dbTestId) {
-      dbTestId = -1;
-      using (MemoryStream ms = new MemoryStream(EncryptionUtility.Decrypt(Convert.FromBase64String(data), enc_pasword))) using (BinaryReader rdr = new BinaryReader(ms)) {
-        companyEMail = rdr.ReadString(); userEMail = rdr.ReadString(); crsId = (CourseIds)rdr.ReadByte(); level = (Levels)rdr.ReadByte(); invitationId = rdr.ReadGuid();
-        if (rdr.BaseStream.Length - 1 > rdr.BaseStream.Position) {
-          sbyte version = rdr.ReadSByte();
-          switch (version) {
-            case 1: dbTestId = rdr.ReadInt32(); break;
-          }
-        }
-      }
-    }
+    //public static void DecodeRunTestRequest(string data, out string companyEMail, out string userEMail, out CourseIds crsId, out Levels level, out Guid invitationId, out int dbTestId) {
+    //  dbTestId = -1;
+    //  using (MemoryStream ms = new MemoryStream(EncryptionUtility.Decrypt(Convert.FromBase64String(data), enc_pasword))) using (BinaryReader rdr = new BinaryReader(ms)) {
+    //    companyEMail = rdr.ReadString(); userEMail = rdr.ReadString(); crsId = (CourseIds)rdr.ReadByte(); level = (Levels)rdr.ReadByte(); invitationId = rdr.ReadGuid();
+    //    if (rdr.BaseStream.Length - 1 > rdr.BaseStream.Position) {
+    //      sbyte version = rdr.ReadSByte();
+    //      switch (version) {
+    //        case 1: dbTestId = rdr.ReadInt32(); break;
+    //      }
+    //    }
+    //  }
+    //}
 
     //[XmlIgnore]
     //public bool UsersFilled;
