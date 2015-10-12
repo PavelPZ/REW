@@ -429,14 +429,15 @@ namespace LMComLib.Cms {
     public CacheNode Ancestor;
 
     public Template getAncestor() {
-      if (ancestor == null) return null;
-      if (LibConfig.Usage == LibUsage.LMComWebAdmin) {
-        Template res = CmsEditContext.getPage((int)ancestor);
-        if (res.GetType() != GetType())
-          throw new Exception("ancestor has different className");
-        return res;
-      } else
-        return Ancestor.getTemplate();
+      //if (ancestor == null) return null;
+      //if (LibConfig.Usage == LibUsage.LMComWebAdmin) {
+      //  Template res = CmsEditContext.getPage((int)ancestor);
+      //  if (res.GetType() != GetType())
+      //    throw new Exception("ancestor has different className");
+      //  return res;
+      //} else
+      //  return Ancestor.getTemplate();
+      return null;
     }
 
     [XmlIgnore]
@@ -453,16 +454,16 @@ namespace LMComLib.Cms {
 
     [XmlIgnore]
     public CmsSiteMapNode cmsNode {
-      get { return LibConfig.Usage == LibUsage.LMComWebAdmin ? CmsEditContext.getSiteMap().FindNode(dbId) : null; }
+      get { return null; }// LibConfig.Usage == LibUsage.LMComWebAdmin ? CmsEditContext.getSiteMap().FindNode(dbId) : null; }
     }
     [XmlIgnore]
     public int dbId; //pouze pro designtime: dbId pro svazani s CmsSiteMapNode
 
-    CmsFile _cmsFile;
-    [XmlIgnore]
-    public CmsFile cmsFile {
-      get { if (_cmsFile == null) _cmsFile = new CmsFile(this); return _cmsFile; }
-    }
+    //CmsFile _cmsFile;
+    //[XmlIgnore]
+    //public CmsFile cmsFile {
+    //  get { if (_cmsFile == null) _cmsFile = new CmsFile(this); return _cmsFile; }
+    //}
 
     public virtual byte[] SerializeToUtf8String() //ICmsSerialize
     {

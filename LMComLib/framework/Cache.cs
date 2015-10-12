@@ -136,19 +136,20 @@ namespace LMComLib {
     }
 
     public static CmsSiteMap GetSiteMap(Domains Site) {
-      LibConfig.DesignTimeEq(true); //musi byt designtine
-      Cache cache = HttpContext.Current.Cache;
-      string key = string.Format("sitemap_{0}", Site);
-      CmsSiteMap res = (CmsSiteMap)cache.Get(key);
-      if (res == null)
-        lock (typeof(CacheItems)) {
-          res = new CmsSiteMap(Site);
-          res.cmsFile.Init();
-          if (res.fillNodeIds())
-            res.cmsFile.Save(); //SiteMap se mohla zmenit - doplneni DBId
-          cache.Insert(key, res, new CacheDependency(res.fileName));
-        }
-      return res;
+      //LibConfig.DesignTimeEq(true); //musi byt designtine
+      //Cache cache = HttpContext.Current.Cache;
+      //string key = string.Format("sitemap_{0}", Site);
+      //CmsSiteMap res = (CmsSiteMap)cache.Get(key);
+      //if (res == null)
+      //  lock (typeof(CacheItems)) {
+      //    res = new CmsSiteMap(Site);
+      //    res.cmsFile.Init();
+      //    if (res.fillNodeIds())
+      //      res.cmsFile.Save(); //SiteMap se mohla zmenit - doplneni DBId
+      //    cache.Insert(key, res, new CacheDependency(res.fileName));
+      //  }
+      //return res;
+      return null;
     }
 
     public static CmsSiteMap GetSiteMap(Domains Site, pageFilter filter, Template page) {
@@ -167,19 +168,20 @@ namespace LMComLib {
     }
 
     public static Template GetTemplate(CmsSiteMapNode nd) {
-      LibConfig.DesignTimeEq(true); //musi byt designtine
-      Cache cache = HttpContext.Current.Cache;
-      string key = string.Format("temp_{0}", nd.dbId);
-      Template res = (Template)cache.Get(key);
-      if (res == null)
-        lock (typeof(CacheItems)) {
-          string fn = nd.urlInfo.getFileName();
-          res = nd.urlInfo.Type == SiteMapNodeType.img ? new ImgTemplate() : Template.Load(fn, nd.className);
-          res.dbId = nd.dbId;
-          res.cmsFile.Init();
-          cache.Insert(key, res, new CacheDependency(fn));
-        }
-      return res;
+      return null;
+      //LibConfig.DesignTimeEq(true); //musi byt designtine
+      //Cache cache = HttpContext.Current.Cache;
+      //string key = string.Format("temp_{0}", nd.dbId);
+      //Template res = (Template)cache.Get(key);
+      //if (res == null)
+      //  lock (typeof(CacheItems)) {
+      //    string fn = nd.urlInfo.getFileName();
+      //    res = nd.urlInfo.Type == SiteMapNodeType.img ? new ImgTemplate() : Template.Load(fn, nd.className);
+      //    res.dbId = nd.dbId;
+      //    res.cmsFile.Init();
+      //    cache.Insert(key, res, new CacheDependency(fn));
+      //  }
+      //return res;
     }
 
   }
