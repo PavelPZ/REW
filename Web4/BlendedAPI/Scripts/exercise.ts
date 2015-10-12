@@ -201,11 +201,12 @@
       });
     }
 
-    confirmLesson(alow: boolean) { //newLevel<0 => udelej cviceni ci test znova
-      if (alow) {
+    confirmLesson(notRepeat: boolean) { //!notRepeat => udelej cviceni ci test znova
+      if (notRepeat) {
         this.saveLectorEvaluation();
-        //alow se pro lekci nevyuzije => jsem urcite v testu
+        //notRepeat se pro lekci nevyuzije => jsem urcite v testu
         setPersistData<IModuleUser>(this.modService.node, this.ctx.taskid, modUser => modUser.lectorControlTestOK = true);
+        this.product.saveProduct(this.controller.ctx, $.noop);
       } else {
         clearPersistData(this.modService.node, this.ctx.taskid);
         _.each(this.modService.node.Items, it => {
@@ -238,6 +239,7 @@
       this.user.short.s = score.s;
       this.user.short.flag = Course.setAgregateFlag(this.user.short.flag, score.flag);
       this.lectorHumanScore = score.ms ? Math.round(score.s / score.ms * 100) : -1;
+      this.product.saveProduct(this.controller.ctx, $.noop);
     }
 
     score(): number {
