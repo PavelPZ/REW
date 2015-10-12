@@ -65,36 +65,36 @@ namespace LMComLib.Cms {
   /// <summary>
   /// Objekt pro Prosper vazbu mezi polozkou faktury a skladem
   /// </summary>
-  public class ProductForStack {
-    public ProductForStack(ProductLicence lic) {
-      Id = lic.ProsperId.ToString();
-      Title = lic.ShortTitle;
-      StackAble = lic.StockAble;
-    }
-    public ProductForStack(string id, string title, bool stockAble) {
-      Id = id;
-      Title = title;
-      StackAble = stockAble;
-    }
-    /// <summary>
-    /// Nase identifikace produktu
-    /// </summary>
-    public string Id;
-    /// <summary>
-    /// Priznak: jedna se o zbozi (=true) nebo specialni kartu (false)
-    /// </summary>
-    public bool StackAble;
-    /// <summary>
-    /// Jmeno skladove karty
-    /// </summary> 
-    public string Title;
-  }
+  //public class ProductForStack {
+  //  public ProductForStack(ProductLicence lic) {
+  //    Id = lic.ProsperId.ToString();
+  //    Title = lic.ShortTitle;
+  //    StackAble = lic.StockAble;
+  //  }
+  //  public ProductForStack(string id, string title, bool stockAble) {
+  //    Id = id;
+  //    Title = title;
+  //    StackAble = stockAble;
+  //  }
+  //  /// <summary>
+  //  /// Nase identifikace produktu
+  //  /// </summary>
+  //  public string Id;
+  //  /// <summary>
+  //  /// Priznak: jedna se o zbozi (=true) nebo specialni kartu (false)
+  //  /// </summary>
+  //  public bool StackAble;
+  //  /// <summary>
+  //  /// Jmeno skladove karty
+  //  /// </summary> 
+  //  public string Title;
+  //}
 
 
-  public class ProductAppDataItem {
-    public string LocUrl;
-    public string LocDownloadUrl;
-  }
+  //public class ProductAppDataItem {
+  //  public string LocUrl;
+  //  public string LocDownloadUrl;
+  //}
 
   [CmsPageAttribute(PageType.Page, "Produkt")]
   public class Product : LMPageTemplate {
@@ -469,28 +469,28 @@ namespace LMComLib.Cms {
   //  }
   //}
 
-  [EnumDescrAttribute(typeof(BoxType), "TopTen=TopTen,IconTableSmall=IconTableSmall,IconTableLarge=IconTableLarge,SubTree=SubTree,CaseStudies=CaseStudies,Actions=Actions,Comments=Comments,News=News")]
-  public enum BoxType {
-    no,
-    //do prave listy
-    TopTen,
-    IconTableSmall,
-    IconTableLarge,
-    SubTree,
-    //na home, prostredni bar
-    CaseStudies,
-    Actions,
-    Comments,
-    //na home, levy bar
-    News,
-  }
+  //[EnumDescrAttribute(typeof(BoxType), "TopTen=TopTen,IconTableSmall=IconTableSmall,IconTableLarge=IconTableLarge,SubTree=SubTree,CaseStudies=CaseStudies,Actions=Actions,Comments=Comments,News=News")]
+  //public enum BoxType {
+  //  no,
+  //  //do prave listy
+  //  TopTen,
+  //  IconTableSmall,
+  //  IconTableLarge,
+  //  SubTree,
+  //  //na home, prostredni bar
+  //  CaseStudies,
+  //  Actions,
+  //  Comments,
+  //  //na home, levy bar
+  //  News,
+  //}
 
-  public abstract class BoxData : PageTemplate {
-    public abstract BoxType? Type { get; set; }
-    public virtual object getDataSource() {
-      return null;
-    }
-  }
+  //public abstract class BoxData : PageTemplate {
+  //  public abstract BoxType? Type { get; set; }
+  //  public virtual object getDataSource() {
+  //    return null;
+  //  }
+  //}
 
   //[CmsPageAttribute(PageType.Control, "Seznam obecných položek box")]
   //public class UniversalItemBox : BoxData {
