@@ -74,14 +74,14 @@ namespace LMComLib {
 
     public List<MyUser> Users { get { return users == null ? users = new List<MyUser>() : users; } set { users = value; } } List<MyUser> users;
 
-    public static string EncodeString(string str) {
-      return Convert.ToBase64String(EncryptionUtility.Encrypt(Encoding.UTF8.GetBytes(str), enc_pasword));
-    }
+    //public static string EncodeString(string str) {
+    //  return Convert.ToBase64String(EncryptionUtility.Encrypt(Encoding.UTF8.GetBytes(str), enc_pasword));
+    //}
 
-    public static string DecodeString(string str) {
-      byte[] bt = EncryptionUtility.Decrypt(Convert.FromBase64String(str), enc_pasword);
-      return Encoding.UTF8.GetString(bt, 0, bt.Length);
-    }
+    //public static string DecodeString(string str) {
+    //  byte[] bt = EncryptionUtility.Decrypt(Convert.FromBase64String(str), enc_pasword);
+    //  return Encoding.UTF8.GetString(bt, 0, bt.Length);
+    //}
 
     //DB LAYER
     const sbyte runTestVersion = 1;
