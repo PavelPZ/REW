@@ -81,7 +81,7 @@ namespace LMComLib {
 
   public class XInvoice : XSupplier {
     public XInvoice() : base() { }
-    public XInvoice (XSupplier supl): this () {
+    public XInvoice(XSupplier supl) : this() {
       Fill(supl);
     }
     public void Fill(XSupplier supl) {
@@ -179,7 +179,7 @@ namespace LMComLib {
       //if (res.site == Domains.com && docType == DocumentType.proforma) throw new Exception("Wrong lm.com docType");
       int multi = docType == DocumentType.adviceOfCredit ? -1 : 1;
 
-      if (isCz) res.nazev = docType == DocumentType.proforma ? "ZÁLOHOVÁ FAKTURA" : (docType == DocumentType.adviceOfCredit ? "DOBROPIS" : "FAKTURA"); 
+      if (isCz) res.nazev = docType == DocumentType.proforma ? "ZÁLOHOVÁ FAKTURA" : (docType == DocumentType.adviceOfCredit ? "DOBROPIS" : "FAKTURA");
       else res.nazev = docType == DocumentType.adviceOfCredit ? "DOBROPIS" : "INVOICE";
       res.id = ord.Id.ToString();
       res.Fill(cust);
@@ -305,87 +305,87 @@ namespace LMComLib {
         setPdfField(fields, "ZakladDS19Text", string.Format(vatBase, "20%"), 8, true); //bold //DPH 20
         setPdfField(fields, "DS19Text", vat + " 20%", 8, true); //bold //DPH 20      
       });*/
-      /*
-      if (font == null)
-        lock (typeof(ProsperLib))
-          if (font == null) {
-            font = BaseFont.CreateFont(@"q:\LMCom\LMCom\App_Data\Invoice\verdana.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            Cert(@"q:\LMCom\LMCom\App_Data\langmaster_pdf.pfx", ConfigurationManager.AppSettings["PDF.Cert.Password"], out akp, out chain);
-          }
-      //PdfReader rdr = new PdfReader(new RandomAccessFileOrArray(string.Format(@"q:\LMCom\LMCom\App_Data\Invoice\{0}.pdf", context.order.Lang)), null);
-      PdfReader rdr = new PdfReader(new RandomAccessFileOrArray(string.Format(@"q:\LMCom\LMCom\App_Data\Invoice.pdf", context.order.Lang)), null);
-      MemoryStream res = new MemoryStream();
-      try {
-        PdfStamper ps = new PdfStamper(rdr, res);
-        try {
-          //Dosazeni poli
-          AcroFields fields = ps.AcroFields;
-
-          Order ord = context.order; OrderItem oi = context.order.Items[0];
-          CommonLib.setLang(ord.Lang);
-          
-          string typDokladu = docType == DocumentType.proforma ?
-            "ZÁLOHOVÁ FAKTURA" :
-            CSLocalize.localize("3ebf4510a52b459ea0d924bb8546027e", LocPageGroup.LMComLib, "FAKTURA");
-          //fields.AddSubstitutionFont(font);
-          setPdfField(fields, "Jmeno", ord.Profile.Address.FirstName,0, false);
-          setPdfField(fields, "Prijmeni", ord.Profile.Address.LastName, 0, false);
-          setPdfField(fields, "Ulice", ord.Profile.Email, 0, false);
-          setPdfField(fields, "TypDokladu", typDokladu, 12, false);
-          setPdfField(fields, "CisloDokladu", info == null ? "XXX001" : info.druhdokladu + "/" + info.cislodokladu, 12, false);
-          setPdfField(fields, "DUZP", ord.DueDate.ToShortDateString(), 0, false);
-          setPdfField(fields, "KodZbozi", oi.dbId.ToString(), 0, false);
-          setPdfField(fields, "produkt", oi.Licence.ShortTitle.Replace("&amp;","&"), 0, false);
-          setPdfField(fields, "PocetKS", "1", 0, false);
-          setPdfField(fields, "CenaCelkem", urlInfo.priceText(ord.Site, oi.PriceTax()), 11, false);
-          setPdfField(fields, "UhradaCelkem", urlInfo.priceText(ord.Site, ord.PriceTax), 12, false);
-          setPdfField(fields, "ZakladDS0", urlInfo.priceText(ord.Site, 0), 9, false);
-          setPdfField(fields, "ZakladDS9", urlInfo.priceText(ord.Site, 0), 9, false);
-          setPdfField(fields, "ZakladDS19", urlInfo.priceText(ord.Site, ord.Price), 9, false);
-          setPdfField(fields, "DS0", urlInfo.priceText(ord.Site, 0), 9, false);
-          setPdfField(fields, "DS9", urlInfo.priceText(ord.Site, 0), 9, false); 
-          setPdfField(fields, "DS19", urlInfo.priceText(ord.Site, ord.Tax), 9, false);
-          //PJ a MT
-          string vat = "DS";
-          string vatBase = "základ DS [0]".Replace('[','{').Replace(']','}');
-          setPdfField(fields, "DodavatelText", CSLocalize.localize("4cd070ae691b49d3b082604774b49b26", LocPageGroup.LMComLib, "Dodavatel"), 10, true); //bold
-          setPdfField(fields, "LMcomText", "LANGMaster.com, s.r.o.", 10, false);
-          setPdfField(fields, "LMadresaText", "Branická 659/107, 140 00 Praha 4", 10, false);
-          setPdfField(fields, "LMstatText", CSLocalize.localize("cb0c6758ea48434e91745e2eeb061ab1", LocPageGroup.LMComLib, "Česká republika"), 10, false);
-          setPdfField(fields, "LMicText", "IČO: 27338606", 10, false);
-          setPdfField(fields, "LMdicText", CSLocalize.localize("68e797efb57d42c68d906b437a981aba", LocPageGroup.LMComLib, "DIČ") + ": CZ27338606", 10, false);
-          setPdfField(fields, "PrijemceText", CSLocalize.localize("18219c6e1ca84878a7d357e6b79dc23b", LocPageGroup.LMComLib, "Příjemce"), 10, true); //bold
-          setPdfField(fields, "DUZPText", "Datum uskutečnitelného zdanitelného plnění", 9, false);
-          setPdfField(fields, "KodZboziText", CSLocalize.localize("c08ab32711664a96bdd55ac6a52f7dee", LocPageGroup.LMComLib, "kód zboží"), 10, true); //bold
-          setPdfField(fields, "ProduktText", CSLocalize.localize("55bf788aa56b4c9494141872d1f24fac", LocPageGroup.LMComLib, "popis produktu"), 10, true); //bold
-          setPdfField(fields, "PocetKSText", "ks", 10, true); //bold
-          setPdfField(fields, "CenaCelkemText", "cena celkem s DPH", 10, true); //bold
-          setPdfField(fields, "UhradaCelkemText", CSLocalize.localize("c6d4c77187234d7f8eb78cf3c69a2a37", LocPageGroup.LMComLib, "Celkem k úhradě"), 11, true); //bold
-          setPdfField(fields, "ZakladDS0Text", string.Format (vatBase, "0%"), 8, true); //bold
-          setPdfField(fields, "DS0Text", vat + " 0%", 8, true); //bold
-          setPdfField(fields, "ZakladDS9Text", string.Format(vatBase, "10%"), 8, true); //bold
-          setPdfField(fields, "DS9Text", vat + " 10%", 8, true); //bold
-          setPdfField(fields, "ZakladDS19Text", string.Format(vatBase, "20%"), 8, true); //bold //DPH 20
-          setPdfField(fields, "DS19Text", vat + " 20%", 8, true); //bold //DPH 20
-          ps.FormFlattening = true;
-          //Priprava na elektronicky podpis
-        } finally { ps.Close(); }
-      } finally { rdr.Close(); }
-      PdfReader certRdr = new PdfReader(res.GetBuffer());
-      MemoryStream certRes = new MemoryStream();
-      try {
-        PdfStamper certPs = PdfStamper.CreateSignature(certRdr, certRes, '\0');
-        try {
-          PdfSignatureAppearance sap = certPs.SignatureAppearance;
-          sap.SetCrypto(akp, chain, null, PdfSignatureAppearance.WINCER_SIGNED);
-          sap.Reason = "Certify";
-          sap.Contact = "LANGMaster";
-          sap.Location = "EU";
-        } finally {
-          certPs.Close();
+    /*
+    if (font == null)
+      lock (typeof(ProsperLib))
+        if (font == null) {
+          font = BaseFont.CreateFont(@"q:\LMCom\LMCom\App_Data\Invoice\verdana.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+          Cert(@"q:\LMCom\LMCom\App_Data\langmaster_pdf.pfx", ConfigurationManager.AppSettings["PDF.Cert.Password"], out akp, out chain);
         }
-      } finally { certRdr.Close(); }
-      return certRes;*/
+    //PdfReader rdr = new PdfReader(new RandomAccessFileOrArray(string.Format(@"q:\LMCom\LMCom\App_Data\Invoice\{0}.pdf", context.order.Lang)), null);
+    PdfReader rdr = new PdfReader(new RandomAccessFileOrArray(string.Format(@"q:\LMCom\LMCom\App_Data\Invoice.pdf", context.order.Lang)), null);
+    MemoryStream res = new MemoryStream();
+    try {
+      PdfStamper ps = new PdfStamper(rdr, res);
+      try {
+        //Dosazeni poli
+        AcroFields fields = ps.AcroFields;
+
+        Order ord = context.order; OrderItem oi = context.order.Items[0];
+        CommonLib.setLang(ord.Lang);
+
+        string typDokladu = docType == DocumentType.proforma ?
+          "ZÁLOHOVÁ FAKTURA" :
+          CSLocalize.localize("3ebf4510a52b459ea0d924bb8546027e", LocPageGroup.LMComLib, "FAKTURA");
+        //fields.AddSubstitutionFont(font);
+        setPdfField(fields, "Jmeno", ord.Profile.Address.FirstName,0, false);
+        setPdfField(fields, "Prijmeni", ord.Profile.Address.LastName, 0, false);
+        setPdfField(fields, "Ulice", ord.Profile.Email, 0, false);
+        setPdfField(fields, "TypDokladu", typDokladu, 12, false);
+        setPdfField(fields, "CisloDokladu", info == null ? "XXX001" : info.druhdokladu + "/" + info.cislodokladu, 12, false);
+        setPdfField(fields, "DUZP", ord.DueDate.ToShortDateString(), 0, false);
+        setPdfField(fields, "KodZbozi", oi.dbId.ToString(), 0, false);
+        setPdfField(fields, "produkt", oi.Licence.ShortTitle.Replace("&amp;","&"), 0, false);
+        setPdfField(fields, "PocetKS", "1", 0, false);
+        setPdfField(fields, "CenaCelkem", urlInfo.priceText(ord.Site, oi.PriceTax()), 11, false);
+        setPdfField(fields, "UhradaCelkem", urlInfo.priceText(ord.Site, ord.PriceTax), 12, false);
+        setPdfField(fields, "ZakladDS0", urlInfo.priceText(ord.Site, 0), 9, false);
+        setPdfField(fields, "ZakladDS9", urlInfo.priceText(ord.Site, 0), 9, false);
+        setPdfField(fields, "ZakladDS19", urlInfo.priceText(ord.Site, ord.Price), 9, false);
+        setPdfField(fields, "DS0", urlInfo.priceText(ord.Site, 0), 9, false);
+        setPdfField(fields, "DS9", urlInfo.priceText(ord.Site, 0), 9, false); 
+        setPdfField(fields, "DS19", urlInfo.priceText(ord.Site, ord.Tax), 9, false);
+        //PJ a MT
+        string vat = "DS";
+        string vatBase = "základ DS [0]".Replace('[','{').Replace(']','}');
+        setPdfField(fields, "DodavatelText", CSLocalize.localize("4cd070ae691b49d3b082604774b49b26", LocPageGroup.LMComLib, "Dodavatel"), 10, true); //bold
+        setPdfField(fields, "LMcomText", "LANGMaster.com, s.r.o.", 10, false);
+        setPdfField(fields, "LMadresaText", "Branická 659/107, 140 00 Praha 4", 10, false);
+        setPdfField(fields, "LMstatText", CSLocalize.localize("cb0c6758ea48434e91745e2eeb061ab1", LocPageGroup.LMComLib, "Česká republika"), 10, false);
+        setPdfField(fields, "LMicText", "IČO: 27338606", 10, false);
+        setPdfField(fields, "LMdicText", CSLocalize.localize("68e797efb57d42c68d906b437a981aba", LocPageGroup.LMComLib, "DIČ") + ": CZ27338606", 10, false);
+        setPdfField(fields, "PrijemceText", CSLocalize.localize("18219c6e1ca84878a7d357e6b79dc23b", LocPageGroup.LMComLib, "Příjemce"), 10, true); //bold
+        setPdfField(fields, "DUZPText", "Datum uskutečnitelného zdanitelného plnění", 9, false);
+        setPdfField(fields, "KodZboziText", CSLocalize.localize("c08ab32711664a96bdd55ac6a52f7dee", LocPageGroup.LMComLib, "kód zboží"), 10, true); //bold
+        setPdfField(fields, "ProduktText", CSLocalize.localize("55bf788aa56b4c9494141872d1f24fac", LocPageGroup.LMComLib, "popis produktu"), 10, true); //bold
+        setPdfField(fields, "PocetKSText", "ks", 10, true); //bold
+        setPdfField(fields, "CenaCelkemText", "cena celkem s DPH", 10, true); //bold
+        setPdfField(fields, "UhradaCelkemText", CSLocalize.localize("c6d4c77187234d7f8eb78cf3c69a2a37", LocPageGroup.LMComLib, "Celkem k úhradě"), 11, true); //bold
+        setPdfField(fields, "ZakladDS0Text", string.Format (vatBase, "0%"), 8, true); //bold
+        setPdfField(fields, "DS0Text", vat + " 0%", 8, true); //bold
+        setPdfField(fields, "ZakladDS9Text", string.Format(vatBase, "10%"), 8, true); //bold
+        setPdfField(fields, "DS9Text", vat + " 10%", 8, true); //bold
+        setPdfField(fields, "ZakladDS19Text", string.Format(vatBase, "20%"), 8, true); //bold //DPH 20
+        setPdfField(fields, "DS19Text", vat + " 20%", 8, true); //bold //DPH 20
+        ps.FormFlattening = true;
+        //Priprava na elektronicky podpis
+      } finally { ps.Close(); }
+    } finally { rdr.Close(); }
+    PdfReader certRdr = new PdfReader(res.GetBuffer());
+    MemoryStream certRes = new MemoryStream();
+    try {
+      PdfStamper certPs = PdfStamper.CreateSignature(certRdr, certRes, '\0');
+      try {
+        PdfSignatureAppearance sap = certPs.SignatureAppearance;
+        sap.SetCrypto(akp, chain, null, PdfSignatureAppearance.WINCER_SIGNED);
+        sap.Reason = "Certify";
+        sap.Contact = "LANGMaster";
+        sap.Location = "EU";
+      } finally {
+        certPs.Close();
+      }
+    } finally { certRdr.Close(); }
+    return certRes;*/
 
     /*
     }
