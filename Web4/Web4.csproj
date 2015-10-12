@@ -2798,10 +2798,6 @@
       <Project>{7b288026-5502-4a39-bf41-77e086f3e4a3}</Project>
       <Name>EPPlus</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LMComExternal\LMComExternal.csproj">
-      <Project>{a0024fc2-c528-45f8-9391-4b45889e53d9}</Project>
-      <Name>LMComExternal</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LMComLib\LMComLib.csproj">
       <Project>{c4201447-b3c3-4f3a-9e5f-4ff9b5f48570}</Project>
       <Name>LMComLib</Name>

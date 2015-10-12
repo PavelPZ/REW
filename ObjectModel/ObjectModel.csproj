@@ -40,6 +40,10 @@
       <HintPath>..\packages\BoneSoft.CSS.1.0.0\lib\BoneSoft.CSS.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ModelCssView, Version=1.1.4014.17643, Culture=neutral, PublicKeyToken=445e193243cd750d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dlls\ModelCssView.dll</HintPath>
@@ -86,10 +90,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LMComExternal\LMComExternal.csproj">
-      <Project>{a0024fc2-c528-45f8-9391-4b45889e53d9}</Project>
-      <Name>LMComExternal</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LMComLib\LMComLib.csproj">
       <Project>{c4201447-b3c3-4f3a-9e5f-4ff9b5f48570}</Project>
       <Name>LMComLib</Name>
