@@ -345,34 +345,34 @@ namespace LMComLib {
       return ctx;
     }
 
-    public static void OnEBankaCheck() {
-      //Zjisteni stavu plateb u eBanky
-      List<int> errors = new List<int>();
-      List<int> OKList = new List<int>();
-      LMComLib.eBanka.PaymentResponse.VerifyPaid(OKList, errors);
-      //Zmena stavu u Order v databazi
-      LMComDataContext db = Machines.getContext();
-      foreach (int id in OKList) {
-        Comm_Order ord = db.Comm_Orders.Single<Comm_Order>(o => o.Id == id);
-        setOrderStatus(ord,
-          ord.ContentType == (short)OrderContentType.Electronic ? OrderStatus.Hotovo : OrderStatus.Zaplaceno);
-      }
-      foreach (int id in errors) {
-        Comm_Order ord = db.Comm_Orders.Single<Comm_Order>(o => o.Id == id);
-        setOrderStatus(ord, OrderStatus.eBankaError);
-      }
-      db.SubmitChanges();
-      if (errors.Count == 0) return;
-      //Mail o eBanka chybe
-      Emailer em = new Emailer();
-      em.PlainText = "Zkontroluj eBanka Errors!!!";
-      em.Subject = "LANGMaster Intranet varování";
-      em.From = "obchod@langmaster.cz";
-      string[] ms = System.Configuration.ConfigurationManager.AppSettings["Email.EBankaError"].Split(',');
-      foreach (string m in ms)
-        em.AddTo(m);
-      em.SendMail();
-    }
+    //public static void OnEBankaCheck() {
+    //  //Zjisteni stavu plateb u eBanky
+    //  List<int> errors = new List<int>();
+    //  List<int> OKList = new List<int>();
+    //  LMComLib.eBanka.PaymentResponse.VerifyPaid(OKList, errors);
+    //  //Zmena stavu u Order v databazi
+    //  LMComDataContext db = Machines.getContext();
+    //  foreach (int id in OKList) {
+    //    Comm_Order ord = db.Comm_Orders.Single<Comm_Order>(o => o.Id == id);
+    //    setOrderStatus(ord,
+    //      ord.ContentType == (short)OrderContentType.Electronic ? OrderStatus.Hotovo : OrderStatus.Zaplaceno);
+    //  }
+    //  foreach (int id in errors) {
+    //    Comm_Order ord = db.Comm_Orders.Single<Comm_Order>(o => o.Id == id);
+    //    setOrderStatus(ord, OrderStatus.eBankaError);
+    //  }
+    //  db.SubmitChanges();
+    //  if (errors.Count == 0) return;
+    //  //Mail o eBanka chybe
+    //  Emailer em = new Emailer();
+    //  em.PlainText = "Zkontroluj eBanka Errors!!!";
+    //  em.Subject = "LANGMaster Intranet varování";
+    //  em.From = "obchod@langmaster.cz";
+    //  string[] ms = System.Configuration.ConfigurationManager.AppSettings["Email.EBankaError"].Split(',');
+    //  foreach (string m in ms)
+    //    em.AddTo(m);
+    //  em.SendMail();
+    //}
 
     public enum PaymentCheckResult {
       ok,
