@@ -124,30 +124,30 @@ namespace LMComLib.Cms {
       sb.Append(IncGlobal.ToString());
       return sb.ToString();
     }
-    public bool nodeOK(CmsSiteMapNode nd, Template page) {
-      if (FilterType != null) {
-        switch ((PageFilter)FilterType) {
-          case PageFilter.TheSameClass: return page != null && nd.className == page.GetType().FullName;
-          case PageFilter.Img: return nd.urlInfo.Type == SiteMapNodeType.img;
-          case PageFilter.Page: if (nd.urlInfo.Type != SiteMapNodeType.lmp) return false;
-            if (Classes != null) {
-              foreach (Type cls in Classes)
-                if (cls.FullName == nd.className) return true;
-              return false;
-            } else
-              return true;
-        }
-      }
-      if (Classes != null) {
-        foreach (Type cls in Classes)
-          if (cls == typeof(ImgTemplate) && nd.urlInfo.Type == SiteMapNodeType.img)
-            return true;
-          else if (cls.FullName == nd.className)
-            return true;
-        return false;
-      } else
-        return true;
-    }
+    //public bool nodeOK(CmsSiteMapNode nd, Template page) {
+    //  if (FilterType != null) {
+    //    switch ((PageFilter)FilterType) {
+    //      case PageFilter.TheSameClass: return page != null && nd.className == page.GetType().FullName;
+    //      case PageFilter.Img: return nd.urlInfo.Type == SiteMapNodeType.img;
+    //      case PageFilter.Page: if (nd.urlInfo.Type != SiteMapNodeType.lmp) return false;
+    //        if (Classes != null) {
+    //          foreach (Type cls in Classes)
+    //            if (cls.FullName == nd.className) return true;
+    //          return false;
+    //        } else
+    //          return true;
+    //    }
+    //  }
+    //  if (Classes != null) {
+    //    foreach (Type cls in Classes)
+    //      if (cls == typeof(ImgTemplate) && nd.urlInfo.Type == SiteMapNodeType.img)
+    //        return true;
+    //      else if (cls.FullName == nd.className)
+    //        return true;
+    //    return false;
+    //  } else
+    //    return true;
+    //}
   }
 
   public abstract class PointerAttributeLow : CmsAttribute {

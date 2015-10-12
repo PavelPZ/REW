@@ -135,37 +135,37 @@ namespace LMComLib {
       return GetTemplate(GetNode(id).Node);
     }
 
-    public static CmsSiteMap GetSiteMap(Domains Site) {
-      //LibConfig.DesignTimeEq(true); //musi byt designtine
-      //Cache cache = HttpContext.Current.Cache;
-      //string key = string.Format("sitemap_{0}", Site);
-      //CmsSiteMap res = (CmsSiteMap)cache.Get(key);
-      //if (res == null)
-      //  lock (typeof(CacheItems)) {
-      //    res = new CmsSiteMap(Site);
-      //    res.cmsFile.Init();
-      //    if (res.fillNodeIds())
-      //      res.cmsFile.Save(); //SiteMap se mohla zmenit - doplneni DBId
-      //    cache.Insert(key, res, new CacheDependency(res.fileName));
-      //  }
-      //return res;
-      return null;
-    }
+    //public static CmsSiteMap GetSiteMap(Domains Site) {
+    //  //LibConfig.DesignTimeEq(true); //musi byt designtine
+    //  //Cache cache = HttpContext.Current.Cache;
+    //  //string key = string.Format("sitemap_{0}", Site);
+    //  //CmsSiteMap res = (CmsSiteMap)cache.Get(key);
+    //  //if (res == null)
+    //  //  lock (typeof(CacheItems)) {
+    //  //    res = new CmsSiteMap(Site);
+    //  //    res.cmsFile.Init();
+    //  //    if (res.fillNodeIds())
+    //  //      res.cmsFile.Save(); //SiteMap se mohla zmenit - doplneni DBId
+    //  //    cache.Insert(key, res, new CacheDependency(res.fileName));
+    //  //  }
+    //  //return res;
+    //  return null;
+    //}
 
-    public static CmsSiteMap GetSiteMap(Domains Site, pageFilter filter, Template page) {
-      LibConfig.DesignTimeEq(true); //musi byt designtine
-      Cache cache = HttpContext.Current.Cache;
-      string key = string.Format("sitemap_{0}", filter.getKey());
-      CmsSiteMap res = (CmsSiteMap)cache.Get(key);
-      if (res == null)
-        lock (typeof(CacheItems)) {
-          res = new CmsSiteMap(filter, page, GetSiteMap(Site), GetSiteMap(Domains.site));
-          string siteKey = string.Format("sitemap_{0}", Site);
-          string[] keys = filter.IncGlobal ? new string[] { siteKey, "sitemap_site" } : new string[] { siteKey };
-          cache.Insert(key, res, new CacheDependency(null, keys));
-        }
-      return res;
-    }
+    //public static CmsSiteMap GetSiteMap(Domains Site, pageFilter filter, Template page) {
+    //  LibConfig.DesignTimeEq(true); //musi byt designtine
+    //  Cache cache = HttpContext.Current.Cache;
+    //  string key = string.Format("sitemap_{0}", filter.getKey());
+    //  CmsSiteMap res = (CmsSiteMap)cache.Get(key);
+    //  if (res == null)
+    //    lock (typeof(CacheItems)) {
+    //      res = new CmsSiteMap(filter, page, GetSiteMap(Site), GetSiteMap(Domains.site));
+    //      string siteKey = string.Format("sitemap_{0}", Site);
+    //      string[] keys = filter.IncGlobal ? new string[] { siteKey, "sitemap_site" } : new string[] { siteKey };
+    //      cache.Insert(key, res, new CacheDependency(null, keys));
+    //    }
+    //  return res;
+    //}
 
     public static Template GetTemplate(CmsSiteMapNode nd) {
       return null;

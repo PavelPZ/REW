@@ -20,165 +20,165 @@ using LMNetLib;
 
 namespace LMComLib.Cms {
 
-  public enum NodeRelation {
-    siblingBefore,
-    siblingAfter,
-    childFirst,
-    childLast
-  }
+  //public enum NodeRelation {
+  //  siblingBefore,
+  //  siblingAfter,
+  //  childFirst,
+  //  childLast
+  //}
 
-  public delegate bool CmsSiteMapFilterEvent(CmsSiteMapNode nd, Template page);
+  //public delegate bool CmsSiteMapFilterEvent(CmsSiteMapNode nd, Template page);
 
-  public class CmsSiteMap : ICmsSerialize {
-    public string fileName;
-    public Domains site;
-    public CmsSiteMapNode root = null;
-    Dictionary<int, CmsSiteMapNode> nodeIds = new Dictionary<int, CmsSiteMapNode>();
-    static XmlWriterSettings wrSett;
-    static CmsSiteMap() {
-      wrSett = new XmlWriterSettings();
-      wrSett.Indent = true;
-    }
-    //public CmsFile cmsFile;
+  //public class CmsSiteMap : ICmsSerialize {
+  //  public string fileName;
+  //  public Domains site;
+  //  public CmsSiteMapNode root = null;
+  //  Dictionary<int, CmsSiteMapNode> nodeIds = new Dictionary<int, CmsSiteMapNode>();
+  //  static XmlWriterSettings wrSett;
+  //  static CmsSiteMap() {
+  //    wrSett = new XmlWriterSettings();
+  //    wrSett.Indent = true;
+  //  }
+  //  //public CmsFile cmsFile;
 
-    public CmsSiteMap(pageFilter filter, Template page, CmsSiteMap actSite, CmsSiteMap commonSite) { }
-    //: this(new CmsSiteMapFilterEvent(filter.nodeOK), filter.IncGlobal, page, actSite, commonSite) { }
+  //  public CmsSiteMap(pageFilter filter, Template page, CmsSiteMap actSite, CmsSiteMap commonSite) { }
+  //  //: this(new CmsSiteMapFilterEvent(filter.nodeOK), filter.IncGlobal, page, actSite, commonSite) { }
 
-    public CmsSiteMap(CmsSiteMapFilterEvent filter, bool bothMaps, Template page, CmsSiteMap actSite, CmsSiteMap commonSite) { }
-    //  if (bothMaps) {
-    //    CmsSiteMapNode res1 = fillSiteMap(filter, page, actSite);
-    //    CmsSiteMapNode res2 = fillSiteMap(filter, page, commonSite);
-    //    if (res1 == null && res2 == null) return;
-    //    if (res1 != null && res2 == null) { root = res1; return; }
-    //    if (res2 != null && res1 == null) { root = res2; return; }
-    //    root = new CmsSiteMapNode();
-    //    root.Add(res1); root.Add(res2);
-    //  } else
-    //    root = fillSiteMap(filter, page, actSite);
-    //}
+  //  public CmsSiteMap(CmsSiteMapFilterEvent filter, bool bothMaps, Template page, CmsSiteMap actSite, CmsSiteMap commonSite) { }
+  //  //  if (bothMaps) {
+  //  //    CmsSiteMapNode res1 = fillSiteMap(filter, page, actSite);
+  //  //    CmsSiteMapNode res2 = fillSiteMap(filter, page, commonSite);
+  //  //    if (res1 == null && res2 == null) return;
+  //  //    if (res1 != null && res2 == null) { root = res1; return; }
+  //  //    if (res2 != null && res1 == null) { root = res2; return; }
+  //  //    root = new CmsSiteMapNode();
+  //  //    root.Add(res1); root.Add(res2);
+  //  //  } else
+  //  //    root = fillSiteMap(filter, page, actSite);
+  //  //}
 
-    //CmsSiteMapNode fillSiteMap(CmsSiteMapFilterEvent filter, Template page, CmsSiteMap site) { }
-    //  if (site == null || site.root == null) return null;
-    //  List<int> validNodes = new List<int>();
-    //  foreach (CmsSiteMapNode nd in site.nodeIds.Values)
-    //    if (filter(nd, page)) validNodes.Add(nd.dbId);
-    //  if (validNodes.Count == 0) return null;
-    //  int i = 0;
-    //  while (i < validNodes.Count) {
-    //    CmsSiteMapNode nd = site.nodeIds[validNodes[i]];
-    //    while (nd.Parent != null) {
-    //      nd = nd.Parent;
-    //      validNodes.Add(nd.dbId);
-    //    }
-    //    i++;
-    //  }
-    //  Dictionary<int, bool> res = new Dictionary<int, bool>();
-    //  foreach (int id in validNodes) res[id] = true;
-    //  //SubTree z validnich nodes
-    //  return site.root.filteredCopy(res, this);
-    //}
-    public CmsSiteMap(Domains dom) { }
-    //  cmsFile = new CmsFile(this);
-    //  site = dom;
-    //  this.fileName = Template.SiteFileName(dom, "web.sitemap");
-    //  using (XmlReader rdr = XmlReader.Create(fileName)) {
-    //    rdr.ReadStartElement("siteMap");
-    //    Stack<CmsSiteMapNode> stack = new Stack<CmsSiteMapNode>();
-    //    while (rdr.Read()) {
-    //      if (rdr.IsStartElement()) {
-    //        bool isEmpty = rdr.IsEmptyElement;
-    //        CmsSiteMapNode nd = new CmsSiteMapNode(this, rdr);
-    //        if (root == null) root = nd;
-    //        if (stack.Count > 0) nd.setParent(stack.Peek());
-    //        if (!isEmpty) stack.Push(nd);
-    //      } else if (rdr.NodeType == XmlNodeType.EndElement) {
-    //        if (stack.Count > 0)
-    //          stack.Pop();
-    //      }
-    //    }
-    //  }
-    //}
+  //  //CmsSiteMapNode fillSiteMap(CmsSiteMapFilterEvent filter, Template page, CmsSiteMap site) { }
+  //  //  if (site == null || site.root == null) return null;
+  //  //  List<int> validNodes = new List<int>();
+  //  //  foreach (CmsSiteMapNode nd in site.nodeIds.Values)
+  //  //    if (filter(nd, page)) validNodes.Add(nd.dbId);
+  //  //  if (validNodes.Count == 0) return null;
+  //  //  int i = 0;
+  //  //  while (i < validNodes.Count) {
+  //  //    CmsSiteMapNode nd = site.nodeIds[validNodes[i]];
+  //  //    while (nd.Parent != null) {
+  //  //      nd = nd.Parent;
+  //  //      validNodes.Add(nd.dbId);
+  //  //    }
+  //  //    i++;
+  //  //  }
+  //  //  Dictionary<int, bool> res = new Dictionary<int, bool>();
+  //  //  foreach (int id in validNodes) res[id] = true;
+  //  //  //SubTree z validnich nodes
+  //  //  return site.root.filteredCopy(res, this);
+  //  //}
+  //  public CmsSiteMap(Domains dom) { }
+  //  //  cmsFile = new CmsFile(this);
+  //  //  site = dom;
+  //  //  this.fileName = Template.SiteFileName(dom, "web.sitemap");
+  //  //  using (XmlReader rdr = XmlReader.Create(fileName)) {
+  //  //    rdr.ReadStartElement("siteMap");
+  //  //    Stack<CmsSiteMapNode> stack = new Stack<CmsSiteMapNode>();
+  //  //    while (rdr.Read()) {
+  //  //      if (rdr.IsStartElement()) {
+  //  //        bool isEmpty = rdr.IsEmptyElement;
+  //  //        CmsSiteMapNode nd = new CmsSiteMapNode(this, rdr);
+  //  //        if (root == null) root = nd;
+  //  //        if (stack.Count > 0) nd.setParent(stack.Peek());
+  //  //        if (!isEmpty) stack.Push(nd);
+  //  //      } else if (rdr.NodeType == XmlNodeType.EndElement) {
+  //  //        if (stack.Count > 0)
+  //  //          stack.Pop();
+  //  //      }
+  //  //    }
+  //  //  }
+  //  //}
 
-    public bool fillNodeIds() { 
-      bool res = false;
-      foreach (CmsSiteMapNode nd in AllNodes(root)) {  
-        if (nd.dbId == 0) {
-          nd.dbId = Template.UniqueId();
-          res = true;
-        }
-        nodeIds.Add(nd.dbId, nd);
-      }
-      return res;
-    }
+  //  public bool fillNodeIds() { 
+  //    bool res = false;
+  //    foreach (CmsSiteMapNode nd in AllNodes(root)) {  
+  //      if (nd.dbId == 0) {
+  //        nd.dbId = Template.UniqueId();
+  //        res = true;
+  //      }
+  //      nodeIds.Add(nd.dbId, nd);
+  //    }
+  //    return res;
+  //  }
 
-    public byte[] SerializeToUtf8String() {
-      MemoryStream ms = new MemoryStream();
-      using (XmlWriter wr = XmlWriter.Create(ms, wrSett)) {
-        wr.WriteStartElement("siteMap", "http://schemas.microsoft.com/AspNet/SiteMap-File-1.0");
-        if (root != null) root.Write(wr);
-        wr.WriteEndElement();
-        wr.Flush();
-        return ms.ToArray();
-      }
-    }
-    public string GetFileName() {
-      return fileName;
-    }
+  //  public byte[] SerializeToUtf8String() {
+  //    MemoryStream ms = new MemoryStream();
+  //    using (XmlWriter wr = XmlWriter.Create(ms, wrSett)) {
+  //      wr.WriteStartElement("siteMap", "http://schemas.microsoft.com/AspNet/SiteMap-File-1.0");
+  //      if (root != null) root.Write(wr);
+  //      wr.WriteEndElement();
+  //      wr.Flush();
+  //      return ms.ToArray();
+  //    }
+  //  }
+  //  public string GetFileName() {
+  //    return fileName;
+  //  }
 
-    public CmsSiteMapNode FindNode(int id) {
-      CmsSiteMapNode res;
-      return nodeIds.TryGetValue(id, out res) ? res : null;
-    }
-    public CmsSiteMapNode FindNode(string url) {
-      url = url.ToLower();
-      foreach (CmsSiteMapNode nd in nodeIds.Values)
-        if (nd.urlInfo != null && nd.urlInfo.Url().ToLower() == url)
-          return nd;
-      return null;
-    }
-    public CmsSiteMapNode GetNode(int id) {
-      CmsSiteMapNode res;
-      if (!nodeIds.TryGetValue(id, out res))
-        throw new Exception(string.Format("CmsSiteMap.GetNode: node {0} does not exist", id));
-      return res;
-    }
-    public static IEnumerable<CmsSiteMapNode> AllNodes(CmsSiteMapNode node) {
-      yield return node;
-      foreach (CmsSiteMapNode nd in node)
-        foreach (CmsSiteMapNode subNd in AllNodes(nd))
-          yield return subNd;
-    }
-    public void MoveNode(CmsSiteMapNode moveNode, CmsSiteMapNode relNode, NodeRelation place) {
-      //Test: moveNode nesmi byt v parent chainu relNode
-      /*CmsSiteMapNode pomNd = relNode;
-      while (pomNd != null)
-      {
-        if (pomNd == moveNode) throw new Exception(string.Format("Cannot move {0} node to {1} node", moveNode.dbId, relNode.dbId));
-        pomNd = pomNd.Parent;
-      }*/
-      moveNode.Parent.Remove(moveNode);
-      nodeIds.Remove(moveNode.dbId);
-      InsertNode(relNode, moveNode, place);
-    }
-    public void DeleteNode(CmsSiteMapNode node) {
-      if (node.Count > 0) throw new Exception("Cannot delete node with child nodes");
-      node.Parent.Remove(node);
-      nodeIds.Remove(node.dbId);
-    }
-    public void InsertNode(CmsSiteMapNode relNode, CmsSiteMapNode node, NodeRelation place) {
-      nodeIds.Add(node.dbId, node);
-      if (place == NodeRelation.childFirst) { relNode.Insert(0, node); node.Parent = relNode; } else if (place == NodeRelation.childLast) { relNode.Add(node); node.Parent = relNode; } else {
-        int idx = relNode.Parent.IndexOf(relNode);
-        node.Parent = relNode.Parent;
-        relNode.Parent.Insert(place == NodeRelation.siblingBefore ? idx : idx + 1, node);
-      }
-      node.SiteMap = this;
-    }
+  //  public CmsSiteMapNode FindNode(int id) {
+  //    CmsSiteMapNode res;
+  //    return nodeIds.TryGetValue(id, out res) ? res : null;
+  //  }
+  //  public CmsSiteMapNode FindNode(string url) {
+  //    url = url.ToLower();
+  //    foreach (CmsSiteMapNode nd in nodeIds.Values)
+  //      if (nd.urlInfo != null && nd.urlInfo.Url().ToLower() == url)
+  //        return nd;
+  //    return null;
+  //  }
+  //  public CmsSiteMapNode GetNode(int id) {
+  //    CmsSiteMapNode res;
+  //    if (!nodeIds.TryGetValue(id, out res))
+  //      throw new Exception(string.Format("CmsSiteMap.GetNode: node {0} does not exist", id));
+  //    return res;
+  //  }
+  //  public static IEnumerable<CmsSiteMapNode> AllNodes(CmsSiteMapNode node) {
+  //    yield return node;
+  //    foreach (CmsSiteMapNode nd in node)
+  //      foreach (CmsSiteMapNode subNd in AllNodes(nd))
+  //        yield return subNd;
+  //  }
+  //  public void MoveNode(CmsSiteMapNode moveNode, CmsSiteMapNode relNode, NodeRelation place) {
+  //    //Test: moveNode nesmi byt v parent chainu relNode
+  //    /*CmsSiteMapNode pomNd = relNode;
+  //    while (pomNd != null)
+  //    {
+  //      if (pomNd == moveNode) throw new Exception(string.Format("Cannot move {0} node to {1} node", moveNode.dbId, relNode.dbId));
+  //      pomNd = pomNd.Parent;
+  //    }*/
+  //    moveNode.Parent.Remove(moveNode);
+  //    nodeIds.Remove(moveNode.dbId);
+  //    InsertNode(relNode, moveNode, place);
+  //  }
+  //  public void DeleteNode(CmsSiteMapNode node) {
+  //    if (node.Count > 0) throw new Exception("Cannot delete node with child nodes");
+  //    node.Parent.Remove(node);
+  //    nodeIds.Remove(node.dbId);
+  //  }
+  //  public void InsertNode(CmsSiteMapNode relNode, CmsSiteMapNode node, NodeRelation place) {
+  //    nodeIds.Add(node.dbId, node);
+  //    if (place == NodeRelation.childFirst) { relNode.Insert(0, node); node.Parent = relNode; } else if (place == NodeRelation.childLast) { relNode.Add(node); node.Parent = relNode; } else {
+  //      int idx = relNode.Parent.IndexOf(relNode);
+  //      node.Parent = relNode.Parent;
+  //      relNode.Parent.Insert(place == NodeRelation.siblingBefore ? idx : idx + 1, node);
+  //    }
+  //    node.SiteMap = this;
+  //  }
 
-  }
+  //}
 
   public class CmsSiteMapNode : List<CmsSiteMapNode> {
-    public CmsSiteMap SiteMap;
+    //public CmsSiteMap SiteMap;
     public CmsSiteMapNode() : base() { }
     //public static CmsSiteMapNode newPage(SecurityDir security, string name, string className, CmsSiteMapNode relNode, NodeRelation placeRelation) {
     //  CmsSiteMapNode res = new CmsSiteMapNode();
@@ -259,13 +259,13 @@ namespace LMComLib.Cms {
     string _url;
     public string url {
       get {
-        return urlInfo == null ? _url : urlInfo.Url(SiteMap.site, dbId);
+        return null; // urlInfo == null ? _url : urlInfo.Url(SiteMap.site, dbId);
       }
       set { _url = value; urlInfo = new urlInfoLow(value); }
     }
 
     public bool isPointer() {
-      return urlInfo != null && urlInfo.SiteId == Domains.site && SiteMap.site != Domains.site;
+      return false; // urlInfo != null && urlInfo.SiteId == Domains.site && SiteMap.site != Domains.site;
     }
     public bool isInParentChain(CmsSiteMapNode nd) {
       while (nd != null) {
