@@ -218,425 +218,425 @@ namespace LMComLib {
   //  }
   //}
 
-  public class ProductCatalogueItems {
-    public static ProductCatalogueItems instance;
-    public static ProductCatalogueItems Instance {
-      get {
-        if (instance != null) return instance;
-        lock (typeof(ProductCatalogueItems)) {
-          if (instance != null) return instance;
-          instance = (ProductCatalogueItems)XmlUtils.FileToObject(
-            Machines.basicPath + @"rew\LMCom\App_Data\ProductCatalogue.xml",
-            typeof(ProductCatalogueItems));
-          instance.Finish();
-          return instance;
-        }
-      }
-    }
-    public List<DsgnProduct> Products;
-    public void Finish() {
-      LocProducts = new Dictionary<Langs, List<ProductCatalogueItem>>();
-      lock (typeof(VirtualImg)) {
-        foreach (DsgnProduct prod in Products) {
-          VirtualImg.registerImg(prod.SmallImgData);
-          if (prod.LocItems != null)
-            foreach (ProductCatalogueItem pi in prod.LocItems) {
-              pi.Owner = prod;
-              List<ProductCatalogueItem> langProd;
-              if (!LocProducts.TryGetValue(pi.lang, out langProd)) {
-                langProd = new List<ProductCatalogueItem>();
-                LocProducts.Add(pi.lang, langProd);
-              }
-              langProd.Add(pi);
-              //VirtualImg.registerImg(pi.MiddleImgData);
-              pi.LicenceList = prod.cloneLicenceList();
-              if (pi.LicenceList != null) foreach (ProductLicence lic in pi.LicenceList) lic.MyProd = pi;
-            }
-        }
-      }
-    }
-    [XmlIgnore]
-    Dictionary<Langs, List<ProductCatalogueItem>> LocProducts;
-    List<ProductCatalogueItem> getLocProduct(Langs lng) {
-      List<ProductCatalogueItem> res;
-      if (LocProducts.TryGetValue(lng, out res)) return res;
-      res = new List<ProductCatalogueItem>();
-      LocProducts.Add(lng, res);
-      return res;
-    }
-    public ProductCatalogueItem get(int productId, Langs lang) {
-      ProductCatalogueItem res = getLocProduct(lang).Where(pr => pr.ProductId == productId).FirstOrDefault();
-      if (res == null && lang != Langs.cs_cz) res = get(productId, Langs.cs_cz);
-      return res;
-    }
-    public ProductCatalogueItem getEx(int productId) {
-      return Products.Where(pr => pr.ProductId == productId).First().LocItems.OrderBy(l => l.lang).First();
-    }
-    public string getBestTitle(int dbId, params Langs[] langs) {
-      var items = Products.Where(pr => pr.ProductId == dbId).SelectMany(p => p.LocItems).ToArray();
-      if (items.Length == 0) throw new Exception();
-      ProductCatalogueItem it = items.FirstOrDefault(t => langs.Contains(t.lang));
-      if (it == null) it = items[0];
-      return it.ShortTitle;
-      /*foreach (Langs lng in langs) {
-        ProductCatalogueItem it = items.FirstOrDefault(t => t.lang == lng);
-        if (it != null) return it.ShortTitle;
-      }*/
-      throw new Exception();
-      /*var items = Products.Where(pr => pr.ProductId == dbId).SelectMany(p => p.LocItems).Where(pi => langs.Contains(pi.lang)).ToArray();
-      if (items.Length == 0) throw new Exception();
-      foreach (Langs lng in langs) {
-        ProductCatalogueItem it = items.FirstOrDefault(t => t.lang == lng);
-        if (it != null) return it.ShortTitle;
-      }
-      throw new Exception();*/
-    }
-    public ProductLicence getFirstLicenceFromAllCommerce(int prosperId/*, Langs lang*/) {
-      int commerceId = ProductLicence.getCommerceId(prosperId);
-      ProductLicenceType licType = ProductLicence.getLicenceType(prosperId);
-      var licences = LocProducts.Values.SelectMany(l => l).Where(p => p.CommerceId == commerceId);
-      return licences.SelectMany(li => li.Licences.Values).Where(li => li.Licence == licType).FirstOrDefault();
-      //DsgnProduct prod = instance.Products.Where(pr => pr.CommerceId == commerceId).Single();
-      /*foreach (ProductCatalogueItem prod in getAllCommerce(commerceId, lang))
-        foreach (ProductLicence lic in prod.Licences.Values)
-          if (lic.Licence == licType)
-            return lic;
-      if (lang != Langs.cs_cz) return getFirstLicenceFromAllCommerce(prosperId/*, Langs.cs_cz);
-      throw new Exception();*/
-    }
+  //public class ProductCatalogueItems {
+  //  public static ProductCatalogueItems instance;
+  //  public static ProductCatalogueItems Instance {
+  //    get {
+  //      if (instance != null) return instance;
+  //      lock (typeof(ProductCatalogueItems)) {
+  //        if (instance != null) return instance;
+  //        instance = (ProductCatalogueItems)XmlUtils.FileToObject(
+  //          Machines.basicPath + @"rew\LMCom\App_Data\ProductCatalogue.xml",
+  //          typeof(ProductCatalogueItems));
+  //        instance.Finish();
+  //        return instance;
+  //      }
+  //    }
+  //  }
+  //  public List<DsgnProduct> Products;
+  //  public void Finish() {
+  //    LocProducts = new Dictionary<Langs, List<ProductCatalogueItem>>();
+  //    lock (typeof(VirtualImg)) {
+  //      foreach (DsgnProduct prod in Products) {
+  //        VirtualImg.registerImg(prod.SmallImgData);
+  //        if (prod.LocItems != null)
+  //          foreach (ProductCatalogueItem pi in prod.LocItems) {
+  //            pi.Owner = prod;
+  //            List<ProductCatalogueItem> langProd;
+  //            if (!LocProducts.TryGetValue(pi.lang, out langProd)) {
+  //              langProd = new List<ProductCatalogueItem>();
+  //              LocProducts.Add(pi.lang, langProd);
+  //            }
+  //            langProd.Add(pi);
+  //            //VirtualImg.registerImg(pi.MiddleImgData);
+  //            pi.LicenceList = prod.cloneLicenceList();
+  //            if (pi.LicenceList != null) foreach (ProductLicence lic in pi.LicenceList) lic.MyProd = pi;
+  //          }
+  //      }
+  //    }
+  //  }
+  //  [XmlIgnore]
+  //  Dictionary<Langs, List<ProductCatalogueItem>> LocProducts;
+  //  List<ProductCatalogueItem> getLocProduct(Langs lng) {
+  //    List<ProductCatalogueItem> res;
+  //    if (LocProducts.TryGetValue(lng, out res)) return res;
+  //    res = new List<ProductCatalogueItem>();
+  //    LocProducts.Add(lng, res);
+  //    return res;
+  //  }
+  //  public ProductCatalogueItem get(int productId, Langs lang) {
+  //    ProductCatalogueItem res = getLocProduct(lang).Where(pr => pr.ProductId == productId).FirstOrDefault();
+  //    if (res == null && lang != Langs.cs_cz) res = get(productId, Langs.cs_cz);
+  //    return res;
+  //  }
+  //  public ProductCatalogueItem getEx(int productId) {
+  //    return Products.Where(pr => pr.ProductId == productId).First().LocItems.OrderBy(l => l.lang).First();
+  //  }
+  //  public string getBestTitle(int dbId, params Langs[] langs) {
+  //    var items = Products.Where(pr => pr.ProductId == dbId).SelectMany(p => p.LocItems).ToArray();
+  //    if (items.Length == 0) throw new Exception();
+  //    ProductCatalogueItem it = items.FirstOrDefault(t => langs.Contains(t.lang));
+  //    if (it == null) it = items[0];
+  //    return it.ShortTitle;
+  //    /*foreach (Langs lng in langs) {
+  //      ProductCatalogueItem it = items.FirstOrDefault(t => t.lang == lng);
+  //      if (it != null) return it.ShortTitle;
+  //    }*/
+  //    throw new Exception();
+  //    /*var items = Products.Where(pr => pr.ProductId == dbId).SelectMany(p => p.LocItems).Where(pi => langs.Contains(pi.lang)).ToArray();
+  //    if (items.Length == 0) throw new Exception();
+  //    foreach (Langs lng in langs) {
+  //      ProductCatalogueItem it = items.FirstOrDefault(t => t.lang == lng);
+  //      if (it != null) return it.ShortTitle;
+  //    }
+  //    throw new Exception();*/
+  //  }
+  //  public ProductLicence getFirstLicenceFromAllCommerce(int prosperId/*, Langs lang*/) {
+  //    int commerceId = ProductLicence.getCommerceId(prosperId);
+  //    ProductLicenceType licType = ProductLicence.getLicenceType(prosperId);
+  //    var licences = LocProducts.Values.SelectMany(l => l).Where(p => p.CommerceId == commerceId);
+  //    return licences.SelectMany(li => li.Licences.Values).Where(li => li.Licence == licType).FirstOrDefault();
+  //    //DsgnProduct prod = instance.Products.Where(pr => pr.CommerceId == commerceId).Single();
+  //    /*foreach (ProductCatalogueItem prod in getAllCommerce(commerceId, lang))
+  //      foreach (ProductLicence lic in prod.Licences.Values)
+  //        if (lic.Licence == licType)
+  //          return lic;
+  //    if (lang != Langs.cs_cz) return getFirstLicenceFromAllCommerce(prosperId/*, Langs.cs_cz);
+  //    throw new Exception();*/
+  //  }
 
-    public IEnumerable<Langs> DownloadLangs(Domains site, CourseIds crsId) {
-      //site = ProductCatalogue.normalizeSite(site);
-      return ProductCatalogueItems.Instance.Products.SelectMany(p => p.LocItems).
-        //Zmena 3.8.2011 kvule Avanquest, povoleni anglictiny v anglictine
-        //Where(pl => pl.Owner.site == site && pl.Owner.LicenceList.Any(l => l.Licence == ProductLicenceType.download && l.CourseId == crsId) && !pl.IsSameLang).
-        Where(pl => pl.Owner.site == site && pl.Owner.LicenceList.Any(l => l.Licence == ProductLicenceType.download && l.CourseId == crsId)).
-        Select(pl => pl.lang);
-    }
+  //  public IEnumerable<Langs> DownloadLangs(Domains site, CourseIds crsId) {
+  //    //site = ProductCatalogue.normalizeSite(site);
+  //    return ProductCatalogueItems.Instance.Products.SelectMany(p => p.LocItems).
+  //      //Zmena 3.8.2011 kvule Avanquest, povoleni anglictiny v anglictine
+  //      //Where(pl => pl.Owner.site == site && pl.Owner.LicenceList.Any(l => l.Licence == ProductLicenceType.download && l.CourseId == crsId) && !pl.IsSameLang).
+  //      Where(pl => pl.Owner.site == site && pl.Owner.LicenceList.Any(l => l.Licence == ProductLicenceType.download && l.CourseId == crsId)).
+  //      Select(pl => pl.lang);
+  //  }
 
-    public struct LocLic { public ProductCatalogueItem Loc; public ProductLicence Lic; }
+  //  public struct LocLic { public ProductCatalogueItem Loc; public ProductLicence Lic; }
 
-    public IEnumerable<LocLic> Downloads(Domains site) {
-      //site = ProductCatalogue.normalizeSite(site);
-      return ProductCatalogueItems.Instance.Products.SelectMany(p => p.LocItems).Where(pl => (site == Domains.no || pl.Owner.site == site) && !pl.IsSameLang).
-        Select(li => new LocLic() { Loc = li, Lic = li.Owner.LicenceList.FirstOrDefault(l => l.Licence == ProductLicenceType.download) }).
-        Where(ll => ll.Lic != null);
-    }
+  //  public IEnumerable<LocLic> Downloads(Domains site) {
+  //    //site = ProductCatalogue.normalizeSite(site);
+  //    return ProductCatalogueItems.Instance.Products.SelectMany(p => p.LocItems).Where(pl => (site == Domains.no || pl.Owner.site == site) && !pl.IsSameLang).
+  //      Select(li => new LocLic() { Loc = li, Lic = li.Owner.LicenceList.FirstOrDefault(l => l.Licence == ProductLicenceType.download) }).
+  //      Where(ll => ll.Lic != null);
+  //  }
 
-    public ProductCatalogueItem getCourse(CourseIds courseId, Domains site, Langs lang, bool langMustMatch) {
-      ProductCatalogueItem res = getLocProduct(lang).Where(pr => pr.getOnlyCourseId() == courseId && pr.site == site).FirstOrDefault();
-      if (res == null) {
-        if (langMustMatch) return null;
-        if (lang != Langs.cs_cz) res = getCourse(courseId, site, Langs.cs_cz);
-      }
-      return res;
-    }
-    public ProductCatalogueItem getCourse(CourseIds courseId, Domains site, Langs lang) {
-      return getCourse(courseId, site, lang, false);
-      //site = ProductCatalogue.normalizeSite(site);
-      //ProductCatalogueItem res = getLocProduct(lang).Where(pr => pr.getOnlyCourseId() == courseId && pr.site == site).FirstOrDefault();
-      //if (res == null && lang != Langs.cs_cz) res = getCourse(courseId, site, Langs.cs_cz);
-      //return res;
-    }
-    IEnumerable<ProductCatalogueItem> getAllCommerce(int commerceId, Langs lang) {
-      return getLocProduct(lang).Where(pr => pr.CommerceId == commerceId);
-    }
-    public IEnumerable<ProductCatalogueItem> GetProductIds(bool hasDownload, Domains site, Langs lang) {
-      //site = ProductCatalogue.normalizeSite(site);
-      return ProductCatalogueItems.Instance.Products.Where(pr => pr.site == site && (!hasDownload || pr.HasDownload) && !pr.HideOnLmcom).
-        SelectMany(pr => pr.LocItems).
-        Where(li => li.lang == lang && (!hasDownload || !li.IsSameLang));
-    }
+  //  public ProductCatalogueItem getCourse(CourseIds courseId, Domains site, Langs lang, bool langMustMatch) {
+  //    ProductCatalogueItem res = getLocProduct(lang).Where(pr => pr.getOnlyCourseId() == courseId && pr.site == site).FirstOrDefault();
+  //    if (res == null) {
+  //      if (langMustMatch) return null;
+  //      if (lang != Langs.cs_cz) res = getCourse(courseId, site, Langs.cs_cz);
+  //    }
+  //    return res;
+  //  }
+  //  public ProductCatalogueItem getCourse(CourseIds courseId, Domains site, Langs lang) {
+  //    return getCourse(courseId, site, lang, false);
+  //    //site = ProductCatalogue.normalizeSite(site);
+  //    //ProductCatalogueItem res = getLocProduct(lang).Where(pr => pr.getOnlyCourseId() == courseId && pr.site == site).FirstOrDefault();
+  //    //if (res == null && lang != Langs.cs_cz) res = getCourse(courseId, site, Langs.cs_cz);
+  //    //return res;
+  //  }
+  //  IEnumerable<ProductCatalogueItem> getAllCommerce(int commerceId, Langs lang) {
+  //    return getLocProduct(lang).Where(pr => pr.CommerceId == commerceId);
+  //  }
+  //  public IEnumerable<ProductCatalogueItem> GetProductIds(bool hasDownload, Domains site, Langs lang) {
+  //    //site = ProductCatalogue.normalizeSite(site);
+  //    return ProductCatalogueItems.Instance.Products.Where(pr => pr.site == site && (!hasDownload || pr.HasDownload) && !pr.HideOnLmcom).
+  //      SelectMany(pr => pr.LocItems).
+  //      Where(li => li.lang == lang && (!hasDownload || !li.IsSameLang));
+  //  }
 
-    public delegate bool ProductOKEvent(DsgnProduct item);
+  //  public delegate bool ProductOKEvent(DsgnProduct item);
 
-    public IEnumerable<ProductCatalogueItem> GetProductIds(Domains site, Langs lang, ProductOKEvent okEvent) {
-      //site = ProductCatalogue.normalizeSite(site);
-      return ProductCatalogueItems.Instance.Products.Where(pr => pr.site == site && !pr.HideOnLmcom && okEvent(pr)).
-        SelectMany(pr => pr.LocItems).
-        Where(li => li.lang == lang);
-    }
+  //  public IEnumerable<ProductCatalogueItem> GetProductIds(Domains site, Langs lang, ProductOKEvent okEvent) {
+  //    //site = ProductCatalogue.normalizeSite(site);
+  //    return ProductCatalogueItems.Instance.Products.Where(pr => pr.site == site && !pr.HideOnLmcom && okEvent(pr)).
+  //      SelectMany(pr => pr.LocItems).
+  //      Where(li => li.lang == lang);
+  //  }
 
-    public IEnumerable<ProductCatalogueItem> GetFiaFileName(Domains site, string fn) {
-      //site = ProductCatalogue.normalizeSite(site);
-      return ProductCatalogueItems.Instance.Products.Where(pr => pr.site == site && pr.FileName == fn).SelectMany(pr => pr.LocItems);
-    }
-  }
+  //  public IEnumerable<ProductCatalogueItem> GetFiaFileName(Domains site, string fn) {
+  //    //site = ProductCatalogue.normalizeSite(site);
+  //    return ProductCatalogueItems.Instance.Products.Where(pr => pr.site == site && pr.FileName == fn).SelectMany(pr => pr.LocItems);
+  //  }
+  //}
 
-  public class ProductCatalogueItem {
-    public Langs lang;
-    public string Title;
-    string shortTitle;
-    public string ShortTitle {
-      get { return shortTitle == null ? "*** missing short title ***" : shortTitle; }
-      set { shortTitle = value; }
-    }
-    public string ShortXTitle(Domains site, Langs lng) {
-      if (site != Domains.com) return ShortTitle;
-      string s = ShortTitle;
-      switch (lng) {
-        case Langs.en_gb: return ShortTitle.Replace(" by LANGMaster.com", null).Replace("Collins", null);
-        case Langs.de_de: return ShortTitle.Replace(" von LANGMaster.com", null).Replace("elektronisches", null);
-        case Langs.sp_sp: return ShortTitle.Replace(" por LANGMaster.com", null).Replace("Collins", null);
-        case Langs.ru_ru: return ShortTitle.Replace(" от LANGMaster.com", null).Replace("Collins", null);
-        case Langs.it_it: return ShortTitle.Replace(" by LANGMaster.com", null).Replace("Collins", null);
-        case Langs.fr_fr: return ShortTitle.Replace(" by LANGMaster.com", null).Replace("Collins", null);
-        default: return ShortTitle;
-      }
-    }
-    public string Perex;
-    public string Url;
-    public string BuyUrl;
-    public bool IsSameLang;
-    public string DownloadUrl;
-    public string RunUrl;
+  //public class ProductCatalogueItem {
+  //  public Langs lang;
+  //  public string Title;
+  //  string shortTitle;
+  //  public string ShortTitle {
+  //    get { return shortTitle == null ? "*** missing short title ***" : shortTitle; }
+  //    set { shortTitle = value; }
+  //  }
+  //  public string ShortXTitle(Domains site, Langs lng) {
+  //    if (site != Domains.com) return ShortTitle;
+  //    string s = ShortTitle;
+  //    switch (lng) {
+  //      case Langs.en_gb: return ShortTitle.Replace(" by LANGMaster.com", null).Replace("Collins", null);
+  //      case Langs.de_de: return ShortTitle.Replace(" von LANGMaster.com", null).Replace("elektronisches", null);
+  //      case Langs.sp_sp: return ShortTitle.Replace(" por LANGMaster.com", null).Replace("Collins", null);
+  //      case Langs.ru_ru: return ShortTitle.Replace(" от LANGMaster.com", null).Replace("Collins", null);
+  //      case Langs.it_it: return ShortTitle.Replace(" by LANGMaster.com", null).Replace("Collins", null);
+  //      case Langs.fr_fr: return ShortTitle.Replace(" by LANGMaster.com", null).Replace("Collins", null);
+  //      default: return ShortTitle;
+  //    }
+  //  }
+  //  public string Perex;
+  //  public string Url;
+  //  public string BuyUrl;
+  //  public bool IsSameLang;
+  //  public string DownloadUrl;
+  //  public string RunUrl;
 
-    public string debugBuyUrl(SubDomains subDomain) {
-      if (subDomain == SubDomains.no) {
-        string newUrl = null;
-        switch (Machines.machine) {
-          case Machines.pz_comp: newUrl = "localhost"; break;
-          case "newbuild": newUrl = "newbuild"; break;
-          case "lm-backup": newUrl = "test.langmaster.cz"; break;
-          default: return BuyUrl;
-        }
-        if (DownloadUrl.IndexOf("vyuka.lide.cz") > 0 && DownloadUrl.IndexOf("vyuka.lide.cz/lmcom/sz") < 0) newUrl += "/lmcom";
-        return BuyUrl.Replace("www.langmaster.cz", newUrl).Replace("vyuka.lide.cz", newUrl).Replace("www.langmaster.com", newUrl);
-      } else
-        return BuyUrl.Replace("www.langmaster.com", SubDomain.subDomainToHost(subDomain));
-    }
+  //  public string debugBuyUrl(SubDomains subDomain) {
+  //    if (subDomain == SubDomains.no) {
+  //      string newUrl = null;
+  //      switch (Machines.machine) {
+  //        case Machines.pz_comp: newUrl = "localhost"; break;
+  //        case "newbuild": newUrl = "newbuild"; break;
+  //        case "lm-backup": newUrl = "test.langmaster.cz"; break;
+  //        default: return BuyUrl;
+  //      }
+  //      if (DownloadUrl.IndexOf("vyuka.lide.cz") > 0 && DownloadUrl.IndexOf("vyuka.lide.cz/lmcom/sz") < 0) newUrl += "/lmcom";
+  //      return BuyUrl.Replace("www.langmaster.cz", newUrl).Replace("vyuka.lide.cz", newUrl).Replace("www.langmaster.com", newUrl);
+  //    } else
+  //      return BuyUrl.Replace("www.langmaster.com", SubDomain.subDomainToHost(subDomain));
+  //  }
 
-    public string debugDownloadUrl(SubDomains subDomain) {
-      if (subDomain == SubDomains.no) {
-        string newUrl = null;
-        switch (Machines.machine) {
-          case Machines.pz_comp: newUrl = "localhost"; break;
-          case "newbuild": newUrl = "newbuild"; break;
-          case "lm-backup": newUrl = "test.langmaster.cz"; break;
-          default: return DownloadUrl;
-        }
-        if (DownloadUrl.IndexOf("vyuka.lide.cz") > 0 && DownloadUrl.IndexOf("vyuka.lide.cz/lmcom/sz") < 0) newUrl += "/lmcom/sz/web/cs-cz/pages";
-        return DownloadUrl.Replace("www.langmaster.cz", newUrl).Replace("vyuka.lide.cz", newUrl).Replace("www.langmaster.com", newUrl);
-      } else
-        return DownloadUrl.Replace("www.langmaster.com", SubDomain.subDomainToHost(subDomain));
-    }
+  //  public string debugDownloadUrl(SubDomains subDomain) {
+  //    if (subDomain == SubDomains.no) {
+  //      string newUrl = null;
+  //      switch (Machines.machine) {
+  //        case Machines.pz_comp: newUrl = "localhost"; break;
+  //        case "newbuild": newUrl = "newbuild"; break;
+  //        case "lm-backup": newUrl = "test.langmaster.cz"; break;
+  //        default: return DownloadUrl;
+  //      }
+  //      if (DownloadUrl.IndexOf("vyuka.lide.cz") > 0 && DownloadUrl.IndexOf("vyuka.lide.cz/lmcom/sz") < 0) newUrl += "/lmcom/sz/web/cs-cz/pages";
+  //      return DownloadUrl.Replace("www.langmaster.cz", newUrl).Replace("vyuka.lide.cz", newUrl).Replace("www.langmaster.com", newUrl);
+  //    } else
+  //      return DownloadUrl.Replace("www.langmaster.com", SubDomain.subDomainToHost(subDomain));
+  //  }
 
-    public string debugUrl(SubDomains subDomain) {
-      if (subDomain == SubDomains.no) {
-        string newUrl = null;
-        switch (Machines.machine) {
-          case Machines.pz_comp: newUrl = "localhost"; break;
-          case "newbuild": newUrl = "newbuild"; break;
-          case "lm-backup": newUrl = "test.langmaster.cz"; break;
-          default: return Url;
-        }
-        if (Url.IndexOf("vyuka.lide.cz") > 0 && Url.IndexOf("vyuka.lide.cz/lmcom/sz") < 0) newUrl += "/lmcom/sz/web/cs-cz/pages";
-        return Url.Replace("www.langmaster.cz", newUrl).Replace("vyuka.lide.cz", newUrl).Replace("www.langmaster.com", newUrl);
-      } else
-        return Url.Replace("www.langmaster.com", SubDomain.subDomainToHost(subDomain));
-    }
+  //  public string debugUrl(SubDomains subDomain) {
+  //    if (subDomain == SubDomains.no) {
+  //      string newUrl = null;
+  //      switch (Machines.machine) {
+  //        case Machines.pz_comp: newUrl = "localhost"; break;
+  //        case "newbuild": newUrl = "newbuild"; break;
+  //        case "lm-backup": newUrl = "test.langmaster.cz"; break;
+  //        default: return Url;
+  //      }
+  //      if (Url.IndexOf("vyuka.lide.cz") > 0 && Url.IndexOf("vyuka.lide.cz/lmcom/sz") < 0) newUrl += "/lmcom/sz/web/cs-cz/pages";
+  //      return Url.Replace("www.langmaster.cz", newUrl).Replace("vyuka.lide.cz", newUrl).Replace("www.langmaster.com", newUrl);
+  //    } else
+  //      return Url.Replace("www.langmaster.com", SubDomain.subDomainToHost(subDomain));
+  //  }
 
-    [XmlIgnore]
-    public string SmallImg { get { return Owner.SmallImgData == null ? null : Owner.SmallImgData.Url(); } }
-    //[XmlIgnore]
-    //public string MiddleImg { get { return MiddleImgData==null ? null : MiddleImgData.Url(); } }
-    //kopie seznamu ruznych licenci s cenami
-    [XmlIgnore]
-    public ProductLicence[] LicenceList;
-    [XmlIgnore]
-    public DsgnProduct Owner;
+  //  [XmlIgnore]
+  //  public string SmallImg { get { return Owner.SmallImgData == null ? null : Owner.SmallImgData.Url(); } }
+  //  //[XmlIgnore]
+  //  //public string MiddleImg { get { return MiddleImgData==null ? null : MiddleImgData.Url(); } }
+  //  //kopie seznamu ruznych licenci s cenami
+  //  [XmlIgnore]
+  //  public ProductLicence[] LicenceList;
+  //  [XmlIgnore]
+  //  public DsgnProduct Owner;
 
-    public int ProductId { get { return Owner.ProductId; } }
-    public Domains site { get { return Owner.site; } }
-    public int CommerceId { get { return Owner.CommerceId; } }
-    // "Vase cena": v podstate plati tato cena, UnitPrice se pouze zobrazuje
-    public Currency Discount { get { return Owner.Discount; } }
-    // Pro ucetnictvi: obsahuje skladovou kartu
-    public bool StockAble { get { return Owner.StockAble; } }
-    // Vyrobni naklady
-    public Currency ProductionCost { get { return Owner.ProductionCost; } }
-    // Informace o licencnich poplatcich
-    public ProductRoyality[] ProductRoyalities { get { return Owner.ProductRoyalities; } }
-    public int[] seeAlso { get { return Owner.seeAlso; } }
+  //  public int ProductId { get { return Owner.ProductId; } }
+  //  public Domains site { get { return Owner.site; } }
+  //  public int CommerceId { get { return Owner.CommerceId; } }
+  //  // "Vase cena": v podstate plati tato cena, UnitPrice se pouze zobrazuje
+  //  public Currency Discount { get { return Owner.Discount; } }
+  //  // Pro ucetnictvi: obsahuje skladovou kartu
+  //  public bool StockAble { get { return Owner.StockAble; } }
+  //  // Vyrobni naklady
+  //  public Currency ProductionCost { get { return Owner.ProductionCost; } }
+  //  // Informace o licencnich poplatcich
+  //  public ProductRoyality[] ProductRoyalities { get { return Owner.ProductRoyalities; } }
+  //  public int[] seeAlso { get { return Owner.seeAlso; } }
 
 
-    public string BuyUrlLic(ProductLicenceType type, SubDomains subDomain) {
-      string res = debugBuyUrl(subDomain);
-      //vedlejsi efekt: stare BuildUrl obsahuje query string, k nim se prida i licence. Nove nikoliv.
-      return res.IndexOf('?') < 0 ? res : res + "&Lic=" + type.ToString();
-    }
+  //  public string BuyUrlLic(ProductLicenceType type, SubDomains subDomain) {
+  //    string res = debugBuyUrl(subDomain);
+  //    //vedlejsi efekt: stare BuildUrl obsahuje query string, k nim se prida i licence. Nove nikoliv.
+  //    return res.IndexOf('?') < 0 ? res : res + "&Lic=" + type.ToString();
+  //  }
 
-    public string GetTitle(RegLicenceObj regLic) {
-      if (regLic != null && regLic.Scena == RegLicenceScena.fixStartDate)
-        return ShortTitle + " (" + "začátek kurzu" + " " + ProductLicence.FixDateStart(regLic.MultiPrice).ToShortDateString() + ")";
-      else
-        return ShortTitle;
-    }
+  //  public string GetTitle(RegLicenceObj regLic) {
+  //    if (regLic != null && regLic.Scena == RegLicenceScena.fixStartDate)
+  //      return ShortTitle + " (" + "začátek kurzu" + " " + ProductLicence.FixDateStart(regLic.MultiPrice).ToShortDateString() + ")";
+  //    else
+  //      return ShortTitle;
+  //  }
 
-    public ProductLicence findLicence(ProductLicenceType type) {
-      if (LicenceList != null)
-        foreach (ProductLicence lic in LicenceList)
-          if (lic.Licence == type) return lic;
-      return null;
-    }
+  //  public ProductLicence findLicence(ProductLicenceType type) {
+  //    if (LicenceList != null)
+  //      foreach (ProductLicence lic in LicenceList)
+  //        if (lic.Licence == type) return lic;
+  //    return null;
+  //  }
 
-    public CourseIds getOnlyCourseId() {
-      return DsgnProduct.getOnlyCourseId(LicenceList);
-    }
+  //  public CourseIds getOnlyCourseId() {
+  //    return DsgnProduct.getOnlyCourseId(LicenceList);
+  //  }
 
-    [XmlIgnore]
-    Dictionary<ProductLicenceType, ProductLicence> licences;
-    [XmlIgnore]
-    public Dictionary<ProductLicenceType, ProductLicence> Licences {
-      get {
-        if (licences == null) {
-          licences = new Dictionary<ProductLicenceType, ProductLicence>();
-          if (LicenceList == null || LicenceList.Length <= 0) {
-            ProductLicence noLic = new ProductLicence();
-            noLic.MyProd = this;
-            noLic.Licence = ProductLicenceType.box;
-            noLic.LicPrice = Discount;
-            licences.Add(noLic.Licence, noLic);
-          } else
-            foreach (ProductLicence lic in LicenceList) {
-              lic.MyProd = this;
-              licences.Add(lic.Licence, lic);
-            }
-        }
-        return licences;
-      }
-    }
+  //  [XmlIgnore]
+  //  Dictionary<ProductLicenceType, ProductLicence> licences;
+  //  [XmlIgnore]
+  //  public Dictionary<ProductLicenceType, ProductLicence> Licences {
+  //    get {
+  //      if (licences == null) {
+  //        licences = new Dictionary<ProductLicenceType, ProductLicence>();
+  //        if (LicenceList == null || LicenceList.Length <= 0) {
+  //          ProductLicence noLic = new ProductLicence();
+  //          noLic.MyProd = this;
+  //          noLic.Licence = ProductLicenceType.box;
+  //          noLic.LicPrice = Discount;
+  //          licences.Add(noLic.Licence, noLic);
+  //        } else
+  //          foreach (ProductLicence lic in LicenceList) {
+  //            lic.MyProd = this;
+  //            licences.Add(lic.Licence, lic);
+  //          }
+  //      }
+  //      return licences;
+  //    }
+  //  }
 
-    public double ProductPriceTax(SubDomains subSite, ProductLicenceType lic) {
-      return Order.RoundCurrency(Discount.PriceTax(Order.ActTaxPercent, subSite, lic));
-    }
+  //  public double ProductPriceTax(SubDomains subSite, ProductLicenceType lic) {
+  //    return Order.RoundCurrency(Discount.PriceTax(Order.ActTaxPercent, subSite, lic));
+  //  }
 
-    public double LowerPriceTax(SubDomains subSite, ProductLicenceType lic) {
-      if (LicenceList == null || LicenceList.Length <= 0) return ProductPriceTax(subSite, lic);
-      double pr = Double.MaxValue;
-      foreach (ProductLicence li in LicenceList) {
-        double newPr = li.NormalPriceTax(subSite);
-        if (newPr < pr) pr = newPr;
-      }
-      return pr;
-    }
+  //  public double LowerPriceTax(SubDomains subSite, ProductLicenceType lic) {
+  //    if (LicenceList == null || LicenceList.Length <= 0) return ProductPriceTax(subSite, lic);
+  //    double pr = Double.MaxValue;
+  //    foreach (ProductLicence li in LicenceList) {
+  //      double newPr = li.NormalPriceTax(subSite);
+  //      if (newPr < pr) pr = newPr;
+  //    }
+  //    return pr;
+  //  }
 
-    //licence pro subsite:
-    public IEnumerable<ProductLicence> com_Licences(SubDomains subsite) {
-      return LicenceList.Where(l => l.SubSites == null || l.SubSites.Contains(subsite));
-    }
+  //  //licence pro subsite:
+  //  public IEnumerable<ProductLicence> com_Licences(SubDomains subsite) {
+  //    return LicenceList.Where(l => l.SubSites == null || l.SubSites.Contains(subsite));
+  //  }
 
-    public Currency com_LowPrice(SubDomains subsite) { return com_Licences(subsite).Select(l => com_Price(l, subsite)).MinBy(l => l.Amount); }
+  //  public Currency com_LowPrice(SubDomains subsite) { return com_Licences(subsite).Select(l => com_Price(l, subsite)).MinBy(l => l.Amount); }
 
-    public ProductLicence com_LowLicence(SubDomains subsite) { return com_Licences(subsite).MinBy(l => com_Price(l, subsite).Amount); }
+  //  public ProductLicence com_LowLicence(SubDomains subsite) { return com_Licences(subsite).MinBy(l => com_Price(l, subsite).Amount); }
 
-    //true: download, false: box; null: both
-    public bool? com_Download(SubDomains subsite) {
-      bool isBox = false; bool isDownload = false;
-      foreach (ProductLicence lic in com_Licences(subsite))
-        if (lic.Licence == ProductLicenceType.box) isBox = true; else if (lic.Licence == ProductLicenceType.download) isDownload = true;
-      if (isDownload && !isBox) return true; else if (!isDownload && isBox) return false; else return null;
-    }
+  //  //true: download, false: box; null: both
+  //  public bool? com_Download(SubDomains subsite) {
+  //    bool isBox = false; bool isDownload = false;
+  //    foreach (ProductLicence lic in com_Licences(subsite))
+  //      if (lic.Licence == ProductLicenceType.box) isBox = true; else if (lic.Licence == ProductLicenceType.download) isDownload = true;
+  //    if (isDownload && !isBox) return true; else if (!isDownload && isBox) return false; else return null;
+  //  }
 
-    //licence daneho typu
-    public ProductLicence com_Licence(SubDomains subsite, ProductLicenceType type) {
-      return com_Licences(subsite).First(l => l.Licence == type);
-    }
+  //  //licence daneho typu
+  //  public ProductLicence com_Licence(SubDomains subsite, ProductLicenceType type) {
+  //    return com_Licences(subsite).First(l => l.Licence == type);
+  //  }
 
-    //cena pro licenci
-    public Currency com_Price(ProductLicence lic, SubDomains subsite) {
-      return lic.LicPrice.priceValue(subsite, lic.Licence);
-      /*if (lic.LicPrice.SubSites == null) return lic.LicPrice;
-      SubSiteCurrency? noPrice = null;
-      foreach (SubSiteCurrency sc in lic.LicPrice.SubSites)
-        if (sc.SubSite == subsite) return sc.getCurrency();
-        else if (sc.SubSite == SubDomains.no) noPrice = sc;
-      if (noPrice == null) throw new Exception();
-      return ((SubSiteCurrency)noPrice).getCurrency();*/
-    }
+  //  //cena pro licenci
+  //  public Currency com_Price(ProductLicence lic, SubDomains subsite) {
+  //    return lic.LicPrice.priceValue(subsite, lic.Licence);
+  //    /*if (lic.LicPrice.SubSites == null) return lic.LicPrice;
+  //    SubSiteCurrency? noPrice = null;
+  //    foreach (SubSiteCurrency sc in lic.LicPrice.SubSites)
+  //      if (sc.SubSite == subsite) return sc.getCurrency();
+  //      else if (sc.SubSite == SubDomains.no) noPrice = sc;
+  //    if (noPrice == null) throw new Exception();
+  //    return ((SubSiteCurrency)noPrice).getCurrency();*/
+  //  }
 
-    public Currency com_Price(ProductLicenceType lic, SubDomains subsite) {
-      return com_Price(com_Licence(subsite, lic), subsite);
-    }
+  //  public Currency com_Price(ProductLicenceType lic, SubDomains subsite) {
+  //    return com_Price(com_Licence(subsite, lic), subsite);
+  //  }
 
-    public string com_PriceText(ProductLicenceType lic, SubDomains subsite) {
-      Currency curr = com_Price(com_Licence(subsite, lic), subsite);
-      return urlInfo.priceText(curr.Typ, curr.PriceTax(subsite, lic));
-    }
+  //  public string com_PriceText(ProductLicenceType lic, SubDomains subsite) {
+  //    Currency curr = com_Price(com_Licence(subsite, lic), subsite);
+  //    return urlInfo.priceText(curr.Typ, curr.PriceTax(subsite, lic));
+  //  }
 
-    public string com_PriceText(ProductLicence lic, SubDomains subsite) {
-      Currency curr = com_Price(lic, subsite);
-      return urlInfo.priceText(curr.Typ, curr.PriceTax(subsite, lic.Licence));
-    }
+  //  public string com_PriceText(ProductLicence lic, SubDomains subsite) {
+  //    Currency curr = com_Price(lic, subsite);
+  //    return urlInfo.priceText(curr.Typ, curr.PriceTax(subsite, lic.Licence));
+  //  }
 
-    /*public bool IsPoslechyOrETAudio() {
-      return Owner.ET_SiteMapId == ET_SiteMapId.talknowaudio || ProductLicence.isPoslechy(getOnlyCourseId());
-    }*/
-  }
+  //  /*public bool IsPoslechyOrETAudio() {
+  //    return Owner.ET_SiteMapId == ET_SiteMapId.talknowaudio || ProductLicence.isPoslechy(getOnlyCourseId());
+  //  }*/
+  //}
 
-  public class DsgnProduct {
-    public int ProductId;
-    public Domains site;
-    public LineIds Line; //zatrideni do skupiny produktu
-    public bool? WithDict; //priznak - produkt se slovnikem
-    public int SiteOrder; //poradi v sitemap
-    public string FileName; //FileName .LMP souboru
-    public bool HideOnLmcom; //produkt se neukazuje v lm.com
-    public string ParentFileName; //FileName .ASPX souboru s parent uzlem produktu
-    public string ParentDownloadFileName; //FileName .ASPX souboru s parent uzlem download stranky
-    public bool HasDownload; //existuje download
-    public int CommerceId;
-    public ImgInfo SmallImgData;
-    // "Vase cena": v podstate plati tato cena, UnitPrice se pouze zobrazuje
-    public Currency Discount;
-    //pomocna cena v USD
-    public double PADUsdPrice;
-    public double PADEurPrice;
-    //ikony
-    public ProductIcons Icons;
-    //file se screenshotem v q:\LMCom\LMCom\site\web\lang\pages\Products\img\ adresari
-    public string COMScreenShot;
-    public ET_SiteMapId ET_SiteMapId; //pro ET produkty: typ produktu
-    public ET_SiteMapId ET_SiteMapIdEx(CourseIds crsId) {
-      if (ET_SiteMapId != LMComLib.ET_SiteMapId.old) return ET_SiteMapId;
-      return ProductLicence.isPoslechy(crsId) ? ET_SiteMapId.poslechy : ET_SiteMapId.old;
-    }
+  //public class DsgnProduct {
+  //  public int ProductId;
+  //  public Domains site;
+  //  public LineIds Line; //zatrideni do skupiny produktu
+  //  public bool? WithDict; //priznak - produkt se slovnikem
+  //  public int SiteOrder; //poradi v sitemap
+  //  public string FileName; //FileName .LMP souboru
+  //  public bool HideOnLmcom; //produkt se neukazuje v lm.com
+  //  public string ParentFileName; //FileName .ASPX souboru s parent uzlem produktu
+  //  public string ParentDownloadFileName; //FileName .ASPX souboru s parent uzlem download stranky
+  //  public bool HasDownload; //existuje download
+  //  public int CommerceId;
+  //  public ImgInfo SmallImgData;
+  //  // "Vase cena": v podstate plati tato cena, UnitPrice se pouze zobrazuje
+  //  public Currency Discount;
+  //  //pomocna cena v USD
+  //  public double PADUsdPrice;
+  //  public double PADEurPrice;
+  //  //ikony
+  //  public ProductIcons Icons;
+  //  //file se screenshotem v q:\LMCom\LMCom\site\web\lang\pages\Products\img\ adresari
+  //  public string COMScreenShot;
+  //  public ET_SiteMapId ET_SiteMapId; //pro ET produkty: typ produktu
+  //  public ET_SiteMapId ET_SiteMapIdEx(CourseIds crsId) {
+  //    if (ET_SiteMapId != LMComLib.ET_SiteMapId.old) return ET_SiteMapId;
+  //    return ProductLicence.isPoslechy(crsId) ? ET_SiteMapId.poslechy : ET_SiteMapId.old;
+  //  }
 
-    // Pro ucetnictvi: obsahuje skladovou kartu
-    public bool StockAble;
-    // Vyrobni naklady
-    public Currency ProductionCost;
-    // Informace o licencnich poplatcich
-    public ProductRoyality[] ProductRoyalities;
-    public int[] seeAlso;
-    public ProductLicence[] LicenceList;
-    public ProductCatalogueItem[] LocItems;
-    public ProductLicence[] cloneLicenceList() {
-      if (LicenceList == null || LicenceList.Length == 0) {
-        ProductLicence noLic = new ProductLicence();
-        noLic.Licence = ProductLicenceType.box;
-        noLic.LicPrice = (Currency)Discount;
-        return new ProductLicence[] { noLic };
-      }
-      ProductLicence[] res = new ProductLicence[LicenceList.Length];
-      for (int i = 0; i < LicenceList.Length; i++) res[i] = (ProductLicence)LicenceList[i].Clone();
-      return res;
-    }
-    public CourseIds getOnlyCourseId() {
-      return getOnlyCourseId(LicenceList);
-    }
+  //  // Pro ucetnictvi: obsahuje skladovou kartu
+  //  public bool StockAble;
+  //  // Vyrobni naklady
+  //  public Currency ProductionCost;
+  //  // Informace o licencnich poplatcich
+  //  public ProductRoyality[] ProductRoyalities;
+  //  public int[] seeAlso;
+  //  public ProductLicence[] LicenceList;
+  //  //public ProductCatalogueItem[] LocItems;
+  //  public ProductLicence[] cloneLicenceList() {
+  //    if (LicenceList == null || LicenceList.Length == 0) {
+  //      ProductLicence noLic = new ProductLicence();
+  //      noLic.Licence = ProductLicenceType.box;
+  //      noLic.LicPrice = (Currency)Discount;
+  //      return new ProductLicence[] { noLic };
+  //    }
+  //    ProductLicence[] res = new ProductLicence[LicenceList.Length];
+  //    for (int i = 0; i < LicenceList.Length; i++) res[i] = (ProductLicence)LicenceList[i].Clone();
+  //    return res;
+  //  }
+  //  public CourseIds getOnlyCourseId() {
+  //    return getOnlyCourseId(LicenceList);
+  //  }
 
-    public static CourseIds getOnlyCourseId(ProductLicence[] LicenceList) {
-      CourseIds res = CourseIds.no;
-      if (LicenceList == null) return CourseIds.no;
-      foreach (ProductLicence lic in LicenceList)
-        if (lic.CourseId != CourseIds.no)
-          if (res != CourseIds.no) throw new Exception(string.Format("{0} {1}", res, lic.CourseId));
-          else res = lic.CourseId;
-      return res;
-    }
+  //  public static CourseIds getOnlyCourseId(ProductLicence[] LicenceList) {
+  //    CourseIds res = CourseIds.no;
+  //    if (LicenceList == null) return CourseIds.no;
+  //    foreach (ProductLicence lic in LicenceList)
+  //      if (lic.CourseId != CourseIds.no)
+  //        if (res != CourseIds.no) throw new Exception(string.Format("{0} {1}", res, lic.CourseId));
+  //        else res = lic.CourseId;
+  //    return res;
+  //  }
 
-  }
+  //}
 
   /// <summary>
   /// Ruzne typy licenci
@@ -688,17 +688,17 @@ namespace LMComLib {
       return res;
     }
 
-    [XmlIgnore]
-    public ProductCatalogueItem MyProd;
+    //[XmlIgnore]
+    //public ProductCatalogueItem MyProd;
 
-    [XmlIgnore]
-    LMComLib.Cms.Product cmsProd;
-    public LMComLib.Cms.Product CmsProd {
-      get {
-        if (cmsProd == null) cmsProd = (LMComLib.Cms.Product)LMComLib.CacheItems.GetTemplate(MyProd.ProductId);
-        return cmsProd;
-      }
-    }
+    //[XmlIgnore]
+    //LMComLib.Cms.Product cmsProd;
+    //public LMComLib.Cms.Product CmsProd {
+    //  get {
+    //    if (cmsProd == null) cmsProd = (LMComLib.Cms.Product)LMComLib.CacheItems.GetTemplate(MyProd.ProductId);
+    //    return cmsProd;
+    //  }
+    //}
     //[XmlIgnore]
     //public string Title { get { return MyProd != null ? MyProd.Title : CmsProd.Title; } }
     //[XmlIgnore]
@@ -740,18 +740,19 @@ namespace LMComLib {
     }
 
     public string GetTitle(Currency? externalPrice) {
-      string st = MyProd != null ? MyProd.ShortTitle : CmsProd.ShortTitle;
-      switch (Licence) {
-        case ProductLicenceType.box:
-        case ProductLicenceType.multiPrice:
-          return st;
-        case ProductLicenceType.download:
-          return st + " (" + CSLocalize.localize("e359c155905a43759cfbbd39aa3c5807", LocPageGroup.LMComLib, "Licenční klíč") + ")";
-        case ProductLicenceType.fixStartDate:
-          return st + (externalPrice == null ? null : " (" + "začátek kurzu" + " " + FixDateStart(Convert.ToInt32(((Currency)externalPrice).Amount)).ToShortDateString() + ")");
-        default:
-          return st + " (" + EnumDescrAttribute.getDescr(typeof(ProductLicenceType), (int)Licence) + ")";
-      }
+      return null;
+      //string st = MyProd != null ? MyProd.ShortTitle : CmsProd.ShortTitle;
+      //switch (Licence) {
+      //  case ProductLicenceType.box:
+      //  case ProductLicenceType.multiPrice:
+      //    return st;
+      //  case ProductLicenceType.download:
+      //    return st + " (" + CSLocalize.localize("e359c155905a43759cfbbd39aa3c5807", LocPageGroup.LMComLib, "Licenční klíč") + ")";
+      //  case ProductLicenceType.fixStartDate:
+      //    return st + (externalPrice == null ? null : " (" + "začátek kurzu" + " " + FixDateStart(Convert.ToInt32(((Currency)externalPrice).Amount)).ToShortDateString() + ")");
+      //  default:
+      //    return st + " (" + EnumDescrAttribute.getDescr(typeof(ProductLicenceType), (int)Licence) + ")";
+      //}
     }
     public static DateTime FixDateStart(int weekNum) {
       return LowUtils.startDate.AddDays(weekNum * 7);

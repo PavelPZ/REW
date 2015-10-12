@@ -376,33 +376,33 @@ namespace LMComLib {
       Order.Instance.RefreshPrice();
     }
 
-    public ProductCatalogueItem Fill(Ipn ipn, XCustommer cust) {
-      return null;
-      //IPN = ipn;
-      //Site = ipn.site;
-      //CurrType = ipn.mc_currency;
-      //PaymentFee = ipn.mc_fee;
-      //Lang = ipn.lng;
-      //TransactionID = ipn.txn_id;
-      //SupplierId = LMComLib.SupplierId.LANGMaster;
-      //BillMethod = BillingMethods.PayPal;
-      //CreatedOn = DueDate = DateTime.UtcNow;
-      //Profile = new ProfileData() { Email = cust.pri2, Address = new Address() { FirstName = cust.pri1, Street = cust.pri3, City = cust.pri4 } };
-      //OrderItem ordItem;
-      //int dbId = int.Parse(ipn.productId);
-      //ProductCatalogueItem prod = ProductCatalogue.get(dbId, Lang);
-      //Items.Add(ordItem = new OrderItem() {
-      //  MyOrder = this,
-      //  dbId = dbId,
-      //  Quantity = 1,
-      //  ExternalPrice = new Currency(ipn.mc_currency, ipn.mc_gross, true),
-      //  LicKey = new string[] { ipn.licKey },
-      //  ProsperId = ProductLicence.getProsperId(prod.CommerceId, ProductLicenceType.download)
-      //});
-      //CurrExchange = PayPalLow.CurrExchange2Kc(CurrType);
-      //RefreshPriceCom();
-      //return prod;
-    }
+    //public ProductCatalogueItem Fill(Ipn ipn, XCustommer cust) {
+    //  return null;
+    //  //IPN = ipn;
+    //  //Site = ipn.site;
+    //  //CurrType = ipn.mc_currency;
+    //  //PaymentFee = ipn.mc_fee;
+    //  //Lang = ipn.lng;
+    //  //TransactionID = ipn.txn_id;
+    //  //SupplierId = LMComLib.SupplierId.LANGMaster;
+    //  //BillMethod = BillingMethods.PayPal;
+    //  //CreatedOn = DueDate = DateTime.UtcNow;
+    //  //Profile = new ProfileData() { Email = cust.pri2, Address = new Address() { FirstName = cust.pri1, Street = cust.pri3, City = cust.pri4 } };
+    //  //OrderItem ordItem;
+    //  //int dbId = int.Parse(ipn.productId);
+    //  //ProductCatalogueItem prod = ProductCatalogue.get(dbId, Lang);
+    //  //Items.Add(ordItem = new OrderItem() {
+    //  //  MyOrder = this,
+    //  //  dbId = dbId,
+    //  //  Quantity = 1,
+    //  //  ExternalPrice = new Currency(ipn.mc_currency, ipn.mc_gross, true),
+    //  //  LicKey = new string[] { ipn.licKey },
+    //  //  ProsperId = ProductLicence.getProsperId(prod.CommerceId, ProductLicenceType.download)
+    //  //});
+    //  //CurrExchange = PayPalLow.CurrExchange2Kc(CurrType);
+    //  //RefreshPriceCom();
+    //  //return prod;
+    //}
 
     public static string productQuery(int dbId, ProductLicenceType? lic, int quantity, Currency? curr) {
       string res = "Add=" + dbId;

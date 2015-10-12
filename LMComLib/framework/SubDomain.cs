@@ -927,21 +927,21 @@ namespace LMComLib {
     static SubDomains[] langMenuUrlSubsites = new SubDomains[] { SubDomains.com_pl, SubDomains.com_RuMarket, SubDomains.com_sk, SubDomains.com_tr, SubDomains.com_lt };
 
 
-    public static string AlternativeProductLinkText(SubDomains subSite, Langs guiLang, ProductCatalogueItem product) {
-      string price, url; ET_Localize.MaskTypes mask;
-      if (subSite == SubDomains.com && langMenuUrlLangs.Contains(guiLang)) {
-        mask = ET_Localize.MaskTypes.AlternativeProductLink_com;
-        SubDomains otherSubsite = defaultLangSubdomain(guiLang);
-        price = product.com_PriceText(product.com_LowLicence(otherSubsite), otherSubsite);
-        url = product.debugUrl(otherSubsite);
-      } else if (langMenuUrlSubsites.Contains(subSite)) {
-        mask = ET_Localize.MaskTypes.AlternativeProductLink_partner;
-        price = product.com_PriceText(product.com_LowLicence(SubDomains.com), SubDomains.com);
-        url = product.debugUrl(SubDomains.com);
-      } else
-        return null;
-      return string.Format(ET_Localize.MaskValue(guiLang, mask), url, price);
-    }
+    //public static string AlternativeProductLinkText(SubDomains subSite, Langs guiLang, ProductCatalogueItem product) {
+    //  string price, url; ET_Localize.MaskTypes mask;
+    //  if (subSite == SubDomains.com && langMenuUrlLangs.Contains(guiLang)) {
+    //    mask = ET_Localize.MaskTypes.AlternativeProductLink_com;
+    //    SubDomains otherSubsite = defaultLangSubdomain(guiLang);
+    //    price = product.com_PriceText(product.com_LowLicence(otherSubsite), otherSubsite);
+    //    url = product.debugUrl(otherSubsite);
+    //  } else if (langMenuUrlSubsites.Contains(subSite)) {
+    //    mask = ET_Localize.MaskTypes.AlternativeProductLink_partner;
+    //    price = product.com_PriceText(product.com_LowLicence(SubDomains.com), SubDomains.com);
+    //    url = product.debugUrl(SubDomains.com);
+    //  } else
+    //    return null;
+    //  return string.Format(ET_Localize.MaskValue(guiLang, mask), url, price);
+    //}
   }
   public static class SubDomain {
 

@@ -775,24 +775,24 @@ namespace LMComLib {
       }
     }
 
-    public static void LocalizeDownloadsXml(XElement root) {
-      CSLocalize.LangItems li = new CSLocalize.LangItems(Machines.basicPath + @"rew\LMCom\App_Data\app_localresources\downloads.xml.resx");
-      StringBuilder sb = new StringBuilder();
-      foreach (XElement comNode in root.Element("Sites").Elements("SiteInfo").Where(el => el.Element("IsLocalized").Value == "true")) {
-        Domains site = (Domains)Enum.Parse(typeof(Domains), comNode.Element("Site").Value);
-        //Langs[] lngs = comNode.Element("AllLangs").Elements("Langs").Select(el => (Langs)Enum.Parse(typeof(Langs), el.Value)).ToArray();
-        foreach (XElement el in comNode.Elements("Downloads").Elements("DownloadInfo")) {
-          CourseIds prodUrl = (CourseIds)Enum.Parse(typeof(CourseIds), el.Element("CourseId").Value);
-          Langs[] lngs = ProductCatalogueItems.Instance.DownloadLangs(site, prodUrl).ToArray();
-          string id = "com." + el.Element("CourseId").Value;
-          modifyDownloads(el, prodUrl, id, lngs, li, sb);
-          foreach (XElement subEl in el.Element("Items").Elements("DownloadInfo")) {
-            string subId = id + "." + subEl.Element("Id").Value;
-            modifyDownloads(subEl, prodUrl, subId, lngs, li, sb);
-          }
-        }
-      }
-    }
+    //public static void LocalizeDownloadsXml(XElement root) {
+    //  CSLocalize.LangItems li = new CSLocalize.LangItems(Machines.basicPath + @"rew\LMCom\App_Data\app_localresources\downloads.xml.resx");
+    //  StringBuilder sb = new StringBuilder();
+    //  foreach (XElement comNode in root.Element("Sites").Elements("SiteInfo").Where(el => el.Element("IsLocalized").Value == "true")) {
+    //    Domains site = (Domains)Enum.Parse(typeof(Domains), comNode.Element("Site").Value);
+    //    //Langs[] lngs = comNode.Element("AllLangs").Elements("Langs").Select(el => (Langs)Enum.Parse(typeof(Langs), el.Value)).ToArray();
+    //    foreach (XElement el in comNode.Elements("Downloads").Elements("DownloadInfo")) {
+    //      CourseIds prodUrl = (CourseIds)Enum.Parse(typeof(CourseIds), el.Element("CourseId").Value);
+    //      Langs[] lngs = ProductCatalogueItems.Instance.DownloadLangs(site, prodUrl).ToArray();
+    //      string id = "com." + el.Element("CourseId").Value;
+    //      modifyDownloads(el, prodUrl, id, lngs, li, sb);
+    //      foreach (XElement subEl in el.Element("Items").Elements("DownloadInfo")) {
+    //        string subId = id + "." + subEl.Element("Id").Value;
+    //        modifyDownloads(subEl, prodUrl, subId, lngs, li, sb);
+    //      }
+    //    }
+    //  }
+    //}
 
     /// <summary>
     /// Jednoznacne ocislovani elementu: kazdy TagName ma svuj vlastni citac
