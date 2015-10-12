@@ -3820,33 +3820,6 @@
     <Compile Include="LinqKit\Extensions.cs" />
     <Compile Include="LinqKit\Linq.cs" />
     <Compile Include="LinqKit\PredicateBuilder.cs" />
-    <Compile Include="SaluseMediaKit\BackStream.cs" />
-    <Compile Include="SaluseMediaKit\BitReserve.cs" />
-    <Compile Include="SaluseMediaKit\Bitstream.cs" />
-    <Compile Include="SaluseMediaKit\BitstreamException.cs" />
-    <Compile Include="SaluseMediaKit\Bridge.cs" />
-    <Compile Include="SaluseMediaKit\CircularByteBuffer.cs" />
-    <Compile Include="SaluseMediaKit\CRC16.cs" />
-    <Compile Include="SaluseMediaKit\Custom16BitStereoOutputBuffer.cs" />
-    <Compile Include="SaluseMediaKit\Decoder.cs" />
-    <Compile Include="SaluseMediaKit\DecoderException.cs" />
-    <Compile Include="SaluseMediaKit\Delegates.cs" />
-    <Compile Include="SaluseMediaKit\Enumerations.cs" />
-    <Compile Include="SaluseMediaKit\Equalizer.cs" />
-    <Compile Include="SaluseMediaKit\FrameDecoder.cs" />
-    <Compile Include="SaluseMediaKit\Header.cs" />
-    <Compile Include="SaluseMediaKit\HuffCodeTab.cs" />
-    <Compile Include="SaluseMediaKit\LayerIIIDecoder.cs" />
-    <Compile Include="SaluseMediaKit\MediaKitException.cs" />
-    <Compile Include="SaluseMediaKit\MP3PCMStream.cs" />
-    <Compile Include="SaluseMediaKit\OutputBuffer.cs" />
-    <Compile Include="SaluseMediaKit\OutputChannels.cs" />
-    <Compile Include="SaluseMediaKit\SampleBuffer.cs" />
-    <Compile Include="SaluseMediaKit\SeekableStream.cs" />
-    <Compile Include="SaluseMediaKit\String.cs" />
-    <Compile Include="SaluseMediaKit\SynthesisFilter.cs" />
-    <Compile Include="SaluseMediaKit\Utilities.cs" />
-    <Compile Include="SaluseMediaKit\VBRHeader.cs" />
     <Compile Include="XmlRpc\GuidEx.cs" />
     <Compile Include="XmlRpc\IHttpRequest.cs" />
     <Compile Include="XmlRpc\IHttpRequestHandler.cs" />
@@ -3967,7 +3940,6 @@
     <Content Include="itextsharp\iTextSharp\text\pdf\fonts\glyphlist.txt" />
     <Content Include="itextsharp\iTextSharp\text\pdf\fonts\mustRead.html" />
     <Content Include="LinqKit\ReadMe.txt" />
-    <None Include="SaluseMediaKit\About.txt" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
