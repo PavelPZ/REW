@@ -213,255 +213,255 @@ namespace LMComLib {
   //}
 
 
-  public static class MailSender {
+  //public static class MailSender {
 
-    public const string fakeEMail = "fake@fake.fake";
+  //  public const string fakeEMail = "fake@fake.fake";
 
-    static MailSender() {
-      root = XElement.Load(Machines.basicPath + @"LMCom\App_Data\emails.xml");
-    }
+  //  static MailSender() {
+  //    root = XElement.Load(Machines.basicPath + @"LMCom\App_Data\emails.xml");
+  //  }
 
-    static XElement root;
+  //  static XElement root;
 
-    static string autorizedUrl(Domains site, SubDomains subSite, Langs lang, string url, Int64 userId) {
-      //if (site == Domains.cz)
-      //return "http://" + HttpContext.Current.Request.Url.Host + urlInfoLow.AppDomainAppVirtualPath + url + "?" + LMStatus.encodeAutorisedUser(userId, url);
-      string res = urlInfo.getUrl(site, subSite, LMApps.commerce, lang.ToString().Replace('_', '-'), url, false) + "?" + LMStatus.encodeAutorisedUser(userId, url);
-      return res;
-    }
+  //  static string autorizedUrl(Domains site, SubDomains subSite, Langs lang, string url, Int64 userId) {
+  //    //if (site == Domains.cz)
+  //    //return "http://" + HttpContext.Current.Request.Url.Host + urlInfoLow.AppDomainAppVirtualPath + url + "?" + LMStatus.encodeAutorisedUser(userId, url);
+  //    string res = urlInfo.getUrl(site, subSite, LMApps.commerce, lang.ToString().Replace('_', '-'), url, false) + "?" + LMStatus.encodeAutorisedUser(userId, url);
+  //    return res;
+  //  }
 
-    //static string ordersUrl(Domains site) {
-    //return site == Domains.cz ? "/cz/Commerce/cs-cz/Secured/Muj-LANGMaster/Prehled-objednavek.aspx" : "Secured/Moje-objednavky.aspx";
-    //return "Secured/Moje-objednavky.aspx";
-    //}
-    const string c_ordersUrl = "Secured/Moje-objednavky.aspx";
-    //const string c_orderListUrl = "/cz/Commerce/cs-cz/Secured/Muj-LANGMaster/Prehled-objednavek.aspx";
-    const string c_activateProfile = "Secured/Activate.aspx";
-    //const string c_onlineLicence = "/cz/Commerce/cs-cz/Secured/Muj-LANGMaster/Online-licence.aspx";
+  //  //static string ordersUrl(Domains site) {
+  //  //return site == Domains.cz ? "/cz/Commerce/cs-cz/Secured/Muj-LANGMaster/Prehled-objednavek.aspx" : "Secured/Moje-objednavky.aspx";
+  //  //return "Secured/Moje-objednavky.aspx";
+  //  //}
+  //  const string c_ordersUrl = "Secured/Moje-objednavky.aspx";
+  //  //const string c_orderListUrl = "/cz/Commerce/cs-cz/Secured/Muj-LANGMaster/Prehled-objednavek.aspx";
+  //  const string c_activateProfile = "Secured/Activate.aspx";
+  //  //const string c_onlineLicence = "/cz/Commerce/cs-cz/Secured/Muj-LANGMaster/Online-licence.aspx";
 
-    public static void sendMailDebug(MailTypes type, Domains site, Langs lang, string mail) {
-      XElement email = root.Elements().
-        //Where(m => m.Attribute("Lang").Value == (lang == Langs.sp_sp ? "es_es" : lang.ToString()) && m.Attribute("Site").Value == site.ToString() && m.Attribute("Type").Value == type.ToString()).
-        Where(m => m.Attribute("Lang").Value == lang.ToString() && m.Attribute("Site").Value == site.ToString() && m.Attribute("Type").Value == type.ToString()).
-        First();
+  //  //public static void sendMailDebug(MailTypes type, Domains site, Langs lang, string mail) {
+  //  //  XElement email = root.Elements().
+  //  //    //Where(m => m.Attribute("Lang").Value == (lang == Langs.sp_sp ? "es_es" : lang.ToString()) && m.Attribute("Site").Value == site.ToString() && m.Attribute("Type").Value == type.ToString()).
+  //  //    Where(m => m.Attribute("Lang").Value == lang.ToString() && m.Attribute("Site").Value == site.ToString() && m.Attribute("Type").Value == type.ToString()).
+  //  //    First();
 
-      //dokonceni mailu (prilohy apod.)
-      Emailer em = new Emailer();
-      em.HTML = email.Element("Html").Value;
-      em.PlainText = email.Element("Txt").Value;
-      em.Subject = email.Attribute("Title").Value;
-      string mailFrom;
-      switch (site) {
-        case Domains.cz: mailFrom = "obchod@langmaster.cz"; break;
-        case Domains.sz: mailFrom = "seznam@langmaster.cz"; break;
-        case Domains.com: mailFrom = "support@langmaster.com"; break;
-        default: throw new Exception("Missing code here");
-      }
-      em.From = mailFrom; // System.Configuration.ConfigurationManager.AppSettings["Email.From"];
-      em.AddTo(mail);
-      em.SendMail();
-    }
+  //  //  //dokonceni mailu (prilohy apod.)
+  //  //  Emailer em = new Emailer();
+  //  //  em.HTML = email.Element("Html").Value;
+  //  //  em.PlainText = email.Element("Txt").Value;
+  //  //  em.Subject = email.Attribute("Title").Value;
+  //  //  string mailFrom;
+  //  //  switch (site) {
+  //  //    case Domains.cz: mailFrom = "obchod@langmaster.cz"; break;
+  //  //    case Domains.sz: mailFrom = "seznam@langmaster.cz"; break;
+  //  //    case Domains.com: mailFrom = "support@langmaster.com"; break;
+  //  //    default: throw new Exception("Missing code here");
+  //  //  }
+  //  //  em.From = mailFrom; // System.Configuration.ConfigurationManager.AppSettings["Email.From"];
+  //  //  em.AddTo(mail);
+  //  //  em.SendMail();
+  //  //}
 
-    /*static void trace(object par, string msg) {
-      if (par.GetType() != typeof(SendLicenceKeyPar)) return;
-      SendLicenceKeyPar licPar = (SendLicenceKeyPar)par;
-      new CommerceEvent(CommerceEventIds.Other, "sendMail " + msg, licPar.orderId).Raise();
-    }*/
+  //  /*static void trace(object par, string msg) {
+  //    if (par.GetType() != typeof(SendLicenceKeyPar)) return;
+  //    SendLicenceKeyPar licPar = (SendLicenceKeyPar)par;
+  //    new CommerceEvent(CommerceEventIds.Other, "sendMail " + msg, licPar.orderId).Raise();
+  //  }*/
 
-    public static void sendMail(MailTypes type, Domains site, SubDomains subSite, Langs lang, string mail, object par) {
-      int orderId = 0;
-      try {
-        if (Machines.debugNoInternet || mail.ToLowerInvariant() == fakeEMail) return;
-        //definice parametru mailu
-        Dictionary<string, string> mailPars = new Dictionary<string, string>();
-        OrderDBContext ctx;
-        MailTypes newType = type;
-        switch (type) {
-          case MailTypes.ConfirmRegistration:
-            ProfileData data = (ProfileData)par;
-            mailPars.Add("LinkUrl", autorizedUrl(site, subSite, lang, c_activateProfile, data.Id));
-            mailPars.Add("Name", data.Email);
-            mailPars.Add("Password", data.Password);
-            break;
-          case MailTypes.LostPassword:
-            mailPars.Add("Name", mail);
-            mailPars.Add("Password", (string)par);
-            break;
-          case MailTypes.OrderAccepted_Proforma:
-            ctx = (OrderDBContext)par;
-            orderId = ctx.OrderId;
-            mailPars.Add("OrderId", ctx.OrderId.ToString());
-            mailPars.Add("Price", urlInfo.priceText(site, subSite, ctx.Order.PriceTax));
-            mailPars.Add("Account", Order.Account);//ctx.Supplier.Company.AccountNo(ctx.Order.CurrType));
-            mailPars.Add("VarSymbol", ctx.OrderId.ToString());
-            mailPars.Add("LinkUrl", autorizedUrl(site, subSite, lang, c_ordersUrl, ctx.Order.UserId));
-            break;
-          case MailTypes.OrderAccepted_Dobirka:
-          case MailTypes.OrderAccepted_Faktura:
-            ctx = (OrderDBContext)par;
-            orderId = ctx.OrderId;
-            mailPars.Add("OrderId", ctx.OrderId.ToString());
-            mailPars.Add("LinkUrl", autorizedUrl(site, subSite, lang, c_ordersUrl, ctx.Order.UserId));
-            break;
-          case MailTypes.OrderAccepted_ComFaktura:
-            OrderInvoice ordInv = (OrderInvoice)par;
-            orderId = ordInv.order.Id;
-            mailPars.Add("OrderId", ordInv.order.Id.ToString());
-            break;
-          case MailTypes.SendDiscount:
-            SendDiscountPar discPar = (SendDiscountPar)par;
-            mailPars.Add("Discount", discPar.Discount);
-            mailPars.Add("Amount", urlInfo.priceText(site, subSite, discPar.Amount));
-            string buyUrl;
-            switch (site) {
-              case Domains.cz: buyUrl = "www.langmaster.cz"; break;
-              case Domains.sz: buyUrl = "vyuka.lide.cz"; break;
-              case Domains.com: buyUrl = "www.langmaster.com"; break;
-              default: throw new Exception("Missing code here");
-            }
-            mailPars.Add("BuyUrl", buyUrl);
-            //actSite = discPar.Context.Order.Site;
-            //actLang = discPar.Context.Order.Lang.ToString().Replace('_', '-');
-            break;
-          case MailTypes.sd_SendLicenceKey:
-            SendLicenceKeyPar licPar = (SendLicenceKeyPar)par;
-            orderId = licPar.orderId;
-            new CommerceEvent(CommerceEventIds.Other, "sendMail trace", orderId).Raise();
-            mailPars.Add("Product", licPar.shortTitle);
-            mailPars.Add("Key", licPar.key);
-            if (licPar.isDownload) {
-              newType = licPar.productType == ET_SiteMapId.poslechy || licPar.productType == ET_SiteMapId.talknowaudio ? MailTypes.SendLicenceKey_Poslechy : MailTypes.SendLicenceKey_Download;
-              string url = licPar.downloadUrl;
-              mailPars.Add("DownloadUrl", url == null ? "" : url);
-              break;
-            }
-            break;
-        }
+  //  //public static void sendMail(MailTypes type, Domains site, SubDomains subSite, Langs lang, string mail, object par) {
+  //  //  int orderId = 0;
+  //  //  try {
+  //  //    if (Machines.debugNoInternet || mail.ToLowerInvariant() == fakeEMail) return;
+  //  //    //definice parametru mailu
+  //  //    Dictionary<string, string> mailPars = new Dictionary<string, string>();
+  //  //    OrderDBContext ctx;
+  //  //    MailTypes newType = type;
+  //  //    switch (type) {
+  //  //      case MailTypes.ConfirmRegistration:
+  //  //        ProfileData data = (ProfileData)par;
+  //  //        mailPars.Add("LinkUrl", autorizedUrl(site, subSite, lang, c_activateProfile, data.Id));
+  //  //        mailPars.Add("Name", data.Email);
+  //  //        mailPars.Add("Password", data.Password);
+  //  //        break;
+  //  //      case MailTypes.LostPassword:
+  //  //        mailPars.Add("Name", mail);
+  //  //        mailPars.Add("Password", (string)par);
+  //  //        break;
+  //  //      case MailTypes.OrderAccepted_Proforma:
+  //  //        ctx = (OrderDBContext)par;
+  //  //        orderId = ctx.OrderId;
+  //  //        mailPars.Add("OrderId", ctx.OrderId.ToString());
+  //  //        mailPars.Add("Price", urlInfo.priceText(site, subSite, ctx.Order.PriceTax));
+  //  //        mailPars.Add("Account", Order.Account);//ctx.Supplier.Company.AccountNo(ctx.Order.CurrType));
+  //  //        mailPars.Add("VarSymbol", ctx.OrderId.ToString());
+  //  //        mailPars.Add("LinkUrl", autorizedUrl(site, subSite, lang, c_ordersUrl, ctx.Order.UserId));
+  //  //        break;
+  //  //      case MailTypes.OrderAccepted_Dobirka:
+  //  //      case MailTypes.OrderAccepted_Faktura:
+  //  //        ctx = (OrderDBContext)par;
+  //  //        orderId = ctx.OrderId;
+  //  //        mailPars.Add("OrderId", ctx.OrderId.ToString());
+  //  //        mailPars.Add("LinkUrl", autorizedUrl(site, subSite, lang, c_ordersUrl, ctx.Order.UserId));
+  //  //        break;
+  //  //      case MailTypes.OrderAccepted_ComFaktura:
+  //  //        OrderInvoice ordInv = (OrderInvoice)par;
+  //  //        orderId = ordInv.order.Id;
+  //  //        mailPars.Add("OrderId", ordInv.order.Id.ToString());
+  //  //        break;
+  //  //      case MailTypes.SendDiscount:
+  //  //        SendDiscountPar discPar = (SendDiscountPar)par;
+  //  //        mailPars.Add("Discount", discPar.Discount);
+  //  //        mailPars.Add("Amount", urlInfo.priceText(site, subSite, discPar.Amount));
+  //  //        string buyUrl;
+  //  //        switch (site) {
+  //  //          case Domains.cz: buyUrl = "www.langmaster.cz"; break;
+  //  //          case Domains.sz: buyUrl = "vyuka.lide.cz"; break;
+  //  //          case Domains.com: buyUrl = "www.langmaster.com"; break;
+  //  //          default: throw new Exception("Missing code here");
+  //  //        }
+  //  //        mailPars.Add("BuyUrl", buyUrl);
+  //  //        //actSite = discPar.Context.Order.Site;
+  //  //        //actLang = discPar.Context.Order.Lang.ToString().Replace('_', '-');
+  //  //        break;
+  //  //      case MailTypes.sd_SendLicenceKey:
+  //  //        SendLicenceKeyPar licPar = (SendLicenceKeyPar)par;
+  //  //        orderId = licPar.orderId;
+  //  //        new CommerceEvent(CommerceEventIds.Other, "sendMail trace", orderId).Raise();
+  //  //        mailPars.Add("Product", licPar.shortTitle);
+  //  //        mailPars.Add("Key", licPar.key);
+  //  //        if (licPar.isDownload) {
+  //  //          newType = licPar.productType == ET_SiteMapId.poslechy || licPar.productType == ET_SiteMapId.talknowaudio ? MailTypes.SendLicenceKey_Poslechy : MailTypes.SendLicenceKey_Download;
+  //  //          string url = licPar.downloadUrl;
+  //  //          mailPars.Add("DownloadUrl", url == null ? "" : url);
+  //  //          break;
+  //  //        }
+  //  //        break;
+  //  //    }
 
-        XElement email = null;
-        if (site == Domains.com && subSite == SubDomains.com_cz && lang == Langs.cs_cz) {
-          try {
-            email = root.Elements().
-              //Where(m => m.Attribute("Lang").Value == (lang == Langs.sp_sp ? "es_es" : lang.ToString()) && m.Attribute("Site").Value == site.ToString() && m.Attribute("Type").Value == newType.ToString()).
-              Where(m => m.Attribute("Lang").Value == lang.ToString() && m.Attribute("Site").Value == Domains.cz.ToString() && m.Attribute("Type").Value == newType.ToString()).
-              FirstOrDefault();
-          } catch {
-            throw new Exception("Cannot find cs-cz email, type= " + newType);
-          }
-        }
-        if (email == null) {
-          try {
-            email = root.Elements().
-              //Where(m => m.Attribute("Lang").Value == (lang == Langs.sp_sp ? "es_es" : lang.ToString()) && m.Attribute("Site").Value == site.ToString() && m.Attribute("Type").Value == newType.ToString()).
-              Where(m => m.Attribute("Lang").Value == lang.ToString() && m.Attribute("Site").Value == site.ToString() && m.Attribute("Type").Value == newType.ToString()).
-              First();
-          } catch {
-            throw new Exception("Cannot find non cs-cz email, type= " + newType + ", lang=" + lang + ", site=" + site);
-          }
-        }
-        //AppData.AppDataDataContext db = Machines.getAppDataContext();
-        //AppData.Mail dbMail = db.Mails.Single(m => m.Lang == (short)lang && m.Site == (short)site && m.Type == (short)newType);
+  //  //    XElement email = null;
+  //  //    if (site == Domains.com && subSite == SubDomains.com_cz && lang == Langs.cs_cz) {
+  //  //      try {
+  //  //        email = root.Elements().
+  //  //          //Where(m => m.Attribute("Lang").Value == (lang == Langs.sp_sp ? "es_es" : lang.ToString()) && m.Attribute("Site").Value == site.ToString() && m.Attribute("Type").Value == newType.ToString()).
+  //  //          Where(m => m.Attribute("Lang").Value == lang.ToString() && m.Attribute("Site").Value == Domains.cz.ToString() && m.Attribute("Type").Value == newType.ToString()).
+  //  //          FirstOrDefault();
+  //  //      } catch {
+  //  //        throw new Exception("Cannot find cs-cz email, type= " + newType);
+  //  //      }
+  //  //    }
+  //  //    if (email == null) {
+  //  //      try {
+  //  //        email = root.Elements().
+  //  //          //Where(m => m.Attribute("Lang").Value == (lang == Langs.sp_sp ? "es_es" : lang.ToString()) && m.Attribute("Site").Value == site.ToString() && m.Attribute("Type").Value == newType.ToString()).
+  //  //          Where(m => m.Attribute("Lang").Value == lang.ToString() && m.Attribute("Site").Value == site.ToString() && m.Attribute("Type").Value == newType.ToString()).
+  //  //          First();
+  //  //      } catch {
+  //  //        throw new Exception("Cannot find non cs-cz email, type= " + newType + ", lang=" + lang + ", site=" + site);
+  //  //      }
+  //  //    }
+  //  //    //AppData.AppDataDataContext db = Machines.getAppDataContext();
+  //  //    //AppData.Mail dbMail = db.Mails.Single(m => m.Lang == (short)lang && m.Site == (short)site && m.Type == (short)newType);
 
-        //dokonceni mailu (prilohy apod.)
-        StringBuilder sb = new StringBuilder();
-        Emailer em = new Emailer();
-        em.HTML = LowUtils.FormatEx(email.Element("Html").Value, mailPars, sb);
-        em.PlainText = LowUtils.FormatEx(email.Element("Txt").Value, mailPars, sb); ;
-        em.Subject = email.Attribute("Title").Value;
-        string mailFrom;
-        switch (site) {
-          case Domains.cz: mailFrom = "obchod@langmaster.cz"; break;
-          case Domains.sz: mailFrom = "seznam@langmaster.cz"; break;
-          case Domains.com: mailFrom = "support@langmaster.com"; break;
-          default: throw new Exception("Missing code here");
-        }
-        em.From = mailFrom; // System.Configuration.ConfigurationManager.AppSettings["Email.From"];
-        em.AddTo(mail);
-        Emailer.Attachment att;
-        switch (type) {
-          case MailTypes.ConfirmRegistration:
-            new MailEvent("potvrzení registrace", em.PlainText).Raise();
-            break;
-          case MailTypes.LostPassword:
-            new MailEvent("ztracené heslo", em.PlainText).Raise();
-            break;
-          case MailTypes.OrderAccepted_Proforma:
-            ctx = (OrderDBContext)par;
-            new MailEvent("potvrzení objednávky, převodem", ctx.OrderId, em.PlainText).Raise();
-            att = new Emailer.Attachment("Proforma_" + ctx.OrderId + ".pdf", ctx.OrderDb.ProformaX.ToArray(), "application/pdf");
-            em.AddAttachment(att);
-            break;
-          case MailTypes.OrderAccepted_Faktura:
-            ctx = (OrderDBContext)par;
-            new MailEvent("potvrzení objednávky, karta", ctx.OrderId, em.PlainText).Raise();
-            XInvoice inv = XmlUtils.StringToObject<XInvoice>(ctx.OrderDb.InvoiceNew);
-            byte[] data = ProsperLib.printInvoiceNew(inv).ToArray();
-            att = new Emailer.Attachment("Invoice_" + ctx.OrderId + ".pdf", data, "application/pdf");
-            em.AddAttachment(att);
-            Intranet.archiveInvoice(inv, data, false);
-            break;
-          case MailTypes.OrderAccepted_ComFaktura:
-            OrderInvoice ordInv = (OrderInvoice)par;
-            new MailEvent("potvrzení objednávky, lm.com karta", ordInv.order.Id, em.PlainText).Raise();
-            byte[] data2 = ProsperLib.printInvoiceNew(ordInv.invoice).ToArray();
-            att = new Emailer.Attachment("Invoice_" + ordInv.order.Id + ".pdf", data2, "application/pdf");
-            em.AddAttachment(att);
-            Intranet.archiveInvoice(ordInv.invoice, data2, false);
-            break;
-          case MailTypes.SendDiscount:
-            SendDiscountPar discPar = (SendDiscountPar)par;
-            new MailEvent("slevový kupon", discPar.Context.Order.Id, em.PlainText).Raise();
-            break;
-          case MailTypes.sd_SendLicenceKey:
-            SendLicenceKeyPar licPar = (SendLicenceKeyPar)par;
-            new MailEvent("licenční klíč", licPar.orderId, em.PlainText).Raise();
-            break;
-          default:
-            new MailEvent(type.ToString(), em.PlainText).Raise();
-            break;
-        }
-        em.SendMail();
-      } catch (Exception exp) {
-        /*switch (type) {
-          case MailTypes.ConfirmRegistration:
-            ProfileData data = (ProfileData)par;
-            data.Id
-            data.Email
-            data.Password
-            break;
-          case MailTypes.LostPassword:
-            mail
-            (string)par
-            break;
-          case MailTypes.OrderAccepted_Proforma:
-            ctx = (OrderDBContext)par;
-            ctx.OrderId.ToString()
-            ctx.Order.PriceTax
-            ctx.Order.CurrType
-            ctx.OrderId.ToString()
-            ctx.Order.UserId
-            break;
-          case MailTypes.OrderAccepted_Dobirka:
-          case MailTypes.OrderAccepted_Faktura:
-            ctx = (OrderDBContext)par;
-            ctx.OrderId.ToString()
-            ctx.Order.UserId
-            break;
-          case MailTypes.SendDiscount:
-            SendDiscountPar discPar = (SendDiscountPar)par;
-            discPar.Discount
-            discPar.Amount
-            break;
-          case MailTypes.sd_SendLicenceKey:
-            SendLicenceKeyPar licPar = (SendLicenceKeyPar)par;
-            licPar.orderItem.Licence.ShortTitle
-            licPar.key
-            licPar.orderItem.Licence.Licence
-        }*/
-        if (orderId != 0) new CommerceEvent(CommerceEventIds.Other, "sendMail Error: " + exp.Message, orderId, exp).Raise();
-        Logging.Trace(TraceLevel.Error, TraceCategory.All, "Cannot send mail " + mail + " " + exp.Message);
-      }
-    }
+  //  //    //dokonceni mailu (prilohy apod.)
+  //  //    StringBuilder sb = new StringBuilder();
+  //  //    Emailer em = new Emailer();
+  //  //    em.HTML = LowUtils.FormatEx(email.Element("Html").Value, mailPars, sb);
+  //  //    em.PlainText = LowUtils.FormatEx(email.Element("Txt").Value, mailPars, sb); ;
+  //  //    em.Subject = email.Attribute("Title").Value;
+  //  //    string mailFrom;
+  //  //    switch (site) {
+  //  //      case Domains.cz: mailFrom = "obchod@langmaster.cz"; break;
+  //  //      case Domains.sz: mailFrom = "seznam@langmaster.cz"; break;
+  //  //      case Domains.com: mailFrom = "support@langmaster.com"; break;
+  //  //      default: throw new Exception("Missing code here");
+  //  //    }
+  //  //    em.From = mailFrom; // System.Configuration.ConfigurationManager.AppSettings["Email.From"];
+  //  //    em.AddTo(mail);
+  //  //    Emailer.Attachment att;
+  //  //    switch (type) {
+  //  //      case MailTypes.ConfirmRegistration:
+  //  //        new MailEvent("potvrzení registrace", em.PlainText).Raise();
+  //  //        break;
+  //  //      case MailTypes.LostPassword:
+  //  //        new MailEvent("ztracené heslo", em.PlainText).Raise();
+  //  //        break;
+  //  //      case MailTypes.OrderAccepted_Proforma:
+  //  //        ctx = (OrderDBContext)par;
+  //  //        new MailEvent("potvrzení objednávky, převodem", ctx.OrderId, em.PlainText).Raise();
+  //  //        att = new Emailer.Attachment("Proforma_" + ctx.OrderId + ".pdf", ctx.OrderDb.ProformaX.ToArray(), "application/pdf");
+  //  //        em.AddAttachment(att);
+  //  //        break;
+  //  //      case MailTypes.OrderAccepted_Faktura:
+  //  //        ctx = (OrderDBContext)par;
+  //  //        new MailEvent("potvrzení objednávky, karta", ctx.OrderId, em.PlainText).Raise();
+  //  //        XInvoice inv = XmlUtils.StringToObject<XInvoice>(ctx.OrderDb.InvoiceNew);
+  //  //        byte[] data = ProsperLib.printInvoiceNew(inv).ToArray();
+  //  //        att = new Emailer.Attachment("Invoice_" + ctx.OrderId + ".pdf", data, "application/pdf");
+  //  //        em.AddAttachment(att);
+  //  //        Intranet.archiveInvoice(inv, data, false);
+  //  //        break;
+  //  //      case MailTypes.OrderAccepted_ComFaktura:
+  //  //        OrderInvoice ordInv = (OrderInvoice)par;
+  //  //        new MailEvent("potvrzení objednávky, lm.com karta", ordInv.order.Id, em.PlainText).Raise();
+  //  //        byte[] data2 = ProsperLib.printInvoiceNew(ordInv.invoice).ToArray();
+  //  //        att = new Emailer.Attachment("Invoice_" + ordInv.order.Id + ".pdf", data2, "application/pdf");
+  //  //        em.AddAttachment(att);
+  //  //        Intranet.archiveInvoice(ordInv.invoice, data2, false);
+  //  //        break;
+  //  //      case MailTypes.SendDiscount:
+  //  //        SendDiscountPar discPar = (SendDiscountPar)par;
+  //  //        new MailEvent("slevový kupon", discPar.Context.Order.Id, em.PlainText).Raise();
+  //  //        break;
+  //  //      case MailTypes.sd_SendLicenceKey:
+  //  //        SendLicenceKeyPar licPar = (SendLicenceKeyPar)par;
+  //  //        new MailEvent("licenční klíč", licPar.orderId, em.PlainText).Raise();
+  //  //        break;
+  //  //      default:
+  //  //        new MailEvent(type.ToString(), em.PlainText).Raise();
+  //  //        break;
+  //  //    }
+  //  //    em.SendMail();
+  //  //  } catch (Exception exp) {
+  //  //    /*switch (type) {
+  //  //      case MailTypes.ConfirmRegistration:
+  //  //        ProfileData data = (ProfileData)par;
+  //  //        data.Id
+  //  //        data.Email
+  //  //        data.Password
+  //  //        break;
+  //  //      case MailTypes.LostPassword:
+  //  //        mail
+  //  //        (string)par
+  //  //        break;
+  //  //      case MailTypes.OrderAccepted_Proforma:
+  //  //        ctx = (OrderDBContext)par;
+  //  //        ctx.OrderId.ToString()
+  //  //        ctx.Order.PriceTax
+  //  //        ctx.Order.CurrType
+  //  //        ctx.OrderId.ToString()
+  //  //        ctx.Order.UserId
+  //  //        break;
+  //  //      case MailTypes.OrderAccepted_Dobirka:
+  //  //      case MailTypes.OrderAccepted_Faktura:
+  //  //        ctx = (OrderDBContext)par;
+  //  //        ctx.OrderId.ToString()
+  //  //        ctx.Order.UserId
+  //  //        break;
+  //  //      case MailTypes.SendDiscount:
+  //  //        SendDiscountPar discPar = (SendDiscountPar)par;
+  //  //        discPar.Discount
+  //  //        discPar.Amount
+  //  //        break;
+  //  //      case MailTypes.sd_SendLicenceKey:
+  //  //        SendLicenceKeyPar licPar = (SendLicenceKeyPar)par;
+  //  //        licPar.orderItem.Licence.ShortTitle
+  //  //        licPar.key
+  //  //        licPar.orderItem.Licence.Licence
+  //  //    }*/
+  //  //    if (orderId != 0) new CommerceEvent(CommerceEventIds.Other, "sendMail Error: " + exp.Message, orderId, exp).Raise();
+  //  //    Logging.Trace(TraceLevel.Error, TraceCategory.All, "Cannot send mail " + mail + " " + exp.Message);
+  //  //  }
+  //  //}
 
-  }
+  //}
 }

@@ -98,20 +98,20 @@ namespace LMComLib {
       return LMComDataProvider.Instance.getPassword(email);
     }
 
-    //Prevod profilu z vyuky na lm.cz
-    public static string createUserFromVyuka(string eMail, string psw) {
-      ProfileData prof = LMComDataProvider.readProfile(eMail, null);
-      if (prof == null) return string.Format("Uživatel {0} neexistuje!", eMail);
-      if (prof.Site != Domains.sz) return string.Format("Profil uživatele {0} je již převeden!", eMail);
-      prof.Password = psw;
-      LMComDataProvider.WriteProfile(prof);
-      MailSender.sendMail(MailTypes.ConfirmRegistration, Domains.com, SubDomains.com_cz, Langs.cs_cz, eMail, prof);
-      return null;
-    }
+    ////Prevod profilu z vyuky na lm.cz
+    //public static string createUserFromVyuka(string eMail, string psw) {
+    //  ProfileData prof = LMComDataProvider.readProfile(eMail, null);
+    //  if (prof == null) return string.Format("Uživatel {0} neexistuje!", eMail);
+    //  if (prof.Site != Domains.sz) return string.Format("Profil uživatele {0} je již převeden!", eMail);
+    //  prof.Password = psw;
+    //  LMComDataProvider.WriteProfile(prof);
+    //  MailSender.sendMail(MailTypes.ConfirmRegistration, Domains.com, SubDomains.com_cz, Langs.cs_cz, eMail, prof);
+    //  return null;
+    //}
 
-    public static bool createUserStart(string eMail, string psw) {
-      return createUserStart(urlInfo.GetUrlInfo(), eMail, psw, null, null)>0;
-    }
+    //public static bool createUserStart(string eMail, string psw) {
+    //  return createUserStart(urlInfo.GetUrlInfo(), eMail, psw, null, null)>0;
+    //}
 
     public static Int64 rew_createUserStart(SubDomains subSite, string email, string login, Action<ProfileData> fillProfile) {
       Int64 id = LMComDataProvider.rew_readProfileId(email, login, null);
@@ -181,25 +181,25 @@ namespace LMComLib {
     /// Nasledne posle aktivacni mail se zakodovanum UserId, eMail a Password
     /// ui==null => pouze zalozi uzivatele ale neposila email. Vyuzito napr pro eTestMe.com, v Q:\lmcom\RW2\Server\Services\MembersipNewService.svc.cs
     /// </summary>
-    public static Int64 createUserStart(urlInfo ui, string eMail, string psw, string firstName, string lastName) {
-      Int64 id = LMComDataProvider.readProfileId (eMail, null);
-      if (id>0) return -1;
-      ProfileData prof = Profile;
-      if (!prof.Anonymous) throw new Exception();
-      prof = LMComDataProvider.createProfileStart(ui == null ? Domains.com : ui.SiteId);
-      prof.ActivationMailSent = DateTime.UtcNow;
-      prof.Address.FirstName = firstName; prof.Address.LastName = lastName;
-      prof.Email = eMail; prof.Password = psw;
-      if (ui != null) {
-        if (Machines.debugNoInternet) {
-          prof.Roles = 0; prof.ActivationMailSent = null; //simulace createUserEnd pro ladeni bez internetu
-        } else
-          MailSender.sendMail(MailTypes.ConfirmRegistration, ui.SiteId, ui.SubSite, ui.LangId, prof.Email, prof);
-        loginProfile(prof);
-      }
-      LMComDataProvider.WriteProfile(prof);
-      return prof.Id;
-    }
+    //public static Int64 createUserStart(urlInfo ui, string eMail, string psw, string firstName, string lastName) {
+    //  Int64 id = LMComDataProvider.readProfileId (eMail, null);
+    //  if (id>0) return -1;
+    //  ProfileData prof = Profile;
+    //  if (!prof.Anonymous) throw new Exception();
+    //  prof = LMComDataProvider.createProfileStart(ui == null ? Domains.com : ui.SiteId);
+    //  prof.ActivationMailSent = DateTime.UtcNow;
+    //  prof.Address.FirstName = firstName; prof.Address.LastName = lastName;
+    //  prof.Email = eMail; prof.Password = psw;
+    //  if (ui != null) {
+    //    if (Machines.debugNoInternet) {
+    //      prof.Roles = 0; prof.ActivationMailSent = null; //simulace createUserEnd pro ladeni bez internetu
+    //    } else
+    //      MailSender.sendMail(MailTypes.ConfirmRegistration, ui.SiteId, ui.SubSite, ui.LangId, prof.Email, prof);
+    //    loginProfile(prof);
+    //  }
+    //  LMComDataProvider.WriteProfile(prof);
+    //  return prof.Id;
+    //}
 
     /// <summary>
     /// Reakce na link z aktivacniho mailu: do profilu daneho Id vlozi Roles, cimz ucet aktivuje.
