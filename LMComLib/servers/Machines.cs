@@ -299,16 +299,16 @@ namespace LMComLib {
       return ConfigurationManager.ConnectionStrings[connName].ConnectionString;
     }
 
-    public static RewiseData.RewiseDataContext getRewiseContext(bool ObjectTrackingEnabled) {
-      RewiseData.RewiseDataContext ctx = new RewiseData.RewiseDataContext(RewiseConnectionString());
-      ctx.ObjectTrackingEnabled = ObjectTrackingEnabled;
-      if (isPZComp()) ctx.Log = wr;
-      return ctx;
-    }
+    //public static RewiseData.RewiseDataContext getRewiseContext(bool ObjectTrackingEnabled) {
+    //  RewiseData.RewiseDataContext ctx = new RewiseData.RewiseDataContext(RewiseConnectionString());
+    //  ctx.ObjectTrackingEnabled = ObjectTrackingEnabled;
+    //  if (isPZComp()) ctx.Log = wr;
+    //  return ctx;
+    //}
 
-    public static RewiseData.RewiseDataContext getRewiseContext() {
-      return getRewiseContext(true);
-    }
+    //public static RewiseData.RewiseDataContext getRewiseContext() {
+    //  return getRewiseContext(true);
+    //}
 
 
 
