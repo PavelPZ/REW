@@ -193,26 +193,27 @@ namespace LMComLib.Cms {
     [XmlIgnore]
     public Dictionary<ProductLicenceType, ProductLicence> Licences {
       get {
-        if (licences == null)
-          try {
-            licences = new Dictionary<ProductLicenceType, ProductLicence>();
-            adjustLicenceList();
-            /*if (LicenceList == null || LicenceList.Length <= 0) {
-              ProductLicence noLic = new ProductLicence();
-              noLic.MyProd = ProductCatalogue.get(Info.dbId, Langs.cs_cz);
-              noLic.Licence = ProductLicenceType.box;
-              noLic.LicPrice = (Currency)Discount;
-              licences.Add(noLic.Licence, noLic);
-            } else*/
-            foreach (ProductLicence lic in LicenceList) {
-              lic.MyProd = ProductCatalogue.get(Info.dbId, Langs.cs_cz);
-              licences.Add(lic.Licence, lic);
-            }
+        return null;
+        //if (licences == null)
+        //  try {
+        //    licences = new Dictionary<ProductLicenceType, ProductLicence>();
+        //    adjustLicenceList();
+        //    /*if (LicenceList == null || LicenceList.Length <= 0) {
+        //      ProductLicence noLic = new ProductLicence();
+        //      noLic.MyProd = ProductCatalogue.get(Info.dbId, Langs.cs_cz);
+        //      noLic.Licence = ProductLicenceType.box;
+        //      noLic.LicPrice = (Currency)Discount;
+        //      licences.Add(noLic.Licence, noLic);
+        //    } else*/
+        //    foreach (ProductLicence lic in LicenceList) {
+        //      lic.MyProd = ProductCatalogue.get(Info.dbId, Langs.cs_cz);
+        //      licences.Add(lic.Licence, lic);
+        //    }
 
-          } catch (Exception exp) {
-            throw new Exception(string.Format("DBId={0}, CommerceId={1}", Info.dbId, CommerceId), exp);
-          }
-        return licences;
+        //  } catch (Exception exp) {
+        //    throw new Exception(string.Format("DBId={0}, CommerceId={1}", Info.dbId, CommerceId), exp);
+        //  }
+        //return licences;
       }
     }
 

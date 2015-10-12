@@ -187,36 +187,36 @@ namespace LMComLib {
   /// Optimalni nacitani produktu pres cache
   /// Umoznuje najit lokalizovany produkt pres ProductId, CommerceId nebo CourseId+Site
   /// </summary>
-  public static class ProductCatalogue {
+  //public static class ProductCatalogue {
 
-    /*public static Domains normalizeSite(Domains site) {
-      return site == Domains.download ? Domains.com : site;
-    }*/
+  //  /*public static Domains normalizeSite(Domains site) {
+  //    return site == Domains.download ? Domains.com : site;
+  //  }*/
 
-    public static string CourseUrl(CourseIds crsId) {
-      ProductInfo info = ProductInfos.GetProduct(crsId);
-      return urlInfo.GetUrl(LMApps.ea, "/" + info.OnlineHomeUrl);
-    }
-    public static ProductCatalogueItem getCourse(CourseIds courseId, Domains site, Langs lang) {
-      //site = normalizeSite(site);
-      return ProductCatalogueItems.Instance.getCourse(courseId, site, lang);
-    }
-    public static ProductLicence getFirstLicenceFromAllCommerce(int prosperId/*, Langs lang*/) {
-      return ProductCatalogueItems.Instance.getFirstLicenceFromAllCommerce(prosperId/*, lang*/);
-    }
+  //  public static string CourseUrl(CourseIds crsId) {
+  //    ProductInfo info = ProductInfos.GetProduct(crsId);
+  //    return urlInfo.GetUrl(LMApps.ea, "/" + info.OnlineHomeUrl);
+  //  }
+  //  public static ProductCatalogueItem getCourse(CourseIds courseId, Domains site, Langs lang) {
+  //    //site = normalizeSite(site);
+  //    return ProductCatalogueItems.Instance.getCourse(courseId, site, lang);
+  //  }
+  //  public static ProductLicence getFirstLicenceFromAllCommerce(int prosperId/*, Langs lang*/) {
+  //    return ProductCatalogueItems.Instance.getFirstLicenceFromAllCommerce(prosperId/*, lang*/);
+  //  }
 
-    public static ProductCatalogueItem get(int productId, Langs lang) {
-      return ProductCatalogueItems.Instance.get(productId, lang);
-    }
-    public static ProductCatalogueItem getViaUrl(string fileName, bool noDict, Domains site, Langs lang) {
-      //site = normalizeSite(site);
-      ProductCatalogueItem item = ProductCatalogueItems.Instance.Products.
-        Where(pr => pr.site == site && fileName == pr.FileName && (pr.WithDict == null || (bool)pr.WithDict != noDict)).
-        SelectMany(pr => pr.LocItems).
-        Where(lic => lic.lang == lang).First();
-      return item;
-    }
-  }
+  //  public static ProductCatalogueItem get(int productId, Langs lang) {
+  //    return ProductCatalogueItems.Instance.get(productId, lang);
+  //  }
+  //  public static ProductCatalogueItem getViaUrl(string fileName, bool noDict, Domains site, Langs lang) {
+  //    //site = normalizeSite(site);
+  //    ProductCatalogueItem item = ProductCatalogueItems.Instance.Products.
+  //      Where(pr => pr.site == site && fileName == pr.FileName && (pr.WithDict == null || (bool)pr.WithDict != noDict)).
+  //      SelectMany(pr => pr.LocItems).
+  //      Where(lic => lic.lang == lang).First();
+  //    return item;
+  //  }
+  //}
 
   public class ProductCatalogueItems {
     public static ProductCatalogueItems instance;

@@ -164,15 +164,16 @@ namespace LMComLib {
     [XmlIgnore]
     public ProductLicence Licence {
       get {
-        try {
-          if (licence == null) {
-            ProductCatalogueItem product = ProductCatalogue.get(dbId, MyOrder.Lang);
-            licence = product==null ? null : product.Licences[LicenceType];
-          }
-          return licence;
-        } catch (Exception exp) {
-          throw new Exception(string.Format("dbId={0}, lang = {1}, licence={2}", dbId, MyOrder.Lang, LicenceType), exp);
-        }
+        return null;
+        //try {
+        //  if (licence == null) {
+        //    ProductCatalogueItem product = ProductCatalogue.get(dbId, MyOrder.Lang);
+        //    licence = product==null ? null : product.Licences[LicenceType];
+        //  }
+        //  return licence;
+        //} catch (Exception exp) {
+        //  throw new Exception(string.Format("dbId={0}, lang = {1}, licence={2}", dbId, MyOrder.Lang, LicenceType), exp);
+        //}
       }
     }
   }
@@ -376,30 +377,31 @@ namespace LMComLib {
     }
 
     public ProductCatalogueItem Fill(Ipn ipn, XCustommer cust) {
-      IPN = ipn;
-      Site = ipn.site;
-      CurrType = ipn.mc_currency;
-      PaymentFee = ipn.mc_fee;
-      Lang = ipn.lng;
-      TransactionID = ipn.txn_id;
-      SupplierId = LMComLib.SupplierId.LANGMaster;
-      BillMethod = BillingMethods.PayPal;
-      CreatedOn = DueDate = DateTime.UtcNow;
-      Profile = new ProfileData() { Email = cust.pri2, Address = new Address() { FirstName = cust.pri1, Street = cust.pri3, City = cust.pri4 } };
-      OrderItem ordItem;
-      int dbId = int.Parse(ipn.productId);
-      ProductCatalogueItem prod = ProductCatalogue.get(dbId, Lang);
-      Items.Add(ordItem = new OrderItem() {
-        MyOrder = this,
-        dbId = dbId,
-        Quantity = 1,
-        ExternalPrice = new Currency(ipn.mc_currency, ipn.mc_gross, true),
-        LicKey = new string[] { ipn.licKey },
-        ProsperId = ProductLicence.getProsperId(prod.CommerceId, ProductLicenceType.download)
-      });
-      CurrExchange = PayPalLow.CurrExchange2Kc(CurrType);
-      RefreshPriceCom();
-      return prod;
+      return null;
+      //IPN = ipn;
+      //Site = ipn.site;
+      //CurrType = ipn.mc_currency;
+      //PaymentFee = ipn.mc_fee;
+      //Lang = ipn.lng;
+      //TransactionID = ipn.txn_id;
+      //SupplierId = LMComLib.SupplierId.LANGMaster;
+      //BillMethod = BillingMethods.PayPal;
+      //CreatedOn = DueDate = DateTime.UtcNow;
+      //Profile = new ProfileData() { Email = cust.pri2, Address = new Address() { FirstName = cust.pri1, Street = cust.pri3, City = cust.pri4 } };
+      //OrderItem ordItem;
+      //int dbId = int.Parse(ipn.productId);
+      //ProductCatalogueItem prod = ProductCatalogue.get(dbId, Lang);
+      //Items.Add(ordItem = new OrderItem() {
+      //  MyOrder = this,
+      //  dbId = dbId,
+      //  Quantity = 1,
+      //  ExternalPrice = new Currency(ipn.mc_currency, ipn.mc_gross, true),
+      //  LicKey = new string[] { ipn.licKey },
+      //  ProsperId = ProductLicence.getProsperId(prod.CommerceId, ProductLicenceType.download)
+      //});
+      //CurrExchange = PayPalLow.CurrExchange2Kc(CurrType);
+      //RefreshPriceCom();
+      //return prod;
     }
 
     public static string productQuery(int dbId, ProductLicenceType? lic, int quantity, Currency? curr) {
@@ -424,53 +426,55 @@ namespace LMComLib {
     }
 
     public ProductLicence addProduct(addProductObj obj, out Currency? external) {
-      int dbId; external = null;
-      if (!Int32.TryParse(obj.dbId, out dbId)) return null;
-      //LMComLib.Cms.Product prod = (LMComLib.Cms.Product)CacheItems.GetTemplate(dbId);
-      ProductCatalogueItem prod = ProductCatalogue.get(dbId, Lang);
-      ProductLicenceType prodLic = string.IsNullOrEmpty(obj.lic) ? ProductLicenceType.box : (ProductLicenceType)Enum.Parse(typeof(ProductLicenceType), obj.lic, true);
-      ProductLicence licObj = prod.Licences[prodLic];
-      int qty;
-      if (!string.IsNullOrEmpty(obj.quantity) || !int.TryParse(obj.quantity, out qty)) qty = 1;
-      if (!string.IsNullOrEmpty(obj.curr)) {
-        Currency curr = new Currency();
-        try {
-          curr.AsString = obj.curr;
-        } catch {
-          throw new Exception(string.Format("Wrong ExternalPrice Query string 2: {0}", obj.curr));
-        }
-        addProduct(licObj, qty, curr);
-        external = curr;
-      } else
-        addProduct(licObj, qty, null);
-      RefreshPrice();
-      return licObj;
+      external = null; return null;
+      //int dbId; external = null;
+      //if (!Int32.TryParse(obj.dbId, out dbId)) return null;
+      ////LMComLib.Cms.Product prod = (LMComLib.Cms.Product)CacheItems.GetTemplate(dbId);
+      //ProductCatalogueItem prod = ProductCatalogue.get(dbId, Lang);
+      //ProductLicenceType prodLic = string.IsNullOrEmpty(obj.lic) ? ProductLicenceType.box : (ProductLicenceType)Enum.Parse(typeof(ProductLicenceType), obj.lic, true);
+      //ProductLicence licObj = prod.Licences[prodLic];
+      //int qty;
+      //if (!string.IsNullOrEmpty(obj.quantity) || !int.TryParse(obj.quantity, out qty)) qty = 1;
+      //if (!string.IsNullOrEmpty(obj.curr)) {
+      //  Currency curr = new Currency();
+      //  try {
+      //    curr.AsString = obj.curr;
+      //  } catch {
+      //    throw new Exception(string.Format("Wrong ExternalPrice Query string 2: {0}", obj.curr));
+      //  }
+      //  addProduct(licObj, qty, curr);
+      //  external = curr;
+      //} else
+      //  addProduct(licObj, qty, null);
+      //RefreshPrice();
+      //return licObj;
     }
 
     public int addProduct(HttpRequest req) {
-      int dbId;
-      if (!Int32.TryParse(req.QueryString["Add"], out dbId)) return 0;
-      //LMComLib.Cms.Product prod = (LMComLib.Cms.Product)CacheItems.GetTemplate(dbId);
-      ProductCatalogueItem prod = ProductCatalogue.get(dbId, Lang);
-      string lic = req.QueryString["Lic"];
-      ProductLicenceType prodLic = string.IsNullOrEmpty(lic) ? ProductLicenceType.box : (ProductLicenceType)Enum.Parse(typeof(ProductLicenceType), lic, true);
-      ProductLicence licObj = prod.Licences[prodLic];
-      string qtyStr = req.QueryString["Quantity"];
-      int qty;
-      if (!string.IsNullOrEmpty(qtyStr) || !int.TryParse(qtyStr, out qty)) qty = 1;
-      string extPrice = req.QueryString["ExternalPrice"];
-      if (!string.IsNullOrEmpty(extPrice)) {
-        Currency curr = new Currency();
-        try {
-          curr.AsString = extPrice;
-        } catch {
-          throw new Exception(string.Format("Wrong ExternalPrice Query string 2: {0}", extPrice));
-        }
-        addProduct(licObj, qty, curr);
-      } else
-        addProduct(licObj, qty, null);
-      RefreshPrice();
-      return licObj.ProsperId;
+      return 0;
+      //int dbId;
+      //if (!Int32.TryParse(req.QueryString["Add"], out dbId)) return 0;
+      ////LMComLib.Cms.Product prod = (LMComLib.Cms.Product)CacheItems.GetTemplate(dbId);
+      //ProductCatalogueItem prod = ProductCatalogue.get(dbId, Lang);
+      //string lic = req.QueryString["Lic"];
+      //ProductLicenceType prodLic = string.IsNullOrEmpty(lic) ? ProductLicenceType.box : (ProductLicenceType)Enum.Parse(typeof(ProductLicenceType), lic, true);
+      //ProductLicence licObj = prod.Licences[prodLic];
+      //string qtyStr = req.QueryString["Quantity"];
+      //int qty;
+      //if (!string.IsNullOrEmpty(qtyStr) || !int.TryParse(qtyStr, out qty)) qty = 1;
+      //string extPrice = req.QueryString["ExternalPrice"];
+      //if (!string.IsNullOrEmpty(extPrice)) {
+      //  Currency curr = new Currency();
+      //  try {
+      //    curr.AsString = extPrice;
+      //  } catch {
+      //    throw new Exception(string.Format("Wrong ExternalPrice Query string 2: {0}", extPrice));
+      //  }
+      //  addProduct(licObj, qty, curr);
+      //} else
+      //  addProduct(licObj, qty, null);
+      //RefreshPrice();
+      //return licObj.ProsperId;
     }
 
     /// <summary>
