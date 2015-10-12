@@ -408,9 +408,9 @@ namespace LMComLib.Cms {
     }
   }
 
-  public class Page {
-    public Template Item;
-  }
+  //public class Page {
+  //  public Template Item;
+  //}
 
   public abstract class Template : ICmsSerialize {
     [XmlIgnore]
@@ -766,37 +766,37 @@ namespace LMComLib.Cms {
     Enum2
   }
 
-  [CmsPageAttribute(PageType.Page, "Popis Test class")]
-  public class Test : PageTemplate {
+  //[CmsPageAttribute(PageType.Page, "Popis Test class")]
+  //public class Test : PageTemplate {
 
-    [StringAttribute(105, "Popis String prop", Default = "def", Required = true, StartGroupDescr = "Zacatek skupiny 1")]
-    public string Str;
+  //  [StringAttribute(105, "Popis String prop", Default = "def", Required = true, StartGroupDescr = "Zacatek skupiny 1")]
+  //  public string Str;
 
-    [EnumAttribute(107, "Popis Enum prop", typeof(TestEnum), Default = TestEnum.Enum2)]
-    public TestEnum? Enum;
+  //  [EnumAttribute(107, "Popis Enum prop", typeof(TestEnum), Default = TestEnum.Enum2)]
+  //  public TestEnum? Enum;
 
-    [BoolAttribute(110, "Popis Check prop", Default = true)]
-    public bool? Check;
+  //  [BoolAttribute(110, "Popis Check prop", Default = true)]
+  //  public bool? Check;
 
-    [IntAttribute(120, "Popis Num prop", Default = 123, StartGroupDescr = "Zacatek skupiny 2")]
-    public int? Num;
+  //  [IntAttribute(120, "Popis Num prop", Default = 123, StartGroupDescr = "Zacatek skupiny 2")]
+  //  public int? Num;
 
-    [CurrencyAttribute(130, "Popis Curr prop", Currencies = CurrencyType.csk, DefaultAmount = 100, DefaultTyp = CurrencyType.csk)]
-    public Currency? Curr;
+  //  [CurrencyAttribute(130, "Popis Curr prop", Currencies = CurrencyType.csk, DefaultAmount = 100, DefaultTyp = CurrencyType.csk)]
+  //  public Currency? Curr;
 
-    [DateAttribute(135, "Popis Date prop", Default = "2007-12-31")]
-    public DateTime? Date;
+  //  [DateAttribute(135, "Popis Date prop", Default = "2007-12-31")]
+  //  public DateTime? Date;
 
-    [PointerAttribute(140, "Popis ptr Prop", FilterType = PageFilter.Page, IncGlobal = false, Classes = new Type[] { typeof(Test) })]
-    public int? ptr;
-    [XmlIgnore]
-    public CacheNode Ptr;
+  //  [PointerAttribute(140, "Popis ptr Prop", FilterType = PageFilter.Page, IncGlobal = false, Classes = new Type[] { typeof(Test) })]
+  //  public int? ptr;
+  //  [XmlIgnore]
+  //  public CacheNode Ptr;
 
-    [PointerAttributes(150, "Popis ptrs prop")]
-    public int[] ptrs;
-    [XmlIgnore]
-    public CacheNode[] Ptrs;
-  }
+  //  [PointerAttributes(150, "Popis ptrs prop")]
+  //  public int[] ptrs;
+  //  [XmlIgnore]
+  //  public CacheNode[] Ptrs;
+  //}
 
   public class UniversalDataItem {
     public UniversalDataItem(Template temp, string Perex, string RelativeUrl, CacheNode nd)
@@ -819,20 +819,20 @@ namespace LMComLib.Cms {
         this.height = info.imgHeight();
       }
     }
-    public static List<UniversalDataItem> CreateDataSource(IEnumerable nodes) {
-      if (nodes == null) return null;
-      List<UniversalDataItem> res = new List<UniversalDataItem>();
-      foreach (object obj in nodes) {
-        Template temp = obj is CacheNode ? ((CacheNode)obj).getTemplate() : CacheItems.GetNode((SiteMapNode)obj).getTemplate();
-        if (temp is Product)
-          res.Add(((Product)temp).getData());
-        else if (temp is UniversalItem)
-          res.Add(((UniversalItem)temp).getData());
-        if (temp is ImgTemplate)
-          res.Add(((ImgTemplate)temp).getData());
-      }
-      return res;
-    }
+    //public static List<UniversalDataItem> CreateDataSource(IEnumerable nodes) {
+    //  if (nodes == null) return null;
+    //  List<UniversalDataItem> res = new List<UniversalDataItem>();
+    //  foreach (object obj in nodes) {
+    //    Template temp = obj is CacheNode ? ((CacheNode)obj).getTemplate() : CacheItems.GetNode((SiteMapNode)obj).getTemplate();
+    //    if (temp is Product)
+    //      res.Add(((Product)temp).getData());
+    //    else if (temp is UniversalItem)
+    //      res.Add(((UniversalItem)temp).getData());
+    //    if (temp is ImgTemplate)
+    //      res.Add(((ImgTemplate)temp).getData());
+    //  }
+    //  return res;
+    //}
     string title;
     public string Title {
       get { return title; }

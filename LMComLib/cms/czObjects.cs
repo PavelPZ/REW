@@ -25,20 +25,20 @@ using LMComLib;
 
 namespace LMComLib.Cms {
 
-  public static class PageRanges {
-    //Stranka (vcetne jejich potomku) je na celou sirku stranky, bez praveho sloupce
-    public static bool hasBlankPageMaster(int id) {
-      switch (id) {
-        case -301:
-        case -302:
-        case -303:
-        case -304:
-          return true;
-        default:
-          return false;
-      }
-    }
-  }
+  //public static class PageRanges {
+  //  //Stranka (vcetne jejich potomku) je na celou sirku stranky, bez praveho sloupce
+  //  public static bool hasBlankPageMaster(int id) {
+  //    switch (id) {
+  //      case -301:
+  //      case -302:
+  //      case -303:
+  //      case -304:
+  //        return true;
+  //      default:
+  //        return false;
+  //    }
+  //  }
+  //}
   /*
   /// <summary>
   /// Odkaz na licencor data u produktu
@@ -263,70 +263,70 @@ namespace LMComLib.Cms {
     }
 
 
-    /// Screenshoty
-    /// </summary>
-    [PointerAttributes(142, "Screenshoty", FilterType = PageFilter.Img)]
-    public int[] screenShots;
-    [XmlIgnore]
-    public CacheNode[] ScreenShots;
+    ///// Screenshoty
+    ///// </summary>
+    //[PointerAttributes(142, "Screenshoty", FilterType = PageFilter.Img)]
+    //public int[] screenShots;
+    //[XmlIgnore]
+    //public CacheNode[] ScreenShots;
 
-    /// <summary>
-    /// Svazane produkty. Pristup je pres Product pr = (Product) Related[i].getTemplate();
-    /// </summary>
-    [PointerAttributes(150, "'Viz též produtky", Classes = new Type[] { typeof(Product) })]
-    public int[] related;
-    [XmlIgnore]
-    public CacheNode[] Related;
+    ///// <summary>
+    ///// Svazane produkty. Pristup je pres Product pr = (Product) Related[i].getTemplate();
+    ///// </summary>
+    //[PointerAttributes(150, "'Viz též produtky", Classes = new Type[] { typeof(Product) })]
+    //public int[] related;
+    //[XmlIgnore]
+    //public CacheNode[] Related;
 
-    /// <summary>
-    /// Svazane produkty
-    /// </summary>
-    [PointerAttributes(160, "'Viz též' komplety", Classes = new Type[] { typeof(Product) })]
-    public int[] packages;
-    [XmlIgnore]
-    public CacheNode[] Packages;
+    ///// <summary>
+    ///// Svazane produkty
+    ///// </summary>
+    //[PointerAttributes(160, "'Viz též' komplety", Classes = new Type[] { typeof(Product) })]
+    //public int[] packages;
+    //[XmlIgnore]
+    //public CacheNode[] Packages;
 
-    /// <summary>
-    /// Ocenění
-    /// </summary>
-    [PointerAttributes(162, "Ocenění", Classes = new Type[] { typeof(UniversalItem) })]
-    public int[] prices;
-    [XmlIgnore]
-    public CacheNode[] Prices;
+    ///// <summary>
+    ///// Ocenění
+    ///// </summary>
+    //[PointerAttributes(162, "Ocenění", Classes = new Type[] { typeof(UniversalItem) })]
+    //public int[] prices;
+    //[XmlIgnore]
+    //public CacheNode[] Prices;
 
-    /// <summary>
-    /// Ocenění
-    /// </summary>
-    [PointerAttributes(163, "Partneři", Classes = new Type[] { typeof(UniversalItem) })]
-    public int[] partners;
-    [XmlIgnore]
-    public CacheNode[] Partners;
+    ///// <summary>
+    ///// Ocenění
+    ///// </summary>
+    //[PointerAttributes(163, "Partneři", Classes = new Type[] { typeof(UniversalItem) })]
+    //public int[] partners;
+    //[XmlIgnore]
+    //public CacheNode[] Partners;
 
-    [IntAttribute(165, "Pořadí v obsahu kompletů", Default = 0)]
-    public int? KompletOrder;
+    //[IntAttribute(165, "Pořadí v obsahu kompletů", Default = 0)]
+    //public int? KompletOrder;
 
-    /// <summary>
-    /// Další informace pro AppData databazi
-    /// </summary>
-    public ProductAppDataItem AppDataItem;
+    ///// <summary>
+    ///// Další informace pro AppData databazi
+    ///// </summary>
+    //public ProductAppDataItem AppDataItem;
 
-    public double ListPrice() {
-      return Order.RoundCurrency(((Currency)UnitPrice).Price(Order.ActTaxPercent, SubDomains.no, ProductLicenceType.box));
-    }
+    //public double ListPrice() {
+    //  return Order.RoundCurrency(((Currency)UnitPrice).Price(Order.ActTaxPercent, SubDomains.no, ProductLicenceType.box));
+    //}
 
-    public double ListPriceTax() {
-      return Order.RoundCurrency(((Currency)UnitPrice).PriceTax(Order.ActTaxPercent, SubDomains.no, ProductLicenceType.box));
-    }
-    /*public double Price() {
-      return Order.RoundCurrency(((Currency)Discount).Price(Order.ActTaxPercent));
-    }
-    public double Tax() {
-      return Order.RoundCurrency(((Currency)Discount).Tax(Order.ActTaxPercent));
-    }*/
+    //public double ListPriceTax() {
+    //  return Order.RoundCurrency(((Currency)UnitPrice).PriceTax(Order.ActTaxPercent, SubDomains.no, ProductLicenceType.box));
+    //}
+    ///*public double Price() {
+    //  return Order.RoundCurrency(((Currency)Discount).Price(Order.ActTaxPercent));
+    //}
+    //public double Tax() {
+    //  return Order.RoundCurrency(((Currency)Discount).Tax(Order.ActTaxPercent));
+    //}*/
 
-    public override string ContentControlUrl() {
-      return "~/cz/Web/Controls/Products/Product.ascx";
-    }
+    //public override string ContentControlUrl() {
+    //  return "~/cz/Web/Controls/Products/Product.ascx";
+    //}
 
     /*public ProductCatalogueItem CreateProductCatalogue(Domains site) {
       ProductCatalogueItem res = AppDataItem != null ? AppDataItem : new ProductCatalogueItem();
@@ -342,29 +342,29 @@ namespace LMComLib.Cms {
       return res;
     }*/
 
-    public DsgnProduct dsgnCreateProduct(Domains site) {
-      DsgnProduct res = new DsgnProduct();
-      res.ProductId = Info.dbId;
-      res.site = site;
-      res.HideOnLmcom = HideOnLmcom;
-      adjustLicenceList();
-      res.LicenceList = LicenceList.Where(lic => lic.LicPrice.Amount > 0 || lic.LicPrice.Ptr != null || lic.LicPrice.SubSites != null).ToArray();// LicenceList;
-      //res.LicenceList = Licences.Values.Where(lic => lic.LicPrice.Amount > 0 || lic.LicPrice.Ptr != null).ToArray();// LicenceList;
-      if (res.LicenceList == null || res.LicenceList.Length == 0)
-        return null;
-      res.seeAlso = related;
-      res.CommerceId = (int)CommerceId;
-      res.Discount = (Currency)Discount;
-      res.StockAble = StockAble == null ? false : (bool)StockAble;
-      res.ProductionCost = ProductionCost == null ? new Currency(CurrencyType.csk, 0.0) : (Currency)ProductionCost;
-      res.ProductRoyalities = ProductRoyalities;
-      res.PADUsdPrice = PADUsdPrice;
-      res.Icons = Icons;
-      res.PADEurPrice = PADEurPrice;
-      res.COMScreenShot = COMScreenShot;
-      res.ET_SiteMapId = ET_SiteMapId;
-      return res;
-    }
+    //public DsgnProduct dsgnCreateProduct(Domains site) {
+    //  DsgnProduct res = new DsgnProduct();
+    //  res.ProductId = Info.dbId;
+    //  res.site = site;
+    //  res.HideOnLmcom = HideOnLmcom;
+    //  adjustLicenceList();
+    //  res.LicenceList = LicenceList.Where(lic => lic.LicPrice.Amount > 0 || lic.LicPrice.Ptr != null || lic.LicPrice.SubSites != null).ToArray();// LicenceList;
+    //  //res.LicenceList = Licences.Values.Where(lic => lic.LicPrice.Amount > 0 || lic.LicPrice.Ptr != null).ToArray();// LicenceList;
+    //  if (res.LicenceList == null || res.LicenceList.Length == 0)
+    //    return null;
+    //  res.seeAlso = related;
+    //  res.CommerceId = (int)CommerceId;
+    //  res.Discount = (Currency)Discount;
+    //  res.StockAble = StockAble == null ? false : (bool)StockAble;
+    //  res.ProductionCost = ProductionCost == null ? new Currency(CurrencyType.csk, 0.0) : (Currency)ProductionCost;
+    //  res.ProductRoyalities = ProductRoyalities;
+    //  res.PADUsdPrice = PADUsdPrice;
+    //  res.Icons = Icons;
+    //  res.PADEurPrice = PADEurPrice;
+    //  res.COMScreenShot = COMScreenShot;
+    //  res.ET_SiteMapId = ET_SiteMapId;
+    //  return res;
+    //}
   }
 
   public enum UniversalCategory {
@@ -375,99 +375,99 @@ namespace LMComLib.Cms {
     reference,
   }
 
-  public abstract class UniversalItemLow : LMPageTemplate {
-    [StringAttribute(100, "Perex", Type = StringType.Html)]
-    public string Perex;
+  //public abstract class UniversalItemLow : LMPageTemplate {
+  //  [StringAttribute(100, "Perex", Type = StringType.Html)]
+  //  public string Perex;
 
-    [StringAttribute(110, "Text", Type = StringType.Html)]
-    public string Body;
+  //  [StringAttribute(110, "Text", Type = StringType.Html)]
+  //  public string Body;
 
-  }
+  //}
 
-  [CmsPageAttribute(PageType.Page, "Help stránka")]
-  public class HelpItem : UniversalItemLow {
-    public override string ContentControlUrl() {
-      return "~/cz/Web/Controls/HelpPage.ascx";
-    }
-    public UniversalDataItem getData() {
-      CacheNode nd = null;
-      UniversalDataItem res = new UniversalDataItem(this, Perex, null, nd);
-      return res;
-    }
-    [PointerAttributes(200, "Viz též...", FilterType = PageFilter.Page, IncGlobal = false, Classes = new Type[] { typeof(HelpItem) })]
-    public int[] items;
-    [XmlIgnore]
-    public CacheNode[] Items;
+  //[CmsPageAttribute(PageType.Page, "Help stránka")]
+  //public class HelpItem : UniversalItemLow {
+  //  public override string ContentControlUrl() {
+  //    return "~/cz/Web/Controls/HelpPage.ascx";
+  //  }
+  //  public UniversalDataItem getData() {
+  //    CacheNode nd = null;
+  //    UniversalDataItem res = new UniversalDataItem(this, Perex, null, nd);
+  //    return res;
+  //  }
+  //  [PointerAttributes(200, "Viz též...", FilterType = PageFilter.Page, IncGlobal = false, Classes = new Type[] { typeof(HelpItem) })]
+  //  public int[] items;
+  //  [XmlIgnore]
+  //  public CacheNode[] Items;
 
-  }
+  //}
 
-  [CmsPageAttribute(PageType.Page, "Obecná položka/stránka")]
-  public class UniversalItem : UniversalItemLow {
+  //[CmsPageAttribute(PageType.Page, "Obecná položka/stránka")]
+  //public class UniversalItem : UniversalItemLow {
 
-    [StringAttribute(105, "Podtitulek", Type = StringType.MultiLine)]
-    public string Subtitle;
+  //  [StringAttribute(105, "Podtitulek", Type = StringType.MultiLine)]
+  //  public string Subtitle;
 
-    [PointerAttribute(120, "Ikona", IncGlobal = true, Classes = new Type[] { typeof(ImgTemplate) })]
-    public int? icon;
-    [XmlIgnore]
-    public CacheNode Icon;
+  //  [PointerAttribute(120, "Ikona", IncGlobal = true, Classes = new Type[] { typeof(ImgTemplate) })]
+  //  public int? icon;
+  //  [XmlIgnore]
+  //  public CacheNode Icon;
 
-    [DateAttribute(130, "Datum")]
-    public DateTime? Date;
+  //  [DateAttribute(130, "Datum")]
+  //  public DateTime? Date;
 
-    [PointerAttribute(140, "Odkaz", IncGlobal = true)]
-    public int? reference;
-    [XmlIgnore]
-    public CacheNode Reference;
+  //  [PointerAttribute(140, "Odkaz", IncGlobal = true)]
+  //  public int? reference;
+  //  [XmlIgnore]
+  //  public CacheNode Reference;
 
-    [StringAttribute(150, "Externí odkaz")]
-    public string ExtReference;
+  //  [StringAttribute(150, "Externí odkaz")]
+  //  public string ExtReference;
 
-    public UniversalDataItem getData() {
-      string url = null;
-      switch (Category) {
-        case UniversalCategory.price: break;
-        case UniversalCategory.news:
-        case UniversalCategory.reference:
-          if (!string.IsNullOrEmpty(Body)) url = Info.AbsVisibleUrl();
-          else if (Reference != null) url = Reference.Info.AbsVisibleUrl();
-          else if (!string.IsNullOrEmpty(ExtReference)) url = ExtReference;
-          break;
-        default:
-          if (Reference != null) url = Reference.Info.AbsVisibleUrl();
-          else if (!string.IsNullOrEmpty(ExtReference)) url = ExtReference;
-          if (url == null) url = Info.AbsVisibleUrl();
-          break;
-      }
-      UniversalDataItem res = new UniversalDataItem(this, Perex, url, Icon);
-      if (Date != null) res.date = (DateTime)Date;
-      res.subtitle = Subtitle;
-      return res;
-    }
-    public override string ContentControlUrl() {
-      return "~/cz/Web/Controls/Page.ascx";
-    }
+  //  public UniversalDataItem getData() {
+  //    string url = null;
+  //    switch (Category) {
+  //      case UniversalCategory.price: break;
+  //      case UniversalCategory.news:
+  //      case UniversalCategory.reference:
+  //        if (!string.IsNullOrEmpty(Body)) url = Info.AbsVisibleUrl();
+  //        else if (Reference != null) url = Reference.Info.AbsVisibleUrl();
+  //        else if (!string.IsNullOrEmpty(ExtReference)) url = ExtReference;
+  //        break;
+  //      default:
+  //        if (Reference != null) url = Reference.Info.AbsVisibleUrl();
+  //        else if (!string.IsNullOrEmpty(ExtReference)) url = ExtReference;
+  //        if (url == null) url = Info.AbsVisibleUrl();
+  //        break;
+  //    }
+  //    UniversalDataItem res = new UniversalDataItem(this, Perex, url, Icon);
+  //    if (Date != null) res.date = (DateTime)Date;
+  //    res.subtitle = Subtitle;
+  //    return res;
+  //  }
+  //  public override string ContentControlUrl() {
+  //    return "~/cz/Web/Controls/Page.ascx";
+  //  }
 
-    UniversalCategory? category;
-    [XmlIgnore]
-    public UniversalCategory Category {
-      get {
-        if (category == null) {
-          SiteMapNode nd = node;
-          while (nd != null) {
-            string catStr = nd["category"];
-            if (!string.IsNullOrEmpty(catStr)) {
-              category = (UniversalCategory)Enum.Parse(typeof(UniversalCategory), catStr, true);
-              break;
-            }
-            nd = nd.ParentNode;
-          }
-          if (category == null) category = UniversalCategory.no;
-        }
-        return (UniversalCategory)category;
-      }
-    }
-  }
+  //  UniversalCategory? category;
+  //  [XmlIgnore]
+  //  public UniversalCategory Category {
+  //    get {
+  //      if (category == null) {
+  //        SiteMapNode nd = node;
+  //        while (nd != null) {
+  //          string catStr = nd["category"];
+  //          if (!string.IsNullOrEmpty(catStr)) {
+  //            category = (UniversalCategory)Enum.Parse(typeof(UniversalCategory), catStr, true);
+  //            break;
+  //          }
+  //          nd = nd.ParentNode;
+  //        }
+  //        if (category == null) category = UniversalCategory.no;
+  //      }
+  //      return (UniversalCategory)category;
+  //    }
+  //  }
+  //}
 
   [EnumDescrAttribute(typeof(BoxType), "TopTen=TopTen,IconTableSmall=IconTableSmall,IconTableLarge=IconTableLarge,SubTree=SubTree,CaseStudies=CaseStudies,Actions=Actions,Comments=Comments,News=News")]
   public enum BoxType {
@@ -492,79 +492,79 @@ namespace LMComLib.Cms {
     }
   }
 
-  [CmsPageAttribute(PageType.Control, "Seznam obecných položek box")]
-  public class UniversalItemBox : BoxData {
+  //[CmsPageAttribute(PageType.Control, "Seznam obecných položek box")]
+  //public class UniversalItemBox : BoxData {
 
-    BoxType? type;
-    [EnumAttribute(100, "Typ boxu", typeof(BoxType))]
-    public override BoxType? Type {
-      get { return type; }
-      set { type = value; }
-    }
+  //  BoxType? type;
+  //  [EnumAttribute(100, "Typ boxu", typeof(BoxType))]
+  //  public override BoxType? Type {
+  //    get { return type; }
+  //    set { type = value; }
+  //  }
 
-    [PointerAttributes(200, "Seznam odkazů", FilterType = PageFilter.Page, IncGlobal = false, Classes = new Type[] { typeof(UniversalItem) })]
-    public int[] items;
-    [XmlIgnore]
-    public CacheNode[] Items;
+  //  [PointerAttributes(200, "Seznam odkazů", FilterType = PageFilter.Page, IncGlobal = false, Classes = new Type[] { typeof(UniversalItem) })]
+  //  public int[] items;
+  //  [XmlIgnore]
+  //  public CacheNode[] Items;
 
-    public override object getDataSource() {
-      return UniversalDataItem.CreateDataSource(Items);
-    }
+  //  public override object getDataSource() {
+  //    return UniversalDataItem.CreateDataSource(Items);
+  //  }
 
-    [StringAttribute(210, "Text pro Více...", Type = StringType.SingleLine)]
-    public string MoreText;
+  //  [StringAttribute(210, "Text pro Více...", Type = StringType.SingleLine)]
+  //  public string MoreText;
 
-    [PointerAttribute(220, "Odkaz pro Více...", IncGlobal = false)]
-    public int? moreUrl;
-    [XmlIgnore]
-    public CacheNode MoreUrl;
+  //  [PointerAttribute(220, "Odkaz pro Více...", IncGlobal = false)]
+  //  public int? moreUrl;
+  //  [XmlIgnore]
+  //  public CacheNode MoreUrl;
 
-  }
+  //}
 
-  [CmsPageAttribute(PageType.Control, "Top 10 box")]
-  public class TopTenBox : BoxData {
+  //[CmsPageAttribute(PageType.Control, "Top 10 box")]
+  //public class TopTenBox : BoxData {
 
-    [XmlIgnore]
-    public override BoxType? Type {
-      get { return BoxType.TopTen; }
-      set { }
-    }
+  //  [XmlIgnore]
+  //  public override BoxType? Type {
+  //    get { return BoxType.TopTen; }
+  //    set { }
+  //  }
 
-    [PointerAttributes(200, "Seznam produktů", FilterType = PageFilter.Page, IncGlobal = false, Classes = new Type[] { typeof(Product) })]
-    public int[] products;
-    [XmlIgnore]
-    public CacheNode[] Products;
+  //  [PointerAttributes(200, "Seznam produktů", FilterType = PageFilter.Page, IncGlobal = false, Classes = new Type[] { typeof(Product) })]
+  //  public int[] products;
+  //  [XmlIgnore]
+  //  public CacheNode[] Products;
 
-    public override object getDataSource() {
-      return UniversalDataItem.CreateDataSource(Products);
-    }
-  }
+  //  public override object getDataSource() {
+  //    return UniversalDataItem.CreateDataSource(Products);
+  //  }
+  //}
 
-  [CmsPageAttribute(PageType.Control, "SubsiteMap box")]
-  public class SubsiteMapBox : BoxData {
+  //[CmsPageAttribute(PageType.Control, "SubsiteMap box")]
+  //public class SubsiteMapBox : BoxData {
 
-    [XmlIgnore]
-    public override BoxType? Type {
-      get { return BoxType.SubTree; }
-      set { }
-    }
+  //  [XmlIgnore]
+  //  public override BoxType? Type {
+  //    get { return BoxType.SubTree; }
+  //    set { }
+  //  }
 
-    [PointerAttribute(200, "Root", FilterType = PageFilter.Page)]
-    public int? root;
-    [XmlIgnore]
-    public CacheNode Root;
+  //  [PointerAttribute(200, "Root", FilterType = PageFilter.Page)]
+  //  public int? root;
+  //  [XmlIgnore]
+  //  public CacheNode Root;
 
-  }
+  //}
 
-  [CmsPageAttribute(PageType.MasterPage, "Rozvržení")]
-  public class Master : PageTemplate {
+  //[CmsPageAttribute(PageType.MasterPage, "Rozvržení")]
+  //public class Master : PageTemplate {
 
-    [PointerAttributes(110, "Seznam pravých boxů", FilterType = PageFilter.Page, IncGlobal = false, Classes = new Type[] { typeof(UniversalItemBox), typeof(TopTenBox), typeof(SubsiteMapBox) })]
-    public int[] rightBoxes;
-    [XmlIgnore]
-    public CacheNode[] RightBoxes;
+  //  [PointerAttributes(110, "Seznam pravých boxů", FilterType = PageFilter.Page, IncGlobal = false, Classes = new Type[] { typeof(UniversalItemBox), typeof(TopTenBox), typeof(SubsiteMapBox) })]
+  //  public int[] rightBoxes;
+  //  [XmlIgnore]
+  //  public CacheNode[] RightBoxes;
 
-  }
+  //}
 
   public abstract class LMPageTemplate : PageTemplate {
 
@@ -583,54 +583,54 @@ namespace LMComLib.Cms {
     public static string threeColumnAspx = null;
     public static string blankAspx = null;
 
-    public override string PageAspx() {
-      loadMasters();
-      if (this is HomePage)
-        return threeColumnAspx;
-      SiteMapNode nd = urlInfo.GetUrlInfo().Node;
-      while (true) {
-        string dbId = nd["dbId"];
-        if (string.IsNullOrEmpty(dbId)) break;
-        if (PageRanges.hasBlankPageMaster(int.Parse(dbId)))
-          return blankAspx;
-        nd = nd.ParentNode;
-        if (nd == null)
-          break;
-      }
-      return twoColumnAspx;
-      //return isHome() ? threeColumnAspx : twoColumnAspx;
-    }
+    //public override string PageAspx() {
+    //  loadMasters();
+    //  if (this is HomePage)
+    //    return threeColumnAspx;
+    //  SiteMapNode nd = urlInfo.GetUrlInfo().Node;
+    //  while (true) {
+    //    string dbId = nd["dbId"];
+    //    if (string.IsNullOrEmpty(dbId)) break;
+    //    if (PageRanges.hasBlankPageMaster(int.Parse(dbId)))
+    //      return blankAspx;
+    //    nd = nd.ParentNode;
+    //    if (nd == null)
+    //      break;
+    //  }
+    //  return twoColumnAspx;
+    //  //return isHome() ? threeColumnAspx : twoColumnAspx;
+    //}
 
     /*public virtual bool isHome() {
       return false;
     }*/
 
-    public static void Init() {
-      Template.InitTypes(typeof(Test), typeof(ImgTemplate), typeof(Product), typeof(UniversalItem), typeof(HelpItem),
-        typeof(TopTenBox), typeof(SubsiteMapBox), typeof(Master), typeof(HomePage), typeof(UniversalItemBox));
-    }
+    //public static void Init() {
+    //  Template.InitTypes(typeof(Test), typeof(ImgTemplate), typeof(Product), typeof(UniversalItem), typeof(HelpItem),
+    //    typeof(TopTenBox), typeof(SubsiteMapBox), typeof(Master), typeof(HomePage), typeof(UniversalItemBox));
+    //}
   }
 
-  [CmsPageAttribute(PageType.Page, "Hlavní stránka")]
-  public class HomePage : LMPageTemplate {
+  //[CmsPageAttribute(PageType.Page, "Hlavní stránka")]
+  //public class HomePage : LMPageTemplate {
 
-    /*public override bool isHome() {
-      return true;
-    }*/
+  //  /*public override bool isHome() {
+  //    return true;
+  //  }*/
 
-    [StringAttribute(195, "Body", Type = StringType.Html)]
-    public string Body;
+  //  [StringAttribute(195, "Body", Type = StringType.Html)]
+  //  public string Body;
 
-    [PointerAttribute(200, "Seznam levých boxů", FilterType = PageFilter.Page, IncGlobal = false, Classes = new Type[] { typeof(UniversalItemBox) })]
-    public int? news;
-    [XmlIgnore]
-    public CacheNode News;
+  //  [PointerAttribute(200, "Seznam levých boxů", FilterType = PageFilter.Page, IncGlobal = false, Classes = new Type[] { typeof(UniversalItemBox) })]
+  //  public int? news;
+  //  [XmlIgnore]
+  //  public CacheNode News;
 
-    [PointerAttributes(210, "Seznam středních boxů", FilterType = PageFilter.Page, IncGlobal = false, Classes = new Type[] { typeof(UniversalItemBox) })]
-    public int[] centerBoxes;
-    [XmlIgnore]
-    public CacheNode[] CenterBoxes;
+  //  [PointerAttributes(210, "Seznam středních boxů", FilterType = PageFilter.Page, IncGlobal = false, Classes = new Type[] { typeof(UniversalItemBox) })]
+  //  public int[] centerBoxes;
+  //  [XmlIgnore]
+  //  public CacheNode[] CenterBoxes;
 
-  }
+  //}
 
 }
