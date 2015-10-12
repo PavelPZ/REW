@@ -292,8 +292,8 @@ namespace CubesDeployment {
 
               //Instructions.run(); 
               //aktualizace cviceni a instrukci z old EA
-              CourseMeta.Lib.init(log1, @"d:\lmcom\", false); Instructions.run();
-              Instructions.run(); CourseMeta.Lib.dataFromEA(CourseMeta.Lib.publishers, CourseMeta.oldeaDataType.lmdata, log1);
+              //CourseMeta.Lib.init(log1, @"d:\lmcom\", false); Instructions.run();
+              //Instructions.run(); CourseMeta.Lib.dataFromEA(CourseMeta.Lib.publishers, CourseMeta.oldeaDataType.lmdata, log1);
 
               saveLog(log1, "FromOldEA");
 

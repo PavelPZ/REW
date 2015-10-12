@@ -383,7 +383,6 @@
     </Compile>
     <Compile Include="Runtime\Admin.cs" />
     <Compile Include="Design\Bundle.cs" />
-    <Compile Include="Design\Deployment.cs" />
     <Compile Include="Design\ImportRwBooks.cs" />
     <Compile Include="Design\Lib.cs" />
     <Compile Include="Design\Noesis.cs" />

@@ -1760,10 +1760,11 @@ namespace LMComLib {
 
     static string getResxValue(string id, XElement res, string fn) {
       try {
-        var cfg = NewEATradosLib.HackEx();
-        if (cfg != null && cfg.courseId != CourseIds.EnglishE) {
-          return NewEATradosLib.onGetResxValue(id, fn);
-        }
+        //LM16
+        //var cfg = NewEATradosLib.HackEx();
+        //if (cfg != null && cfg.courseId != CourseIds.EnglishE) {
+        //  return NewEATradosLib.onGetResxValue(id, fn);
+        //}
         return res.Descendants(empty + "value").Where(el => (string)el.Parent.Attribute("name") == id).Select(e => e.Value).Single();
       } catch {
         return "*** getResxValue trans to do ***";
@@ -1817,10 +1818,11 @@ namespace LMComLib {
       //string dir = Path.GetDirectoryName(fn);
       //string name = Path.GetFileName(fn).Replace(".aspx.lmdata", null);
       string outFn = resxFileName(resxFileName(virtualFn), lang); // dir + @"\App_LocalResources\" + name + "." + lang.ToString().Replace('_', '-') + ".resx";
-      var cfg = NewEATradosLib.HackEx();
-      if (cfg != null && cfg.courseId != CourseIds.EnglishE && !File.Exists(outFn) && lang == Langs.cs_cz) {
-        outFn = outFn.Replace("cs-cz.", "");
-      }
+      //LM16
+      //var cfg = NewEATradosLib.HackEx();
+      //if (cfg != null && cfg.courseId != CourseIds.EnglishE && !File.Exists(outFn) && lang == Langs.cs_cz) {
+      //  outFn = outFn.Replace("cs-cz.", "");
+      //}
 
       if (File.Exists(outFn)) {
         //setUniqueIds(root); //jednoznacne ocislovani uzlu (je jedna ciselna rada pro kazdy tagName) 

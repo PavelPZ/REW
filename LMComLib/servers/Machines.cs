@@ -320,57 +320,64 @@ namespace LMComLib {
       get { return !data; }
     }
 
-    public static bool doEaCache(HttpContext ctx) {
-      if (!Machines.doCache && !isBuildEACacheEx(ctx)) return false;
-      urlInfo ui = urlInfo.GetUrlInfo();
-      if (ui == null) return false;
-      return ui.EACourse != CourseIds.no;
-    }
+    //public static bool doEaCache(HttpContext ctx) {
+    //  if (!Machines.doCache && !isBuildEACacheEx(ctx)) return false;
+    //  urlInfo ui = urlInfo.GetUrlInfo();
+    //  if (ui == null) return false;
+    //  return ui.EACourse != CourseIds.no;
+    //}
 
-    public static bool isBuildEACacheEx(HttpContext ctx) {
-      //return true;
-      return ctx != null && ctx.Request.Headers["User-Agent"] == "LANGMasterCacheBuild";
-    }
+    //public static bool isBuildEACacheEx(HttpContext ctx) {
+    //  //return true;
+    //  return ctx != null && ctx.Request.Headers["User-Agent"] == "LANGMasterCacheBuild";
+    //}
 
-    public static bool isBuildEACache {
-      get { return isBuildEACacheEx(HttpContext.Current); }
-    }
+    //public static bool isBuildEACache {
+    //  get { return isBuildEACacheEx(HttpContext.Current); }
+    //}
+
+    //public static bool isBuildEACache_BuildCD_Crawler {
+    //  get {
+    //    return isBuildEACache_BuildCD_CrawlerLow(HttpContext.Current);
+    //  }
+    //}
+
+    //public static bool isBuildEACache_BuildCD_CrawlerLow(HttpContext ctx) {
+    //  if (ctx == null) return false;
+    //  return isBuildEACacheEx(ctx) || isCrawlerEx(ctx) || isEABuildCDEx(ctx);
+    //}
+
+    //public static bool isEABuildCDEx(HttpContext ctx) {
+    //  return !string.IsNullOrEmpty(ctx.Request.Headers["Deploy-Config"]); //z EADeploy.pas
+    //}
+
+    //public static bool isEABuildCD {
+    //  get { return isEABuildCDEx(HttpContext.Current) && !ConfigLow.isLMComCacheDeployment(); }
+    //}
+
+    ////static Regex agentEx = null;
+    //public static bool isCrawlerEx(HttpContext ctx) {
+    //  string agent = ctx.Request.UserAgent;
+    //  if (string.IsNullOrEmpty(agent)) return false;
+    //  return Filter.isMatch(ctx, "crawlers", agent);
+    //  /*if (agentEx == null) {
+    //    string crvs = ConfigurationManager.AppSettings["Machines.Crawlers"];
+    //    agentEx = new Regex(crvs, RegexOptions.Compiled);
+    //  }
+    //  bool res = agentEx.IsMatch(agent);
+    //  return res;*/
+    //}
+
+    //public static bool isCrawler {
+    //  get { return isCrawlerEx(HttpContext.Current); }
+    //}
 
     public static bool isBuildEACache_BuildCD_Crawler {
       get {
-        return isBuildEACache_BuildCD_CrawlerLow(HttpContext.Current);
+        return false;
       }
     }
 
-    public static bool isBuildEACache_BuildCD_CrawlerLow(HttpContext ctx) {
-      if (ctx == null) return false;
-      return isBuildEACacheEx(ctx) || isCrawlerEx(ctx) || isEABuildCDEx(ctx);
-    }
-
-    public static bool isEABuildCDEx(HttpContext ctx) {
-      return !string.IsNullOrEmpty(ctx.Request.Headers["Deploy-Config"]); //z EADeploy.pas
-    }
-
-    public static bool isEABuildCD {
-      get { return isEABuildCDEx(HttpContext.Current) && !ConfigLow.isLMComCacheDeployment(); }
-    }
-
-    //static Regex agentEx = null;
-    public static bool isCrawlerEx(HttpContext ctx) {
-      string agent = ctx.Request.UserAgent;
-      if (string.IsNullOrEmpty(agent)) return false;
-      return Filter.isMatch(ctx, "crawlers", agent);
-      /*if (agentEx == null) {
-        string crvs = ConfigurationManager.AppSettings["Machines.Crawlers"];
-        agentEx = new Regex(crvs, RegexOptions.Compiled);
-      }
-      bool res = agentEx.IsMatch(agent);
-      return res;*/
-    }
-
-    public static bool isCrawler {
-      get { return isCrawlerEx(HttpContext.Current); }
-    }
 
     static string adminIP = ConfigurationManager.AppSettings["Machines.AdminIP"];
 

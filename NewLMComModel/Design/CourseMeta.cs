@@ -573,8 +573,10 @@ namespace CourseMeta {
 
   public static class Lib {
 
+    public static JsonSerializerSettings jsonSet = new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore };
+
     public static string serializeObjectToJS(object obj) {
-      return JsonConvert.SerializeObject(obj, Formatting.Indented, EADeployLib.jsonSet);
+      return JsonConvert.SerializeObject(obj, Formatting.Indented, jsonSet);
     }
 
     //static lib() {

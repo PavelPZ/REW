@@ -264,7 +264,7 @@ namespace LMComLib {
     }
 
     public static LMCookie saveCookie(HttpContext ctx) {
-      if (Machines.isBuildEACache_BuildCD_CrawlerLow(ctx)) return null;
+      //if (Machines.isBuildEACache_BuildCD_CrawlerLow(ctx)) return null;
       LMCookie cook = GetCookieLow(ctx); if (cook == null) return null;
       cook.saveCookie(ctx);
       return cook;
@@ -369,7 +369,7 @@ namespace LMComLib {
     }
 
     static void checkCookie(HttpContext ctx, LMCookie cook) {
-      if (!string.IsNullOrEmpty(cook.EMail) && Machines.isCrawlerEx(ctx)) {
+      if (!string.IsNullOrEmpty(cook.EMail)) { // && Machines.isCrawlerEx(ctx)) {
         Emailer em = new Emailer();
         em.From = "error@langmaster.cz";
         em.AddTo("pjanecek@langmaster.cz");

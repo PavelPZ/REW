@@ -72,7 +72,6 @@
     <Compile Include="Course\SchemaDoc.cs" />
     <Compile Include="Model\Exercises.cs" />
     <Compile Include="Model\LicenceConsts.cs" />
-    <Compile Include="Model\MembershipConsts.cs" />
     <Compile Include="Model\Objects.cs" />
     <Compile Include="Model\SchoolsRewModel.cs" />
     <Compile Include="Model\Scorm.cs" />
