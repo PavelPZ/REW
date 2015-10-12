@@ -182,13 +182,13 @@ namespace LibDownload {
 
     static bool modify(buf b1, buf b2, SubDomains subSite) { //modifikace buf1 a zacatku buf2
       bool res = false;
-      if (b2 != null) Array.Copy(b2.data, 0, b1.data, bufLen, signLen); //na konec b1 dej zacatek b2
-      int idx = IndexOfBytes(b1.data, sign, 0, b1.data.Length);
-      if (res = idx >= 0) { //nahrada
-        byte[] newDomain = Encoding.UTF8.GetBytes(SubDomain.subDomainToHost(subSite) + endDomain); //nova data
-        Array.Copy(newDomain, 0, b1.data, idx + sign.Length + 1/*preskoc guid a prvni apostrof*/, newDomain.Length); //copy za apostrof do b1
-      }
-      if (b2 != null) if (res) Array.Copy(b1.data, bufLen, b2.data, 0, signLen); //zmenena data do b2
+      //if (b2 != null) Array.Copy(b2.data, 0, b1.data, bufLen, signLen); //na konec b1 dej zacatek b2
+      //int idx = IndexOfBytes(b1.data, sign, 0, b1.data.Length);
+      //if (res = idx >= 0) { //nahrada
+      //  byte[] newDomain = Encoding.UTF8.GetBytes(SubDomain.subDomainToHost(subSite) + endDomain); //nova data
+      //  Array.Copy(newDomain, 0, b1.data, idx + sign.Length + 1/*preskoc guid a prvni apostrof*/, newDomain.Length); //copy za apostrof do b1
+      //}
+      //if (b2 != null) if (res) Array.Copy(b1.data, bufLen, b2.data, 0, signLen); //zmenena data do b2
       return res;
     }
 

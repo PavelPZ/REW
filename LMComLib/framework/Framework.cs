@@ -414,7 +414,7 @@ namespace LMComLib {
       : base(req.Url.AbsolutePath, req.Url.Query) {
       HttpContext ctx = HttpContext.Current;
       ctx.Items[uiKey] = this;
-      SubSite = SiteId == Domains.com ? SubDomain.hostToComSubdomain(req.Url.Host) : SubDomains.no;
+      //SubSite = SiteId == Domains.com ? SubDomain.hostToComSubdomain(req.Url.Host) : SubDomains.no;
       if (AppId == LMApps.ea) return;
       if ((this.Type == SiteMapNodeType.aspx || this.Type == SiteMapNodeType.lmp) && this.LangId == Langs.lang)
         throw new EReplaceLang("Replace /LANG/ to /cs-cz/ in browser URL");
@@ -559,7 +559,7 @@ namespace LMComLib {
       return langs.Select(l => new SeeAlsoInfo() {
         LineClass = ctrl == null ? null : "comp-mod-icon-" + CommonLib.LangToLineId(l),
         //IconUrl = ctrl==null ? null : ctrl.ResolveClientUrl("~/flags/small_bitmaps/" + CommonLib.LangToLineId(l).ToString() + ".png"),
-        Url = urlInfo.getUrl(SiteId, SubDomainInfo.LANGMasterSubDomain(l), l.ToString().Replace('_', '-'), page) + urlPostfix,
+        //Url = urlInfo.getUrl(SiteId, SubDomainInfo.LANGMasterSubDomain(l), l.ToString().Replace('_', '-'), page) + urlPostfix,
         Title = CommonLib.langTitle[l]
       }).OrderBy(l => l.Title);
     }
@@ -614,17 +614,18 @@ namespace LMComLib {
     }
 
     public static string comBasicPath(SubDomains subSite, LMApps appId) {
-      switch (appId) {
-        case LMApps.commerce:
-        case LMApps.web:
-          return SubDomain.subdomainToUrl(subSite) + "/lmcom/";
-        case LMApps.ea:
-        //return SubDomain.subdomainToUrl(SubDomains.com) + "/";
-        case LMApps.no:
-          return SubDomain.subdomainToUrl(subSite) + "/";
-        default:
-          throw new NotImplementedException();
-      }
+      return null;
+      //switch (appId) {
+      //  case LMApps.commerce:
+      //  case LMApps.web:
+      //    return SubDomain.subdomainToUrl(subSite) + "/lmcom/";
+      //  case LMApps.ea:
+      //  //return SubDomain.subdomainToUrl(SubDomains.com) + "/";
+      //  case LMApps.no:
+      //    return SubDomain.subdomainToUrl(subSite) + "/";
+      //  default:
+      //    throw new NotImplementedException();
+      //}
     }
 
     public static string getUrl(Domains site, SubDomains subSite, LMApps appId, string lang, string path, bool virtualRootAdded, bool isDefault) {
@@ -748,7 +749,7 @@ namespace LMComLib {
         case Domains.el:
         case Domains.sz:
         case Domains.cz: return price.ToString("C", Currency.kcCulture);
-        case Domains.com: return priceText(SubDomain.subDomainToCurr(subsite), price);
+        //case Domains.com: return priceText(SubDomain.subDomainToCurr(subsite), price);
         default: throw new Exception("Missing code here");
       }
     }
