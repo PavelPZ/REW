@@ -220,12 +220,12 @@ namespace LMComLib.Cms {
       return Order.RoundCurrency(((Currency)Discount).PriceTax(Order.ActTaxPercent, SubDomains.no, ProductLicenceType.box));
     }
 
-    public UniversalDataItem getData() {
-      UniversalDataItem res = new UniversalDataItem(this, Perex, Info.AbsVisibleUrl(), middleImg());
-      res.price = ProductPriceTax();
-      res.pageOnly = pageOnly();
-      return res;
-    }
+    //public UniversalDataItem getData() {
+    //  UniversalDataItem res = new UniversalDataItem(this, Perex, Info.AbsVisibleUrl(), middleImg());
+    //  res.price = ProductPriceTax();
+    //  res.pageOnly = pageOnly();
+    //  return res;
+    //}
 
     /*Properties, "zdedene" od predchudcu
     string Title; //Jmeno produktu

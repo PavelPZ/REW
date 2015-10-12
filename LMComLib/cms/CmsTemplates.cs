@@ -799,82 +799,82 @@ namespace LMComLib.Cms {
   //  public CacheNode[] Ptrs;
   //}
 
-  public class UniversalDataItem {
-    public UniversalDataItem(Template temp, string Perex, string RelativeUrl, CacheNode nd)
-      : this(temp, Perex, RelativeUrl, nd == null ? null : nd.Info) { }
+  //public class UniversalDataItem {
+  //  public UniversalDataItem(Template temp, string Perex, string RelativeUrl, CacheNode nd)
+  //    : this(temp, Perex, RelativeUrl, nd == null ? null : nd.Info) { }
 
-    public UniversalDataItem(Template temp, string Perex, string RelativeUrl, urlInfoLow info) {
-      if (temp is Product) {
-        string tit = ((Product)temp).ShortTitle;
-        this.title = string.IsNullOrEmpty(tit) ? temp.Title : tit;
-      } else
-        this.title = temp.Title;
-      _dbId = temp.Info.dbId;
-      this.perex = Template.getHtml(Perex);
-      this.relativeUrl = RelativeUrl;
-      this.date = DateTime.MinValue;
-      this.subtitle = "";
-      if (info != null) {
-        this.relativeIconUrl = info.AbsUrl();
-        this.width = info.imgWidth();
-        this.height = info.imgHeight();
-      }
-    }
-    //public static List<UniversalDataItem> CreateDataSource(IEnumerable nodes) {
-    //  if (nodes == null) return null;
-    //  List<UniversalDataItem> res = new List<UniversalDataItem>();
-    //  foreach (object obj in nodes) {
-    //    Template temp = obj is CacheNode ? ((CacheNode)obj).getTemplate() : CacheItems.GetNode((SiteMapNode)obj).getTemplate();
-    //    if (temp is Product)
-    //      res.Add(((Product)temp).getData());
-    //    else if (temp is UniversalItem)
-    //      res.Add(((UniversalItem)temp).getData());
-    //    if (temp is ImgTemplate)
-    //      res.Add(((ImgTemplate)temp).getData());
-    //  }
-    //  return res;
-    //}
-    string title;
-    public string Title {
-      get { return title; }
-    }
-    internal string subtitle;
-    public string SubTitle {
-      get { return subtitle; }
-    }
-    string perex;
-    public string Perex {
-      get { return perex; }
-    }
-    string relativeUrl;
-    public string RelativeUrl {
-      get { return relativeUrl; }
-    }
-    string relativeIconUrl;
-    public string RelativeIconUrl {
-      get { return relativeIconUrl; }
-    }
-    internal DateTime date;
-    public DateTime Date {
-      get { return date; }
-    }
-    int _dbId;
-    public int dbId {
-      get { return _dbId; }
-    }
-    internal int width;
-    public int Width {
-      get { return width; }
-    }
-    internal int height;
-    public int Height {
-      get { return height; }
-    }
-    internal double price;
-    public double Price {
-      get { return price; }
-    }
-    public bool pageOnly { get; set; }
-  }
+  //  public UniversalDataItem(Template temp, string Perex, string RelativeUrl, urlInfoLow info) {
+  //    if (temp is Product) {
+  //      string tit = ((Product)temp).ShortTitle;
+  //      this.title = string.IsNullOrEmpty(tit) ? temp.Title : tit;
+  //    } else
+  //      this.title = temp.Title;
+  //    _dbId = temp.Info.dbId;
+  //    this.perex = Template.getHtml(Perex);
+  //    this.relativeUrl = RelativeUrl;
+  //    this.date = DateTime.MinValue;
+  //    this.subtitle = "";
+  //    if (info != null) {
+  //      this.relativeIconUrl = info.AbsUrl();
+  //      this.width = info.imgWidth();
+  //      this.height = info.imgHeight();
+  //    }
+  //  }
+  //  //public static List<UniversalDataItem> CreateDataSource(IEnumerable nodes) {
+  //  //  if (nodes == null) return null;
+  //  //  List<UniversalDataItem> res = new List<UniversalDataItem>();
+  //  //  foreach (object obj in nodes) {
+  //  //    Template temp = obj is CacheNode ? ((CacheNode)obj).getTemplate() : CacheItems.GetNode((SiteMapNode)obj).getTemplate();
+  //  //    if (temp is Product)
+  //  //      res.Add(((Product)temp).getData());
+  //  //    else if (temp is UniversalItem)
+  //  //      res.Add(((UniversalItem)temp).getData());
+  //  //    if (temp is ImgTemplate)
+  //  //      res.Add(((ImgTemplate)temp).getData());
+  //  //  }
+  //  //  return res;
+  //  //}
+  //  string title;
+  //  public string Title {
+  //    get { return title; }
+  //  }
+  //  internal string subtitle;
+  //  public string SubTitle {
+  //    get { return subtitle; }
+  //  }
+  //  string perex;
+  //  public string Perex {
+  //    get { return perex; }
+  //  }
+  //  string relativeUrl;
+  //  public string RelativeUrl {
+  //    get { return relativeUrl; }
+  //  }
+  //  string relativeIconUrl;
+  //  public string RelativeIconUrl {
+  //    get { return relativeIconUrl; }
+  //  }
+  //  internal DateTime date;
+  //  public DateTime Date {
+  //    get { return date; }
+  //  }
+  //  int _dbId;
+  //  public int dbId {
+  //    get { return _dbId; }
+  //  }
+  //  internal int width;
+  //  public int Width {
+  //    get { return width; }
+  //  }
+  //  internal int height;
+  //  public int Height {
+  //    get { return height; }
+  //  }
+  //  internal double price;
+  //  public double Price {
+  //    get { return price; }
+  //  }
+  //  public bool pageOnly { get; set; }
+  //}
 
 }
