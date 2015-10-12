@@ -425,29 +425,29 @@ namespace LMComLib {
     public CourseIds[] Products;
     public string[] Langs;
     public LMSType[] Lms;
-    public void Finish(SiteInfos sites) {
-      if (Steps != null) return;
-      foreach (SiteInfo si in sites.Items) {
-        if (Sites != null && Array.IndexOf<Domains>(Sites, si.Id) < 0) continue;
-        if (si.Langs != null) foreach (string lang in si.Langs) {
-            if (Langs != null && Array.IndexOf<string>(Langs, lang) < 0) continue;
-            if (si.Products != null) foreach (CourseIds crs in si.Products) {
-                if (Products != null && Array.IndexOf<CourseIds>(Products, crs) < 0) continue;
-                if (si.Lms != null) foreach (LMSType lms in si.Lms) {
-                    if (Lms != null && Array.IndexOf<LMSType>(Lms, lms) < 0) continue;
-                    ConfigLow cfg = null;
-                    switch (lms) {
-                      case LMSType.NewEE: cfg = new ConfigCourse(si.Id, lang, crs); break;
-                      case LMSType.Moodle: cfg = new ConfigLmsCourse(si.Id, lang, crs, lms); break;
-                      default: continue;
-                    }
-                    if (Steps == null) Steps = new ConfigLow[1]; else Array.Resize<ConfigLow>(ref Steps, Steps.Length + 1);
-                    Steps[Steps.Length - 1] = cfg;
-                  }
-              }
-          }
-      }
-    }
+    //public void Finish(SiteInfos sites) {
+    //  if (Steps != null) return;
+    //  foreach (SiteInfo si in sites.Items) {
+    //    if (Sites != null && Array.IndexOf<Domains>(Sites, si.Id) < 0) continue;
+    //    if (si.Langs != null) foreach (string lang in si.Langs) {
+    //        if (Langs != null && Array.IndexOf<string>(Langs, lang) < 0) continue;
+    //        if (si.Products != null) foreach (CourseIds crs in si.Products) {
+    //            if (Products != null && Array.IndexOf<CourseIds>(Products, crs) < 0) continue;
+    //            if (si.Lms != null) foreach (LMSType lms in si.Lms) {
+    //                if (Lms != null && Array.IndexOf<LMSType>(Lms, lms) < 0) continue;
+    //                ConfigLow cfg = null;
+    //                switch (lms) {
+    //                  case LMSType.NewEE: cfg = new ConfigCourse(si.Id, lang, crs); break;
+    //                  case LMSType.Moodle: cfg = new ConfigLmsCourse(si.Id, lang, crs, lms); break;
+    //                  default: continue;
+    //                }
+    //                if (Steps == null) Steps = new ConfigLow[1]; else Array.Resize<ConfigLow>(ref Steps, Steps.Length + 1);
+    //                Steps[Steps.Length - 1] = cfg;
+    //              }
+    //          }
+    //      }
+    //  }
+    //}
     [XmlArrayItem(typeof(ConfigModule))]
     [XmlArrayItem(typeof(ConfigTitle))]
     [XmlArrayItem(typeof(ConfigTitles))]

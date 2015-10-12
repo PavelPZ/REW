@@ -380,25 +380,25 @@ namespace LMNetLib {
     #endregion
   }
 
-  public class TitleUrl {
-    public TitleUrl() { }
-    public TitleUrl(string title, string url, string target) {
-      Title = title; Url = url; Target = target;
-    }
-    public TitleUrl(string title, string url) {
-      Title = title; Url = url; Target = "_top";
-    }
-    public TitleUrl(SiteMapNode nd) {
-      Title = nd.Title; Url = LMComLib.urlInfo.GetUrl(nd); Target = "_top";
-    }
-    public TitleUrl(string title, string url, bool b) {
-      Title = title; Url = LMComLib.urlInfo.GetUrl(SiteMap.Provider.FindSiteMapNode(url)); Target = "_top";
-    }
-    public TitleUrl(string url) : this(SiteMap.Provider.FindSiteMapNode(url)) { }
-    public string Title { get; set; }
-    public string Url { get; set; }
-    public string Target;
-  }
+  //public class TitleUrl {
+  //  public TitleUrl() { }
+  //  public TitleUrl(string title, string url, string target) {
+  //    Title = title; Url = url; Target = target;
+  //  }
+  //  public TitleUrl(string title, string url) {
+  //    Title = title; Url = url; Target = "_top";
+  //  }
+  //  public TitleUrl(SiteMapNode nd) {
+  //    Title = nd.Title; Url = LMComLib.urlInfo.GetUrl(nd); Target = "_top";
+  //  }
+  //  public TitleUrl(string title, string url, bool b) {
+  //    Title = title; Url = LMComLib.urlInfo.GetUrl(SiteMap.Provider.FindSiteMapNode(url)); Target = "_top";
+  //  }
+  //  public TitleUrl(string url) : this(SiteMap.Provider.FindSiteMapNode(url)) { }
+  //  public string Title { get; set; }
+  //  public string Url { get; set; }
+  //  public string Target;
+  //}
 
   /*public class MoodleCourseRoot : MoodleCourseItem {
     public MoodleCourseRoot() { }
