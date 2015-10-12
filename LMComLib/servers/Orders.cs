@@ -1040,22 +1040,22 @@ namespace LMComLib {
       return SaveLow(ctx, oldId);
     }*/
 
-    public void OnStorno(OrderDBContext ctx) {
-      ctx.db.ExecuteCommand("DELETE FROM Licencors WHERE OrderId=" + ctx.OrderId);
-      ctx.db.ExecuteCommand("DELETE FROM ProductInfo WHERE OrderId=" + ctx.OrderId);
-      //archivace storno faktury
-      XInvoice inv = XmlUtils.StringToObject<XInvoice>(ctx.OrderDb.AdviceNew);
-      byte[] data = ProsperLib.printInvoiceNew(inv).ToArray();
-      Intranet.archiveInvoice(inv, data, true);
-      /*using (System.Data.SqlClient.SqlConnection con = new System.Data.SqlClient.SqlConnection(Machines.LMDataConnectionString())) {
-        con.Open();
-        System.Data.SqlClient.SqlCommand del = new System.Data.SqlClient.SqlCommand("DELETE FROM Licencors WHERE OrderId=" + ctx.Order.Id.ToString(), con);
-        del.ExecuteNonQuery();
-        del = new System.Data.SqlClient.SqlCommand("DELETE FROM ProductInfo WHERE OrderId=" + ctx.Order.Id.ToString(), con);
-        del.ExecuteNonQuery();
-        con.Close();
-      }*/
-    }
+    //public void OnStorno(OrderDBContext ctx) {
+    //  ctx.db.ExecuteCommand("DELETE FROM Licencors WHERE OrderId=" + ctx.OrderId);
+    //  ctx.db.ExecuteCommand("DELETE FROM ProductInfo WHERE OrderId=" + ctx.OrderId);
+    //  //archivace storno faktury
+    //  XInvoice inv = XmlUtils.StringToObject<XInvoice>(ctx.OrderDb.AdviceNew);
+    //  byte[] data = ProsperLib.printInvoiceNew(inv).ToArray();
+    //  Intranet.archiveInvoice(inv, data, true);
+    //  /*using (System.Data.SqlClient.SqlConnection con = new System.Data.SqlClient.SqlConnection(Machines.LMDataConnectionString())) {
+    //    con.Open();
+    //    System.Data.SqlClient.SqlCommand del = new System.Data.SqlClient.SqlCommand("DELETE FROM Licencors WHERE OrderId=" + ctx.Order.Id.ToString(), con);
+    //    del.ExecuteNonQuery();
+    //    del = new System.Data.SqlClient.SqlCommand("DELETE FROM ProductInfo WHERE OrderId=" + ctx.Order.Id.ToString(), con);
+    //    del.ExecuteNonQuery();
+    //    con.Close();
+    //  }*/
+    //}
 
     public ProfileData Profile;
     /// <summary>

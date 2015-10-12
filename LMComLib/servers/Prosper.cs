@@ -22,14 +22,14 @@ using LMWeb;
 
 namespace LMComLib {
 
-  public class VypisItem {
-    public DateTime Date { get; set; }
-    public int OrderId { get; set; }
-    public double Amount { get; set; }
-    public Intranet.PaymentCheckResult PairResult { get; set; }
-    public Exception Error { get; set; }
-    public string ErrorStr { get { return LowUtils.ExceptionToString(Error, true, true); } }
-  }
+  //public class VypisItem {
+  //  public DateTime Date { get; set; }
+  //  public int OrderId { get; set; }
+  //  public double Amount { get; set; }
+  //  public Intranet.PaymentCheckResult PairResult { get; set; }
+  //  public Exception Error { get; set; }
+  //  public string ErrorStr { get { return LowUtils.ExceptionToString(Error, true, true); } }
+  //}
 
   public class XCustommer {
     public XCustommer(ProfileData profile) {
