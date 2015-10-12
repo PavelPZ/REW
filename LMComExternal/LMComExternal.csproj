@@ -102,56 +102,6 @@
     <Compile Include="LinqKit\Extensions.cs" />
     <Compile Include="LinqKit\Linq.cs" />
     <Compile Include="LinqKit\PredicateBuilder.cs" />
-    <Compile Include="XmlRpc\GuidEx.cs" />
-    <Compile Include="XmlRpc\IHttpRequest.cs" />
-    <Compile Include="XmlRpc\IHttpRequestHandler.cs" />
-    <Compile Include="XmlRpc\IHttpResponse.cs" />
-    <Compile Include="XmlRpc\IXmlRpcProxy.cs" />
-    <Compile Include="XmlRpc\RequestResponseLogger.cs" />
-    <Compile Include="XmlRpc\Tracer.cs" />
-    <Compile Include="XmlRpc\util.cs" />
-    <Compile Include="XmlRpc\XmlRpcAsyncResult.cs" />
-    <Compile Include="XmlRpc\XmlRpcBeginAttribute.cs" />
-    <Compile Include="XmlRpc\XmlRpcBoolean.cs" />
-    <Compile Include="XmlRpc\XmlRpcClientFormatterSink.cs" />
-    <Compile Include="XmlRpc\XmlRpcClientFormatterSinkProvider.cs" />
-    <Compile Include="XmlRpc\XmlRpcClientProtocol.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="XmlRpc\XmlRpcDateTime.cs" />
-    <Compile Include="XmlRpc\XmlRpcDocWriter.cs" />
-    <Compile Include="XmlRpc\XmlRpcDouble.cs" />
-    <Compile Include="XmlRpc\XmlRpcEndAttribute.cs" />
-    <Compile Include="XmlRpc\XmlRpcException.cs" />
-    <Compile Include="XmlRpc\XmlRpcFaultException.cs" />
-    <Compile Include="XmlRpc\XmlRpcHttpRequest.cs" />
-    <Compile Include="XmlRpc\XmlRpcHttpResponse.cs" />
-    <Compile Include="XmlRpc\XmlRpcHttpServerProtocol.cs" />
-    <Compile Include="XmlRpc\XmlRpcInt.cs" />
-    <Compile Include="XmlRpc\XmlRpcLogger.cs" />
-    <Compile Include="XmlRpc\XmlRpcMemberAttribute.cs" />
-    <Compile Include="XmlRpc\XmlRpcMethodAttribute.cs" />
-    <Compile Include="XmlRpc\XmlRpcMethodInfo.cs" />
-    <Compile Include="XmlRpc\XmlRpcMissingMappingAttribute.cs" />
-    <Compile Include="XmlRpc\XmlRpcNonStandard.cs" />
-    <Compile Include="XmlRpc\XmlRpcParameterAttribute.cs" />
-    <Compile Include="XmlRpc\XmlRpcParameterInfo.cs" />
-    <Compile Include="XmlRpc\XmlRpcProxyCodeGen.cs" />
-    <Compile Include="XmlRpc\XmlRpcProxyGen.cs" />
-    <Compile Include="XmlRpc\XmlRpcRequest.cs" />
-    <Compile Include="XmlRpc\XmlRpcRequestEventArgs.cs" />
-    <Compile Include="XmlRpc\XmlRpcResponse.cs" />
-    <Compile Include="XmlRpc\XmlRpcResponseEventArgs.cs" />
-    <Compile Include="XmlRpc\XmlRpcReturnValueAttribute.cs" />
-    <Compile Include="XmlRpc\XmlRpcSerializer.cs" />
-    <Compile Include="XmlRpc\XmlRpcServerFormatterSink.cs" />
-    <Compile Include="XmlRpc\XmlRpcServerFormatterSinkProvider.cs" />
-    <Compile Include="XmlRpc\XmlRpcServerProtocol.cs" />
-    <Compile Include="XmlRpc\XmlRpcService.cs" />
-    <Compile Include="XmlRpc\XmlRpcServiceAttribute.cs" />
-    <Compile Include="XmlRpc\XmlRpcServiceInfo.cs" />
-    <Compile Include="XmlRpc\XmlRpcStruct.cs" />
-    <Compile Include="XmlRpc\XmlRpcUrlAttribute.cs" />
     <Compile Include="ZLib\Adler32.cs" />
     <Compile Include="ZLib\BZip2.cs" />
     <Compile Include="ZLib\BZip2Constants.cs" />
@@ -243,9 +193,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Markdown\" />
-    <Folder Include="MVVMLight\" />
-    <Folder Include="PayU\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
