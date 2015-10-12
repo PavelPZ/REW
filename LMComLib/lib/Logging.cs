@@ -162,11 +162,11 @@ namespace LMComLib {
     }
   }
 
-  public class DownloadMoodleEvent : LMEvent {
-    public DownloadMoodleEvent(SL.Licence lic)
-      : base(ZipWrapper.SerializeToString(lic), null, 0, 0) {
-    }
-  }
+  //public class DownloadMoodleEvent : LMEvent {
+  //  public DownloadMoodleEvent(SL.Licence lic)
+  //    : base(ZipWrapper.SerializeToString(lic), null, 0, 0) {
+  //  }
+  //}
 
   public class PayPalEvent : LMEvent {
     public const int Completed = WebEventCodes.WebExtendedBase + 1;
@@ -406,8 +406,8 @@ namespace LMComLib {
         log.Type = (short)EventCategory.SeznamRPC;
       else if (ev is DownloadEvent)
         log.Type = (short)EventCategory.DownloadMP3;
-      else if (ev is DownloadMoodleEvent)
-        log.Type = (short)EventCategory.DownloadMoodle;
+      //else if (ev is DownloadMoodleEvent)
+      //  log.Type = (short)EventCategory.DownloadMoodle;
       else if (ev is DebugEvent)
         log.Type = (short)EventCategory.debug;
       //else if (ev is PayPalEvent)
