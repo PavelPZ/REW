@@ -317,7 +317,6 @@ namespace LMComLib {
         //foreach (string s in new string[] { "/dbimg.aspx?lang", "_vti_", "msoffice/cltreq.asp", "/news/images/bg01.gif", "_vpi.xml", "wp-rss"})
         //if (inf.RequestUrl.ToLower().IndexOf(s) >= 0) return;
       }
-      Emailer em = new Emailer();
       string err = null;
       if (HttpContext.Current != null) {
         HttpContext ctx = HttpContext.Current;
@@ -336,12 +335,12 @@ namespace LMComLib {
           err += "UserId=" + cook.id.ToString() + "\n";
       }
       err += eventRaised.ToString();
+      Emailer em = new Emailer(null, "error@langmaster.cz", eventRaised.GetType().Name, err.Replace("\n", "<br/>"));
       //if (err.ToLower().IndexOf("http://vyuka.lide.cz/webresource.axd") > 0) return;
-      em.HTML = err.Replace("\n", "<br/>");
-      em.Subject = eventRaised.GetType().Name;
-      em.From = "error@langmaster.cz";
-      foreach (string mail in mailsTo)
-        em.AddTo(mail);
+      //em.HTML = err.Replace("\n", "<br/>");
+      //em.Subject = eventRaised.GetType().Name;
+      //em.From = "error@langmaster.cz";
+      foreach (string mail in mailsTo) em.AddTo(mail);
       em.SendMail();
     }
 

@@ -19,7 +19,7 @@ namespace NewData {
 
       /******************* LOGGER ***********************/
       Handlers.CmdService.registerCommand<Cmd_Logger, bool>(par => {
-        Emailer.SendEMail(ConfigurationManager.AppSettings["Logger.emails"] ?? @"support@langmaster.com", "logger@langmaster.com", "Message from logger", "See attachment", false, new Emailer.Attachment("LogFile", Encoding.UTF8.GetBytes(par.data), "text/plain"));
+        Emailer.SendEMail(ConfigurationManager.AppSettings["Logger.emails"] ?? @"support@langmaster.com", "logger@langmaster.com", "Message from logger", "See attachment", new Emailer.Attachment("LogFile", Encoding.UTF8.GetBytes(par.data), "text/plain"));
         return new RpcResponse();
       });
 

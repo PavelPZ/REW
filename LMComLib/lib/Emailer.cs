@@ -9,14 +9,17 @@ using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Net.Mail;
+using System.Net.Mime;
+using System.ComponentModel;
+using LMNetLib;
+using System.IO;
 
 namespace LMComLib {
   /// <summary>
   /// Summary description for Emailer
   /// </summary>
   public class Emailer {
-    private static string Chilkat_Mht = System.Configuration.ConfigurationManager.AppSettings["Chilkat.Mht"];
-    private static string Chilkat_MailMan = System.Configuration.ConfigurationManager.AppSettings["Chilkat.MailMan"];
 
     public class Attachment {
       public string fileName;
@@ -30,161 +33,70 @@ namespace LMComLib {
       }
     }
 
-    #region Properities
-
-    private string html;
-    public string HTML {
-      get { return html; }
-      set {
-        html = value;
-        Chilkat.Mht mht = new Chilkat.Mht();
-        bool success = mht.UnlockComponent(Emailer.Chilkat_Mht);
-        if (success != true) {
-          throw new Exception("Chilkat Mht trial expired!");
-        }
-
-        mht.UseCids = true;
-
-        // Create an email from an HTML file.
-        // Call mht.HtmlToEML to get the MIME source of an email,
-        // then load it into an email object.
-        email = new Chilkat.Email();
-        string mime;
-        mime = mht.HtmlToEML(html);
-        email.SetFromMimeText(mime);
-        this.PlainText = Html2Text(html);
-      }
+    public Emailer(string toEMails, string fromEMail, string subject, string body) {
+      HTML = body;
+      Subject = subject;
+      From = fromEMail;
+      foreach (string mail in toEMails.Split(new char[] { ';', ',' })) AddTo(mail);
     }
 
-    private string plain;
-    public string PlainText {
-      get { return plain; }
-      set {
-        plain = value;
-        email.AddPlainTextAlternativeBody(plain);
-      }
-    }
+    public string HTML;
+    public string From;
+    public string Subject;
+    HashSet<string> to = new HashSet<string>();
+    List<Attachment> attachments = new List<Attachment>();
 
-    private string from;
-    public string From {
-      get { return from; }
-      set { from = value; }
-    }
-
-    private string subject;
-    public string Subject {
-      get { return subject; }
-      set { subject = value; }
-    }
-
-    #endregion Properities
-
-    private Dictionary<string, string> to;
-    private List<Attachment> attachments;
-    Chilkat.Email email;
-
-    public static string sendEMail(string toEMails, string fromEMail, string subject, string body, bool isHtml, Emailer.Attachment att, string cc = null) {
-      Emailer em = new Emailer();
-      em.HTML = body;
-      em.Subject = subject;
-      em.From = fromEMail;
-      foreach (string mail in toEMails.Split(new char[] { ';', ',' })) em.AddTo(mail);
+    public static string SendEMail(string toEMails, string fromEMail, string subject, string body, Emailer.Attachment att = null, string cc = null) {
+      Emailer em = new Emailer(toEMails, fromEMail, subject, body);
       if (cc != null) foreach (string mail in cc.Split(new char[] { ';', ',' })) em.AddTo("+" + mail);
       if (att != null) em.AddAttachment(att);
       return em.sendMail();
     }
 
-    public static void SendEMail(string toEMails, string fromEMail, string subject, string body, bool isHtml, Emailer.Attachment att, string cc = null) {
-      sendEMail(toEMails, fromEMail, subject, body, isHtml, att, cc);
-    }
-
-    public Emailer() {
-      email = new Chilkat.Email();
-      attachments = new List<Attachment>();
-      to = new Dictionary<string, string>();
-    }
-
-    public void Replace(string oldValue, string newValue) {
-      this.HTML = this.HTML.Replace(oldValue, newValue);
-      this.PlainText = this.PlainText.Replace(oldValue, newValue);
-    }
-
-    public void AddAttachment(Attachment att) {
+    void AddAttachment(Attachment att) {
       attachments.Add(att);
     }
 
-    public void ClearAttachment() {
-      attachments.Clear();
-    }
-
     public void AddTo(string email) {
-      to.Add(email, email);
+      to.Add(email);
     }
-
-    public void AddToCC(string email) {
-      to.Add(email, email);
-    }
-
-    public void AddTo(string title, string email) {
-      to.Add(title, email);
-    }
-
-    public void ClearTo() {
-      to.Clear();
-    }
-
-    public bool SaveMail(string file) {
-      RefreshMail();
-      return email.SaveEml(file);
-    }
-
-    protected void RefreshMail() {
-      email.Subject = Subject;
-      email.Charset = "utf-8";
-      email.ClearTo();
-      foreach (string key in to.Keys) {
-        string em = to[key];
-        if (em[0] == '-') email.AddBcc(key, em.Substring(1));
-        else if (em[0] == '+') email.AddCC(key, em.Substring(1));
-        else email.AddTo(key, em);
-      }
-      email.From = From;
-      email.DropAttachments();
-      if (attachments.Count > 0)
-        foreach (Attachment att in attachments)
-          email.AddDataAttachment2(att.fileName, att.content, att.contentType);
-    }
-
+    
     public string sendMail() {
-      RefreshMail();
+      MailMessage mailMsg = new MailMessage();
+      foreach (string email in to) mailMsg.To.Add(new MailAddress(email, null));
+      mailMsg.From = new MailAddress(From, null);
 
-      Chilkat.MailMan mailman = new Chilkat.MailMan();
-      if (!mailman.UnlockComponent(Emailer.Chilkat_MailMan)) {
-        throw new Exception("Chilkat MailMan trial expired!");
+      // Subject and multipart/alternative Body
+      mailMsg.Subject = Subject;
+      mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(Html2Text(HTML), null, MediaTypeNames.Text.Plain));
+      mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(HTML, null, MediaTypeNames.Text.Html));
+      foreach (var att in attachments) {
+        var ms = new MemoryStream(att.content); ms.Seek(0, SeekOrigin.Begin);
+        mailMsg.Attachments.Add(new System.Net.Mail.Attachment(ms, att.fileName, att.contentType));
       }
-      // Set the SMTP server hostname.
-      mailman.SmtpHost = SmtpHost;
-      mailman.SmtpUsername = SmtpUsername;
-      mailman.SmtpPassword = SmtpPassword;
-      mailman.SmtpSsl = SmtpSsl;
-      mailman.StartTLS = StartTLS;
-      mailman.SmtpPort = SmtpPort;
 
-      if (!mailman.SendEmail(email)) {
-        string err = mailman.LastErrorText;
-        if (err != null) return err;
-        return "Error";
+      using (var sc = new SmtpClient(SmtpHost, SmtpPort)) {
+        sc.EnableSsl = SmtpSsl;
+        sc.Timeout = 10000;
+        sc.DeliveryMethod = SmtpDeliveryMethod.Network;
+        sc.UseDefaultCredentials = false;
+        sc.Credentials = new System.Net.NetworkCredential(SmtpUsername, SmtpPassword);
+        try {
+          sc.Send(mailMsg);
+          return null;
+        } catch (Exception e){
+          return LowUtils.ExceptionToString(e);
+        }
       }
-      return null;
     }
 
     public bool SendMail() {
-      return sendMail()==null;
+      return sendMail() == null;
     }
     static string SmtpHost = System.Configuration.ConfigurationManager.AppSettings["Email.SmtpHost"];
     static string SmtpUsername = System.Configuration.ConfigurationManager.AppSettings["Email.SmtpUsername"];
     static string SmtpPassword = System.Configuration.ConfigurationManager.AppSettings["Email.SmtpPassword"];
-    static bool SmtpSsl = System.Configuration.ConfigurationManager.AppSettings["Email.SmtpSsl"]=="true";
+    static bool SmtpSsl = System.Configuration.ConfigurationManager.AppSettings["Email.SmtpSsl"] == "true";
     static bool StartTLS = System.Configuration.ConfigurationManager.AppSettings["Email.StartTLS"] == "true";
     static int SmtpPort = int.Parse(System.Configuration.ConfigurationManager.AppSettings["Email.SmtpPort"] ?? "0");
 
@@ -355,8 +267,7 @@ namespace LMComLib {
         // Thats it.
         return result;
 
-      }
-      catch {
+      } catch {
         return source;
       }
     }

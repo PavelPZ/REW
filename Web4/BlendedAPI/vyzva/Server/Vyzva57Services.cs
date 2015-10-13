@@ -118,14 +118,14 @@ namespace blended {
       sb.AppendLine(res.text); sb.AppendLine(); sb.AppendLine();
       res.text = null;
       sb.AppendLine(JsonConvert.SerializeObject(res));
-      Emailer em = new Emailer();
-      em.PlainText = sb.ToString();
-      //em.AddTo("pzika@langmaster.cz");
-      //em.From = "pzika@langmaster.com";
-      em.AddTo("support@langmaster.cz");
-      em.From = res.userEmail;
-      em.Subject = "LANGMaster technická podpora";
-      em.SendMail();
+      //Emailer em = new Emailer();
+      //em.HTML = sb.ToString();
+      ////em.AddTo("pzika@langmaster.cz");
+      ////em.From = "pzika@langmaster.com";
+      //em.AddTo("support@langmaster.cz");
+      //em.From = res.userEmail;
+      //em.Subject = "LANGMaster technická podpora";
+      Emailer.SendEMail("support@langmaster.cz", "support@langmaster.cz", "LANGMaster technická podpora", sb.ToString());
     }
     //D:\LMCom\REW\Web4\BlendedAPI\vyzva\Scripts\Lib.ts
     public class IWriteUs {

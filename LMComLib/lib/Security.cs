@@ -370,11 +370,11 @@ namespace LMComLib {
 
     static void checkCookie(HttpContext ctx, LMCookie cook) {
       if (!string.IsNullOrEmpty(cook.EMail)) { // && Machines.isCrawlerEx(ctx)) {
-        Emailer em = new Emailer();
-        em.From = "error@langmaster.cz";
+        Emailer em = new Emailer(null, "error@langmaster.cz", "Invalid crawler: ", ctx.Request.UserAgent);
+        //em.From = "error@langmaster.cz";
         em.AddTo("pjanecek@langmaster.cz");
         em.AddTo("pzika@langmaster.cz");
-        em.Subject = "Invalid crawler: " + ctx.Request.UserAgent;
+        //em.Subject = "Invalid crawler: " + ctx.Request.UserAgent;
         em.SendMail();
       }
     }
