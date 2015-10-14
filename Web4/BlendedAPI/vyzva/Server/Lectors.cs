@@ -141,7 +141,7 @@ namespace vyzva {
 
     public class school {
       public blended.ICompanyData data;
-      public blendedData.Company dbData;
+      public blendedData.BlendedCompany dbData;
     }
   }
 }

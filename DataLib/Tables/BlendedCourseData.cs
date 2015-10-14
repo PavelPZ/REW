@@ -5,7 +5,7 @@ namespace blendedData {
   using System.ComponentModel.DataAnnotations.Schema;
   using System.Data.Entity.Spatial;
 
-  public partial class CourseData {
+  public partial class BlendedCourseData {
 
     [Key]
     public int Id { get; set; }
@@ -31,6 +31,6 @@ namespace blendedData {
 
     public long Flags { get; set; }
 
-    public virtual CourseUser CourseUser { get; set; }
+    public virtual BlendedCourseUser CourseUser { get; set; }
   }
 }

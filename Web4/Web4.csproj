@@ -2459,9 +2459,6 @@
     <Compile Include="BlendedAPI\vyzva\Server\Lectors.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\PrepareDemoData.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\Vyzva57Services.cs" />
-    <Compile Include="BlendedAPI\vyzva\Server\DataModel\Company.cs" />
-    <Compile Include="BlendedAPI\vyzva\Server\DataModel\CourseData.cs" />
-    <Compile Include="BlendedAPI\vyzva\Server\DataModel\CourseUser.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\DataModel\Vyzva57.cs" />
     <Compile Include="Code\LibMp3Lame.cs" />
     <Compile Include="Code\NormalizeProjectFile.cs" />
@@ -2766,6 +2763,10 @@
     <Folder Include="Temp\Sql\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataLib\DataLib.csproj">
+      <Project>{182822fa-7779-4da9-990a-3a04c2c11207}</Project>
+      <Name>DataLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EPPlus\EPPlus.csproj">
       <Project>{7b288026-5502-4a39-bf41-77e086f3e4a3}</Project>
       <Name>EPPlus</Name>

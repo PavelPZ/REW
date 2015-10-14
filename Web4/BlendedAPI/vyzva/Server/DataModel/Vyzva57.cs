@@ -9,16 +9,16 @@ namespace blendedData {
         : base("name=Vyzva57") {
     }
 
-    public virtual DbSet<Company> Companies { get; set; }
-    public virtual DbSet<CourseData> CourseDatas { get; set; }
-    public virtual DbSet<CourseUser> CourseUsers { get; set; }
+    public virtual DbSet<BlendedCompany> Companies { get; set; }
+    public virtual DbSet<BlendedCourseData> CourseDatas { get; set; }
+    public virtual DbSet<BlendedCourseUser> CourseUsers { get; set; }
 
     protected override void OnModelCreating(DbModelBuilder modelBuilder) {
-      modelBuilder.Entity<CourseUser>()
+      modelBuilder.Entity<BlendedCourseUser>()
           .HasMany(e => e.CourseDatas)
           .WithRequired(e => e.CourseUser)
           .HasForeignKey(e => e.CourseUserId);
-      modelBuilder.Entity<Company>()
+      modelBuilder.Entity<BlendedCompany>()
           .HasMany(e => e.CourseUsers)
           .WithRequired(e => e.Company)
           .HasForeignKey(e => e.CompanyId);
