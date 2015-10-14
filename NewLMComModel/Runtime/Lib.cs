@@ -294,12 +294,9 @@ namespace NewData {
     }
   }
 
-  public partial class Container {
+  public static class Lib {
 
-    public Container() : base(cs(), true) { }
-    public Container(string connStr) : base(new SqlConnection(connStr), true) { }
-
-    static DbConnection cs() {
+    public static DbConnection cs() {
       var conn = connStr();
       if (conn.ProviderName == "System.Data.SqlClient") return new SqlConnection(conn.ConnectionString);
       if (conn.ProviderName.StartsWith("System.Data.SqlServerCe")) return new SqlCeConnection(conn.ConnectionString);
@@ -308,16 +305,13 @@ namespace NewData {
     public static ConnectionStringSettings connStr() {
       string connName = Machines.isFE5() ? "Container_FE5" : "Container";
       var res = ConfigurationManager.ConnectionStrings[connName] ?? ConfigurationManager.ConnectionStrings["Container"];
-      if (res == null) res = new ConnectionStringSettings {
-        ConnectionString = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=NewLMCom;Integrated Security=False;User ID=lmcomdatatest;Password=lmcomdatatest;",
-        ProviderName = "System.Data.SqlClient"
-      }; // throw new Exception("Cannot find connection string: " + connName);
+      if (res == null)
+        res = new ConnectionStringSettings {
+          ConnectionString = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=NewLMCom;Integrated Security=False;User ID=lmcomdatatest;Password=lmcomdatatest;",
+          ProviderName = "System.Data.SqlClient"
+        }; // throw new Exception("Cannot find connection string: " + connName);
       return res;
     }
-
-  }
-
-  public static class Lib {
 
     public static void SaveChanges(Container db) {
       try {
@@ -336,7 +330,7 @@ namespace NewData {
 
     public static Container CreateContext() {
       init();
-      return new Container();
+      return new Container(cs());
     }
     public const int publicCommpanyId = 1;
 
@@ -345,7 +339,7 @@ namespace NewData {
       initialized = true;
       Logger.Log(@"Lib.NewData.Container init: Start");
       Database.SetInitializer<Container>(new NewData.Migrations.initializer());
-      using (var context = new Container()) context.Database.Initialize(false);
+      using (var context = new Container(cs())) context.Database.Initialize(false);
       Logger.Log(@"Lib.NewData.Container init: End");
     } static bool initialized;
 

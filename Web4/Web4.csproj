@@ -267,13 +267,6 @@
     <Content Include="Licenses\v8.strongtalk.license" />
     <Content Include="Licenses\v8.main.license" />
     <Content Include="Licenses\ClearScript.main.license" />
-    <EntityDeploy Include="BlendedAPI\vyzva\Server\DataModel\schema\Model.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="BlendedAPI\vyzva\Server\DataModel\schema\Model.edmx.diagram">
-      <DependentUpon>Model.edmx</DependentUpon>
-    </Content>
     <Content Include="Temp\printPdf.ps1" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
@@ -2459,7 +2452,6 @@
     <Compile Include="BlendedAPI\vyzva\Server\Lectors.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\PrepareDemoData.cs" />
     <Compile Include="BlendedAPI\vyzva\Server\Vyzva57Services.cs" />
-    <Compile Include="BlendedAPI\vyzva\Server\DataModel\Vyzva57.cs" />
     <Compile Include="Code\LibMp3Lame.cs" />
     <Compile Include="Code\NormalizeProjectFile.cs" />
     <Compile Include="Code\Skrivanek.cs" />
@@ -2755,6 +2747,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BlendedAPI\vyzva\Pages\" />
+    <Folder Include="BlendedAPI\vyzva\Server\DataModel\" />
     <Folder Include="BlendedAPI\vyzva\Server\Excels\" />
     <Folder Include="BS3\css\" />
     <Folder Include="ClientBin\" />

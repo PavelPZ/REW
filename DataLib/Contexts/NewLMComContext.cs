@@ -2,11 +2,15 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using NewData.Mapping;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Data.Common;
 
 //http://msdn.microsoft.com/en-us/data/ee712907#codefirst
 //http://weblogs.asp.net/manavi/entity-association-mapping-with-code-first-one-to-one-shared-primary-key-associations
 namespace NewData {
   public partial class Container : DbContext {
+
+    public Container(DbConnection conn) : base(conn, true) { }
+    public Container(string conn) : base(conn) { }
 
     public DbSet<Company> Companies { get; set; }
     public DbSet<CompanyDepartment> CompanyDepartments { get; set; }

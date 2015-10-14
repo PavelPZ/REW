@@ -256,19 +256,19 @@ namespace CubesDeployment {
           Console.WriteLine("");
           Console.WriteLine("... processing ...");
           switch (ch) {
-            case '1':
-              NewData.SSAS.refreshSASSDeploymentBatchFile();
-              break;
-            case '2':
-              NewData.SSAS.includeClrExtensionToDB(serverId);
-              break;
-            case '3':
-              NewData.SSAS.buildCompanyCubes(serverId);
-              break;
-            case '4':
-              NewData.SSAS.includeClrExtensionToDB(serverId);
-              NewData.SSAS.buildCompanyCubes(serverId);
-              break;
+            //case '1':
+            //  NewData.SSAS.refreshSASSDeploymentBatchFile();
+            //  break;
+            //case '2':
+            //  NewData.SSAS.includeClrExtensionToDB(serverId);
+            //  break;
+            //case '3':
+            //  NewData.SSAS.buildCompanyCubes(serverId);
+            //  break;
+            //case '4':
+            //  NewData.SSAS.includeClrExtensionToDB(serverId);
+            //  NewData.SSAS.buildCompanyCubes(serverId);
+            //  break;
             case '5':
               LoggerMemory log1 = new LoggerMemory(true);
               //TradosLib.recomputeLookupHash(0); TradosLib.recomputeSentHash(0); return;

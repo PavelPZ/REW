@@ -361,7 +361,6 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>htmlHead.cs</LastGenOutput>
     </Content>
-    <Compile Include="Models\NewLMComContext.cs" />
     <Compile Include="Properties\Settings1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -470,6 +469,7 @@
     <Folder Include="bin\Debug\" />
     <Folder Include="Doc\" />
     <Folder Include="ModelStat\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201412221224373_v008.resx">
