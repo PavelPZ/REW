@@ -252,8 +252,8 @@
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.js" />
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.structure.css" />
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.theme.css" />
-    <Content Include="Author\Author - Copy.html" />
     <Content Include="Author\Author.html" />
+    <Content Include="Temp\Author.html" />
     <Content Include="BlendedAPI\Doc.txt" />
     <None Include="BlendedAPI\Styles\style.less" />
     <None Include="BlendedAPI\Styles\exercise.less" />
