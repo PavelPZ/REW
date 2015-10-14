@@ -74,12 +74,12 @@ namespace LMComLib {
     /// <summary>
     /// Vola se vzdy, kdyz uzivatel pomoci GUI provedl Logout
     /// </summary>
-    public static void logout() {
-      trace(null, "LMCookie.logout Start: {0}", HttpContext.Current.User.Identity.Name);
-      loginLogout(null, null);
-      Order.ClearInstance();
-      //HttpContext.Current.Response.Redirect(urlInfo.HomeUrl());
-    }
+    //public static void logout() {
+    //  trace(null, "LMCookie.logout Start: {0}", HttpContext.Current.User.Identity.Name);
+    //  loginLogout(null, null);
+    //  Order.ClearInstance();
+    //  //HttpContext.Current.Response.Redirect(urlInfo.HomeUrl());
+    //}
 
     /*public static void logoutNew() {
       trace(null, "LMCookie.logout Start: {0}", HttpContext.Current.User.Identity.Name);
@@ -98,20 +98,20 @@ namespace LMComLib {
       return LMComDataProvider.Instance.getPassword(email);
     }
 
-    //Prevod profilu z vyuky na lm.cz
-    public static string createUserFromVyuka(string eMail, string psw) {
-      ProfileData prof = LMComDataProvider.readProfile(eMail, null);
-      if (prof == null) return string.Format("Uživatel {0} neexistuje!", eMail);
-      if (prof.Site != Domains.sz) return string.Format("Profil uživatele {0} je již převeden!", eMail);
-      prof.Password = psw;
-      LMComDataProvider.WriteProfile(prof);
-      MailSender.sendMail(MailTypes.ConfirmRegistration, Domains.com, SubDomains.com_cz, Langs.cs_cz, eMail, prof);
-      return null;
-    }
+    ////Prevod profilu z vyuky na lm.cz
+    //public static string createUserFromVyuka(string eMail, string psw) {
+    //  ProfileData prof = LMComDataProvider.readProfile(eMail, null);
+    //  if (prof == null) return string.Format("Uživatel {0} neexistuje!", eMail);
+    //  if (prof.Site != Domains.sz) return string.Format("Profil uživatele {0} je již převeden!", eMail);
+    //  prof.Password = psw;
+    //  LMComDataProvider.WriteProfile(prof);
+    //  MailSender.sendMail(MailTypes.ConfirmRegistration, Domains.com, SubDomains.com_cz, Langs.cs_cz, eMail, prof);
+    //  return null;
+    //}
 
-    public static bool createUserStart(string eMail, string psw) {
-      return createUserStart(urlInfo.GetUrlInfo(), eMail, psw, null, null)>0;
-    }
+    //public static bool createUserStart(string eMail, string psw) {
+    //  return createUserStart(urlInfo.GetUrlInfo(), eMail, psw, null, null)>0;
+    //}
 
     public static Int64 rew_createUserStart(SubDomains subSite, string email, string login, Action<ProfileData> fillProfile) {
       Int64 id = LMComDataProvider.rew_readProfileId(email, login, null);
@@ -181,25 +181,25 @@ namespace LMComLib {
     /// Nasledne posle aktivacni mail se zakodovanum UserId, eMail a Password
     /// ui==null => pouze zalozi uzivatele ale neposila email. Vyuzito napr pro eTestMe.com, v Q:\lmcom\RW2\Server\Services\MembersipNewService.svc.cs
     /// </summary>
-    public static Int64 createUserStart(urlInfo ui, string eMail, string psw, string firstName, string lastName) {
-      Int64 id = LMComDataProvider.readProfileId (eMail, null);
-      if (id>0) return -1;
-      ProfileData prof = Profile;
-      if (!prof.Anonymous) throw new Exception();
-      prof = LMComDataProvider.createProfileStart(ui == null ? Domains.com : ui.SiteId);
-      prof.ActivationMailSent = DateTime.UtcNow;
-      prof.Address.FirstName = firstName; prof.Address.LastName = lastName;
-      prof.Email = eMail; prof.Password = psw;
-      if (ui != null) {
-        if (Machines.debugNoInternet) {
-          prof.Roles = 0; prof.ActivationMailSent = null; //simulace createUserEnd pro ladeni bez internetu
-        } else
-          MailSender.sendMail(MailTypes.ConfirmRegistration, ui.SiteId, ui.SubSite, ui.LangId, prof.Email, prof);
-        loginProfile(prof);
-      }
-      LMComDataProvider.WriteProfile(prof);
-      return prof.Id;
-    }
+    //public static Int64 createUserStart(urlInfo ui, string eMail, string psw, string firstName, string lastName) {
+    //  Int64 id = LMComDataProvider.readProfileId (eMail, null);
+    //  if (id>0) return -1;
+    //  ProfileData prof = Profile;
+    //  if (!prof.Anonymous) throw new Exception();
+    //  prof = LMComDataProvider.createProfileStart(ui == null ? Domains.com : ui.SiteId);
+    //  prof.ActivationMailSent = DateTime.UtcNow;
+    //  prof.Address.FirstName = firstName; prof.Address.LastName = lastName;
+    //  prof.Email = eMail; prof.Password = psw;
+    //  if (ui != null) {
+    //    if (Machines.debugNoInternet) {
+    //      prof.Roles = 0; prof.ActivationMailSent = null; //simulace createUserEnd pro ladeni bez internetu
+    //    } else
+    //      MailSender.sendMail(MailTypes.ConfirmRegistration, ui.SiteId, ui.SubSite, ui.LangId, prof.Email, prof);
+    //    loginProfile(prof);
+    //  }
+    //  LMComDataProvider.WriteProfile(prof);
+    //  return prof.Id;
+    //}
 
     /// <summary>
     /// Reakce na link z aktivacniho mailu: do profilu daneho Id vlozi Roles, cimz ucet aktivuje.
@@ -264,7 +264,7 @@ namespace LMComLib {
     }
 
     public static LMCookie saveCookie(HttpContext ctx) {
-      if (Machines.isBuildEACache_BuildCD_CrawlerLow(ctx)) return null;
+      //if (Machines.isBuildEACache_BuildCD_CrawlerLow(ctx)) return null;
       LMCookie cook = GetCookieLow(ctx); if (cook == null) return null;
       cook.saveCookie(ctx);
       return cook;
@@ -369,12 +369,12 @@ namespace LMComLib {
     }
 
     static void checkCookie(HttpContext ctx, LMCookie cook) {
-      if (!string.IsNullOrEmpty(cook.EMail) && Machines.isCrawlerEx(ctx)) {
-        Emailer em = new Emailer();
-        em.From = "error@langmaster.cz";
+      if (!string.IsNullOrEmpty(cook.EMail)) { // && Machines.isCrawlerEx(ctx)) {
+        Emailer em = new Emailer(null, "error@langmaster.cz", "Invalid crawler: ", ctx.Request.UserAgent);
+        //em.From = "error@langmaster.cz";
         em.AddTo("pjanecek@langmaster.cz");
         em.AddTo("pzika@langmaster.cz");
-        em.Subject = "Invalid crawler: " + ctx.Request.UserAgent;
+        //em.Subject = "Invalid crawler: " + ctx.Request.UserAgent;
         em.SendMail();
       }
     }
@@ -416,30 +416,30 @@ namespace LMComLib {
       return cook;
     }
 
-    static void refreshLastRequest(HttpContext ctx, LMCookie cook) {
-      HttpCookie lastReqSaveCook = ctx.Request.Cookies["LastReqSave"];
-      DateTime now = DateTime.UtcNow; //aktualizace data posledniho requestu
-      DateTime lastReqSave = DateTime.MinValue; string crs = null;
-      if (lastReqSaveCook != null) {
-        try {
-          string[] parts = lastReqSaveCook.Value.Split('|');
-          lastReqSave = DateTime.Parse(parts[0]); crs = parts[1];
-          Int64 lastReqUserId = Int64.Parse(parts[2]);
-          if (lastReqUserId != cook.id) lastReqSave = DateTime.MinValue;
-        } catch {
-          lastReqSave = DateTime.MinValue; crs = null;
-        }
-      }
-      TimeSpan ts = now - lastReqSave;
-      urlInfo ui = urlInfo.GetUrlInfo();
-      CourseIds crsId = ui == null ? CourseIds.no : ui.EACourse;
-      if (crsId == CourseIds.no) crsId = cook.getCourseId();
-      if (lastReqSaveCook == null || ts > Persistence.c_RefreshLastRequestInterval || crsId.ToString() != crs) { //... nejcasteji kazdych 3 minuty
-        ctx.Response.Cookies["LastReqSave"].Value = now.ToString() + "|" + crsId.ToString() + "|" + cook.id.ToString();
-        //ctx.Response.Cookies[LMStatus.c_cookieName].Value = JSON.ObjectToJSON(cook);
-        Persistence.setLastRequest(ctx, cook, crsId);
-      }
-    }
+    //static void refreshLastRequest(HttpContext ctx, LMCookie cook) {
+    //  HttpCookie lastReqSaveCook = ctx.Request.Cookies["LastReqSave"];
+    //  DateTime now = DateTime.UtcNow; //aktualizace data posledniho requestu
+    //  DateTime lastReqSave = DateTime.MinValue; string crs = null;
+    //  if (lastReqSaveCook != null) {
+    //    try {
+    //      string[] parts = lastReqSaveCook.Value.Split('|');
+    //      lastReqSave = DateTime.Parse(parts[0]); crs = parts[1];
+    //      Int64 lastReqUserId = Int64.Parse(parts[2]);
+    //      if (lastReqUserId != cook.id) lastReqSave = DateTime.MinValue;
+    //    } catch {
+    //      lastReqSave = DateTime.MinValue; crs = null;
+    //    }
+    //  }
+    //  TimeSpan ts = now - lastReqSave;
+    //  urlInfo ui = urlInfo.GetUrlInfo();
+    //  CourseIds crsId = ui == null ? CourseIds.no : ui.EACourse;
+    //  if (crsId == CourseIds.no) crsId = cook.getCourseId();
+    //  if (lastReqSaveCook == null || ts > Persistence.c_RefreshLastRequestInterval || crsId.ToString() != crs) { //... nejcasteji kazdych 3 minuty
+    //    ctx.Response.Cookies["LastReqSave"].Value = now.ToString() + "|" + crsId.ToString() + "|" + cook.id.ToString();
+    //    //ctx.Response.Cookies[LMStatus.c_cookieName].Value = JSON.ObjectToJSON(cook);
+    //    Persistence.setLastRequest(ctx, cook, crsId);
+    //  }
+    //}
 
     public delegate string getOtherData(object obj);
 

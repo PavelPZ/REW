@@ -33,42 +33,42 @@ namespace LMComLib {
     LMApps,
   }
 
-  public static class Lookups {
-    public static string GetLoopupValue(LookupType type, int val) {
-      switch (type) {
-        case LookupType.Domains: return EnumDescrAttribute.getDescr(typeof(Domains), val);
-        case LookupType.TaskType: return EnumDescrAttribute.getDescr(typeof(TaskType), val);
-        case LookupType.Product: return ((LMComLib.Cms.Product)CacheItems.GetTemplate(val)).Title;
-        case LookupType.ProductNew: return ProductCatalogueItems.Instance.getEx(val).ShortTitle;
-        case LookupType.ProductLicence:
-          ProductLicence it = ProductCatalogue.getFirstLicenceFromAllCommerce(val/*, Langs.cs_cz*/);
-          //ProductLicence lic = ProductLicence.fincLicence(val);
-          return it == null ? "-" : it.ShortTitle;
-        case LookupType.OrderStatus: {
-            switch ((OrderStatus)val) {
-              case OrderStatus.CekaNaPlatbu: return "Čeká na platbu";
-              case OrderStatus.Hotovo: return "Ukončena";
-              case OrderStatus.Zrusena: return "Zrušena";
-              case OrderStatus.Storno: return "Storno";
-              default: return EnumDescrAttribute.getDescr(typeof(OrderStatus), val);
-            }
-          }
-        case LookupType.BillingMethods: {
-            switch ((BillingMethods)val) {
-              case BillingMethods.PayPal: return "Platba PayPal";
-              default: return EnumDescrAttribute.getDescr(typeof(BillingMethods), val);
-            }
-          }
-        case LookupType.ShippingMethods: return EnumDescrAttribute.getDescr(typeof(ShippingMethods), val);
-        case LookupType.Licencors: return RoyalityTable.royalityTableItem(val).Title;
-        case LookupType.LicencorsEx: return RoyalityTable.royalityTableItem(val).Licencor;
-        case LookupType.EventCategory: return EnumDescrAttribute.getDescr(typeof(EventCategory), val);
-        case LookupType.LMApps: return EnumDescrAttribute.getDescr(typeof(LMApps), val);
-        default: throw new Exception();
-      }
-    }
+  //public static class Lookups {
+  //  public static string GetLoopupValue(LookupType type, int val) {
+  //    switch (type) {
+  //      case LookupType.Domains: return EnumDescrAttribute.getDescr(typeof(Domains), val);
+  //      case LookupType.TaskType: return EnumDescrAttribute.getDescr(typeof(TaskType), val);
+  //      case LookupType.Product: return ((LMComLib.Cms.Product)CacheItems.GetTemplate(val)).Title;
+  //      case LookupType.ProductNew: return ProductCatalogueItems.Instance.getEx(val).ShortTitle;
+  //      case LookupType.ProductLicence:
+  //        ProductLicence it = ProductCatalogue.getFirstLicenceFromAllCommerce(val/*, Langs.cs_cz*/);
+  //        //ProductLicence lic = ProductLicence.fincLicence(val);
+  //        return it == null ? "-" : it.ShortTitle;
+  //      case LookupType.OrderStatus: {
+  //          switch ((OrderStatus)val) {
+  //            case OrderStatus.CekaNaPlatbu: return "Čeká na platbu";
+  //            case OrderStatus.Hotovo: return "Ukončena";
+  //            case OrderStatus.Zrusena: return "Zrušena";
+  //            case OrderStatus.Storno: return "Storno";
+  //            default: return EnumDescrAttribute.getDescr(typeof(OrderStatus), val);
+  //          }
+  //        }
+  //      case LookupType.BillingMethods: {
+  //          switch ((BillingMethods)val) {
+  //            case BillingMethods.PayPal: return "Platba PayPal";
+  //            default: return EnumDescrAttribute.getDescr(typeof(BillingMethods), val);
+  //          }
+  //        }
+  //      case LookupType.ShippingMethods: return EnumDescrAttribute.getDescr(typeof(ShippingMethods), val);
+  //      case LookupType.Licencors: return RoyalityTable.royalityTableItem(val).Title;
+  //      case LookupType.LicencorsEx: return RoyalityTable.royalityTableItem(val).Licencor;
+  //      case LookupType.EventCategory: return EnumDescrAttribute.getDescr(typeof(EventCategory), val);
+  //      case LookupType.LMApps: return EnumDescrAttribute.getDescr(typeof(LMApps), val);
+  //      default: throw new Exception();
+  //    }
+  //  }
 
-  }
+  //}
   public enum ExcelFormat {
     Number,
     Currency,
@@ -124,7 +124,7 @@ namespace LMComLib {
       if (value == DBNull.Value || value == null) { wr.WriteString("-"); return; }
       switch (Format) {
         case ExcelFormat.String: wr.WriteString(value.ToString()); break;
-        case ExcelFormat.Lookup: wr.WriteString(Lookups.GetLoopupValue(Lookup, Convert.ToInt32(value))); break;
+        //case ExcelFormat.Lookup: wr.WriteString(Lookups.GetLoopupValue(Lookup, Convert.ToInt32(value))); break;
         case ExcelFormat.Currency: wr.WriteValue(Convert.ToDecimal(value)); break;
         case ExcelFormat.Number: wr.WriteValue(Convert.ToInt64(value)); break;
         case ExcelFormat.Date: wr.WriteString((Convert.ToDateTime(value)).ToString("yyyy-MM-dd")); break;

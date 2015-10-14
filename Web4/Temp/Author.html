@@ -3,30 +3,6 @@
 <head>
   <title></title>
   <meta charset="utf-8" />
-  <!--[if lt IE 9]>
-    <script type='text/javascript' src='../jslib/scripts/jquery.js'></script>
-    <script src="../jslib/scripts/es5-shim.js" type="text/javascript" ></script>
-    <script src="../jslib/scripts/jquery-1.11.3.min.js" type="text/javascript" ></script>
-    <script src="../jslib/scripts/angular-ie8.js" type="text/javascript"></script>
-    <style>
-      .ng-hide, .alert.advertise {
-        display: none !important;
-       }
-       .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
-    </style>
-  <![endif]-->
-  <!--[if (gt IE 8)|!(IE)]><!-->
-  <script type='text/javascript' src='../jslib/scripts/jquery2.js'></script>
-  <script src="../jslib/scripts/angular.js" type="text/javascript"></script>
-  <!--<![endif]-->
-  <script type='text/javascript' src='../jslib/scripts/underscore.js'></script>
-  <script type='text/javascript' src='../jslib/js/lmconsoleinit.js'></script>
-
-  <script src="../jslib/scripts/angular-route.js" type="text/javascript"></script>
-  <script src="../jslib/scripts/angular-animate.js" type="text/javascript"></script>
-  <script src="../jslib/scripts/angular-cookies.js" type="text/javascript"></script>
-  <script src="../jslib/scripts/angular-ui-router.js" type="text/javascript"></script>
-  <script src="../jslib/scripts/ui-bootstrap-tpls.js" type="text/javascript"></script>
 
   <link href="../font-awesome/lm/externals.css" rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="../jslib/ea/ea.css" />
@@ -77,125 +53,28 @@
       "vocabulary": false
     };
   </script>
+  <script type="text/javascript">
+    var $deployConfig = { lang: cfg.lang, oldIE: false, target: cfg.target, version: cfg.version };
+  </script>
+  <!--[if lt IE 9]>
+    <script type="text/javascript">
+      $deployConfig.oldIE = true;
+    </script>
+    <style>
+      .ng-hide, .alert.advertise {
+        display: none !important;
+       }
+       .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+    </style>
+  <![endif]-->
 
-  <script type='text/javascript' src='../jslib/scripts/jquery-migrate.js'></script>
-  <script type='text/javascript' src='../jslib/scripts/jqvalidator/core.js'></script>
-  <script type='text/javascript' src='../jslib/scripts/jqvalidator/delegate.js'></script>
-  <script type='text/javascript' src='../jslib/scripts/jqvalidator/lm_remote.js'></script>
-  <script type='text/javascript' src='../bs3/js/modal.js'></script>
-  <script type='text/javascript' src='../bs3/js/tooltip.js'></script>
-  <script type='text/javascript' src='../jslib/js/external/jqvalidator.js'></script>
-  <script type='text/javascript' src='../jslib/scripts/ui/jquery-ui.js'></script>
-  <script type='text/javascript' src='../jslib/scripts/query.autosize.js'></script>
-  <script type='text/javascript' src='../jslib/scripts/globalize.js'></script>
-  <script type='text/javascript' src='../jslib/scripts/jquery.ba-hashchange.js'></script>
-  <script type='text/javascript' src='../jslib/scripts/json2.js'></script>
-  <script type='text/javascript' src='../jslib/scripts/jsrender.js'></script>
-  <script type='text/javascript' src='../jslib/scripts/knockout.js'></script>
-  <script type='text/javascript' src='../jslib/scripts/knockout.validation.js'></script>
-  <script type='text/javascript' src='../jslib/scripts/knockout-delegatedevents.js'></script>
-  <script type='text/javascript' src='../jslib/js/external/knockoutplugins.js'></script>
-  <script type='text/javascript' src='../jslib/js/external/closurelib.js'></script>
-  <script type='text/javascript' src='../jslib/js/external/closureliblow.js'></script>
-  <script type='text/javascript' src='../jslib/js/genlmcomlib.js'></script>
-  <script type='text/javascript' src='../jslib/js/bowser.js'></script>
-  <script type='text/javascript' src='../jslib/js/boot.js'></script>
-  <script type='text/javascript' src='../jslib/ea/ea.js'></script>
-  <script type='text/javascript' src='../jslib/js/gui.js'></script>
-  <script type='text/javascript' src='../jslib/js/modelbase.js'></script>
-  <script type='text/javascript' src='../jslib/js/utils.js'></script>
-  <script type='text/javascript' src='../jslib/js/viewbase.js'></script>
-  <script type='text/javascript' src='../jslib/js/ajax.js'></script>
-  <script type='text/javascript' src='../jslib/js/validate.js'></script>
-  <script type='text/javascript' src='../jslib/controls/treeview/treeview.js'></script>
-  <script type='text/javascript' src='../blendedapi/oldboot.js'></script>
-  <script type='text/javascript' src='../jslib/js/lmconsole.js'></script>
-  <script type='text/javascript' src='../jslib/scripts/waitforimages.js'></script>
-  <script type='text/javascript' src='../schools/gencourse.js'></script>
-  <script type='text/javascript' src='../schools/genschools.js'></script>
-  <script type='text/javascript' src='../schools/genproxy.js'></script>
-  <script type='text/javascript' src='../schools/genazure.js'></script>
-  <script type='text/javascript' src='../schools/interfaces.js'></script>
-  <script type='text/javascript' src='../jslib/js/sound/mp3workerlib.js'></script>
-  <script type='text/javascript' src='../jslib/js/sound/soundnew.js'></script>
-  <script type='text/javascript' src='../jslib/js/sound/html5recorder.js'></script>
-  <script type='text/javascript' src='../jslib/js/sound/wavepcm.js'></script>
-  <script type='text/javascript' src='../jslib/js/unicode.js'></script>
-  <script type='text/javascript' src='../jslib/js/base32.js'></script>
-  <script type='text/javascript' src='../jslib/js/keys.js'></script>
-  <script type='text/javascript' src='../jslib/ea/eaextension.js'></script>
-  <script type='text/javascript' src='../jslib/controls/dict/dict.js'></script>
-  <script type='text/javascript' src='../jslib/js/external/rjson.js'></script>
-  <script type='text/javascript' src='../schools/lib.js'></script>
-  <script type='text/javascript' src='../schools/products.js'></script>
-  <script type='text/javascript' src='../schools/topbar.js'></script>
-  <script type='text/javascript' src='../schools/model.js'></script>
-  <script type='text/javascript' src='../schools/persist.js'></script>
-  <script type='text/javascript' src='../schools/persistlocal.js'></script>
-  <script type='text/javascript' src='../schools/persistnewea.js'></script>
-  <script type='text/javascript' src='../schools/persistdownload.js'></script>
-  <script type='text/javascript' src='../schools/persistphonegap.js'></script>
-  <script type='text/javascript' src='../schools/persistscormex.js'></script>
-  <script type='text/javascript' src='../schools/persistmemory.js'></script>
-  <script type='text/javascript' src='../schools/splash.js'></script>
-  <script type='text/javascript' src='../schools/coursemetagui.js'></script>
-  <script type='text/javascript' src='../schools/my.js'></script>
-  <script type='text/javascript' src='../schools/exercise.js'></script>
-  <script type='text/javascript' src='../schools/genscorm.js'></script>
-  <script type='text/javascript' src='../schools/cpv.js'></script>
-  <script type='text/javascript' src='../schools/gramm.js'></script>
-  <script type='text/javascript' src='../courses/gencoursemodel.js'></script>
-  <script type='text/javascript' src='../testme/gentestmodel.js'></script>
-  <script type='text/javascript' src='../courses/gencoursemeta.js'></script>
-  <script type='text/javascript' src='../courses/coursemodel.js'></script>
-  <script type='text/javascript' src='../courses/course.js'></script>
-  <script type='text/javascript' src='../courses/courselib.js'></script>
-  <script type='text/javascript' src='../courses/coursemeta.js'></script>
-  <script type='text/javascript' src='../courses/coursestatus.js'></script>
-  <script type='text/javascript' src='../courses/gapfill.js'></script>
-  <script type='text/javascript' src='../courses/pairing.js'></script>
-  <script type='text/javascript' src='../courses/ordering.js'></script>
-  <script type='text/javascript' src='../courses/singlechoice.js'></script>
-  <script type='text/javascript' src='../courses/media.js'></script>
-  <script type='text/javascript' src='../courses/eval.js'></script>
-  <script type='text/javascript' src='../courses/checkitem.js'></script>
-  <script type='text/javascript' src='../courses/codes/chinhspeaking.js'></script>
-  <script type='text/javascript' src='../courses/codes/docreference.js'></script>
-  <script type='text/javascript' src='../testme/testexercise.js'></script>
-  <script type='text/javascript' src='../testme/testresult.js'></script>
-  <script type='text/javascript' src='../author/vsnet.js'></script>
-  <script type='text/javascript' src='../author/doc.js'></script>
-  <script type='text/javascript' src='../author/xref.js'></script>
-  <script type='text/javascript' src='../jslib/scripts/prettify.js'></script>
-  <script type='text/javascript' src='../blendedapi/scripts/lib.js'></script>
-  <script type='text/javascript' src='../blendedapi/scripts/loader.js'></script>
-  <script type='text/javascript' src='../blendedapi/scripts/directives.js'></script>
-  <script type='text/javascript' src='../blendedapi/scripts/tasks.js'></script>
-  <script type='text/javascript' src='../blendedapi/scripts/exercise.js'></script>
-  <script type='text/javascript' src='../blendedapi/scripts/exercisesimple.js'></script>
-  <script type='text/javascript' src='../blendedapi/scripts/module.js'></script>
-  <script type='text/javascript' src='../blendedapi/scripts/stateman.js'></script>
-  <script type='text/javascript' src='../blendedapi/vyzva/scripts/lib.js'></script>
-  <script type='text/javascript' src='../blendedapi/vyzva/scripts/intranet.js'></script>
-  <script type='text/javascript' src='../blendedapi/vyzva/scripts/directives.js'></script>
-  <script type='text/javascript' src='../blendedapi/vyzva/views/managerlangmaster.js'></script>
-  <script type='text/javascript' src='../blendedapi/vyzva/views/managerschool.js'></script>
-  <script type='text/javascript' src='../blendedapi/vyzva/views/exercise.js'></script>
-  <script type='text/javascript' src='../blendedapi/vyzva/views/module.js'></script>
-  <script type='text/javascript' src='../blendedapi/vyzva/views/pretest.js'></script>
-  <script type='text/javascript' src='../blendedapi/vyzva/views/lector.js'></script>
-  <script type='text/javascript' src='../blendedapi/vyzva/views/home.js'></script>
-  <script type='text/javascript' src='../blendedapi/vyzva/views/faq.js'></script>
-  <script type='text/javascript' src='../blendedapi/vyzva/views/testhw.js'></script>
-  <script type='text/javascript' src='../blendedapi/vyzva/views/vyzvademo.js'></script>
-  <script type='text/javascript' src='../blendedapi/vyzva/views/vyzvaprovoz.js'></script>
-  <script type='text/javascript' src='../blendedapi/vyzva/views/lector/_tabs.js'></script>
-  <script type='text/javascript' src='../author/author.js'></script>
-  <script type='text/javascript' src='../blendedapi/vyzva/app.js'></script>
-  <script type='text/javascript' src='../blendedapi/app.js'></script>
-
-  <script type='text/javascript' src='../schools/loc/tradosdata.en-gb.js'></script>
-  <script type='text/javascript' src='../jslib/scripts/cultures/globalize.culture.en-gb.js'></script>
+  <script src="../jslib/scripts/core.js" type="text/javascript"></script>
+  <script src="../jslib/js/jsdeploy.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    jsDeploy.load(['author/author.js']);
+    //var html = jsDeploy.load(['author/author.js']);
+    //document.write(html);
+  </script>
 </head>
 <body>
   <div ng-app="appRoot" class="bl"><div data-ui-view></div></div>
@@ -266,8 +145,10 @@
       {{for wordItems}}
       <!-- ko with: wordItems[{{:#index}}] -->
       <button class="btn btn-primary" data-bind="css: st, click: click"><i class="fa fa-check"></i>ec&nbsp;<span>{{:title()}}</span></button>
-      <!-- /ko -->
+      <!-- /
+      ko -->
       {{/for}}
+        </div>
     </div>
     <!-- /ko -->
   </script>
@@ -329,6 +210,7 @@
         </tr>
         <!-- /ko -->
         {{/for}}
+          </tabl
       </table>
     </div>
     <!-- /ko -->
@@ -389,6 +271,9 @@
       <div class="oli-cancel-stop-sound content">
         <div>
           {{if !#data.Items}}&nbsp;{{else}}{{for #data tmpl=~T('c_genitems')/}}{{/if}}
+          
+
+          </div>
         </div>
       </div>
     </div>
@@ -438,6 +323,8 @@
   <script id="c__mediareplica" type="text/x-jsrender">
     <div class="oli-replica {{:css()}}">
       {{if actor}}<b>{{:actor}}</b>:{{/if}}
+      
+
       {{include tmpl=~T("c_genitemsex")/}}
     </div>
   </script>
@@ -508,6 +395,10 @@
     <!-- ko with: getItem('{{:id}}') -->
     <div class="oli-dialog" {{:style()}}>
       {{for Items tmpl=~T('c_gen')/}}
+      
+
+       </div>
+      <!-- /ko -->
     </div>
     <!-- /ko -->
   </script>

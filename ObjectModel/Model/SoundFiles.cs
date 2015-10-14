@@ -10,7 +10,7 @@ using Rewise;
 using LMMedia;
 //using System.Windows.Controls;
 using System.Runtime.InteropServices;
-using Saluse.MediaKit.IO;
+//using Saluse.MediaKit.IO;
 using System.Xml.Serialization;
 using System.IO.Compression;
 
@@ -188,13 +188,13 @@ namespace Design {
       throw new Exception(sb.ToString());
     }
 
-    static int fileLen2(string path) {
-      using (MP3PCMStream str = new MP3PCMStream(path)) {
-        str.DecodeFrames(2);
-        float totalMilliseconds = str.LastHeader.GetTotalMilliseconds((int)str.Length);
-        return (int)Math.Round(totalMilliseconds);
-      }
-    }
+    //static int fileLen2(string path) {
+    //  using (MP3PCMStream str = new MP3PCMStream(path)) {
+    //    str.DecodeFrames(2);
+    //    float totalMilliseconds = str.LastHeader.GetTotalMilliseconds((int)str.Length);
+    //    return (int)Math.Round(totalMilliseconds);
+    //  }
+    //}
 
     //public static void CreateSoundDirectory(IEnumerable<Book> books) {
     //  MediaElement el = new MediaElement();

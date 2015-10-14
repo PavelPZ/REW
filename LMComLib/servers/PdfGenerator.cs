@@ -32,7 +32,8 @@ namespace LMComLib {
             path = string.Format(ConfigurationManager.AppSettings["PDF.Cert"], Machines.rootPath);
             Cert(path, ConfigurationManager.AppSettings["PDF.Cert.Password"], out akp, out chain);
           }
-      PdfReader rdr = new PdfReader(new RandomAccessFileOrArray(template), null);
+      //PdfReader rdr = new PdfReader(new RandomAccessFileOrArray(template), null);
+      PdfReader rdr = new PdfReader(template, null);
       MemoryStream res = new MemoryStream();
       try {
         PdfStamper ps = new PdfStamper(rdr, res);
@@ -44,22 +45,24 @@ namespace LMComLib {
           //Priprava na elektronicky podpis
         } finally { ps.Close(); }
       } finally { rdr.Close(); }
-      PdfReader certRdr = new PdfReader(res.ToArray());
-      MemoryStream certRes = new MemoryStream();
-      try {
-        PdfStamper certPs = PdfStamper.CreateSignature(certRdr, certRes, '\0');
-        try {
-          PdfSignatureAppearance sap = certPs.SignatureAppearance;
-          sap.SetCrypto(akp, chain, null, PdfSignatureAppearance.WINCER_SIGNED);
-          sap.Reason = "Certify";
-          sap.Contact = "LANGMaster";
-          sap.Location = "EU";
-          certRes.Seek(0, SeekOrigin.Begin);
-        } finally {
-          certPs.Close();
-        }
-      } finally { certRdr.Close(); }
-      return certRes.ToArray();
+      //PdfReader certRdr = new PdfReader(res.ToArray());
+      //MemoryStream certRes = new MemoryStream();
+      //try {
+      //  PdfStamper certPs = PdfStamper.CreateSignature(certRdr, certRes, '\0');
+      //  try {
+      //    PdfSignatureAppearance sap = certPs.SignatureAppearance;
+      //    //LM16
+      //    //sap.SetCrypto(akp, chain, null, PdfSignatureAppearance.WINCER_SIGNED);
+      //    sap.Reason = "Certify";
+      //    sap.Contact = "LANGMaster";
+      //    sap.Location = "EU";
+      //    certRes.Seek(0, SeekOrigin.Begin);
+      //  } finally {
+      //    certPs.Close();
+      //  }
+      //} finally { certRdr.Close(); }
+      //return certRes.ToArray();
+      return res.ToArray();
     }
 
     static void Cert(string path, string password, out AsymmetricKeyParameter akp, out Org.BouncyCastle.X509.X509Certificate[] chain) {

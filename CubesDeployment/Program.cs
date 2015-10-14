@@ -36,6 +36,8 @@ namespace CubesDeployment {
 
     static void Main(string[] args) {
 
+      //File.WriteAllText(@"d:\temp\build.json", Packager.RewApp.jsDeployData());
+      //return;
       //CourseMeta.Lib.init(new LoggerMemory(true), @"d:\lmcom\", false);
       //return;
 
@@ -292,8 +294,8 @@ namespace CubesDeployment {
 
               //Instructions.run(); 
               //aktualizace cviceni a instrukci z old EA
-              CourseMeta.Lib.init(log1, @"d:\lmcom\", false); Instructions.run();
-              Instructions.run(); CourseMeta.Lib.dataFromEA(CourseMeta.Lib.publishers, CourseMeta.oldeaDataType.lmdata, log1);
+              //CourseMeta.Lib.init(log1, @"d:\lmcom\", false); Instructions.run();
+              //Instructions.run(); CourseMeta.Lib.dataFromEA(CourseMeta.Lib.publishers, CourseMeta.oldeaDataType.lmdata, log1);
 
               saveLog(log1, "FromOldEA");
 
@@ -461,16 +463,16 @@ namespace CubesDeployment {
                   File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
 
                   //*************** Skrivanek
-                  webBatchId = "skrivanek_software";
-                  Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
-                    actBatchVersion = Packager.batchVersion.release,
-                    version = schools.versions.debug,
-                    //version = schools.versions.minified,
-                    persistType = schools.persistTypes.persistNewEA,
-                    testGroup_debug = false,
-                  });
-                  zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; if (File.Exists(zipFn)) File.Delete(zipFn);
-                  File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
+                  //webBatchId = "skrivanek_software";
+                  //Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
+                  //  actBatchVersion = Packager.batchVersion.release,
+                  //  version = schools.versions.debug,
+                  //  //version = schools.versions.minified,
+                  //  persistType = schools.persistTypes.persistNewEA,
+                  //  testGroup_debug = false,
+                  //});
+                  //zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; if (File.Exists(zipFn)) File.Delete(zipFn);
+                  //File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
 
                   //*************** FE3
                   //webBatchId = "LM_Software";

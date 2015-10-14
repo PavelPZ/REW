@@ -775,24 +775,24 @@ namespace LMComLib {
       }
     }
 
-    public static void LocalizeDownloadsXml(XElement root) {
-      CSLocalize.LangItems li = new CSLocalize.LangItems(Machines.basicPath + @"rew\LMCom\App_Data\app_localresources\downloads.xml.resx");
-      StringBuilder sb = new StringBuilder();
-      foreach (XElement comNode in root.Element("Sites").Elements("SiteInfo").Where(el => el.Element("IsLocalized").Value == "true")) {
-        Domains site = (Domains)Enum.Parse(typeof(Domains), comNode.Element("Site").Value);
-        //Langs[] lngs = comNode.Element("AllLangs").Elements("Langs").Select(el => (Langs)Enum.Parse(typeof(Langs), el.Value)).ToArray();
-        foreach (XElement el in comNode.Elements("Downloads").Elements("DownloadInfo")) {
-          CourseIds prodUrl = (CourseIds)Enum.Parse(typeof(CourseIds), el.Element("CourseId").Value);
-          Langs[] lngs = ProductCatalogueItems.Instance.DownloadLangs(site, prodUrl).ToArray();
-          string id = "com." + el.Element("CourseId").Value;
-          modifyDownloads(el, prodUrl, id, lngs, li, sb);
-          foreach (XElement subEl in el.Element("Items").Elements("DownloadInfo")) {
-            string subId = id + "." + subEl.Element("Id").Value;
-            modifyDownloads(subEl, prodUrl, subId, lngs, li, sb);
-          }
-        }
-      }
-    }
+    //public static void LocalizeDownloadsXml(XElement root) {
+    //  CSLocalize.LangItems li = new CSLocalize.LangItems(Machines.basicPath + @"rew\LMCom\App_Data\app_localresources\downloads.xml.resx");
+    //  StringBuilder sb = new StringBuilder();
+    //  foreach (XElement comNode in root.Element("Sites").Elements("SiteInfo").Where(el => el.Element("IsLocalized").Value == "true")) {
+    //    Domains site = (Domains)Enum.Parse(typeof(Domains), comNode.Element("Site").Value);
+    //    //Langs[] lngs = comNode.Element("AllLangs").Elements("Langs").Select(el => (Langs)Enum.Parse(typeof(Langs), el.Value)).ToArray();
+    //    foreach (XElement el in comNode.Elements("Downloads").Elements("DownloadInfo")) {
+    //      CourseIds prodUrl = (CourseIds)Enum.Parse(typeof(CourseIds), el.Element("CourseId").Value);
+    //      Langs[] lngs = ProductCatalogueItems.Instance.DownloadLangs(site, prodUrl).ToArray();
+    //      string id = "com." + el.Element("CourseId").Value;
+    //      modifyDownloads(el, prodUrl, id, lngs, li, sb);
+    //      foreach (XElement subEl in el.Element("Items").Elements("DownloadInfo")) {
+    //        string subId = id + "." + subEl.Element("Id").Value;
+    //        modifyDownloads(subEl, prodUrl, subId, lngs, li, sb);
+    //      }
+    //    }
+    //  }
+    //}
 
     /// <summary>
     /// Jednoznacne ocislovani elementu: kazdy TagName ma svuj vlastni citac
@@ -1760,10 +1760,11 @@ namespace LMComLib {
 
     static string getResxValue(string id, XElement res, string fn) {
       try {
-        var cfg = NewEATradosLib.HackEx();
-        if (cfg != null && cfg.courseId != CourseIds.EnglishE) {
-          return NewEATradosLib.onGetResxValue(id, fn);
-        }
+        //LM16
+        //var cfg = NewEATradosLib.HackEx();
+        //if (cfg != null && cfg.courseId != CourseIds.EnglishE) {
+        //  return NewEATradosLib.onGetResxValue(id, fn);
+        //}
         return res.Descendants(empty + "value").Where(el => (string)el.Parent.Attribute("name") == id).Select(e => e.Value).Single();
       } catch {
         return "*** getResxValue trans to do ***";
@@ -1817,10 +1818,11 @@ namespace LMComLib {
       //string dir = Path.GetDirectoryName(fn);
       //string name = Path.GetFileName(fn).Replace(".aspx.lmdata", null);
       string outFn = resxFileName(resxFileName(virtualFn), lang); // dir + @"\App_LocalResources\" + name + "." + lang.ToString().Replace('_', '-') + ".resx";
-      var cfg = NewEATradosLib.HackEx();
-      if (cfg != null && cfg.courseId != CourseIds.EnglishE && !File.Exists(outFn) && lang == Langs.cs_cz) {
-        outFn = outFn.Replace("cs-cz.", "");
-      }
+      //LM16
+      //var cfg = NewEATradosLib.HackEx();
+      //if (cfg != null && cfg.courseId != CourseIds.EnglishE && !File.Exists(outFn) && lang == Langs.cs_cz) {
+      //  outFn = outFn.Replace("cs-cz.", "");
+      //}
 
       if (File.Exists(outFn)) {
         //setUniqueIds(root); //jednoznacne ocislovani uzlu (je jedna ciselna rada pro kazdy tagName) 

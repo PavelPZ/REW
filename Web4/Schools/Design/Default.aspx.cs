@@ -169,14 +169,14 @@ namespace web4.Schools.Design {
       //check();
     }
 
-    protected void newDataForDict(object sender, EventArgs e) {
-      exErr = Exercise.newDataForDict();
-      check();
-    }
+    //protected void newDataForDict(object sender, EventArgs e) {
+    //  exErr = Exercise.newDataForDict();
+    //  check();
+    //}
 
-    protected void InstructionsClick(object sender, EventArgs e) {
-      Instructions.run();
-    }
+    //protected void InstructionsClick(object sender, EventArgs e) {
+    //  Instructions.run();
+    //}
 
     protected void CoursesClick(object sender, EventArgs e) {
       //CoursesSitemap.run();
@@ -284,9 +284,9 @@ namespace web4.Schools.Design {
     //  //Packager.RewApp.BatchIncludes(@"q:\LMCom\rew\Downloads\Common\batches\vsz.xml");
     //}
 
-    protected void CreateMaps(object sender, EventArgs e) {
-      eTestMe.CreateMaps();
-    }
+    //protected void CreateMaps(object sender, EventArgs e) {
+    //  eTestMe.CreateMaps();
+    //}
 
     protected void RefreshTrados(object sender, EventArgs e) {
       //CoursesSitemap.RefreshTrados();
