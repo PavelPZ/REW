@@ -238,7 +238,7 @@ Web4/Schools/SLExtension.dll
 Web4/_bin_deployableAssemblies/
 dll/
 
-Web4/signature.bin
+Web4/signature.sign
 Web4/Data/buildLogs/
 Web4/Data/instr/
 Web4/Data/XmlSource/

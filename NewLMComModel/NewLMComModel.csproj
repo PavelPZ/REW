@@ -418,7 +418,9 @@
     <None Include="Licenses\v8.strongtalk.license" />
     <None Include="Licenses\v8.v8.license" />
     <None Include="Licenses\v8.valgrind.license" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Runtime\lmConsole\index.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>index.cs</LastGenOutput>
