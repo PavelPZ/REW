@@ -11,7 +11,7 @@ namespace blendedData {
   using System.Linq;
   using System.Text;
 
-  internal sealed class Configuration : DbMigrationsConfiguration<blendedData.Vyzva57> {
+  internal sealed class Configuration : DbMigrationsConfiguration<Vyzva57> {
     public Configuration() {
       AutomaticMigrationsEnabled = false;
       AutomaticMigrationDataLossAllowed = true;

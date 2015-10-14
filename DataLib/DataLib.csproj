@@ -54,10 +54,34 @@
     <Compile Include="Tables\BlendedCompany.cs" />
     <Compile Include="Tables\BlendedCourseData.cs" />
     <Compile Include="Tables\BlendedCourseUser.cs" />
+    <Compile Include="Tables\Company.cs" />
+    <Compile Include="Tables\CompanyDepartment.cs" />
+    <Compile Include="Tables\CompanyLicence.cs" />
+    <Compile Include="Tables\CompanyUser.cs" />
+    <Compile Include="Tables\CourseData.cs" />
+    <Compile Include="Tables\CourseUser.cs" />
+    <Compile Include="Tables\Mapping\CompanyDepartmentMap.cs" />
+    <Compile Include="Tables\Mapping\CompanyLicenceMap.cs" />
+    <Compile Include="Tables\Mapping\CompanyMap.cs" />
+    <Compile Include="Tables\Mapping\CompanyUserMap.cs" />
+    <Compile Include="Tables\Mapping\CourseDataMap.cs" />
+    <Compile Include="Tables\Mapping\CourseUserMap.cs" />
+    <Compile Include="Tables\Mapping\ScormExMap.cs" />
+    <Compile Include="Tables\Mapping\UserLicenceMap.cs" />
+    <Compile Include="Tables\Mapping\UserMap.cs" />
+    <Compile Include="Tables\ScormEx.cs" />
+    <Compile Include="Tables\User.cs" />
+    <Compile Include="Tables\UserLicence.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LMComLib\LMComLib.csproj">
+      <Project>{c4201447-b3c3-4f3a-9e5f-4ff9b5f48570}</Project>
+      <Name>LMComLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
