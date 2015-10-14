@@ -86,7 +86,7 @@ namespace LMComLib {
         logCmd.data += "\r\n\r\n************* SERVER LOG:\r\n\r\n" + File.ReadAllText(fn);
         File.Delete(fn);
       }
-      Emailer.SendEMail(ConfigurationManager.AppSettings["Logger.emails"] ?? @"support@langmaster.com", "logger@langmaster.com", "Message from logger", "See attachment", false, new Emailer.Attachment("LogFile", Encoding.UTF8.GetBytes(logCmd.data), "text/plain"));
+      Emailer.SendEMail(ConfigurationManager.AppSettings["Logger.emails"] ?? @"support@langmaster.com", "logger@langmaster.com", "Message from logger", "See attachment", new Emailer.Attachment("LogFile", Encoding.UTF8.GetBytes(logCmd.data), "text/plain"));
       //SendLog(logCmd);
     }
     public static void SendLog(HttpContext context) {

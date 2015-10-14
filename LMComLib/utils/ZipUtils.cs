@@ -110,31 +110,31 @@ namespace LMComLib {
     /*                 PATCH jednoho souboru v ZIP                                   */
     /*********************************************************************************/
 
-    public void AddPatchableFileToZip(string fileName, byte[] fileBytes, string filePath) {
-      PatchInfo res = AddPatchableFileToZip (fileBytes, filePath);
-      new XElement("patch",
-        new XElement("Size", res.Size.ToString()),
-        new XElement("HeaderPatchPos", res.HeaderPatchPos.ToString()),
-        new XElement("DataPos", res.DataPos.ToString()),
-        new XElement("FileName", res.FileName)
-        ).Save(fileName += ".patch");
-    }
+    //public void AddPatchableFileToZip(string fileName, byte[] fileBytes, string filePath) {
+    //  PatchInfo res = AddPatchableFileToZip (fileBytes, filePath);
+    //  new XElement("patch",
+    //    new XElement("Size", res.Size.ToString()),
+    //    new XElement("HeaderPatchPos", res.HeaderPatchPos.ToString()),
+    //    new XElement("DataPos", res.DataPos.ToString()),
+    //    new XElement("FileName", res.FileName)
+    //    ).Save(fileName += ".patch");
+    //}
 
-    public PatchInfo AddPatchableFileToZip(byte[] fileBytes, string filePath) {
-      ZipEntry entry = new ZipEntry(filePath);
-      PatchInfo res = new PatchInfo() {FileName = filePath};
-      entry.DateTime = DateTime.UtcNow;
-      entry.Size = res.Size = fileBytes.Length;
-      entry.CompressionMethod = CompressionMethod.Stored;
+    //public PatchInfo AddPatchableFileToZip(byte[] fileBytes, string filePath) {
+    //  ZipEntry entry = new ZipEntry(filePath);
+    //  PatchInfo res = new PatchInfo() {FileName = filePath};
+    //  entry.DateTime = DateTime.UtcNow;
+    //  entry.Size = res.Size = fileBytes.Length;
+    //  entry.CompressionMethod = CompressionMethod.Stored;
 
-      zip.PutNextEntry(entry);
+    //  zip.PutNextEntry(entry);
 
-      res.HeaderPatchPos = zip.headerPatchPos;
-      //zip.patchEntryHeader = false;
-      res.DataPos = zip.baseOutputStream.Position;
-      zip.Write(fileBytes, 0, fileBytes.Length);
-      return res;
-    }
+    //  res.HeaderPatchPos = zip.headerPatchPos;
+    //  //zip.patchEntryHeader = false;
+    //  res.DataPos = zip.baseOutputStream.Position;
+    //  zip.Write(fileBytes, 0, fileBytes.Length);
+    //  return res;
+    //}
 
     static PatchInfo infoFromXml(string fileName) {
       XElement el = XElement.Load(fileName + ".patch");

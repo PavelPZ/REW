@@ -64,33 +64,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ChilkatDotNet4">
-      <HintPath>..\dlls\ChilkatDotNet4.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.AspNet, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetOpenAuth.AspNet.4.3.4.13329\lib\net45-full\DotNetOpenAuth.AspNet.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetOpenAuth.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.OAuth, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetOpenAuth.OAuth.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.OAuth.Consumer, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetOpenAuth.OAuth.Consumer.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.OpenId, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetOpenAuth.OpenId.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OpenId.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetOpenAuth.OpenId.RelyingParty.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="EcmaScript.NET, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EcmaScript.Net.1.0.1.0\lib\net20\EcmaScript.NET.dll</HintPath>
       <Private>True</Private>
@@ -176,10 +149,6 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml">
       <Private>True</Private>
@@ -256,6 +225,7 @@
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.structure.css" />
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.theme.css" />
     <Content Include="Author\Author.html" />
+    <Content Include="Temp\Author.html" />
     <Content Include="BlendedAPI\Doc.txt" />
     <None Include="BlendedAPI\Styles\style.less" />
     <None Include="BlendedAPI\Styles\exercise.less" />
@@ -286,8 +256,9 @@
     <Content Include="JsLib\Scripts\angular-route.js" />
     <Content Include="JsLib\Scripts\angular-ui-router.js" />
     <Content Include="JsLib\Scripts\angular.js" />
+    <Content Include="JsLib\Scripts\core.js" />
+    <Content Include="JsLib\Scripts\core.min.js" />
     <Content Include="JsLib\Scripts\es5-shim.js" />
-    <Content Include="JsLib\Scripts\jquery-1.11.3.min.js" />
     <Content Include="JsLib\Scripts\ui-bootstrap-tpls.js" />
     <Content Include="links.aspx" />
     <Content Include="packs\repositories.config" />
@@ -1339,7 +1310,6 @@
     <Content Include="JsLib\skins\skrivanek\eTestMeCertifikat.pdf" />
     <Content Include="JsLib\skins\skrivanek\css.less" />
     <Content Include="JsLib\css\img\logo-jjlearning.png" />
-    <Content Include="JsLib\Scripts\dx.phonejs.js" />
     <Content Include="JsLib\Scripts\jquery.transit.js" />
     <Content Include="JsLib\Scripts\knockout.validation.js" />
     <Content Include="JsLib\Scripts\knockout.js" />
@@ -1499,11 +1469,13 @@
     <TypeScriptCompile Include="JsLib\JSD\angularjs\angular-ui-bootstrap.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\angularjs\angular-ui-router.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\angularjs\angular.d.ts" />
+    <TypeScriptCompile Include="JsLib\JSD\core-js.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\HtmlAudio\waa.d.ts" />
     <None Include="JsLib\JSD\jquery-ui.d - Copy.ts_" />
     <TypeScriptCompile Include="JsLib\JSD\jquery-ui.d.ts" />
     <None Include="JsLib\JSD\jquery.d - Copy.ts_" />
     <TypeScriptCompile Include="JsLib\JSD\lib-lm.d.ts" />
+    <TypeScriptCompile Include="Temp\jsDeploy.ts" />
     <TypeScriptCompile Include="Temp\angular\knockout.ts" />
     <TypeScriptCompile Include="Temp\angular\test.ts" />
     <TypeScriptCompile Include="Temp\mediumJS\ts\Base.ts" />
@@ -2794,17 +2766,9 @@
     <Folder Include="Temp\Sql\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EduAuthor\EduAuthor.csproj">
-      <Project>{0e71cdce-d1c8-459e-ac82-2869f3200953}</Project>
-      <Name>EduAuthor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EPPlus\EPPlus.csproj">
       <Project>{7b288026-5502-4a39-bf41-77e086f3e4a3}</Project>
       <Name>EPPlus</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LMComExternal\LMComExternal.csproj">
-      <Project>{a0024fc2-c528-45f8-9391-4b45889e53d9}</Project>
-      <Name>LMComExternal</Name>
     </ProjectReference>
     <ProjectReference Include="..\LMComLib\LMComLib.csproj">
       <Project>{c4201447-b3c3-4f3a-9e5f-4ff9b5f48570}</Project>

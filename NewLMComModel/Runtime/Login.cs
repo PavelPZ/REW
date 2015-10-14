@@ -142,7 +142,7 @@ namespace NewData {
             par.Html = par.Html.Replace("$PASSWORD$", psw);
         }
         Emailer.Attachment att = par.isAtt ? new Emailer.Attachment(par.attFile, Encoding.UTF8.GetBytes(par.attContent), par.attContentType) : null;
-        var err = LMComLib.Emailer.sendEMail(par.To, par.From, par.Subject, par.Html, true, att, par.Cc);
+        var err = LMComLib.Emailer.SendEMail(par.To, par.From, par.Subject, par.Html, att, par.Cc);
         return err == null ? new RpcResponse() : new RpcResponse() { error = 999, errorText = err, result = null };
       });
 

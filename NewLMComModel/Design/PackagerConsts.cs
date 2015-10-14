@@ -497,7 +497,7 @@ namespace Packager {
       "courses/GenCourseMeta.js",
     };
 
-    public static string[] angularJS = new string[] {
+    public static string[] jsBlended = new string[] {
       "blendedapi/scripts/lib.js",
       "blendedapi/scripts/loader.js",
       "blendedapi/scripts/directives.js",

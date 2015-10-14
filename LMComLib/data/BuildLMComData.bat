@@ -1,1 +1,0 @@
-"C:\Program Files\SubSonic\SubSonic 2.0.2\SubCommander\sonic.exe" generate /override /server pzika-notebook /db LMComData /out "Q:\LMCom\LMComLib\Data\LMComData\" /generatedNameSpace LMComData /provider LMComDataProvider

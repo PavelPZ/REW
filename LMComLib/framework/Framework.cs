@@ -180,7 +180,7 @@ namespace LMComLib {
           //DEBUG:
           //SiteId = Domains.com; LangId = Langs.fr_fr;
           Security = SecurityDir.Pages;
-          EACourse = ProductInfos.SpaceIdToCourseId(parts[2]);
+          //EACourse = ProductInfos.SpaceIdToCourseId(parts[2]);
           RelativePath = VirtualPathUtility.ToAppRelative(url.ToLower());
           break;
       }
@@ -414,7 +414,7 @@ namespace LMComLib {
       : base(req.Url.AbsolutePath, req.Url.Query) {
       HttpContext ctx = HttpContext.Current;
       ctx.Items[uiKey] = this;
-      SubSite = SiteId == Domains.com ? SubDomain.hostToComSubdomain(req.Url.Host) : SubDomains.no;
+      //SubSite = SiteId == Domains.com ? SubDomain.hostToComSubdomain(req.Url.Host) : SubDomains.no;
       if (AppId == LMApps.ea) return;
       if ((this.Type == SiteMapNodeType.aspx || this.Type == SiteMapNodeType.lmp) && this.LangId == Langs.lang)
         throw new EReplaceLang("Replace /LANG/ to /cs-cz/ in browser URL");
@@ -527,7 +527,7 @@ namespace LMComLib {
     public string AbsoluteUri; //Info z puvodniho requestu pred RewritePath
     public SubDomains SubSite;
     public string AbsolutePath; //Info z puvodniho requestu pred RewritePath
-    public LMComLib.Cms.Template CmsTemplate; //Template, zjistovany v runtime v AuthenticateRequest
+    //public LMComLib.Cms.Template CmsTemplate; //Template, zjistovany v runtime v AuthenticateRequest
     public SiteMapNode Node; //SiteMapNode, zjistovany v runtime v AuthenticateRequest
     public bool isLMP; //LMP nebo ASPX soubor. Zjistovano z existence prislusneho souboru
 
@@ -559,7 +559,7 @@ namespace LMComLib {
       return langs.Select(l => new SeeAlsoInfo() {
         LineClass = ctrl == null ? null : "comp-mod-icon-" + CommonLib.LangToLineId(l),
         //IconUrl = ctrl==null ? null : ctrl.ResolveClientUrl("~/flags/small_bitmaps/" + CommonLib.LangToLineId(l).ToString() + ".png"),
-        Url = urlInfo.getUrl(SiteId, SubDomainInfo.LANGMasterSubDomain(l), l.ToString().Replace('_', '-'), page) + urlPostfix,
+        //Url = urlInfo.getUrl(SiteId, SubDomainInfo.LANGMasterSubDomain(l), l.ToString().Replace('_', '-'), page) + urlPostfix,
         Title = CommonLib.langTitle[l]
       }).OrderBy(l => l.Title);
     }
@@ -568,93 +568,94 @@ namespace LMComLib {
       return ctx == null ? null : (urlInfo)HttpContext.Current.Items[uiKey];
     }
 
-    public static string GetUrl(LMApps appId, string path) {
-      return GetUrlInfo().getUrl(appId, path);
-    }
+    //public static string GetUrl(LMApps appId, string path) {
+    //  return GetUrlInfo().getUrl(appId, path);
+    //}
 
-    public string getUrl(LMApps appId, string path) {
-      return getUrl(SiteId, SubSite, appId, Lang, path, VirtualRootAdded);
-    }
+    //public string getUrl(LMApps appId, string path) {
+    //  return getUrl(SiteId, SubSite, appId, Lang, path, VirtualRootAdded);
+    //}
 
-    public static string getUrl(Domains site, SubDomains subSite, string lang, string path) {
-      return getUrl(site, subSite, LMApps.web, lang, path, true);
-    }
+    //public static string getUrl(Domains site, SubDomains subSite, string lang, string path) {
+    //  return getUrl(site, subSite, LMApps.web, lang, path, true);
+    //}
 
-    public string getUrlEa(CourseIds crsId, string path) {
-      return getUrl(LMApps.ea, crsId.ToString().Replace('_', '-') + "/" + path);
-    }
+    //public string getUrlEa(CourseIds crsId, string path) {
+    //  return getUrl(LMApps.ea, crsId.ToString().Replace('_', '-') + "/" + path);
+    //}
 
-    public string getUrl(Domains site, SubDomains subSite, LMApps appId, string path) {
-      return getUrl(site, subSite, appId, Lang, path, VirtualRootAdded);
-    }
+    //public string getUrl(Domains site, SubDomains subSite, LMApps appId, string path) {
+    //  return getUrl(site, subSite, appId, Lang, path, VirtualRootAdded);
+    //}
 
     public static bool isSeznam() {
       urlInfo ui = urlInfo.GetUrlInfo();
       return ui != null && ui.SiteId == Domains.sz;
     }
 
-    public static string getDefaultUrl(Domains site, SubDomains subSite, LMApps appId, string lang, string path, bool virtualRootAdded) {
-      path = path.ToLower();
-      if (appId == LMApps.web && path != null)
-        path = path.Replace(".lmp", ".aspx").Replace("home.aspx", null);
-      string basicPath = SiteInfos.getDefaultAuthority(site, SiteInfos.c_appId, appId.ToString());
-      switch (appId) {
-        case LMApps.ea: return basicPath + path;
-        case LMApps.web: if (virtualRootAdded) return basicPath + (path == null ? null : path.Replace("pages/", null)); else break;
-      }
-      return string.Format(@"{0}{1}/{2}/{3}/{4}", basicPath, site, appId, lang, path);
-    }
+    //public static string getDefaultUrl(Domains site, SubDomains subSite, LMApps appId, string lang, string path, bool virtualRootAdded) {
+    //  path = path.ToLower();
+    //  if (appId == LMApps.web && path != null)
+    //    path = path.Replace(".lmp", ".aspx").Replace("home.aspx", null);
+    //  string basicPath = SiteInfos.getDefaultAuthority(site, SiteInfos.c_appId, appId.ToString());
+    //  switch (appId) {
+    //    case LMApps.ea: return basicPath + path;
+    //    case LMApps.web: if (virtualRootAdded) return basicPath + (path == null ? null : path.Replace("pages/", null)); else break;
+    //  }
+    //  return string.Format(@"{0}{1}/{2}/{3}/{4}", basicPath, site, appId, lang, path);
+    //}
 
-    public static string getUrl(Domains site, SubDomains subSite, LMApps appId, string lang, string path, bool virtualRootAdded) {
-      return getUrl(site, subSite, appId, lang, path, virtualRootAdded, Machines.isBuildEACache);
-    }
+    //public static string getUrl(Domains site, SubDomains subSite, LMApps appId, string lang, string path, bool virtualRootAdded) {
+    //  return getUrl(site, subSite, appId, lang, path, virtualRootAdded, Machines.isBuildEACache);
+    //}
 
     public static string comBasicPath() {
       return comBasicPath(urlInfo.GetUrlInfo().SubSite, LMApps.web);
     }
 
     public static string comBasicPath(SubDomains subSite, LMApps appId) {
-      switch (appId) {
-        case LMApps.commerce:
-        case LMApps.web:
-          return SubDomain.subdomainToUrl(subSite) + "/lmcom/";
-        case LMApps.ea:
-        //return SubDomain.subdomainToUrl(SubDomains.com) + "/";
-        case LMApps.no:
-          return SubDomain.subdomainToUrl(subSite) + "/";
-        default:
-          throw new NotImplementedException();
-      }
+      return null;
+      //switch (appId) {
+      //  case LMApps.commerce:
+      //  case LMApps.web:
+      //    return SubDomain.subdomainToUrl(subSite) + "/lmcom/";
+      //  case LMApps.ea:
+      //  //return SubDomain.subdomainToUrl(SubDomains.com) + "/";
+      //  case LMApps.no:
+      //    return SubDomain.subdomainToUrl(subSite) + "/";
+      //  default:
+      //    throw new NotImplementedException();
+      //}
     }
 
-    public static string getUrl(Domains site, SubDomains subSite, LMApps appId, string lang, string path, bool virtualRootAdded, bool isDefault) {
-      path = path.ToLowerInvariant();
-      if (appId == LMApps.web && path != null)
-        path = path.Replace(".lmp", ".aspx").Replace("home.aspx", null);
-      string basicPath;
-      if (site == Domains.com) basicPath = comBasicPath(subSite, appId);
-      else if (site == Domains.cz) basicPath = "http://www.langmaster.cz/lmcom/";
-      else basicPath = isDefault ?
-          SiteInfos.getDefaultAuthority(site, SiteInfos.c_appId, (appId == LMApps.no ? LMApps.web : appId).ToString()) :
-          SiteInfos.getAuthority(site, appId == LMApps.no ? LMApps.web : appId);
+    //public static string getUrl(Domains site, SubDomains subSite, LMApps appId, string lang, string path, bool virtualRootAdded, bool isDefault) {
+    //  path = path.ToLowerInvariant();
+    //  if (appId == LMApps.web && path != null)
+    //    path = path.Replace(".lmp", ".aspx").Replace("home.aspx", null);
+    //  string basicPath;
+    //  if (site == Domains.com) basicPath = comBasicPath(subSite, appId);
+    //  else if (site == Domains.cz) basicPath = "http://www.langmaster.cz/lmcom/";
+    //  else basicPath = isDefault ?
+    //      SiteInfos.getDefaultAuthority(site, SiteInfos.c_appId, (appId == LMApps.no ? LMApps.web : appId).ToString()) :
+    //      SiteInfos.getAuthority(site, appId == LMApps.no ? LMApps.web : appId);
 
-      switch (appId) {
-        case LMApps.no: return basicPath + path;
-        case LMApps.ea:
-          if (site == Domains.cz || site == Domains.sz) return basicPath + path;
-          Langs lng = (Langs)Enum.Parse(typeof(Langs), lang.Replace('-', '_'));
-          return basicPath + LangToEADir(lng) + "/" + path;
-        case LMApps.web:
-          if (virtualRootAdded && site == Domains.sz)
-            return basicPath + (path == null ? null : path.Replace("pages/", null));
-          else
-            break;
-      }
-      if ((site == Domains.com || site == Domains.org) && appId == LMApps.web) {
-        path = LocalizeUrl.Localize(path, lang);
-      }
-      return string.Format(@"{0}{1}/{2}/{3}/{4}", basicPath, site, appId, lang, path);
-    }
+    //  switch (appId) {
+    //    case LMApps.no: return basicPath + path;
+    //    case LMApps.ea:
+    //      if (site == Domains.cz || site == Domains.sz) return basicPath + path;
+    //      Langs lng = (Langs)Enum.Parse(typeof(Langs), lang.Replace('-', '_'));
+    //      return basicPath + LangToEADir(lng) + "/" + path;
+    //    case LMApps.web:
+    //      if (virtualRootAdded && site == Domains.sz)
+    //        return basicPath + (path == null ? null : path.Replace("pages/", null));
+    //      else
+    //        break;
+    //  }
+    //  if ((site == Domains.com || site == Domains.org) && appId == LMApps.web) {
+    //    path = LocalizeUrl.Localize(path, lang);
+    //  }
+    //  return string.Format(@"{0}{1}/{2}/{3}/{4}", basicPath, site, appId, lang, path);
+    //}
 
     public static string LangToEADir(Langs lng) {
       switch (lng) {
@@ -681,12 +682,12 @@ namespace LMComLib {
       }
     }
 
-    public static string GetUrl(SiteMapNode nd) {
-      string url = VirtualPathUtility.ToAppRelative(nd.Url.ToLowerInvariant());
-      string[] parts = url.Split(new char[] { '/' }, 5);
-      if (parts.Length != 5) throw new Exception();
-      return GetUrl((LMApps)Enum.Parse(typeof(LMApps), parts[2], true), parts[4]);
-    }
+    //public static string GetUrl(SiteMapNode nd) {
+    //  string url = VirtualPathUtility.ToAppRelative(nd.Url.ToLowerInvariant());
+    //  string[] parts = url.Split(new char[] { '/' }, 5);
+    //  if (parts.Length != 5) throw new Exception();
+    //  return GetUrl((LMApps)Enum.Parse(typeof(LMApps), parts[2], true), parts[4]);
+    //}
 
     public static string getTitle(Domains site, string lng, string path) {
       SiteMapNode nd = SiteMap.Provider.FindSiteMapNode("~/site-" + site.ToString() + "/web/lang/" + path);
@@ -698,27 +699,27 @@ namespace LMComLib {
       } finally { Thread.CurrentThread.CurrentUICulture = oldCi; }
     }
 
-    public static string GetUrl(SiteMapNode nd, SubDomains subSite, Langs lng) {
-      string url = VirtualPathUtility.ToAppRelative(nd.Url.ToLower());
-      string[] parts = url.Split(new char[] { '/' }, 5);
-      if (parts.Length != 5) throw new Exception();
-      string site = parts[1];
-      if (site.StartsWith("site-")) site = site.Substring(5, site.Length - 5);
-      return getUrl(
-        (Domains)Enum.Parse(typeof(Domains), site, true),
-        subSite,
-        (LMApps)Enum.Parse(typeof(LMApps), parts[2], true),
-        lng.ToString().Replace('_', '-'),
-        parts[4],
-        true);
-    }
+    //public static string GetUrl(SiteMapNode nd, SubDomains subSite, Langs lng) {
+    //  string url = VirtualPathUtility.ToAppRelative(nd.Url.ToLower());
+    //  string[] parts = url.Split(new char[] { '/' }, 5);
+    //  if (parts.Length != 5) throw new Exception();
+    //  string site = parts[1];
+    //  if (site.StartsWith("site-")) site = site.Substring(5, site.Length - 5);
+    //  return getUrl(
+    //    (Domains)Enum.Parse(typeof(Domains), site, true),
+    //    subSite,
+    //    (LMApps)Enum.Parse(typeof(LMApps), parts[2], true),
+    //    lng.ToString().Replace('_', '-'),
+    //    parts[4],
+    //    true);
+    //}
 
-    public static string HomeUrl(SubDomains subSite) {
-      urlInfo ui = urlInfo.GetUrlInfo();
-      if (ui == null) return "about:blank";
-      return getUrl(ui.SiteId, subSite, LMApps.web, ui.Lang, "pages/", true);
-      //return GetUrl(LMApps.web, "pages/");
-    }
+    //public static string HomeUrl(SubDomains subSite) {
+    //  urlInfo ui = urlInfo.GetUrlInfo();
+    //  if (ui == null) return "about:blank";
+    //  return getUrl(ui.SiteId, subSite, LMApps.web, ui.Lang, "pages/", true);
+    //  //return GetUrl(LMApps.web, "pages/");
+    //}
 
 
     public bool isHomeUrl() {
@@ -748,7 +749,7 @@ namespace LMComLib {
         case Domains.el:
         case Domains.sz:
         case Domains.cz: return price.ToString("C", Currency.kcCulture);
-        case Domains.com: return priceText(SubDomain.subDomainToCurr(subsite), price);
+        //case Domains.com: return priceText(SubDomain.subDomainToCurr(subsite), price);
         default: throw new Exception("Missing code here");
       }
     }
@@ -833,26 +834,26 @@ namespace LMComLib {
     public override object EvaluateExpression(object target, BoundPropertyEntry entry, object parsedData, System.Web.Compilation.ExpressionBuilderContext context) {
       return null;
     }
-    public static string getUrl(string data) {
-      if (string.IsNullOrEmpty(data)) return "";
-      urlInfo ui = urlInfo.GetUrlInfo(); if (ui == null) return "";
-      string[] parts = data.Split(',');
-      LMApps app; string url;
-      switch (parts.Length) {
-        case 1:
-          app = ui.AppId; url = parts[0];
-          return ui.getUrl(app, url);
-        case 2:
-          app = (LMApps)Enum.Parse(typeof(LMApps), parts[0], true); url = parts[1];
-          return ui.getUrl(app, url);
-        case 3:
-          Domains site = LowUtils.EnumParse<Domains>(parts[0]);
-          app = (LMApps)Enum.Parse(typeof(LMApps), parts[1], true); url = parts[2];
-          return ui.getUrl(site, ui.SubSite, app, url);
-        default:
-          return "error";
-      }
-    }
+    //public static string getUrl(string data) {
+    //  if (string.IsNullOrEmpty(data)) return "";
+    //  urlInfo ui = urlInfo.GetUrlInfo(); if (ui == null) return "";
+    //  string[] parts = data.Split(',');
+    //  LMApps app; string url;
+    //  switch (parts.Length) {
+    //    case 1:
+    //      app = ui.AppId; url = parts[0];
+    //      return ui.getUrl(app, url);
+    //    case 2:
+    //      app = (LMApps)Enum.Parse(typeof(LMApps), parts[0], true); url = parts[1];
+    //      return ui.getUrl(app, url);
+    //    case 3:
+    //      Domains site = LowUtils.EnumParse<Domains>(parts[0]);
+    //      app = (LMApps)Enum.Parse(typeof(LMApps), parts[1], true); url = parts[2];
+    //      return ui.getUrl(site, ui.SubSite, app, url);
+    //    default:
+    //      return "error";
+    //  }
+    //}
     public override System.CodeDom.CodeExpression GetCodeExpression(BoundPropertyEntry entry, object parsedData, System.Web.Compilation.ExpressionBuilderContext context) {
       return new CodeMethodInvokeExpression(
         new CodeTypeReferenceExpression(typeof(GetUrlExpressionBuilder)),

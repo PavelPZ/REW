@@ -1,0 +1,3323 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Query Status="Warn" Name="Potentially dead Types" ContentTruncatedThreshold="100" NbNodeListed="803" FullName="" QueryId="" ProjectNameAndDate="Web4New  (analysis done Today 11:38 most recent)" NbNodeMatched="803" NbNodeTested="4566" KindOfNode=" types">
+  <QueryString>// &lt;Name&gt;Potentially dead Types&lt;/Name&gt;
+        
+warnif count &gt; 0
+// Filter procedure for types that should'nt be considered as dead
+let canTypeBeConsideredAsDeadProc = new Func&lt;IType, bool&gt;(
+   t =&gt; //!t.IsPublic &amp;&amp; //   Public types might be used by client applications of your assemblies.
+         t.Name != "Program" &amp;&amp; 
+        !t.IsGeneratedByCompiler &amp;&amp;
+
+         // If you don't want to link NDepend.API.dll, you can use your own IsNotDeadCodeAttribute 
+         // and adapt the source code of this rule.
+        !t.HasAttribute("NDepend.Attributes.IsNotDeadCodeAttribute".AllowNoMatch()) 
+
+         // Exclude static types that define only const fields
+         // because they cannot be seen as used in IL code.
+        &amp;&amp; !(t.IsStatic &amp;&amp; t.NbMethods == 0 &amp;&amp; !t.Fields.Where(f =&gt; !f.IsLiteral).Any())
+)
+
+// Select types unused
+let typesUnused = 
+   from t in JustMyCode.Types where
+   t.NbTypesUsingMe == 0 &amp;&amp; canTypeBeConsideredAsDeadProc(t)
+   select t
+
+// Dead types = types used only by unused types (recursive)
+let deadTypesMetric = typesUnused.FillIterative(
+types =&gt; from t in codeBase.Application.Types.UsedByAny(types).Except(types)
+         where canTypeBeConsideredAsDeadProc(t) &amp;&amp;
+               t.TypesUsingMe.Intersect(types).Count() == t.NbTypesUsingMe
+         select t)
+
+from t in deadTypesMetric.DefinitionDomain
+select new { 
+  t, 
+  depth = deadTypesMetric[t],
+  t.TypesUsingMe  
+}
+
+//&lt;Description&gt;
+// This rule lists *potentially* **dead types**.
+// A dead type is a type that can be removed
+// because it is never used by the program.
+//
+// This rule lists not only types not used anywhere in code,
+// but also types used only by types not used anywhere in code.
+// This is why this rule comes with a column *TypesusingMe* and
+// this is why there is a code metric named *depth*:
+//
+// • A *depth* value of *0* means the type is not used.
+//
+// • A *depth* value of *1* means the type is used only by types not used.
+//
+// • etc…
+//
+// By reading the source code of this rule, you'll see that by default,
+// *public* types are not matched, because such type might not be used
+// by the analyzed code, but still be used by client code, not analyzed by NDepend.
+// This default behavior can be easily changed.
+//&lt;/Description&gt;
+
+//&lt;HowToFix&gt;
+// *Static analysis* cannot provide an *exact* list of dead types,
+// because there are several ways to use a type *dynamically* (like through reflection).
+//
+// For each type matched by this query, first investigate if the type is used somehow
+// (like through reflection).
+// If the type is really never used, it is important to remove it 
+// to avoid maintaining useless code.
+// If you estimate the code of the type might be used in the future, 
+// at least comment it, and provide an explanatory comment about the future intentions.
+//
+// If a type is used somehow,
+// but still is matched by this rule, you can tag it with the attribute 
+// **IsNotDeadCodeAttribute** found in *NDepend.API.dll* to avoid matching the type again.
+// You can also provide your own attribute for this need, 
+// but then you'll need to adapt this code rule.
+//&lt;/HowToFix&gt;</QueryString>
+  <Columns>
+    <Column>types</Column>
+    <Column>depth</Column>
+    <Column>TypesUsingMe</Column>
+  </Columns>
+  <Rows>
+    <Row Name="GZipInputStream" FullName="ICSharpCode.SharpZipLib.GZip .GZipInputStream">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="GZipOutputStream" FullName="ICSharpCode.SharpZipLib.GZip .GZipOutputStream">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="NameAndSizeFilter" FullName="ICSharpCode.SharpZipLib.Core .NameAndSizeFilter">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="BZip2" FullName="ICSharpCode.SharpZipLib.BZip2.BZip2">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="FastZip" FullName="ICSharpCode.SharpZipLib.Zip.FastZip">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="GeneralBitFlags" FullName="ICSharpCode.SharpZipLib.Zip .GeneralBitFlags">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="XmlRpcProxyCodeGen" FullName="Headblender.XmlRpc.XmlRpcProxyCodeGen">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Tracer" FullName="xmlrpc.Tracer">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RequestResponseLogger" FullName="CookComputing.XmlRpc .RequestResponseLogger">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="XmlRpcClientFormatterSinkProvider" FullName="CookComputing.XmlRpc .XmlRpcClientFormatterSinkProvider">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="XmlRpcUnexpectedTypeException" FullName="CookComputing.XmlRpc .XmlRpcUnexpectedTypeException">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="XmlRpcProxyGen" FullName="CookComputing.XmlRpc.XmlRpcProxyGen">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="XmlRpcServerFormatterSinkProvider" FullName="CookComputing.XmlRpc .XmlRpcServerFormatterSinkProvider">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="XmlRpcService" FullName="CookComputing.XmlRpc.XmlRpcService">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="String" FullName="Saluse.MediaKit.Extensions.String">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SeekableStream" FullName="Saluse.MediaKit.IO.SeekableStream">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="OutputChannelTypeEnumeration" FullName="Saluse.MediaKit.Enumerations .OutputChannelTypeEnumeration">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="AudioTypeEnumeration" FullName="Saluse.MediaKit.Enumerations .AudioTypeEnumeration">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SampleReadyDelegate" FullName="Saluse.MediaKit.Delegates .SampleReadyDelegate">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="AudioPreProcessorDelegate" FullName="Saluse.MediaKit.Delegates .AudioPreProcessorDelegate">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SerializableAttribute" FullName="Saluse.MediaKit.Bridge .SerializableAttribute">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Hashtable" FullName="Saluse.MediaKit.Bridge.Hashtable">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="BinaryFormatter" FullName="Saluse.MediaKit.Bridge.BinaryFormatter">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Linq" FullName="LinqKit.Linq">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="JZlib" FullName="System.util.zlib.JZlib">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="k_Queue" FullName="System.util.collections.k_Queue">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="k_Stack" FullName="System.util.collections.k_Stack">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="TimeStampRequestGenerator" FullName="Org.BouncyCastle.Tsp .TimeStampRequestGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="TimeStampResponseGenerator" FullName="Org.BouncyCastle.Tsp .TimeStampResponseGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="TspAlgorithms" FullName="Org.BouncyCastle.Tsp.TspAlgorithms">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PemReader" FullName="Org.BouncyCastle.OpenSsl.PemReader">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PemWriter" FullName="Org.BouncyCastle.OpenSsl.PemWriter">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="BasicOcspRespGenerator" FullName="Org.BouncyCastle.Ocsp .BasicOcspRespGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="OcspReqGenerator" FullName="Org.BouncyCastle.Ocsp.OcspReqGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="OCSPRespGenerator" FullName="Org.BouncyCastle.Ocsp.OCSPRespGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="OcscpRespStatus" FullName="Org.BouncyCastle.Ocsp.OcscpRespStatus">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CmsAttributeTableGenerationException" FullName="Org.BouncyCastle.Cms .CmsAttributeTableGenerationException">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CmsAttributeTableParameter" FullName="Org.BouncyCastle.Cms .CmsAttributeTableParameter">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CmsCompressedDataGenerator" FullName="Org.BouncyCastle.Cms .CmsCompressedDataGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CmsCompressedDataParser" FullName="Org.BouncyCastle.Cms .CmsCompressedDataParser">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CmsCompressedDataStreamGenerator" FullName="Org.BouncyCastle.Cms .CmsCompressedDataStreamGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CmsEnvelopedDataGenerator" FullName="Org.BouncyCastle.Cms .CmsEnvelopedDataGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CmsEnvelopedDataParser" FullName="Org.BouncyCastle.Cms .CmsEnvelopedDataParser">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CmsEnvelopedDataStreamGenerator" FullName="Org.BouncyCastle.Cms .CmsEnvelopedDataStreamGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CmsProcessableFile" FullName="Org.BouncyCastle.Cms.CmsProcessableFile">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CmsSignedDataParser" FullName="Org.BouncyCastle.Cms.CmsSignedDataParser">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Pkcs5Scheme2PbeKey" FullName="Org.BouncyCastle.Cms.Pkcs5Scheme2PbeKey">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="X509AttrCertParser" FullName="Org.BouncyCastle.X509.X509AttrCertParser">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="X509CertPairParser" FullName="Org.BouncyCastle.X509.X509CertPairParser">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="X509KeyUsage" FullName="Org.BouncyCastle.X509.X509KeyUsage">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="X509V1CertificateGenerator" FullName="Org.BouncyCastle.X509 .X509V1CertificateGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="X509V2AttributeCertificateGenerator" FullName="Org.BouncyCastle.X509 .X509V2AttributeCertificateGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="X509V2CrlGenerator" FullName="Org.BouncyCastle.X509.X509V2CrlGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="X509V3CertificateGenerator" FullName="Org.BouncyCastle.X509 .X509V3CertificateGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="X509AttrCertStoreSelector" FullName="Org.BouncyCastle.X509.Store .X509AttrCertStoreSelector">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="X509CertPairStoreSelector" FullName="Org.BouncyCastle.X509.Store .X509CertPairStoreSelector">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="X509CrlStoreSelector" FullName="Org.BouncyCastle.X509.Store .X509CrlStoreSelector">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="AuthorityKeyIdentifierStructure" FullName="Org.BouncyCastle.X509.Extension .AuthorityKeyIdentifierStructure">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SubjectKeyIdentifierStructure" FullName="Org.BouncyCastle.X509.Extension .SubjectKeyIdentifierStructure">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="JZlib" FullName="Org.BouncyCastle.Utilities.Zlib.JZlib">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="BufferedDecoder" FullName="Org.BouncyCastle.Utilities.Encoders .BufferedDecoder">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="BufferedEncoder" FullName="Org.BouncyCastle.Utilities.Encoders .BufferedEncoder">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="HexTranslator" FullName="Org.BouncyCastle.Utilities.Encoders .HexTranslator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="UrlBase64" FullName="Org.BouncyCastle.Utilities.Encoders .UrlBase64">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DotNetUtilities" FullName="Org.BouncyCastle.Security .DotNetUtilities">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="NoSuchAlgorithmException" FullName="Org.BouncyCastle.Security .NoSuchAlgorithmException">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ReferenceMultiplier" FullName="Org.BouncyCastle.Math.EC.Multiplier .ReferenceMultiplier">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="WNafMultiplier" FullName="Org.BouncyCastle.Math.EC.Multiplier .WNafMultiplier">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="WTauNafMultiplier" FullName="Org.BouncyCastle.Math.EC.Multiplier .WTauNafMultiplier">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="StreamBlockCipher" FullName="Org.BouncyCastle.Crypto .StreamBlockCipher">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="AlwaysValidVerifyer" FullName="Org.BouncyCastle.Crypto.Tls .AlwaysValidVerifyer">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Iso9796d2PssSigner" FullName="Org.BouncyCastle.Crypto.Signers .Iso9796d2PssSigner">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CryptoApiRandomGenerator" FullName="Org.BouncyCastle.Crypto.Prng .CryptoApiRandomGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="VmpcRandomGenerator" FullName="Org.BouncyCastle.Crypto.Prng .VmpcRandomGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CcmParameters" FullName="Org.BouncyCastle.Crypto.Parameters .CcmParameters">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="MacStream" FullName="Org.BouncyCastle.Crypto.IO.MacStream">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DHBasicKeyPairGenerator" FullName="Org.BouncyCastle.Crypto.Generators .DHBasicKeyPairGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DHParametersGenerator" FullName="Org.BouncyCastle.Crypto.Generators .DHParametersGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DsaParametersGenerator" FullName="Org.BouncyCastle.Crypto.Generators .DsaParametersGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ElGamalParametersGenerator" FullName="Org.BouncyCastle.Crypto.Generators .ElGamalParametersGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Gost3410ParametersGenerator" FullName="Org.BouncyCastle.Crypto.Generators .Gost3410ParametersGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Kdf1BytesGenerator" FullName="Org.BouncyCastle.Crypto.Generators .Kdf1BytesGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Mgf1BytesGenerator" FullName="Org.BouncyCastle.Crypto.Generators .Mgf1BytesGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="NaccacheSternKeyPairGenerator" FullName="Org.BouncyCastle.Crypto.Generators .NaccacheSternKeyPairGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RsaBlindingFactorGenerator" FullName="Org.BouncyCastle.Crypto.Generators .RsaBlindingFactorGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="AesLightEngine" FullName="Org.BouncyCastle.Crypto.Engines .AesLightEngine">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="IsaacEngine" FullName="Org.BouncyCastle.Crypto.Engines .IsaacEngine">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="NaccacheSternEngine" FullName="Org.BouncyCastle.Crypto.Engines .NaccacheSternEngine">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="NullEngine" FullName="Org.BouncyCastle.Crypto.Engines .NullEngine">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RsaBlindingEngine" FullName="Org.BouncyCastle.Crypto.Engines .RsaBlindingEngine">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RsaEngine" FullName="Org.BouncyCastle.Crypto.Engines .RsaEngine">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ShortenedDigest" FullName="Org.BouncyCastle.Crypto.Digests .ShortenedDigest">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DHAgreement" FullName="Org.BouncyCastle.Crypto.Agreement .DHAgreement">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DHKekGenerator" FullName="Org.BouncyCastle.Crypto.Agreement.Kdf .DHKekGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ArmoredOutputStream" FullName="Org.BouncyCastle.Bcpg .ArmoredOutputStream">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="OutputStreamPacket" FullName="Org.BouncyCastle.Bcpg.OutputStreamPacket">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PgpCompressedDataGenerator" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpCompressedDataGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PgpEncryptedDataGenerator" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpEncryptedDataGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PgpKeyFlags" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpKeyFlags">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PgpKeyRingGenerator" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpKeyRingGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PgpPublicKeyRingBundle" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpPublicKeyRingBundle">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PgpSecretKeyRingBundle" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpSecretKeyRingBundle">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PgpSignatureSubpacketGenerator" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpSignatureSubpacketGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PgpUserAttributeSubpacketVectorGenerator" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpUserAttributeSubpacketVectorGenerato r">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PgpV3SignatureGenerator" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpV3SignatureGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Asn1ObjectParser" FullName="Org.BouncyCastle.Asn1.Asn1ObjectParser">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Asn1Tags" FullName="Org.BouncyCastle.Asn1.Asn1Tags">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="BerNull" FullName="Org.BouncyCastle.Asn1.BerNull">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DerSequenceGenerator" FullName="Org.BouncyCastle.Asn1 .DerSequenceGenerator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="OtherInfo" FullName="Org.BouncyCastle.Asn1.X9.OtherInfo">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Dump" FullName="Org.BouncyCastle.Asn1.Utilities.Dump">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SmimeCapabilities" FullName="Org.BouncyCastle.Asn1.Smime .SmimeCapabilities">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SmimeCapabilitiesAttribute" FullName="Org.BouncyCastle.Asn1.Smime .SmimeCapabilitiesAttribute">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SmimeEncryptionKeyPreferenceAttribute" FullName="Org.BouncyCastle.Asn1.Smime .SmimeEncryptionKeyPreferenceAttribute">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="AttributePkcs" FullName="Org.BouncyCastle.Asn1.Pkcs.AttributePkcs">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PbeS2Parameters" FullName="Org.BouncyCastle.Asn1.Pkcs .PbeS2Parameters">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RsaesOaepParameters" FullName="Org.BouncyCastle.Asn1.Pkcs .RsaesOaepParameters">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SignerInfo" FullName="Org.BouncyCastle.Asn1.Pkcs.SignerInfo">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CrlID" FullName="Org.BouncyCastle.Asn1.Ocsp.CrlID">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ServiceLocator" FullName="Org.BouncyCastle.Asn1.Ocsp .ServiceLocator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PublicKeyAndChallenge" FullName="Org.BouncyCastle.Asn1.Mozilla .PublicKeyAndChallenge">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="MicrosoftObjectIdentifiers" FullName="Org.BouncyCastle.Asn1.Microsoft .MicrosoftObjectIdentifiers">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="IcaoObjectIdentifiers" FullName="Org.BouncyCastle.Asn1.Icao .IcaoObjectIdentifiers">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LdsSecurityObject" FullName="Org.BouncyCastle.Asn1.Icao .LdsSecurityObject">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="GnuObjectIdentifiers" FullName="Org.BouncyCastle.Asn1.Gnu .GnuObjectIdentifiers">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ContentHints" FullName="Org.BouncyCastle.Asn1.Ess.ContentHints">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ContentIdentifier" FullName="Org.BouncyCastle.Asn1.Ess .ContentIdentifier">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="OtherSigningCertificate" FullName="Org.BouncyCastle.Asn1.Ess .OtherSigningCertificate">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CertificateValues" FullName="Org.BouncyCastle.Asn1.Esf .CertificateValues">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CommitmentTypeIdentifier" FullName="Org.BouncyCastle.Asn1.Esf .CommitmentTypeIdentifier">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CommitmentTypeIndication" FullName="Org.BouncyCastle.Asn1.Esf .CommitmentTypeIndication">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CommitmentTypeQualifier" FullName="Org.BouncyCastle.Asn1.Esf .CommitmentTypeQualifier">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CompleteCertificateRefs" FullName="Org.BouncyCastle.Asn1.Esf .CompleteCertificateRefs">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CompleteRevocationRefs" FullName="Org.BouncyCastle.Asn1.Esf .CompleteRevocationRefs">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="EsfAttributes" FullName="Org.BouncyCastle.Asn1.Esf.EsfAttributes">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="OtherSigningCertificate" FullName="Org.BouncyCastle.Asn1.Esf .OtherSigningCertificate">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RevocationValues" FullName="Org.BouncyCastle.Asn1.Esf .RevocationValues">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SignaturePolicyIdentifier" FullName="Org.BouncyCastle.Asn1.Esf .SignaturePolicyIdentifier">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SignerLocation" FullName="Org.BouncyCastle.Asn1.Esf.SignerLocation">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ECGost3410ParamSetParameters" FullName="Org.BouncyCastle.Asn1.CryptoPro .ECGost3410ParamSetParameters">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Gost28147Parameters" FullName="Org.BouncyCastle.Asn1.CryptoPro .Gost28147Parameters">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="EncryptedData" FullName="Org.BouncyCastle.Asn1.Cms.EncryptedData">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="AccessDescription" FullName="Org.BouncyCastle.Asn1.X509 .AccessDescription">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="AttributeTable" FullName="Org.BouncyCastle.Asn1.X509 .AttributeTable">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="AuthorityInformationAccess" FullName="Org.BouncyCastle.Asn1.X509 .AuthorityInformationAccess">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CertPolicyID" FullName="Org.BouncyCastle.Asn1.X509.CertPolicyID">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="IetfAttrSyntax" FullName="Org.BouncyCastle.Asn1.X509 .IetfAttrSyntax">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="NameConstraints" FullName="Org.BouncyCastle.Asn1.X509 .NameConstraints">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PolicyMappings" FullName="Org.BouncyCastle.Asn1.X509 .PolicyMappings">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PolicyQualifierInfo" FullName="Org.BouncyCastle.Asn1.X509 .PolicyQualifierInfo">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RoleSyntax" FullName="Org.BouncyCastle.Asn1.X509.RoleSyntax">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SubjectDirectoryAttributes" FullName="Org.BouncyCastle.Asn1.X509 .SubjectDirectoryAttributes">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="UserNotice" FullName="Org.BouncyCastle.Asn1.X509.UserNotice">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="X509Attributes" FullName="Org.BouncyCastle.Asn1.X509 .X509Attributes">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PersonalData" FullName="Org.BouncyCastle.Asn1.X509.SigI .PersonalData">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SigIObjectIdentifiers" FullName="Org.BouncyCastle.Asn1.X509.SigI .SigIObjectIdentifiers">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="BiometricData" FullName="Org.BouncyCastle.Asn1.X509.Qualified .BiometricData">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="EtsiQCObjectIdentifiers" FullName="Org.BouncyCastle.Asn1.X509.Qualified .EtsiQCObjectIdentifiers">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="MonetaryValue" FullName="Org.BouncyCastle.Asn1.X509.Qualified .MonetaryValue">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="QCStatement" FullName="Org.BouncyCastle.Asn1.X509.Qualified .QCStatement">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Rfc3739QCObjectIdentifiers" FullName="Org.BouncyCastle.Asn1.X509.Qualified .Rfc3739QCObjectIdentifiers">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SemanticsInformation" FullName="Org.BouncyCastle.Asn1.X509.Qualified .SemanticsInformation">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="AdditionalInformationSyntax" FullName="Org.BouncyCastle.Asn1.IsisMtt.X509 .AdditionalInformationSyntax">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="AdmissionSyntax" FullName="Org.BouncyCastle.Asn1.IsisMtt.X509 .AdmissionSyntax">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DeclarationOfMajority" FullName="Org.BouncyCastle.Asn1.IsisMtt.X509 .DeclarationOfMajority">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="MonetaryLimit" FullName="Org.BouncyCastle.Asn1.IsisMtt.X509 .MonetaryLimit">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ProcurationSyntax" FullName="Org.BouncyCastle.Asn1.IsisMtt.X509 .ProcurationSyntax">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Restriction" FullName="Org.BouncyCastle.Asn1.IsisMtt.X509 .Restriction">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CertHash" FullName="Org.BouncyCastle.Asn1.IsisMtt.Ocsp .CertHash">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RequestedCertificate" FullName="Org.BouncyCastle.Asn1.IsisMtt.Ocsp .RequestedCertificate">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="GreekList" FullName="iTextSharp.text.GreekList">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RomanList" FullName="iTextSharp.text.RomanList">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ZapfDingbatsList" FullName="iTextSharp.text.ZapfDingbatsList">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ZapfDingbatsNumberList" FullName="iTextSharp.text.ZapfDingbatsNumberList">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="XmpMMSchema" FullName="iTextSharp.text.xml.xmp.XmpMMSchema">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RtfWriter2" FullName="iTextSharp.text.rtf.RtfWriter2">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RtfTabGroup" FullName="iTextSharp.text.rtf.text.RtfTabGroup">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RtfStyleTypes" FullName="iTextSharp.text.rtf.style.RtfStyleTypes">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RtfShape" FullName="iTextSharp.text.rtf.graphic.RtfShape">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RtfTableOfContents" FullName="iTextSharp.text.rtf.field .RtfTableOfContents">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RtfTotalPageNumber" FullName="iTextSharp.text.rtf.field .RtfTotalPageNumber">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RtfCtrlWordPropertyType" FullName="iTextSharp.text.rtf.parser.properties .RtfCtrlWordPropertyType">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RtfUnknownCtrlWordException" FullName="iTextSharp.text.rtf.parser.exceptions .RtfUnknownCtrlWordException">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RtfColorThemes" FullName="iTextSharp.text.rtf.parser.enumerations .RtfColorThemes">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RtfDestinationColorTable" FullName="iTextSharp.text.rtf.parser.destinations .RtfDestinationColorTable">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RtfDestinationDocument" FullName="iTextSharp.text.rtf.parser.destinations .RtfDestinationDocument">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RtfDestinationListTable" FullName="iTextSharp.text.rtf.parser.destinations .RtfDestinationListTable">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RtfDestinationShppict" FullName="iTextSharp.text.rtf.parser.destinations .RtfDestinationShppict">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RtfCtrlWordType" FullName="iTextSharp.text.rtf.parser.ctrlwords .RtfCtrlWordType">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RtfDataCache" FullName="iTextSharp.text.rtf.document.output .RtfDataCache">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Barcode128" FullName="iTextSharp.text.pdf.Barcode128">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Barcode39" FullName="iTextSharp.text.pdf.Barcode39">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="BarcodeCodabar" FullName="iTextSharp.text.pdf.BarcodeCodabar">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="BarcodeDatamatrix" FullName="iTextSharp.text.pdf.BarcodeDatamatrix">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="BarcodeEAN" FullName="iTextSharp.text.pdf.BarcodeEAN">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="BarcodeEANSUPP" FullName="iTextSharp.text.pdf.BarcodeEANSUPP">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="BarcodeInter25" FullName="iTextSharp.text.pdf.BarcodeInter25">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="BarcodePDF417" FullName="iTextSharp.text.pdf.BarcodePDF417">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="BarcodePostnet" FullName="iTextSharp.text.pdf.BarcodePostnet">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PdfCopyFields" FullName="iTextSharp.text.pdf.PdfCopyFields">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PdfEncryptor" FullName="iTextSharp.text.pdf.PdfEncryptor">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PdfSmartCopy" FullName="iTextSharp.text.pdf.PdfSmartCopy">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RadioCheckField" FullName="iTextSharp.text.pdf.RadioCheckField">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SimpleNamedDestination" FullName="iTextSharp.text.pdf .SimpleNamedDestination">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Type3Font" FullName="iTextSharp.text.pdf.Type3Font">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="VerticalText" FullName="iTextSharp.text.pdf.VerticalText">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="HyphenationException" FullName="iTextSharp.text.pdf.hyphenation .HyphenationException">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="FieldPositioningEvents" FullName="iTextSharp.text.pdf.events .FieldPositioningEvents">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DottedLineSeparator" FullName="iTextSharp.text.pdf.draw .DottedLineSeparator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="TIFFConstants" FullName="iTextSharp.text.pdf.codec.TIFFConstants">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="HtmlParser" FullName="iTextSharp.text.html.HtmlParser">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="HtmlWriter" FullName="iTextSharp.text.html.HtmlWriter">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="HTMLWorker" FullName="iTextSharp.text.html.simpleparser .HTMLWorker">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="UrlManager" FullName="LMNetLib.UrlManager">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ConvertsCore" FullName="LMNetLib.ConvertsCore">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CSVLib" FullName="LMNetLib.CSVLib">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Files" FullName="LMNetLib.Files">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ThreadRandom" FullName="LMNetLib.ThreadRandom">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LoggerFile" FullName="LMNetLib.LoggerFile">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LoggerDummy" FullName="LMNetLib.LoggerDummy">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LoggerMemory_" FullName="LMNetLib.LoggerMemory_">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SerializableDictionary&lt;TKey,TVal&gt;" FullName="LMNetLib.SerializableDictionary&lt;TKey ,TVal&gt;">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="TitleUrl" FullName="LMNetLib.TitleUrl">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LMException" FullName="LMNetLib.LMException">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LocalServiceConfig" FullName="LMNetLib.LocalServiceConfig">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="RemoteServiceConfig" FullName="LMNetLib.RemoteServiceConfig">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="TCPManagerConfig" FullName="LMNetLib.TCPManagerConfig">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="MyUtf8" FullName="LMNetLib.MyUtf8">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="regExItemPos" FullName="LMNetLib.regExItemPos">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ITree" FullName="LMNetLib.ITree">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="TypeHelper" FullName="LMNetLib.TypeHelper">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="JsonHelper" FullName="LMNetLib.JsonHelper">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="StaticReflection" FullName="LMNetLib.StaticReflection">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="FtpClient" FullName="LMNetLib.FtpClient">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LMJson" FullName="LMNetLib.LMJson">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LZWCompressor" FullName="LMNetLib.LZWCompressor">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Keyboard" FullName="LMNetLib.Keyboard">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Normalize" FullName="LMNetLib.Normalize">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DownloadLib" FullName="LibDownload.DownloadLib">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DownloadModify" FullName="LibDownload.DownloadModify">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="TransStatus" FullName="Payu.TransStatus">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Error" FullName="Payu.Error">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PayuGate" FullName="Payu.PayuGate">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Lib" FullName="LMWeb.Lib">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="GoogleButton" FullName="LMWeb.GoogleButton">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="YahooButton" FullName="LMWeb.YahooButton">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="MyOpenIdButton" FullName="LMWeb.MyOpenIdButton">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LibSmall" FullName="LMWeb.LibSmall">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PayPal" FullName="LMWeb.PayPal">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="BuyNowButton" FullName="LMWeb.BuyNowButton">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="JsTypeAttribute" FullName="SharpKit.JavaScript.JsTypeAttribute">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="JsFieldAttribute" FullName="SharpKit.JavaScript.JsFieldAttribute">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="JsArray&lt;T&gt;" FullName="SharpKit.JavaScript.JsArray&lt;T&gt;">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="JsObject&lt;T&gt;" FullName="SharpKit.JavaScript.JsObject&lt;T&gt;">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Protocol" FullName="CMLib.Protocol">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="TableType" FullName="CMLib.TableType">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="EMailStatus" FullName="CMLib.EMailStatus">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="EmailToTypes" FullName="CMLib.EmailToTypes">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="EmailToPart" FullName="CMLib.EmailToPart">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="EMailCampaignStatus" FullName="CMLib.EMailCampaignStatus">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="GetEmailsType" FullName="CMLib.GetEmailsType">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="GetContactType" FullName="CMLib.GetContactType">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DeleteType" FullName="CMLib.DeleteType">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DefaultEMailFolders" FullName="CMLib.DefaultEMailFolders">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DefaultContactFolders" FullName="CMLib.DefaultContactFolders">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DefaultFileFolders" FullName="CMLib.DefaultFileFolders">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DefaultRoles" FullName="CMLib.DefaultRoles">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DefaultTags" FullName="CMLib.DefaultTags">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="File_GetType" FullName="CMLib.File_GetType">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CustomerDataIds" FullName="CMLib.CustomerDataIds">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="NotifyType" FullName="CMLib.NotifyType">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="FileUploadType" FullName="CMLib.FileUploadType">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="EduPortalDB" FullName="EduPortal.EduPortalDB">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PartnersServer" FullName="LMComLib.PartnersServer">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="TradosDOC" FullName="LMComLib.TradosDOC">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="FillCompanyUserInfoType" FullName="LMComLib.FillCompanyUserInfoType">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CompService" FullName="LMComLib.CompService">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LMAction&lt;T&gt;" FullName="LMComLib.LMAction&lt;T&gt;">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LMAction" FullName="LMComLib.LMAction">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="AudioOutFormat" FullName="LMComLib.AudioOutFormat">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ISitemapNode" FullName="LMComLib.ISitemapNode">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="JSPlayerInclude" FullName="LMComLib.JSPlayerInclude">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LMJsContext" FullName="LMComLib.LMJsContext">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="JQueryLangs" FullName="LMComLib.JQueryLangs">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ScriptAliasAttribute" FullName="LMComLib.ScriptAliasAttribute">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="JsField" FullName="LMComLib.JsField">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="JsMethod" FullName="LMComLib.JsMethod">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="WebDownloads" FullName="LMComLib.WebDownloads">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="KeyEqualityComparer&lt;T&gt;" FullName="LMComLib.KeyEqualityComparer&lt;T&gt;">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Stemmer" FullName="LMComLib.Stemmer">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="WordBreaker" FullName="LMComLib.WordBreaker">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LMViewModelBase" FullName="LMComLib.LMViewModelBase">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ET_Generator" FullName="LMComLib.ET_Generator">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ProductRight" FullName="LMComLib.ProductRight">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="XapDataMap" FullName="LMComLib.XapDataMap">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CommonLocales" FullName="LMComLib.CommonLocales">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SiteLang" FullName="LMComLib.SiteLang">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LMComProfile" FullName="LMComLib.LMComProfile">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="EaUrlInfoLib" FullName="LMComLib.EaUrlInfoLib">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LMPage" FullName="LMComLib.LMPage">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="GetUrlExpressionBuilder" FullName="LMComLib.GetUrlExpressionBuilder">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LmModule" FullName="LMComLib.LmModule">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CmsPathProvider" FullName="LMComLib.CmsPathProvider">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SeznamPathProvider" FullName="LMComLib.SeznamPathProvider">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DiscountGeneratorType" FullName="LMComLib.DiscountGeneratorType">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="EALib" FullName="LMComLib.EALib">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ConfigUrl" FullName="LMComLib.ConfigUrl">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ConfigMoodleCourse" FullName="LMComLib.ConfigMoodleCourse">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ConfigTitles" FullName="LMComLib.ConfigTitles">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="JSON" FullName="LMComLib.JSON">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PageStatusPlace" FullName="LMComLib.PageStatusPlace">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PageStatusType" FullName="LMComLib.PageStatusType">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DownloadEvent" FullName="LMComLib.DownloadEvent">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DownloadMoodleEvent" FullName="LMComLib.DownloadMoodleEvent">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DebugEvent" FullName="LMComLib.DebugEvent">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SeznamRpcEvent" FullName="LMComLib.SeznamRpcEvent">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LMMailEventProvider" FullName="LMComLib.LMMailEventProvider">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LMEventProviderx" FullName="LMComLib.LMEventProviderx">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LMEventProvider" FullName="LMComLib.LMEventProvider">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ShareThis" FullName="LMComLib.ShareThis">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="VypisKB" FullName="LMComLib.Pko.VypisKB">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Titles" FullName="LMComLib.Lang.Titles">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PaymentRequest" FullName="LMComLib.eBanka.PaymentRequest">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="User_Fulltext" FullName="LMComLib.Admin.User_Fulltext">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Order_Delayed" FullName="LMComLib.Admin.Order_Delayed">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Order_Months" FullName="LMComLib.Admin.Order_Months">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Order_Quarter" FullName="LMComLib.Admin.Order_Quarter">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Order_Year" FullName="LMComLib.Admin.Order_Year">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Order_Interval" FullName="LMComLib.Admin.Order_Interval">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Product_Months" FullName="LMComLib.Admin.Product_Months">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Product_Quarter" FullName="LMComLib.Admin.Product_Quarter">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Product_Year" FullName="LMComLib.Admin.Product_Year">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Product_Interval" FullName="LMComLib.Admin.Product_Interval">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ProductOrder_Months" FullName="LMComLib.Admin.ProductOrder_Months">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ProductOrder_Quarter" FullName="LMComLib.Admin.ProductOrder_Quarter">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ProductOrder_Year" FullName="LMComLib.Admin.ProductOrder_Year">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ProductOrder_Interval" FullName="LMComLib.Admin.ProductOrder_Interval">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Licencors_Months" FullName="LMComLib.Admin.Licencors_Months">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Licencors_Quarter" FullName="LMComLib.Admin.Licencors_Quarter">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Licencors_Year" FullName="LMComLib.Admin.Licencors_Year">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Licencors_Interval" FullName="LMComLib.Admin.Licencors_Interval">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Task_Id" FullName="LMComLib.Admin.Task_Id">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Task_Type" FullName="LMComLib.Admin.Task_Type">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="EventLogPar" FullName="LMComLib.Admin.EventLogPar">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Discount_Months" FullName="LMComLib.Admin.Discount_Months">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Discount_Quarter" FullName="LMComLib.Admin.Discount_Quarter">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Discount_Year" FullName="LMComLib.Admin.Discount_Year">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Discount_Interval" FullName="LMComLib.Admin.Discount_Interval">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="QueryParCtrl" FullName="LMComLib.Admin.QueryParCtrl">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="GetEnumValueEvent" FullName="LMComLib.Admin.GetEnumValueEvent">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SetEnumValueEvent" FullName="LMComLib.Admin.SetEnumValueEvent">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="EnumQueryItem" FullName="LMComLib.Admin.EnumQueryItem">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PaymentRequest" FullName="LMComLib.PayMUZO.PaymentRequest">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PaymentResponse" FullName="LMComLib.PayMUZO.PaymentResponse">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Page" FullName="LMComLib.Cms.Page">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ProductForStack" FullName="LMComLib.Cms.ProductForStack">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LMComDataRemovedDataContext" FullName="LMComLib.Data .LMComDataRemovedDataContext">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="TableAdapterManager" FullName="LMComLib.Data.SeoScanResultTableAdapters .TableAdapterManager">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PDFSigner" FullName="LMComLib.Commerce.PDF.PDFSigner">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DocAuthor" FullName="LMComLib.Commerce.PDF.DocAuthor">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LearnFactId" FullName="SLRewise.LearnFactId">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SaveRewiseFactRec" FullName="SLRewise.SaveRewiseFactRec">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LessonSelection" FullName="SLRewise.LessonSelection">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DiskSoundFile" FullName="Design.DiskSoundFile">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LicenceType" FullName="schools.LicenceType">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SchoolCmdFillCompanyUserInfoTestId" FullName="schools .SchoolCmdFillCompanyUserInfoTestId">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SchoolCmdLoadTestInfo" FullName="schools.SchoolCmdLoadTestInfo">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SchoolCmdLoadModule" FullName="schools.SchoolCmdLoadModule">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SchoolCmdSaveTest" FullName="schools.SchoolCmdSaveTest">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SchoolCmdSaveModule" FullName="schools.SchoolCmdSaveModule">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="dumpDatas" FullName="schools.dumpDatas">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="dumpRows" FullName="schools.dumpRows">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="page" FullName="schools.page">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Words" FullName="Course.Words">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="EvalList" FullName="Course.EvalList">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="HtmlText" FullName="Course.HtmlText">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Sound" FullName="Course.Sound">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CheckItem" FullName="Course.CheckItem">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CheckItemResult" FullName="Course.CheckItemResult">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="GapFill" FullName="Course.GapFill">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="GapFillResult" FullName="Course.GapFillResult">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Pairing" FullName="Course.Pairing">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SingleChoice" FullName="Course.SingleChoice">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SingleChoiceResult" FullName="Course.SingleChoiceResult">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Writing" FullName="Course.Writing">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="WritingResult" FullName="Course.WritingResult">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Speaking" FullName="Course.Speaking">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="SpeakingResult" FullName="Course.SpeakingResult">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Parts" FullName="Course.Parts">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ReplicaLike" FullName="Course.ReplicaLike">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ExerciseField" FullName="Course.ExerciseField">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="IExternalResult" FullName="Course.IExternalResult">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="TestUserInfo" FullName="Course.TestUserInfo">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="exportUploadQuery" FullName="Course.exportUploadQuery">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ServerCommands" FullName="Course.ServerCommands">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="TestTaskTypes" FullName="Course.TestTaskTypes">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="TestManRoles" FullName="Course.TestManRoles">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Instructions" FullName="Course.Instructions">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ResultExtension" FullName="Course.ResultExtension">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LoadCourseInfoData" FullName="Course.LoadCourseInfoData">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="FillCompanyUserInfoData" FullName="Course.FillCompanyUserInfoData">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CreateUserData" FullName="Course.CreateUserData">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="TestLockMode" FullName="Course.TestLockMode">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CreateTestResult" FullName="Course.CreateTestResult">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LectorTestQuery" FullName="Course.LectorTestQuery">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="TestLicOrder" FullName="Course.TestLicOrder">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Invitation" FullName="Course.Invitation">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LicProductInfo" FullName="LMComLib.LicProductInfo">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="IpnInfo" FullName="LMComLib.IpnInfo">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="EMailType" FullName="LMComLib.EMailType">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LMMembershipCreateStatus" FullName="LMComLib.LMMembershipCreateStatus">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="UserData" FullName="LMComLib.UserData">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="UserLog" FullName="LMComLib.UserLog">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="NewFactResult" FullName="LMComLib.NewFactResult">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ModifyXsd" FullName="SchemaDefinition.ModifyXsd">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="error" FullName="CourseModel.error">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ExpandProxyEvent" FullName="Rewise.ExpandProxyEvent">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Test" FullName="Rewise.Test">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="StoredProcedures" FullName="StoredProcedures">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Grammar" FullName="Grammar">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="jqm_collapsible_set" FullName="ViewLib.jqm_collapsible_set">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="jqm_collapsible" FullName="ViewLib.jqm_collapsible">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="jqm_listview" FullName="ViewLib.jqm_listview">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="jqm_list_divider" FullName="ViewLib.jqm_list_divider">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="jqm_list_item" FullName="ViewLib.jqm_list_item">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="jqm_list_fields" FullName="ViewLib.jqm_list_fields">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="jqm_controlgroup" FullName="ViewLib.jqm_controlgroup">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="jqm_button" FullName="ViewLib.jqm_button">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="JsRenderScript" FullName="ViewLib.JsRenderScript">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CfgPage" FullName="ViewLib.CfgPage">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="JsRenderScriptCtrl" FullName="ViewLib.JsRenderScriptCtrl">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="JSUser" FullName="Login.JSUser">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Request" FullName="Handlers.Request">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="sessionManager" FullName="Handlers.sessionManager">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="tool" FullName="_rn.tool">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Lib" FullName="FreeDict.Lib">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v001" FullName="NewData.Migrations.v001">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v002" FullName="NewData.Migrations.v002">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v003" FullName="NewData.Migrations.v003">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v004" FullName="NewData.Migrations.v004">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v005" FullName="NewData.Migrations.v005">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v006" FullName="NewData.Migrations.v006">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v007" FullName="NewData.Migrations.v007">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v008" FullName="NewData.Migrations.v008">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v009" FullName="NewData.Migrations.v009">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v010" FullName="NewData.Migrations.v010">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v011" FullName="NewData.Migrations.v011">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v012" FullName="NewData.Migrations.v012">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v013" FullName="NewData.Migrations.v013">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v014" FullName="NewData.Migrations.v014">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v015" FullName="NewData.Migrations.v015">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v016" FullName="NewData.Migrations.v016">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DesignEntities" FullName="NewData.Design.DesignEntities">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="companyTasks" FullName="AzureData.companyTasks">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="testExEvalTask" FullName="AzureData.testExEvalTask">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="dbCompanyController" FullName="AzureData.dbCompanyController">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Lib" FullName="AzureData.Lib">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="dbUserController" FullName="AzureData.dbUserController">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="azure001" FullName="AzureData.azure001">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="testMeController" FullName="azure.testMeController">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="my" FullName="azure.my">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="testController" FullName="azure.testController">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="lib" FullName="azure.lib">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LinqBuilder" FullName="azure.LinqBuilder">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Form" FullName="JSCrambler.Form">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="uploadChunkHandler" FullName="mp3Uploader.uploadChunkHandler">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="debugEx" FullName="CourseModel.debugEx">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CmdSkrivanekErrors" FullName="testMe.CmdSkrivanekErrors">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v001" FullName="blendedData.v001">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v002" FullName="blendedData.v002">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v003" FullName="blendedData.v003">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="v004" FullName="blendedData.v004">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="initializer" FullName="blendedData.initializer">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="urlUserEqualityComparer" FullName="blendedMeta.urlUserEqualityComparer">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="BlendedPersistenceController" FullName="blended.BlendedPersistenceController">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="AuthorForm" FullName="Author.AuthorForm">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="NormalizeProjectFile" FullName="web4.NormalizeProjectFile">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Global" FullName="web4.Global">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="links" FullName="web4.links">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Default" FullName="web4.Trados.Default">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="EditPage1" FullName="web4.Trados.EditPage1">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="EditPage" FullName="web4.Trados.EditPage">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LookupManager" FullName="web4.Trados.LookupManager">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Manager" FullName="web4.Trados.Manager">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="CompaniesLoc" FullName="web4.Trados.CompaniesLoc">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="ManagerBatch" FullName="web4.Trados.ManagerBatch">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Partner" FullName="web4.Trados.Partner">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="PartnerEdit" FullName="web4.Trados.PartnerEdit">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Partner_Search" FullName="web4.Trados.Partner_Search">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Statistics" FullName="web4.Trados.Statistics">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Unlock" FullName="web4.Trados.Unlock">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DBClearUnusedLMComUserData" FullName="web4.Temp.DBClearUnusedLMComUserData">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="WebForm1" FullName="web4.Temp.WebForm1">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="index" FullName="web4.AuthorWeb.index">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DictLingea" FullName="web4.Schools.DictLingea">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="DefaultDict" FullName="web4.Schools.Design.DefaultDict">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="Default" FullName="web4.Schools.Design.Default">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="LANGMasterAuthorGalery" FullName="web4.Schools.Design .LANGMasterAuthorGalery">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="lmConsole" FullName="web4.Schools.Design.lmConsole">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="QueryBuilder" FullName="web4.Schools.Design.QueryBuilder">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="TTS" FullName="web4.Schools.Design.TTS">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="dbTest" FullName="azure.dbTest">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="BlendedBatches" FullName="CubesDeployment.BlendedBatches">
+      <Val>0</Val>
+      <Val>0 type</Val>
+    </Row>
+    <Row Name="GZipConstants" FullName="ICSharpCode.SharpZipLib.GZip .GZipConstants">
+      <Val>1</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="GZipException" FullName="ICSharpCode.SharpZipLib.GZip .GZipException">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="FileSystemScanner" FullName="ICSharpCode.SharpZipLib.Core .FileSystemScanner">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="BZip2InputStream" FullName="ICSharpCode.SharpZipLib.BZip2 .BZip2InputStream">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="BZip2OutputStream" FullName="ICSharpCode.SharpZipLib.BZip2 .BZip2OutputStream">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="FastZipEvents" FullName="ICSharpCode.SharpZipLib.Zip .FastZipEvents">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="FastZip+Overwrite" FullName="ICSharpCode.SharpZipLib.Zip .FastZip+Overwrite">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="FastZip+ConfirmOverwriteDelegate" FullName="ICSharpCode.SharpZipLib.Zip .FastZip+ConfirmOverwriteDelegate">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ZipNameTransform" FullName="ICSharpCode.SharpZipLib.Zip .ZipNameTransform">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="XmlRpcProxyCodeGenOptions" FullName="Headblender.XmlRpc .XmlRpcProxyCodeGenOptions">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="XmlRpcProxyCodeGen+BuildMethodDelegate" FullName="Headblender.XmlRpc .XmlRpcProxyCodeGen+BuildMethodDelegate">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="XmlRpcProxyCodeGen+MethodData" FullName="Headblender.XmlRpc .XmlRpcProxyCodeGen+MethodData">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="XmlRpcClientFormatterSink" FullName="CookComputing.XmlRpc .XmlRpcClientFormatterSink">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="XmlRpcEndAttribute" FullName="CookComputing.XmlRpc.XmlRpcEndAttribute">
+      <Val>1</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="XmlRpcHttpRequest" FullName="CookComputing.XmlRpc.XmlRpcHttpRequest">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="XmlRpcHttpResponse" FullName="CookComputing.XmlRpc.XmlRpcHttpResponse">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="XmlRpcHttpServerProtocol" FullName="CookComputing.XmlRpc .XmlRpcHttpServerProtocol">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="XmlRpcLogger" FullName="CookComputing.XmlRpc.XmlRpcLogger">
+      <Val>1</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="XmlRpcProxyGen+MethodData" FullName="CookComputing.XmlRpc .XmlRpcProxyGen+MethodData">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="XmlRpcServerFormatterSink" FullName="CookComputing.XmlRpc .XmlRpcServerFormatterSink">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="DownloadProgressChangedDelegate" FullName="Saluse.MediaKit.Delegates .DownloadProgressChangedDelegate">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="k_Vector" FullName="System.util.collections.k_Vector">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="TimeStampResponse" FullName="Org.BouncyCastle.Tsp.TimeStampResponse">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="TimeStampResponseGenerator+FailInfo" FullName="Org.BouncyCastle.Tsp .TimeStampResponseGenerator+FailInfo">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="TimeStampTokenGenerator" FullName="Org.BouncyCastle.Tsp .TimeStampTokenGenerator">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Pkcs10CertificationRequest" FullName="Org.BouncyCastle.Pkcs .Pkcs10CertificationRequest">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="IPasswordFinder" FullName="Org.BouncyCastle.OpenSsl.IPasswordFinder">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PemUtilities" FullName="Org.BouncyCastle.OpenSsl.PemUtilities">
+      <Val>1</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="BasicOcspRespGenerator+ResponseObject" FullName="Org.BouncyCastle.Ocsp .BasicOcspRespGenerator+ResponseObject">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="OcspReq" FullName="Org.BouncyCastle.Ocsp.OcspReq">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="OcspReqGenerator+RequestObject" FullName="Org.BouncyCastle.Ocsp .OcspReqGenerator+RequestObject">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="OcspResp" FullName="Org.BouncyCastle.Ocsp.OcspResp">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="OcspRespStatus" FullName="Org.BouncyCastle.Ocsp.OcspRespStatus">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="CmsCompressedData" FullName="Org.BouncyCastle.Cms.CmsCompressedData">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="CmsCompressedDataStreamGenerator+CmsComp ressedOutputStream" FullName="Org.BouncyCastle.Cms .CmsCompressedDataStreamGenerator+CmsCom pressedOutputStream">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="CmsContentInfoParser" FullName="Org.BouncyCastle.Cms .CmsContentInfoParser">
+      <Val>1</Val>
+      <Val>3 types</Val>
+    </Row>
+    <Row Name="CmsEnvelopedDataStreamGenerator+CmsEnvel opedDataOutputStream" FullName="Org.BouncyCastle.Cms .CmsEnvelopedDataStreamGenerator+CmsEnve lopedDataOutputStream">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="X509CertificatePair" FullName="Org.BouncyCastle.X509 .X509CertificatePair">
+      <Val>1</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="X509Utilities" FullName="Org.BouncyCastle.X509.X509Utilities">
+      <Val>1</Val>
+      <Val>4 types</Val>
+    </Row>
+    <Row Name="CBZip2OutputStream" FullName="Org.BouncyCastle.Apache.Bzip2 .CBZip2OutputStream">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ITranslator" FullName="Org.BouncyCastle.Utilities.Encoders .ITranslator">
+      <Val>1</Val>
+      <Val>3 types</Val>
+    </Row>
+    <Row Name="UrlBase64Encoder" FullName="Org.BouncyCastle.Utilities.Encoders .UrlBase64Encoder">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="GeneratorUtilities" FullName="Org.BouncyCastle.Security .GeneratorUtilities">
+      <Val>1</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="WNafPreCompInfo" FullName="Org.BouncyCastle.Math.EC.Multiplier .WNafPreCompInfo">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="WTauNafPreCompInfo" FullName="Org.BouncyCastle.Math.EC.Multiplier .WTauNafPreCompInfo">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="MgfParameters" FullName="Org.BouncyCastle.Crypto.Parameters .MgfParameters">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="NaccacheSternKeyGenerationParameters" FullName="Org.BouncyCastle.Crypto.Parameters .NaccacheSternKeyGenerationParameters">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="NaccacheSternPrivateKeyParameters" FullName="Org.BouncyCastle.Crypto.Parameters .NaccacheSternPrivateKeyParameters">
+      <Val>1</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="ParametersWithSalt" FullName="Org.BouncyCastle.Crypto.Parameters .ParametersWithSalt">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="DHParametersHelper" FullName="Org.BouncyCastle.Crypto.Generators .DHParametersHelper">
+      <Val>1</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="PgpEncryptedDataGenerator+PbeMethod" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpEncryptedDataGenerator+PbeMethod">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PgpEncryptedDataGenerator+PubMethod" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpEncryptedDataGenerator+PubMethod">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PgpObjectFactory" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpObjectFactory">
+      <Val>1</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="BerSetGenerator" FullName="Org.BouncyCastle.Asn1.BerSetGenerator">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="DerSetGenerator" FullName="Org.BouncyCastle.Asn1.DerSetGenerator">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="KeySpecificInfo" FullName="Org.BouncyCastle.Asn1.X9.KeySpecificInfo">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="SmimeAttributes" FullName="Org.BouncyCastle.Asn1.Smime .SmimeAttributes">
+      <Val>1</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="SmimeCapability" FullName="Org.BouncyCastle.Asn1.Smime .SmimeCapability">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="SmimeCapabilityVector" FullName="Org.BouncyCastle.Asn1.Smime .SmimeCapabilityVector">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="EncryptionScheme" FullName="Org.BouncyCastle.Asn1.Pkcs .EncryptionScheme">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="IssuerAndSerialNumber" FullName="Org.BouncyCastle.Asn1.Pkcs .IssuerAndSerialNumber">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="KeyDerivationFunc" FullName="Org.BouncyCastle.Asn1.Pkcs .KeyDerivationFunc">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="DataGroupHash" FullName="Org.BouncyCastle.Asn1.Icao.DataGroupHash">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="OtherCertID" FullName="Org.BouncyCastle.Asn1.Ess.OtherCertID">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="CrlOcspRef" FullName="Org.BouncyCastle.Asn1.Esf.CrlOcspRef">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="OtherCertID" FullName="Org.BouncyCastle.Asn1.Esf.OtherCertID">
+      <Val>1</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="OtherRevVals" FullName="Org.BouncyCastle.Asn1.Esf.OtherRevVals">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="SignaturePolicyId" FullName="Org.BouncyCastle.Asn1.Esf .SignaturePolicyId">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="CompressedDataParser" FullName="Org.BouncyCastle.Asn1.Cms .CompressedDataParser">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="EnvelopedDataParser" FullName="Org.BouncyCastle.Asn1.Cms .EnvelopedDataParser">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="SignedDataParser" FullName="Org.BouncyCastle.Asn1.Cms .SignedDataParser">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PkiStatus" FullName="Org.BouncyCastle.Asn1.Cmp.PkiStatus">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="GeneralSubtree" FullName="Org.BouncyCastle.Asn1.X509 .GeneralSubtree">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="NoticeReference" FullName="Org.BouncyCastle.Asn1.X509 .NoticeReference">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PolicyQualifierID" FullName="Org.BouncyCastle.Asn1.X509 .PolicyQualifierID">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="TargetInformation" FullName="Org.BouncyCastle.Asn1.X509 .TargetInformation">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="V1TbsCertificateGenerator" FullName="Org.BouncyCastle.Asn1.X509 .V1TbsCertificateGenerator">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="V2AttributeCertificateInfoGenerator" FullName="Org.BouncyCastle.Asn1.X509 .V2AttributeCertificateInfoGenerator">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="V2TbsCertListGenerator" FullName="Org.BouncyCastle.Asn1.X509 .V2TbsCertListGenerator">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="V3TbsCertificateGenerator" FullName="Org.BouncyCastle.Asn1.X509 .V3TbsCertificateGenerator">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="X509ExtensionsGenerator" FullName="Org.BouncyCastle.Asn1.X509 .X509ExtensionsGenerator">
+      <Val>1</Val>
+      <Val>3 types</Val>
+    </Row>
+    <Row Name="NameOrPseudonym" FullName="Org.BouncyCastle.Asn1.X509.SigI .NameOrPseudonym">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Iso4217CurrencyCode" FullName="Org.BouncyCastle.Asn1.X509.Qualified .Iso4217CurrencyCode">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="TypeOfBiometricData" FullName="Org.BouncyCastle.Asn1.X509.Qualified .TypeOfBiometricData">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Admissions" FullName="Org.BouncyCastle.Asn1.IsisMtt.X509 .Admissions">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="DeclarationOfMajority+Choice" FullName="Org.BouncyCastle.Asn1.IsisMtt.X509 .DeclarationOfMajority+Choice">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="RequestedCertificate+Choice" FullName="Org.BouncyCastle.Asn1.IsisMtt.Ocsp .RequestedCertificate+Choice">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="GreekAlphabetFactory" FullName="iTextSharp.text.factories .GreekAlphabetFactory">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="XmlParser" FullName="iTextSharp.text.xml.XmlParser">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="RtfShapePosition" FullName="iTextSharp.text.rtf.graphic .RtfShapePosition">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="RtfShapeProperty" FullName="iTextSharp.text.rtf.graphic .RtfShapeProperty">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="RtfParserException" FullName="iTextSharp.text.rtf.parser.exceptions .RtfParserException">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="RtfDestinationFontTable" FullName="iTextSharp.text.rtf.parser.destinations .RtfDestinationFontTable">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Barcode" FullName="iTextSharp.text.pdf.Barcode">
+      <Val>1</Val>
+      <Val>7 types</Val>
+    </Row>
+    <Row Name="BarcodeDatamatrix+DmParams" FullName="iTextSharp.text.pdf .BarcodeDatamatrix+DmParams">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="BarcodeDatamatrix+Placement" FullName="iTextSharp.text.pdf .BarcodeDatamatrix+Placement">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="BarcodeDatamatrix+ReedSolomon" FullName="iTextSharp.text.pdf .BarcodeDatamatrix+ReedSolomon">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="BarcodePDF417+SegmentList" FullName="iTextSharp.text.pdf .BarcodePDF417+SegmentList">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PdfSmartCopy+ByteStore" FullName="iTextSharp.text.pdf .PdfSmartCopy+ByteStore">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Type3Glyph" FullName="iTextSharp.text.pdf.Type3Glyph">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="HtmlEncoder" FullName="iTextSharp.text.html.HtmlEncoder">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ITextmyHtmlHandler" FullName="iTextSharp.text.html.ITextmyHtmlHandler">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="FactoryProperties" FullName="iTextSharp.text.html.simpleparser .FactoryProperties">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="IALink" FullName="iTextSharp.text.html.simpleparser.IALink">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="IImageProvider" FullName="iTextSharp.text.html.simpleparser .IImageProvider">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="IImg" FullName="iTextSharp.text.html.simpleparser.IImg">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="IncCell" FullName="iTextSharp.text.html.simpleparser .IncCell">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="IncTable" FullName="iTextSharp.text.html.simpleparser .IncTable">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="StyleSheet" FullName="iTextSharp.text.html.simpleparser .StyleSheet">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="CSVLib+BreakException" FullName="LMNetLib.CSVLib+BreakException">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="MoodleCourseItem" FullName="LMNetLib.MoodleCourseItem">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ShareThis" FullName="LMNetLib.ShareThis">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="FtpClient+ECancelException" FullName="LMNetLib.FtpClient+ECancelException">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="downloadRes" FullName="LibDownload.downloadRes">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="DownloadModify+buf" FullName="LibDownload.DownloadModify+buf">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ConfigData" FullName="Payu.ConfigData">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="NewOrderData" FullName="Payu.NewOrderData">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="OrderReplyData" FullName="Payu.OrderReplyData">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="GetReplyData" FullName="Payu.GetReplyData">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ConfirmCancelReplyData" FullName="Payu.ConfirmCancelReplyData">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="LMOpenIdButton" FullName="LMWeb.LMOpenIdButton">
+      <Val>1</Val>
+      <Val>3 types</Val>
+    </Row>
+    <Row Name="LibSmall+LoginResult" FullName="LMWeb.LibSmall+LoginResult">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="JsMode" FullName="SharpKit.JavaScript.JsMode">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="CSignature" FullName="X509Helper.CSignature">
+      <Val>1</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="SoundFormat" FullName="LMComLib.SoundFormat">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="AudioMP3BitRate" FullName="LMComLib.AudioMP3BitRate">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="MP3Quality" FullName="LMComLib.MP3Quality">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="AsyncAppContext" FullName="LMComLib.AsyncAppContext">
+      <Val>1</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="WebDownloads+DownloadResult&lt;T&gt;" FullName="LMComLib.WebDownloads+DownloadResult&lt;T&gt;">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="WebDownloads+StreamToObject&lt;T&gt;" FullName="LMComLib.WebDownloads+StreamToObject&lt;T&gt;">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="WebDownloads+UploadInfo" FullName="LMComLib.WebDownloads+UploadInfo">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Stemmer+putWord" FullName="LMComLib.Stemmer+putWord">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Com" FullName="LMComLib.Com">
+      <Val>1</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="IStemmer" FullName="LMComLib.IStemmer">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="IWordBreaker" FullName="LMComLib.IWordBreaker">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="WordBreaker+putWord" FullName="LMComLib.WordBreaker+putWord">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="WordBreaker+isStopWordEvent" FullName="LMComLib.WordBreaker+isStopWordEvent">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="LMMessenger" FullName="LMComLib.LMMessenger">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ET_Generator+GetProductPriceEvent" FullName="LMComLib .ET_Generator+GetProductPriceEvent">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ET_Generator+siteNodeType" FullName="LMComLib.ET_Generator+siteNodeType">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ET_Generator+crsDict" FullName="LMComLib.ET_Generator+crsDict">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ET_Generator+LineUrl" FullName="LMComLib.ET_Generator+LineUrl">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="LmModule+FindCountryEvent" FullName="LMComLib.LmModule+FindCountryEvent">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="LmModule+WrongCountryLangEvent" FullName="LMComLib.LmModule+WrongCountryLangEvent">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="CmsPathProvider+HtmlVirtualFile" FullName="LMComLib.CmsPathProvider+HtmlVirtualFile">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="SeznamPathProvider+HtmlVirtualFile" FullName="LMComLib .SeznamPathProvider+HtmlVirtualFile">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="JSONRPCRequestEvent" FullName="LMComLib.JSONRPCRequestEvent">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="JSONRPCException" FullName="LMComLib.JSONRPCException">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="JSONRPC_MethodCall" FullName="LMComLib.JSONRPC_MethodCall">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="JSONRPC_MethodResult" FullName="LMComLib.JSONRPC_MethodResult">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="DownloadMode" FullName="LMComLib.DownloadMode">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PayPalEvent" FullName="LMComLib.PayPalEvent">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="SeznamProxyId" FullName="LMComLib.SeznamProxyId">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ShareThis+NETRESOURCE" FullName="LMComLib.ShareThis+NETRESOURCE">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Licence" FullName="LMComLib.SL.Licence">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Line" FullName="LMComLib.Pko.Line">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="DateItem" FullName="LMComLib.Pko.DateItem">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Title" FullName="LMComLib.Lang.Title">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="UserDateType" FullName="LMComLib.Admin.UserDateType">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Order_UserId" FullName="LMComLib.Admin.Order_UserId">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ProductOrderPar" FullName="LMComLib.Admin.ProductOrderPar">
+      <Val>1</Val>
+      <Val>4 types</Val>
+    </Row>
+    <Row Name="LicencorsPar" FullName="LMComLib.Admin.LicencorsPar">
+      <Val>1</Val>
+      <Val>4 types</Val>
+    </Row>
+    <Row Name="DiscountPar" FullName="LMComLib.Admin.DiscountPar">
+      <Val>1</Val>
+      <Val>4 types</Val>
+    </Row>
+    <Row Name="PayMUZO" FullName="LMComLib.PayMUZO.PayMUZO">
+      <Val>1</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="Feedback" FullName="LMComLib.Data.Feedback">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="UniqueId" FullName="LMComLib.Data.UniqueId">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="DataTableAdapter" FullName="LMComLib.Data.SeoScanResultTableAdapters .DataTableAdapter">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="TableAdapterManager+UpdateOrderOption" FullName="LMComLib.Data.SeoScanResultTableAdapters .TableAdapterManager+UpdateOrderOption">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="TableAdapterManager+SelfReferenceCompare r" FullName="LMComLib.Data.SeoScanResultTableAdapters .TableAdapterManager+SelfReferenceCompar er">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Cert" FullName="LMComLib.Commerce.PDF.Cert">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="MetaData" FullName="LMComLib.Commerce.PDF.MetaData">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="TodayFactStatus" FullName="SLRewise.TodayFactStatus">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="FolderId" FullName="SLRewise.FolderId">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="FactSelection" FullName="SLRewise.FactSelection">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="RewiseFactId" FullName="SLRewise.RewiseFactId">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="FactId" FullName="SLRewise.FactId">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="List" FullName="Course.List">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PlayType" FullName="Course.PlayType">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="CheckItem+CheckItemTemplates" FullName="Course.CheckItem+CheckItemTemplates">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PairingItem" FullName="Course.PairingItem">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PairingResult" FullName="Course.PairingResult">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="SingleChoice+SingleChoiceTemplates" FullName="Course .SingleChoice+SingleChoiceTemplates">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="NeedsEvalExercise" FullName="Course.NeedsEvalExercise">
+      <Val>1</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="UIDTypes" FullName="Course.UIDTypes">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ExternalResultType" FullName="Course.ExternalResultType">
+      <Val>1</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="FillCompanyUserInfoData+User" FullName="Course.FillCompanyUserInfoData+User">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="FillCompanyUserInfoData+Courses" FullName="Course.FillCompanyUserInfoData+Courses">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="FillCompanyUserInfoData+Module" FullName="Course.FillCompanyUserInfoData+Module">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="TestInvitationResult" FullName="Course.TestInvitationResult">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="TestLicTest" FullName="Course.TestLicTest">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Membership_Role" FullName="LMComLib.Membership_Role">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="UserLector" FullName="LMComLib.UserLector">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="UserCompany" FullName="LMComLib.UserCompany">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PropIds" FullName="LMComLib.PropIds">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="doc" FullName="CourseModel.doc">
+      <Val>1</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="Dialog" FullName="Rewise.Dialog">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="StoredProcedures+TocFlat" FullName="StoredProcedures+TocFlat">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Exercise" FullName="Exercise">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="eTestMe" FullName="eTestMe">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="TemplateCtrl" FullName="ViewLib.TemplateCtrl">
+      <Val>1</Val>
+      <Val>9 types</Val>
+    </Row>
+    <Row Name="JsRenderScriptCtrl+TemplateOwner" FullName="ViewLib.JsRenderScriptCtrl+TemplateOwner">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="MyDataNew" FullName="Login.MyDataNew">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="sessionManager+item" FullName="Handlers.sessionManager+item">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ToRecord" FullName="Tts.ToRecord">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="rnEl" FullName="_rn.rnEl">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="pcConfig" FullName="FreeDict.pcConfig">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Lib+wordUrl" FullName="FreeDict.Lib+wordUrl">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="authorModes" FullName="Author.authorModes">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Dump" FullName="NewData.Dump">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="LANGMasterScorm" FullName="NewData.Design.LANGMasterScorm">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="testmeEvalTask" FullName="AzureData.testmeEvalTask">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="dbCompanyController+JSCompany" FullName="AzureData.dbCompanyController+JSCompany">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="migrationInitializer" FullName="AzureData.migrationInitializer">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="dbUserController+JSUser" FullName="AzureData.dbUserController+JSUser">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="hmanEvalController" FullName="azure.hmanEvalController">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="testMeController+toEvalLangsResultItem" FullName="azure .testMeController+toEvalLangsResultItem">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="adminLicenceController" FullName="azure.adminLicenceController">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Skrivanek" FullName="testMe.Skrivanek">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="LibMp3Lame" FullName="NAudio.Lame.DLL.LibMp3Lame">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Configuration" FullName="blendedData.Configuration">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Global+WebApiConfig" FullName="web4.Global+WebApiConfig">
+      <Val>1</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="TopBar" FullName="web4.Trados.TopBar">
+      <Val>1</Val>
+      <Val>6 types</Val>
+    </Row>
+    <Row Name="DirectoryFailureDelegate" FullName="ICSharpCode.SharpZipLib.Core .DirectoryFailureDelegate">
+      <Val>2</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="FileFailureDelegate" FullName="ICSharpCode.SharpZipLib.Core .FileFailureDelegate">
+      <Val>2</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="INameTransform" FullName="ICSharpCode.SharpZipLib.Core .INameTransform">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="BZip2Constants" FullName="ICSharpCode.SharpZipLib.BZip2 .BZip2Constants">
+      <Val>2</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="BZip2Exception" FullName="ICSharpCode.SharpZipLib.BZip2 .BZip2Exception">
+      <Val>2</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="BZip2OutputStream+StackElem" FullName="ICSharpCode.SharpZipLib.BZip2 .BZip2OutputStream+StackElem">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="StrangeCRC" FullName="ICSharpCode.SharpZipLib.Checksums .StrangeCRC">
+      <Val>2</Val>
+      <Val>2 types</Val>
+    </Row>
+    <Row Name="XmlRpcDocWriter" FullName="CookComputing.XmlRpc.XmlRpcDocWriter">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="k_CollectionOnIterators" FullName="System.util.collections .k_CollectionOnIterators">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Req" FullName="Org.BouncyCastle.Ocsp.Req">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="CBZip2OutputStream+StackElem" FullName="Org.BouncyCastle.Apache.Bzip2 .CBZip2OutputStream+StackElem">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Base64Encoder" FullName="Org.BouncyCastle.Utilities.Encoders .Base64Encoder">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="DesEdeKeyGenerator" FullName="Org.BouncyCastle.Crypto.Generators .DesEdeKeyGenerator">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="DHKeyPairGenerator" FullName="Org.BouncyCastle.Crypto.Generators .DHKeyPairGenerator">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="DsaKeyPairGenerator" FullName="Org.BouncyCastle.Crypto.Generators .DsaKeyPairGenerator">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ElGamalKeyPairGenerator" FullName="Org.BouncyCastle.Crypto.Generators .ElGamalKeyPairGenerator">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Gost3410KeyPairGenerator" FullName="Org.BouncyCastle.Crypto.Generators .Gost3410KeyPairGenerator">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="RsaKeyPairGenerator" FullName="Org.BouncyCastle.Crypto.Generators .RsaKeyPairGenerator">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PgpCompressedData" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpCompressedData">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PgpEncryptedDataList" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpEncryptedDataList">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PgpExperimental" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpExperimental">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PgpLiteralData" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpLiteralData">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PgpMarker" FullName="Org.BouncyCastle.Bcpg.OpenPgp.PgpMarker">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PgpOnePassSignatureList" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpOnePassSignatureList">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PgpSignatureList" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpSignatureList">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="CertificationRequest" FullName="Org.BouncyCastle.Asn1.Pkcs .CertificationRequest">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="CrlListID" FullName="Org.BouncyCastle.Asn1.Esf.CrlListID">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="OcspListID" FullName="Org.BouncyCastle.Asn1.Esf.OcspListID">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="OtherRevRefs" FullName="Org.BouncyCastle.Asn1.Esf.OtherRevRefs">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="SigPolicyQualifierInfo" FullName="Org.BouncyCastle.Asn1.Esf .SigPolicyQualifierInfo">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ProfessionInfo" FullName="Org.BouncyCastle.Asn1.IsisMtt.X509 .ProfessionInfo">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ITextmyHandler" FullName="iTextSharp.text.xml.ITextmyHandler">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="HyphenationAuto" FullName="iTextSharp.text.pdf.HyphenationAuto">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ShareThis+NETRESOURCE" FullName="LMNetLib.ShareThis+NETRESOURCE">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="FacebookButton" FullName="LMWeb.FacebookButton">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="KeyFromCert" FullName="X509Helper.KeyFromCert">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="EncryptionUtility" FullName="LMComLib.EncryptionUtility">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="LMMessenger+LMAction&lt;T&gt;" FullName="LMComLib.LMMessenger+LMAction&lt;T&gt;">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="LMMessenger+DlgMessage&lt;TInit,TResult&gt;" FullName="LMComLib.LMMessenger+DlgMessage&lt;TInit ,TResult&gt;">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="LicenceType" FullName="LMComLib.SL.LicenceType">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="DBQuestionPool" FullName="Course.DBQuestionPool">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="QuestionPool" FullName="Course.QuestionPool">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="UserCompany+MyUser" FullName="LMComLib.UserCompany+MyUser">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="eTestMe+dbSkill" FullName="eTestMe+dbSkill">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="eTestMe+dbGroup" FullName="eTestMe+dbGroup">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Dir" FullName="Tts.Dir">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Dump+scormEx" FullName="NewData.Dump+scormEx">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="MigrationConfiguration" FullName="AzureData.MigrationConfiguration">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="hmanEvalController+linesToEvalResult" FullName="azure .hmanEvalController+linesToEvalResult">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="hmanEvalController+evalLineResult" FullName="azure.hmanEvalController+evalLineResult">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="hmanEvalController+tempInfo" FullName="azure.hmanEvalController+tempInfo">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="hmanEvalController+getEvaluatorTestsResu lt" FullName="azure .hmanEvalController+getEvaluatorTestsRes ult">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="JSCompany" FullName="Admin.JSCompany">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="CmdSkrivanek" FullName="testMe.CmdSkrivanek">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="CmdSkrivanekResult" FullName="testMe.CmdSkrivanekResult">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="CmdSkrivanekSuggests" FullName="testMe.CmdSkrivanekSuggests">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="CmdSkrivanekDump" FullName="testMe.CmdSkrivanekDump">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Skrivanek+dumpTest" FullName="testMe.Skrivanek+dumpTest">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="LibMp3Lame+setFunc&lt;T&gt;" FullName="NAudio.Lame.DLL.LibMp3Lame+setFunc&lt;T&gt;">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="LibMp3Lame+NativeMethods" FullName="NAudio.Lame.DLL.LibMp3Lame+NativeMethods">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="LibMp3Lame+ReportFunction" FullName="NAudio.Lame.DLL .LibMp3Lame+ReportFunction">
+      <Val>2</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="DsaKeyGenerationParameters" FullName="Org.BouncyCastle.Crypto.Parameters .DsaKeyGenerationParameters">
+      <Val>3</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ElGamalKeyGenerationParameters" FullName="Org.BouncyCastle.Crypto.Parameters .ElGamalKeyGenerationParameters">
+      <Val>3</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Gost3410KeyGenerationParameters" FullName="Org.BouncyCastle.Crypto.Parameters .Gost3410KeyGenerationParameters">
+      <Val>3</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="RsaKeyGenerationParameters" FullName="Org.BouncyCastle.Crypto.Parameters .RsaKeyGenerationParameters">
+      <Val>3</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PgpPbeEncryptedData" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpPbeEncryptedData">
+      <Val>3</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PgpPublicKeyEncryptedData" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpPublicKeyEncryptedData">
+      <Val>3</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="CrlValidatedID" FullName="Org.BouncyCastle.Asn1.Esf.CrlValidatedID">
+      <Val>3</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="OcspResponsesID" FullName="Org.BouncyCastle.Asn1.Esf .OcspResponsesID">
+      <Val>3</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Hyphenator" FullName="iTextSharp.text.pdf.hyphenation .Hyphenator">
+      <Val>3</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PgpDataValidationException" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpDataValidationException">
+      <Val>4</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="PgpKeyValidationException" FullName="Org.BouncyCastle.Bcpg.OpenPgp .PgpKeyValidationException">
+      <Val>4</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="CrlIdentifier" FullName="Org.BouncyCastle.Asn1.Esf.CrlIdentifier">
+      <Val>4</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="OcspIdentifier" FullName="Org.BouncyCastle.Asn1.Esf.OcspIdentifier">
+      <Val>4</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="HyphenationTree" FullName="iTextSharp.text.pdf.hyphenation .HyphenationTree">
+      <Val>4</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="ByteVector" FullName="iTextSharp.text.pdf.hyphenation .ByteVector">
+      <Val>5</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="SimplePatternParser" FullName="iTextSharp.text.pdf.hyphenation .SimplePatternParser">
+      <Val>5</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Hyphen" FullName="iTextSharp.text.pdf.hyphenation.Hyphen">
+      <Val>6</Val>
+      <Val>1 type</Val>
+    </Row>
+    <Row Name="Sum:" FullName="Stat">
+      <Val>407</Val>
+      <Val>0</Val>
+    </Row>
+    <Row Name="Average:" FullName="Stat">
+      <Val>0.51</Val>
+      <Val>0</Val>
+    </Row>
+    <Row Name="Minimum:" FullName="Stat">
+      <Val>0</Val>
+      <Val>0</Val>
+    </Row>
+    <Row Name="Maximum:" FullName="Stat">
+      <Val>6</Val>
+      <Val>0</Val>
+    </Row>
+    <Row Name="Standard deviation:" FullName="Stat">
+      <Val>0.79</Val>
+      <Val>0</Val>
+    </Row>
+    <Row Name="Variance:" FullName="Stat">
+      <Val>0.63</Val>
+      <Val>0</Val>
+    </Row>
+  </Rows>
+</Query>

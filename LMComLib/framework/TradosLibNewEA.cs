@@ -44,10 +44,10 @@ namespace LMComLib {
     //static List<pageInfo> pages = new List<pageInfo>();
     //static pageInfo actPage;
 
-    public static Func<ConfigNewEA> doHackEx;
+    //public static Func<ConfigNewEA> doHackEx;
     public static Func<bool> doHack;
     public static bool Hack() { return doHack != null && doHack(); }
-    public static ConfigNewEA HackEx() { return doHackEx == null ? null : doHackEx(); }
+    //public static ConfigNewEA HackEx() { return doHackEx == null ? null : doHackEx(); }
 
     //**************** Volano v q:\LMNet2\WebApps\EduAuthorNew\framework\deployment\EANew-DeployGenerator.ascx
     public static string onGetResxValue(string id, string fn) { //notifikace o potrebe vlozit do stranky lokalizovany retezec
