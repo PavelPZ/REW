@@ -1,4 +1,4 @@
-namespace blendedData {
+namespace NewData {
   using System;
   using System.Data.Entity;
   using System.ComponentModel.DataAnnotations.Schema;

@@ -46,7 +46,7 @@ namespace blended {
       var db = blendedData.Lib.CreateContext();
       var comp = db.Companies.FirstOrDefault(c => c.Id == companyid);
       if (comp != null && !string.IsNullOrEmpty(comp.LearningData)) return;
-      if (comp == null) db.Companies.Add(comp = new blendedData.BlendedCompany { Id = companyid });
+      if (comp == null) db.Companies.Add(comp = new NewData.BlendedCompany { Id = companyid });
       comp.LearningData = companyData;
       blendedData.Lib.SaveChanges(db);
     }
@@ -266,11 +266,11 @@ namespace blended {
     public void saveUserData(int companyid, long lmcomId, string productUrl, [FromBody] ISaveData[] data) {
       var db = blendedData.Lib.CreateContext();
       var courseUser = db.CourseUsers.FirstOrDefault(cu => cu.CompanyId == companyid && cu.LMComId == lmcomId && cu.ProductUrl == productUrl);
-      if (courseUser == null) db.CourseUsers.Add(courseUser = new blendedData.BlendedCourseUser() { CompanyId = companyid, LMComId = lmcomId, ProductUrl = productUrl });
+      if (courseUser == null) db.CourseUsers.Add(courseUser = new NewData.BlendedCourseUser() { CompanyId = companyid, LMComId = lmcomId, ProductUrl = productUrl });
       foreach (var dt in data) {
         var courseData = courseUser.CourseDatas.FirstOrDefault(cd => cd.Key == dt.url && cd.TaskId == dt.taskId);
         if (courseData != null && dt.shortData == null) { db.CourseDatas.Remove(courseData); continue; }
-        if (courseData == null) db.CourseDatas.Add(courseData = new blendedData.BlendedCourseData() { CourseUser = courseUser, Key = dt.url, TaskId = dt.taskId });
+        if (courseData == null) db.CourseDatas.Add(courseData = new NewData.BlendedCourseData() { CourseUser = courseUser, Key = dt.url, TaskId = dt.taskId });
         courseData.ShortData = dt.shortData; courseData.Data = dt.longData; courseData.Flags = (long)dt.flag;
       }
       blendedData.Lib.SaveChanges(db);

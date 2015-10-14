@@ -11,13 +11,13 @@ namespace blendedData {
   using System.Linq;
   using System.Text;
 
-  internal sealed class Configuration : DbMigrationsConfiguration<Vyzva57> {
+  internal sealed class Configuration : DbMigrationsConfiguration<NewData.Vyzva57> {
     public Configuration() {
       AutomaticMigrationsEnabled = false;
       AutomaticMigrationDataLossAllowed = true;
     }
 
-    protected override void Seed(Vyzva57 context) {
+    protected override void Seed(NewData.Vyzva57 context) {
       //  This method will be called after migrating to the latest version.
 
       //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
@@ -33,10 +33,10 @@ namespace blendedData {
     }
   }
 
-  internal class initializer : MigrateDatabaseToLatestVersion<Vyzva57, Configuration> { }
+  internal class initializer : MigrateDatabaseToLatestVersion<NewData.Vyzva57, Configuration> { }
 
   public static class Lib {
-    public static void SaveChanges(Vyzva57 db) {
+    public static void SaveChanges(NewData.Vyzva57 db) {
       try {
         db.SaveChanges();
       }
@@ -51,9 +51,9 @@ namespace blendedData {
         throw new Exception(sb.ToString(), dbEx);
       }
     }
-    public static Vyzva57 CreateContext() {
+    public static NewData.Vyzva57 CreateContext() {
       init();
-      return new Vyzva57();
+      return new NewData.Vyzva57();
     }
 
     static void init() {
