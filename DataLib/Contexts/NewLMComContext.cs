@@ -9,6 +9,7 @@ using System.Data.Common;
 namespace NewData {
   public partial class Container : DbContext {
 
+    public Container() : base() { }
     public Container(DbConnection conn) : base(conn, true) { }
     public Container(string conn) : base(conn) { }
 
