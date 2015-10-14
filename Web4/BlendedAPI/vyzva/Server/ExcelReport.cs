@@ -48,7 +48,7 @@ namespace blended {
         courseUsers = studentsFromCompany(groupId < 0 ? data.studyGroups : data.studyGroups.Where(g => g.groupId == groupId));
         allUsers = usersFromCompany(data);
       }
-      public blendedData.Vyzva57 db;
+      public NewData.Vyzva57 db;
       public ICompanyData data;
       public Dictionary<blendedMeta.lineUser, IAlocatedKey> courseUsers;
       public Dictionary<long, IAlocatedKey> allUsers;
@@ -218,7 +218,7 @@ namespace blended {
     }
     const int secPerDay = 60 * 60 * 24;
 
-    static ICompanyData readData(int companyId, blendedData.Vyzva57 db = null) {
+    static ICompanyData readData(int companyId, NewData.Vyzva57 db = null) {
       if (db == null) db = blendedData.Lib.CreateContext();
       var dbData = db.Companies.Where(c => c.Id == companyId).Select(c => c.LearningData).FirstOrDefault();
       return JsonConvert.DeserializeObject<ICompanyData>(dbData);

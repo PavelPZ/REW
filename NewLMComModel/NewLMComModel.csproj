@@ -361,25 +361,6 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>htmlHead.cs</LastGenOutput>
     </Content>
-    <Compile Include="Models\Company.cs" />
-    <Compile Include="Models\CompanyDepartment.cs" />
-    <Compile Include="Models\CompanyLicence.cs" />
-    <Compile Include="Models\CompanyUser.cs" />
-    <Compile Include="Models\CourseData.cs" />
-    <Compile Include="Models\CourseUser.cs" />
-    <Compile Include="Models\Mapping\CompanyDepartmentMap.cs" />
-    <Compile Include="Models\Mapping\CompanyLicenceMap.cs" />
-    <Compile Include="Models\Mapping\CompanyMap.cs" />
-    <Compile Include="Models\Mapping\CompanyUserMap.cs" />
-    <Compile Include="Models\Mapping\CourseDataMap.cs" />
-    <Compile Include="Models\Mapping\CourseUserMap.cs" />
-    <Compile Include="Models\Mapping\ScormExMap.cs" />
-    <Compile Include="Models\Mapping\UserLicenceMap.cs" />
-    <Compile Include="Models\Mapping\UserMap.cs" />
-    <Compile Include="Models\NewLMComContext.cs" />
-    <Compile Include="Models\ScormEx.cs" />
-    <Compile Include="Models\User.cs" />
-    <Compile Include="Models\UserLicence.cs" />
     <Compile Include="Properties\Settings1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -460,6 +441,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataLib\DataLib.csproj">
+      <Project>{182822fa-7779-4da9-990a-3a04c2c11207}</Project>
+      <Name>DataLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EPPlus\EPPlus.csproj">
       <Project>{7b288026-5502-4a39-bf41-77e086f3e4a3}</Project>
       <Name>EPPlus</Name>
@@ -484,6 +469,7 @@
     <Folder Include="bin\Debug\" />
     <Folder Include="Doc\" />
     <Folder Include="ModelStat\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201412221224373_v008.resx">
