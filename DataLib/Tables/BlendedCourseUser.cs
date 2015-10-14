@@ -1,14 +1,14 @@
-namespace blendedData {
+namespace NewData {
   using System;
   using System.Collections.Generic;
   using System.ComponentModel.DataAnnotations;
   using System.ComponentModel.DataAnnotations.Schema;
   using System.Data.Entity.Spatial;
 
-  public partial class CourseUser {
+  public partial class BlendedCourseUser {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-    public CourseUser() {
-      CourseDatas = new HashSet<CourseData>();
+    public BlendedCourseUser() {
+      CourseDatas = new HashSet<BlendedCourseData>();
     }
 
     [Key]
@@ -25,9 +25,9 @@ namespace blendedData {
 
     public int CompanyId { get; set; }
 
-    public virtual Company Company { get; set; }
+    public virtual BlendedCompany Company { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-    public virtual ICollection<CourseData> CourseDatas { get; set; }
+    public virtual ICollection<BlendedCourseData> CourseDatas { get; set; }
   }
 }
