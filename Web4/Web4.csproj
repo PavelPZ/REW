@@ -252,6 +252,7 @@
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.js" />
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.structure.css" />
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.theme.css" />
+    <Content Include="Author\Author - Copy.html" />
     <Content Include="Author\Author.html" />
     <Content Include="BlendedAPI\Doc.txt" />
     <None Include="BlendedAPI\Styles\style.less" />
@@ -283,8 +284,9 @@
     <Content Include="JsLib\Scripts\angular-route.js" />
     <Content Include="JsLib\Scripts\angular-ui-router.js" />
     <Content Include="JsLib\Scripts\angular.js" />
+    <Content Include="JsLib\Scripts\core.js" />
+    <Content Include="JsLib\Scripts\core.min.js" />
     <Content Include="JsLib\Scripts\es5-shim.js" />
-    <Content Include="JsLib\Scripts\jquery-1.11.3.min.js" />
     <Content Include="JsLib\Scripts\ui-bootstrap-tpls.js" />
     <Content Include="links.aspx" />
     <Content Include="packs\repositories.config" />
@@ -1336,7 +1338,6 @@
     <Content Include="JsLib\skins\skrivanek\eTestMeCertifikat.pdf" />
     <Content Include="JsLib\skins\skrivanek\css.less" />
     <Content Include="JsLib\css\img\logo-jjlearning.png" />
-    <Content Include="JsLib\Scripts\dx.phonejs.js" />
     <Content Include="JsLib\Scripts\jquery.transit.js" />
     <Content Include="JsLib\Scripts\knockout.validation.js" />
     <Content Include="JsLib\Scripts\knockout.js" />
@@ -1496,11 +1497,13 @@
     <TypeScriptCompile Include="JsLib\JSD\angularjs\angular-ui-bootstrap.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\angularjs\angular-ui-router.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\angularjs\angular.d.ts" />
+    <TypeScriptCompile Include="JsLib\JSD\core-js.d.ts" />
     <TypeScriptCompile Include="JsLib\JSD\HtmlAudio\waa.d.ts" />
     <None Include="JsLib\JSD\jquery-ui.d - Copy.ts_" />
     <TypeScriptCompile Include="JsLib\JSD\jquery-ui.d.ts" />
     <None Include="JsLib\JSD\jquery.d - Copy.ts_" />
     <TypeScriptCompile Include="JsLib\JSD\lib-lm.d.ts" />
+    <TypeScriptCompile Include="Temp\jsDeploy.ts" />
     <TypeScriptCompile Include="Temp\angular\knockout.ts" />
     <TypeScriptCompile Include="Temp\angular\test.ts" />
     <TypeScriptCompile Include="Temp\mediumJS\ts\Base.ts" />

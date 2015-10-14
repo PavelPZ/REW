@@ -36,6 +36,8 @@ namespace CubesDeployment {
 
     static void Main(string[] args) {
 
+      //File.WriteAllText(@"d:\temp\build.json", Packager.RewApp.jsDeployData());
+      //return;
       //CourseMeta.Lib.init(new LoggerMemory(true), @"d:\lmcom\", false);
       //return;
 

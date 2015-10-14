@@ -1,11 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <NDepend AppName="Web4New" Platform="DotNet">
   <OutputDir KeepXmlFiles="False">D:\LMCom\rew\NDependOut</OutputDir>
   <Assemblies>
     <Name>web4</Name>
     <Name>ObjectModel</Name>
     <Name>NewLMComModel</Name>
-    <Name>LMComExternal</Name>
     <Name>LMComLib</Name>
     <Name>CubesDeployment</Name>
   </Assemblies>
@@ -24,13 +23,11 @@
     <Name>System.Data.Linq</Name>
     <Name>System.Windows.Forms</Name>
     <Name>Microsoft.CSharp</Name>
-    <Name>EduAuthor</Name>
     <Name>System.Web.Http.WebHost</Name>
     <Name>System.Configuration</Name>
     <Name>System.Drawing</Name>
     <Name>ModelCssView</Name>
     <Name>BoneSoft.CSS</Name>
-    <Name>CommonMark</Name>
     <Name>System.Data</Name>
     <Name>ClearScript</Name>
     <Name>System.Runtime.Caching</Name>
@@ -47,19 +44,17 @@
     <Name>System.Web.Extensions</Name>
     <Name>System.Data.SqlServerCe</Name>
     <Name>DotNetOpenAuth</Name>
-    <Name>ChilkatDotNet4</Name>
-    <Name>GalaSoft.MvvmLight.WPF4</Name>
     <Name>System.DirectoryServices</Name>
-    <Name>System.Transactions</Name>
-    <Name>System.Data.DataSetExtensions</Name>
     <Name>System.Reactive.Linq</Name>
     <Name>System.Reactive.Core</Name>
+    <Name>ICSharpCode.SharpZipLib</Name>
+    <Name>itextsharp</Name>
   </FrameworkAssemblies>
   <Dirs>
-    <Dir>D:\LMCom\rew\Web4\bin</Dir>
-    <Dir>D:\LMCom\rew\CubesDeployment\bin\Debug</Dir>
     <Dir>C:\Windows\Microsoft.NET\Framework\v4.0.30319</Dir>
     <Dir>C:\Windows\Microsoft.NET\Framework\v4.0.30319\WPF</Dir>
+    <Dir>D:\LMCom\rew\Web4\bin</Dir>
+    <Dir>D:\LMCom\rew\CubesDeployment\bin\Debug</Dir>
   </Dirs>
   <MergeCodeGeneratedByCompiler>True</MergeCodeGeneratedByCompiler>
   <Report Kind="0" SectionsEnabled="45055" XslPath="" Flags="261120" />
@@ -109,8 +104,7 @@
   <SourceFileRebasing FromPath="" ToPath="" />
   <PathVariables />
   <RuleFiles />
-  <ProjectRules AreActive="True" />
-  <Queries>
+  <ProjectRules AreActive="True" /><Queries>
     <Group Name="Code Quality" Active="False" ShownInReport="False">
       <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="True"><![CDATA[// <Name>Types too big - critical</Name>
 warnif count > 0 from t in JustMyCode.Types where 
@@ -8091,6 +8085,4 @@ select new { n, n.NbLinesOfCode }
 //</HowToFix>]]></Query>
       </Group>
     </Group>
-  </Queries>
-  <WarnFilter />
-</NDepend>
+  </Queries></NDepend>

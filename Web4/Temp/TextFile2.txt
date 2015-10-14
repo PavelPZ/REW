@@ -1,87 +1,107 @@
-﻿@import "../bs3/less/variables.less";
-
-.sm-text {
-  position: relative;
-  background-color: white;
-  overflow: hidden;
-
-  textarea, pre, span {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
-    border: 0px;
-    border-radius: 0px;
-    overflow: hidden;
-    margin: 0px;
-    resize:none;
-
-    text-decoration:none;
-    line-height: 1em;
-    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-    font-variant: normal;
-    font-size:14px;
-    font-style: normal;
-    letter-spacing: normal;
-    text-transform:none;
-    text-align:left;
-    direction:ltr;
-    font-size-adjust:none;
-    //word-wrap:break-word;
-    //word-break:break-all;
-    white-space: pre-wrap; //klicove pro Chrome a FF. V kodu je pro IE prepsan na 'pre'
-    word-spacing:0;
-
-  }
-
-  > .sm-view {
-    display: block;
-    //color: transparent;
-    color: red;
-    background: transparent;
-
-    .span {
-      background-color: darken(@state-success-bg, 15%);
-    }
-
-    .error {
-      background-color: darken(@state-danger-bg, 15%);
-    }
-
-    .inline {
-      background-color: darken(@state-warning-bg, 15%);
-    }
-
-    .style {
-      background-color: darken(@state-info-bg, 15%);
-    }
-    /*.span { background-color: lighten(@brand-success, 15%);}
-    .error {background-color: lighten(@brand-danger, 15%);}
-    .inline {background-color: lighten(@brand-warning, 15%);}
-    .style {background-color: lighten(@brand-info, 15%);}*/
-    .block {
-      background-color: @state-info-bg;
-    }
-  }
-
-  > textarea {
-    background: transparent;
-    overflow: hidden;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    &:focus {
-      border: none;
-      border-color: transparent;
-      outline: none;
-    }
-  }
-}
-
-.sm-block {
-  .sm-block-body {
-    margin-left: 20px;
-  }
-}
+﻿script execution finished: http://localhost/Web4/author/../jslib/scripts/jquery2.js
+script execution finished: http://localhost/Web4/author/../jslib/scripts/angular.js
+script execution finished: http://localhost/Web4/author/../jslib/scripts/underscore.js
+script execution finished: http://localhost/Web4/author/../jslib/js/lmconsoleinit.js
+script execution finished: http://localhost/Web4/author/../jslib/scripts/angular-route.js
+script execution finished: http://localhost/Web4/author/../jslib/scripts/angular-animate.js
+script execution finished: http://localhost/Web4/author/../jslib/scripts/angular-cookies.js
+script execution finished: http://localhost/Web4/author/../jslib/scripts/angular-ui-router.js
+script execution finished: http://localhost/Web4/author/../jslib/scripts/ui-bootstrap-tpls.js
+script execution finished: http://localhost/Web4/author/../jslib/scripts/jquery-migrate.js
+script execution finished: http://localhost/Web4/author/../JsLib/Scripts/jqvalidator/core.js
+script execution finished: http://localhost/Web4/author/../JsLib/Scripts/jqvalidator/delegate.js
+script execution finished: http://localhost/Web4/author/../JsLib/Scripts/jqvalidator/lm_remote.js
+script execution finished: http://localhost/Web4/author/../bs3/js/modal.js
+script execution finished: http://localhost/Web4/author/../bs3/js/tooltip.js
+script execution finished: http://localhost/Web4/author/../JsLib/JS/External/jqvalidator.js
+script execution finished: http://localhost/Web4/author/../JsLib/Scripts/ui/jquery-ui.js
+script execution finished: http://localhost/Web4/author/../JsLib/Scripts/query.autosize.js
+script execution finished: http://localhost/Web4/author/../jslib/scripts/globalize.js
+script execution finished: http://localhost/Web4/author/../jslib/scripts/jquery.ba-hashchange.js
+script execution finished: http://localhost/Web4/author/../jslib/scripts/json2.js
+script execution finished: http://localhost/Web4/author/../jslib/scripts/jsRender.js
+script execution finished: http://localhost/Web4/author/../jslib/scripts/knockout.js
+script execution finished: http://localhost/Web4/author/../jslib/scripts/knockout.validation.js
+script execution finished: http://localhost/Web4/author/../jslib/scripts/knockout-delegatedEvents.js
+script execution finished: http://localhost/Web4/author/../jslib/js/external/KnockoutPlugins.js
+script execution finished: http://localhost/Web4/author/../jslib/js/external/ClosureLib.js
+script execution finished: http://localhost/Web4/author/../jslib/js/external/ClosureLibLow.js
+script execution finished: http://localhost/Web4/author/../jslib/js/GenLMComLib.js
+script execution finished: http://localhost/Web4/author/../jslib/js/bowser.js
+script execution finished: http://localhost/Web4/author/../jslib/js/boot.js
+script execution finished: http://localhost/Web4/author/../jslib/js/unicode.js
+script execution finished: http://localhost/Web4/author/../jslib/js/unicode.js
+script execution finished: http://localhost/Web4/author/../jslib/js/base32.js
+script execution finished: http://localhost/Web4/author/../jslib/js/base32.js
+script execution finished: http://localhost/Web4/author/../jslib/js/external/rjson.js
+script execution finished: http://localhost/Web4/author/../jslib/js/external/rjson.js
+script execution finished: http://localhost/Web4/author/../jslib/js/Utils.js
+script execution finished: http://localhost/Web4/author/../jslib/js/Utils.js
+script execution finished: http://localhost/Web4/author/../jslib/js/Ajax.js
+script execution finished: http://localhost/Web4/author/../jslib/js/Ajax.js
+script execution finished: http://localhost/Web4/author/../jslib/ea/earepl.js
+script execution finished: http://localhost/Web4/author/../jslib/js/gui.js
+script execution finished: http://localhost/Web4/author/../jslib/js/ModelBase.js
+script execution finished: http://localhost/Web4/author/../jslib/js/ViewBase.js
+script execution finished: http://localhost/Web4/author/../jslib/js/Validate.js
+script execution finished: http://localhost/Web4/author/../JsLib/Controls/TreeView/TreeView.js
+script execution finished: http://localhost/Web4/author/../blendedapi/oldBoot.js
+script execution finished: http://localhost/Web4/author/../jslib/js/OAuth.js
+script execution finished: http://localhost/Web4/author/../jslib/js/EMailer.js
+script execution finished: http://localhost/Web4/author/../login/GenLogin.js
+script execution finished: http://localhost/Web4/author/../login/Model.js
+script execution finished: http://localhost/Web4/author/../login/Login.js
+script execution finished: http://localhost/Web4/author/../login/LMLogin.js
+script execution finished: http://localhost/Web4/author/../login/Register.js
+script execution finished: http://localhost/Web4/author/../login/ChangePassword.js
+script execution finished: http://localhost/Web4/author/../login/ForgotPassword.js
+script execution finished: http://localhost/Web4/author/../login/Profile.js
+script execution finished: http://localhost/Web4/author/../login/ConfirmRegistration.js
+script execution finished: http://localhost/Web4/author/../admin/GenAdmin.js
+script execution finished: http://localhost/Web4/author/../admin/admin.js
+script execution finished: http://localhost/Web4/author/../admin/KeyGen.js
+script execution finished: http://localhost/Web4/author/../admin/Products.js
+script execution finished: http://localhost/Web4/author/../admin/HumanEval.js
+script execution finished: http://localhost/Web4/author/../admin/HumanEvalManager.js
+script execution finished: http://localhost/Web4/author/../admin/CompAdmins.js
+script execution finished: http://localhost/Web4/author/../Admin/UserResults.js
+script execution finished: http://localhost/Web4/author/../Admin/Departments.js
+script execution finished: http://localhost/Web4/author/../jslib/js/lmconsole.js
+script execution finished: http://localhost/Web4/author/../jslib/scripts/waitforimages.js
+script execution finished: http://localhost/Web4/author/../schools/gencourse.js
+script execution finished: http://localhost/Web4/author/../schools/genschools.js
+script execution finished: http://localhost/Web4/author/../schools/genproxy.js
+script execution finished: http://localhost/Web4/author/../schools/genazure.js
+script execution finished: http://localhost/Web4/author/../schools/interfaces.js
+script execution finished: http://localhost/Web4/author/../jslib/js/sound/mp3WorkerLib.js
+script execution finished: http://localhost/Web4/author/../jslib/js/sound/soundNew.js
+script execution finished: http://localhost/Web4/author/../jslib/js/sound/Html5Recorder.js
+script execution finished: http://localhost/Web4/author/../jslib/js/sound/wavePcm.js
+script execution finished: http://localhost/Web4/author/../jslib/js/keys.js
+script execution finished: http://localhost/Web4/author/../jslib/ea/eaextension.js
+script execution finished: http://localhost/Web4/author/../jslib/controls/dict/dict.js
+script execution finished: http://localhost/Web4/author/../schools/lib.js
+script execution finished: http://localhost/Web4/author/../schools/products.js
+script execution finished: http://localhost/Web4/author/../schools/topBar.js
+script execution finished: http://localhost/Web4/author/../schools/model.js
+script execution finished: http://localhost/Web4/author/../schools/persist.js
+script execution finished: http://localhost/Web4/author/../schools/persistlocal.js
+script execution finished: http://localhost/Web4/author/../schools/persistnewea.js
+script execution finished: http://localhost/Web4/author/../schools/persistdownload.js
+script execution finished: http://localhost/Web4/author/../schools/persistphonegap.js
+script execution finished: http://localhost/Web4/author/../schools/persistscormex.js
+script execution finished: http://localhost/Web4/author/../schools/persistmemory.js
+script execution finished: http://localhost/Web4/author/../schools/splash.js
+script execution finished: http://localhost/Web4/author/../schools/CourseMetaGui.js
+script execution finished: http://localhost/Web4/author/../schools/my.js
+script execution finished: http://localhost/Web4/author/../schools/exercise.js
+script execution finished: http://localhost/Web4/author/../schools/genscorm.js
+script execution finished: http://localhost/Web4/author/../schools/cpv.js
+script execution finished: http://localhost/Web4/author/../schools/gramm.js
+script execution finished: http://localhost/Web4/author/../courses/GenCourseModel.js
+script execution finished: http://localhost/Web4/author/../testme/GenTestModel.js
+script execution finished: http://localhost/Web4/author/../courses/GenCourseMeta.js
+script execution finished: http://localhost/Web4/author/../courses/CourseModel.js
+script execution finished: http://localhost/Web4/author/../courses/Course.js
+script execution finished: http://localhost/Web4/author/../courses/CourseLib.js
+script execution finished: http://localhost/Web4/author/../courses/CourseMeta.js
