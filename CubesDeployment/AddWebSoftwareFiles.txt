@@ -15,6 +15,7 @@ blendedapi/vyzva/views/vyzvademo.html
 blendedapi/vyzva/views/vyzvaprovoz.html
 blendedapi/vyzva/views/_pagetemplate.html
 blendedapi/vyzva/server/excels/studyall.xlsx
+jslib/scripts/underscore.js
 jslib/scripts/es5-shim.js
 jslib/scripts/angular.js
 jslib/scripts/angular-route.js
