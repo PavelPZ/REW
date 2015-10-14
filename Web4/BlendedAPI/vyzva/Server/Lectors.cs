@@ -40,16 +40,16 @@ namespace vyzva {
       if (missings.Any()) { //dopln lector users a priprav jim course-product´s Licencni klice (pro kazdou skolu a kazdy kurz jeden)
         foreach (var missing in missings) {
           var compId = missing.dbData.Id;
-          var user = new User() { EMail = compId.ToString() + "@lector-langmaster.cz", Password = "lpsw", FirstName = "LANGMaster", LastName = "lector", Created = DateTime.UtcNow, OtherType = (short)OtherType.LANGMaster };
+          var user = new Users() { EMail = compId.ToString() + "@lector-langmaster.cz", Password = "lpsw", FirstName = "LANGMaster", LastName = "lector", Created = DateTime.UtcNow, OtherType = (short)OtherType.LANGMaster };
           oldDb.Users.Add(user);
-          var compUser = new CompanyUser() { CompanyId = compId, User = user, Created = DateTime.UtcNow };
+          var compUser = new CompanyUsers() { CompanyId = compId, User = user, Created = DateTime.UtcNow };
           oldDb.CompanyUsers.Add(compUser);
           foreach (var courseId in new string[] { "english", "german", "french" }) {
             var prodId = "/lm/prods_lm_blcourse_" + courseId + "/";
-            var courseUser = new CourseUser() { CompanyUser = compUser, Created = DateTime.UtcNow, ProductId = prodId };
-            var compLicence = new CompanyLicence() { CompanyId = compId, Days = 5000, ProductId = prodId, Created = DateTime.UtcNow, LastCounter = 2 };
+            var courseUser = new CourseUsers() { CompanyUser = compUser, Created = DateTime.UtcNow, ProductId = prodId };
+            var compLicence = new CompanyLicences() { CompanyId = compId, Days = 5000, ProductId = prodId, Created = DateTime.UtcNow, LastCounter = 2 };
             oldDb.CourseUsers.Add(courseUser);
-            var userLicence = new UserLicence() { CompanyLicence = compLicence, CourseUser = courseUser, Started = DateTime.UtcNow, Created = DateTime.UtcNow, Counter = 1 };
+            var userLicence = new UserLicences() { CompanyLicence = compLicence, CourseUser = courseUser, Started = DateTime.UtcNow, Created = DateTime.UtcNow, Counter = 1 };
             oldDb.UserLicences.Add(userLicence);
           }
         }

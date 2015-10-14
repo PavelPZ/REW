@@ -343,14 +343,14 @@ namespace NewData {
       Logger.Log(@"Lib.NewData.Container init: End");
     } static bool initialized;
 
-    public static bool adjustCourseUser(Container db, Int64 lmcomUserId, int companyId, string productId, out CourseUser crsUser, out CompanyUser compUser) {
+    public static bool adjustCourseUser(Container db, Int64 lmcomUserId, int companyId, string productId, out CourseUsers crsUser, out CompanyUsers compUser) {
       DateTime startDate = DateTime.UtcNow; crsUser = null;
 
       //adjust CompanyUser
       compUser = db.CompanyUsers.FirstOrDefault(u => u.CompanyId == companyId && u.UserId == lmcomUserId);
       if (compUser == null) {
         var allDeps = db.CompanyDepartments.Where(d => d.CompanyId == companyId).Select(cd => cd.Id).ToArray();
-        db.CompanyUsers.Add(compUser = new CompanyUser() {
+        db.CompanyUsers.Add(compUser = new CompanyUsers() {
           UserId = lmcomUserId,
           CompanyId = companyId,
           Created = DateTime.UtcNow,
@@ -361,7 +361,7 @@ namespace NewData {
 
       //adjust CourseUser
       if (crsUser == null) {
-        db.CourseUsers.Add(crsUser = new CourseUser() {
+        db.CourseUsers.Add(crsUser = new CourseUsers() {
           CompanyUser = compUser,
           Created = DateTime.UtcNow,
           ProductId = productId,

@@ -174,11 +174,11 @@ namespace testMe {
       var db = Lib.CreateContext();
       var skCompany = db.Companies.FirstOrDefault(c => c.Title == skTitle);
       if (skCompany == null) {
-        skCompany = new Company { Title = skTitle, Created = DateTime.UtcNow };
+        skCompany = new Companies { Title = skTitle, Created = DateTime.UtcNow };
         var usr = db.Users.First(u => u.EMail == "zzikova@langmaster.cz");
-        var dep = new CompanyDepartment() { Title = skCompany.Title, Company = skCompany };
+        var dep = new CompanyDepartments() { Title = skCompany.Title, Company = skCompany };
         db.CompanyDepartments.Add(dep);
-        var compUser = new CompanyUser() { Company = skCompany, User = usr, Created = DateTime.UtcNow, RolesEx = (long)CompRole.All, CompanyDepartment = dep };
+        var compUser = new CompanyUsers() { Company = skCompany, User = usr, Created = DateTime.UtcNow, RolesEx = (long)CompRole.All, CompanyDepartment = dep };
         Lib.SaveChanges(db);
       }
       //adjust Licence

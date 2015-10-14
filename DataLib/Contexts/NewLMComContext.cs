@@ -13,15 +13,15 @@ namespace NewData {
     public Container(DbConnection conn) : base(conn, true) { }
     public Container(string conn) : base(conn) { }
 
-    public DbSet<Company> Companies { get; set; }
-    public DbSet<CompanyDepartment> CompanyDepartments { get; set; }
-    public DbSet<CompanyLicence> CompanyLicences { get; set; }
-    public DbSet<CompanyUser> CompanyUsers { get; set; }
-    public DbSet<CourseData> CourseDatas { get; set; }
-    public DbSet<CourseUser> CourseUsers { get; set; }
-    public DbSet<LANGMasterScorm> LANGMasterScorms { get; set; }
-    public DbSet<UserLicence> UserLicences { get; set; }
-    public DbSet<User> Users { get; set; }
+    public DbSet<Companies> Companies { get; set; }
+    public DbSet<CompanyDepartments> CompanyDepartments { get; set; }
+    public DbSet<CompanyLicences> CompanyLicences { get; set; }
+    public DbSet<CompanyUsers> CompanyUsers { get; set; }
+    public DbSet<CourseDatas> CourseDatas { get; set; }
+    public DbSet<CourseUsers> CourseUsers { get; set; }
+    public DbSet<LANGMasterScorms> LANGMasterScorms { get; set; }
+    public DbSet<UserLicences> UserLicences { get; set; }
+    public DbSet<Users> Users { get; set; }
 
     protected override void OnModelCreating(DbModelBuilder modelBuilder) {
       //modelBuilder.Conventions.Remove<IncludeMetadataConvention>();

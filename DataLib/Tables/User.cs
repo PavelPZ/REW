@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.SqlTypes;
 
 namespace NewData {
-  public partial class User {
-    public User() {
-      this.CompanyUsers = new List<CompanyUser>();
+  public partial class Users {
+    public Users() {
+      this.CompanyUsers = new List<CompanyUsers>();
       Created = SqlDateTime.MinValue.Value;
     }
 
@@ -25,10 +25,10 @@ namespace NewData {
     public string LoginEMail { get; set; }
     public long Roles { get; set; }
     public string OtherData { get; set; }
-    public virtual ICollection<CompanyUser> CompanyUsers { get; set; }
+    public virtual ICollection<CompanyUsers> CompanyUsers { get; set; }
 
     //Publisher
     public Nullable<int> MyPublisherId { get; set; } //moje fake company compId pro pripad ze jsem individualni publisher
-    public virtual Company MyPublisher { get; set; } //fake company pro pripad, ze jsem individualni publisher.
+    public virtual Companies MyPublisher { get; set; } //fake company pro pripad, ze jsem individualni publisher.
   }
 }

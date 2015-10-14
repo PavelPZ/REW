@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NewData.Mapping
 {
-    public class CompanyLicenceMap : EntityTypeConfiguration<CompanyLicence>
+    public class CompanyLicenceMap : EntityTypeConfiguration<CompanyLicences>
     {
         public CompanyLicenceMap()
         {

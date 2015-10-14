@@ -46,7 +46,7 @@ namespace Author {
       switch (par.action) {
         case DeployProjectAction.deployStart:
           //adjust company v DB
-          NewData.Company comp;
+          NewData.Companies comp;
           if (!par.isCompany) {
             var user = db.Users.First(u => u.Id == par.id);
             comp = user.MyPublisher != null ? user.MyPublisher : NewData.AdminServ.createCompany(db, string.Format("{0} {1} ({2})", user.FirstName, user.LastName, user.EMail), user, true);

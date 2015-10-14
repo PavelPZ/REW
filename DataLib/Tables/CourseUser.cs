@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.SqlTypes;
 
 namespace NewData {
-  public partial class CourseUser {
-    public CourseUser() {
-      this.CourseDatas = new List<CourseData>();
-      this.UserLicences = new List<UserLicence>();
+  public partial class CourseUsers {
+    public CourseUsers() {
+      this.CourseDatas = new List<CourseDatas>();
+      this.UserLicences = new List<UserLicences>();
       Created = HumanAssigned = SqlDateTime.MinValue.Value;
     }
 
@@ -22,9 +22,9 @@ namespace NewData {
     //public int ProductId { get; set; }
     [Index]
     public string ProductId { get; set; }
-    public virtual CompanyUser CompanyUser { get; set; }
-    public virtual ICollection<CourseData> CourseDatas { get; set; }
-    public virtual ICollection<UserLicence> UserLicences { get; set; }
+    public virtual CompanyUsers CompanyUser { get; set; }
+    public virtual ICollection<CourseDatas> CourseDatas { get; set; }
+    public virtual ICollection<UserLicences> UserLicences { get; set; }
     //public byte[] RowVersion { get; set; }
   }
 }

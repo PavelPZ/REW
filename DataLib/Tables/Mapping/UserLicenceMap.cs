@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace NewData.Mapping {
-  public class UserLicenceMap : EntityTypeConfiguration<UserLicence> {
+  public class UserLicenceMap : EntityTypeConfiguration<UserLicences> {
     public UserLicenceMap() {
       // Primary Key
       this.HasKey(t => new { t.LicenceId, t.Counter });

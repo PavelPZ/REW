@@ -258,7 +258,7 @@ namespace NewDataNet35 {
       var db = Lib.CreateContext();
 
       //Where podminka na vsechny klice
-      LANGMasterScorm cdata = db.LANGMasterScorms.
+      LANGMasterScorms cdata = db.LANGMasterScorms.
         FirstOrDefault(s => s.UserId == par.UserId
           && (par.AttemptIdStr.value==null || s.AttemptIdStr == par.AttemptIdStr.value)
           //&& s.AttemptIdGuid == par.AttemptIdGuid.guidValue  
@@ -270,7 +270,7 @@ namespace NewDataNet35 {
       //Zaznam nenalezen, zaloz novy
       if (cdata == null)
 #if !net35
-        db.LANGMasterScorms.Add(cdata = new LANGMasterScorm() {
+        db.LANGMasterScorms.Add(cdata = new LANGMasterScorms() {
 #else
         db.LANGMasterScorms.InsertOnSubmit(cdata = new LANGMasterScorm() {
 #endif
@@ -321,7 +321,7 @@ namespace NewDataNet35 {
     }
 
     //Definice WHERE podminky
-    static IEnumerable<LANGMasterScorm> getQuery(Container db, pars par) {
+    static IEnumerable<LANGMasterScorms> getQuery(Container db, pars par) {
       var res = db.LANGMasterScorms.Where(s => s.UserId == par.UserId); //Test na email vzdy
       if (par.AttemptId.isValue) res = res.Where(s => s.AttemptId == par.AttemptId.value); //neprazdny AttemptId, pridej podminku
       if (par.AttemptIdStr.isValue) res = res.Where(s => s.AttemptIdStr == par.AttemptIdStr.value); //neprazdny AttemptId, pridej podminku

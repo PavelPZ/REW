@@ -290,7 +290,7 @@ namespace NewData {
 
     static bool humanEvalManagerEvsSave(CmdHumanEvalManagerEvsSave par) {
       var db = Lib.CreateContext();
-      CompanyUser cu;
+      CompanyUsers cu;
       if (par.companyUserId < 0) {
         cu = db.CompanyUsers.First(c => c.Id == -par.companyUserId);
         var ex = cu.RoleParEx;
@@ -302,7 +302,7 @@ namespace NewData {
         par.email = par.email.ToLower();
         var u = db.Users.Where(c => c.EMail == par.email).FirstOrDefault(); if (u == null) return false;
         cu = db.CompanyUsers.Where(c => c.UserId == u.Id && c.CompanyId == par.companyId).FirstOrDefault();
-        if (cu == null) db.CompanyUsers.Add(cu = new CompanyUser { CompanyId = par.companyId, UserId = u.Id, Created = DateTime.UtcNow });
+        if (cu == null) db.CompanyUsers.Add(cu = new CompanyUsers { CompanyId = par.companyId, UserId = u.Id, Created = DateTime.UtcNow });
       } else
         cu = db.CompanyUsers.First(c => c.Id == par.companyUserId);
       LMComLib.CompUserRole rx = cu.RoleParEx;
@@ -417,7 +417,7 @@ namespace NewData {
 
     static bool SaveDepartment(CmdSaveDepartment par) {
       var db = Lib.CreateContext();
-      CompanyUser compUser = db.CompanyUsers.First(cu => cu.CompanyId == par.companyId && cu.UserId == par.userId);
+      CompanyUsers compUser = db.CompanyUsers.First(cu => cu.CompanyId == par.companyId && cu.UserId == par.userId);
       compUser.DepartmentId = par.departmentId;
       Lib.SaveChanges(db);
       return true;
@@ -486,7 +486,7 @@ namespace NewData {
       if (usedLics.Any(l => l != lmcomUserId)) { res.res = EnterLicenceResult.used; return res; }
 
       //vse OK, zaregistruj pouziti licence (klice)
-      CourseUser crsUser; CompanyUser compUser;
+      CourseUsers crsUser; CompanyUsers compUser;
       DateTime startDate = DateTime.UtcNow;
       if (Lib.adjustCourseUser(db, lmcomUserId, compLic.CompanyId, compLic.ProductId, out crsUser, out compUser)) {
         var lastLic = crsUser.UserLicences.OrderByDescending(ul => ul.Started).Select(ul => new { ul.Started, ul.CompanyLicence.Days }).FirstOrDefault();
@@ -497,7 +497,7 @@ namespace NewData {
       }
 
       //Zalozeni nove licence
-      db.UserLicences.Add(new UserLicence() {
+      db.UserLicences.Add(new UserLicences() {
         Started = startDate,
         CourseUser = crsUser,
         CompanyLicence = compLic,

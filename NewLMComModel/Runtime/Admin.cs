@@ -169,7 +169,7 @@ namespace Admin {
     public bool isNew;
     /*** design time ***/
     [JsonIgnore]
-    public NewData.CompanyDepartment db;
+    public NewData.CompanyDepartments db;
   }
 
   /************ DEPARTMENT USAGE *************************/
@@ -465,7 +465,7 @@ namespace NewData {
       //najdi a vloz nebo aktualizuj
       ForEach(par.Departments, (parent, act) => {
         if (act.isNew) {
-          db.CompanyDepartments.Add(act.db = new CompanyDepartment() {
+          db.CompanyDepartments.Add(act.db = new CompanyDepartments() {
             Title = act.Title,
             Parent = parent == null ? null : parent.db,
             CompanyId = par.CompanyId,
@@ -523,7 +523,7 @@ namespace NewData {
     //    UsedIds = allUsed.OfType<int>().ToArray()
     //  };
     //}
-    static Department GetDepartment(CompanyDepartment[] allDb, CompanyDepartment actDb = null) {
+    static Department GetDepartment(CompanyDepartments[] allDb, CompanyDepartments actDb = null) {
       if (allDb == null || allDb.Length == 0) return null;
       if (actDb == null) actDb = allDb.First(d => d.ParentId == null);
       return new Department() {
@@ -543,10 +543,10 @@ namespace NewData {
     }
 
     //pripravi jednu licenci, napr. pro Skrivanek testGlobalAdmin (kde je days=0)
-    public static CompanyLicence adjustAddHocLicence(int companyId, Int64 userId, short days, string productId) {
+    public static CompanyLicences adjustAddHocLicence(int companyId, Int64 userId, short days, string productId) {
       var db = Lib.CreateContext();
       var prod = db.CompanyLicences.Where(l => l.CompanyId == companyId && l.ProductId == productId && l.Days == days).FirstOrDefault();
-      if (prod == null) db.CompanyLicences.Add(prod = new CompanyLicence {
+      if (prod == null) db.CompanyLicences.Add(prod = new CompanyLicences {
         ProductId = productId,
         Days = days,
         LastCounter = 0,
@@ -597,7 +597,7 @@ namespace NewData {
       }
       //insert
       foreach (var pr in prodList.Where(p => p.Id == 0)) {
-        db.CompanyLicences.Add(new CompanyLicence() {
+        db.CompanyLicences.Add(new CompanyLicences() {
           ProductId = pr.ProductId,
           Days = pr.Days,
           LastCounter = 0,
@@ -649,11 +649,11 @@ namespace NewData {
       };
     }
 
-    public static Company createCompany(Container db, string title, User usr, bool isFakePublisherCompany) {
-      var compDb = new Company() { Title = title, Created = DateTime.UtcNow }; db.Companies.Add(compDb);
-      var dep = new CompanyDepartment() { Title = title, Company = compDb };
+    public static Companies createCompany(Container db, string title, Users usr, bool isFakePublisherCompany) {
+      var compDb = new Companies() { Title = title, Created = DateTime.UtcNow }; db.Companies.Add(compDb);
+      var dep = new CompanyDepartments() { Title = title, Company = compDb };
       db.CompanyDepartments.Add(dep);
-      var compUser = new CompanyUser() { Created = DateTime.UtcNow, Company = compDb, User = usr, RolesEx = (long)(isFakePublisherCompany ? CompRole.All : CompRole.Admin), CompanyDepartment = dep };
+      var compUser = new CompanyUsers() { Created = DateTime.UtcNow, Company = compDb, User = usr, RolesEx = (long)(isFakePublisherCompany ? CompRole.All : CompRole.Admin), CompanyDepartment = dep };
       db.CompanyUsers.Add(compUser);
       if (isFakePublisherCompany) usr.MyPublisher = compDb;
       return compDb;
@@ -712,10 +712,10 @@ namespace NewData {
             db.CompanyUsers.First(u => u.Id == old.UserId).RolesEx &= ~(long)CompRole.Admin; //zrus admina u old email
             //adjust noveho admina 
             var usr = newUsers.FirstOrDefault(u => u.EMail == comp.EMail); //Zacni Userem
-            CompanyUser compUsr = null;
+            CompanyUsers compUsr = null;
             if (usr == null) usr = NewData.Login.PrepareUser(comp.EMail, db); //pro neexistujiciho zaloz usera v prepared stavu
             else compUsr = usr.CompanyUsers.FirstOrDefault(cu => cu.CompanyId == comp.Id); //pro existujiciho usera nalezni Cmpany Usera
-            if (compUsr == null) compUsr = new CompanyUser() { Created = DateTime.UtcNow, Company = compDb, User = usr, RolesEx = (long)CompRole.Admin }; //Company User neexistuje => zaloz
+            if (compUsr == null) compUsr = new CompanyUsers() { Created = DateTime.UtcNow, Company = compDb, User = usr, RolesEx = (long)CompRole.Admin }; //Company User neexistuje => zaloz
             //else compUsr.Roles |= (long)CompRole.Admin; //existuje, dej mu Admin roli
             else compUsr.RolesEx |= (long)CompRole.Admin; //existuje, dej mu Admin roli
           }
@@ -743,12 +743,12 @@ namespace NewData {
         foreach (var cusr in actUsers.Where(u => u.UserId == 0)) {
           //adjust noveho admina 
           var usr = newUsers.FirstOrDefault(u => u.EMail == cusr.EMail); //Zacni Userem
-          CompanyUser compUsr = null;
+          CompanyUsers compUsr = null;
           if (usr == null) usr = NewData.Login.PrepareUser(cusr.EMail, db); //pro neexistujiciho zaloz usera v prepared stavu
           else compUsr = usr.CompanyUsers.FirstOrDefault(cu => cu.CompanyId == cusr.CompanyId); //pro existujiciho usera nalezni Cmpany Usera
           var newRoles = cusr.RoleEx.Role;
           if (compUsr == null)
-            db.CompanyUsers.Add(compUsr = new CompanyUser() { Created = DateTime.UtcNow, CompanyId = cusr.CompanyId, User = usr, RoleParEx = cusr.RoleEx }); //Company User neexistuje => zaloz
+            db.CompanyUsers.Add(compUsr = new CompanyUsers() { Created = DateTime.UtcNow, CompanyId = cusr.CompanyId, User = usr, RoleParEx = cusr.RoleEx }); //Company User neexistuje => zaloz
           else {
             var oldRoles = (CompRole)compUsr.Roles;
             newRoles |= oldRoles & CompRole.HumanEvalator;

@@ -156,15 +156,15 @@ namespace NewData {
     static void saveUserData(Cmd_saveUserData par) {
       if (par.data == null || par.data.Length == 0) return;
       var db = Lib.CreateContext();
-      CourseUser crsUser; CourseData[] cdatas = null; CompanyUser compUser;
+      CourseUsers crsUser; CourseDatas[] cdatas = null; CompanyUsers compUser;
       if (Lib.adjustCourseUser(db, par.lmcomId, par.companyId, par.productId, out crsUser, out compUser)) {
         var keys = par.data.Select(d => d[0]).ToArray();
         cdatas = crsUser.CourseDatas.Where(d => keys.Contains(d.Key)).ToArray();
       } else
-        cdatas = new CourseData[0];
+        cdatas = new CourseDatas[0];
       foreach (var kv in par.data) {
         var cdata = cdatas.FirstOrDefault(cd => cd.Key == kv[0]);
-        if (cdata == null) db.CourseDatas.Add(cdata = new CourseData() {
+        if (cdata == null) db.CourseDatas.Add(cdata = new CourseDatas() {
           Key = kv[0],
           CourseUser = crsUser,
           Data = ""
@@ -200,7 +200,7 @@ namespace NewData {
       crsUser.ProductId = crsUser.ProductId + "|" + crsUser.Id.ToString();
       var licences = crsUser.UserLicences.Skip(1).ToArray(); //vsechny licence mimo prvni...
       if (licences.Length > 0) { //...preved na noveho CrsUsera
-        var crsNewUser = new CourseUser() {
+        var crsNewUser = new CourseUsers() {
           UserId = crsUser.UserId,
           Created = DateTime.UtcNow,
           ProductId = par.productId,

@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace NewData.Mapping {
-  public class LANGMasterScormMap : EntityTypeConfiguration<LANGMasterScorm> {
+  public class LANGMasterScormMap : EntityTypeConfiguration<LANGMasterScorms> {
     public LANGMasterScormMap()
         {
             // Primary Key

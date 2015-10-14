@@ -152,7 +152,7 @@ namespace NewData {
 
     public static LMCookieJS OnLMLogin(CmdLmLogin par) {
       var db = Lib.CreateContext();
-      User usr;
+      Users usr;
       if (par.ticket != null) {
         var ticketDir = Machines.rootPath + @"App_Data\tickets";
         var ticketFn = ticketDir + "\\" + par.ticket;
@@ -185,7 +185,7 @@ namespace NewData {
       var db = Lib.CreateContext();
       var el = new El(email, null);
       var usr = db.Users.FirstOrDefault(u => u.EMail == el.email && u.Login == null);
-      if (usr == null) db.Users.Add(usr = new User() { EMail = email, Created = DateTime.UtcNow });
+      if (usr == null) db.Users.Add(usr = new Users() { EMail = email, Created = DateTime.UtcNow });
       usr.VerifyStatus = (short)VerifyStates.ok;
       usr.OtherType = (short)otherType; usr.OtherId = otherId; usr.FirstName = firstName; usr.LastName = lastName;
       Lib.SaveChanges(db);
@@ -200,18 +200,18 @@ namespace NewData {
 
       var usr = db.Users.FirstOrDefault(u => u.Login == login);
       var comp = db.Companies.Where(c => c.ScormHost == par.companyHost).FirstOrDefault();
-      CompanyUser compUser = null;
+      CompanyUsers compUser = null;
       Logger.Log("CmdAdjustScormUserResult Start");
       if (usr == null) //adjust user
-        db.Users.Add(usr = new User() { Created = DateTime.UtcNow, EMail = null, Login = login, FirstName = par.firstName, LastName = par.lastName, LoginEMail = null, OtherId = par.login, OtherType = (short)LMComLib.OtherType.scorm });
+        db.Users.Add(usr = new Users() { Created = DateTime.UtcNow, EMail = null, Login = login, FirstName = par.firstName, LastName = par.lastName, LoginEMail = null, OtherId = par.login, OtherType = (short)LMComLib.OtherType.scorm });
       else if (comp != null) //comp a user nejsou null => testGlobalAdmin na compuser
         compUser = db.CompanyUsers.FirstOrDefault(cu => cu.CompanyId == comp.Id && cu.UserId == usr.Id);
 
       if (comp == null) //adjust company
-        db.Companies.Add(comp = new Company() { ScormHost = par.companyHost, Title = par.companyHost, Created = DateTime.UtcNow });
+        db.Companies.Add(comp = new Companies() { ScormHost = par.companyHost, Title = par.companyHost, Created = DateTime.UtcNow });
 
       if (compUser == null) //adjust comp user
-        db.CompanyUsers.Add(compUser = new CompanyUser() { User = usr, Created = DateTime.UtcNow, Company = comp });
+        db.CompanyUsers.Add(compUser = new CompanyUsers() { User = usr, Created = DateTime.UtcNow, Company = comp });
       else if (par.isNotAttempted) { //compUser existuje a isNotAttempted => vymaz vysledky kurzu
         Logger.Log("prodId={0}, userId={1}", par.productId, compUser.Id);
         //foreach (var modData in db.CourseDatas.Where(cd => cd.CourseUser.ProductId == par.productId && cd.CourseUser.email == compUser.compId)) db.CourseDatas.DeleteObject(modData);
@@ -256,7 +256,7 @@ namespace NewData {
             return usr.Id;
         }
       if (usr == null)
-        db.Users.Add(usr = new User() {
+        db.Users.Add(usr = new Users() {
           Created = DateTime.UtcNow,
           VerifyStatus = cook.Type == OtherType.LANGMasterNoEMail ? (short)VerifyStates.ok : (short)VerifyStates.waiting,
           Password = psw,
@@ -282,8 +282,8 @@ namespace NewData {
       Lib.SaveChanges(db);
     }
 
-    public static User PrepareUser(string email, Container db, bool addCompsRole = false) {
-      var res = new User() { Created = DateTime.UtcNow, EMail = email, VerifyStatus = (short)VerifyStates.prepared, Roles = addCompsRole ? (long)Role.Comps : 0 };
+    public static Users PrepareUser(string email, Container db, bool addCompsRole = false) {
+      var res = new Users() { Created = DateTime.UtcNow, EMail = email, VerifyStatus = (short)VerifyStates.prepared, Roles = addCompsRole ? (long)Role.Comps : 0 };
       db.Users.Add(res);
       return res;
     }
@@ -313,12 +313,12 @@ namespace NewData {
     }
 
     /*** private ***/
-    static bool isLMComUser(User usr) {
+    static bool isLMComUser(Users usr) {
       var tp = (OtherType)usr.OtherType;
       return tp == OtherType.LANGMaster || tp == OtherType.LANGMasterNoEMail;
     }
 
-    static LMCookieJS user2cookie(User usr) {
+    static LMCookieJS user2cookie(Users usr) {
       return new LMCookieJS() {
         id = usr.Id,
         EMail = usr.EMail,
@@ -331,7 +331,7 @@ namespace NewData {
         OtherData = usr.OtherData,
       };
     }
-    static void cookie2user(LMCookieJS cook, User usr) {
+    static void cookie2user(LMCookieJS cook, Users usr) {
       var el = new El(cook.EMail, cook.Login);
       usr.EMail = el.email;
       usr.FirstName = cook.FirstName;

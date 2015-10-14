@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 
 namespace NewData {
-  public partial class CompanyUser {
-    public CompanyUser() {
-      this.CourseUsers = new List<CourseUser>();
+  public partial class CompanyUsers {
+    public CompanyUsers() {
+      this.CourseUsers = new List<CourseUsers>();
       Created = SqlDateTime.MinValue.Value;
     }
 
@@ -16,13 +16,13 @@ namespace NewData {
     public Nullable<int> DepartmentId { get; set; }
     public long Roles { get; set; }
     public string RolePar { get; set; }
-    public virtual Company Company { get; set; }
-    public virtual CompanyDepartment CompanyDepartment { get; set; }
-    public virtual ICollection<CourseUser> CourseUsers { get; set; }
-    public virtual User User { get; set; }
+    public virtual Companies Company { get; set; }
+    public virtual CompanyDepartments CompanyDepartment { get; set; }
+    public virtual ICollection<CourseUsers> CourseUsers { get; set; }
+    public virtual Users User { get; set; }
   }
 
-  public partial class CompanyUser {
+  public partial class CompanyUsers {
     [System.ComponentModel.DataAnnotations.Schema.NotMapped]
     public long RolesEx {
       get { 

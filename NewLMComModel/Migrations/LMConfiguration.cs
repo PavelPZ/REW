@@ -62,13 +62,13 @@ namespace NewData.Migrations {
       context.Database.ExecuteSqlCommand(string.Format("CREATE {2} INDEX IX_{0} ON {1} ([{0}])", fieldId, tableName, unique ? "UNIQUE" : null));
     }
     static void addAdmin(Container db, string email, string password, string firstName, string lastName) {
-      var user = new User() { EMail = email, Password = password, Created = DateTime.UtcNow, OtherType = 10, FirstName = firstName, LastName = lastName, Roles = (int)Role.All, };
+      var user = new Users() { EMail = email, Password = password, Created = DateTime.UtcNow, OtherType = 10, FirstName = firstName, LastName = lastName, Roles = (int)Role.All, };
       db.Users.Add(user);
-      var company = new Company() { Title = "Company " + lastName, Created = DateTime.UtcNow };
+      var company = new Companies() { Title = "Company " + lastName, Created = DateTime.UtcNow };
       db.Companies.Add(company);
-      var dep = new CompanyDepartment() { Title = company.Title, Company = company };
+      var dep = new CompanyDepartments() { Title = company.Title, Company = company };
       db.CompanyDepartments.Add(dep);
-      var compUser = new CompanyUser() { Company = company, User = user, Created = DateTime.UtcNow, RolesEx = (long)CompRole.All, CompanyDepartment = dep };
+      var compUser = new CompanyUsers() { Company = company, User = user, Created = DateTime.UtcNow, RolesEx = (long)CompRole.All, CompanyDepartment = dep };
       db.CompanyUsers.Add(compUser);
       //@PRODID
       string[] ignoreUserLic = new string[] { "/lm/prods_lm_blcourse_english/", "/lm/prods_lm_blcourse_french/", "/lm/prods_lm_blcourse_german/" };
@@ -87,12 +87,12 @@ namespace NewData.Migrations {
         "/lm/blcourse/schoolmanager.product/",
         "/lm/blcourse/langmastermanager.product/",
         }.Concat(ignoreUserLic).Select(p => p.ToLower())) {
-        var compLicence = new CompanyLicence() { Company = company, Days = 100, ProductId = prodId, Created = DateTime.UtcNow };
+        var compLicence = new CompanyLicences() { Company = company, Days = 100, ProductId = prodId, Created = DateTime.UtcNow };
         db.CompanyLicences.Add(compLicence);
-        var courseUser = new CourseUser() { CompanyUser = compUser, Created = DateTime.UtcNow, ProductId = prodId };
+        var courseUser = new CourseUsers() { CompanyUser = compUser, Created = DateTime.UtcNow, ProductId = prodId };
         db.CourseUsers.Add(courseUser);
         if (!ignoreUserLic.Contains(prodId)) {
-          var userLicence = new UserLicence() { CompanyLicence = compLicence, CourseUser = courseUser, Started = DateTime.UtcNow, Created = DateTime.UtcNow };
+          var userLicence = new UserLicences() { CompanyLicence = compLicence, CourseUser = courseUser, Started = DateTime.UtcNow, Created = DateTime.UtcNow };
           db.UserLicences.Add(userLicence);
         }
       }

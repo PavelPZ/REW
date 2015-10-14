@@ -44,17 +44,17 @@ namespace vyzva {
       var demoCompanyTitle = companyTitle + " *";
       long hash = demoCompanyTitle.GetHashCode(); var host = "blend." + hash;
       var company = db.Companies.FirstOrDefault(c => c.ScormHost == host);
-      UserLicence lSpravce = null; UserLicence lStudent = null; UserLicence lUcitel = null; UserLicence lStudentDe = null; UserLicence lUcitelDe = null;
-      User uSpravce = null; User uStudent = null; User uUcitel = null; User uStudentDe = null; User uUcitelDe = null;
+      UserLicences lSpravce = null; UserLicences lStudent = null; UserLicences lUcitel = null; UserLicences lStudentDe = null; UserLicences lUcitelDe = null;
+      Users uSpravce = null; Users uStudent = null; Users uUcitel = null; Users uStudentDe = null; Users uUcitelDe = null;
       var result = new keysFromCompanyTitleResult() { companyTitle = demoCompanyTitle };
       if (company == null) {
-        db.Companies.Add(company = new Company() { Title = demoCompanyTitle, Created = DateTime.UtcNow, ScormHost = host });
-        var dep = new CompanyDepartment() { Title = company.Title, Company = company };
+        db.Companies.Add(company = new Companies() { Title = demoCompanyTitle, Created = DateTime.UtcNow, ScormHost = host });
+        var dep = new CompanyDepartments() { Title = company.Title, Company = company };
         db.CompanyDepartments.Add(dep);
 
-        CompanyLicence schoolManLic = null; CompanyLicence englishLic = null;
+        CompanyLicences schoolManLic = null; CompanyLicences englishLic = null;
         foreach (var prodId in new string[] { "/lm/blcourse/schoolmanager.product/", "/lm/prods_lm_blcourse_english/", "/lm/prods_lm_blcourse_french/", "/lm/prods_lm_blcourse_german/" }) {
-          var compLicence = new CompanyLicence() { Company = company, Days = 100, ProductId = prodId, Created = DateTime.UtcNow, LastCounter = 10 };
+          var compLicence = new CompanyLicences() { Company = company, Days = 100, ProductId = prodId, Created = DateTime.UtcNow, LastCounter = 10 };
           if (schoolManLic == null) schoolManLic = compLicence; else if (englishLic == null) englishLic = compLicence;
           db.CompanyLicences.Add(compLicence);
         }
@@ -62,21 +62,21 @@ namespace vyzva {
         //users
         int lastCounter = 1;
         foreach (var userId in new string[] { "spravce", "ucitel", "student", "ucitelde", "studentde" }) {
-          var user = new User() { EMail = userId + "@" + hash + ".cz", Password = "heslo", FirstName = userId, LastName = "", Created = DateTime.UtcNow, OtherType = (short)OtherType.LANGMaster };
+          var user = new Users() { EMail = userId + "@" + hash + ".cz", Password = "heslo", FirstName = userId, LastName = "", Created = DateTime.UtcNow, OtherType = (short)OtherType.LANGMaster };
           db.Users.Add(user);
-          var compUser = new CompanyUser() { Company = company, User = user, Created = DateTime.UtcNow, CompanyDepartment = dep };
+          var compUser = new CompanyUsers() { Company = company, User = user, Created = DateTime.UtcNow, CompanyDepartment = dep };
           db.CompanyUsers.Add(compUser);
           if (userId == "spravce") {
             uSpravce = user;
-            var courseUser = new CourseUser() { CompanyUser = compUser, Created = DateTime.UtcNow, ProductId = "/lm/blcourse/schoolmanager.product/" };
+            var courseUser = new CourseUsers() { CompanyUser = compUser, Created = DateTime.UtcNow, ProductId = "/lm/blcourse/schoolmanager.product/" };
             db.CourseUsers.Add(courseUser);
-            var userLicence = lSpravce = new UserLicence() { CompanyLicence = schoolManLic, CourseUser = courseUser, Started = DateTime.UtcNow, Created = DateTime.UtcNow, Counter = lastCounter++ };
+            var userLicence = lSpravce = new UserLicences() { CompanyLicence = schoolManLic, CourseUser = courseUser, Started = DateTime.UtcNow, Created = DateTime.UtcNow, Counter = lastCounter++ };
             db.UserLicences.Add(userLicence);
           } else {
             var courseId = userId == "ucitel" || userId == "student" ? "english" : "german";
-            var courseUser = new CourseUser() { CompanyUser = compUser, Created = DateTime.UtcNow, ProductId = "/lm/prods_lm_blcourse_" + courseId + "/" };
+            var courseUser = new CourseUsers() { CompanyUser = compUser, Created = DateTime.UtcNow, ProductId = "/lm/prods_lm_blcourse_" + courseId + "/" };
             db.CourseUsers.Add(courseUser);
-            var userLicence = new UserLicence() { CompanyLicence = englishLic, CourseUser = courseUser, Started = DateTime.UtcNow, Created = DateTime.UtcNow, Counter = lastCounter++ };
+            var userLicence = new UserLicences() { CompanyLicence = englishLic, CourseUser = courseUser, Started = DateTime.UtcNow, Created = DateTime.UtcNow, Counter = lastCounter++ };
             db.UserLicences.Add(userLicence);
             switch (userId) {
               case "ucitel": lUcitel = userLicence; uUcitel = user; break;
@@ -97,7 +97,7 @@ namespace vyzva {
         lUcitelDe = db.UserLicences.Where(l => l.CourseUser.CompanyUser.Company.ScormHost == host && l.CourseUser.CompanyUser.User.EMail == "ucitelde@" + hash + ".cz" && l.CourseUser.ProductId == "/lm/prods_lm_blcourse_german/").FirstOrDefault();
         lStudentDe = db.UserLicences.Where(l => l.CourseUser.CompanyUser.Company.ScormHost == host && l.CourseUser.CompanyUser.User.EMail == "studentde@" + hash + ".cz" && l.CourseUser.ProductId == "/lm/prods_lm_blcourse_german/").FirstOrDefault();
       }
-      Func<UserLicence, User, userItem> createUserItem = (lic, user) => {
+      Func<UserLicences, Users, userItem> createUserItem = (lic, user) => {
         if (lic == null) return null;
         userItem res = new userItem() { licId = lic.LicenceId, licCounter = lic.Counter };
         if (user != null) { res.email = user.EMail; res.firstName = user.FirstName; res.lastName = user.LastName; res.lmcomId = user.Id; }
@@ -123,17 +123,17 @@ namespace vyzva {
       var db = NewData.Lib.CreateContext();
       long hash = companyTitle.GetHashCode(); var host = "blend." + hash;
       var company = db.Companies.FirstOrDefault(c => c.ScormHost == host);
-      CompanyLicence schoolManLic = null;
+      CompanyLicences schoolManLic = null;
       if (company == null) {
         //company
-        company = new Company() { Title = companyTitle, Created = DateTime.UtcNow, ScormHost = host };
+        company = new Companies() { Title = companyTitle, Created = DateTime.UtcNow, ScormHost = host };
         db.Companies.Add(company);
-        var dep = new CompanyDepartment() { Title = company.Title, Company = company };
+        var dep = new CompanyDepartments() { Title = company.Title, Company = company };
         db.CompanyDepartments.Add(dep);
 
         //products
         foreach (var prodId in new string[] { "/lm/blcourse/schoolmanager.product/", "/lm/prods_lm_blcourse_english/", "/lm/prods_lm_blcourse_french/", "/lm/prods_lm_blcourse_german/" }) {
-          var compLicence = new CompanyLicence() { Company = company, Days = 1000, ProductId = prodId, Created = DateTime.UtcNow, LastCounter = 2 };
+          var compLicence = new CompanyLicences() { Company = company, Days = 1000, ProductId = prodId, Created = DateTime.UtcNow, LastCounter = 2 };
           if (schoolManLic == null) schoolManLic = compLicence;
           db.CompanyLicences.Add(compLicence);
         }

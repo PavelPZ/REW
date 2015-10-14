@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NewData {
-  public partial class LANGMasterScorm {
+  public partial class LANGMasterScorms {
     public int Id { get; set; }
     [Index]
     public string UserId { get; set; }
