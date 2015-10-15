@@ -1,13 +1,16 @@
 using Microsoft.Data.Entity;
+using System;
+using System.Linq;
 using System.Configuration;
 using System.Data.SqlClient;
 
 namespace NewData {
   public class NewLMComContext_SqlServer : Container {
 
-    //Add-Migration lmcom-serv-001 -c NewData.NewLMComContext_SqlServer
-    //Update-Database lmcom-serv-001 -c NewData.NewLMComContext_SqlServer
+    //Add-Migration lmcom-serv-002 -c NewData.NewLMComContext_SqlServer
+    //Update-Database lmcom-serv-002 -c NewData.NewLMComContext_SqlServer
     protected override void OnConfiguring(DbContextOptionsBuilder options) {
+      base.OnConfiguring(options);
       var config = ConfigurationManager.ConnectionStrings["Container"];
       var conn = new SqlConnection(config.ConnectionString);
       options.UseSqlServer(conn);
@@ -15,6 +18,10 @@ namespace NewData {
   }
 
   public class Container : DbContext {
+
+    public Container() {
+      Database.EnsureCreated();
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
       modelBuilder.Entity<Companies>(entity => {
@@ -60,9 +67,9 @@ namespace NewData {
             .Required()
             .HasDefaultValue(0L);
         entity.Property(e => e.Key).Required().MaxLength(120);
-        entity.Property(e => e.RowVersion)
-            .Required()
-            .ValueGeneratedOnAddOrUpdate();
+        //entity.Property(e => e.RowVersion)
+        //    .Required()
+        //    .ValueGeneratedOnAddOrUpdate();
         entity.Reference(d => d.CourseUser).InverseCollection(p => p.CourseDatas).ForeignKey(d => d.CourseUserId);
       });
 
@@ -94,14 +101,14 @@ namespace NewData {
         entity.Property(e => e.Date).Required();
         entity.Property(e => e.Key1Int).Required();
         entity.Property(e => e.Key2Int).Required();
-        entity.Property(e => e.RowVersion)
-            .Required()
-            .ValueGeneratedOnAddOrUpdate();
+        //entity.Property(e => e.RowVersion)
+        //    .Required()
+        //    .ValueGeneratedOnAddOrUpdate();
         entity.Property(e => e.UserId).Required();
       });
 
       modelBuilder.Entity<UserLicences>(entity => {
-        entity.Key(e => new { e.LicenceId, e.Counter });
+        entity.Index(e => new { e.LicenceId, e.Counter }).Unique();
         entity.Property(e => e.Created).Required();
         entity.Property(e => e.Started).Required();
         entity.Property(e => e.UserId).Required();
@@ -132,4 +139,5 @@ namespace NewData {
     public virtual DbSet<UserLicences> UserLicences { get; set; }
     public virtual DbSet<Users> Users { get; set; }
   }
+
 }

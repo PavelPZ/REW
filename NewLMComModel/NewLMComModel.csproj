@@ -298,7 +298,6 @@
     <Compile Include="Design\Packager.cs" />
     <Compile Include="Design\CourseMeta.cs" />
     <Compile Include="Design\SchoolsServices.cs" />
-    <Compile Include="Runtime\DictForOldLMCom.cs" />
     <Compile Include="Runtime\Handlers.cs" />
     <Compile Include="Runtime\Statistics.cs" />
     <Compile Include="Runtime\RewRpcLib.cs" />

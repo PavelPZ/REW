@@ -25,11 +25,12 @@ namespace web4 {
 
     protected void Application_Start(object sender, EventArgs e) {
       //https://gist.github.com/HenrikFrystykNielsen/2907767
-      //System.Diagnostics.Debugger.Break();
+      System.Diagnostics.Debugger.Break();
       //GlobalConfiguration.Configuration.Services.Replace(typeof(IAssembliesResolver), new ProductsApp.Controllers.CustomAssemblyResolver());
       //GlobalConfiguration.Configure(config => config.MapHttpAttributeRoutes());//config.RegisterProxyRoutes();
 
       GlobalConfiguration.Configure(WebApiConfig.Register);
+      NewData.Lib.lmcomSeed();
     }
 
     protected void Session_Start(object sender, EventArgs e) {

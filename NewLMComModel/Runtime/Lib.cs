@@ -294,6 +294,54 @@ namespace NewData {
 
   public static class Lib {
 
+    public static void lmcomSeed() {
+      if (lmcomAddAdminsDone) return;
+      lock (typeof(Lib)) {
+        if (lmcomAddAdminsDone) return;
+        lmcomAddAdminsDone = true;
+        var context = CreateContext();
+        if (context.Users.Any()) return;
+        lmcomAddAdmin(context, "pzika@langmaster.cz", "p", "Pavel", "Zika");
+        lmcomAddAdmin(context, "pjanecek@langmaster.cz", "pj", "Petr", "Janeček");
+        lmcomAddAdmin(context, "zzikova@langmaster.cz", "zz", "Zdenka", "Ziková");
+        lmcomAddAdmin(context, "rjeliga@langmaster.cz", "rj", "Radek", "Jeliga");
+        lmcomAddAdmin(context, "zikovakaca@seznam.cz", "kz", "Káča", "Ziková");
+        Lib.SaveChanges(context);
+      }
+    } static bool lmcomAddAdminsDone = false;
+
+    static void lmcomAddAdmin(Container db, string email, string password, string firstName, string lastName) {
+      var user = new Users() { EMail = email, Password = password, Created = DateTime.UtcNow, OtherType = 10, FirstName = firstName, LastName = lastName, Roles = (int)Role.All, };
+      db.Users.Add(user);
+      var company = new Companies() { Title = "Company " + lastName, Created = DateTime.UtcNow };
+      db.Companies.Add(company);
+      var dep = new CompanyDepartments() { Title = company.Title, Company = company };
+      db.CompanyDepartments.Add(dep);
+      var compUser = new CompanyUsers() { Company = company, User = user, Created = DateTime.UtcNow/*, RolesEx = (long)CompRole.All*/, CompanyDepartment = dep };
+      setRolesEx(compUser, (long)CompRole.All);
+      db.CompanyUsers.Add(compUser);
+      //@PRODID
+      foreach (var prodId in new string[] { 
+        //"/data/xmlsource/simpleenglish/", "/data/xmlsource/simplespanish/", 
+        "/data/xmlsource/docexamples/", "/data/xmlsource/TestProduct/",
+        "/lm/EnglishE_0_10/", "/lm/English_0_10/", "/lm/German_0_5/", "/lm/Spanish_0_6/", "/lm/French_0_6/", "/lm/Italian_0_6/", "/lm/Russian_0_3/",
+        "/lm/EnglishE_0_1/", "/lm/Spanish_0_1/",
+        "/grafia/od1_8/", "/grafia/od1_administrativ/",
+        "/skrivanek/prods/etestme-std/english/a1/", "/skrivanek/prods/etestme-comp/english/a1/", "/skrivanek/prods/etestme-comp/english/all/",
+        "/skrivanek/prods/etestme-comp/french/all/",
+        "/skrivanek/prods/etestme-comp/german/all/","/skrivanek/prods/etestme-comp/russian/all/",
+        "/skrivanek/prods/etestme-comp/italian/all/","/skrivanek/prods/etestme-comp/spanish/all/",
+        "/lm/prods/etestme/english/a1/", //"/lm/prods/etestme/english/a1_c2/"
+        }.Select(p => p.ToLower())) {
+        var compLicence = new CompanyLicences() { Company = company, Days = 100, ProductId = prodId, Created = DateTime.UtcNow };
+        db.CompanyLicences.Add(compLicence);
+        var courseUser = new CourseUsers() { CompanyUser = compUser, Created = DateTime.UtcNow, ProductId = prodId };
+        db.CourseUsers.Add(courseUser);
+        var userLicence = new UserLicences() { CompanyLicence = compLicence, CourseUser = courseUser, Started = DateTime.UtcNow, Created = DateTime.UtcNow, Counter = 0 };
+        db.UserLicences.Add(userLicence);
+      }
+    }
+
     //public static DbConnection cs() {
     //  var conn = connStr();
     //  if (conn.ProviderName == "System.Data.SqlClient") return new SqlConnection(conn.ConnectionString);
@@ -347,7 +395,7 @@ namespace NewData {
       init();
       //return new Container(cs());
       //EF7
-      return new Container();
+      return new NewLMComContext_SqlServer();
     }
     public const int publicCommpanyId = 1;
 

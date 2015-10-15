@@ -17,6 +17,17 @@ namespace NewData {
 
   public class Vyzva57Context : DbContext {
 
+    public Vyzva57Context() {
+      Database.EnsureCreated();
+    }
+
+    public static Vyzva57Context CreateContext() {
+      return new Vyzva57Context_SqlServer();
+    }
+    public static void SaveChanges(Vyzva57Context db) {
+      db.SaveChanges();
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
       modelBuilder.Entity<BlendedCompany>(entity => {
         entity.Property(e => e.Id).ValueGeneratedNever();

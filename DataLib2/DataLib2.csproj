@@ -140,9 +140,9 @@
     <Compile Include="Migrations\20151015083141_vyzva-serv-001.designer.cs">
       <DependentUpon>20151015083141_vyzva-serv-001.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\20151015083727_lmcom-serv-001.cs" />
-    <Compile Include="Migrations\20151015083727_lmcom-serv-001.designer.cs">
-      <DependentUpon>20151015083727_lmcom-serv-001.cs</DependentUpon>
+    <Compile Include="Migrations\20151015131947_lmcom-serv-001.cs" />
+    <Compile Include="Migrations\20151015131947_lmcom-serv-001.designer.cs">
+      <DependentUpon>20151015131947_lmcom-serv-001.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\NewLMComContext_SqlServerModelSnapshot.cs" />
     <Compile Include="Migrations\Vyzva57Context_SqlServerModelSnapshot.cs" />

@@ -13,7 +13,7 @@ namespace DataLib2.Migrations
     {
         public override string Id
         {
-            get { return "20151015083727_lmcom-serv-001"; }
+            get { return "20151015131947_lmcom-serv-001"; }
         }
 
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -119,10 +119,6 @@ namespace DataLib2.Migrations
                         .Required()
                         .Annotation("MaxLength", 120);
 
-                    b.Property<byte[]>("RowVersion")
-                        .Required()
-                        .ValueGeneratedOnAddOrUpdate();
-
                     b.Property<string>("ShortData");
 
                     b.Key("Id");
@@ -184,10 +180,6 @@ namespace DataLib2.Migrations
 
                     b.Property<string>("Key2Str");
 
-                    b.Property<byte[]>("RowVersion")
-                        .Required()
-                        .ValueGeneratedOnAddOrUpdate();
-
                     b.Property<string>("UserId")
                         .Required();
 
@@ -196,17 +188,23 @@ namespace DataLib2.Migrations
 
             modelBuilder.Entity("NewData.UserLicences", b =>
                 {
-                    b.Property<int>("LicenceId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("Counter");
 
                     b.Property<DateTime>("Created");
 
+                    b.Property<int>("LicenceId");
+
                     b.Property<DateTime>("Started");
 
                     b.Property<int>("UserId");
 
-                    b.Key("LicenceId", "Counter");
+                    b.Key("Id");
+
+                    b.Index("LicenceId", "Counter")
+                        .Unique();
                 });
 
             modelBuilder.Entity("NewData.Users", b =>

@@ -13,17 +13,6 @@ using CourseMeta;
 using blendedMeta;
 using LMComLib;
 
-namespace blendedData {
-  public static class Lib {
-    public static NewData.Vyzva57Context CreateContext() {
-      throw new NotImplementedException();
-    }
-    public static void SaveChanges(NewData.Vyzva57Context db) {
-      throw new NotImplementedException();
-    }
-  }
-}
-
 namespace blended {
 
   public static class ExcelReport {
@@ -52,7 +41,7 @@ namespace blended {
     public class exporter {
       public exporter(int companyId, int groupId) {
         this.companyId = companyId; this.groupId = groupId;
-        db = blendedData.Lib.CreateContext();
+        db = NewData.Vyzva57Context.CreateContext();
         //nacteni Companies.data, kde je JSON se strukturou grup, licencnich klicu apod.
         data = readData(companyId, db);
         //adresar <lineId,lmcomId> => user informace (firstName, lastname...)
@@ -230,7 +219,7 @@ namespace blended {
     const int secPerDay = 60 * 60 * 24;
 
     static ICompanyData readData(int companyId, NewData.Vyzva57Context db = null) {
-      if (db == null) db = blendedData.Lib.CreateContext();
+      if (db == null) db = NewData.Vyzva57Context.CreateContext();
       var dbData = db.BlendedCompanies.Where(c => c.Id == companyId).Select(c => c.LearningData).FirstOrDefault();
       return JsonConvert.DeserializeObject<ICompanyData>(dbData);
     }

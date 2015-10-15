@@ -13,7 +13,7 @@ namespace NewData
         public long Date { get; set; }
         public long Flags { get; set; }
         public string Key { get; set; }
-        public byte[] RowVersion { get; set; }
+        //public byte[] RowVersion { get; set; }
         public string ShortData { get; set; }
 
         public virtual CourseUsers CourseUser { get; set; }

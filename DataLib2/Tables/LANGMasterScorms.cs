@@ -19,7 +19,7 @@ namespace NewData
         public string Key1Str { get; set; }
         public long Key2Int { get; set; }
         public string Key2Str { get; set; }
-        public byte[] RowVersion { get; set; }
+        //public byte[] RowVersion { get; set; }
         public string UserId { get; set; }
     }
 }

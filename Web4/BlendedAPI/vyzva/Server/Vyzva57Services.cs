@@ -43,12 +43,12 @@ namespace blended {
 
     [Route("lmAdminCreateCompany"), HttpPost]
     public void lmAdminCreateCompany(int companyid, [FromBody]string companyData) {
-      var db = blendedData.Lib.CreateContext();
+      var db = NewData.Vyzva57Context.CreateContext();
       var comp = db.BlendedCompanies.FirstOrDefault(c => c.Id == companyid);
       if (comp != null && !string.IsNullOrEmpty(comp.LearningData)) return;
       if (comp == null) db.BlendedCompanies.Add(comp = new NewData.BlendedCompany { Id = companyid });
       comp.LearningData = companyData;
-      blendedData.Lib.SaveChanges(db);
+      NewData.Vyzva57Context.SaveChanges(db);
     }
     [Route("lmAdminCreateLicenceKeys"), HttpPost]
     public lmAdminCreateLicenceKey[] lmAdminCreateLicenceKeys(int companyid, [FromBody]lmAdminCreateLicenceKey[] requestedKeys) {
@@ -89,17 +89,17 @@ namespace blended {
 
     [Route("loadCompanyData"), HttpGet]
     public string loadCompanyData(int companyid) {
-      var db = blendedData.Lib.CreateContext();
+      var db = NewData.Vyzva57Context.CreateContext();
       var res = db.BlendedCompanies.Where(c => c.Id == companyid).Select(c => c.LearningData).FirstOrDefault();
       return res;
     }
 
     [Route("writeCompanyData"), HttpPost]
     public void writeCompanyData(int companyid, [FromBody]string data) {
-      var db = blendedData.Lib.CreateContext();
+      var db = NewData.Vyzva57Context.CreateContext();
       var comp = db.BlendedCompanies.First(c => c.Id == companyid);
       comp.LearningData = data;
-      blendedData.Lib.SaveChanges(db);
+      NewData.Vyzva57Context.SaveChanges(db);
     }
 
     [Route("reports"), HttpGet]
@@ -214,9 +214,9 @@ namespace blended {
     //***************************  SCORM
     [Route("deleteProduct"), HttpPost]
     public void deleteProduct(int companyid, long lmcomId, string productUrl, string taskId) {
-      var db = blendedData.Lib.CreateContext();
+      var db = NewData.Vyzva57Context.CreateContext();
       db.BlendedCourseDatas.RemoveRange(db.BlendedCourseDatas.Where(cd => cd.CourseUser.CompanyId == companyid && cd.CourseUser.LMComId == lmcomId && cd.CourseUser.ProductUrl == productUrl && cd.TaskId == taskId));
-      blendedData.Lib.SaveChanges(db);
+      NewData.Vyzva57Context.SaveChanges(db);
     }
 
     //public class IResetData {
@@ -236,13 +236,13 @@ namespace blended {
     }
     [Route("getShortProductDatas"), HttpGet]
     public ILoadShortData[] getShortProductDatas(int companyid, long lmcomId, string productUrl) {
-      var db = blendedData.Lib.CreateContext();
+      var db = NewData.Vyzva57Context.CreateContext();
       return db.BlendedCourseDatas.Where(cd => cd.CourseUser.CompanyId == companyid && cd.CourseUser.LMComId == lmcomId && cd.CourseUser.ProductUrl == productUrl).Select(cd => new ILoadShortData() { shortData = cd.ShortData, taskId = cd.TaskId, url = cd.Key }).ToArray();
     }
 
     [Route("getLongData"), HttpGet]
     public string getLongData(int companyid, long lmcomId, string productUrl, string taskid, string key) {
-      var db = blendedData.Lib.CreateContext();
+      var db = NewData.Vyzva57Context.CreateContext();
       return db.BlendedCourseDatas.Where(cd => cd.CourseUser.CompanyId == companyid && cd.CourseUser.LMComId == lmcomId && cd.CourseUser.ProductUrl == productUrl && cd.Key == key).Select(cd => cd.Data).FirstOrDefault();
     }
 
@@ -264,7 +264,7 @@ namespace blended {
     }
     [Route("saveUserData"), HttpPost]
     public void saveUserData(int companyid, long lmcomId, string productUrl, [FromBody] ISaveData[] data) {
-      var db = blendedData.Lib.CreateContext();
+      var db = NewData.Vyzva57Context.CreateContext();
       var courseUser = db.BlendedCourseUsers.FirstOrDefault(cu => cu.CompanyId == companyid && cu.LMComId == lmcomId && cu.ProductUrl == productUrl);
       if (courseUser == null) db.BlendedCourseUsers.Add(courseUser = new NewData.BlendedCourseUser() { CompanyId = companyid, LMComId = lmcomId, ProductUrl = productUrl });
       foreach (var dt in data) {
@@ -273,7 +273,7 @@ namespace blended {
         if (courseData == null) db.BlendedCourseDatas.Add(courseData = new NewData.BlendedCourseData() { CourseUser = courseUser, Key = dt.url, TaskId = dt.taskId });
         courseData.ShortData = dt.shortData; courseData.Data = dt.longData; courseData.Flags = (long)dt.flag;
       }
-      blendedData.Lib.SaveChanges(db);
+      NewData.Vyzva57Context.SaveChanges(db);
     }
 
   }

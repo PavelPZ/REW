@@ -56,7 +56,8 @@ namespace excelReport {
           Select(cd => new {
             courseResult = cd.Data,
             cd.Id,
-            cd.RowVersion,
+            //FE7
+            //cd.RowVersion,
             cd.CourseUser.ProductId,
             cd.CourseUser.HumanAssigned,
             cd.CourseUser.HumanCompanyUserId,
@@ -68,7 +69,7 @@ namespace excelReport {
           prod = CourseMeta.Lib.getRuntimeProd(o.ProductId),
           HumanAssigned = LowUtils.dateToNum(o.HumanAssigned),
           o.HumanCompanyUserId,
-          RowVersion = BitConverter.ToUInt64(o.RowVersion.Reverse().ToArray(), 0),
+          //RowVersion = BitConverter.ToUInt64(o.RowVersion.Reverse().ToArray(), 0),
           o.Id
         }).Where(o => o.prod != null); //.ToArray();
         //SelectMany na controls Result
@@ -77,7 +78,7 @@ namespace excelReport {
           o.HumanCompanyUserId,
           o.HumanAssigned,
           o.prod,
-          o.RowVersion,
+          //o.RowVersion,
           o.Id
         })).ToArray();
         //Evaluators z databaze
@@ -96,7 +97,7 @@ namespace excelReport {
           tDelay = new timeHelper((int)(o.ctrlResult.hDate - o.HumanAssigned), 0),
           o.prod,
           o.ctrlResult,
-          o.RowVersion,
+          //o.RowVersion,
           o.Id
         }).ToArray();
         //***************** dEvalPayment
@@ -108,7 +109,7 @@ namespace excelReport {
           t==null ? (object)"firstName" : t.evalUser.FirstName,
           t==null ? (object)"lastName" : t.evalUser.LastName,
 
-          t==null ? (object)"recordVersion" : t.RowVersion,
+          //t==null ? (object)"recordVersion" : t.RowVersion,
           t==null ? (object)"levelId" : levelIds[t.ctrlResult.hLevel] + 1,
           t==null ? (object)"actLevel" : new lib.actionFormula((r,c) => { return string.Format("=IF(D{0}<=$B$1,0,E{0})",r,c);}), //dej levelId nebo 0 pro stare rowVersion
           t==null ? (object)"isSpeaking" : t.ctrlResult.tg=="audio-capture" ? 1 : 0,

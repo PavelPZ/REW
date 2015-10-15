@@ -6,6 +6,7 @@ namespace NewData {
     public UserLicences() {
       Started = Created = Started = SqlDateTime.MinValue.Value;
     }
+    public int Id { get; set; }
     public int LicenceId { get; set; }
     public int Counter { get; set; }
     public DateTime Created { get; set; }

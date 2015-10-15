@@ -359,7 +359,7 @@ namespace NewData {
       //filter pres jazyk
       CourseMeta.product tempProd;
       //var prodMeta = CourseMeta.Lib.runtimeProdExpanded();
-      todoCourseUsers = todoCourseUsers.Where(c => (tempProd = CourseMeta.Lib.getRuntimeProd(c.ProductId))!=null && tempProd.line == par.courseLang).ToArray();
+      todoCourseUsers = todoCourseUsers.Where(c => (tempProd = CourseMeta.Lib.getRuntimeProd(c.ProductId)) != null && tempProd.line == par.courseLang).ToArray();
       evaluators = evaluators.Where(e => LMComLib.CompUserRole.FromString(e.RolePar).HumanEvalatorInfos.Any(h => h.lang == par.courseLang)).ToArray();
 
       return new CmdHumanEvalManagerGetResult {
@@ -442,10 +442,33 @@ namespace NewData {
         l.Counter,
       }).ToArray();
 
-      var compUserInfo = db.Users.Include(c => c.CompanyUsers).Where(u => u.Id == userId).Select(u => new {
-        u.Roles,
-        compUsers = u.CompanyUsers.Select(cu => new { cu.CompanyId, cu.Company.Title, cu.RolePar, cu.Roles, cu.DepartmentId, PublisherOwner = cu.Company.PublisherOwners.FirstOrDefault() })
-      }).FirstOrDefault();
+      //EF7
+      //z nejakych pricin hlasi chybu, dotaz predelan
+      //var compUserInfo = db.Users.Include(c => c.CompanyUsers).Where(u => u.Id == userId).Select(u => new {
+      //  u.Roles,
+      //  compUsers = u.CompanyUsers.Select(cu => new {
+      //    cu.CompanyId,
+      //    cu.Company.Title,
+      //    cu.RolePar,
+      //    cu.Roles,
+      //    cu.DepartmentId,
+      //    PublisherOwner = cu.Company.PublisherOwners.FirstOrDefault()
+      //  })
+      //}).FirstOrDefault();
+
+      var user = db.Users.Include(c => c.CompanyUsers).ThenInclude(c => c.Company).Where(u => u.Id == userId).FirstOrDefault();
+      var compUsers = user != null ? user.CompanyUsers.ToArray() : null;
+      var compUserInfo = user != null ? new {
+        Roles = user.Roles,
+        compUsers = compUsers== null ? null : compUsers.Select(cu => new {
+          cu.CompanyId,
+          cu.Company.Title,
+          cu.RolePar,
+          cu.Roles,
+          cu.DepartmentId,
+          PublisherOwner = cu.Company.PublisherOwners.FirstOrDefault()
+        })
+      } : null;
 
       if (compUserInfo == null) return new MyData() { UserId = userId };
       var res = new MyData() {

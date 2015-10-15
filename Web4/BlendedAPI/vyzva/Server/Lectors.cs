@@ -19,7 +19,7 @@ using OfficeOpenXml;
 namespace vyzva {
   public static class Lectors {
     public static byte[] exportInfoToXml() {
-      var db = blendedData.Lib.CreateContext();
+      var db = NewData.Vyzva57Context.CreateContext();
       var oldDb = NewData.Lib.CreateContext();
       //company title
       var companyTitle = NewData.Lib.CreateContext().Companies.Select(c => new { c.Id, c.Title }).ToDictionary(c => c.Id);
@@ -92,7 +92,7 @@ namespace vyzva {
           g.studentKeys.Where(s => s.lmcomId > 0).Select(s => new { comp = c, group = g, student = s, key = s.lmcomId.ToString() + "#" + Vyzva57ServicesController.lineToProductId[g.line] + "#" + c.dbData.Id.ToString() }))).ToArray();
       var studyTeachers = studyTeachersRaw.GroupBy(t => t.key).ToDictionary(g => g.Key, g => g.First());
       //
-      db = blendedData.Lib.CreateContext(); var flag = (long)CourseModel.CourseDataFlag.needsEval;
+      db = NewData.Vyzva57Context.CreateContext(); var flag = (long)CourseModel.CourseDataFlag.needsEval;
       var waitForEvalRaw = db.BlendedCourseDatas.
         Where(cd => (cd.Flags & flag) != 0).
         Select(cu => new { cu.CourseUser.LMComId, cu.CourseUser.ProductUrl, cu.CourseUser.CompanyId, cu.Key }).
