@@ -3,7 +3,7 @@ using LMNetLib;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using Microsoft.Data.Entity;
 using System.Linq;
 using System.Xml.Serialization;
 
@@ -553,8 +553,8 @@ namespace NewData {
 
     static Product[] GetProducts(CmdGetProducts comp) {
       var db = Lib.CreateContext();
-      var res = db.CompanyLicences.
-        Where(l => l.CompanyId == comp.CompanyId).
+      var lics = comp.incUsedKeys ? db.CompanyLicences.Include(cl => cl.UserLicences).Where(l => l.CompanyId == comp.CompanyId).ToArray() : db.CompanyLicences.Where(l => l.CompanyId == comp.CompanyId).ToArray();
+      var res = lics.
         Select(l => new Product() {
           Id = l.Id,
           Days = l.Days,

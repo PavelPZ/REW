@@ -372,7 +372,6 @@
     <Content Include="Data\Lmcom.sql" />
     <Content Include="Data\NewData.ScormExecs.sql" />
     <Content Include="Data\NewData.Create.sql" />
-    <Content Include="Design\NewData.edmx.sql" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
