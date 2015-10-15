@@ -7,14 +7,14 @@ using NewData;
 
 namespace DataLib2.Migrations
 {
-    [DbContext(typeof(NewLMComContext_SqlServer))]
-    partial class NewLMComContext_SqlServerModelSnapshot : ModelSnapshot
+    [DbContext(typeof(NewLMComContext_Sqlite))]
+    [Migration("20151015224127_lmcom-sqlite-001")]
+    partial class lmcomsqlite001
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .Annotation("ProductVersion", "7.0.0-beta8-15964")
-                .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .Annotation("ProductVersion", "7.0.0-beta8-15964");
 
             modelBuilder.Entity("NewData.Companies", b =>
                 {

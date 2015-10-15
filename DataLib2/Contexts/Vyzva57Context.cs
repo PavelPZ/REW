@@ -1,9 +1,24 @@
 //https://github.com/aspnet/EntityFramework/wiki/Design-Meeting-Notes---July-23,-2015
+//Install-Package EntityFramework.Commands -Pre 
 using Microsoft.Data.Entity;
 using System.Configuration;
 using System.Data.SqlClient;
+using Microsoft.Data.Sqlite;
 
 namespace NewData {
+
+  public class Vyzva57Context_Sqlite : Vyzva57Context {
+
+    //Add-Migration vyzva-sqlite-001 -c NewData.Vyzva57Context_Sqlite
+    //Update-Database vyzva-sqlite-001 -c NewData.Vyzva57Context_Sqlite
+    protected override void OnConfiguring(DbContextOptionsBuilder options) {
+      base.OnConfiguring(options);
+      var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = @"d:\LMCom\rew\Web4\App_Data\Vyzva57_sqlite.s3db" };
+      var connectionString = connectionStringBuilder.ToString();
+      var connection = new SqliteConnection(connectionString);
+      options.UseSqlite(connection);
+    }
+  }
 
   //Add-Migration vyzva-serv-001 -c NewData.Vyzva57Context_SqlServer
   //Update-Database vyzva-serv-001 -c NewData.Vyzva57Context_SqlServer
@@ -22,8 +37,10 @@ namespace NewData {
     }
 
     public static Vyzva57Context CreateContext() {
-      return new Vyzva57Context_SqlServer();
+      //return new Vyzva57Context_SqlServer();
+      return new Vyzva57Context_Sqlite();
     }
+
     public static void SaveChanges(Vyzva57Context db) {
       db.SaveChanges();
     }
@@ -36,20 +53,20 @@ namespace NewData {
       modelBuilder.Entity<BlendedCourseData>(entity => {
         entity.Index(c => c.Key);
         entity.Index(c => c.TaskId);
-        entity.Property(e => e.CourseUserId).Required();
-        entity.Property(e => e.Flags).Required();
-        entity.Property(e => e.Key).Required().MaxLength(240);
-        entity.Property(e => e.TaskId).MaxLength(32);
-        entity.Reference(d => d.CourseUser).InverseCollection(p => p.CourseDatas).ForeignKey(d => d.CourseUserId);
+        entity.Property(e => e.CourseUserId).IsRequired();
+        entity.Property(e => e.Flags).IsRequired();
+        entity.Property(e => e.Key).IsRequired().HasMaxLength(240);
+        entity.Property(e => e.TaskId).HasMaxLength(32);
+        entity.HasOne(d => d.CourseUser).WithMany(p => p.CourseDatas).ForeignKey(d => d.CourseUserId);
       });
 
       modelBuilder.Entity<BlendedCourseUser>(entity => {
         entity.Index(c => c.ProductUrl);
         entity.Index(c => c.LMComId);
-        entity.Property(e => e.CompanyId).Required();
-        entity.Property(e => e.LMComId).Required();
-        entity.Property(e => e.ProductUrl).Required().MaxLength(120);
-        entity.Reference(d => d.Company).InverseCollection(p => p.CourseUsers).ForeignKey(d => d.CompanyId);
+        entity.Property(e => e.CompanyId).IsRequired();
+        entity.Property(e => e.LMComId).IsRequired();
+        entity.Property(e => e.ProductUrl).IsRequired().HasMaxLength(120);
+        entity.HasOne(d => d.Company).WithMany(p => p.CourseUsers).ForeignKey(d => d.CompanyId);
       });
 
     }

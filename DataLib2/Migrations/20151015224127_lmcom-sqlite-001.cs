@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Data.Entity.Migrations;
-using Microsoft.Data.Entity.SqlServer.Metadata;
 
 namespace DataLib2.Migrations
 {
-    public partial class lmcomserv001 : Migration
+    public partial class lmcomsqlite001 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,13 +12,13 @@ namespace DataLib2.Migrations
                 name: "Companies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(isNullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerIdentityStrategy.IdentityColumn),
-                    Created = table.Column<DateTime>(isNullable: false),
-                    HumanEvalPaymentConfig = table.Column<string>(isNullable: true),
-                    IntervalsConfig = table.Column<string>(isNullable: true),
-                    ScormHost = table.Column<string>(isNullable: true),
-                    Title = table.Column<string>(isNullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Created = table.Column<DateTime>(nullable: false),
+                    HumanEvalPaymentConfig = table.Column<string>(nullable: true),
+                    IntervalsConfig = table.Column<string>(nullable: true),
+                    ScormHost = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,20 +28,20 @@ namespace DataLib2.Migrations
                 name: "LANGMasterScorms",
                 columns: table => new
                 {
-                    Id = table.Column<int>(isNullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerIdentityStrategy.IdentityColumn),
-                    ApiUrlCrc = table.Column<int>(isNullable: false, defaultValue: 0),
-                    AttemptId = table.Column<long>(isNullable: false),
-                    AttemptIdGuid = table.Column<Guid>(isNullable: true),
-                    AttemptIdStr = table.Column<string>(isNullable: true),
-                    Data1 = table.Column<string>(isNullable: true),
-                    Data2 = table.Column<string>(isNullable: true),
-                    Date = table.Column<long>(isNullable: false),
-                    Key1Int = table.Column<long>(isNullable: false),
-                    Key1Str = table.Column<string>(isNullable: true),
-                    Key2Int = table.Column<long>(isNullable: false),
-                    Key2Str = table.Column<string>(isNullable: true),
-                    UserId = table.Column<string>(isNullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ApiUrlCrc = table.Column<int>(nullable: false, defaultValue: 0),
+                    AttemptId = table.Column<long>(nullable: false),
+                    AttemptIdGuid = table.Column<Guid>(nullable: true),
+                    AttemptIdStr = table.Column<string>(nullable: true),
+                    Data1 = table.Column<string>(nullable: true),
+                    Data2 = table.Column<string>(nullable: true),
+                    Date = table.Column<long>(nullable: false),
+                    Key1Int = table.Column<long>(nullable: false),
+                    Key1Str = table.Column<string>(nullable: true),
+                    Key2Int = table.Column<long>(nullable: false),
+                    Key2Str = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -52,11 +51,11 @@ namespace DataLib2.Migrations
                 name: "CompanyDepartments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(isNullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerIdentityStrategy.IdentityColumn),
-                    CompanyId = table.Column<int>(isNullable: false),
-                    ParentId = table.Column<int>(isNullable: true, defaultValue: 0),
-                    Title = table.Column<string>(isNullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CompanyId = table.Column<int>(nullable: false),
+                    ParentId = table.Column<int>(nullable: true, defaultValue: 0),
+                    Title = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -76,13 +75,13 @@ namespace DataLib2.Migrations
                 name: "CompanyLicences",
                 columns: table => new
                 {
-                    Id = table.Column<int>(isNullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerIdentityStrategy.IdentityColumn),
-                    CompanyId = table.Column<int>(isNullable: false),
-                    Created = table.Column<DateTime>(isNullable: false),
-                    Days = table.Column<short>(isNullable: false),
-                    LastCounter = table.Column<int>(isNullable: false),
-                    ProductId = table.Column<string>(isNullable: true)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CompanyId = table.Column<int>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: false),
+                    Days = table.Column<short>(nullable: false),
+                    LastCounter = table.Column<int>(nullable: false),
+                    ProductId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -97,21 +96,21 @@ namespace DataLib2.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<long>(isNullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerIdentityStrategy.IdentityColumn),
-                    Created = table.Column<DateTime>(isNullable: false),
-                    EMail = table.Column<string>(isNullable: true),
-                    FirstName = table.Column<string>(isNullable: true),
-                    LastName = table.Column<string>(isNullable: true),
-                    Login = table.Column<string>(isNullable: true),
-                    LoginEMail = table.Column<string>(isNullable: true),
-                    MyPublisherId = table.Column<int>(isNullable: true),
-                    OtherData = table.Column<string>(isNullable: true),
-                    OtherId = table.Column<string>(isNullable: true),
-                    OtherType = table.Column<short>(isNullable: false),
-                    Password = table.Column<string>(isNullable: true),
-                    Roles = table.Column<long>(isNullable: false),
-                    VerifyStatus = table.Column<short>(isNullable: false)
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Created = table.Column<DateTime>(nullable: false),
+                    EMail = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Login = table.Column<string>(nullable: true),
+                    LoginEMail = table.Column<string>(nullable: true),
+                    MyPublisherId = table.Column<int>(nullable: true),
+                    OtherData = table.Column<string>(nullable: true),
+                    OtherId = table.Column<string>(nullable: true),
+                    OtherType = table.Column<short>(nullable: false),
+                    Password = table.Column<string>(nullable: true),
+                    Roles = table.Column<long>(nullable: false),
+                    VerifyStatus = table.Column<short>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -126,14 +125,14 @@ namespace DataLib2.Migrations
                 name: "CompanyUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(isNullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerIdentityStrategy.IdentityColumn),
-                    CompanyId = table.Column<int>(isNullable: false),
-                    Created = table.Column<DateTime>(isNullable: false),
-                    DepartmentId = table.Column<int>(isNullable: true),
-                    RolePar = table.Column<string>(isNullable: true),
-                    Roles = table.Column<long>(isNullable: false),
-                    UserId = table.Column<long>(isNullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CompanyId = table.Column<int>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: false),
+                    DepartmentId = table.Column<int>(nullable: true),
+                    RolePar = table.Column<string>(nullable: true),
+                    Roles = table.Column<long>(nullable: false),
+                    UserId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -158,13 +157,13 @@ namespace DataLib2.Migrations
                 name: "CourseUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(isNullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerIdentityStrategy.IdentityColumn),
-                    Created = table.Column<DateTime>(isNullable: false),
-                    HumanAssigned = table.Column<DateTime>(isNullable: false),
-                    HumanCompanyUserId = table.Column<int>(isNullable: false, defaultValue: 0),
-                    ProductId = table.Column<string>(isNullable: true),
-                    UserId = table.Column<int>(isNullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Created = table.Column<DateTime>(nullable: false),
+                    HumanAssigned = table.Column<DateTime>(nullable: false),
+                    HumanCompanyUserId = table.Column<int>(nullable: false, defaultValue: 0),
+                    ProductId = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -179,14 +178,14 @@ namespace DataLib2.Migrations
                 name: "CourseDatas",
                 columns: table => new
                 {
-                    Id = table.Column<long>(isNullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerIdentityStrategy.IdentityColumn),
-                    CourseUserId = table.Column<int>(isNullable: false),
-                    Data = table.Column<string>(isNullable: false),
-                    Date = table.Column<long>(isNullable: false),
-                    Flags = table.Column<long>(isNullable: false, defaultValue: 0L),
-                    Key = table.Column<string>(isNullable: false),
-                    ShortData = table.Column<string>(isNullable: true)
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CourseUserId = table.Column<int>(nullable: false),
+                    Data = table.Column<string>(nullable: false),
+                    Date = table.Column<long>(nullable: false),
+                    Flags = table.Column<long>(nullable: false, defaultValue: 0L),
+                    Key = table.Column<string>(nullable: false),
+                    ShortData = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -201,13 +200,13 @@ namespace DataLib2.Migrations
                 name: "UserLicences",
                 columns: table => new
                 {
-                    Id = table.Column<int>(isNullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerIdentityStrategy.IdentityColumn),
-                    Counter = table.Column<int>(isNullable: false),
-                    Created = table.Column<DateTime>(isNullable: false),
-                    LicenceId = table.Column<int>(isNullable: false),
-                    Started = table.Column<DateTime>(isNullable: false),
-                    UserId = table.Column<int>(isNullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Counter = table.Column<int>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: false),
+                    LicenceId = table.Column<int>(nullable: false),
+                    Started = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -243,7 +242,7 @@ namespace DataLib2.Migrations
                 name: "IX_UserLicences_LicenceId_Counter",
                 table: "UserLicences",
                 columns: new[] { "LicenceId", "Counter" },
-                isUnique: true);
+                unique: true);
             migrationBuilder.CreateIndex(
                 name: "IX_Users_EMail",
                 table: "Users",

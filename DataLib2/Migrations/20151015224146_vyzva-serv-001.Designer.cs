@@ -4,23 +4,18 @@ using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Data.Entity.Metadata;
 using Microsoft.Data.Entity.Migrations;
 using NewData;
-using Microsoft.Data.Entity.SqlServer.Metadata;
 
 namespace DataLib2.Migrations
 {
     [DbContext(typeof(Vyzva57Context_SqlServer))]
+    [Migration("20151015224146_vyzva-serv-001")]
     partial class vyzvaserv001
     {
-        public override string Id
-        {
-            get { return "20151015083141_vyzva-serv-001"; }
-        }
-
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .Annotation("ProductVersion", "7.0.0-beta7-15540")
-                .Annotation("SqlServer:ValueGenerationStrategy", SqlServerIdentityStrategy.IdentityColumn);
+                .Annotation("ProductVersion", "7.0.0-beta8-15964")
+                .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("NewData.BlendedCompany", b =>
                 {
@@ -28,7 +23,7 @@ namespace DataLib2.Migrations
 
                     b.Property<string>("LearningData");
 
-                    b.Key("Id");
+                    b.HasKey("Id");
                 });
 
             modelBuilder.Entity("NewData.BlendedCourseData", b =>
@@ -43,7 +38,7 @@ namespace DataLib2.Migrations
                     b.Property<long>("Flags");
 
                     b.Property<string>("Key")
-                        .Required()
+                        .IsRequired()
                         .Annotation("MaxLength", 240);
 
                     b.Property<string>("ShortData");
@@ -51,7 +46,7 @@ namespace DataLib2.Migrations
                     b.Property<string>("TaskId")
                         .Annotation("MaxLength", 32);
 
-                    b.Key("Id");
+                    b.HasKey("Id");
 
                     b.Index("Key");
 
@@ -68,10 +63,10 @@ namespace DataLib2.Migrations
                     b.Property<long>("LMComId");
 
                     b.Property<string>("ProductUrl")
-                        .Required()
+                        .IsRequired()
                         .Annotation("MaxLength", 120);
 
-                    b.Key("Id");
+                    b.HasKey("Id");
 
                     b.Index("LMComId");
 
@@ -80,15 +75,15 @@ namespace DataLib2.Migrations
 
             modelBuilder.Entity("NewData.BlendedCourseData", b =>
                 {
-                    b.Reference("NewData.BlendedCourseUser")
-                        .InverseCollection()
+                    b.HasOne("NewData.BlendedCourseUser")
+                        .WithMany()
                         .ForeignKey("CourseUserId");
                 });
 
             modelBuilder.Entity("NewData.BlendedCourseUser", b =>
                 {
-                    b.Reference("NewData.BlendedCompany")
-                        .InverseCollection()
+                    b.HasOne("NewData.BlendedCompany")
+                        .WithMany()
                         .ForeignKey("CompanyId");
                 });
         }

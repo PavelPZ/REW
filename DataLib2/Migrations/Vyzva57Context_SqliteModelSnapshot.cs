@@ -7,14 +7,13 @@ using NewData;
 
 namespace DataLib2.Migrations
 {
-    [DbContext(typeof(Vyzva57Context_SqlServer))]
-    partial class Vyzva57Context_SqlServerModelSnapshot : ModelSnapshot
+    [DbContext(typeof(Vyzva57Context_Sqlite))]
+    partial class Vyzva57Context_SqliteModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .Annotation("ProductVersion", "7.0.0-beta8-15964")
-                .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .Annotation("ProductVersion", "7.0.0-beta8-15964");
 
             modelBuilder.Entity("NewData.BlendedCompany", b =>
                 {

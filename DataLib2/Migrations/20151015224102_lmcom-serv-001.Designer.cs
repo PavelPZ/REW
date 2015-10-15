@@ -4,23 +4,18 @@ using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Data.Entity.Metadata;
 using Microsoft.Data.Entity.Migrations;
 using NewData;
-using Microsoft.Data.Entity.SqlServer.Metadata;
 
 namespace DataLib2.Migrations
 {
     [DbContext(typeof(NewLMComContext_SqlServer))]
+    [Migration("20151015224102_lmcom-serv-001")]
     partial class lmcomserv001
     {
-        public override string Id
-        {
-            get { return "20151015131947_lmcom-serv-001"; }
-        }
-
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .Annotation("ProductVersion", "7.0.0-beta7-15540")
-                .Annotation("SqlServer:ValueGenerationStrategy", SqlServerIdentityStrategy.IdentityColumn);
+                .Annotation("ProductVersion", "7.0.0-beta8-15964")
+                .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("NewData.Companies", b =>
                 {
@@ -37,9 +32,9 @@ namespace DataLib2.Migrations
                         .Annotation("MaxLength", 240);
 
                     b.Property<string>("Title")
-                        .Required();
+                        .IsRequired();
 
-                    b.Key("Id");
+                    b.HasKey("Id");
 
                     b.Index("ScormHost");
                 });
@@ -56,9 +51,9 @@ namespace DataLib2.Migrations
                         .Annotation("Relational:DefaultValueType", "System.Int32");
 
                     b.Property<string>("Title")
-                        .Required();
+                        .IsRequired();
 
-                    b.Key("Id");
+                    b.HasKey("Id");
                 });
 
             modelBuilder.Entity("NewData.CompanyLicences", b =>
@@ -76,7 +71,7 @@ namespace DataLib2.Migrations
 
                     b.Property<string>("ProductId");
 
-                    b.Key("Id");
+                    b.HasKey("Id");
                 });
 
             modelBuilder.Entity("NewData.CompanyUsers", b =>
@@ -96,7 +91,7 @@ namespace DataLib2.Migrations
 
                     b.Property<long>("UserId");
 
-                    b.Key("Id");
+                    b.HasKey("Id");
                 });
 
             modelBuilder.Entity("NewData.CourseDatas", b =>
@@ -107,7 +102,7 @@ namespace DataLib2.Migrations
                     b.Property<int>("CourseUserId");
 
                     b.Property<string>("Data")
-                        .Required();
+                        .IsRequired();
 
                     b.Property<long>("Date");
 
@@ -116,12 +111,12 @@ namespace DataLib2.Migrations
                         .Annotation("Relational:DefaultValueType", "System.Int64");
 
                     b.Property<string>("Key")
-                        .Required()
+                        .IsRequired()
                         .Annotation("MaxLength", 120);
 
                     b.Property<string>("ShortData");
 
-                    b.Key("Id");
+                    b.HasKey("Id");
 
                     b.Index("Flags");
 
@@ -146,7 +141,7 @@ namespace DataLib2.Migrations
 
                     b.Property<int>("UserId");
 
-                    b.Key("Id");
+                    b.HasKey("Id");
 
                     b.Index("ProductId");
                 });
@@ -181,9 +176,9 @@ namespace DataLib2.Migrations
                     b.Property<string>("Key2Str");
 
                     b.Property<string>("UserId")
-                        .Required();
+                        .IsRequired();
 
-                    b.Key("Id");
+                    b.HasKey("Id");
                 });
 
             modelBuilder.Entity("NewData.UserLicences", b =>
@@ -201,7 +196,7 @@ namespace DataLib2.Migrations
 
                     b.Property<int>("UserId");
 
-                    b.Key("Id");
+                    b.HasKey("Id");
 
                     b.Index("LicenceId", "Counter")
                         .Unique();
@@ -240,7 +235,7 @@ namespace DataLib2.Migrations
 
                     b.Property<short>("VerifyStatus");
 
-                    b.Key("Id");
+                    b.HasKey("Id");
 
                     b.Index("EMail");
 
@@ -249,66 +244,66 @@ namespace DataLib2.Migrations
 
             modelBuilder.Entity("NewData.CompanyDepartments", b =>
                 {
-                    b.Reference("NewData.Companies")
-                        .InverseCollection()
+                    b.HasOne("NewData.Companies")
+                        .WithMany()
                         .ForeignKey("CompanyId");
 
-                    b.Reference("NewData.CompanyDepartments")
-                        .InverseCollection()
+                    b.HasOne("NewData.CompanyDepartments")
+                        .WithMany()
                         .ForeignKey("ParentId");
                 });
 
             modelBuilder.Entity("NewData.CompanyLicences", b =>
                 {
-                    b.Reference("NewData.Companies")
-                        .InverseCollection()
+                    b.HasOne("NewData.Companies")
+                        .WithMany()
                         .ForeignKey("CompanyId");
                 });
 
             modelBuilder.Entity("NewData.CompanyUsers", b =>
                 {
-                    b.Reference("NewData.Companies")
-                        .InverseCollection()
+                    b.HasOne("NewData.Companies")
+                        .WithMany()
                         .ForeignKey("CompanyId");
 
-                    b.Reference("NewData.CompanyDepartments")
-                        .InverseCollection()
+                    b.HasOne("NewData.CompanyDepartments")
+                        .WithMany()
                         .ForeignKey("DepartmentId");
 
-                    b.Reference("NewData.Users")
-                        .InverseCollection()
+                    b.HasOne("NewData.Users")
+                        .WithMany()
                         .ForeignKey("UserId");
                 });
 
             modelBuilder.Entity("NewData.CourseDatas", b =>
                 {
-                    b.Reference("NewData.CourseUsers")
-                        .InverseCollection()
+                    b.HasOne("NewData.CourseUsers")
+                        .WithMany()
                         .ForeignKey("CourseUserId");
                 });
 
             modelBuilder.Entity("NewData.CourseUsers", b =>
                 {
-                    b.Reference("NewData.CompanyUsers")
-                        .InverseCollection()
+                    b.HasOne("NewData.CompanyUsers")
+                        .WithMany()
                         .ForeignKey("UserId");
                 });
 
             modelBuilder.Entity("NewData.UserLicences", b =>
                 {
-                    b.Reference("NewData.CompanyLicences")
-                        .InverseCollection()
+                    b.HasOne("NewData.CompanyLicences")
+                        .WithMany()
                         .ForeignKey("LicenceId");
 
-                    b.Reference("NewData.CourseUsers")
-                        .InverseCollection()
+                    b.HasOne("NewData.CourseUsers")
+                        .WithMany()
                         .ForeignKey("UserId");
                 });
 
             modelBuilder.Entity("NewData.Users", b =>
                 {
-                    b.Reference("NewData.Companies")
-                        .InverseCollection()
+                    b.HasOne("NewData.Companies")
+                        .WithMany()
                         .ForeignKey("MyPublisherId");
                 });
         }

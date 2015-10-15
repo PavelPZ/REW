@@ -100,6 +100,10 @@ namespace blended {
       var comp = db.BlendedCompanies.First(c => c.Id == companyid);
       comp.LearningData = data;
       NewData.Vyzva57Context.SaveChanges(db);
+      db = NewData.Vyzva57Context.CreateContext();
+      comp = db.BlendedCompanies.First(c => c.Id == companyid);
+      data = comp.LearningData;
+      data = null;
     }
 
     [Route("reports"), HttpGet]
