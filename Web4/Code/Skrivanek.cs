@@ -178,7 +178,8 @@ namespace testMe {
         var usr = db.Users.First(u => u.EMail == "zzikova@langmaster.cz");
         var dep = new CompanyDepartments() { Title = skCompany.Title, Company = skCompany };
         db.CompanyDepartments.Add(dep);
-        var compUser = new CompanyUsers() { Company = skCompany, User = usr, Created = DateTime.UtcNow, RolesEx = (long)CompRole.All, CompanyDepartment = dep };
+        var compUser = new CompanyUsers() { Company = skCompany, User = usr, Created = DateTime.UtcNow/*, RolesEx = (long)CompRole.All*/, CompanyDepartment = dep };
+        Lib.setRolesEx(compUser, (long)CompRole.All);
         Lib.SaveChanges(db);
       }
       //adjust Licence

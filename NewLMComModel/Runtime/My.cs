@@ -12,11 +12,11 @@ namespace Login {
 
   /*********************** My Learning *************************/
 
-  public class MyDataNew {
-    public LMCookieJS cookie;
-    public string IP; //ip adresa v dobe spusteni session
-    public Admin.JSCompany[] Companies;
-  }
+  //public class MyDataNew {
+  //  public LMCookieJS cookie;
+  //  public string IP; //ip adresa v dobe spusteni session
+  //  public Admin.JSCompany[] Companies;
+  //}
 
   public class MyData {
     public Int64 UserId; //lmcom email

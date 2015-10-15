@@ -13,6 +13,17 @@ using CourseMeta;
 using blendedMeta;
 using LMComLib;
 
+namespace blendedData {
+  public static class Lib {
+    public static NewData.Vyzva57Context CreateContext() {
+      throw new NotImplementedException();
+    }
+    public static void SaveChanges(NewData.Vyzva57Context db) {
+      throw new NotImplementedException();
+    }
+  }
+}
+
 namespace blended {
 
   public static class ExcelReport {
@@ -48,7 +59,7 @@ namespace blended {
         courseUsers = studentsFromCompany(groupId < 0 ? data.studyGroups : data.studyGroups.Where(g => g.groupId == groupId));
         allUsers = usersFromCompany(data);
       }
-      public NewData.Vyzva57 db;
+      public NewData.Vyzva57Context db;
       public ICompanyData data;
       public Dictionary<blendedMeta.lineUser, IAlocatedKey> courseUsers;
       public Dictionary<long, IAlocatedKey> allUsers;
@@ -114,7 +125,7 @@ namespace blended {
       static IEnumerable<object[]> exportStudyBlocks(exporter e) {
         //nacti z CourseData pretesty, hotove lekce nebo vyhodnocene testy:
         long validTypes = (long)(CourseModel.CourseDataFlag.blLesson | CourseModel.CourseDataFlag.blTest | CourseModel.CourseDataFlag.blPretest);
-        var query = e.db.CourseDatas.
+        var query = e.db.BlendedCourseDatas.
           Where(cd =>
             cd.CourseUser.CompanyId == e.companyId &&
             (cd.Flags & (long)CourseModel.CourseDataFlag.done) != 0 && //musi byt done
@@ -161,7 +172,7 @@ namespace blended {
         //hotova cviceni, ktera nepotrebuji human evaluaci:
         long exFlag = (long)(CourseModel.CourseDataFlag.ex | CourseModel.CourseDataFlag.done);
         long wrongFlag = (long)CourseModel.CourseDataFlag.needsEval;
-        var query = e.db.CourseDatas.
+        var query = e.db.BlendedCourseDatas.
           Where(cd =>
             cd.CourseUser.CompanyId == e.companyId &&
             (cd.Flags & exFlag) == exFlag &&
@@ -218,9 +229,9 @@ namespace blended {
     }
     const int secPerDay = 60 * 60 * 24;
 
-    static ICompanyData readData(int companyId, NewData.Vyzva57 db = null) {
+    static ICompanyData readData(int companyId, NewData.Vyzva57Context db = null) {
       if (db == null) db = blendedData.Lib.CreateContext();
-      var dbData = db.Companies.Where(c => c.Id == companyId).Select(c => c.LearningData).FirstOrDefault();
+      var dbData = db.BlendedCompanies.Where(c => c.Id == companyId).Select(c => c.LearningData).FirstOrDefault();
       return JsonConvert.DeserializeObject<ICompanyData>(dbData);
     }
     //**************************** MANAGER & LECTOR KEYS

@@ -122,21 +122,21 @@ namespace Admin {
     public CompUserItem[] CompUsers;
   }
   /************ COMPANY NEW *************************/
-  public class CompanyMeta {
-    //public string compId; //jednoznacna identifikace company
-    public string Title;
-    public string ScormHost; //identifikace company pro scorm (= domena jejich scormu)
-    public int Created;
-  }
-  public class JSCompany { //objekt pro komunikaci mezi JS a serverem
-    public string compId;
-    public string ETag;
-    public CompanyMeta metaObj;
-    public DepartmentRoot departmentsObj; //struktura oddeleni
-    public CompanyLicences licenceObj; //licence ke kurzum
-    public DepartmentUsages departmentUsageObj; //zatrideni users do department
-    public CompanyUsers usersObj; //users s company roli
-  }
+  //public class CompanyMeta {
+  //  //public string compId; //jednoznacna identifikace company
+  //  public string Title;
+  //  public string ScormHost; //identifikace company pro scorm (= domena jejich scormu)
+  //  public int Created;
+  //}
+  //public class JSCompany { //objekt pro komunikaci mezi JS a serverem
+  //  public string compId;
+  //  public string ETag;
+  //  public CompanyMeta metaObj;
+  //  public DepartmentRoot departmentsObj; //struktura oddeleni
+  //  public CompanyLicences licenceObj; //licence ke kurzum
+  //  public DepartmentUsages departmentUsageObj; //zatrideni users do department
+  //  public CompanyUsers usersObj; //users s company roli
+  //}
 
 
   /************ DEPARTMENTS *************************/
@@ -153,9 +153,9 @@ namespace Admin {
     public Department Departments;
     public IntervalsConfig IntervalsConfig;
   }
-  public class DepartmentRoot : Department {
-    public ushort IdAutoIncrement; //citac, zajistujici jednoznacnost Department.compId
-  }
+  //public class DepartmentRoot : Department {
+  //  public ushort IdAutoIncrement; //citac, zajistujici jednoznacnost Department.compId
+  //}
   public class Department {
     public int Id;
     public string Title;
@@ -167,37 +167,37 @@ namespace Admin {
   }
 
   /************ DEPARTMENT USAGE *************************/
-  public class DepartmentUsages {
-    public List<DepartmentUsage> Usages;
-    public void ToBinary(BinaryWriter wr) {
-      wr.Write(binaryVersion.v);
-      wr.Write(Usages == null ? 0 : Usages.Count);
-      if (Usages != null) foreach (var l in Usages) l.ToBinary(wr);
-    }
-    public static DepartmentUsages FromBinary(BinaryReader wr) {
-      wr.ReadByte();
-      var res = new DepartmentUsages();
-      var cnt = wr.ReadInt32(); if (cnt == 0) { res.Usages = new List<DepartmentUsage>(); return res; }
-      res.Usages = Enumerable.Range(0, cnt).Select(c => DepartmentUsage.FromBinary(wr)).ToList();
-      return res;
-    }
-  }
-  public class DepartmentUsage {
-    public ushort depId;
-    public int[] userIds;
-    public void ToBinary(BinaryWriter wr) {
-      wr.Write(binaryVersion.v);
-      wr.Write(depId); wr.Write(userIds == null ? 0 : userIds.Length);
-      if (userIds != null) foreach (var l in userIds) wr.Write(l);
-    }
-    public static DepartmentUsage FromBinary(BinaryReader wr) {
-      wr.ReadByte();
-      var res = new DepartmentUsage { depId = wr.ReadUInt16() };
-      var cnt = wr.ReadInt32(); if (cnt == 0) return res;
-      res.userIds = Enumerable.Range(0, cnt).Select(c => wr.ReadInt32()).ToArray();
-      return res;
-    }
-  }
+  //public class DepartmentUsages {
+  //  public List<DepartmentUsage> Usages;
+  //  public void ToBinary(BinaryWriter wr) {
+  //    wr.Write(binaryVersion.v);
+  //    wr.Write(Usages == null ? 0 : Usages.Count);
+  //    if (Usages != null) foreach (var l in Usages) l.ToBinary(wr);
+  //  }
+  //  public static DepartmentUsages FromBinary(BinaryReader wr) {
+  //    wr.ReadByte();
+  //    var res = new DepartmentUsages();
+  //    var cnt = wr.ReadInt32(); if (cnt == 0) { res.Usages = new List<DepartmentUsage>(); return res; }
+  //    res.Usages = Enumerable.Range(0, cnt).Select(c => DepartmentUsage.FromBinary(wr)).ToList();
+  //    return res;
+  //  }
+  //}
+  //public class DepartmentUsage {
+  //  public ushort depId;
+  //  public int[] userIds;
+  //  public void ToBinary(BinaryWriter wr) {
+  //    wr.Write(binaryVersion.v);
+  //    wr.Write(depId); wr.Write(userIds == null ? 0 : userIds.Length);
+  //    if (userIds != null) foreach (var l in userIds) wr.Write(l);
+  //  }
+  //  public static DepartmentUsage FromBinary(BinaryReader wr) {
+  //    wr.ReadByte();
+  //    var res = new DepartmentUsage { depId = wr.ReadUInt16() };
+  //    var cnt = wr.ReadInt32(); if (cnt == 0) return res;
+  //    res.userIds = Enumerable.Range(0, cnt).Select(c => wr.ReadInt32()).ToArray();
+  //    return res;
+  //  }
+  //}
 
   //****************** informace v Company o users 
   public class CompanyUsers { 

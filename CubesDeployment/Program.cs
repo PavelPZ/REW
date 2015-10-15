@@ -1,20 +1,13 @@
 ﻿using LMComLib;
 using LMNetLib;
+using System;
+using System.Collections.Generic;
+using System.IO;
 //using Microsoft.AnalysisServices;
 //using Microsoft.AnalysisServices.AdomdClient;
 using System.Linq;
-using System.Collections.Generic;
-using System.Data.Linq;
-using System.Text.RegularExpressions;
-using System.Xml.Linq;
-using System;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
-using System.Xml;
-using CourseModel;
-using CourseMeta;
+using System.Xml.Linq;
 
 namespace CubesDeployment {
 
@@ -619,9 +612,9 @@ namespace CubesDeployment {
         }
         serverId = args.Length < 2 ? null : args[1].ToLower();
         switch (args[0]) {
-          case "buildCompanyCubes":
-            NewData.SSAS.buildCompanyCubes(serverId);
-            break;
+          //case "buildCompanyCubes":
+          //  NewData.SSAS.buildCompanyCubes(serverId);
+          //  break;
           case "includeClrExtensionToDB":
             NewData.SSAS.includeClrExtensionToDB(serverId);
             break;

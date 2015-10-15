@@ -592,14 +592,14 @@ namespace Admin {
       yield return typeof(CmdXrefDataResult);
       yield return typeof(xrefLink);
 
-      yield return typeof(CompanyMeta);
-      yield return typeof(DepartmentRoot);
-      yield return typeof(DepartmentUsages);
-      yield return typeof(DepartmentUsage);
-      yield return typeof(CompanyLicences);
-      yield return typeof(ProductLicence);
-      yield return typeof(UsedKey);
-      yield return typeof(GenLicKey);
+      //yield return typeof(CompanyMeta);
+      //yield return typeof(DepartmentRoot);
+      //yield return typeof(DepartmentUsages);
+      //yield return typeof(DepartmentUsage);
+      //yield return typeof(CompanyLicences);
+      //yield return typeof(ProductLicence);
+      //yield return typeof(UsedKey);
+      //yield return typeof(GenLicKey);
 
       yield return typeof(CompanyUsers);
       yield return typeof(CompanyUser);

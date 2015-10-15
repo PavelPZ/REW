@@ -24,7 +24,7 @@ namespace vyzva {
       //company title
       var companyTitle = NewData.Lib.CreateContext().Companies.Select(c => new { c.Id, c.Title }).ToDictionary(c => c.Id);
 
-      var companies = db.Companies.ToArray().
+      var companies = db.BlendedCompanies.ToArray().
         Select(dbData => new school { dbData = dbData, data = JsonConvert.DeserializeObject<ICompanyData>(dbData.LearningData) }).
         ToArray();
 
@@ -93,7 +93,7 @@ namespace vyzva {
       var studyTeachers = studyTeachersRaw.GroupBy(t => t.key).ToDictionary(g => g.Key, g => g.First());
       //
       db = blendedData.Lib.CreateContext(); var flag = (long)CourseModel.CourseDataFlag.needsEval;
-      var waitForEvalRaw = db.CourseDatas.
+      var waitForEvalRaw = db.BlendedCourseDatas.
         Where(cd => (cd.Flags & flag) != 0).
         Select(cu => new { cu.CourseUser.LMComId, cu.CourseUser.ProductUrl, cu.CourseUser.CompanyId, cu.Key }).
         ToArray();
