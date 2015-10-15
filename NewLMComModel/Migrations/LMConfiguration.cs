@@ -68,7 +68,8 @@ namespace NewData.Migrations {
       db.Companies.Add(company);
       var dep = new CompanyDepartments() { Title = company.Title, Company = company };
       db.CompanyDepartments.Add(dep);
-      var compUser = new CompanyUsers() { Company = company, User = user, Created = DateTime.UtcNow, RolesEx = (long)CompRole.All, CompanyDepartment = dep };
+      var compUser = new CompanyUsers() { Company = company, User = user, Created = DateTime.UtcNow, CompanyDepartment = dep };
+      Lib.setRolesEx(compUser, (long)CompRole.All);
       db.CompanyUsers.Add(compUser);
       //@PRODID
       string[] ignoreUserLic = new string[] { "/lm/prods_lm_blcourse_english/", "/lm/prods_lm_blcourse_french/", "/lm/prods_lm_blcourse_german/" };

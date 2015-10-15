@@ -115,7 +115,7 @@ namespace LMComLib {
         if (string.IsNullOrEmpty(logIdStr) && isDebug(ctx)) force = true;
       } catch { logIdStr = null; }
       if (string.IsNullOrEmpty(logIdStr) && force) {
-        try { logIdStr = ctx.Request.UrlReferrer==null ? null : ctx.Request.UrlReferrer.Host; } catch { }
+        try { logIdStr = ctx.Request.UrlReferrer == null ? null : ctx.Request.UrlReferrer.Host; } catch { }
       }
       if (string.IsNullOrEmpty(logIdStr)) return null;
       return logIdStr;
@@ -123,7 +123,8 @@ namespace LMComLib {
 
     static void LogLow(string logIdStr, string msg, bool forceHeader = false) {
       if (logIdStr == null) return;
-      else lock (typeof(Logger)) {
+      else
+        lock (typeof(Logger)) {
           var fn = Machines.appData + string.Format(@"logs\{0}.log", logIdStr);
           LowUtils.AdjustFileDir(fn);
           using (StreamWriter wr = new StreamWriter(fn, true)) {
@@ -163,7 +164,7 @@ namespace NewModel {
       var resp = HttpContext.Current.Response;
       resp.Clear();
       resp.ContentType = contentType;
-      resp.AddHeader("Content-Disposition", "attachment; filename="+ fileName);
+      resp.AddHeader("Content-Disposition", "attachment; filename=" + fileName);
       resp.AddHeader("Content-Length", data.Length.ToString());
       using (var str = resp.OutputStream)
         str.Write(data, 0, data.Length);
@@ -328,6 +329,21 @@ namespace NewData {
       }
     }
 
+    public static long getRolesEx(CompanyUsers self) {
+      return self.RolePar == null ? self.Roles : (long)CompUserRole.FromString(self.RolePar).Role;
+    }
+    public static void setRolesEx(CompanyUsers self, long value) {
+      var r = CompUserRole.FromString(self.RolePar); r.Role = (CompRole)value; self.RolePar = r.ToString();
+      self.Roles = value;
+    }
+    public static CompUserRole getRoleParEx(CompanyUsers self) {
+      if (self.RolePar == null && self.Roles != 0) return new CompUserRole { Role = (CompRole)self.Roles };
+      else return CompUserRole.FromString(self.RolePar);
+    }
+    public static void getRoleParEx(CompanyUsers self, CompUserRole value) {
+      self.RolePar = value.ToString(); self.Roles = (long)value.Role;
+    }
+
     public static Container CreateContext() {
       init();
       return new Container(cs());
@@ -341,7 +357,8 @@ namespace NewData {
       Database.SetInitializer<Container>(new NewData.Migrations.initializer());
       using (var context = new Container(cs())) context.Database.Initialize(false);
       Logger.Log(@"Lib.NewData.Container init: End");
-    } static bool initialized;
+    }
+    static bool initialized;
 
     public static bool adjustCourseUser(Container db, Int64 lmcomUserId, int companyId, string productId, out CourseUsers crsUser, out CompanyUsers compUser) {
       DateTime startDate = DateTime.UtcNow; crsUser = null;
@@ -354,7 +371,7 @@ namespace NewData {
           UserId = lmcomUserId,
           CompanyId = companyId,
           Created = DateTime.UtcNow,
-          DepartmentId = allDeps.Length==1 ? (int?) allDeps[0] : null,
+          DepartmentId = allDeps.Length == 1 ? (int?)allDeps[0] : null,
         });
       } else
         crsUser = compUser.CourseUsers.FirstOrDefault(cu => cu.ProductId == productId);

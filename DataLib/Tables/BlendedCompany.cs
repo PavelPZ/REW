@@ -11,7 +11,6 @@ namespace NewData {
       CourseUsers = new HashSet<BlendedCourseUser>();
     }
 
-
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public int Id { get; set; }
