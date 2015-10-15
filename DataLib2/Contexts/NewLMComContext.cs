@@ -4,6 +4,9 @@ using System.Data.SqlClient;
 
 namespace NewData {
   public class NewLMComContext_SqlServer : NewLMComContext {
+
+    //Add-Migration lmcom-serv-001 -c NewData.NewLMComContext_SqlServer
+    //Update-Database lmcom-serv-001 -c NewData.NewLMComContext_SqlServer
     protected override void OnConfiguring(DbContextOptionsBuilder options) {
       var config = ConfigurationManager.ConnectionStrings["Container"];
       var conn = new SqlConnection(config.ConnectionString);
@@ -16,6 +19,7 @@ namespace NewData {
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
       modelBuilder.Entity<Companies>(entity => {
         entity.Index(c => c.ScormHost);
+        entity.Property(e => e.ScormHost).MaxLength(240);
         entity.Property(e => e.Created).Required();
         entity.Property(e => e.Title).Required();
       });
@@ -55,7 +59,7 @@ namespace NewData {
         entity.Property(e => e.Flags)
             .Required()
             .HasDefaultValue(0L);
-        entity.Property(e => e.Key).Required();
+        entity.Property(e => e.Key).Required().MaxLength(120);
         entity.Property(e => e.RowVersion)
             .Required()
             .ValueGeneratedOnAddOrUpdate();
@@ -70,18 +74,19 @@ namespace NewData {
             .Required()
             .HasDefaultValue(0);
         entity.Property(e => e.UserId).Required();
+        entity.Property(e => e.ProductId).MaxLength(240);
         entity.Reference(d => d.CompanyUser).InverseCollection(p => p.CourseUsers).ForeignKey(d => d.UserId);
       });
 
       modelBuilder.Entity<LANGMasterScorms>(entity => {
-        entity.Index(c => c.UserId);
-        entity.Index(c => c.AttemptId);
-        entity.Index(c => c.AttemptIdStr);
-        entity.Index(c => c.AttemptIdGuid);
-        entity.Index(c => c.Key1Str);
-        entity.Index(c => c.Key2Str);
-        entity.Index(c => c.Key1Int);
-        entity.Index(c => c.Key2Int);
+        //entity.Index(c => c.UserId);
+        //entity.Index(c => c.AttemptId);
+        //entity.Index(c => c.AttemptIdStr);
+        //entity.Index(c => c.AttemptIdGuid);
+        //entity.Index(c => c.Key1Str);
+        //entity.Index(c => c.Key2Str);
+        //entity.Index(c => c.Key1Int);
+        //entity.Index(c => c.Key2Int);
         entity.Property(e => e.ApiUrlCrc)
             .Required()
             .HasDefaultValue(0);
@@ -107,6 +112,8 @@ namespace NewData {
       modelBuilder.Entity<Users>(entity => {
         entity.Index(c => c.EMail);
         entity.Index(c => c.OtherId);
+        entity.Property(e => e.OtherId).MaxLength(80);
+        entity.Property(e => e.EMail).MaxLength(120);
         entity.Property(e => e.Created).Required();
         entity.Property(e => e.OtherType).Required();
         entity.Property(e => e.Roles).Required();

@@ -1,9 +1,13 @@
+//https://github.com/aspnet/EntityFramework/wiki/Design-Meeting-Notes---July-23,-2015
 using Microsoft.Data.Entity;
 using System.Configuration;
 using System.Data.SqlClient;
 
 namespace NewData {
-  public class Vyzva57Context_SqlServer : NewLMComContext {
+
+  //Add-Migration vyzva-serv-001 -c NewData.Vyzva57Context_SqlServer
+  //Update-Database vyzva-serv-001 -c NewData.Vyzva57Context_SqlServer
+  public class Vyzva57Context_SqlServer : Vyzva57Context {
     protected override void OnConfiguring(DbContextOptionsBuilder options) {
       var config = ConfigurationManager.ConnectionStrings["Vyzva57"];
       var conn = new SqlConnection(config.ConnectionString);

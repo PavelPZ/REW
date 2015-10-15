@@ -135,6 +135,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\20151015083141_vyzva-serv-001.cs" />
+    <Compile Include="Migrations\20151015083141_vyzva-serv-001.designer.cs">
+      <DependentUpon>20151015083141_vyzva-serv-001.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20151015083727_lmcom-serv-001.cs" />
+    <Compile Include="Migrations\20151015083727_lmcom-serv-001.designer.cs">
+      <DependentUpon>20151015083727_lmcom-serv-001.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\NewLMComContext_SqlServerModelSnapshot.cs" />
+    <Compile Include="Migrations\Vyzva57Context_SqlServerModelSnapshot.cs" />
     <Compile Include="Tables\Companies.cs" />
     <Compile Include="Tables\CompanyDepartments.cs" />
     <Compile Include="Tables\CompanyLicences.cs" />
@@ -159,9 +169,7 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0-beta1-20150812-01\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0-beta1-20150812-01\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
