@@ -4,13 +4,10 @@ using scorm;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.Entity.Validation;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Web;
 
 namespace NewData {
 
@@ -218,8 +215,12 @@ namespace NewData {
         Where(c => c.CourseUser.CompanyUser.UserId == par.lmcomId && c.CourseUser.CompanyUser.CompanyId == par.companyId && c.CourseUser.ProductId == par.productId && c.ShortData != null).
         Select(c => new { c.Id, c.Key }).ToArray();
       var dict = par.modIds.ToDictionary(s => s, s => true);
-      var idCond = all.Where(ik => dict.ContainsKey(ik.Key)).Select(ik => ik.Id.ToString()).DefaultIfEmpty().Aggregate((r, i) => r + "," + i);
-      db.Database.ExecuteSqlCommand("DELETE FROM courseDatas WHERE id in (" + idCond + ")");
+      //var idCond = all.Where(ik => dict.ContainsKey(ik.Key)).Select(ik => ik.Id.ToString()).DefaultIfEmpty().Aggregate((r, i) => r + "," + i).ToArray();
+      //db.Database.ExecuteSqlCommand("DELETE FROM courseDatas WHERE id in (" + idCond + ")");
+      //EF7
+      var idCond = all.Where(ik => dict.ContainsKey(ik.Key)).Select(ik => ik.Id).ToArray();
+      db.CourseDatas.RemoveRange(db.CourseDatas.Where(cd => idCond.Contains(cd.Id)));
+      Lib.SaveChanges(db);
     }
 
     //static void setScormData(ScormCmd par, string key, string data, string shortData, NewData.CourseDataFlag flags, Int64 date) {

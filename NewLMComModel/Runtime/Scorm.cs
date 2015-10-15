@@ -232,7 +232,8 @@ namespace NewDataNet35 {
               var idCond = all.Where(ik => keys.Any(k => k == ik.Key1Str)).Select(ik => ik.Id.ToString()).DefaultIfEmpty().Aggregate((r, i) => r + "," + i);
               //comma delimited string pouzij v IN
 #if !net35
-              if (!string.IsNullOrEmpty(idCond)) db.Database.ExecuteSqlCommand("DELETE FROM LANGMasterScorms WHERE id in (" + idCond + ")");
+              //EF7 TODO
+              //if (!string.IsNullOrEmpty(idCond)) db.Database.ExecuteSqlCommand("DELETE FROM LANGMasterScorms WHERE id in (" + idCond + ")");
 #else
           db.ExecuteCommand("DELETE FROM LANGMasterScorms WHERE id in (" + idCond + ")");
 #endif

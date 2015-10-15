@@ -1,17 +1,11 @@
 ﻿using LMComLib;
+using LMNetLib;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Objects;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LMNetLib;
-using Login;
-using System.Data.Entity;
-using Newtonsoft.Json;
-using System.Xml.Serialization;
-using Course;
 using System.IO;
+using System.Linq;
+using System.Xml.Serialization;
 
 namespace Admin {
 
@@ -310,7 +304,6 @@ namespace NewData {
 
   using Admin;
   using System.IO;
-  using System.Web;
 
   public static class AdminServ {
 
@@ -653,7 +646,8 @@ namespace NewData {
       var compDb = new Companies() { Title = title, Created = DateTime.UtcNow }; db.Companies.Add(compDb);
       var dep = new CompanyDepartments() { Title = title, Company = compDb };
       db.CompanyDepartments.Add(dep);
-      var compUser = new CompanyUsers() { Created = DateTime.UtcNow, Company = compDb, User = usr, RolesEx = (long)(isFakePublisherCompany ? CompRole.All : CompRole.Admin), CompanyDepartment = dep };
+      var compUser = new CompanyUsers() { Created = DateTime.UtcNow, Company = compDb, User = usr/*, RolesEx = (long)(isFakePublisherCompany ? CompRole.All : CompRole.Admin)*/, CompanyDepartment = dep };
+      Lib.setRolesEx(compUser, (long)(isFakePublisherCompany ? CompRole.All : CompRole.Admin));
       db.CompanyUsers.Add(compUser);
       if (isFakePublisherCompany) usr.MyPublisher = compDb;
       return compDb;
@@ -708,16 +702,20 @@ namespace NewData {
           compDb.Title = comp.Title; //aktualizuj //compDb.PublisherId = comp.PublisherId; 
           var old = dt.OldComps.First(c => c.Id == comp.Id); //najdi starou verzi
           if (old.EMail != comp.EMail) {//User je zmeneny
-            //db.CompanyUsers.First(u => u.compId == old.email).Roles &= ~(long)CompRole.Admin; //zrus admina u old email
-            db.CompanyUsers.First(u => u.Id == old.UserId).RolesEx &= ~(long)CompRole.Admin; //zrus admina u old email
+            //db.CompanyUsers.First(u => u.Id == old.UserId).RolesEx &= ~(long)CompRole.Admin; //zrus admina u old email
+            var adminUsr = db.CompanyUsers.First(u => u.Id == old.UserId);
+            Lib.setRolesEx(adminUsr, Lib.getRolesEx(adminUsr) & ~(long)CompRole.Admin);
             //adjust noveho admina 
             var usr = newUsers.FirstOrDefault(u => u.EMail == comp.EMail); //Zacni Userem
             CompanyUsers compUsr = null;
             if (usr == null) usr = NewData.Login.PrepareUser(comp.EMail, db); //pro neexistujiciho zaloz usera v prepared stavu
             else compUsr = usr.CompanyUsers.FirstOrDefault(cu => cu.CompanyId == comp.Id); //pro existujiciho usera nalezni Cmpany Usera
-            if (compUsr == null) compUsr = new CompanyUsers() { Created = DateTime.UtcNow, Company = compDb, User = usr, RolesEx = (long)CompRole.Admin }; //Company User neexistuje => zaloz
+            if (compUsr == null) {
+              compUsr = new CompanyUsers() { Created = DateTime.UtcNow, Company = compDb, User = usr/*, RolesEx = (long)CompRole.Admin*/ }; //Company User neexistuje => zaloz
+              Lib.setRolesEx(compUsr, (long)CompRole.Admin);
+            }
             //else compUsr.Roles |= (long)CompRole.Admin; //existuje, dej mu Admin roli
-            else compUsr.RolesEx |= (long)CompRole.Admin; //existuje, dej mu Admin roli
+            else Lib.setRolesEx(compUsr, Lib.getRolesEx(compUsr) | (long)CompRole.Admin); //compUsr.RolesEx |= (long)CompRole.Admin; //existuje, dej mu Admin roli
           }
         }
       }
@@ -735,7 +733,8 @@ namespace NewData {
           var usr = actUsers.First(u => u.UserId == dbUser.Id); //dato s novou verzi
           var oldRoles = (CompRole)dbUser.Roles; var newRoles = usr.RoleEx.Role;
           oldRoles = usr.Deleted ? oldRoles & CompRole.HumanEvalator : (oldRoles & CompRole.HumanEvalator) | newRoles;
-          dbUser.RolesEx = (long)oldRoles; //nastav novou roli
+          Lib.setRolesEx(dbUser, (long)newRoles);
+          //dbUser.RolesEx = (long)oldRoles; //nastav novou roli
         }
         //Zaloz nove users
         var emails = actUsers.Where(u => u.UserId == 0).Select(u => u.EMail).ToList(); //vsechny nove emaily
@@ -747,12 +746,14 @@ namespace NewData {
           if (usr == null) usr = NewData.Login.PrepareUser(cusr.EMail, db); //pro neexistujiciho zaloz usera v prepared stavu
           else compUsr = usr.CompanyUsers.FirstOrDefault(cu => cu.CompanyId == cusr.CompanyId); //pro existujiciho usera nalezni Cmpany Usera
           var newRoles = cusr.RoleEx.Role;
-          if (compUsr == null)
-            db.CompanyUsers.Add(compUsr = new CompanyUsers() { Created = DateTime.UtcNow, CompanyId = cusr.CompanyId, User = usr, RoleParEx = cusr.RoleEx }); //Company User neexistuje => zaloz
-          else {
+          if (compUsr == null) {
+            db.CompanyUsers.Add(compUsr = new CompanyUsers() { Created = DateTime.UtcNow, CompanyId = cusr.CompanyId, User = usr }); //Company User neexistuje => zaloz
+            Lib.setRoleParEx(compUsr, cusr.RoleEx);
+          }  else {
             var oldRoles = (CompRole)compUsr.Roles;
             newRoles |= oldRoles & CompRole.HumanEvalator;
-            compUsr.RolesEx = (long)newRoles;
+            Lib.setRolesEx(compUsr, (long)newRoles);
+            //compUsr.RolesEx = newRoles;
           }
         }
       }

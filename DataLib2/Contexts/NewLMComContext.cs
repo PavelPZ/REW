@@ -3,7 +3,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 
 namespace NewData {
-  public class NewLMComContext_SqlServer : NewLMComContext {
+  public class NewLMComContext_SqlServer : Container {
 
     //Add-Migration lmcom-serv-001 -c NewData.NewLMComContext_SqlServer
     //Update-Database lmcom-serv-001 -c NewData.NewLMComContext_SqlServer
@@ -14,7 +14,7 @@ namespace NewData {
     }
   }
 
-  public class NewLMComContext : DbContext {
+  public class Container : DbContext {
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
       modelBuilder.Entity<Companies>(entity => {

@@ -1,13 +1,10 @@
 ﻿using LMComLib;
 using LMNetLib;
+using Microsoft.Data.Entity;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 //Pouziti napr.
 //using (var fs = File.OpenWrite(@"d:\temp\dump.xslt"))
@@ -27,15 +24,17 @@ namespace NewData {
       public string Data1 { get; set; }
     }
     public static IEnumerable<schools.dumpData> LANGMasterScorm() {
-      var db = Lib.CreateContext();
-      var data = db.Database.SqlQuery<scormEx>("SELECT * FROM LANGMasterScorms WHERE Key1Int=1").ToArray();
-      //var data = db.Database.SqlQuery<scormEx>("SELECT * FROM [ScormExes] WHERE Key1Int=1").ToArray();
-      return data.Select(d => new schools.dumpData() {
-        UserId = d.UserId,
-        AttemptId = d.AttemptId != 0 ? d.AttemptId.ToString() : (d.AttemptIdStr != null ? d.AttemptIdStr : (d.AttemptIdGuid != null ? d.AttemptIdStr.ToString() : null)),
-        ModuleId = d.Key1Str,
-        ModuleData = Newtonsoft.Json.JsonConvert.DeserializeObject<schools.ModUser>(Encoding.UTF8.GetString(Convert.FromBase64String(d.Data1))),
-      });
+      //EF7
+      yield break;
+      //var db = Lib.CreateContext();
+      //var data = db.Database.SqlQuery<scormEx>("SELECT * FROM LANGMasterScorms WHERE Key1Int=1").ToArray();
+      ////var data = db.Database.SqlQuery<scormEx>("SELECT * FROM [ScormExes] WHERE Key1Int=1").ToArray();
+      //return data.Select(d => new schools.dumpData() {
+      //  UserId = d.UserId,
+      //  AttemptId = d.AttemptId != 0 ? d.AttemptId.ToString() : (d.AttemptIdStr != null ? d.AttemptIdStr : (d.AttemptIdGuid != null ? d.AttemptIdStr.ToString() : null)),
+      //  ModuleId = d.Key1Str,
+      //  ModuleData = Newtonsoft.Json.JsonConvert.DeserializeObject<schools.ModUser>(Encoding.UTF8.GetString(Convert.FromBase64String(d.Data1))),
+      //});
     }
     public static IEnumerable<schools.dumpData> Web() {
       var db = Lib.CreateContext();

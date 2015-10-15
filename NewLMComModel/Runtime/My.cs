@@ -1,10 +1,12 @@
 ﻿using LMComLib;
 using LMNetLib;
 using Login;
+using Microsoft.Data.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+
 
 namespace Login {
 
@@ -293,9 +295,11 @@ namespace NewData {
       CompanyUsers cu;
       if (par.companyUserId < 0) {
         cu = db.CompanyUsers.First(c => c.Id == -par.companyUserId);
-        var ex = cu.RoleParEx;
+        //var ex = cu.RoleParEx;
+        var ex = Lib.getRoleParEx(cu);
         ex.HumanEvalatorInfos = null; ex.Role &= ~CompRole.HumanEvalator;
-        cu.RoleParEx = ex;
+        //cu.RoleParEx = ex;
+        Lib.setRoleParEx(cu, ex);
         db.SaveChanges();
         return true;
       } else if (par.companyUserId == 0) {
@@ -305,10 +309,12 @@ namespace NewData {
         if (cu == null) db.CompanyUsers.Add(cu = new CompanyUsers { CompanyId = par.companyId, UserId = u.Id, Created = DateTime.UtcNow });
       } else
         cu = db.CompanyUsers.First(c => c.Id == par.companyUserId);
-      LMComLib.CompUserRole rx = cu.RoleParEx;
+      //CompUserRole rx = cu.RoleParEx;
+      var rx = Lib.getRoleParEx(cu);
       rx.Role = rx.Role |= CompRole.HumanEvalator;
       rx.HumanEvalatorInfos = par.evalInfos;
-      cu.RoleParEx = rx;
+      //cu.RoleParEx = rx;
+      Lib.setRoleParEx(cu, rx);
       db.SaveChanges();
       return true;
     }
@@ -436,7 +442,7 @@ namespace NewData {
         l.Counter,
       }).ToArray();
 
-      var compUserInfo = db.Users.Include("CompanyUsers").Where(u => u.Id == userId).Select(u => new {
+      var compUserInfo = db.Users.Include(c => c.CompanyUsers).Where(u => u.Id == userId).Select(u => new {
         u.Roles,
         compUsers = u.CompanyUsers.Select(cu => new { cu.CompanyId, cu.Company.Title, cu.RolePar, cu.Roles, cu.DepartmentId, PublisherOwner = cu.Company.PublisherOwners.FirstOrDefault() })
       }).FirstOrDefault();

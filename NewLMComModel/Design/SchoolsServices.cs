@@ -1,14 +1,8 @@
 ﻿using LMComLib;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity.Core.Objects;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Login;
 using LMNetLib;
-using System.Data.Entity;
 using schools;
+using System;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml.Linq;
