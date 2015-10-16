@@ -1415,8 +1415,6 @@
     <Content Include="Schools\Splash.html" />
     <Content Include="Schools\Statistics.html" />
     <Content Include="Schools\Design\ExtractWords.aspx" />
-    <None Include="Statistics\Default.ascx_" />
-    <None Include="Statistics\Toc.ascx_" />
     <Content Include="Temp\angular\knockout.html" />
     <Content Include="Temp\angular\index.html" />
     <Content Include="Temp\file1.js" />
@@ -1430,7 +1428,6 @@
     <Content Include="Temp\htmlPublishing\index.html" />
     <Content Include="Temp\LFE3.html" />
     <Content Include="Temp\local.html" />
-    <None Include="Statistics\Ground.Master_" />
     <None Include="Temp\Data.json" />
     <Content Include="Temp\mediumJS\bililiteRange.js" />
     <Content Include="Temp\mediumJS\index.html" />
@@ -2282,7 +2279,6 @@
       <DependentUpon>TopBar.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Schools\Splash.ts" />
-    <None Include="Statistics\Statistics.ts_" />
     <TypeScriptCompile Include="Temp\htmlPublishing\ko-comp.ts" />
     <TypeScriptCompile Include="Temp\mediumJS\mediumJS.ts" />
     <TypeScriptCompile Include="Temp\TestTransit.ts" />
@@ -2548,7 +2544,6 @@
     <Compile Include="Schools\Design\DictLingea.aspx.designer.cs">
       <DependentUpon>DictLingea.aspx</DependentUpon>
     </Compile>
-    <None Include="Statistics\DevExLib.cs_" />
     <Compile Include="Temp\CodeFile1.cs" />
     <Compile Include="Temp\DBClearUnusedLMComUserData.aspx.cs">
       <DependentUpon>DBClearUnusedLMComUserData.aspx</DependentUpon>
