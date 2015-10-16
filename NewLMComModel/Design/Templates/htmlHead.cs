@@ -22,7 +22,7 @@ namespace NewData.Design.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+    #line 1 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class htmlHead : htmlHeadBase
     {
@@ -38,7 +38,7 @@ namespace NewData.Design.Templates
             this.Write(" \r\n");
             this.Write(" \r\n\r\n\r\n");
             
-            #line 12 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 12 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
  //**************** BOOT
   var min = cfg.version == versions.minified ? ".min" : "";
   var themeId = cfg.themeId!=null ? cfg.themeId : "";
@@ -52,7 +52,7 @@ namespace NewData.Design.Templates
             this.Write(" <!--[if lt IE 9]>\r\n  <script type=\'text/javascript\' src=\'../jslib/scripts/jquery" +
                     "");
             
-            #line 20 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 20 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(min));
             
             #line default
@@ -71,7 +71,7 @@ namespace NewData.Design.Templates
   <!--[if (gt IE 8)|!(IE)]><!-->
   <script type='text/javascript' src='../jslib/scripts/jquery2");
             
-            #line 32 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 32 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(min));
             
             #line default
@@ -80,7 +80,7 @@ namespace NewData.Design.Templates
                     "\"></script>\r\n  <!--<![endif]-->\r\n  <script type=\'text/javascript\' src=\'../jslib/" +
                     "scripts/underscore");
             
-            #line 35 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 35 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(min));
             
             #line default
@@ -96,7 +96,7 @@ namespace NewData.Design.Templates
 
   <link href=""../font-awesome/lm/externals");
             
-            #line 44 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 44 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(themeId));
             
             #line default
@@ -105,14 +105,14 @@ namespace NewData.Design.Templates
                     "/ea/ea.css\" />\r\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"../blendedapi/sty" +
                     "les/style.css\" />\r\n  <link href=\"../jslib/css/lm");
             
-            #line 47 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 47 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(themeId));
             
             #line default
             #line hidden
             this.Write(".css\" rel=\"stylesheet\"/>\r\n\r\n");
             
-            #line 49 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 49 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
 
   WriteLine(RewApp.writeCfg(cfg));
   WriteLine(MainPage.writeCss(RewApp.publisherSkinCss(cfg)));
@@ -121,7 +121,7 @@ namespace NewData.Design.Templates
             #line default
             #line hidden
             
-            #line 53 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 53 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
 
   if (cfg.version == versions.minified) {
 
@@ -137,7 +137,7 @@ namespace NewData.Design.Templates
   }
 ");
             
-            #line 63 "D:\LMCom\REW\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 63 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
 
     if (cfg.licenceConfig.domain != null) WriteLine(string.Format("  if (window.location.host.toLowerCase().indexOf('{0}') < 0) {{ alert('Wrong domain: {0}'); isOk = false; }}", cfg.licenceConfig.domain.ToLower()));
     if (cfg.licenceConfig.intExpiration > 0) WriteLine("  if (new Date().getTime() > {0}) {{ alert('Trial version expired at {1}'); isOk = false; }}", cfg.licenceConfig.intExpiration, cfg.licenceConfig.expiration.ToString("yyyy-MM-dd"));

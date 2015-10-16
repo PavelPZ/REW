@@ -22,7 +22,7 @@ namespace NewData.Design.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\LMCom\REW\NewLMComModel\Design\Templates\html.tt"
+    #line 1 "D:\LMCom\rew\NewLMComModel\Design\Templates\html.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class html : htmlBase
     {
@@ -60,21 +60,21 @@ namespace NewData.Design.Templates
   <meta name='viewport' content='width=device-width'/>
   <title>");
             
-            #line 31 "D:\LMCom\REW\NewLMComModel\Design\Templates\html.tt"
+            #line 31 "D:\LMCom\rew\NewLMComModel\Design\Templates\html.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(pageTitle));
             
             #line default
             #line hidden
             this.Write("</title>\r\n  ");
             
-            #line 32 "D:\LMCom\REW\NewLMComModel\Design\Templates\html.tt"
+            #line 32 "D:\LMCom\rew\NewLMComModel\Design\Templates\html.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(RewApp.headContent(false, cfg)));
             
             #line default
             #line hidden
             this.Write("\r\n</head>\r\n<body ");
             
-            #line 34 "D:\LMCom\REW\NewLMComModel\Design\Templates\html.tt"
+            #line 34 "D:\LMCom\rew\NewLMComModel\Design\Templates\html.tt"
 if (cfg.noCpv) Write("class='hide-cpv'");
             
             #line default
@@ -99,14 +99,14 @@ if (cfg.noCpv) Write("class='hide-cpv'");
   </script>
   ");
             
-            #line 52 "D:\LMCom\REW\NewLMComModel\Design\Templates\html.tt"
+            #line 52 "D:\LMCom\rew\NewLMComModel\Design\Templates\html.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(MainPage.htmls(RewApp.htmlNewEA(cfg))));
             
             #line default
             #line hidden
             this.Write("\r\n  ");
             
-            #line 53 "D:\LMCom\REW\NewLMComModel\Design\Templates\html.tt"
+            #line 53 "D:\LMCom\rew\NewLMComModel\Design\Templates\html.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(serverScript??""));
             
             #line default
