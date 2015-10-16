@@ -7,7 +7,6 @@ using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Data.SqlClient;
-using System.Data.SqlServerCe;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -302,7 +301,7 @@ namespace NewData {
     static DbConnection cs() {
       var conn = connStr();
       if (conn.ProviderName == "System.Data.SqlClient") return new SqlConnection(conn.ConnectionString);
-      if (conn.ProviderName.StartsWith("System.Data.SqlServerCe")) return new SqlCeConnection(conn.ConnectionString);
+      //if (conn.ProviderName.StartsWith("System.Data.SqlServerCe")) return new SqlCeConnection(conn.ConnectionString);
       throw new Exception(@"d:\LMCom\rew\NewLMComModel\Runtime\Lib.cs.Container.cs: unknown ProviderName - " + conn.ProviderName);
     }
     public static ConnectionStringSettings connStr() {

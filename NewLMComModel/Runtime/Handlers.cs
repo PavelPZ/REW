@@ -1,29 +1,14 @@
 ﻿using LMComLib;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Login;
 using System.Web;
 using LMNetLib;
 using System.IO;
 using System.Configuration;
-using System.Data.Entity.Core.EntityClient;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Data.Entity.SqlServer;
 using Newtonsoft.Json;
 using System.IO.Compression;
-using System.Data.Entity.Migrations;
-using System.Data.SqlClient;
-using System.Data.Common;
-using System.Data.SqlServerCe;
-using System.Web.Hosting;
-using System.Web.Script.Serialization;
-using System.Globalization;
-using System.Runtime.Caching;
 using System.Text.RegularExpressions;
 
 namespace Handlers {
