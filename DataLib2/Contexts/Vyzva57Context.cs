@@ -13,10 +13,9 @@ namespace NewData {
     //Update-Database vyzva-sqlite-001 -c NewData.Vyzva57Context_Sqlite
     protected override void OnConfiguring(DbContextOptionsBuilder options) {
       base.OnConfiguring(options);
-      var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = @"d:\LMCom\rew\Web4\App_Data\Vyzva57_sqlite.s3db" };
-      var connectionString = connectionStringBuilder.ToString();
-      var connection = new SqliteConnection(connectionString);
-      options.UseSqlite(connection);
+      var config = ConfigurationManager.ConnectionStrings["Vyzva57-sqlite"];
+      var conn = new SqliteConnection(config.ConnectionString);
+      options.UseSqlite(conn);
     }
   }
 
@@ -32,7 +31,7 @@ namespace NewData {
 
   public class Vyzva57Context : DbContext {
 
-    public Vyzva57Context() {
+    public Vyzva57Context(): base() {
       Database.EnsureCreated();
     }
 

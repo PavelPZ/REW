@@ -11,10 +11,9 @@ namespace NewData {
     //Update-Database lmcom-sqlite-001 -c NewData.NewLMComContext_Sqlite
     protected override void OnConfiguring(DbContextOptionsBuilder options) {
       base.OnConfiguring(options);
-      var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = @"d:\LMCom\rew\Web4\App_Data\NewLMCom_sqlite.s3db" };
-      var connectionString = connectionStringBuilder.ToString();
-      var connection = new SqliteConnection(connectionString);
-      options.UseSqlite(connection);
+      var config = ConfigurationManager.ConnectionStrings["Container-sqlite"];
+      var conn = new SqliteConnection(config.ConnectionString);
+      options.UseSqlite(conn);
     }
   }
 
@@ -32,7 +31,7 @@ namespace NewData {
 
   public class Container : DbContext {
 
-    public Container() {
+    public Container(): base() {
       Database.EnsureCreated();
     }
 

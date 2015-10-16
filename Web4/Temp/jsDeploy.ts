@@ -37,9 +37,9 @@ namespace jsDeploy {
     jss.forEach(js => { if (js) js.forEach(j => res.push('../' + j)); });
     return res;
   }
-  function replaceLang(js: string): string {
+  function replaceLang(js: string, lang: Langs): string {
     var english: string = '.' + Langs[Langs.en_gb].replace('_', '-') + '.';
-    var act: string = '.' + Langs[$deployConfig.lang].replace('_', '-') + '.';
+    var act: string = '.' + Langs[lang].replace('_', '-') + '.';
     return js.replace(english, act);
   }
 
@@ -51,13 +51,14 @@ namespace jsDeploy {
       $deployData.jsGround,
       $deployConfig.oldEA ? $deployData.jsEA : $deployData.jsEARepl,
       $deployData.jsModel,
-      $deployData.jsLogin,
-      $deployData.jsAdmin,
+      $deployConfig.target == LMComLib.Targets.scorm ? $deployData.jsScorm : null,
+      $deployConfig.target == LMComLib.Targets.web ? $deployData.jsLogin : null,
+      $deployConfig.target == LMComLib.Targets.web ? $deployData.jsAdmin : null,
       $deployData.jsSchoolStart,
       $deployData.jsSchoolEnd,
       $deployData.jsCourse,
       $deployData.jsBlended,
-      $deployData.jsLoc.map(js => replaceLang(js)),
+      $deployData.jsLoc.map(js => replaceLang(js, $deployConfig.lang)),
       appJs
     ]);
     var head = document.getElementsByTagName("head")[0];
