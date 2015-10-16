@@ -551,6 +551,7 @@
     <None Include="Author\xhtml5.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="BlendedAPI\vyzva\Server\Excels\StudyAll.xlsx" />
     <None Include="Courses\xhtml5.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -2757,7 +2758,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BlendedAPI\vyzva\Server\Excels\" />
     <Folder Include="BS3\css\" />
     <Folder Include="ClientBin\" />
     <Folder Include="JsLib\css\img\Reports\" />

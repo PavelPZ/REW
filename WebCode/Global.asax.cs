@@ -20,7 +20,7 @@ namespace WebCode {
     protected void Application_Start(object sender, EventArgs e) {
       Machines._rootDir = @"d:\LMCom\rew\Web4";
       //System.Diagnostics.Debugger.Break();
-      //GlobalConfiguration.Configure(WebApiConfig.Register);
+      GlobalConfiguration.Configure(WebApiConfig.Register);
       NewData.Lib.lmcomSeed();
     }
 
