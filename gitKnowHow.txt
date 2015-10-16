@@ -1,0 +1,5 @@
+rem reset branch to commit
+git reset --hard 3f5ec29d77c0ae478241b46c5f48f8b0b376b184
+rem push aktualni MASTER branch to origin 
+git push origin master --force
+
