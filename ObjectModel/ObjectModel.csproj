@@ -61,7 +61,6 @@
     <Compile Include="Course\Macro.cs" />
     <Compile Include="Course\Meta.cs" />
     <Compile Include="Course\ModifyXsd.cs" />
-    <Compile Include="Course\SchemaCSS.cs" />
     <Compile Include="Course\Schema.cs" />
     <Compile Include="Course\SchemaDOM.cs" />
     <Compile Include="Model\CSharpToTypeScript.cs" />
