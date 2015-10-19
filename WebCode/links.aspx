@@ -8,5 +8,6 @@
 </head>
 <body>
   <a runat="server" href="~/code/NewEA.aspx?lang=cs-cz">Local</a><br />
+  <a runat="server" href="~/code/NewEA.aspx?lang=cs-cz&a1y=b2c">Local force log</a><br />
 </body>
 </html>

@@ -49,9 +49,35 @@ namespace NewData.Design.Templates
             
             #line default
             #line hidden
-            this.Write("  <script type=\'text/javascript\' src=\'../jslib/scripts/jquery");
+            this.Write("  <link href=\"../font-awesome/lm/externals");
             
             #line 19 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(themeId));
+            
+            #line default
+            #line hidden
+            this.Write(".css\" rel=\"stylesheet\"/>\r\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"../jslib" +
+                    "/ea/ea.css\" />\r\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"../blendedapi/sty" +
+                    "les/style.css\" />\r\n  <link href=\"../jslib/css/lm");
+            
+            #line 22 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(themeId));
+            
+            #line default
+            #line hidden
+            this.Write(".css\" rel=\"stylesheet\"/>\r\n\r\n");
+            
+            #line 24 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
+
+  WriteLine(RewApp.writeCfg(cfg));
+  WriteLine(MainPage.writeCss(RewApp.publisherSkinCss(cfg)));
+
+            
+            #line default
+            #line hidden
+            this.Write("\r\n  <script type=\'text/javascript\' src=\'../jslib/scripts/jquery");
+            
+            #line 29 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(min));
             
             #line default
@@ -59,7 +85,7 @@ namespace NewData.Design.Templates
             this.Write(".js\'></script>\r\n  <script src=\"../jslib/scripts/angular.js\" type=\"text/javascript" +
                     "\"></script>\r\n  <script type=\'text/javascript\' src=\'../jslib/scripts/underscore");
             
-            #line 21 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 31 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(min));
             
             #line default
@@ -73,34 +99,9 @@ namespace NewData.Design.Templates
   <script src=""../jslib/scripts/angular-ui-router.js"" type=""text/javascript""></script>
   <script src=""../jslib/scripts/ui-bootstrap-tpls.js"" type=""text/javascript""></script>
 
-  <link href=""../font-awesome/lm/externals");
+");
             
-            #line 30 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(themeId));
-            
-            #line default
-            #line hidden
-            this.Write(".css\" rel=\"stylesheet\"/>\r\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"../jslib" +
-                    "/ea/ea.css\" />\r\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"../blendedapi/sty" +
-                    "les/style.css\" />\r\n  <link href=\"../jslib/css/lm");
-            
-            #line 33 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(themeId));
-            
-            #line default
-            #line hidden
-            this.Write(".css\" rel=\"stylesheet\"/>\r\n\r\n");
-            
-            #line 35 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
-
-  WriteLine(RewApp.writeCfg(cfg));
-  WriteLine(MainPage.writeCss(RewApp.publisherSkinCss(cfg)));
-
-            
-            #line default
-            #line hidden
-            
-            #line 39 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 40 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
 
   if (cfg.version == versions.minified) {
 
@@ -116,7 +117,7 @@ namespace NewData.Design.Templates
   }
 ");
             
-            #line 49 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 50 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
 
     if (cfg.licenceConfig.domain != null) WriteLine(string.Format("  if (window.location.host.toLowerCase().indexOf('{0}') < 0) {{ alert('Wrong domain: {0}'); isOk = false; }}", cfg.licenceConfig.domain.ToLower()));
     if (cfg.licenceConfig.intExpiration > 0) WriteLine("  if (new Date().getTime() > {0}) {{ alert('Trial version expired at {1}'); isOk = false; }}", cfg.licenceConfig.intExpiration, cfg.licenceConfig.expiration.ToString("yyyy-MM-dd"));
