@@ -569,7 +569,7 @@ namespace CourseModel {
       postProcess_Sound(pg, allTags, sb); dump(debugXml, pg, "postProcess_Sound");
 
       //CSS styles. zmeni pg
-      CSS.applyCSS(ref pg, ex); dump(debugXml, pg, "applyCSS");
+      //CSS.applyCSS(ref pg, ex); dump(debugXml, pg, "applyCSS");
 
       //kontrola a dokonceni
       foreach (var ctrl in pg.scan()) ctrl.checkAndFinish(pg, sb); if (debugXml != null) dump(debugXml, pg, "checkAndFinish");
