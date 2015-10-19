@@ -69,21 +69,22 @@ namespace NewData.Design.Templates
             
             #line 24 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
 
-  WriteLine(RewApp.writeCfg(cfg));
   WriteLine(MainPage.writeCss(RewApp.publisherSkinCss(cfg)));
+  WriteLine(RewApp.writeCfg(cfg));
 
             
             #line default
             #line hidden
-            this.Write("\r\n  <script type=\'text/javascript\' src=\'../jslib/scripts/jquery");
+            this.Write("  <script type=\'text/javascript\' src=\'../jslib/js/lmconsoleinit.js\'></script>\r\n\r\n" +
+                    "  <script type=\'text/javascript\' src=\'../jslib/scripts/jquery");
             
-            #line 29 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 30 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(min));
             
             #line default
             #line hidden
-            this.Write(".js\'></script>\r\n  <script src=\"../jslib/scripts/angular.js\" type=\"text/javascript" +
-                    "\"></script>\r\n  <script type=\'text/javascript\' src=\'../jslib/scripts/underscore");
+            this.Write(".js\'></script>\r\n  <script type=\'text/javascript\' src=\'../jslib/scripts/underscore" +
+                    "");
             
             #line 31 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(min));
@@ -91,7 +92,7 @@ namespace NewData.Design.Templates
             #line default
             #line hidden
             this.Write(@".js'></script>
-  <script type='text/javascript' src='../jslib/js/lmconsoleinit.js'></script>
+  <script src=""../jslib/scripts/angular.js"" type=""text/javascript""></script>
 
   <script src=""../jslib/scripts/angular-route.js"" type=""text/javascript""></script>
   <script src=""../jslib/scripts/angular-animate.js"" type=""text/javascript""></script>

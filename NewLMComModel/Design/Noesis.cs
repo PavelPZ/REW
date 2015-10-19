@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using LMComLib;
 using System.IO;
-using LMNetLib;
-using LMComLib;
-using System.Text;
-using Microsoft.ClearScript.Windows;
-using Microsoft.ClearScript.V8;
 
 namespace ClearScript {
   public static class Lib {

@@ -566,8 +566,8 @@ namespace Packager {
         var compressor = new JavaScriptCompressor() { ErrorReporter = new JSErrorReporter(dest, err) };
         try {
           //ERROR in _course.js, odzavorkovana komprese
-          //var comp = compressor.Compress(sb.ToString());
-          var comp = sb.ToString();
+          var comp = compressor.Compress(sb.ToString());
+          //var comp = sb.ToString();
           writeFile(destMin, comp);
         } catch (Exception exp) {
           throw new Exception(err.ToString(), exp);

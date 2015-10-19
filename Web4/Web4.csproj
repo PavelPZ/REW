@@ -564,6 +564,7 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Deploy\typescript.cmd" />
+    <Content Include="Deploy\jsDeploy.json" />
     <None Include="JsLib\css\Author.less" />
     <Content Include="JsLib\css\img\flag-mid.png" />
     <Content Include="JsLib\css\img\flag-small.png" />
@@ -1479,7 +1480,7 @@
     <Content Include="Temp\HtmlPage3.html" />
     <Content Include="Temp\htmlPublishing.aspx" />
     <Content Include="Temp\JavaScript1.js" />
-    <Content Include="Temp\jsonml-xml.js" />
+    <Content Include="Deploy\jsonml-xml.js" />
     <Content Include="Temp\htmlPublishing\index.html" />
     <Content Include="Temp\LFE3.html" />
     <Content Include="Temp\local.html" />
@@ -1521,7 +1522,7 @@
     <TypeScriptCompile Include="JsLib\JSD\jquery-ui.d.ts" />
     <None Include="JsLib\JSD\jquery.d - Copy.ts_" />
     <TypeScriptCompile Include="JsLib\JSD\lib-lm.d.ts" />
-    <TypeScriptCompile Include="Temp\jsDeploy.ts" />
+    <TypeScriptCompile Include="Deploy\jsDeploy.ts" />
     <TypeScriptCompile Include="Temp\angular\knockout.ts" />
     <TypeScriptCompile Include="Temp\angular\test.ts" />
     <TypeScriptCompile Include="Temp\mediumJS\ts\Base.ts" />
