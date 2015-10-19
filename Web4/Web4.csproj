@@ -308,6 +308,8 @@
     <Content Include="Author\Author.html" />
     <Content Include="Deploy\min.js" />
     <Content Include="Deploy\Minify.xml" />
+    <Content Include="JsLib\Scripts\jquery.js" />
+    <Content Include="JsLib\Scripts\jquery.min.js" />
     <Content Include="Temp\Author.html" />
     <Content Include="BlendedAPI\Doc.txt" />
     <None Include="BlendedAPI\Styles\style.less" />
@@ -1322,7 +1324,6 @@
     <Content Include="JsLib\Scripts\intl\jsonp\zh.js" />
     <Content Include="JsLib\Scripts\intl\jsonp\zu-ZA.js" />
     <Content Include="JsLib\Scripts\intl\jsonp\zu.js" />
-    <Content Include="JsLib\Scripts\jquery2.js" />
     <Content Include="JsLib\Scripts\jqvalidator\core.js" />
     <Content Include="JsLib\Scripts\jqvalidator\delegate.js" />
     <Content Include="JsLib\Scripts\jqvalidator\localization\messages_cs.js" />
@@ -2092,7 +2093,6 @@
     <Content Include="JsLib\Scripts\globalize.js" />
     <Content Include="JsLib\Scripts\jquery-migrate.js" />
     <Content Include="JsLib\Scripts\jquery.ba-hashchange.js" />
-    <Content Include="JsLib\Scripts\jquery.js" />
     <Content Include="JsLib\Scripts\json2.js" />
     <Content Include="JsLib\Scripts\jsRender.js" />
     <Content Include="JsLib\Scripts\knockout-delegatedEvents.js" />
@@ -2498,7 +2498,6 @@
     <Compile Include="Author\Author.aspx.designer.cs">
       <DependentUpon>Author.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Code\LibMp3Lame.cs" />
     <Compile Include="Code\NormalizeProjectFile.cs" />
     <Compile Include="Code\Skrivanek.cs" />
     <Compile Include="Courses\Debug.cs" />

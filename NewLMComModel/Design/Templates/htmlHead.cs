@@ -49,38 +49,17 @@ namespace NewData.Design.Templates
             
             #line default
             #line hidden
-            this.Write(" <!--[if lt IE 9]>\r\n  <script type=\'text/javascript\' src=\'../jslib/scripts/jquery" +
-                    "");
+            this.Write("  <script type=\'text/javascript\' src=\'../jslib/scripts/jquery");
             
-            #line 20 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(min));
-            
-            #line default
-            #line hidden
-            this.Write(@".js'></script>
-  <script src=""../jslib/scripts/es5-shim.js"" type=""text/javascript"" ></script>
-  <script src=""../jslib/scripts/jquery-1.11.3.min.js"" type=""text/javascript"" ></script>
-  <script src=""../jslib/scripts/angular-ie8.js"" type=""text/javascript""></script>
-  <style>
-    .ng-hide, .alert.advertise {
-      display: none !important;
-     }
-     .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
-  </style>
-  <![endif]-->
-  <!--[if (gt IE 8)|!(IE)]><!-->
-  <script type='text/javascript' src='../jslib/scripts/jquery2");
-            
-            #line 32 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 19 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(min));
             
             #line default
             #line hidden
             this.Write(".js\'></script>\r\n  <script src=\"../jslib/scripts/angular.js\" type=\"text/javascript" +
-                    "\"></script>\r\n  <!--<![endif]-->\r\n  <script type=\'text/javascript\' src=\'../jslib/" +
-                    "scripts/underscore");
+                    "\"></script>\r\n  <script type=\'text/javascript\' src=\'../jslib/scripts/underscore");
             
-            #line 35 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 21 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(min));
             
             #line default
@@ -96,7 +75,7 @@ namespace NewData.Design.Templates
 
   <link href=""../font-awesome/lm/externals");
             
-            #line 44 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 30 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(themeId));
             
             #line default
@@ -105,14 +84,14 @@ namespace NewData.Design.Templates
                     "/ea/ea.css\" />\r\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"../blendedapi/sty" +
                     "les/style.css\" />\r\n  <link href=\"../jslib/css/lm");
             
-            #line 47 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 33 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(themeId));
             
             #line default
             #line hidden
             this.Write(".css\" rel=\"stylesheet\"/>\r\n\r\n");
             
-            #line 49 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 35 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
 
   WriteLine(RewApp.writeCfg(cfg));
   WriteLine(MainPage.writeCss(RewApp.publisherSkinCss(cfg)));
@@ -121,7 +100,7 @@ namespace NewData.Design.Templates
             #line default
             #line hidden
             
-            #line 53 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 39 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
 
   if (cfg.version == versions.minified) {
 
@@ -137,7 +116,7 @@ namespace NewData.Design.Templates
   }
 ");
             
-            #line 63 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 49 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
 
     if (cfg.licenceConfig.domain != null) WriteLine(string.Format("  if (window.location.host.toLowerCase().indexOf('{0}') < 0) {{ alert('Wrong domain: {0}'); isOk = false; }}", cfg.licenceConfig.domain.ToLower()));
     if (cfg.licenceConfig.intExpiration > 0) WriteLine("  if (new Date().getTime() > {0}) {{ alert('Trial version expired at {1}'); isOk = false; }}", cfg.licenceConfig.intExpiration, cfg.licenceConfig.expiration.ToString("yyyy-MM-dd"));

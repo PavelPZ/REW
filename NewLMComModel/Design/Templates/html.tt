@@ -8,22 +8,8 @@
 <#@ import namespace="Packager" #> 
 <#@ import namespace="schools" #> 
 
-<!--[if lt IE 8]>  
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/tr/xhtml1/DTD/xhtml1-transitional.dtd">
-<html class='no-media ie7'> 
-<![endif]-->
-<!--[if IE 8]>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/tr/xhtml1/DTD/xhtml1-transitional.dtd">
-<html class='no-ie7 no-media ie8'>
-<![endif]-->
-<!--[if IE 9]>
-<!DOCTYPE html>
-<html class='ie ie9'> 
-<![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!-->
 <!DOCTYPE html>
 <html class='no-ie7 no-ie8'>
-<!--<![endif]-->
 <head>
   <meta http-equiv='X-UA-Compatible' content='IE=Edge' />
   <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>

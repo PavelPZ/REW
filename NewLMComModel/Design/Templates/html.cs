@@ -36,45 +36,26 @@ namespace NewData.Design.Templates
             this.Write(" \r\n");
             this.Write(" \r\n");
             this.Write(" \r\n");
-            this.Write(@" 
-
-<!--[if lt IE 8]>  
-<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Transitional//EN"" ""http://www.w3.org/tr/xhtml1/DTD/xhtml1-transitional.dtd"">
-<html class='no-media ie7'> 
-<![endif]-->
-<!--[if IE 8]>
-<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Transitional//EN"" ""http://www.w3.org/tr/xhtml1/DTD/xhtml1-transitional.dtd"">
-<html class='no-ie7 no-media ie8'>
-<![endif]-->
-<!--[if IE 9]>
-<!DOCTYPE html>
-<html class='ie ie9'> 
-<![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!-->
-<!DOCTYPE html>
-<html class='no-ie7 no-ie8'>
-<!--<![endif]-->
-<head>
-  <meta http-equiv='X-UA-Compatible' content='IE=Edge' />
-  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
-  <meta name='viewport' content='width=device-width'/>
-  <title>");
+            this.Write(" \r\n\r\n<!DOCTYPE html>\r\n<html class=\'no-ie7 no-ie8\'>\r\n<head>\r\n  <meta http-equiv=\'X" +
+                    "-UA-Compatible\' content=\'IE=Edge\' />\r\n  <meta http-equiv=\'Content-Type\' content=" +
+                    "\'text/html; charset=utf-8\'>\r\n  <meta name=\'viewport\' content=\'width=device-width" +
+                    "\'/>\r\n  <title>");
             
-            #line 31 "D:\LMCom\rew\NewLMComModel\Design\Templates\html.tt"
+            #line 17 "D:\LMCom\rew\NewLMComModel\Design\Templates\html.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(pageTitle));
             
             #line default
             #line hidden
             this.Write("</title>\r\n  ");
             
-            #line 32 "D:\LMCom\rew\NewLMComModel\Design\Templates\html.tt"
+            #line 18 "D:\LMCom\rew\NewLMComModel\Design\Templates\html.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(RewApp.headContent(false, cfg)));
             
             #line default
             #line hidden
             this.Write("\r\n</head>\r\n<body ");
             
-            #line 34 "D:\LMCom\rew\NewLMComModel\Design\Templates\html.tt"
+            #line 20 "D:\LMCom\rew\NewLMComModel\Design\Templates\html.tt"
 if (cfg.noCpv) Write("class='hide-cpv'");
             
             #line default
@@ -99,14 +80,14 @@ if (cfg.noCpv) Write("class='hide-cpv'");
   </script>
   ");
             
-            #line 52 "D:\LMCom\rew\NewLMComModel\Design\Templates\html.tt"
+            #line 38 "D:\LMCom\rew\NewLMComModel\Design\Templates\html.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(MainPage.htmls(RewApp.htmlNewEA(cfg))));
             
             #line default
             #line hidden
             this.Write("\r\n  ");
             
-            #line 53 "D:\LMCom\rew\NewLMComModel\Design\Templates\html.tt"
+            #line 39 "D:\LMCom\rew\NewLMComModel\Design\Templates\html.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(serverScript??""));
             
             #line default

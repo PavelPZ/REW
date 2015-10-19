@@ -30,6 +30,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLib2", "DataLib2\DataLib2.csproj", "{D6C78A04-6A43-4AA6-B552-E8C331D58460}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCode", "WebCode\WebCode.csproj", "{7B9727BA-C862-46F1-9770-4FC29ABBA9FC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A34E819D-607A-45FA-87C2-CFEF760F58F1} = {A34E819D-607A-45FA-87C2-CFEF760F58F1}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VyzvaLib", "VyzvaLib\VyzvaLib.csproj", "{88118662-E1E1-49FD-8498-67FAACC5726D}"
 EndProject
