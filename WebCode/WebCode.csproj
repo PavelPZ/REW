@@ -176,22 +176,20 @@
     <Compile Include="links.aspx.designer.cs">
       <DependentUpon>links.aspx</DependentUpon>
     </Compile>
+    <Compile Include="mp3Uploader.ashx.cs">
+      <DependentUpon>mp3Uploader.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
     <Content Include="Service.ashx" />
+    <Content Include="mp3Uploader.ashx" />
     <None Include="Web.AppSetting.config">
       <SubType>Designer</SubType>
     </None>
     <None Include="Web.ConnectionStrings.config">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

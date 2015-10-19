@@ -1,0 +1,1 @@
+"c:\Program Files (x86)\Microsoft SDKs\TypeScript\1.6\tsc.exe" -p D:\LMCom\rew\Web4

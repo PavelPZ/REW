@@ -281,6 +281,7 @@
     </Compile>
     <Compile Include="Design\Templates\Templates.cs" />
     <Compile Include="Design\TtsBuild.cs" />
+    <Compile Include="Runtime\LibMp3Lame.cs" />
     <Compile Include="Runtime\lmConsole\lmconsole.cs" />
     <Compile Include="Runtime\lmConsole\index.cs">
       <DependentUpon>index.tt</DependentUpon>

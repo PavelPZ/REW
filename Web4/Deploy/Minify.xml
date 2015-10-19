@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/MsBuild/2003">
+
+  <UsingTask TaskName="JavaScriptCompressorTask" AssemblyFile="d:\LMCom\rew\packages\YUICompressor.NET.MSBuild.2.7.0.0\lib\NET20\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
+
+  <Target Name="Minify">
+    <ItemGroup>
+      <JavaScriptFiles Include="../jslib/scripts/angular.js"/>
+      <JavaScriptFiles Include="../jslib/scripts/angular-route.js"/>
+    </ItemGroup>
+
+    <JavaScriptCompressorTask SourceFiles="@(JavaScriptFiles)" DeleteSourceFiles="false" OutputFile="min.js" />
+  </Target>
+</Project>

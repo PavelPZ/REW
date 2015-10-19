@@ -56,7 +56,8 @@
     if (oldEaType != CourseMeta.oldeaDataType.xml) cfg.noOldEA = true;
     if (serverScript != null) {
       //var log = new LMNetLib.LoggerMemory(true) { isVsNet = true };
-      serverScript = CourseMeta.buildLib.getServerScript(Author.vsNetServer.buildExFiles(new System.IO.MemoryStream(Encoding.UTF8.GetBytes(serverScript)), url, log)).ToString();
+      serverScript = CourseMeta.buildLib.getServerScript(
+        Author.vsNetServer.buildExFiles(new System.IO.MemoryStream(Encoding.UTF8.GetBytes(serverScript)), url, log)).ToString();
     }
   }
   string renderHtml = Packager.RewApp.HomePage(cfg, serverScript);

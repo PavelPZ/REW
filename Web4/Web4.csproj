@@ -65,7 +65,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EcmaScript.NET, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EcmaScript.Net.1.0.1.0\lib\net20\EcmaScript.NET.dll</HintPath>
+      <HintPath>..\packages\YUICompressor.NET.MSBuild.2.7.0.0\lib\NET20\EcmaScript.NET.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.Commands, Version=7.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -241,7 +241,11 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Yahoo.Yui.Compressor, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YUICompressor.NET.2.7.0.0\lib\NET20\Yahoo.Yui.Compressor.dll</HintPath>
+      <HintPath>..\packages\YUICompressor.NET.MSBuild.2.7.0.0\lib\NET20\Yahoo.Yui.Compressor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Yahoo.Yui.Compressor.Build.MsBuild, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YUICompressor.NET.MSBuild.2.7.0.0\lib\NET20\Yahoo.Yui.Compressor.Build.MsBuild.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -302,6 +306,8 @@
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.structure.css" />
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.theme.css" />
     <Content Include="Author\Author.html" />
+    <Content Include="Deploy\min.js" />
+    <Content Include="Deploy\Minify.xml" />
     <Content Include="Temp\Author.html" />
     <Content Include="BlendedAPI\Doc.txt" />
     <None Include="BlendedAPI\Styles\style.less" />
@@ -555,6 +561,7 @@
     <None Include="Courses\xhtml5.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Deploy\typescript.cmd" />
     <None Include="JsLib\css\Author.less" />
     <Content Include="JsLib\css\img\flag-mid.png" />
     <Content Include="JsLib\css\img\flag-small.png" />
@@ -1475,6 +1482,7 @@
     <Content Include="Temp\htmlPublishing\index.html" />
     <Content Include="Temp\LFE3.html" />
     <Content Include="Temp\local.html" />
+    <Content Include="Temp\jsDeploy.json" />
     <None Include="Temp\Data.json" />
     <Content Include="Temp\mediumJS\bililiteRange.js" />
     <Content Include="Temp\mediumJS\index.html" />
@@ -1692,6 +1700,7 @@
     <Content Include="Web.ConnectionStrings.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="tsconfig.json" />
     <None Include="Web.AppSetting.config">
       <SubType>Designer</SubType>
     </None>
@@ -2834,8 +2843,7 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>"$(MSBuildBinPath)\msbuild.exe" "$(ProjectDir)deploy\minify.xml"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
