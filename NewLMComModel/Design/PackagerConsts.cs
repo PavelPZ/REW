@@ -1,21 +1,13 @@
-﻿using EcmaScript.NET;
+﻿//using EcmaScript.NET;
 using LMComLib;
-using LMNetLib;
-using Newtonsoft.Json;
-using schools;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Web;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.Serialization;
-using Yahoo.Yui.Compressor;
+//using Yahoo.Yui.Compressor;
 
 namespace Packager {
 

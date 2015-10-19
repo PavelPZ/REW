@@ -43,16 +43,8 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BoneSoft.CSS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BoneSoft.CSS.1.0.0\lib\BoneSoft.CSS.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="ClearScript, Version=5.4.2.1, Culture=neutral, PublicKeyToken=935d0c957da47c73, processorArchitecture=MSIL">
       <HintPath>..\packages\ClearScript.V8.5.4.2.1\lib\net40\ClearScript.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="EcmaScript.NET, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EcmaScript.Net.1.0.1.0\lib\net20\EcmaScript.NET.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.Commands, Version=7.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -234,10 +226,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Yahoo.Yui.Compressor, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YUICompressor.NET.2.7.0.0\lib\NET20\Yahoo.Yui.Compressor.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\LMDatabaseExtension\DBExtensionCommon.cs">

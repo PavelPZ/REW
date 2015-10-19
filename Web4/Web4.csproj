@@ -64,10 +64,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EcmaScript.NET, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YUICompressor.NET.MSBuild.2.7.0.0\lib\NET20\EcmaScript.NET.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="EntityFramework.Commands, Version=7.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.Commands.7.0.0-beta8\lib\net45\EntityFramework.Commands.dll</HintPath>
       <Private>True</Private>
@@ -240,14 +236,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Yahoo.Yui.Compressor, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YUICompressor.NET.MSBuild.2.7.0.0\lib\NET20\Yahoo.Yui.Compressor.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Yahoo.Yui.Compressor.Build.MsBuild, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YUICompressor.NET.MSBuild.2.7.0.0\lib\NET20\Yahoo.Yui.Compressor.Build.MsBuild.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\Departments.html" />
