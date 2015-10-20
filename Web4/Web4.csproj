@@ -2374,10 +2374,6 @@
       <DependentUpon>PersistPhonegap.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Schools\PersistPhonegap.ts" />
-    <Content Include="Schools\Lib.js">
-      <DependentUpon>Lib.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Schools\Lib.ts" />
     <Content Include="Schools\GenScorm.js">
       <DependentUpon>GenScorm.ts</DependentUpon>
     </Content>
@@ -2394,10 +2390,6 @@
       <DependentUpon>Persist.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Schools\Persist.ts" />
-    <Content Include="Schools\GenCourse.js">
-      <DependentUpon>GenCourse.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Schools\GenCourse.ts" />
     <Content Include="Schools\GenSchools.js">
       <DependentUpon>GenSchools.ts</DependentUpon>
     </Content>

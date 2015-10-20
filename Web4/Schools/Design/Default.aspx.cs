@@ -109,11 +109,11 @@ namespace web4.Schools.Design {
       var batch = Request["adjustJSCrambler"];
       if (!string.IsNullOrEmpty(batch))
         Packager.RewApp.jsCramblerAdjust(string.Format(Machines.basicPath + @"rew\Downloads\Common\batches\{0}.xml", batch));
-      var minify = Request["minify"];
-      if (!string.IsNullOrEmpty(minify)) {
-        var targ = LowUtils.EnumParse<Targets>(minify);
-        doMinify(targ);
-      }
+      //var minify = Request["minify"];
+      //if (!string.IsNullOrEmpty(minify)) {
+      //  var targ = LowUtils.EnumParse<Targets>(minify);
+      //  doMinify(targ);
+      //}
       //var compileTS = Request["compileTypeScript"];
       //if (compileTS == "true") compileTypeScript(null, null);
       //var homePg = Request["homePages"];
@@ -210,15 +210,15 @@ namespace web4.Schools.Design {
       //File.WriteAllText(@"d:\temp\BuildAll.log", "**** Exercise.allDataFromEA\r\n" + exErr1 + "\r\n\r\n**** Exercise.run\r\n" + exErr2 + "\r\n\r\n***** Grammar.run\r\n" + exErr3);
     }
 
-    protected void doMinify(Targets target) {
-      try { Packager.RewApp.minify(false, target); } catch (Exception exp) { error(exp); }
-    }
-    protected void Minify(object sender, EventArgs e) {
-      Packager.RewApp.minify(false, Targets.web, Targets.scorm);
-    }
-    protected void DebugMinify(object sender, EventArgs e) {
-      Packager.RewApp.minify(true, Targets.web, Targets.scorm);
-    }
+    //protected void doMinify(Targets target) {
+    //  try { Packager.RewApp.minify(false, target); } catch (Exception exp) { error(exp); }
+    //}
+    //protected void Minify(object sender, EventArgs e) {
+    //  Packager.RewApp.minify(false, Targets.web, Targets.scorm);
+    //}
+    //protected void DebugMinify(object sender, EventArgs e) {
+    //  Packager.RewApp.minify(true, Targets.web, Targets.scorm);
+    //}
 
     //protected void compileTypeScript(object sender, EventArgs e) {
     //  try { Packager.RewApp.compileTypeScript(); } catch (Exception exp) { error(exp); }

@@ -1,5 +1,4 @@
-﻿using EcmaScript.NET;
-using LMComLib;
+﻿using LMComLib;
 using LMNetLib;
 using Newtonsoft.Json;
 using schools;
@@ -15,7 +14,6 @@ using System.Web;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-using Yahoo.Yui.Compressor;
 
 namespace Packager {
 
@@ -414,7 +412,7 @@ namespace Packager {
     public static string[] jsSchoolStart = new string[] {
       "jslib/js/lmconsole.js",
       "jslib/scripts/waitforimages.js",
-      "schools/gencourse.js",
+      //"schools/gencourse.js",
       "schools/genschools.js",
       "schools/genproxy.js",
       "schools/genazure.js",
@@ -433,7 +431,7 @@ namespace Packager {
       "jslib/js/external/rjson.js",
       //"jslib/js/external/md5.js",
       //"jslib/js/external/punycode.js",
-      "schools/lib.js",
+      //"schools/lib.js",
       "schools/products.js",
       "schools/topBar.js",
       "schools/model.js",

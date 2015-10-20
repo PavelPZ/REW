@@ -14,4 +14,4 @@ d:\LMCom\rew\CubesDeployment\bin\Debug\CubesDeployment.exe -9skrivanek_data-glob
 d:\LMCom\rew\CubesDeployment\bin\Debug\CubesDeployment.exe -9LM_Data_Blended
 d:\LMCom\rew\CubesDeployment\bin\Debug\CubesDeployment.exe -9lm_data_blended-globals
 
-rem call d:\LMCom\ReleaseDeploy\copyFE3.cmd
+call d:\LMCom\ReleaseDeploy\copyFE3.cmd
