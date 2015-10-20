@@ -256,19 +256,19 @@ namespace CubesDeployment {
           Console.WriteLine("");
           Console.WriteLine("... processing ...");
           switch (ch) {
-            case '1':
-              NewData.SSAS.refreshSASSDeploymentBatchFile();
-              break;
-            case '2':
-              NewData.SSAS.includeClrExtensionToDB(serverId);
-              break;
-            case '3':
-              NewData.SSAS.buildCompanyCubes(serverId);
-              break;
-            case '4':
-              NewData.SSAS.includeClrExtensionToDB(serverId);
-              NewData.SSAS.buildCompanyCubes(serverId);
-              break;
+            //case '1':
+            //  NewData.SSAS.refreshSASSDeploymentBatchFile();
+            //  break;
+            //case '2':
+            //  NewData.SSAS.includeClrExtensionToDB(serverId);
+            //  break;
+            //case '3':
+            //  NewData.SSAS.buildCompanyCubes(serverId);
+            //  break;
+            //case '4':
+            //  NewData.SSAS.includeClrExtensionToDB(serverId);
+            //  NewData.SSAS.buildCompanyCubes(serverId);
+            //  break;
             case '5':
               LoggerMemory log1 = new LoggerMemory(true);
               //TradosLib.recomputeLookupHash(0); TradosLib.recomputeSentHash(0); return;
@@ -618,14 +618,14 @@ namespace CubesDeployment {
           return;
         }
         serverId = args.Length < 2 ? null : args[1].ToLower();
-        switch (args[0]) {
-          case "buildCompanyCubes":
-            NewData.SSAS.buildCompanyCubes(serverId);
-            break;
-          case "includeClrExtensionToDB":
-            NewData.SSAS.includeClrExtensionToDB(serverId);
-            break;
-        }
+        //switch (args[0]) {
+        //  case "buildCompanyCubes":
+        //    NewData.SSAS.buildCompanyCubes(serverId);
+        //    break;
+        //  case "includeClrExtensionToDB":
+        //    NewData.SSAS.includeClrExtensionToDB(serverId);
+        //    break;
+        //}
       } catch (Exception exp) {
         File.WriteAllText(errorFn, LowUtils.ExceptionToString(exp));
       }

@@ -206,92 +206,92 @@ namespace NewData {
   //http://msdn.microsoft.com/en-us/data/ee712907
   //http://visualstudiogallery.msdn.microsoft.com/72a60b14-1581-4b9b-89f2-846072eff19d
 
-  public static class SSAS {
+  //public static class SSAS {
 
-    public static void includeClrExtensionToDB(string servId) {
-      string fn; string sql;
-      using (var rdr = getInfo("WebCourseStatistics.sql", out fn)) sql = rdr.ReadToEnd();
-      if (string.IsNullOrEmpty(sql)) return;
-      var cb = getConnectionStringInfo(servId);
-      sql = string.Format(sql, cb.UserID, servId == "lm-virtual-1_run" ? "NewLMComServices" : "NewLMCom", BitConverter.ToString(File.ReadAllBytes(fn)).Replace("-", ""));
-      //File.WriteAllText(@"d:\temp\pom.sql", sql);
-      Microsoft.SqlServer.Management.Common.ServerConnection connection = new Microsoft.SqlServer.Management.Common.ServerConnection(cb.DataSource, cb.UserID, cb.Password);
-      Microsoft.SqlServer.Management.Smo.Server serv = new Microsoft.SqlServer.Management.Smo.Server(connection);
-      serv.ConnectionContext.ExecuteNonQuery(sql);
-      serv.ConnectionContext.ExecuteNonQuery("go");
-    }
+  //  public static void includeClrExtensionToDB(string servId) {
+  //    string fn; string sql;
+  //    using (var rdr = getInfo("WebCourseStatistics.sql", out fn)) sql = rdr.ReadToEnd();
+  //    if (string.IsNullOrEmpty(sql)) return;
+  //    var cb = getConnectionStringInfo(servId);
+  //    sql = string.Format(sql, cb.UserID, servId == "lm-virtual-1_run" ? "NewLMComServices" : "NewLMCom", BitConverter.ToString(File.ReadAllBytes(fn)).Replace("-", ""));
+  //    //File.WriteAllText(@"d:\temp\pom.sql", sql);
+  //    Microsoft.SqlServer.Management.Common.ServerConnection connection = new Microsoft.SqlServer.Management.Common.ServerConnection(cb.DataSource, cb.UserID, cb.Password);
+  //    Microsoft.SqlServer.Management.Smo.Server serv = new Microsoft.SqlServer.Management.Smo.Server(connection);
+  //    serv.ConnectionContext.ExecuteNonQuery(sql);
+  //    serv.ConnectionContext.ExecuteNonQuery("go");
+  //  }
 
-    public static void refreshSASSDeploymentBatchFile() {
-      var selfDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-      var xmlaFn = selfDir.ToLower().Replace(@"\bin\debug", null) + "\\NewLMComStat.xmla";
-      OtherCore.LaunchProcess(
-        @"c:\Program Files (x86)\Microsoft SQL Server\110\Tools\Binn\ManagementStudio\Microsoft.AnalysisServices.Deployment.exe",
-        @"D:\LMCom\rew\NewLMComStat\bin\NewLMComStat.asdatabase /s:d:\temp\pom.log /o:" + xmlaFn, true);
-      //d:\LMCom\rew\LMDatabaseExtension\NewLMComStat.xmla
-    }
+  //  public static void refreshSASSDeploymentBatchFile() {
+  //    var selfDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+  //    var xmlaFn = selfDir.ToLower().Replace(@"\bin\debug", null) + "\\NewLMComStat.xmla";
+  //    OtherCore.LaunchProcess(
+  //      @"c:\Program Files (x86)\Microsoft SQL Server\110\Tools\Binn\ManagementStudio\Microsoft.AnalysisServices.Deployment.exe",
+  //      @"D:\LMCom\rew\NewLMComStat\bin\NewLMComStat.asdatabase /s:d:\temp\pom.log /o:" + xmlaFn, true);
+  //    //d:\LMCom\rew\LMDatabaseExtension\NewLMComStat.xmla
+  //  }
 
-    public static void buildCompanyCubes(string servId) {
-      string fn; string xmlaStr;
-      using (var rdr = getInfo("NewLMComStat.xmla", out fn)) xmlaStr = rdr.ReadToEnd();
-      if (string.IsNullOrEmpty(xmlaStr)) return;
-      var db = new NewData.Container(getConnectionString(servId));
-      var comps = db.Companies.Where(c => c.CompanyUsers.SelectMany(cu => cu.CourseUsers).SelectMany(crsu => crsu.CourseDatas.Where(cd => cd.ShortData != null)).Any()).Select(c => c.Id).ToArray();
-      var cb = getConnectionStringInfo(servId);
-      foreach (int companyId in comps) {
-        XElement batch = XElement.Parse(xmlaStr);
-        //user/password
-        var provider = ConfigurationManager.AppSettings[Machines.machine + ".SSAS.Provider"];
-        var conn = batch.Descendants(batchNS + "ConnectionString").Single();
-        conn.Value = string.Format("Provider={4};Data Source={0};Initial Catalog={1};User ID={2};Password={3};Connect Timeout=300;",
-          cb.DataSource, cb.InitialCatalog, cb.UserID, cb.Password, provider ?? "SQLNCLI11.1");
-        //conn.Value.Replace("Password=;User ID=;", string.Format("User ID={0};Password={1};Connect Timeout=300;", cb.UserID, cb.Password));
-        //Adjust lib
-        string compIdStr = companyId.ToString();
-        var dbName = string.Format("{0}_{1}", cb.InitialCatalog, compIdStr);
-        foreach (var attr in batch.Descendants(xsNS + "element").Where(e => e.Attributes().Any(a => a.Name == mspropNS + "TableType" && a.Value == "View")).Select(el => el.Attribute(mspropNS + "QueryDefinition")))
-          attr.Value = regCompanyId.Replace(attr.Value, "(" + compIdStr + ")");
-        //DBName
-        foreach (var txt in batch.DescendantNodes().OfType<XText>().Where(nd => nd != null && nd.Value == "NewLMComStat").ToArray()) txt.Value = dbName;
+  //  public static void buildCompanyCubes(string servId) {
+  //    string fn; string xmlaStr;
+  //    using (var rdr = getInfo("NewLMComStat.xmla", out fn)) xmlaStr = rdr.ReadToEnd();
+  //    if (string.IsNullOrEmpty(xmlaStr)) return;
+  //    var db = new NewData.Container(getConnectionString(servId));
+  //    var comps = db.Companies.Where(c => c.CompanyUsers.SelectMany(cu => cu.CourseUsers).SelectMany(crsu => crsu.CourseDatas.Where(cd => cd.ShortData != null)).Any()).Select(c => c.Id).ToArray();
+  //    var cb = getConnectionStringInfo(servId);
+  //    foreach (int companyId in comps) {
+  //      XElement batch = XElement.Parse(xmlaStr);
+  //      //user/password
+  //      var provider = ConfigurationManager.AppSettings[Machines.machine + ".SSAS.Provider"];
+  //      var conn = batch.Descendants(batchNS + "ConnectionString").Single();
+  //      conn.Value = string.Format("Provider={4};Data Source={0};Initial Catalog={1};User ID={2};Password={3};Connect Timeout=300;",
+  //        cb.DataSource, cb.InitialCatalog, cb.UserID, cb.Password, provider ?? "SQLNCLI11.1");
+  //      //conn.Value.Replace("Password=;User ID=;", string.Format("User ID={0};Password={1};Connect Timeout=300;", cb.UserID, cb.Password));
+  //      //Adjust lib
+  //      string compIdStr = companyId.ToString();
+  //      var dbName = string.Format("{0}_{1}", cb.InitialCatalog, compIdStr);
+  //      foreach (var attr in batch.Descendants(xsNS + "element").Where(e => e.Attributes().Any(a => a.Name == mspropNS + "TableType" && a.Value == "View")).Select(el => el.Attribute(mspropNS + "QueryDefinition")))
+  //        attr.Value = regCompanyId.Replace(attr.Value, "(" + compIdStr + ")");
+  //      //DBName
+  //      foreach (var txt in batch.DescendantNodes().OfType<XText>().Where(nd => nd != null && nd.Value == "NewLMComStat").ToArray()) txt.Value = dbName;
 
-        var xmlaCmd = batch.ToString();
+  //      var xmlaCmd = batch.ToString();
 
-        //*********** DEPLOY XMLA
-        //http://msdn.microsoft.com/en-us/magazine/cc135979.aspx
-        //using (new Impersonator(
-        //  ConfigurationManager.AppSettings[Machines.machine + ".SSAS.email"],
-        //  ConfigurationManager.AppSettings[Machines.machine + ".SSAS.Domain"],
-        //  ConfigurationManager.AppSettings[Machines.machine + ".SSAS.Password"])) {
-        //  using (Microsoft.AnalysisServices.Server server = new Microsoft.AnalysisServices.Server()) {
-        //    server.Connect(@"RowType Source=" + ConfigurationManager.AppSettings[Machines.machine + ".SSAS.Server"] + ";Provider=msolap");
-        //    if (server.Databases.ContainsName(dbName)) server.Databases.GetByName(dbName).Drop();
-        //    Microsoft.AnalysisServices.XmlaResultCollection res2; string err;
-        //    //File.WriteAllText(@"d:\temp\pom.xmla", xmlaCmd);
-        //    res2 = server.Execute(xmlaCmd);
-        //    err = res2.Cast<Microsoft.AnalysisServices.XmlaResult>().SelectMany(r => r.Messages.Cast<Microsoft.AnalysisServices.XmlaMessage>()).Select(m => m.Description).DefaultIfEmpty().Aggregate((r, i) => r + "\r\n" + i);
-        //    if (err != null) throw new Exception(err);
-        //  }
-        //}
-      }
-    }
-    static XNamespace batchNS = "http://schemas.microsoft.com/analysisservices/2003/engine";
-    static XNamespace xsNS = "http://www.w3.org/2001/XMLSchema";
-    static XNamespace mspropNS = "urn:schemas-microsoft-com:xml-msprop";
-    static Regex regCompanyId = new Regex(@"\(\d+\)");
+  //      //*********** DEPLOY XMLA
+  //      //http://msdn.microsoft.com/en-us/magazine/cc135979.aspx
+  //      //using (new Impersonator(
+  //      //  ConfigurationManager.AppSettings[Machines.machine + ".SSAS.email"],
+  //      //  ConfigurationManager.AppSettings[Machines.machine + ".SSAS.Domain"],
+  //      //  ConfigurationManager.AppSettings[Machines.machine + ".SSAS.Password"])) {
+  //      //  using (Microsoft.AnalysisServices.Server server = new Microsoft.AnalysisServices.Server()) {
+  //      //    server.Connect(@"RowType Source=" + ConfigurationManager.AppSettings[Machines.machine + ".SSAS.Server"] + ";Provider=msolap");
+  //      //    if (server.Databases.ContainsName(dbName)) server.Databases.GetByName(dbName).Drop();
+  //      //    Microsoft.AnalysisServices.XmlaResultCollection res2; string err;
+  //      //    //File.WriteAllText(@"d:\temp\pom.xmla", xmlaCmd);
+  //      //    res2 = server.Execute(xmlaCmd);
+  //      //    err = res2.Cast<Microsoft.AnalysisServices.XmlaResult>().SelectMany(r => r.Messages.Cast<Microsoft.AnalysisServices.XmlaMessage>()).Select(m => m.Description).DefaultIfEmpty().Aggregate((r, i) => r + "\r\n" + i);
+  //      //    if (err != null) throw new Exception(err);
+  //      //  }
+  //      //}
+  //    }
+  //  }
+  //  static XNamespace batchNS = "http://schemas.microsoft.com/analysisservices/2003/engine";
+  //  static XNamespace xsNS = "http://www.w3.org/2001/XMLSchema";
+  //  static XNamespace mspropNS = "urn:schemas-microsoft-com:xml-msprop";
+  //  static Regex regCompanyId = new Regex(@"\(\d+\)");
 
-    static StreamReader getInfo(string resPath, out string fn) {
-      fn = null;
-      var ass = Assembly.GetEntryAssembly();
-      fn = AppDomain.CurrentDomain.BaseDirectory + "LMDatabaseExtension.dll"; // HttpContext.Current.Server.MapPath("~/bin/LMDatabaseExtension.dll");
-      return new StreamReader(ass.GetManifestResourceStream(ass.GetName().Name + "." + resPath));
-    }
+  //  static StreamReader getInfo(string resPath, out string fn) {
+  //    fn = null;
+  //    var ass = Assembly.GetEntryAssembly();
+  //    fn = AppDomain.CurrentDomain.BaseDirectory + "LMDatabaseExtension.dll"; // HttpContext.Current.Server.MapPath("~/bin/LMDatabaseExtension.dll");
+  //    return new StreamReader(ass.GetManifestResourceStream(ass.GetName().Name + "." + resPath));
+  //  }
 
-    public static string getConnectionString(string serverId) {
-      return ConfigurationManager.ConnectionStrings[serverId == "" ? "container" : "container_" + serverId].ConnectionString;
-    }
-    public static SqlConnectionStringBuilder getConnectionStringInfo(string serverId) {
-      return new SqlConnectionStringBuilder(getConnectionString(serverId));
-    }
-  }
+  //  public static string getConnectionString(string serverId) {
+  //    return ConfigurationManager.ConnectionStrings[serverId == "" ? "container" : "container_" + serverId].ConnectionString;
+  //  }
+  //  public static SqlConnectionStringBuilder getConnectionStringInfo(string serverId) {
+  //    return new SqlConnectionStringBuilder(getConnectionString(serverId));
+  //  }
+  //}
 
   public partial class Container {
 
