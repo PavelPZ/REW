@@ -235,6 +235,7 @@ Web4/Schools/SLExtension.dll
 *.dll
 *.exe
 *.zip
+*.s3db
 Web4/_bin_deployableAssemblies/
 dll/
 
