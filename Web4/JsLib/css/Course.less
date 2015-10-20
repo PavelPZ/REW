@@ -1242,6 +1242,14 @@ input {
 
   &.a {
     .dlg-active(@oli-dialog-a);
+    //chyba, koliduje s class=a pro anchor v D:\LMCom\rew\Web4\BlendedAPI\Styles\other.less
+    color: @text-color;
+
+    &:hover,
+    &:focus {
+      color: @text-color;
+      text-decoration: none;
+    }
   }
 
   &.b {
@@ -1833,7 +1841,7 @@ input {
       padding: 0;
       margin: 5px 0;
       padding-bottom: 10px;
-      display:none;
+      display: none;
     }
   }
 

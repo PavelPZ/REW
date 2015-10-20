@@ -84,7 +84,7 @@
   }
 
   export function waitForEvaluation(sc: IExShort): boolean { return !!(sc.flag & CourseModel.CourseDataFlag.needsEval); }
-  export function scorePercent(sc: IExShort): number { return sc.ms == 0 ? -1 : Math.round(sc.s / sc.ms * 100); }
+  export function scorePercent(sc: IExShort): number { return sc.ms == 0 || waitForEvaluation(sc) ? -1 : Math.round(sc.s / sc.ms * 100); }
   export function donesPercent(sc: IExShortAgreg): number { return sc.count == 0 ? -1 : Math.round((sc.dones || 0) / sc.count * 100); }
   export function scoreText(sc: IExShort): string { var pr = scorePercent(sc); return pr < 0 ? '' : pr.toString() + '%'; }
 
@@ -119,7 +119,9 @@
       var done = us && persistUserIsDone(us.shortData);
       if (!done || !nd.ms) return;
       if (!!(us.shortData.flag & CourseModel.CourseDataFlag.pcCannotEvaluate)) {
-        res.human.ms += nd.ms; res.human.s += us.shortData.s;
+        //skore se zapocita pouze pro ucitelem vyhodnocene cviceni nebo pro nenahrane cviceni
+        if (!(us.shortData.flag & CourseModel.CourseDataFlag.needsEval)) { res.human.ms += nd.ms; res.human.s += us.shortData.s; }
+        //res.human.ms += nd.ms; res.human.s += us.shortData.s;
       } else {
         res.auto.ms += nd.ms; res.auto.s += us.shortData.s;
       }
@@ -141,7 +143,13 @@
       if (!done) persistUserIsDone(res, false);
       if (nd.ms) { //aktivni cviceni (se skore)
         if (done) { //hotove cviceni, zapocitej vzdy
-          res.ms += nd.ms; res.s += us.shortData.s;
+          //Bug 2556: nebere se ohled 
+          if (!!(us.shortData.flag & CourseModel.CourseDataFlag.pcCannotEvaluate)) {
+            if (!(us.shortData.flag & CourseModel.CourseDataFlag.needsEval)) res.ms += nd.ms; //nic nenahrano => nula bodu, pripocti pouze MS
+          } else {
+            res.ms += nd.ms; res.s += us.shortData.s;
+          }
+          //res.ms += nd.ms; res.s += us.short.s;
         } else if (moduleAlowFinishWhenUndone) { //nehotove cviceni, zapocitej pouze kdyz je moduleAlowFinishWhenUndone (napr. pro test)
           res.ms += nd.ms;
         }

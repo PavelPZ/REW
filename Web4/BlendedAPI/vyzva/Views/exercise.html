@@ -180,7 +180,7 @@
     <div class="header h4" ng-click="excollapsed.collapseToogle()">
       <div class="more fa fa-bars"></div>
       <span class="fa fa-check"></span>
-      Cvičení "{{::ts.title}}" dokončeno: <span ng-if="exService.score()>=0"> skóre <span vyzva$exmodule$scoreprogress value="{{exService.score()}}"></span></span>
+      Cvičení "{{::ts.title}}" dokončeno<span ng-if="exService.score()>=0">: skóre <span vyzva$exmodule$scoreprogress value="{{exService.score()}}"></span></span>
     </div>
     <div collapse="excollapsed.isCollapsed" class="more-body-exercise position-relative">
       <div class="close-panel fa fa-times" ng-click="excollapsed.collapseToogle()"></div>
