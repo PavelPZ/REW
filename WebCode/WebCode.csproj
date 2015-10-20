@@ -199,7 +199,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Service.ashx" />
     <Content Include="mp3Uploader.ashx" />
     <Content Include="schools\Index.cshtml" />
