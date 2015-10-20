@@ -231,6 +231,8 @@
     <Compile Include="..\LMDatabaseExtension\DBExtensionCommon.cs">
       <Link>Design\DBExtensionCommon.cs</Link>
     </Compile>
+    <Compile Include="DesignNew\DeployConsts.cs" />
+    <Compile Include="DesignNew\Deploy.cs" />
     <Compile Include="Design\jsWebApiProxy\WebApiProxyTempl.cs">
       <DependentUpon>WebApiProxyTempl.tt</DependentUpon>
       <AutoGen>True</AutoGen>

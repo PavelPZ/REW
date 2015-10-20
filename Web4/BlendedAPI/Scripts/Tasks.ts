@@ -290,7 +290,7 @@
     }
 
     checkCommingUrl() {
-      var ud = this.user.short;
+      var ud = this.user.shortData;
       if (!ud) return this.getProductHomeUrl(); //{ stateName: prodStates.home.name, pars: this.ctx }; //pretest jeste nezacal => goto product home
       if (persistUserIsDone(ud)) return null; //done pretest: vse je povoleno
       var dataNode = <IPretestRepository>this.dataNode;
@@ -304,7 +304,7 @@
     }
 
     adjustChild(): taskController {
-      var ud = this.user.short;
+      var ud = this.user.shortData;
       if (persistUserIsDone(ud)) return null;
       var actModule = this.actRepo(ud.actLevel); if (!actModule) throw '!actModule';
       var state: IStateService = {
@@ -318,7 +318,7 @@
 
     moveForward(sender: exerciseTaskViewController): moveForwardResult {
       //if (this.inCongratulation) { delete this.inCongratulation; return moveForwardResult.toParent; }
-      var ud = this.user.short;
+      var ud = this.user.shortData;
       var actTestItem = sender.moduleParent; // <exerciseTaskViewController>(this.child);
       var actRepo = this.actRepo(ud.actLevel);
       if (actTestItem.dataNode != actRepo) throw 'actTestItem.dataNode != actRepo';

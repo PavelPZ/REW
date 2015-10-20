@@ -415,16 +415,12 @@ namespace Packager {
       "jslib/js/sound/soundNew.js",
       "jslib/js/sound/Html5Recorder.js",
       "jslib/js/sound/wavePcm.js",
-      //"JsLib/JS/Sound/pako_deflate.js",
       "jslib/js/unicode.js",
       "jslib/js/base32.js",
       "jslib/js/keys.js",
       "jslib/ea/eaextension.js",
-      //"jslib/controls/crsitem/crsitem.js",
       "jslib/controls/dict/dict.js",
       "jslib/js/external/rjson.js",
-      //"jslib/js/external/md5.js",
-      //"jslib/js/external/punycode.js",
       "schools/lib.js",
       "schools/products.js",
       "schools/topBar.js",
@@ -446,9 +442,7 @@ namespace Packager {
       "schools/genscorm.js",
       "schools/cpv.js",
       "schools/gramm.js",
-      //"schools/statistics.js",
     };
-
 
     public static string[] jsDesign = new string[] {
       "schools/design/design.js"

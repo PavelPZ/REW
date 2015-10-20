@@ -99,10 +99,9 @@ namespace NewData.Design.Templates
   <script src=""../jslib/scripts/angular-cookies.js"" type=""text/javascript""></script>
   <script src=""../jslib/scripts/angular-ui-router.js"" type=""text/javascript""></script>
   <script src=""../jslib/scripts/ui-bootstrap-tpls.js"" type=""text/javascript""></script>
-
 ");
             
-            #line 40 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 39 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
 
   if (cfg.version == versions.minified) {
 
@@ -118,7 +117,7 @@ namespace NewData.Design.Templates
   }
 ");
             
-            #line 50 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
+            #line 49 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
 
     if (cfg.licenceConfig.domain != null) WriteLine(string.Format("  if (window.location.host.toLowerCase().indexOf('{0}') < 0) {{ alert('Wrong domain: {0}'); isOk = false; }}", cfg.licenceConfig.domain.ToLower()));
     if (cfg.licenceConfig.intExpiration > 0) WriteLine("  if (new Date().getTime() > {0}) {{ alert('Trial version expired at {1}'); isOk = false; }}", cfg.licenceConfig.intExpiration, cfg.licenceConfig.expiration.ToString("yyyy-MM-dd"));

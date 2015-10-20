@@ -85,7 +85,7 @@
     } 
 
     showResult(): boolean {
-      var res = this.exService.user && this.exService.user.short && persistUserIsDone(this.exService.user.short) &&
+      var res = this.exService.user && this.exService.user.shortData && persistUserIsDone(this.exService.user.shortData) &&
         (this.lessonType == blended.moduleServiceType.lesson || this.moduleDone);
       return res;
     }
@@ -124,14 +124,14 @@
     }
 
     onExerciseLoaded(idx: number) {
-      var ud = this.user.short;
+      var ud = this.user.shortData;
       if (persistUserIsDone(ud)) { ud.actChildIdx = idx; this.user.modified = true; }
     }
 
     adjustChild(): taskController {
-      var ud = this.user.short;
+      var ud = this.user.shortData;
       var exNode = persistUserIsDone(ud) ? this.exercises[ud.actChildIdx] : _.find(this.exercises, it => { var itUd = blended.getPersistData<IExShort>(it, this.ctx.taskid); return !persistUserIsDone(itUd); });
-      if (!exNode) { debugger; persistUserIsDone(ud,true); this.user.modified = true; }
+      if (!exNode) { eval('debugger;'); persistUserIsDone(ud,true); this.user.modified = true; }
 
       var moduleExerciseState = _.find(this.state.childs, ch => !ch.noModuleExercise);
       var state: IStateService = {
@@ -144,7 +144,7 @@
 
     moveForward(sender: exerciseTaskViewController): moveForwardResult {
       if (this.inCongratulation) { delete this.inCongratulation; return moveForwardResult.toParent; }
-      var ud = this.user.short;
+      var ud = this.user.shortData;
       if (persistUserIsDone(ud)) {
         ud.actChildIdx = ud.actChildIdx == this.exercises.length - 1 ? 0 : ud.actChildIdx + 1;
         this.user.modified = true;
@@ -171,7 +171,7 @@
     .filter('vyzva$exmodule$percentwidth', () => (per: number, maxWidth: number) => { return { width: ((100 - per) * maxWidth / 100).toString() + 'px' }; })
     .filter('vyzva$exmodule$sec', () => (sec: number) => { return sec ? Utils.formatDateTime(sec) : null; })
     .filter('vyzva$exmodule$time', () => (sec: number) => { return sec ? Utils.formatTimeSpan(sec) : null; })
-    .filter('vyzva$exmodule$score', () => (short: IExShort) => scoreText(short))
+    .filter('vyzva$exmodule$score', () => (shortData: IExShort) => scoreText(shortData))
     .directive('vyzva$exmodule$emptytest', () => {
       return {
         scope: { label: '@label', value: '@value', nobr: '@nobr' },

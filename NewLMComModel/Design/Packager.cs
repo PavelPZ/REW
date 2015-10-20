@@ -459,34 +459,6 @@ namespace Packager {
 
     }
 
-    public static string jsDeployData() {
-      Dictionary<string, string[]> json = new Dictionary<string, string[]>();
-      json["jsIE8"] = new string[] { "jslib/scripts/jquery.js", "jslib/scripts/es5-shim.js", "jslib/scripts/angular-ie8.js" };
-      json["jsOtherBrowsers"] = new string[] { "jslib/scripts/jquery2.js", "jslib/scripts/angular.js" };
-      json["jsBasic"] = new string[] { "jslib/scripts/underscore.js", "jslib/js/lmconsoleinit.js", "jslib/scripts/angular-route.js", "jslib/scripts/angular-animate.js", "jslib/scripts/angular-cookies.js", "jslib/scripts/angular-ui-router.js", "jslib/scripts/ui-bootstrap-tpls.js"};
-
-      json["jsExternal"] = Consts.jsExternal;
-      json["jsGround"] = Consts.jsGround;
-
-      json["jsEA"] = Consts.jsEA;
-      json["jsEARepl"] = Consts.jsEARepl;
-
-      json["jsModel"] = Consts.jsModel;
-
-      json["jsScorm"] = Consts.jsScorm;
-      json["jsLogin"] = Consts.jsLogin;
-      json["jsAdmin"] = Consts.jsAdmin;
-
-      json["jsSchoolStart"] = Consts.jsSchoolStart;
-      json["jsSchoolEnd"] = Consts.jsSchoolEnd;
-
-      json["jsCourse"] = Consts.jsCourse;
-      json["jsBlended"] = Consts.jsBlended;
-
-      json["jsLoc"] = new string[] { "schools/loc/tradosdata.en-gb.js", "jslib/scripts/cultures/globalize.culture.en-gb.js" };
-
-      return Newtonsoft.Json.JsonConvert.SerializeObject(json);
-    }
 
 
     //public static IEnumerable<IEnumerable<string>> notMinifiedCSS(ConfigLow cfg) {

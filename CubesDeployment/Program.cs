@@ -29,6 +29,7 @@ namespace CubesDeployment {
 
     static void Main(string[] args) {
 
+      DesignNew.Deploy.generateMSBuildMinify();
       //File.WriteAllText(@"d:\temp\build.json", Packager.RewApp.jsDeployData());
       //return;
       //CourseMeta.Lib.init(new LoggerMemory(true), @"d:\lmcom\", false);

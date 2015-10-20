@@ -1243,7 +1243,7 @@ function $UrlMatcherFactory() {
   function valFromString(val) { return val != null ? val.toString().replace(/%2F/g, "/") : val; }
 
   var $types = {}, enqueue = true, typeQueue = [], injector, defaultTypes = {
-    string: {
+    'string': {
       encode: valToString,
       decode: valFromString,
       // TODO: in 1.0, make string .is() return false if value is undefined/null by default.
@@ -1251,13 +1251,13 @@ function $UrlMatcherFactory() {
       is: function(val) { return val == null || !isDefined(val) || typeof val === "string"; },
       pattern: /[^/]*/
     },
-    int: {
+    'int': {
       encode: valToString,
       decode: function(val) { return parseInt(val, 10); },
       is: function(val) { return isDefined(val) && this.decode(val.toString()) === val; },
       pattern: /\d+/
     },
-    bool: {
+    'bool': {
       encode: function(val) { return val ? 1 : 0; },
       decode: function(val) { return parseInt(val, 10) !== 0; },
       is: function(val) { return val === true || val === false; },

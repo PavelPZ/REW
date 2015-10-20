@@ -102,7 +102,7 @@
       .state({ //state root
         name: 'pg',
         url: '/pg',
-        abstract: true,
+        'abstract': true,
         template: "<div data-ui-view></div>",
         resolve: {
           checkOldApplicationStart: checkOldApplicationStart //ceka se na dokonceni inicalizace nasi technologie
@@ -111,7 +111,7 @@
       .state({ //old state root
         name: 'pg.old',
         url: '/old',
-        abstract: true,
+        'abstract': true,
         template: "<div data-ui-view></div>",
       })
     ;

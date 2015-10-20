@@ -132,7 +132,7 @@
     })
     .directive('vyzva$managerchool$usekeys', () => {
       return {
-        scope: { items: '&items', for: '&for' },
+        scope: { items: '&items', ['for']: '&for' },
         templateUrl: 'vyzva$managerchool$usekeys.html'
       }
     })

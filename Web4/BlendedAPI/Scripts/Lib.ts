@@ -91,20 +91,20 @@
   export function agregateShorts(shorts: Array<IExShortAgreg>): IExShortAgreg {
     var res: IExShortAgreg = $.extend({}, shortDefaultAgreg);
     persistUserIsDone(res, true);
-    _.each(shorts, short => {
-      if (!short) { persistUserIsDone(res, false); return; }
-      var done = persistUserIsDone(short);
-      res.waitForEvaluation = res.waitForEvaluation || short.waitForEvaluation;
+    _.each(shorts, shortData => {
+      if (!shortData) { persistUserIsDone(res, false); return; }
+      var done = persistUserIsDone(shortData);
+      res.waitForEvaluation = res.waitForEvaluation || shortData.waitForEvaluation;
       if (!done) persistUserIsDone(res, false);
-      res.count += short.count || 1;
-      res.dones += (short.dones ? short.dones : (persistUserIsDone(short) ? 1 : 0));
+      res.count += shortData.count || 1;
+      res.dones += (shortData.dones ? shortData.dones : (persistUserIsDone(shortData) ? 1 : 0));
       if (done) { //zapocitej hotove cviceni
-        res.ms += short.ms || 0; res.s += short.s || 0;
+        res.ms += shortData.ms || 0; res.s += shortData.s || 0;
       }
       //elapsed, beg a end
-      res.beg = setDate(res.beg, short.beg, true); res.end = setDate(res.end, short.end, false);
-      res.elapsed += short.elapsed || 0;
-      res.sPlay += short.sPlay; res.sPRec += short.sPRec; res.sRec += short.sRec;
+      res.beg = setDate(res.beg, shortData.beg, true); res.end = setDate(res.end, shortData.end, false);
+      res.elapsed += shortData.elapsed || 0;
+      res.sPlay += shortData.sPlay; res.sPRec += shortData.sPRec; res.sRec += shortData.sRec;
     });
     res.score = blended.scorePercent(res);
     res.finished = blended.donesPercent(res);
@@ -116,12 +116,12 @@
     _.each(node.Items, nd => {
       if (!isEx(nd)) return;
       var us = getPersistWrapper<IExShortAgreg>(nd, taskId);
-      var done = us && persistUserIsDone(us.short);
+      var done = us && persistUserIsDone(us.shortData);
       if (!done || !nd.ms) return;
-      if (!!(us.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate)) {
-        res.human.ms += nd.ms; res.human.s += us.short.s;
+      if (!!(us.shortData.flag & CourseModel.CourseDataFlag.pcCannotEvaluate)) {
+        res.human.ms += nd.ms; res.human.s += us.shortData.s;
       } else {
-        res.auto.ms += nd.ms; res.auto.s += us.short.s;
+        res.auto.ms += nd.ms; res.auto.s += us.shortData.s;
       }
     })
     res.auto.score = res.auto.ms ? Math.round(res.auto.s / res.auto.ms * 100) : -1;
@@ -135,21 +135,21 @@
       if (!isEx(nd)) return;
       res.count++;
       var us = getPersistWrapper<IExShortAgreg>(nd, taskId);
-      var done = us && persistUserIsDone(us.short);
-      res.waitForEvaluation = res.waitForEvaluation || (done && waitForEvaluation(us.short));
-      if (done) res.dones += (us.short.dones ? us.short.dones : (persistUserIsDone(us.short) ? 1 : 0));
+      var done = us && persistUserIsDone(us.shortData);
+      res.waitForEvaluation = res.waitForEvaluation || (done && waitForEvaluation(us.shortData));
+      if (done) res.dones += (us.shortData.dones ? us.shortData.dones : (persistUserIsDone(us.shortData) ? 1 : 0));
       if (!done) persistUserIsDone(res, false);
       if (nd.ms) { //aktivni cviceni (se skore)
         if (done) { //hotove cviceni, zapocitej vzdy
-          res.ms += nd.ms; res.s += us.short.s;
+          res.ms += nd.ms; res.s += us.shortData.s;
         } else if (moduleAlowFinishWhenUndone) { //nehotove cviceni, zapocitej pouze kdyz je moduleAlowFinishWhenUndone (napr. pro test)
           res.ms += nd.ms;
         }
       }
-      if (us && us.short) { //elapsed, beg a end zapocitej vzdy
-        res.beg = setDate(res.beg, us.short.beg, true); res.end = setDate(res.end, us.short.end, false);
-        res.elapsed += us.short.elapsed;
-        res.sPlay += us.short.sPlay; res.sPRec += us.short.sPRec; res.sRec += us.short.sRec;
+      if (us && us.shortData) { //elapsed, beg a end zapocitej vzdy
+        res.beg = setDate(res.beg, us.shortData.beg, true); res.end = setDate(res.end, us.shortData.end, false);
+        res.elapsed += us.shortData.elapsed;
+        res.sPlay += us.shortData.sPlay; res.sPRec += us.shortData.sPRec; res.sRec += us.shortData.sRec;
       }
     })
     res.score = blended.scorePercent(res);

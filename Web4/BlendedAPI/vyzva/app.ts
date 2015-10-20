@@ -124,7 +124,7 @@ module vyzva {
     stateNames.root = new state({
       name: 'pg.ajs',
       url: '/ajs',
-      abstract: true,
+      'abstract': true,
       controller: () => { Pager.clearHtml(); }, //vyhozeni old obsahu 
       template: "<div data-ui-view></div>",
       onEnter: () => anim.inAngularjsGui = true,
@@ -134,7 +134,7 @@ module vyzva {
           name: 'vyzva',
           //lickeys ve formatu <UserLicences.LicenceId>|<UserLicences.Counter>#<UserLicences.LicenceId>|<UserLicences.Counter>...
           url: "/vyzva/:companyid/:loginid/:persistence/:loc/:lickeys?returnurl&homelinktype&vyzvademocompanytitle",
-          abstract: true,
+          'abstract': true,
           template: "<div data-ui-view></div>",
           resolve: {
             $intranetInfo: loadIntranetInfo(),
@@ -169,7 +169,7 @@ module vyzva {
               template: "<div data-ui-view></div>",
               controller: homeTaskController,
               controllerAs: blended.taskContextAs.product,
-              abstract: true,
+              'abstract': true,
               resolve: {
                 $loadedProduct: loadProduct,
                 $intranetInfo: loadIntranetInfo(),
@@ -198,7 +198,7 @@ module vyzva {
                   url: "/lector/:groupid",
                   controller: lectorController,
                   controllerAs: blended.taskContextAs.lector,
-                  abstract: true,
+                  'abstract': true,
                   template: "<div data-ui-view></div>",
                   childs: [
                     stateNames.lectorHome = new state({
@@ -224,7 +224,7 @@ module vyzva {
                   controllerAs: blended.taskContextAs.pretest,
                   dataNodeUrlParName: 'pretestUrl',
                   //isGreenArrowRoot:true,
-                  abstract: true,
+                  'abstract': true,
                   template: "<div data-ui-view></div>",
                   childs: [
                     stateNames.pretest = new state({
@@ -240,7 +240,7 @@ module vyzva {
                       controller: moduleTaskController,
                       controllerAs: blended.taskContextAs.module,
                       dataNodeUrlParName: 'moduleUrl',
-                      abstract: true,
+                      'abstract': true,
                       moduleType: blended.moduleServiceType.pretest,
                       template: "<div data-ui-view></div>",
                       childs: [
@@ -274,7 +274,7 @@ module vyzva {
                   dataNodeUrlParName: 'moduleUrl',
                   moduleType: blended.moduleServiceType.pretest,
                   //isGreenArrowRoot: true,
-                  abstract: true,
+                  'abstract': true,
                   template: "<div data-ui-view></div>",
                   childs: [
                     new state({
@@ -302,7 +302,7 @@ module vyzva {
                   dataNodeUrlParName: 'moduleUrl',
                   //isGreenArrowRoot: true,
                   moduleType: blended.moduleServiceType.lesson,
-                  abstract: true,
+                  'abstract': true,
                   template: "<div data-ui-view></div>",
                   childs: [
                     new state({
@@ -329,7 +329,7 @@ module vyzva {
                   controllerAs: blended.taskContextAs.module,
                   dataNodeUrlParName: 'moduleUrl',
                   //isGreenArrowRoot: true,
-                  abstract: true,
+                  'abstract': true,
                   template: "<div data-ui-view></div>",
                   moduleType: blended.moduleServiceType.test,
                   childs: [

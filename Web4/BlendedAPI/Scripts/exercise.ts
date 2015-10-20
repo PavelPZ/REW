@@ -63,8 +63,8 @@
     blended.finishContext(ctx);
     var def = ctx.$q.defer<IExLong>();
     try {
-      proxies.vyzva57services.getLongData(ctx.companyid, ctx.userDataId(), ctx.productUrl, ctx.taskid, ctx.Url, long => {
-        var res = JSON.parse(long);
+      proxies.vyzva57services.getLongData(ctx.companyid, ctx.userDataId(), ctx.productUrl, ctx.taskid, ctx.Url, longData => {
+        var res = JSON.parse(longData);
         def.resolve(res);
       });
     } finally { return def.promise; }
@@ -182,7 +182,7 @@
     //confirm dialog
     confirmWrongScoreDialog: () => ng.IPromise<any>;
 
-    constructor(public exercise: cacheExercise, public long: IExLong, public controller: exerciseTaskViewController, public modIdx: number) {
+    constructor(public exercise: cacheExercise, public longData: IExLong, public controller: exerciseTaskViewController, public modIdx: number) {
       //this.exercise = exercise; this.modIdx = modIdx;
       this.confirmWrongScoreDialog = () => controller.confirmWrongScoreDialog();
       this.ctx = controller.ctx; this.product = controller.productParent.dataNode;
@@ -218,9 +218,9 @@
     }
 
     //ICoursePageCallback
-    onRecorder(page: Course.Page, msecs: number) { if (page != this.page) debugger; this.user.modified = true; if (!this.user.short.sRec) this.user.short.sRec = 0; this.user.short.sRec += Math.round(msecs / 1000); }
-    onPlayRecorder(page: Course.Page, msecs: number) { this.user.modified = true; if (!this.user.short.sPRec) this.user.short.sPRec = 0; this.user.short.sPRec += Math.round(msecs / 1000); }
-    onPlayed(page: Course.Page, msecs: number) { this.user.modified = true; if (!this.user.short.sPlay) this.user.short.sPlay = 0; this.user.short.sPlay += Math.round(msecs / 1000); }
+    onRecorder(page: Course.Page, msecs: number) { if (page != this.page) debugger; this.user.modified = true; if (!this.user.shortData.sRec) this.user.shortData.sRec = 0; this.user.shortData.sRec += Math.round(msecs / 1000); }
+    onPlayRecorder(page: Course.Page, msecs: number) { this.user.modified = true; if (!this.user.shortData.sPRec) this.user.shortData.sPRec = 0; this.user.shortData.sPRec += Math.round(msecs / 1000); }
+    onPlayed(page: Course.Page, msecs: number) { this.user.modified = true; if (!this.user.shortData.sPlay) this.user.shortData.sPlay = 0; this.user.shortData.sPlay += Math.round(msecs / 1000); }
     recorder: ICpeRecorder;
 
     saveLectorEvaluation() {
@@ -236,14 +236,14 @@
         ev.ctrl.setScore();
       })
       var score = this.page.getScore();
-      this.user.short.s = score.s;
-      this.user.short.flag = Course.setAgregateFlag(this.user.short.flag, score.flag);
+      this.user.shortData.s = score.s;
+      this.user.shortData.flag = Course.setAgregateFlag(this.user.shortData.flag, score.flag);
       this.lectorHumanScore = score.ms ? Math.round(score.s / score.ms * 100) : -1;
       this.product.saveProduct(this.controller.ctx, $.noop);
     }
 
     score(): number {
-      return blended.scorePercent(this.user.short);
+      return blended.scorePercent(this.user.shortData);
     }
 
     onDisplay(el: ng.IAugmentedJQuery, completed: (pg: Course.Page) => void) {
@@ -257,13 +257,13 @@
         else if (this.isTest) res.flag |= CourseModel.CourseDataFlag.testEx;
         return res;
       });
-      if (!this.long) { this.long = {}; this.user.modified = true; }
-      this.user.long = this.long
+      if (!this.longData) { this.longData = {}; this.user.modified = true; }
+      this.user.longData = this.longData
       this.startTime = Utils.nowToNum();
       //greenArrowRoot
       this.greenArrowRoot = this.controller.pretestParent ? this.controller.pretestParent : this.controller.moduleParent;
       this.lectorMode = !!this.ctx.onbehalfof && this.modService.moduleDone;
-      this.lectorCanEvaluateRecording = this.lectorMode && !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
+      this.lectorCanEvaluateRecording = this.lectorMode && !!(this.user.shortData.flag & CourseModel.CourseDataFlag.pcCannotEvaluate);
 
       if (this.lectorMode) {
         var autoH = agregateAutoHuman(this.modService.node, this.controller.ctx.taskid);
@@ -271,7 +271,7 @@
       }
 
       var pg = this.page = CourseMeta.extractEx(this.exercise.pageJsonML);
-      if (this.lectorMode && !!(this.user.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate)) this.page.humanEvalMode = true;
+      if (this.lectorMode && !!(this.user.shortData.flag & CourseModel.CourseDataFlag.pcCannotEvaluate)) this.page.humanEvalMode = true;
       this.recorder = this; pg.blendedExtension = this; //navazani rozsireni na Page
       Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, this.exercise.mod.loc));
       var isGramm = CourseMeta.isType(this.exercise.dataNode, CourseMeta.runtimeType.grammar);
@@ -285,7 +285,7 @@
       this.instructionData = { title: pg.instrTitle, body: instrBody.join('') };
 
       var exImpl = <CourseMeta.exImpl>(this.exercise.dataNode);
-      exImpl.page = pg; exImpl.result = this.user.long;
+      exImpl.page = pg; exImpl.result = this.user.longData;
 
       pg.finishCreatePage(<CourseMeta.exImpl>(this.exercise.dataNode));
       var hasGapFill = _.any(pg.items, it => it._tg == CourseModel.tgapFill);
@@ -300,11 +300,11 @@
         ko.applyBindings({}, el[0]);
         pg.callInitProcs(Course.initPhase.afterRender, () => {//inicializace kontrolek, 2
           pg.callInitProcs(Course.initPhase.afterRender2, () => {
-            if (this.isTest && persistUserIsDone(this.user.short) && !this.modService.moduleDone && !this.lectorMode) {
+            if (this.isTest && persistUserIsDone(this.user.shortData) && !this.modService.moduleDone && !this.lectorMode) {
               //test cviceni nesmi byt (pro nedokonceny test) videt ve vyhodnocenem stavu. Do vyhodnoceneho stav se vrati dalsim klikem na zelenou sipku.
-              persistUserIsDone(this.user.short, false);
+              persistUserIsDone(this.user.shortData, false);
             }
-            pg.acceptData(persistUserIsDone(this.user.short), exImpl.result);
+            pg.acceptData(persistUserIsDone(this.user.shortData), exImpl.result);
             completed(pg);
           });
         });
@@ -314,14 +314,14 @@
     onDestroy(el: ng.IAugmentedJQuery) {
       //elapsed
       var now = Utils.nowToNum();
-      var delta = Math.min(maxDelta, Math.round(now - this.startTime));
-      if (this.user.short) { //muze nastat pri RESET lekce  
-        var short = this.user.short;
-        if (!short.elapsed) short.elapsed = 0;
-        short.elapsed += delta;
-        short.end = Utils.nowToNum();
+      var delta = Math.min(maxDelta, Math.round(now - this.startTime)); 
+      if (this.user.shortData) { //muze nastat pri RESET lekce  
+        var shortData = this.user.shortData;
+        if (!shortData.elapsed) shortData.elapsed = 0;
+        shortData.elapsed += delta;
+        shortData.end = Utils.nowToNum();
         this.user.modified = true;
-        if (!persistUserIsDone(this.user.short)) this.page.provideData(); //prevzeti poslednich dat z kontrolek cviceni
+        if (!persistUserIsDone(this.user.shortData)) this.page.provideData(); //prevzeti poslednich dat z kontrolek cviceni
       }
       //uklid
       if (this.page.sndPage) this.page.sndPage.htmlClearing();
@@ -334,31 +334,31 @@
     //vrati budto promise v IEvaluateResult.confirmWrongScore (= aktivni pod 75% = cekani na wrongScore confirmation dialog) 
     // nebo IEvaluateResult.showResult (ukazat vysledek vyhodnoceni: pro aktivni nad 75% cviceni ano, pro pasivni a test ne)
     evaluate(isTest: boolean, exerciseShowWarningPercent: number = 75): IEvaluateResult {
-      if (persistUserIsDone(this.user.short)) { return { showResult: false }; }
+      if (persistUserIsDone(this.user.shortData)) { return { showResult: false }; }
       this.user.modified = true;
-      var short = this.user.short;
+      var shortData = this.user.shortData;
 
       //pasivni stranka
       if (this.page.isPassivePage()) {
         this.page.processReadOnlyEtc(true, true);
-        persistUserIsDone(short, true);
+        persistUserIsDone(shortData, true);
         return { showResult: false };
       }
 
       //aktivni stranka
       this.page.provideData(); //prevzeti vysledku z kontrolek
       var score = this.page.getScore(); //vypocet score
-      if (!score) { debugger; persistUserIsDone(short, true); return null; }
+      if (!score) { debugger; persistUserIsDone(shortData, true); return null; }
 
       var afterConfirmScore = () => {
         this.page.processReadOnlyEtc(true, true); //readonly a skipable controls
         if (!isTest) this.page.acceptData(true);
 
         this.user.modified = true;
-        persistUserIsDone(short, true);
+        persistUserIsDone(shortData, true);
         if (this.exercise.dataNode.ms != score.ms) { debugger; def.reject("this.maxScore != score.ms"); return null; }
-        short.s = score.s;
-        short.flag = Course.setAgregateFlag(short.flag, score.flag);
+        shortData.s = score.s;
+        shortData.flag = Course.setAgregateFlag(shortData.flag, score.flag);
         //short.flag |= score.flag;
       };
 

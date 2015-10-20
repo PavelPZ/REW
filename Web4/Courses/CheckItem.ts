@@ -43,8 +43,8 @@ module Course {
       //this.isSkipEvaluation sdili s readonly modem stav done
       if (this.readOnly || (done && this.skipEvaluation)) {
         var val: CourseModel.threeStateBool = this.readOnly ? this.initValue : this.boolTothreeState(this.result.Value);
-        this.yes(val == CourseModel.threeStateBool.true); this.no(val == CourseModel.threeStateBool.false);
-        this.yesEval(val == CourseModel.threeStateBool.true ? "black" : "no"); this.noEval(val == CourseModel.threeStateBool.false ? "black" : "no");
+        this.yes(val == CourseModel.threeStateBool['true']); this.no(val == CourseModel.threeStateBool['true']);
+        this.yesEval(val == CourseModel.threeStateBool['true'] ? "black" : "no"); this.noEval(val == CourseModel.threeStateBool['true'] ? "black" : "no");
         return;
       }
       if (this.done()) {
@@ -56,15 +56,15 @@ module Course {
         if (this.result.Value != undefined) {
           this.yes(this.result.Value); this.no(!this.result.Value);
         } else {
-          this.yes(this.initValue == CourseModel.threeStateBool.true); this.no(this.initValue == CourseModel.threeStateBool.false);
+          this.yes(this.initValue == CourseModel.threeStateBool['true']); this.no(this.initValue == CourseModel.threeStateBool['false']);
         }
       }
     }
 
     boolTothreeState(bool: boolean): CourseModel.threeStateBool {
       if (bool === undefined) return CourseModel.threeStateBool.no;
-      else if (bool === true) return CourseModel.threeStateBool.true;
-      else return CourseModel.threeStateBool.false;
+      else if (bool === true) return CourseModel.threeStateBool['true'];
+      else return CourseModel.threeStateBool['true'];
     }
 
     isCorrect(): boolean { //pro 0 x 1 score

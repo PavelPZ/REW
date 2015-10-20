@@ -5,8 +5,8 @@
 module blended {
 
   export interface IPersistNodeItem<T> { //persistentni udaj pro jednu variantu (jeden taskId). Kazde cviceni apod. se muze spustit vicekrat, aniz by se prepisovaly jeho user data.
-    short: T;
-    long: IExLong;
+    shortData: T;
+    longData: IExLong;
     modified: boolean;
   }
 
@@ -42,8 +42,8 @@ module blended {
   export function getPersistWrapper<T extends IPersistNodeUser>(dataNode: CourseMeta.data, taskid: string, createProc?: () => T): IPersistNodeItem<T> {
     if (createProc) {
       if (!dataNode.userData) dataNode.userData = {};
-      var res = dataNode.userData[taskid]; if (res && res.short) return <IPersistNodeItem<T>> res;
-      res = { long: null, short: createProc(), modified: true };
+      var res = dataNode.userData[taskid]; if (res && res.shortData) return <IPersistNodeItem<T>> res;
+      res = { longData: null, shortData: createProc(), modified: true };
       dataNode.userData[taskid] = res;
       return <IPersistNodeItem<T>> res;
     } else {
@@ -53,26 +53,26 @@ module blended {
   }
   export function getPersistData<T>(dataNode: CourseMeta.data, taskid: string): T {
     var res = getPersistWrapper<T>(dataNode, taskid);
-    return res ? res.short : null;
+    return res ? res.shortData : null;
   }
 
   export function clearPersistData(dataNode: CourseMeta.data, taskid: string) {
     var it = dataNode.userData ? dataNode.userData[taskid] : null; if (!it) return;
-    it.modified = true; delete it.short; delete it.long;
+    it.modified = true; delete it.shortData; delete it.longData;
   }
 
   export function setPersistData<T>(dataNode: CourseMeta.data, taskid: string, modify: (data: T) => void): T {
     var it = dataNode.userData ? dataNode.userData[taskid] : null;
     if (!it) {
-      it = { short: <T>{}, modified: true, long: null };
+      it = { shortData: <T>{}, modified: true, longData: null };
       if (!dataNode.userData) dataNode.userData = {};
       dataNode.userData[taskid] = it;
     } else {
-      if (!it.short) it.short = {};
+      if (!it.shortData) it.shortData = {};
       it.modified = true;
     }
-    modify(<T>(it.short));
-    return <T>(it.short);
+    modify(<T>(it.shortData));
+    return <T>(it.shortData);
   }
 
 
@@ -124,9 +124,9 @@ module blended {
           try {
             var d = nd.userData[p]; if (!d.modified) return;
             d.modified = false;
-            toSave.push({ url: nd.url, taskId: p, shortData: d.short ? JSON.stringify(d.short) : null, longData: d.long ? JSON.stringify(d.long) : null, flag: d.short ? d.short.flag : 0 });
-            if (!d.short) delete nd.userData[p];
-          } finally { delete p.long; }
+            toSave.push({ url: nd.url, taskId: p, shortData: d.shortData ? JSON.stringify(d.shortData) : null, longData: d.longData ? JSON.stringify(d.longData) : null, flag: d.shortData ? d.shortData.flag : 0 });
+            if (!d.shortData) delete nd.userData[p];
+          } finally { delete d.longData; }
         }
       });
       if (toSave.length == 0) { completed(); return; }
@@ -201,7 +201,7 @@ module blended {
                 var node = prod.nodeDir[it.url]; if (!node) debugger/*something wrong*/;
                 if (!node.userData) node.userData = {};
                 var taskData = node.userData[it.taskId];
-                var shortLong: IPersistNodeItem<any> = { modified: false, long: null, short: JSON.parse(it.shortData) };
+                var shortLong: IPersistNodeItem<any> = { modified: false, longData: null, shortData: JSON.parse(it.shortData) };
                 if (!taskData) node.userData[it.taskId] = shortLong;
                 //else debugger; /*something wrong*/
               });

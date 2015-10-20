@@ -1,5 +1,4 @@
 ﻿/// <reference path="../jslib/js/GenLMComLib.ts" />
-/// <reference path="GenCourse.ts" />
 /// <reference path="GenSchools.ts" />
 /// <reference path="../courses/GenCourseModel.ts" />
 module schools {

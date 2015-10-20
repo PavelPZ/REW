@@ -143,6 +143,10 @@
       <HintPath>..\packages\Microsoft.Framework.Primitives.1.0.0-beta8\lib\net45\Microsoft.Framework.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -214,12 +218,28 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows.Forms" />
@@ -294,8 +314,12 @@
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.structure.css" />
     <Content Include="AuthorWeb\trash\jquery-ui\jquery-ui.theme.css" />
     <Content Include="Author\Author.html" />
-    <Content Include="Deploy\min.js" />
+    <Content Include="Deploy\cs-cz.min.js" />
+    <Content Include="Deploy\en-gb.min.js" />
+    <Content Include="Deploy\externals.min.js" />
+    <Content Include="Deploy\MinifyTemplate.xml" />
     <Content Include="Deploy\Minify.xml" />
+    <Content Include="Deploy\web.min.js" />
     <Content Include="JsLib\Scripts\jquery.js" />
     <Content Include="JsLib\Scripts\jquery.min.js" />
     <Content Include="Temp\Author.html" />
@@ -341,6 +365,7 @@
     <Content Include="Licenses\v8.main.license" />
     <Content Include="Licenses\ClearScript.main.license" />
     <Content Include="Temp\printPdf.ps1" />
+    <Content Include="WebPage1.cshtml" />
     <TypeScriptCompile Include="AuthorWeb\js\compRenderTag.ts" />
     <TypeScriptCompile Include="AuthorWeb\js\encodeLib.ts" />
     <TypeScriptCompile Include="AuthorWeb\js\docBlock.ts" />
@@ -548,11 +573,9 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="BlendedAPI\vyzva\Server\Excels\StudyAll.xlsx" />
-    <None Include="Courses\xhtml5.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Deploy\typescript.cmd" />
     <Content Include="Deploy\jsDeploy.json" />
+    <Content Include="Deploy\Azure.cmd" />
     <None Include="JsLib\css\Author.less" />
     <Content Include="JsLib\css\img\flag-mid.png" />
     <Content Include="JsLib\css\img\flag-small.png" />
@@ -1405,7 +1428,6 @@
     <TypeScriptCompile Include="BlendedAPI\Scripts\stateMan.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\app.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Loader.ts" />
-    <TypeScriptCompile Include="BlendedAPI\vyzva\Scripts\directives.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Scripts\Intranet.ts" />
     <TypeScriptCompile Include="BlendedAPI\vyzva\Scripts\Lib.ts" />
     <TypeScriptCompile Include="BlendedAPI\Scripts\Tasks.ts" />
@@ -1648,7 +1670,6 @@
     <TypeScriptCompile Include="Schools\CourseMetaGui.ts" />
     <TypeScriptCompile Include="Schools\Design\DictLingea.ts" />
     <TypeScriptCompile Include="Schools\Design\ExtractWords.ts" />
-    <TypeScriptCompile Include="Schools\GenAzure.ts" />
     <TypeScriptCompile Include="Schools\GenProxyTest.ts" />
     <TypeScriptCompile Include="Schools\GenProxy.ts" />
     <TypeScriptCompile Include="Schools\PersistMemory.ts" />
@@ -2434,10 +2455,6 @@
       <DependentUpon>PersistPhonegap.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Schools\PersistPhonegap.ts" />
-    <Content Include="Schools\Lib.js">
-      <DependentUpon>Lib.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Schools\Lib.ts" />
     <Content Include="Schools\GenScorm.js">
       <DependentUpon>GenScorm.ts</DependentUpon>
     </Content>
@@ -2454,10 +2471,6 @@
       <DependentUpon>Persist.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Schools\Persist.ts" />
-    <Content Include="Schools\GenCourse.js">
-      <DependentUpon>GenCourse.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Schools\GenCourse.ts" />
     <Content Include="Schools\GenSchools.js">
       <DependentUpon>GenSchools.ts</DependentUpon>
     </Content>
