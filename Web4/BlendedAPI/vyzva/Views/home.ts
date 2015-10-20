@@ -75,34 +75,6 @@
           else res.leftMarkType = leftMarkTypes.progress;
         }
 
-        //if (!firstNotDoneCheckTestIdx && res.lessonType == blended.moduleServiceType.test) {
-        //  lcOK = undefined;
-        //  if (nodeUser) {
-        //    if (!(nodeUser.flag & CourseModel.CourseDataFlag.pcCannotEvaluate)) lcOK = true;
-        //    else lcOK = (<blended.IModuleUser>nodeUser).lectorControlTestOK;
-        //  }
-        //  if (lcOK == undefined && res.status == homeLessonStates.done) {
-        //    if (false && res.agregUser.score < 65) firstNotDoneCheckTestIdx = idx;
-        //  } else {
-        //    res.agregUser.lectorControlTestOK = nodeUser && (<blended.IModuleUser>nodeUser).lectorControlTestOK;
-        //    if (!res.agregUser.lectorControlTestOK) firstNotDoneCheckTestIdx = idx;
-        //  }
-        //  res.agregUser.lectorControlTestOK = lcOK;
-        //}
-        //left mark
-        //if (res.status == homeLessonStates.done) {
-        //  switch (res.lessonType) {
-        //    case blended.moduleServiceType.pretest: res.leftMarkType = leftMarkTypes.pretestLevel; break;
-        //    case blended.moduleServiceType.test:
-        //      if (lcOK === false) mustWaitForEvaluation = true; //hotovy test se spatnym score => nejde pokracovat dal
-        //      res.leftMarkType = !res.agregUser.lectorControlTestOK ? leftMarkTypes.waitForEvaluation : leftMarkTypes.progress; break;
-        //    default: res.leftMarkType = leftMarkTypes.progress;
-        //  }
-        //} else {
-        //  switch (res.lessonType) {
-        //    case blended.moduleServiceType.test: if (!firstNotDoneCheckTestIdx) firstNotDoneCheckTestIdx = idx;
-        //  }
-        //}
         return res;
       }
 

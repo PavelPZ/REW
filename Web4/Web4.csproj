@@ -473,9 +473,6 @@
     <None Include="Author\xhtml5.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Courses\xhtml5.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="JsLib\css\Author.less" />
     <Content Include="JsLib\css\img\flag-mid.png" />
     <Content Include="JsLib\css\img\flag-small.png" />
