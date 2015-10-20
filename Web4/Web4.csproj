@@ -365,7 +365,6 @@
     <Content Include="Licenses\v8.main.license" />
     <Content Include="Licenses\ClearScript.main.license" />
     <Content Include="Temp\printPdf.ps1" />
-    <Content Include="WebPage1.cshtml" />
     <TypeScriptCompile Include="AuthorWeb\js\compRenderTag.ts" />
     <TypeScriptCompile Include="AuthorWeb\js\encodeLib.ts" />
     <TypeScriptCompile Include="AuthorWeb\js\docBlock.ts" />
@@ -1490,7 +1489,7 @@
     <Content Include="Temp\HtmlPage3.html" />
     <Content Include="Temp\htmlPublishing.aspx" />
     <Content Include="Temp\JavaScript1.js" />
-    <Content Include="Deploy\jsonml-xml.js" />
+    <Content Include="Temp\jsonml-xml.js" />
     <Content Include="Temp\htmlPublishing\index.html" />
     <Content Include="Temp\LFE3.html" />
     <Content Include="Temp\local.html" />
