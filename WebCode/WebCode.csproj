@@ -212,7 +212,6 @@
     </Content>
     <Content Include="Service.ashx" />
     <Content Include="mp3Uploader.ashx" />
-    <Content Include="schools\Index.cshtml" />
     <None Include="Web.AppSetting.config">
       <SubType>Designer</SubType>
     </None>

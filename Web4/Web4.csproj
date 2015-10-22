@@ -1469,7 +1469,9 @@
     </EmbeddedResource>
     <None Include="mp3Uploader.ashx" />
     <Content Include="JsLib\skins\chinh\css.less" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Schools\Statistics.odc" />
     <Content Include="Schools\Design\DictLingea.html" />
     <Content Include="Schools\NewEAProtected.aspx" />
