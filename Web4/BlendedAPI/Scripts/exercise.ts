@@ -144,10 +144,11 @@
   export class showExerciseModel {
     constructor(public $stateParams: blended.learnContext) { }
     link: (scope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes) => void = (scope, el, attrs) => {
+      blended.waitStart();
       var exService: exerciseService = scope.exService()
-      //scope.$on('$destroy', ev => exService.onDestroy(el));
       scope.$on('onStateChangeSuccess', ev => exService.onDestroy(el));
-      exService.onDisplay(el, $.noop);
+      //exService.onDisplay(el, $.noop);
+      exService.onDisplay(el, () => blended.waitEnd(true));
     };
     scope = { exService: '&exService' }
   }

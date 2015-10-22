@@ -60,13 +60,13 @@ module vyzva {
   export var initVyzvaApp = ['$rootScope', '$location', '$state', ($rootScope: angular.IRootScopeService, $location: angular.ILocationService, $state: angular.ui.IStateService) => {
 
     //$rootScope.$on('$locationChangeStart', (event: angular.IAngularEvent, newUrl: string, oldUrl: string, newState, oldState) => {
+    //  debugger;
+    //  console.log('$$$$$$$ $locationChangeStart');
     //})
 
     //sance zrusit ladovani stranky
-    
-    //$rootScope.$on('$stateChangeStart', (e, toState, toParams, fromState, fromParams) => {
     $rootScope.$on('$stateChangeSuccess', (e, toState, toParams, fromState, fromParams) => {
-      $rootScope.$broadcast('onStateChangeSuccess'); //sance pred ulozenim produktu naplnit data. Vyuzije pro volani exerciseService.onDestroy
+      $rootScope.$broadcast('onStateChangeSuccess'); //sance pred ulozenim produktu naplnit data. Vyuzije se pro volani exerciseService.onDestroy
       var prod = blended.loader.productCache.fromCache(fromParams).prod;
       if (prod) prod.saveProduct(fromParams, $.noop);
     });
@@ -252,10 +252,7 @@ module vyzva {
                           dataNodeUrlParName: 'Url',
                           layoutSpecial: true,
                           layoutContentId: 'exercise',
-                          //layoutToolbarType: 'toolbar/run',
                           ignorePageTitle: true,
-                          //exerciseIsTest: true,
-                          //exerciseOmitModuleMap: true,
                           resolve: {
                             $loadedEx: blended.loadEx,
                             $loadedLongData: blended.loadLongData,
@@ -282,7 +279,6 @@ module vyzva {
                       url: '/:url',
                       controller: lessonTest,
                       controllerAs: blended.taskContextAs.ex,
-                      //exerciseIsTest: true,
                       dataNodeUrlParName: 'Url',
                       layoutSpecial: true,
                       layoutContentId: 'exercise',
@@ -313,7 +309,6 @@ module vyzva {
                       dataNodeUrlParName: 'Url',
                       layoutSpecial: true,
                       layoutContentId: 'exercise',
-                      //layoutToolbarType: 'toolbar/run',
                       resolve: {
                         $loadedEx: blended.loadEx,
                         $loadedLongData: blended.loadLongData,
@@ -338,11 +333,10 @@ module vyzva {
                       url: '/:url',
                       controller: lessonTest,
                       controllerAs: blended.taskContextAs.ex,
-                      //exerciseIsTest: true,
                       dataNodeUrlParName: 'Url',
                       layoutSpecial: true,
                       layoutContentId: 'exercise',
-                      //layoutToolbarType: 'toolbar/run',
+                      //onEnter: () => { debugger; },
                       resolve: {
                         $loadedEx: blended.loadEx,
                         $loadedLongData: blended.loadLongData,

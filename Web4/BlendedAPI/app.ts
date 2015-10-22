@@ -64,10 +64,24 @@
       rootScope = $rootScope; templateCache = $templateCache; compile = $compile;
       $rootScope.$on('$locationChangeStart', (event: angular.IAngularEvent, newUrl: string, oldUrl: string, newState, oldState) => {
         if (Pager.angularJS_OAuthLogin(location.hash, () => Pager.gotoHomeUrl())) event.preventDefault()
-      })
+      });
+      $rootScope.$on('$stateChangeStart', () => waitStart(true));
+      $rootScope.$on('$stateChangeSuccess', () => setTimeout(() => waitEnd(), 1));
     }])
   ;
 
+  export function waitStart(force?: boolean) {
+    if (force) waitCounter = 0;
+    if (waitCounter == 0) {
+      Pager.blockGui(true);
+    } waitCounter++;
+  }
+  export function waitEnd(force?: boolean) {
+    if (force) waitCounter = 0; else waitCounter--;
+    if (waitCounter != 0) return;
+    Pager.blockGui(false);
+  }
+  var waitCounter = 0;
 
   export function checkOldApplicationStart() { //boot nasi technologie
     if (checkOldApplicationStarted) return; checkOldApplicationStarted = true;
@@ -85,7 +99,7 @@
     $location: ng.ILocationProvider,
     $urlMatcherFactoryProvider: angular.ui.IUrlMatcherFactory,
     $provide
-    ) => {
+  ) => {
     //routerLogging($provide);
     $urlMatcherFactoryProvider.caseInsensitive(true); //http://stackoverflow.com/questions/25994308/how-to-config-angular-ui-router-to-not-use-strict-url-matching-mode
     //Nefunguje pak browser historie
@@ -133,7 +147,7 @@
     //_.each(debugAllRoutes, r => Logger.trace("Pager", 'Define:' + r));
   }]);
 
-   //dokumentace pro dostupne services
+  //dokumentace pro dostupne services
   export function servicesDocumentation() {
     //https://docs.angularjs.org/api/ng/function/angular.injector
     //http://stackoverflow.com/questions/17497006/use-http-inside-custom-provider-in-app-config-angular-js
