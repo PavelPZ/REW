@@ -8,6 +8,14 @@ using System.Threading.Tasks;
 namespace DesignNew {
   public static partial class Deploy {
 
+    static IEnumerable<string> jquery(bool isMin) { yield return isMin ? "jslib/scripts/jquery.min.js" : "jslib/scripts/jquery.js"; }
+
+    static string[] jsMins = new string[] {
+      "deploy/externals.min.js",
+      "deploy/web.min.js",
+      "deploy/{0}.min.js"
+    };
+
     static string[] jsExternal = new string[] {
       "jslib/scripts/underscore.js",
       "jslib/scripts/angular.js",

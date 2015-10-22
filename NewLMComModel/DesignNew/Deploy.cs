@@ -8,8 +8,9 @@ using System.Xml.Linq;
 namespace DesignNew {
   public static partial class Deploy {
 
-    public static IEnumerable<string> allJS(string lang) {
-      return externals.SelectMany(s => s).Concat(web.SelectMany(s => s)).Concat(loc.SelectMany(s => s).Select(s => string.Format(s, lang)));
+    public static IEnumerable<string> allJS(bool isMin, string lang) {
+      var jss = isMin ? jsMins.Select(s => string.Format(s, lang)) : externals.SelectMany(s => s).Concat(web.SelectMany(s => s)).Concat(loc.SelectMany(s => s).Select(s => string.Format(s, lang)));
+      return jquery(isMin).Concat(jss);
     }
 
     //******************* generace D:\LMCom\rew\Web4\Deploy\Minify.xml

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Text;
+using System.Linq;
+using System.Configuration;
 
 namespace WebCode {
 
@@ -15,8 +17,7 @@ namespace WebCode {
 
       cfg = new Packager.Config() {
         target = LMComLib.Targets.web,
-        //version = schools.versions.debug,
-        version = schools.versions.minified,
+        version = isDebug ? schools.versions.debug : schools.versions.minified,
         dataBatchUrl = "/lm/lm_data_new/",
         lang = LMComLib.urlInfo.langStrToLang(Request["lang"]),
         canSkipCourse = true,
@@ -29,27 +30,19 @@ namespace WebCode {
     }
 
     static DateTime appLoadTime = DateTime.Now;
+    static bool isDebug = ConfigurationManager.AppSettings["cfg-isDebug"] == "true";
 
     protected Packager.Config cfg;
     protected string pageTitle;
     protected string scripts() {
       StringBuilder sb = new StringBuilder();
-      if (cfg.version == schools.versions.debug) {
-        sb.AppendLine("<script src='../jslib/scripts/jquery.js' type='text/javascript'></script>");
-        foreach (var s in DesignNew.Deploy.allJS(cfg.langStr)) {
-          sb.AppendFormat(@"  <script src='../{0}' type='text/javascript'></script>", s);
-          sb.AppendLine();
-        }
-      } else {
-        sb.AppendLine("  <script src='../jslib/scripts/jquery.min.js' type='text/javascript'></script>");
-        sb.AppendLine("  <script src='../deploy/externals.min.js' type='text/javascript'></script>");
-        sb.AppendLine("  <script src='../deploy/web.min.js' type='text/javascript'></script>");
-        sb.AppendLine("  <script src='../deploy/" + cfg.langStr + ".min.js' type='text/javascript'></script>");
-      }
+      foreach (var s in DesignNew.Deploy.allJS(cfg.version != schools.versions.debug, cfg.langStr)) script(sb, s);
       return sb.ToString();
     }
+    static void script(StringBuilder sb, string url) { sb.AppendFormat(@"  <script src='../{0}' type='text/javascript'></script>", url); sb.AppendLine(); }
 
-    bool isCached() { 
+    bool isCached() {
+      if (isDebug) return false;
       string header = Request.Headers["If-Modified-Since"]; //udaje, nastavene vyse v Response.Cache.SetLastModified(appLoadTime);
       if (header != null) {
         DateTime clientLastModified;

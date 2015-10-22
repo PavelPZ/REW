@@ -337,12 +337,12 @@
     // nebo IEvaluateResult.showResult (ukazat vysledek vyhodnoceni: pro aktivni nad 75% cviceni ano, pro pasivni a test ne)
     evaluate(isTest: boolean, exerciseShowWarningPercent: number = 75): IEvaluateResult {
       //kontrola "uklikani testu". Mezi dvema vyhodnocenimi testu musi byt alespon 2 sec
-      if (isTest) {
-        var now = new Date().getTime();
-        try {
-          if (now - lastTestEvalTime < 2000) return { confirmWrongScore: null, showResult: true };
-        } finally { lastTestEvalTime = now; }
-      }
+      //if (isTest) {
+      //  var now = new Date().getTime();
+      //  try {
+      //    if (now - lastTestEvalTime < 2000) return { confirmWrongScore: null, showResult: true };
+      //  } finally { lastTestEvalTime = now; }
+      //}
 
       if (persistUserIsDone(this.user.shortData)) { return { showResult: false }; }
       this.user.modified = true;
@@ -394,6 +394,6 @@
     }
   }
   var maxDelta = 10 * 60; //10 minut
-  var lastTestEvalTime = 0; //datum naposledy vyhodnoceneho test-cviceni
+  //var lastTestEvalTime = 0; //datum naposledy vyhodnoceneho test-cviceni
 
 }

@@ -1,7 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+  call from CubesDeployment: DesignNew.Deploy.generateMSBuildMinify(); 
+  build task:  "$(MSBuildBinPath)\msbuild.exe" "$(ProjectDir)deploy\minify.xml"
+-->
 <Project xmlns="http://schemas.microsoft.com/developer/MsBuild/2003">
 
-  <UsingTask TaskName="JavaScriptCompressorTask" AssemblyFile="d:\LMCom\rew\packages\YUICompressor.NET.MSBuild.2.7.0.0\lib\NET20\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
+  <UsingTask TaskName="JavaScriptCompressorTask" AssemblyFile="d:\LMCom\YuiCompressor\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
 
   <Target Name="web">
     <ItemGroup>

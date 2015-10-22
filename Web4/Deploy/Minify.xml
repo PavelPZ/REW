@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/MsBuild/2003">
-  <UsingTask TaskName="JavaScriptCompressorTask" AssemblyFile="d:\LMCom\rew\packages\YUICompressor.NET.MSBuild.2.7.0.0\lib\NET20\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
+  <UsingTask TaskName="JavaScriptCompressorTask" AssemblyFile="d:\LMCom\YuiCompressor\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
   <Target Name="web">
     <ItemGroup>
       <JavaScriptFiles1 Include="../jslib/scripts/underscore.js; ../jslib/scripts/angular.js; ../jslib/scripts/angular-route.js; ../jslib/scripts/angular-animate.js; ../jslib/scripts/angular-cookies.js; ../jslib/scripts/angular-ui-router.js; ../jslib/scripts/ui-bootstrap-tpls.js; ../jslib/scripts/jquery-migrate.js; ../JsLib/Scripts/jqvalidator/core.js; ../JsLib/Scripts/jqvalidator/delegate.js; ../JsLib/Scripts/jqvalidator/lm_remote.js; ../bs3/js/modal.js; ../bs3/js/tooltip.js; ../JsLib/JS/External/jqvalidator.js; ../JsLib/Scripts/ui/jquery-ui.js; ../JsLib/Scripts/query.autosize.js; ../jslib/scripts/globalize.js; ../jslib/scripts/jquery.ba-hashchange.js; ../jslib/scripts/json2.js; ../jslib/scripts/jsRender.js; ../jslib/scripts/knockout.js; ../jslib/scripts/knockout.validation.js; ../jslib/scripts/knockout-delegatedEvents.js; ../jslib/js/external/KnockoutPlugins.js; ../jslib/js/external/ClosureLib.js; ../jslib/js/external/ClosureLibLow.js" />

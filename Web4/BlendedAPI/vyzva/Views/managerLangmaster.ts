@@ -18,8 +18,8 @@
       var s = price.toString(); return s.substr(0, s.length - 3) + ' ' + s.substr(s.length - 3);
     }
     url(): string {
-      var host = location.href.split('/')[2];
-      return 'http://' + host + (host == 'localhost' ? '/Web4/Schools/NewEA.aspx?lang=cs-cz' : '/schools/index_cs_cz.html');
+      var host = location.href.split('#')[0];
+      return host; //'http://' + host + (host == 'localhost' ? '/Web4/Schools/NewEA.aspx?lang=cs-cz' : '/schools/index_cs_cz.html');
     }
     encodetitle(): string { return this.url() + '#/vyzvademo?companytitle=' + encodeURIComponent(this.schoolTitle); }
     vyzvaProvoz(): string { return this.url() + '#/vyzvaprovoz?companytitle=' + encodeURIComponent('"' + this.schoolTitle + '"'); }
