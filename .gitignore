@@ -256,3 +256,5 @@ Web4/Data/instr/
 Web4/Data/XmlSource/
 ndependout/
 *.s3db
+
+SolutionToolbar/*.dll
