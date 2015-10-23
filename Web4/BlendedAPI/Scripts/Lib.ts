@@ -143,7 +143,7 @@
         if (done) { //hotove cviceni, zapocitej vzdy
           //Bug 2556: nebere se ohled na 
           if (!!(us.short.flag & CourseModel.CourseDataFlag.pcCannotEvaluate)) {
-            if (!(us.short.flag & CourseModel.CourseDataFlag.needsEval)) res.ms += nd.ms; //nic nenahrano => nula bodu, pripocti pouze MS
+            if (!(us.short.flag & CourseModel.CourseDataFlag.needsEval)) { res.ms += nd.ms; res.s += us.short.s; }//needs eval => nepripocitava se score
           } else {
             res.ms += nd.ms; res.s += us.short.s;
           }
