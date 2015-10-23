@@ -116,9 +116,9 @@
       <br />
       <h2>Other</h2>
       <asp:LinkButton ID="LinkButton15" runat="server" Text="CSharpToTypeScript" OnClick="CSharpToTypeScript" /><br />
-      <asp:LinkButton ID="LinkButton13" runat="server" Text="Minify" OnClick="Minify" />
+      <%--<asp:LinkButton ID="LinkButton13" runat="server" Text="Minify" OnClick="Minify" />--%>
       |
-      <asp:LinkButton ID="LinkButton20" runat="server" Text="Debug Minify" OnClick="DebugMinify" /><br />
+      <%--<asp:LinkButton ID="LinkButton20" runat="server" Text="Debug Minify" OnClick="DebugMinify" /><br />--%>
       <asp:LinkButton runat="server" Text="Decode d:\temp\signature.sign to d:\temp\signature.zip" OnClick="DecodeSign" /><br />
       <br />
       <%--<asp:LinkButton runat="server" Text="BatchIncludes" OnClick="BatchIncludes" /><br />
@@ -142,7 +142,7 @@
       q:\LMCom\rew\Web4\Schools\EARewise adresar obsahuje pro každý jazyk: index (všechny rewise books), crs2RwMap (lekce pro LM kurzy), obsah lekcí<br />
       <br />
       <h3>Tests</h3>
-      <asp:LinkButton ID="LinkButton3" runat="server" OnClick="CreateMaps">Create Maps</asp:LinkButton><br />
+      <%--<asp:LinkButton ID="LinkButton3" runat="server" OnClick="CreateMaps">Create Maps</asp:LinkButton><br />--%>
       <h3>Trados</h3>
       <asp:LinkButton ID="LinkButton16" runat="server" OnClick="RefreshTrados">Refresh Trados (do c:\Temp\trados.txt)</asp:LinkButton><br />
     </div>

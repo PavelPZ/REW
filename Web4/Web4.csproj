@@ -1668,7 +1668,7 @@
     <TypeScriptCompile Include="Schools\CourseMetaGui.ts" />
     <TypeScriptCompile Include="Schools\Design\DictLingea.ts" />
     <TypeScriptCompile Include="Schools\Design\ExtractWords.ts" />
-    <TypeScriptCompile Include="Schools\GenProxyTest.ts" />
+    <None Include="Schools\GenProxyTest._ts" />
     <TypeScriptCompile Include="Schools\GenProxy.ts" />
     <TypeScriptCompile Include="Schools\PersistMemory.ts" />
     <Content Include="Schools\Design\LANGMasterAuthorGalery.aspx" />

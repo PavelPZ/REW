@@ -261,44 +261,6 @@ export interface xrefLink {
   title: string;
   url: string;
 }
-export interface CompanyMeta {
-  Title: string;
-  ScormHost: string;
-  Created: number;
-}
-export interface DepartmentRoot extends Department {
-  IdAutoIncrement: number;
-}
-export interface DepartmentUsages {
-  Usages: Array<DepartmentUsage>;
-}
-export interface DepartmentUsage {
-  depId: number;
-  userIds: Array<number>;
-}
-export interface CompanyLicences {
-  Lics: Array<ProductLicence>;
-  LicIdAutoIncrement: number;
-  CompShortId: number;
-}
-export interface ProductLicence {
-  ProductId: string;
-  isTest: boolean;
-  LicId: number;
-  CourseDays: number;
-  KeyIdAutoIncrement: number;
-  Lics: Array<UsedKey>;
-  LicsCount: number;
-}
-export interface UsedKey {
-  LicKeyId: number;
-  email: string;
-}
-export interface GenLicKey {
-  CompShortId: number;
-  LicId: number;
-  LicKeyId: number;
-}
 export interface CompanyUsers {
   Users: Array<CompanyUser>;
 }

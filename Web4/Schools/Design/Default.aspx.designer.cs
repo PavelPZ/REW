@@ -49,24 +49,6 @@ namespace web4.Schools.Design {
         protected global::System.Web.UI.WebControls.LinkButton LinkButton15;
         
         /// <summary>
-        /// LinkButton13 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButton13;
-        
-        /// <summary>
-        /// LinkButton20 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButton20;
-        
-        /// <summary>
         /// LinkButton6 control.
         /// </summary>
         /// <remarks>
@@ -119,15 +101,6 @@ namespace web4.Schools.Design {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton LinkButton9;
-        
-        /// <summary>
-        /// LinkButton3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButton3;
         
         /// <summary>
         /// LinkButton16 control.
