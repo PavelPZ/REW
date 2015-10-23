@@ -8,6 +8,7 @@ using System.Xml.Linq;
 namespace DesignNew {
   public static partial class Deploy {
 
+    //seznam JS souboru (pro debug a minify mode)
     public static IEnumerable<string> allJS(bool isMin, string lang) {
       var jss = isMin ? jsMins.Select(s => string.Format(s, lang)) : externals.SelectMany(s => s).Concat(web.SelectMany(s => s)).Concat(loc.SelectMany(s => s).Select(s => string.Format(s, lang)));
       return jquery(isMin).Concat(jss);

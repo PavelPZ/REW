@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <!-- 
-  call from CubesDeployment: DesignNew.Deploy.generateMSBuildMinify(); 
+  generace minify.xml: call from CubesDeployment: DesignNew.Deploy.generateMSBuildMinify(); 
   build task:  "$(MSBuildBinPath)\msbuild.exe" "$(ProjectDir)deploy\minify.xml"
 -->
 <Project xmlns="http://schemas.microsoft.com/developer/MsBuild/2003">
