@@ -200,10 +200,22 @@ FakesAssemblies/
 !web4/app_data/testme/testmecertifikat.pdf
 !web4/app_data/testme/langmaster_pdf.pfx
 
+artifacts/
+blended/
+commonmark/
+datalib/
+dlls/
 downloads/
-oldtonewdata/
+eduauthor/
 eduauthornew/
-epplus/
+lmcom/
+lmdatabaseextension/
+ndependout/
+oldtonewdata/
+oldtonewviewer/
+packages/
+schemadefinition/
+scormexnet35/
 
 web4/edusoft/
 web4/lm/
