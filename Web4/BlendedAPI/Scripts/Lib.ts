@@ -145,7 +145,7 @@
         if (done) { //hotove cviceni, zapocitej vzdy
           //Bug 2556: nebere se ohled 
           if (!!(us.shortData.flag & CourseModel.CourseDataFlag.pcCannotEvaluate)) {
-            if (!(us.shortData.flag & CourseModel.CourseDataFlag.needsEval)) res.ms += nd.ms; //nic nenahrano => nula bodu, pripocti pouze MS
+            if (!(us.shortData.flag & CourseModel.CourseDataFlag.needsEval)) { res.ms += nd.ms; res.s += us.shortData.s; } //nevyhodnoceno => ignoruj
           } else {
             res.ms += nd.ms; res.s += us.shortData.s;
           }

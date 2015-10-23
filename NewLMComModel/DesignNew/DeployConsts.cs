@@ -8,6 +8,18 @@ using System.Threading.Tasks;
 namespace DesignNew {
   public static partial class Deploy {
 
+    //**************************** Data group
+    public enum DataGroups {
+      blended,
+      edusoft,
+      english, french, german, italian, russian, spanish,
+      grafia,
+      lmtests,
+      skrivanek
+    }
+
+
+    //**************************** JS logic
     static IEnumerable<string> jquery(bool isMin) { yield return isMin ? "jslib/scripts/jquery.min.js" : "jslib/scripts/jquery.js"; }
 
     static string[] jsMins = new string[] {

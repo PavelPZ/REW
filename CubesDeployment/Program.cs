@@ -1,13 +1,20 @@
 ﻿using LMComLib;
 using LMNetLib;
-using System;
-using System.Collections.Generic;
-using System.IO;
 //using Microsoft.AnalysisServices;
 //using Microsoft.AnalysisServices.AdomdClient;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Data.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using System;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
+using System.Xml;
+using CourseModel;
+using CourseMeta;
 
 namespace CubesDeployment {
 
@@ -29,7 +36,6 @@ namespace CubesDeployment {
 
     static void Main(string[] args) {
 
-      DesignNew.Deploy.generateMSBuildMinify();
       //File.WriteAllText(@"d:\temp\build.json", Packager.RewApp.jsDeployData());
       //return;
       //CourseMeta.Lib.init(new LoggerMemory(true), @"d:\lmcom\", false);
@@ -368,25 +374,25 @@ namespace CubesDeployment {
               //CourseMeta.buildLib.writeVirtualFiles(CourseMeta.WebBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\LM_debug.xml").getWebBatchFiles(logger));
 
               /***** ALAN ZIP ****/
-                //webBatchId = "alan_data";
-                //string zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; var tempZip = @"c:\temp\build.zip";
-                //CourseMeta.buildLib.zipVirtualFiles(tempZip, CourseMeta.WebBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + webBatchId + ".xml").getWebBatchFiles(logger), logger);
-                //if (File.Exists(zipFn)) File.Delete(zipFn); File.Move(tempZip, zipFn);
+              //webBatchId = "alan_data";
+              //string zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; var tempZip = @"c:\temp\build.zip";
+              //CourseMeta.buildLib.zipVirtualFiles(tempZip, CourseMeta.WebBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + webBatchId + ".xml").getWebBatchFiles(logger), logger);
+              //if (File.Exists(zipFn)) File.Delete(zipFn); File.Move(tempZip, zipFn);
 
-                /***** GRAFIA ZIP ****/
-                //webBatchId = "grafia_data";
-                //string zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; var tempZip = @"c:\temp\build.zip";
-                //if (File.Exists(tempZip)) File.Delete(tempZip); if (File.Exists(zipFn)) File.Delete(zipFn);
-                //var ignExts = new HashSet<string> { ".webm", ".mp4" };
-                //CourseMeta.buildLib.zipVirtualFiles(
-                //  tempZip,
-                //  CourseMeta.WebBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + webBatchId + ".xml").getWebBatchFiles(logger),
-                //  logger,
-                //  f => !ignExts.Contains(Path.GetExtension(f.srcPath)));
-                //File.Move(tempZip, zipFn);
+              /***** GRAFIA ZIP ****/
+              //webBatchId = "grafia_data";
+              //string zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; var tempZip = @"c:\temp\build.zip";
+              //if (File.Exists(tempZip)) File.Delete(tempZip); if (File.Exists(zipFn)) File.Delete(zipFn);
+              //var ignExts = new HashSet<string> { ".webm", ".mp4" };
+              //CourseMeta.buildLib.zipVirtualFiles(
+              //  tempZip,
+              //  CourseMeta.WebBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + webBatchId + ".xml").getWebBatchFiles(logger),
+              //  logger,
+              //  f => !ignExts.Contains(Path.GetExtension(f.srcPath)));
+              //File.Move(tempZip, zipFn);
 
-                /***** refresh LM web *****/
-                CourseMeta.Lib.init(logger, @"d:\lmcom\", true);
+              /***** refresh LM web *****/
+              CourseMeta.Lib.init(logger, @"d:\lmcom\", true);
               CourseMeta.buildLib.writeVirtualFiles(CourseMeta.WebDataBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\LM_Data_New.xml").getWebBatchFiles(logger));
               break;
             case '8':
@@ -445,16 +451,16 @@ namespace CubesDeployment {
                   //File.Move(tempZip, zipFn);
 
                   //*************** Blended
-                  webBatchId = "blended_software";
-                  Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
-                    actBatchVersion = Packager.batchVersion.release,
-                    version = schools.versions.debug,
-                    //version = schools.versions.minified,
-                    persistType = schools.persistTypes.persistNewEA,
-                    testGroup_debug = false,
-                  });
-                  zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; if (File.Exists(zipFn)) File.Delete(zipFn);
-                  File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
+                  //webBatchId = "blended_software";
+                  //Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
+                  //  actBatchVersion = Packager.batchVersion.release,
+                  //  version = schools.versions.debug,
+                  //  //version = schools.versions.minified,
+                  //  persistType = schools.persistTypes.persistNewEA,
+                  //  testGroup_debug = false,
+                  //});
+                  //zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; if (File.Exists(zipFn)) File.Delete(zipFn);
+                  //File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
 
                   //*************** Skrivanek
                   //webBatchId = "skrivanek_software";
@@ -481,40 +487,16 @@ namespace CubesDeployment {
                   //File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
 
                   //*************** chinhTestVN
-                  //webBatchId = "chinhTestvn_software";
-                  //Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
-                  //  actBatchVersion = Packager.batchVersion.release,
-                  //  version = schools.versions.debug,
-                  //  //version = schools.versions.minified,
-                  //  persistType = schools.persistTypes.persistNewEA,
-                  //  testGroup_debug = false,
-                  //});
-                  //zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; if (File.Exists(zipFn)) File.Delete(zipFn);
-                  //File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
-
-                  //webBatchId = "chinhtestvn_software";
-                  //Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
-                  //  actBatchVersion = Packager.batchVersion.release,
-                  //  version = schools.versions.debug,
-                  //  //version = schools.versions.minified,
-                  //  persistType = schools.persistTypes.persistNewEA,
-                  //  testGroup_debug = false,
-                  //});
-                  ////zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip";
-                  //zipFn = string.Format(@"\\192.168.0.14\q\temp\{0}.zip", webBatchId);
-                  //if (File.Exists(zipFn)) File.Delete(zipFn);
-                  //File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
-
-                  //webBatchId = "chinhtestvn_data";
-                  ////zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip";
-                  //zipFn = string.Format(@"\\192.168.0.14\q\temp\{0}.zip", webBatchId);
-                  //if (File.Exists(zipFn)) File.Delete(zipFn);
-                  //tempZip = @"c:\temp\build.zip"; if (File.Exists(tempZip)) File.Delete(tempZip);
-                  //CourseMeta.buildLib.zipVirtualFiles(
-                  //  tempZip,
-                  //  CourseMeta.WebDataBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + webBatchId + ".xml").
-                  //  getWebBatchFiles(lg3), lg3, f => !ignExts.Contains(Path.GetExtension(f.srcPath)));
-                  //File.Move(tempZip, zipFn);
+                  webBatchId = "chinhTestvn_software";
+                  Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
+                    actBatchVersion = Packager.batchVersion.release,
+                    version = schools.versions.debug,
+                    //version = schools.versions.minified,
+                    persistType = schools.persistTypes.persistNewEA,
+                    testGroup_debug = false,
+                  });
+                  zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; if (File.Exists(zipFn)) File.Delete(zipFn);
+                  File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
 
                   //*************** Grafia
                   //webBatchId = "grafia_software";
@@ -612,14 +594,14 @@ namespace CubesDeployment {
           return;
         }
         serverId = args.Length < 2 ? null : args[1].ToLower();
-        switch (args[0]) {
-          //case "buildCompanyCubes":
-          //  NewData.SSAS.buildCompanyCubes(serverId);
-          //  break;
-          case "includeClrExtensionToDB":
-            NewData.SSAS.includeClrExtensionToDB(serverId);
-            break;
-        }
+        //switch (args[0]) {
+        //  case "buildCompanyCubes":
+        //    NewData.SSAS.buildCompanyCubes(serverId);
+        //    break;
+        //  case "includeClrExtensionToDB":
+        //    NewData.SSAS.includeClrExtensionToDB(serverId);
+        //    break;
+        //}
       } catch (Exception exp) {
         File.WriteAllText(errorFn, LowUtils.ExceptionToString(exp));
       }
@@ -705,7 +687,8 @@ namespace CubesDeployment {
         txt = root.Descendants("media-dialog").FirstOrDefault(mt => mt.AttributeValue("url", "").StartsWith(".self."));
         if (txt != null) {
           txt.Name = "cut-dialog"; if (fn.IndexOf(@"\grafia\") > 0) txt.SetAttributeValue("media-url", "@std-4"); txt.SetAttributeValue("url", null);
-          foreach (var s in txt.Elements()) { s.Name = "replica"; if (s.Attribute("name") != null) { s.SetAttributeValue("actor", s.Attribute("name").Value); s.SetAttributeValue("name", null); } } foreach (var s in txt.Descendants("snd-sent")) s.Name = "sent";
+          foreach (var s in txt.Elements()) { s.Name = "replica"; if (s.Attribute("name") != null) { s.SetAttributeValue("actor", s.Attribute("name").Value); s.SetAttributeValue("name", null); } }
+          foreach (var s in txt.Descendants("snd-sent")) s.Name = "sent";
           root = txt; return;
         }
         //media-dialog, media-text
@@ -772,8 +755,8 @@ namespace CubesDeployment {
         CourseModel.tag.adjustXsdReference(root);
       }
     }
-    static Dictionary<string, string> renameTags = new Dictionary<string, string>() { 
-      { "drag-source", "offering" }, 
+    static Dictionary<string, string> renameTags = new Dictionary<string, string>() {
+      { "drag-source", "offering" },
       { "possibilities", "offering" },
       { "drag-target", "drop-down" },
       { "eval-group-btn", "eval-btn" },
@@ -882,3 +865,4 @@ namespace CubesDeployment {
   }
 
 }
+
