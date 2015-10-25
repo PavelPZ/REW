@@ -313,6 +313,8 @@
     <Content Include="Deploy\cs-cz.min.js" />
     <Content Include="Deploy\en-gb.min.js" />
     <Content Include="Deploy\externals.min.js" />
+    <Content Include="Deploy\otherServer.txt" />
+    <Content Include="Deploy\otherClient.txt" />
     <Content Include="Deploy\MinifyTemplate.xml" />
     <Content Include="Deploy\Minify.xml" />
     <Content Include="Deploy\web.min.js" />

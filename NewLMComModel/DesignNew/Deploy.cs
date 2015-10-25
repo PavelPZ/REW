@@ -8,10 +8,28 @@ using System.Xml.Linq;
 namespace DesignNew {
   public static partial class Deploy {
 
-    //seznam JS souboru (pro debug a minify mode)
-    public static IEnumerable<string> allJS(bool isMin, string lang) {
+    //******************* soubory pro SW deployment
+    public static IEnumerable<string> allSWFiles() {
+      var JSs = validDesignIds.SelectMany(skin => validLangStrs.SelectMany(lang => new bool[] { true, false }.Select(bol => new { skin, lang, bol }))).SelectMany(slb => allJS(slb.bol, slb.lang, slb.skin));
+      var CSSs = validDesignIds.SelectMany(skin => new bool[] { true, false }.Select(bol => new { skin, bol })).SelectMany(slb => allCSS(slb.bol, slb.skin));
+      var other = File.ReadAllLines(@"D:\LMCom\rew\Web4\Deploy\otherServer.txt").Concat(File.ReadAllLines(@"D:\LMCom\rew\Web4\Deploy\otherClient.txt"));
+      return JSs.Concat(CSSs).Concat(other).Where(s => !string.IsNullOrEmpty(s)).Select(s => s.ToLower()).Distinct().OrderBy(s => s);
+    }
+
+    //******************* soubory pro generaci index.html
+    //seznam JS a CSS souboru (pro debug a minify mode)
+    public static IEnumerable<string> allJS(bool isMin, string lang, string designId) {
       var jss = isMin ? jsMins.Select(s => string.Format(s, lang)) : externals.SelectMany(s => s).Concat(web.SelectMany(s => s)).Concat(loc.SelectMany(s => s).Select(s => string.Format(s, lang)));
-      return jquery(isMin).Concat(jss);
+      IEnumerable<string> skin = Enumerable.Empty<string>();
+      if (!string.IsNullOrEmpty(designId)) { string[] sk; if (jsSkins.TryGetValue(designId, out sk)) skin = sk; }
+      return jquery(isMin).Concat(jss).Concat(skin);
+    }
+
+    public static IEnumerable<string> allCSS(bool isMin, string designId) {
+      var cssList = isMin ? cssMins : css;
+      IEnumerable<string> skin = Enumerable.Empty<string>();
+      if (!string.IsNullOrEmpty(designId)) { string[] sk; if (cssSkins.TryGetValue(designId, out sk)) skin = sk; }
+      return cssList.Concat(skin);
     }
 
     //******************* generace D:\LMCom\rew\Web4\Deploy\Minify.xml
@@ -22,7 +40,7 @@ namespace DesignNew {
       int cnt = 0;
       generatePart2(Target, ItemGroup, ref cnt, externals, "externals");
       generatePart2(Target, ItemGroup, ref cnt, web, "web");
-      foreach (var lang in new string[] { "cs-cz", "en-gb" }) generatePart2(Target, ItemGroup, ref cnt, loc, lang);
+      foreach (var lang in validLangStrs) generatePart2(Target, ItemGroup, ref cnt, loc, lang);
       var CssFiles = ItemGroup.Element(schema + "CssFiles");
       CssFiles.Add(new XAttribute("Include", css.Select(c => "../" + c).Aggregate((r,i) => r + "; " + i)));
       template.Save(@"D:\LMCom\rew\Web4\Deploy\Minify.xml");

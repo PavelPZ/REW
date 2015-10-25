@@ -36,11 +36,13 @@ namespace CubesDeployment {
 
     static void Main(string[] args) {
 
-      DesignNew.Deploy.generateMSBuildMinify(); return;
-      //File.WriteAllText(@"d:\temp\build.json", Packager.RewApp.jsDeployData());
-      //return;
-      //CourseMeta.Lib.init(new LoggerMemory(true), @"d:\lmcom\", false);
-      //return;
+      //DesignNew.Deploy.generateMSBuildMinify(); return;
+      //var fss = DesignNew.Deploy.validDesignIds.Select(skin => new Packager.ConfigLow { designId = skin }).SelectMany(cfg => Packager.RewApp.imgFontsEtc(cfg)).SelectMany(ss => ss);
+      //var swf = File.ReadAllLines(@"D:\LMCom\rew\CubesDeployment\AddWebSoftwareFiles.txt");
+      //File.WriteAllLines(@"d:\temp\files.txt", fss.Concat(swf).Distinct().Select(s => s.ToLower().Replace('\\','/')).OrderBy(s => s));
+      //File.WriteAllLines(@"d:\temp\files.txt", DesignNew.Deploy.allSWFiles().Select(f => Path.GetExtension(@"d:\LMCom\rew\Web4\" + f.Replace('/', '\\'))).Distinct().OrderBy(s => s));
+      File.WriteAllText(@"d:\temp\files.txt", DesignNew.Deploy.allSWFiles().Select(f => Path.GetExtension(@"d:\LMCom\rew\Web4\" + f.Replace('/', '\\'))).Distinct().OrderBy(s => s).Select(s => "\"" + s + "\"").Aggregate((r,i) => r + ", " + i));
+      return;
 
       Machines._basicPath = @"d:\lmcom\";
       var ignExts = new HashSet<string> { ".webm", ".mp4", ".mp3" };

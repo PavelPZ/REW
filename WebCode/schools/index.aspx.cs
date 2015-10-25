@@ -20,6 +20,7 @@ namespace WebCode {
         version = isDebug ? schools.versions.debug : schools.versions.minified,
         dataBatchUrl = "/lm/lm_data_new/",
         lang = LMComLib.urlInfo.langStrToLang(Request["lang"]),
+        designId = DesignNew.Deploy.validDesignIds.Contains(designId) ? designId : null,
         canSkipCourse = true,
         canResetCourse = true,
         canResetTest = true,
@@ -31,18 +32,18 @@ namespace WebCode {
 
     static DateTime appLoadTime = DateTime.Now;
     static bool isDebug = ConfigurationManager.AppSettings["cfg-isDebug"] == "true";
+    static string designId = ConfigurationManager.AppSettings["cfg-designId"];
 
     protected Packager.Config cfg;
     protected string pageTitle;
     protected string scripts() {
       StringBuilder sb = new StringBuilder();
-      foreach (var s in DesignNew.Deploy.allJS(cfg.version != schools.versions.debug, cfg.langStr)) script(sb, s);
+      foreach (var s in DesignNew.Deploy.allJS(cfg.version != schools.versions.debug, cfg.langStr, cfg.designId)) script(sb, s);
       return sb.ToString();
     }
     protected string csss() {
       StringBuilder sb = new StringBuilder();
-      var cssList = cfg.version != schools.versions.debug ? DesignNew.Deploy.cssMins : DesignNew.Deploy.css;
-      foreach (var s in cssList) css(sb, s);
+      foreach (var s in DesignNew.Deploy.allCSS(cfg.version != schools.versions.debug, cfg.designId)) css(sb, s);
       return sb.ToString();
     }
     static void script(StringBuilder sb, string url) { sb.AppendFormat(@"  <script src='../{0}' type='text/javascript'></script>", url); sb.AppendLine(); }

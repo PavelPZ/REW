@@ -1,4 +1,5 @@
-﻿using Packager;
+﻿using LMComLib;
+using Packager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,11 @@ namespace DesignNew {
       skrivanek
     }
 
+    public static HashSet<string> validDesignIds = new HashSet<string>(new string[] { "skrivanek", "grafia", "chinh" });
+    public static Langs[] validLangs = new Langs[] { Langs.cs_cz, Langs.en_gb };
+    public static string[] validLangStrs = validLangs.Select(l => l.ToString().Replace('_', '-')).ToArray();
+    public static string[] validExtensions = new string[] { ".css", ".eot", ".gif", ".html", ".jpg", ".js", ".otf", ".pdf", ".png", ".svg", ".ttf", ".woff", ".woff2", ".xap", ".xlsx" };
+
     //**************************** CSS logic
     public static string[] cssMins = new string[] {
       "jslib/css/lm.min.css",
@@ -28,8 +34,11 @@ namespace DesignNew {
       "blendedapi/styles/style.css",
       "jslib/css/lm.css",
     };
-
-
+    static Dictionary<string, string[]> cssSkins = new Dictionary<string, string[]>() {
+      {"skrivanek", new string[] { "jslib/skins/skrivanek/css.css" } },
+      {"grafia", new string[] { "jslib/skins/grafia/css.css" } },
+      {"chinh", new string[] { "jslib/skins/chinh/css.css" } }
+    };
 
     //**************************** JS logic
     static IEnumerable<string> jquery(bool isMin) { yield return isMin ? "jslib/scripts/jquery.min.js" : "jslib/scripts/jquery.js"; }
@@ -228,6 +237,12 @@ namespace DesignNew {
     static string[] jsLoc = new string[] {
       "schools/loc/tradosdata.{0}.js",
       "jslib/scripts/cultures/globalize.culture.{0}.js"
+    };
+
+    static Dictionary<string, string[]> jsSkins = new Dictionary<string, string[]>() {
+      {"skrivanek", new string[] { "jslib/skins/skrivanek/script.js" } },
+      {"grafia", new string[] { "jslib/skins/grafia/script.js" } },
+      {"chinh", new string[] { "jslib/skins/chinh/script.js" } }
     };
 
     static string[][] externals = new string[][] { jsExternal };

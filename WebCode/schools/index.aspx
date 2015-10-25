@@ -8,12 +8,6 @@
   <meta name='viewport' content='width=device-width' />
   <title><%=pageTitle%></title>
   <%=csss() %>
-  <%--<link href="../font-awesome/lm/externals.css" rel="stylesheet" type="text/css" />
-  <link href="../jslib/ea/ea.css" rel="stylesheet" type="text/css" />
-  <link href="../blendedapi/styles/style.css" rel="stylesheet" type="text/css" />
-  <link href="../jslib/css/lm.css" rel="stylesheet" />--%>
-
-  <%--=Packager.MainPage.writeCss(Packager.RewApp.publisherSkinCss(cfg))--%>
   <%=Packager.RewApp.writeCfg(cfg)%>
   <script type='text/javascript' src='../jslib/js/lmconsoleinit.js'></script>
   <%=scripts() %>

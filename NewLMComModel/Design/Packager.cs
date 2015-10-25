@@ -419,19 +419,6 @@ namespace Packager {
       yield return Consts.jsGround;
     }
 
-    //public static IEnumerable<IEnumerable<string>> notMinifiedGroundCSS() {
-    //  yield return Consts.cssBootstrap;
-    //  yield return Consts.cssFontAwesome;
-    //  yield return Consts.cssJsLib;
-    //  yield return Consts.cssSchool;
-    //}
-
-    //public static IEnumerable<string> minifiedGroundCSS() {
-    //  yield return cssBootstrap;
-    //  yield return cssFonts;
-    //  yield return cssGround;
-    //}
-
     public static IEnumerable<string> minifiedJS(ConfigLow cfg) {
       //yield return jsQuery; yield return jsQuery2;
       yield return jsExternal;
@@ -459,58 +446,6 @@ namespace Packager {
 
     }
 
-
-
-    //public static IEnumerable<IEnumerable<string>> notMinifiedCSS(ConfigLow cfg) {
-    //  yield return Consts.cssBootstrap;
-    //  yield return Consts.cssFontAwesome;
-    //  if (!cfg.noOldEA) yield return Consts.cssEA;
-    //  yield return Consts.cssJsLib;
-    //  if (cfg.target == Targets.web) yield return Consts.cssLogin;
-    //  if (cfg.target == Targets.web) yield return Consts.cssAdmin;
-    //  yield return Consts.cssSchool;
-    //  yield return Consts.cssCourse;
-    //}
-
-    //public static IEnumerable<string> minifiedCSS(ConfigLow cfg) {
-    //  yield return cssBootstrap;
-    //  yield return cssFonts;
-    //  if (!cfg.noOldEA) yield return cssOldEA;
-    //  yield return cssMinifiedTarget[cfg.target];
-    //}
-
-
-    //public static void minify(bool debugMinIsBig, params Targets[] targets) {
-    //  StringBuilder err = new StringBuilder();
-
-    //  jsMinify(debugMinIsBig, jsGround, err,
-    //    Consts.jsGround);
-    //  jsMinify(debugMinIsBig, jsExternal, err,
-    //    Consts.jsExternal);
-    //  jsMinify(debugMinIsBig, jsOldEA, err,
-    //    Consts.jsEA);
-    //  jsMinify(debugMinIsBig, jsOldEARepl, err,
-    //    Consts.jsEARepl);
-    //  foreach (var target in targets)
-    //    jsMinify(debugMinIsBig, jsMinifiedTarget[target], err,
-    //      Consts.jsModel,
-    //      target == Targets.scorm ? Consts.jsScorm : null,
-    //      target == Targets.web ? Consts.jsLogin : null,
-    //      //target == Targets.web || target == Targets.author ? Consts.jsAuthor : null,
-    //      Consts.jsSchoolStart,
-    //      target == Targets.web ? Consts.jsAdmin : null
-    //      );
-    //  jsMinify(debugMinIsBig, jsCourse, err,
-    //    Consts.jsSchoolEnd,
-    //    Consts.jsCourse,
-    //    Consts.jsAuthorWeb,
-    //    Consts.jsBlended
-    //  );
-    //  //jsMinify(debugMinIsBig, jsLame, err,
-    //  //  Consts.jsLame);
-    //  if (err.Length > 0) throw new Exception(err.ToString());
-    //}
-
     const string jsExternal = "schools/_external";
     const string jsGround = "schools/_ground";
     const string jsOldEA = "schools/_ea";
@@ -525,53 +460,6 @@ namespace Packager {
     static IEnumerable<string> protectedJS() { return jsMinifiedTarget.Values.Concat(XExtension.Create(jsCourse)); }
 
     static string basicPath = Machines.rootPath;
-
-    //static void jsMinify(bool debugMinIsBig, string result, StringBuilder err, params string[][] groups) {
-    //  StringBuilder sb = new StringBuilder();
-    //  var dest = basicPath + result.Replace('/', '\\') + ".js";
-    //  var destMin = dest.Replace(".js", ".min.js");
-    //  foreach (var fn in groups.Where(g => g != null).SelectMany(g => g)) sb.AppendLine(File.ReadAllText(basicPath + fn));
-    //  writeFile(dest, sb.ToString());
-    //  if (debugMinIsBig)
-    //    File.Copy(dest, destMin, true);
-    //  else {
-    //    var compressor = new JavaScriptCompressor() { ErrorReporter = new JSErrorReporter(dest, err) };
-    //    try {
-    //      //ERROR in _course.js, odzavorkovana komprese
-    //      var comp = compressor.Compress(sb.ToString());
-    //      //var comp = sb.ToString();
-    //      writeFile(destMin, comp);
-    //    } catch (Exception exp) {
-    //      throw new Exception(err.ToString(), exp);
-    //    }
-    //  }
-    //  Handlers.GZipHandler.GZip(destMin);
-    //}
-    //static void cssMinify(string resultFn, params string[][] groups) {
-    //  StringBuilder sb = new StringBuilder();
-    //  foreach (var fn in groups.Where(g => g != null).SelectMany(g => g)) sb.AppendLine(File.ReadAllText(basicPath + fn));
-    //  writeFile(basicPath + resultFn + ".css", sb.ToString());
-    //  var comp = new CssCompressor().Compress(sb.ToString());
-    //  writeFile(basicPath + resultFn + ".min.css", comp);
-    //}
-
-    //public class JSErrorReporter : ErrorReporter {
-    //  public JSErrorReporter(string fn, StringBuilder err) { this.err = err; this.fn = fn; }
-    //  StringBuilder err;
-    //  string fn;
-
-    //  public void Error(string message, string sourceName, int line, string lineSource, int lineOffset) {
-    //    err.AppendFormat("{0} in {1}: lineNum={2}, lineTxt={3}, offset={4}", message, sourceName, line, lineSource, lineOffset);
-    //    err.AppendLine("<br/>");
-    //  }
-    //  public EcmaScriptRuntimeException RuntimeError(string message, string sourceName, int line, string lineSource, int lineOffset) {
-    //    err.AppendFormat("{0} in {1}: lineNum={2}, lineTxt={3}, offset={4}", message, sourceName, line, lineSource, lineOffset);
-    //    err.AppendLine("<br/>");
-    //    return new EcmaScriptRuntimeException("*** Error in " + fn, sourceName, line, lineSource, lineOffset);
-    //  }
-    //  public void Warning(string message, string sourceName, int line, string lineSource, int lineOffset) {
-    //  }
-    //}
 
     static void writeFile(string fn, string cont) {
       fn = fn.Replace('/', '\\'); cont = cont.TrimEnd();
@@ -596,50 +484,11 @@ namespace Packager {
       if (File.Exists(skinJs)) yield return new string[] { string.Format(@"JsLib/skins/{0}/script.js", cfg.designId).ToLower() };
     }
 
-    //public static IEnumerable<IEnumerable<string>> cssNewEA(ConfigLow cfg, bool isGround) {
-    //  //switch (cfg.version) {
-    //  //  case versions.debug:
-    //  //    foreach (var jss in isGround ? notMinifiedGroundCSS() : notMinifiedCSS(cfg)) yield return jss;
-    //  //    break;
-    //  //  case versions.minified:
-    //  //  case versions.not_minified:
-    //  //    yield return (isGround ? minifiedGroundCSS() : minifiedCSS(cfg)).Select(m => m + (cfg.version == versions.minified ? ".charMin" : null) + ".css");
-    //  //    break;
-    //  //}
-    //  var skinCss = string.Format(Machines.basicPath + @"rew\Web4\JsLib\skins\{0}\css.css", cfg.designId);
-    //  if (File.Exists(skinCss)) yield return new string[] { string.Format(@"JsLib/skins/{0}/css.css", cfg.designId).ToLower() };
-    //}
-
     public static IEnumerable<IEnumerable<string>> publisherSkinCss(ConfigLow cfg) {
       var skinCss = string.Format(Machines.rootPath + @"JsLib\skins\{0}\css.css", cfg.designId);
       if (File.Exists(skinCss)) yield return new string[] { string.Format(@"JsLib/skins/{0}/css.css", cfg.designId).ToLower() };
     }
-    //public static IEnumerable<IEnumerable<string>> jsGroundJS(ConfigLow cfg) {
-    //  switch (cfg.version) {
-    //    case versions.debug:
-    //      foreach (var jss in notMinifiedGroundJS()) yield return jss;
-    //      break;
-    //    case versions.not_minified:
-    //      yield return minifiedGroundJS().Select(m => m + ".js");
-    //      break;
-    //    case versions.minified:
-    //      yield return minifiedGroundJS().Select(m => m + ".charMin.js");
-    //      break;
-    //  }
-    //}
-
-    //public static IEnumerable<IEnumerable<string>> cssGroundCSS(ConfigLow cfg) {
-    //  switch (cfg.version) {
-    //    case versions.debug:
-    //      foreach (var jss in notMinifiedGroundCSS()) yield return jss;
-    //      break;
-    //    case versions.minified:
-    //    case versions.not_minified:
-    //      yield return minifiedGroundCSS().Select(m => m + (cfg.version == versions.minified ? ".charMin" : null) + ".css");
-    //      break;
-    //  }
-    //}
-
+    
     public static IEnumerable<IEnumerable<string>> htmlNewEA(ConfigLow cfg) {
       yield return Consts.htmlJsLib;
       if (cfg.target == Targets.web) yield return Consts.htmlLogin;
@@ -654,7 +503,7 @@ namespace Packager {
     }
 
 
-    static IEnumerable<IEnumerable<string>> imgFontsEtc(ConfigLow cfg) {
+    public static IEnumerable<IEnumerable<string>> imgFontsEtc(ConfigLow cfg) {
       yield return new string[] { @"JsLib\EA\img", @"JsLib\css\img", @"Schools\EAImgMp3\framework\controls\symbols", @"font-awesome\fonts\" }.SelectMany(pth => dir(pth, "*.*", true));
       //Skin PDF a IMG
       var skinDir = string.Format(Machines.rootPath + @"JsLib\skins\{0}\", cfg.designId);

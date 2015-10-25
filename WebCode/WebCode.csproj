@@ -186,8 +186,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="gzip-gzip.htm" />
-    <Content Include="gzip-.htm" />
     <Content Include="links.html" />
     <Content Include="schools\index.aspx" />
     <Content Include="Web.config" />
