@@ -43,7 +43,7 @@ namespace CubesDeployment {
       //File.WriteAllLines(@"d:\temp\files.txt", DesignNew.Deploy.allSWFiles().Select(f => Path.GetExtension(@"d:\LMCom\rew\Web4\" + f.Replace('/', '\\'))).Distinct().OrderBy(s => s));
       //File.WriteAllText(@"d:\temp\files.txt", DesignNew.Deploy.allSWFiles().Select(f => Path.GetExtension(@"d:\LMCom\rew\Web4\" + f.Replace('/', '\\'))).Distinct().OrderBy(s => s).Select(s => "\"" + s + "\"").Aggregate((r,i) => r + ", " + i));
 
-      DesignNew.Deploy.zipSWFiles(@"d:\temp\swFiles.zip");
+      //DesignNew.Deploy.zipSWFiles(@"d:\temp\swFiles.zip");
       return;
 
       Machines._basicPath = @"d:\lmcom\";

@@ -7,23 +7,51 @@ using System.Linq;
 using System.Xml.Linq;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-
+using Yahoo.Yui.Compressor;
+using System.Text;
 
 namespace DesignNew {
 
   public class zipSWFiles : Task {
     public override bool Execute() {
-      Deploy.zipSWFiles(zipFile);
+      Log.LogMessage(">>> zipSWFiles START");
+      Log.LogMessage(basicPath + " > " + zipFile);
+      Deploy.zipSWFiles(basicPath, zipFile);
+      Log.LogMessage(">>> zipSWFiles END");
       return true;
     }
+    [Required]
+    public string basicPath { get; set; }
     [Required]
     public string zipFile { get; set; }
   }
 
   public class minify : Task {
     public override bool Execute() {
+      Log.LogMessage(">>> minify START");
+      generate(Deploy.externals.SelectMany(f => f), "externals", true, null);
+      generate(Deploy.web.SelectMany(f => f), "web", true, null);
+      foreach (var lng in Deploy.validLangStrs) {
+        generate(Deploy.loc.SelectMany(f => f), lng, true, lng);
+      }
+      generate(Deploy.css, null, false, null);
+      Log.LogMessage(">>> minify END");
       return true;
     }
+    void generate(IEnumerable<string> files, string name, bool isJs, string lng) {
+      StringBuilder sb = new StringBuilder();
+      Compressor compr = isJs ? (Compressor)new JavaScriptCompressor() : new CssCompressor();
+      foreach (var fn in files.Select(f => basicPath + string.Format(f,lng).Replace('/', '\\'))) {
+        //Log.LogMessage(fn);
+        var res = compr.Compress(File.ReadAllText(fn, Encoding.UTF8));
+        sb.Append(res);
+      }
+      var minFn = isJs ? basicPath + @"deploy\" + name + ".min.js" : basicPath + @"jslib\css\lm.min.css";
+      Log.LogMessage("> " + minFn);
+      File.WriteAllText(minFn, sb.ToString());
+    }
+    [Required]
+    public string basicPath { get; set; }
   }
 
 
@@ -31,19 +59,19 @@ namespace DesignNew {
   public static partial class Deploy {
 
     //******************* soubory pro SW deployment
-    public static IEnumerable<string> allSWFiles() {
+    public static IEnumerable<string> allSWFiles(string basicPath) {
       var JSs = validDesignIds.SelectMany(skin => validLangStrs.SelectMany(lang => new bool[] { true, false }.Select(bol => new { skin, lang, bol }))).SelectMany(slb => allJS(slb.bol, slb.lang, slb.skin));
       var CSSs = validDesignIds.SelectMany(skin => new bool[] { true, false }.Select(bol => new { skin, bol })).SelectMany(slb => allCSS(slb.bol, slb.skin));
-      var other = File.ReadAllLines(@"D:\LMCom\rew\Web4\Deploy\otherServer.txt").Concat(File.ReadAllLines(@"D:\LMCom\rew\Web4\Deploy\otherClient.txt"));
+      var other = File.ReadAllLines(basicPath + @"Deploy\otherServer.txt").Concat(File.ReadAllLines(basicPath + @"Deploy\otherClient.txt"));
       return JSs.Concat(CSSs).Concat(other).Where(s => !string.IsNullOrEmpty(s)).Select(s => s.ToLower()).Distinct().OrderBy(s => s);
     }
-    public static void zipSWFiles(string zipFile) {
+    public static void zipSWFiles(string basicPath, string zipFile) {
       if (File.Exists(zipFile)) File.Delete(zipFile);
       using (var zipStr = File.OpenWrite(zipFile))
       using (ZipArchive zip = new ZipArchive(zipStr, ZipArchiveMode.Create)) {
-        foreach (var fn in allSWFiles().Select(f => f.Replace('/', '\\'))) {
+        foreach (var fn in allSWFiles(basicPath).Select(f => f.Replace('/', '\\'))) {
           ZipArchiveEntry entry = zip.CreateEntry(fn);
-          var inpFn = @"D:\LMCom\rew\Web4\" + fn;
+          var inpFn = basicPath + fn;
           using (var inpStr = File.OpenRead(inpFn))
           using (var str = entry.Open()) inpStr.CopyTo(str);
           if (gzipExtensions.Contains(Path.GetExtension(inpFn))) {
@@ -76,34 +104,34 @@ namespace DesignNew {
     }
 
     //******************* generace D:\LMCom\rew\Web4\Deploy\Minify.xml
-    public static void generateMSBuildMinify() {
-      XElement template = XElement.Load(@"D:\LMCom\rew\Web4\Deploy\MinifyTemplate.xml");
-      var Target = template.Descendants(schema + "Target").First();
-      var ItemGroup = Target.Element(schema + "ItemGroup");
-      int cnt = 0;
-      generatePart2(Target, ItemGroup, ref cnt, externals, "externals");
-      generatePart2(Target, ItemGroup, ref cnt, web, "web");
-      foreach (var lang in validLangStrs) generatePart2(Target, ItemGroup, ref cnt, loc, lang);
-      var CssFiles = ItemGroup.Element(schema + "CssFiles");
-      CssFiles.Add(new XAttribute("Include", css.Select(c => "../" + c).Aggregate((r, i) => r + "; " + i)));
-      template.Save(@"D:\LMCom\rew\Web4\Deploy\Minify.xml");
-    }
+    //public static void generateMSBuildMinify() {
+    //  XElement template = XElement.Load(@"D:\LMCom\rew\Web4\Deploy\MinifyTemplate.xml");
+    //  var Target = template.Descendants(schema + "Target").First();
+    //  var ItemGroup = Target.Element(schema + "ItemGroup");
+    //  int cnt = 0;
+    //  generatePart2(Target, ItemGroup, ref cnt, externals, "externals");
+    //  generatePart2(Target, ItemGroup, ref cnt, web, "web");
+    //  foreach (var lang in validLangStrs) generatePart2(Target, ItemGroup, ref cnt, loc, lang);
+    //  var CssFiles = ItemGroup.Element(schema + "CssFiles");
+    //  CssFiles.Add(new XAttribute("Include", css.Select(c => "../" + c).Aggregate((r, i) => r + "; " + i)));
+    //  template.Save(@"D:\LMCom\rew\Web4\Deploy\Minify.xml");
+    //}
 
-    static void generatePart2(XElement target, XElement itemGroup, ref int cnt, string[][] externals, string name) {
-      cnt++;
-      var tagName = "JavaScriptFiles" + cnt.ToString();
+    //static void generatePart2(XElement target, XElement itemGroup, ref int cnt, string[][] externals, string name) {
+    //  cnt++;
+    //  var tagName = "JavaScriptFiles" + cnt.ToString();
 
-      var Include = externals.SelectMany(e => e).Select(s => "../" + string.Format(s, name)).Aggregate((r, i) => r + "; " + i);
-      itemGroup.Add(new XElement(schema + tagName, new XAttribute("Include", Include)));
+    //  var Include = externals.SelectMany(e => e).Select(s => "../" + string.Format(s, name)).Aggregate((r, i) => r + "; " + i);
+    //  itemGroup.Add(new XElement(schema + tagName, new XAttribute("Include", Include)));
 
-      target.Add(new XElement(schema + "JavaScriptCompressorTask",
-        new XAttribute("DeleteSourceFiles", "false"),
-        new XAttribute("SourceFiles", string.Format("@({0})", tagName)),
-        new XAttribute("OutputFile", string.Format("{0}.min.js", name))
-      ));
-    }
+    //  target.Add(new XElement(schema + "JavaScriptCompressorTask",
+    //    new XAttribute("DeleteSourceFiles", "false"),
+    //    new XAttribute("SourceFiles", string.Format("@({0})", tagName)),
+    //    new XAttribute("OutputFile", string.Format("{0}.min.js", name))
+    //  ));
+    //}
 
-    static XNamespace schema = "http://schemas.microsoft.com/developer/MsBuild/2003";
+    //static XNamespace schema = "http://schemas.microsoft.com/developer/MsBuild/2003";
 
     //public static string jsDeployData() {
     //  Dictionary<string, string[]> json = new Dictionary<string, string[]>();

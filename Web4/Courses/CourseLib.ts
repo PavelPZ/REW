@@ -33,7 +33,7 @@ module CourseMeta {
   //inline contrtols
   var oliReplace = 'olireplace';
   export function processInlineControls(scriptId: string, completed: () => void) {
-    if (!scriptId) { _.each($(oliReplace),(el: HTMLElement) => $(el).remove()); completed(); return; }
+    if (!scriptId) { _.each($(oliReplace), (el: HTMLElement) => $(el).remove()); completed(); return; }
     var txt = $('#' + scriptId).html();
     if (!txt) { debugger; throw scriptId; }
     //nacti page
@@ -43,7 +43,7 @@ module CourseMeta {
     ex.onSetPage(pg, {});
     var pgCtrl = Course.finishCreatePage(ex);
     //replace <oli-replace> elements with controls 
-    _.each($(oliReplace),(el: HTMLElement) => {
+    _.each($(oliReplace), (el: HTMLElement) => {
       var ctrl = pg.tags[el.id];
       if (!ctrl) { $(el).remove(); return; }
       var html = JsRenderTemplateEngine.render('c_gen', ctrl);
@@ -52,9 +52,9 @@ module CourseMeta {
       ko.applyBindings(ctrl, $html[0]);
     });
     //init controls
-    pg.callInitProcs(Course.initPhase.beforeRender,() => {
-      pg.callInitProcs(Course.initPhase.afterRender,() => {
-        pg.callInitProcs(Course.initPhase.afterRender2,() => {
+    pg.callInitProcs(Course.initPhase.beforeRender, () => {
+      pg.callInitProcs(Course.initPhase.afterRender, () => {
+        pg.callInitProcs(Course.initPhase.afterRender2, () => {
           ex.evaluator = pg;
           ex.evaluator.acceptData(ex.done, ex.result);
           if (completed) completed();
@@ -232,7 +232,7 @@ module CourseMeta {
       foundGreenEx = null;
       if (_.isEmpty(prodUrl)) { completed(null); return; }
       prodUrl = decodeURIComponent(prodUrl);
-      adjustProduct(prodUrl, persistence,() => {
+      adjustProduct(prodUrl, persistence, () => {
         if (actNode && actNode.url == nodeUrl) { completed(isType(actNode, runtimeType.ex) ? <exImpl>actNode : null); return; } //zadna zmena aktualniho node
         var oldEx = actEx; var oldMod = actModule; var oldNode = actNode; var oldGrammarEx = actGrammarEx; var oldGrammarModule = actGrammarModule;
         var doCompleted = (loadedEx: exImpl) => {
@@ -294,7 +294,7 @@ module CourseMeta {
 
         //jiny task multitasku - prejdi pres home
         if (changeTaskInMultitask(actNode, findRes.grEx))
-          findRes.info = new greenArrowInfo(CSLocalize('e64fb875261a4c5e849a9952ecc4ae63', 'Continue'), false, 'success', 'hand-o-right',() => gui.gotoData(null));
+          findRes.info = new greenArrowInfo(CSLocalize('e64fb875261a4c5e849a9952ecc4ae63', 'Continue'), false, 'success', 'hand-o-right', () => gui.gotoData(null));
 
         //muze nastat?
         if (!findRes.info) return;
@@ -370,7 +370,7 @@ module CourseMeta {
       var isGramm = isType(actm, runtimeType.grammar);
       if ((isGramm && actm == actGrammarModule) || (!isGramm && actm == actModule)) { completed(actm); return; } //zadna zmena modulu
       if (isGramm) actGrammarModule = actm; else actModule = actm;
-      load(urlStripLast(actm.url) + '.' + Trados.actLangStr,(locDict: locDict) => {
+      load(urlStripLast(actm.url) + '.' + Trados.actLangStr, (locDict: locDict) => {
         if (!locDict) locDict = { loc: {}, dict: null };
         actm.loc = locDict.loc; actm.dict = locDict.dict ? RJSON.unpack(locDict.dict) : null;
         actm.expandDynamic(); /*kdy se pouziva???*/ lib.saveProduct(() => completed(actm));
@@ -384,11 +384,11 @@ module CourseMeta {
         var isGramm = isType(ex, runtimeType.grammar);
         if (isGramm) actGrammarEx = <grammEx>ex; else actEx = ex;
         if (ex.page) { completed(ex); return; }
-        load(ex.url,(pgJsonML: Array<any>) => {
+        load(ex.url, (pgJsonML: Array<any>) => {
           var pg = extractEx(pgJsonML);
-          Course.localize(pg, s => localizeString(pg.url, s,(isGramm ? actGrammarModule : actModule).loc));
+          Course.localize(pg, s => localizeString(pg.url, s, (isGramm ? actGrammarModule : actModule).loc));
           if (isGramm) { ex.onSetPage(pg, null); completed(ex); }
-          else actPersistence().loadUserData(lmcomUserId == 0 ? schools.LMComUserId() : lmcomUserId, actCompanyId, actProduct.url, ex.url,(exData: { [id: string]: CourseModel.Result; }) => {
+          else actPersistence().loadUserData(lmcomUserId == 0 ? schools.LMComUserId() : lmcomUserId, actCompanyId, actProduct.url, ex.url, (exData: { [id: string]: CourseModel.Result; }) => {
             if (!exData) exData = {};
             ex.onSetPage(pg, exData); completed(ex);
           });
@@ -399,7 +399,7 @@ module CourseMeta {
     //zajisti existenci adresare vsech produktu
     export function adjustAllProductList(completed: () => void) {
       if (allProductList) { completed(); return; }
-      load(urlStripLast(cfg.dataBatchUrl ? cfg.dataBatchUrl : '/siteroot/'),(obj: CourseMeta.data) => { allProductList = obj.Items; if (Login.finishMyData) Login.finishMyData(); completed(); });
+      load(urlStripLast(cfg.dataBatchUrl ? cfg.dataBatchUrl : '/siteroot/'), (obj: CourseMeta.data) => { allProductList = obj ? obj.Items : null; if (Login.finishMyData) Login.finishMyData(); completed(); });
     }
 
     //zajisteni existence instrukci
@@ -423,7 +423,7 @@ module CourseMeta {
       //Uprav content
       var cnt = $('.content-place');
       //anchory
-      _.each(cnt.find("a"),(a: HTMLAnchorElement) => {
+      _.each(cnt.find("a"), (a: HTMLAnchorElement) => {
         var href = $(a).attr('href'); if (_.isEmpty(href)) return;
         if (/* /w/w/w... */href.match(/^(\/?\w)+$/)) { $(a).attr('href', '#'); a.onclick = ev => gotoHref(ev, href); }
       });
@@ -437,7 +437,7 @@ module CourseMeta {
       //doc.finishHtmlDOM();
     }
 
-    export function info_continue(): greenArrowInfo { return new greenArrowInfo(CSLocalize('2882c6a2ef6343089ae90c898cac63f6', 'Continue'), false, "info", "reply",() => gui.gotoData(null)); }
+    export function info_continue(): greenArrowInfo { return new greenArrowInfo(CSLocalize('2882c6a2ef6343089ae90c898cac63f6', 'Continue'), false, "info", "reply", () => gui.gotoData(null)); }
     export function info_courseFinished(): greenArrowInfo { return new greenArrowInfo(CSLocalize('e06a4208d7c84c8ba97c1a700f00046c', 'Course completed!'), actNode == actCourseRoot, "info", "thumbs-up", actNode == actCourseRoot ? $.noop : () => gui.gotoData(null)); }
 
     //vykresleni naladovaneho cviceni
@@ -446,16 +446,16 @@ module CourseMeta {
       var pgCtrl = actExPageControl = Course.finishCreatePage(loadedEx);
       gui.exerciseHtml = () => JsRenderTemplateEngine.render("c_gen", loadedEx.page);
       gui.exerciseCls = () => loadedEx.page.isOldEa ? "ea" : "new-ea";
-      pgCtrl.callInitProcs(Course.initPhase.beforeRender,() => { //inicializace kontrolek, 1
+      pgCtrl.callInitProcs(Course.initPhase.beforeRender, () => { //inicializace kontrolek, 1
         //if (!pgCtrl.isOldEa) pgCtrl.isPassive = _.all(pgCtrl.items, it => !it.isEval()); //pasivni cviceni ma vsechna isEval=false
         //pgCtrl.sound = new Course.pageSound(pgCtrl);
         if (beforeUpdate) beforeUpdate(loadedEx);
         oldEAInitialization = null;
         Pager.renderHtmlEx(true, loadedEx.page.bodyStyle); //HTML rendering (kod, provedeny normalne za onUpdate)
-        pgCtrl.callInitProcs(Course.initPhase.afterRender,() => {//inicializace kontrolek, 2
+        pgCtrl.callInitProcs(Course.initPhase.afterRender, () => {//inicializace kontrolek, 2
           if (!oldEAInitialization) oldEAInitialization = completed => completed();
           oldEAInitialization(() => {
-            pgCtrl.callInitProcs(Course.initPhase.afterRender2,() => {//inicializace kontrolek, 3
+            pgCtrl.callInitProcs(Course.initPhase.afterRender2, () => {//inicializace kontrolek, 3
 
               loadedEx.evaluator = loadedEx.page.isOldEa ? new EA.oldToNewScoreProvider($evalRoot()) : pgCtrl;
               loadedEx.evaluator.acceptData(loadedEx.done, loadedEx.result);
@@ -489,10 +489,10 @@ module CourseMeta {
       if (!actProduct) { completed(); return; }
       var res: Array<Array<string>> = [];
       //var persistObj = actCourseRoot.
-      scan(actCourseRoot,(dt: courseNode) => { if (!dt.userPending) return; dt.getUserData((shrt, lng, flag, key) => res.push([key ? key : dt.url, shrt, lng, flag ? flag.toString() : '0'])); dt.userPending = false; });
+      scan(actCourseRoot, (dt: courseNode) => { if (!dt.userPending) return; dt.getUserData((shrt, lng, flag, key) => res.push([key ? key : dt.url, shrt, lng, flag ? flag.toString() : '0'])); dt.userPending = false; });
       if (res.length > 0) { //neprazdny res => save. res ve tvaru [key, shortData, data, flags]
         Logger.trace_course('saveProduct lib, items=' + _.map(res, r => r[0]).join('; '));
-        actPersistence().saveUserData(!lmcomUserId ? schools.LMComUserId() : lmcomUserId, actCompanyId, actProduct.url, res,() => {
+        actPersistence().saveUserData(!lmcomUserId ? schools.LMComUserId() : lmcomUserId, actCompanyId, actProduct.url, res, () => {
           if (cfg.target == LMComLib.Targets.scorm) {
             actCourseRoot.refreshNumbers();
             scorm.reportProgress(actCourseRoot.elapsed, actCourseRoot.done ? (actCourseRoot.complNotPassiveCnt == 0 || actCourseRoot.ms == 0 ? 100 : Math.round(actCourseRoot.s / actCourseRoot.ms /*/ actCourseRoot.complNotPassiveCnt*/)) : null);
@@ -579,7 +579,7 @@ module CourseMeta {
   export function localizeString(keyPrefix: string, data: string, loc: { [id: string]: any; }): string { //nahradi {{xxx|value}} z JS objektu
     if (_.isEmpty(data) || data.indexOf('{{') < 0) return data;
     if (!loc) loc = {};
-    return data.replace(locEx,(match, ...gm: string[]) => {
+    return data.replace(locEx, (match, ...gm: string[]) => {
       var idVal = gm[0].split('|'); var val = idVal.length < 2 ? null : idVal[1];
       var parts = keyPrefix ? keyPrefix.split('/') : []; parts.push(idVal[0]);
       var idx = 0; var res: any = '';
@@ -603,8 +603,8 @@ module CourseMeta {
     var headItems = head && head.Items ? head.Items : null;
     var tit; var bodyStyle;
     if (headItems) {
-      var tit = _.find(headItems,(it: any) => (<CourseModel.tag>it)._tg == 'title');
-      var bodyStyle = _.find(headItems,(it: any) => (<CourseModel.tag>it)._tg == 'style');
+      var tit = _.find(headItems, (it: any) => (<CourseModel.tag>it)._tg == 'title');
+      var bodyStyle = _.find(headItems, (it: any) => (<CourseModel.tag>it)._tg == 'style');
     }
     pg.title = tit && tit.Items && _.isString(tit.Items[0]) ? tit.Items[0] : '';
     pg.bodyStyle = bodyStyle && bodyStyle.Items && _.isString(bodyStyle.Items[0]) ? bodyStyle.Items[0] : '';

@@ -9,7 +9,7 @@
   <title><%=pageTitle%></title>
   <%=csss() %>
   <%=Packager.RewApp.writeCfg(cfg)%>
-  <script type='text/javascript' src='../jslib/js/lmconsoleinit.js'></script>
+  <script type='text/javascript' src='lmconsoleinit.js'></script>
   <%=scripts() %>
 </head>
 <body>

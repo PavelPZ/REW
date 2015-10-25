@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <appSettings configSource="Web.AppSetting.config" />
+  <connectionStrings configSource="Web.ConnectionStrings.config" />
+  <system.web>
+    <compilation debug="true" targetFramework="4.6" />
+    <httpRuntime targetFramework="4.6" />
+  </system.web>
+  <system.webServer>
+    <modules>
+      <add name="UrlRewrite" type="WebCode.UrlRewrite, NewLMComModel"/>  
+    </modules>
+    <rewrite>
+      <rules>
+        <!-- stranky na WebCode serveru -->
+        <rule name="Preserve" stopProcessing="true">
+          <match url="^(code/newea\.aspx|links\.aspx|vyzva57services/(.*)|service\.ashx|mp3Uploader\.ashx|.*\.cshtml|links\.html)$" />
+          <action type="None" />
+        </rule>
+        <!-- index html -->
+        <rule name="Index" stopProcessing="true">
+          <!--<match url="^(schools/index-(^[.]*)\.html)$" />-->
+          <match url="^schools/index-([^.]*)\.html$" />
+          <conditions>
+            <add input="{HTTP_ACCEPT_ENCODING}" pattern="(gzip|)" />
+          </conditions>
+          <action type="Rewrite" url="schools/index.aspx?lang={R:1}&amp;encoding={C:0}" redirectType="Permanent" />
+        </rule>
+        <!-- lm, skrivanek, edusoft, grafia redirect  -->
+        <!-- TODO (jinak se uklada na server do cache) -->
+
+        <!-- html and js rewrite  -->
+        <rule name="RedirectJS" stopProcessing="true">
+          <match url="^(.*\.(js|html))$" />
+          <action type="Rewrite" url="http://localhost/web4/{R:1}" redirectType="Permanent" />
+        </rule>
+        <!-- else redirect  -->
+        <rule name="RedirectAll" stopProcessing="true">
+          <match url="^(.*)$" />
+          <action type="Redirect" url="http://localhost/web4/{R:1}" />
+        </rule>
+      </rules>
+    </rewrite>
+  </system.webServer>
+  <runtime>
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+      <dependentAssembly>
+        <assemblyIdentity name="Newtonsoft.Json" publicKeyToken="30ad4fe6b2a6aeed" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-7.0.0.0" newVersion="7.0.0.0" />
+      </dependentAssembly>
+
+      <!--<dependentAssembly>
+        <assemblyIdentity name="System.Web.Helpers" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.WebPages" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>-->
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Data.Edm" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-5.6.4.0" newVersion="5.6.4.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Data.Services.Client" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-5.6.4.0" newVersion="5.6.4.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Data.OData" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-5.6.4.0" newVersion="5.6.4.0" />
+      </dependentAssembly>
+    </assemblyBinding>
+  </runtime>
+</configuration>

@@ -24,6 +24,29 @@ namespace DesignNew {
     public static string[] validLangStrs = validLangs.Select(l => l.ToString().Replace('_', '-')).ToArray();
     public static string[] validExtensions = new string[] { ".css", ".eot", ".gif", ".html", ".jpg", ".js", ".otf", ".pdf", ".png", ".svg", ".ttf", ".woff", ".woff2", ".xap", ".xlsx" };
     public static HashSet<string> gzipExtensions = new HashSet<string>(new string[] { ".css", ".html", ".js", ".otf", ".svg", ".woff", ".woff2", ".ttf", ".eot" });
+    public static Dictionary<string, string> contentTypes = new Dictionary<string, string> {
+      {".js", "application/x-javascript"},
+      {".html", "text/html"},
+      {".css", "text/css"},
+      {".svg", "image/svg+xml"},
+      {".ttf", "application/x-font-ttf"},
+      {".otf", "application/x-font-opentype"},
+      {".woff", "application/font-woff"},
+      {".woff2", "application/font-woff2"},
+      {".eot", "application/vnd.ms-fontobject"},
+
+      {".pdf", "application/pdf"},
+      {".xap", "application/x-silverlight-app"},
+      {".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
+
+      {".mp4", "video/mp4"},
+      {".webm", "video/webm"},
+      {".gif", "image/gif"},
+      {".png", "image/png"},
+      {".bmp", "image/bmp"},
+      {".jpg", "image/jpg"},
+    };
+
 
     //**************************** CSS logic
     public static string[] cssMins = new string[] {
@@ -246,9 +269,9 @@ namespace DesignNew {
       {"chinh", new string[] { "jslib/skins/chinh/script.js" } }
     };
 
-    static string[][] externals = new string[][] { jsExternal };
-    static string[][] web = new string[][] { jsGround, jsModel, jsLogin, jsAdmin, jsSchoolStart, jsSchoolEnd, jsCourse, jsBlended };
-    static string[][] loc = new string[][] { jsLoc };
+    public static string[][] externals = new string[][] { jsExternal };
+    public static string[][] web = new string[][] { jsGround, jsModel, jsLogin, jsAdmin, jsSchoolStart, jsSchoolEnd, jsCourse, jsBlended };
+    public static string[][] loc = new string[][] { jsLoc };
 
   }
 

@@ -315,7 +315,7 @@
     <Content Include="Deploy\externals.min.js" />
     <Content Include="Deploy\otherServer.txt" />
     <Content Include="Deploy\otherClient.txt" />
-    <Content Include="Deploy\MinifyTemplate.xml" />
+    <None Include="Deploy\MinifyTemplate.xml_" />
     <Content Include="Deploy\Minify.xml" />
     <Content Include="Deploy\web.min.js" />
     <Content Include="JsLib\css\lm.min.css" />
@@ -2843,7 +2843,7 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>"$(MSBuildBinPath)\msbuild.exe" "$(ProjectDir)deploy\minify.xml"</PostBuildEvent>
+    <PostBuildEvent>rem "$(MSBuildBinPath)\msbuild.exe" "$(ProjectDir)deploy\minify.xml"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
