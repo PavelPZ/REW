@@ -575,6 +575,7 @@
     <Content Include="Deploy\jsDeploy.json" />
     <Content Include="Deploy\Azure.cmd" />
     <Content Include="Deploy\vhd.cmd" />
+    <Content Include="Deploy\gitKnowHow.cmd" />
     <None Include="JsLib\css\Author.less" />
     <Content Include="JsLib\css\img\flag-mid.png" />
     <Content Include="JsLib\css\img\flag-small.png" />

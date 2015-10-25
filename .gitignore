@@ -258,3 +258,6 @@ ndependout/
 *.s3db
 
 SolutionToolbar/*.dll
+
+!Web4/blendedapi/styles/style.css
+!Web4/jslib/css/lm.css
