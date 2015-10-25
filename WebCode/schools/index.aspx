@@ -7,12 +7,13 @@
   <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
   <meta name='viewport' content='width=device-width' />
   <title><%=pageTitle%></title>
-  <link href="../font-awesome/lm/externals.css" rel="stylesheet" type="text/css" />
+  <%=csss() %>
+  <%--<link href="../font-awesome/lm/externals.css" rel="stylesheet" type="text/css" />
   <link href="../jslib/ea/ea.css" rel="stylesheet" type="text/css" />
   <link href="../blendedapi/styles/style.css" rel="stylesheet" type="text/css" />
-  <link href="../jslib/css/lm.css" rel="stylesheet" />
+  <link href="../jslib/css/lm.css" rel="stylesheet" />--%>
 
-  <%=Packager.MainPage.writeCss(Packager.RewApp.publisherSkinCss(cfg))%>
+  <%--=Packager.MainPage.writeCss(Packager.RewApp.publisherSkinCss(cfg))--%>
   <%=Packager.RewApp.writeCfg(cfg)%>
   <script type='text/javascript' src='../jslib/js/lmconsoleinit.js'></script>
   <%=scripts() %>

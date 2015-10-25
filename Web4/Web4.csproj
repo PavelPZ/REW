@@ -316,6 +316,7 @@
     <Content Include="Deploy\MinifyTemplate.xml" />
     <Content Include="Deploy\Minify.xml" />
     <Content Include="Deploy\web.min.js" />
+    <Content Include="JsLib\css\lm.min.css" />
     <Content Include="JsLib\Scripts\jquery.js" />
     <Content Include="JsLib\Scripts\jquery.min.js" />
     <Content Include="Temp\Author.html" />
@@ -1622,10 +1623,6 @@
       <Minify>False</Minify>
     </Content>
     <Content Include="font-awesome\less\rotated-flipped.less">
-      <Compile>False</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="font-awesome\less\spinning.less">
       <Compile>False</Compile>
       <Minify>False</Minify>
     </Content>

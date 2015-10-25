@@ -6,10 +6,13 @@
 <Project xmlns="http://schemas.microsoft.com/developer/MsBuild/2003">
 
   <UsingTask TaskName="JavaScriptCompressorTask" AssemblyFile="d:\LMCom\YuiCompressor\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
+  <UsingTask TaskName="CssCompressorTask" AssemblyFile="d:\LMCom\YuiCompressor\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
 
   <Target Name="web">
     <ItemGroup>
+      <CssFiles />
     </ItemGroup>
+    <CssCompressorTask DeleteSourceFiles="false" SourceFiles="@(CssFiles)" OutputFile="../jslib/css/lm.min.css" />
   </Target>
   
 </Project>

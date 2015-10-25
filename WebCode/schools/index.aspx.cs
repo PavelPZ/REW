@@ -39,7 +39,14 @@ namespace WebCode {
       foreach (var s in DesignNew.Deploy.allJS(cfg.version != schools.versions.debug, cfg.langStr)) script(sb, s);
       return sb.ToString();
     }
+    protected string csss() {
+      StringBuilder sb = new StringBuilder();
+      var cssList = cfg.version != schools.versions.debug ? DesignNew.Deploy.cssMins : DesignNew.Deploy.css;
+      foreach (var s in cssList) css(sb, s);
+      return sb.ToString();
+    }
     static void script(StringBuilder sb, string url) { sb.AppendFormat(@"  <script src='../{0}' type='text/javascript'></script>", url); sb.AppendLine(); }
+    static void css(StringBuilder sb, string url) { sb.AppendFormat(@"  <link href='../{0}' rel='stylesheet' type='text/css' />", url); sb.AppendLine(); }
 
     bool isCached() {
       if (isDebug) return false;

@@ -23,6 +23,8 @@ namespace DesignNew {
       generatePart2(Target, ItemGroup, ref cnt, externals, "externals");
       generatePart2(Target, ItemGroup, ref cnt, web, "web");
       foreach (var lang in new string[] { "cs-cz", "en-gb" }) generatePart2(Target, ItemGroup, ref cnt, loc, lang);
+      var CssFiles = ItemGroup.Element(schema + "CssFiles");
+      CssFiles.Add(new XAttribute("Include", css.Select(c => "../" + c).Aggregate((r,i) => r + "; " + i)));
       template.Save(@"D:\LMCom\rew\Web4\Deploy\Minify.xml");
     }
 

@@ -230,6 +230,7 @@
   <ItemGroup>
     <Compile Include="DesignNew\DeployConsts.cs" />
     <Compile Include="DesignNew\Deploy.cs" />
+    <Compile Include="DesignNew\UrlRewrite.cs" />
     <Compile Include="Design\jsWebApiProxy\WebApiProxyTempl.cs">
       <DependentUpon>WebApiProxyTempl.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -287,6 +288,7 @@
     </Compile>
     <Compile Include="Runtime\ModelCSharpToTypescript.cs" />
     <Compile Include="Runtime\Reports.cs" />
+    <Compile Include="Runtime\ReverseProxy.cs" />
     <Compile Include="Runtime\StatisticsToc.cs" />
     <Compile Include="Runtime\Author.cs" />
     <Content Include="Design\Templates\html.tt">

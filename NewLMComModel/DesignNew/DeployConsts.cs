@@ -18,6 +18,18 @@ namespace DesignNew {
       skrivanek
     }
 
+    //**************************** CSS logic
+    public static string[] cssMins = new string[] {
+      "jslib/css/lm.min.css",
+    };
+    public static string[] css = new string[] {
+      "font-awesome/lm/externals.css",
+      //"jslib/ea/ea.css",
+      "blendedapi/styles/style.css",
+      "jslib/css/lm.css",
+    };
+
+
 
     //**************************** JS logic
     static IEnumerable<string> jquery(bool isMin) { yield return isMin ? "jslib/scripts/jquery.min.js" : "jslib/scripts/jquery.js"; }
