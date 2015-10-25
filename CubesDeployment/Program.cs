@@ -41,7 +41,9 @@ namespace CubesDeployment {
       //var swf = File.ReadAllLines(@"D:\LMCom\rew\CubesDeployment\AddWebSoftwareFiles.txt");
       //File.WriteAllLines(@"d:\temp\files.txt", fss.Concat(swf).Distinct().Select(s => s.ToLower().Replace('\\','/')).OrderBy(s => s));
       //File.WriteAllLines(@"d:\temp\files.txt", DesignNew.Deploy.allSWFiles().Select(f => Path.GetExtension(@"d:\LMCom\rew\Web4\" + f.Replace('/', '\\'))).Distinct().OrderBy(s => s));
-      File.WriteAllText(@"d:\temp\files.txt", DesignNew.Deploy.allSWFiles().Select(f => Path.GetExtension(@"d:\LMCom\rew\Web4\" + f.Replace('/', '\\'))).Distinct().OrderBy(s => s).Select(s => "\"" + s + "\"").Aggregate((r,i) => r + ", " + i));
+      //File.WriteAllText(@"d:\temp\files.txt", DesignNew.Deploy.allSWFiles().Select(f => Path.GetExtension(@"d:\LMCom\rew\Web4\" + f.Replace('/', '\\'))).Distinct().OrderBy(s => s).Select(s => "\"" + s + "\"").Aggregate((r,i) => r + ", " + i));
+
+      DesignNew.Deploy.zipSWFiles(@"d:\temp\swFiles.zip");
       return;
 
       Machines._basicPath = @"d:\lmcom\";

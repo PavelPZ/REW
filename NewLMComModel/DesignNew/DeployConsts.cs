@@ -23,6 +23,7 @@ namespace DesignNew {
     public static Langs[] validLangs = new Langs[] { Langs.cs_cz, Langs.en_gb };
     public static string[] validLangStrs = validLangs.Select(l => l.ToString().Replace('_', '-')).ToArray();
     public static string[] validExtensions = new string[] { ".css", ".eot", ".gif", ".html", ".jpg", ".js", ".otf", ".pdf", ".png", ".svg", ".ttf", ".woff", ".woff2", ".xap", ".xlsx" };
+    public static HashSet<string> gzipExtensions = new HashSet<string>(new string[] { ".css", ".html", ".js", ".otf", ".svg", ".woff", ".woff2", ".ttf", ".eot" });
 
     //**************************** CSS logic
     public static string[] cssMins = new string[] {

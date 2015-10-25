@@ -2,10 +2,32 @@
 using Packager;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Xml.Linq;
+using Microsoft.Build.Framework;
+using Microsoft.Build.Utilities;
+
 
 namespace DesignNew {
+
+  public class zipSWFiles : Task {
+    public override bool Execute() {
+      Deploy.zipSWFiles(zipFile);
+      return true;
+    }
+    [Required]
+    public string zipFile { get; set; }
+  }
+
+  public class minify : Task {
+    public override bool Execute() {
+      return true;
+    }
+  }
+
+
+
   public static partial class Deploy {
 
     //******************* soubory pro SW deployment
@@ -14,6 +36,27 @@ namespace DesignNew {
       var CSSs = validDesignIds.SelectMany(skin => new bool[] { true, false }.Select(bol => new { skin, bol })).SelectMany(slb => allCSS(slb.bol, slb.skin));
       var other = File.ReadAllLines(@"D:\LMCom\rew\Web4\Deploy\otherServer.txt").Concat(File.ReadAllLines(@"D:\LMCom\rew\Web4\Deploy\otherClient.txt"));
       return JSs.Concat(CSSs).Concat(other).Where(s => !string.IsNullOrEmpty(s)).Select(s => s.ToLower()).Distinct().OrderBy(s => s);
+    }
+    public static void zipSWFiles(string zipFile) {
+      if (File.Exists(zipFile)) File.Delete(zipFile);
+      using (var zipStr = File.OpenWrite(zipFile))
+      using (ZipArchive zip = new ZipArchive(zipStr, ZipArchiveMode.Create)) {
+        foreach (var fn in allSWFiles().Select(f => f.Replace('/', '\\'))) {
+          ZipArchiveEntry entry = zip.CreateEntry(fn);
+          var inpFn = @"D:\LMCom\rew\Web4\" + fn;
+          using (var inpStr = File.OpenRead(inpFn))
+          using (var str = entry.Open()) inpStr.CopyTo(str);
+          if (gzipExtensions.Contains(Path.GetExtension(inpFn))) {
+            entry = zip.CreateEntry(fn + ".gzip", CompressionLevel.NoCompression);
+            using (var inpStr = File.OpenRead(inpFn)) {
+              if (inpStr.Length < 100) continue;
+              using (var str = entry.Open())
+              using (var gzipStr = new GZipStream(str, CompressionMode.Compress))
+                inpStr.CopyTo(gzipStr);
+            }
+          }
+        }
+      }
     }
 
     //******************* soubory pro generaci index.html
@@ -42,7 +85,7 @@ namespace DesignNew {
       generatePart2(Target, ItemGroup, ref cnt, web, "web");
       foreach (var lang in validLangStrs) generatePart2(Target, ItemGroup, ref cnt, loc, lang);
       var CssFiles = ItemGroup.Element(schema + "CssFiles");
-      CssFiles.Add(new XAttribute("Include", css.Select(c => "../" + c).Aggregate((r,i) => r + "; " + i)));
+      CssFiles.Add(new XAttribute("Include", css.Select(c => "../" + c).Aggregate((r, i) => r + "; " + i)));
       template.Save(@"D:\LMCom\rew\Web4\Deploy\Minify.xml");
     }
 
