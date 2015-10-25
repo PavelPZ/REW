@@ -7,13 +7,13 @@ namespace WebCode {
 
   public partial class index : System.Web.UI.Page {
     protected void Page_Init(object sender, EventArgs e) {
-      if (isCached()) {
-        Response.StatusCode = 304;
-        Response.SuppressContent = true;
-        Response.End();
-      } else {
-        Response.Cache.SetLastModified(appLoadTime);
-      }
+      //if (isCached()) {
+      //  Response.StatusCode = 304;
+      //  Response.SuppressContent = true;
+      //  Response.End();
+      //} else {
+      //  Response.Cache.SetLastModified(appLoadTime);
+      //}
 
       cfg = new Packager.Config() {
         target = LMComLib.Targets.web,
