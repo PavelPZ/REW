@@ -37,8 +37,8 @@ namespace CubesDeployment {
     static void Main(string[] args) {
 
 
-      //DesignNew.SynchronizeDirs.synchronize(@"d:\LMCom\ReleaseDeploy\packs\LM_Data_New-skrivanek.zip", new DesignNew.fileSystemDriver(@"d:\temp\azure"));
-      //return;
+      DesignNew.SynchronizeDirs.synchronize(new DesignNew.fileSystemDriver(@"d:\temp\azure"));
+      return;
       //DesignNew.Deploy.generateMSBuildMinify(); return;
       //var fss = DesignNew.Deploy.validDesignIds.Select(skin => new Packager.ConfigLow { designId = skin }).SelectMany(cfg => Packager.RewApp.imgFontsEtc(cfg)).SelectMany(ss => ss);
       //var swf = File.ReadAllLines(@"D:\LMCom\rew\CubesDeployment\AddWebSoftwareFiles.txt");

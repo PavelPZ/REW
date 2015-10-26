@@ -12,12 +12,16 @@ using System.Xml.Serialization;
 namespace DesignNew {
 
   public static class SynchronizeDirs {
-    public static void synchronize(string zipFn, IDriver driver) {
-      foreach (var items in dirItems.srcFromZip(zipFn)) {
-        var dest = driver.readMap(items.container);
-        var delta = items.synchronize(dest); if (delta == null) continue;
-        driver.update(dest.dest.container, delta);
-      }
+    public static void synchronize(IDriver driver) {
+      var all = allPZFiles().ToArray();
+      var items = dirItems.srcFromFilesystem("v1_0", @"d:\LMCom\rew\Web4", all);
+      var dest = driver.readMap(items.container);
+      var delta = items.synchronize(dest); if (delta == null) return;
+      driver.update(dest.dest.container, delta);
+    }
+    public static IEnumerable<string> allPZFiles() {
+      string[] paths = new string[] { @"d:\LMCom\rew\Web4\lm", @"d:\LMCom\rew\Web4\grafia", @"d:\LMCom\rew\Web4\edusoft", @"d:\LMCom\rew\Web4\skrivanek", @"d:\LMCom\rew\Web4\data\instr"};
+      return paths.SelectMany(d => Directory.EnumerateFiles(d, "*.js", SearchOption.AllDirectories).Concat(Directory.EnumerateFiles(d, "*.mm", SearchOption.AllDirectories)));
     }
   }
 
@@ -44,6 +48,8 @@ namespace DesignNew {
     public string eTag; //Base64 z MD5
     [XmlIgnore]
     public byte[] data; //data pro insert nebo update
+    [XmlIgnore]
+    public string fileName; //soubor s daty pro insert nebo update
   }
   public class dirItemsDelta {
     public List<dirItem> update = new List<dirItem>();
@@ -66,41 +72,60 @@ namespace DesignNew {
     }
     public void update(string container, dirItemsDelta delta) {
       if (delta.empty()) return;
-      foreach (var it in delta.delete) File.Delete(fileName(it.path));
-      foreach (var it in delta.update.Concat(delta.insert)) {
+      Parallel.ForEach(delta.delete, it => File.Delete(fileName(it.path)));
+      //foreach (var it in delta.delete) File.Delete(fileName(it.path));
+      Parallel.ForEach(delta.update.Concat(delta.insert), it => {
+        //foreach (var it in delta.update.Concat(delta.insert)) {
         var fn = fileName(it.path); Directory.CreateDirectory(Path.GetDirectoryName(fn));
-        File.WriteAllBytes(fn, it.data);
-      }
+        if (it.data != null) File.WriteAllBytes(fn, it.data);
+        else File.Copy(it.fileName, fn);
+      });
+      //}
     }
-    string fileName(string container, string url) { return basicPath + "\\" + container + "\\" + url; }
-    string fileName(string path) { var pth = sdPath.pathParts(path); return basicPath + "\\" + pth.container + "\\" + pth.blob; }
+    string fileName(string container, string url) { return basicPath + "\\" + container + "\\" + url.Replace('/','\\'); }
+    string fileName(string path) { var pth = sdPath.pathParts(path); return fileName (pth.container, pth.blob); }
   }
   public struct readMapResult { public dirItems dest; public bool justCreated; }
 
   public class dirItems {
-    public static List<dirItems> srcFromZip(string zipFn) {
-      List<dirItems> res = new List<dirItems>();
-      var mStr = new MemoryStream();
+    public static dirItems srcFromFilesystem(string container, string basicPath, IEnumerable<string> files) {
+      var res = new dirItems { container = container };
       using (MD5 md5 = MD5.Create())
-      using (var zipStr = File.OpenRead(zipFn))
-      using (ZipArchive zip = new ZipArchive(zipStr, ZipArchiveMode.Read)) {
-        foreach (var f in zip.Entries) {
-          if (Path.GetExtension(f.FullName) == ".gzip") continue;
-          using (var fStr = f.Open()) {
-            mStr.SetLength(0); fStr.CopyTo(mStr);
-            sdPath path = sdPath.computePath(f.FullName.Replace('\\', '/'));
-            var contItems = res.FirstOrDefault(c => c.container == path.container);
-            if (contItems == null) res.Add(contItems = new dirItems { container = path.container });
-            contItems.add(path, mStr.ToArray(), md5);
-          }
+        foreach (var f in files.Select(f => f.ToLower())) {
+          var isMM = Path.GetExtension(f) == ".mm";
+          var fn = isMM ? f.Substring(0, f.Length - 3) : f;
+          var name = fn.Substring(basicPath.Length + 1);
+          name = name.Replace('\\','/');
+          var di = new dirItem(); di.path = container + '|' + name;
+          di.eTag = isMM ? File.ReadAllText(f) : Convert.ToBase64String(md5.ComputeHash(File.ReadAllBytes(f)));
+          di.fileName = fn;
+          res.items.Add(di);
         }
-      }
       return res;
     }
-    public void add(sdPath path, byte[] data, MD5 md5) {
-      var di = new dirItem(); di.path = path.toPath(); di.eTag = Convert.ToBase64String(md5.ComputeHash(data)); di.data = data;
-      items.Add(di);
-    }
+    //public static List<dirItems> srcFromZip(string zipFn) {
+    //  List<dirItems> res = new List<dirItems>();
+    //  var mStr = new MemoryStream();
+    //  using (MD5 md5 = MD5.Create())
+    //  using (var zipStr = File.OpenRead(zipFn))
+    //  using (ZipArchive zip = new ZipArchive(zipStr, ZipArchiveMode.Read)) {
+    //    foreach (var f in zip.Entries) {
+    //      if (Path.GetExtension(f.FullName) == ".gzip") continue;
+    //      using (var fStr = f.Open()) {
+    //        mStr.SetLength(0); fStr.CopyTo(mStr);
+    //        sdPath path = sdPath.computePath(f.FullName.Replace('\\', '/'));
+    //        var contItems = res.FirstOrDefault(c => c.container == path.container);
+    //        if (contItems == null) res.Add(contItems = new dirItems { container = path.container });
+    //        contItems.add(path, mStr.ToArray(), md5);
+    //      }
+    //    }
+    //  }
+    //  return res;
+    //}
+    //public void add(sdPath path, byte[] data, MD5 md5) {
+    //  var di = new dirItem(); di.path = path.toPath(); di.eTag = Convert.ToBase64String(md5.ComputeHash(data)); di.data = data;
+    //  items.Add(di);
+    //}
     public dirItemsDelta synchronize(readMapResult dest) {
       var res = new dirItemsDelta();
       var srcDir = items.ToDictionary(it => it.path); HashSet<string> srcDone = new HashSet<string>();
@@ -109,7 +134,7 @@ namespace DesignNew {
         if (srcDir.TryGetValue(destItem.path, out srcItem)) {
           srcDone.Add(destItem.path);
           if (srcItem.eTag == destItem.eTag) continue;
-          res.update.Add(destItem); destItem.eTag = srcItem.eTag; destItem.data = srcItem.data;
+          res.update.Add(destItem); destItem.eTag = srcItem.eTag; destItem.data = srcItem.data; destItem.fileName = srcItem.fileName;
         } else {
           res.delete.Add(destItem);
           dest.dest.items.RemoveAt(i);
@@ -117,7 +142,7 @@ namespace DesignNew {
       }
       foreach (var srcItem in items) { //insert:
         if (srcDone.Contains(srcItem.path)) continue;
-        dirItem destItem = new dirItem { path = srcItem.path, eTag = srcItem.eTag, data = srcItem.data };
+        dirItem destItem = new dirItem { path = srcItem.path, eTag = srcItem.eTag, data = srcItem.data, fileName = srcItem.fileName };
         res.insert.Add(destItem); dest.dest.items.Add(destItem);
       }
       if (res.empty()) return null;
