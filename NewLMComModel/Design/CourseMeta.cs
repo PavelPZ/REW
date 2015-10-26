@@ -10,6 +10,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -135,15 +136,25 @@ namespace CourseMeta {
       var files = files_.ToArray();
 
       var dirs = files.Select(f => f.destDir + "\\" + f.name.Replace('/', '\\')).ToArray();
+      
 
       Parallel.ForEach(files.Where(f => f != null).Distinct(constsFileComparer), /*lib.parallelOptions,*/ file => {
-        var data = file.srcData; if (data == null) return; //preskoc vse, mimo vytvorenych souboru (.js)
+        var data = file.srcData;
         var fn = Machines.rootPath + file.destDir + "\\" + file.name.Replace('/', '\\');
         LowUtils.AdjustFileDir(fn);
-        if (File.Exists(fn)) File.Delete(fn);
-        File.WriteAllBytes(fn, data);
-        if (Path.GetExtension(fn) == ".js")
-          new FileInfo(fn).Attributes = FileAttributes.Hidden; //hidden atributy
+        if (data == null) { //obalka mm souboru se etagem
+          var mmfn = fn + ".mm"; if (File.Exists(mmfn)) return;
+          using (var md5 = MD5.Create())
+          using (var str = File.OpenRead(fn)) {
+            var etag = Convert.ToBase64String(md5.ComputeHash(str));
+            File.WriteAllText(mmfn, etag);
+          }
+        } else {
+          if (File.Exists(fn)) File.Delete(fn);
+          File.WriteAllBytes(fn, data);
+          if (Path.GetExtension(fn) == ".js")
+            new FileInfo(fn).Attributes = FileAttributes.Hidden; //hidden atributy
+        }
       });
     }
     public static string getServerScript(string url, string content) {
@@ -376,6 +387,10 @@ namespace CourseMeta {
       pageJsons(page, out json);
 
       //ostatni externals
+      //if (page.url == "/skrivanek/english/a1/listening/listeningtruefalse_multitask/v1_1") {
+      //  var ctrls = page.scan().ToArray();
+      //  if (ctrls == null) return;
+      //}
       foreach (var extFn in page.scan().SelectMany(t => t.getExternals(page)).Distinct()) {
         if (extFn.IndexOf("://") > 0) continue;
         externals.Add(new external { url = VirtualPathUtility.Combine(page.url, extFn.ToLower()) });

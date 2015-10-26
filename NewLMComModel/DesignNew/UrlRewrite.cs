@@ -86,8 +86,7 @@ namespace WebCode {
       public swFile(string nm) { name = nm; ext = Path.GetExtension(name); }
       public void setData(byte[] d, MD5 md5) {
         data = d;
-        var shb = new System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary(md5.ComputeHash(d));
-        eTag = shb.ToString();
+        eTag = Convert.ToBase64String(md5.ComputeHash(d));
       }
 
       public string name;

@@ -1374,6 +1374,7 @@ namespace CourseModel {
           };
           using (XmlReader r = XmlReader.Create(str, xmlReaderSettings)) {
             errorMsg = null;
+            //toto nefunguje pod .NET 4.6: https://msdn.microsoft.com/en-us/library/mt270286.aspx
             var res = XElement.Load(r, LoadOptions.PreserveWhitespace);
             var memoryLogger = logger as LoggerMemory; if (memoryLogger != null && memoryLogger.saveDumpXml) memoryLogger.dumpXml = new XElement("root", res);
 
@@ -1388,6 +1389,7 @@ namespace CourseModel {
       }
     }
     static void initSchema() {
+      //AppContext.SetSwitch("System.Xml.IgnoreEmptyKeySequences", true); 
       if (xmlSchemaSet == null)
         lock (typeof(tag))
           if (xmlSchemaSet == null) {
