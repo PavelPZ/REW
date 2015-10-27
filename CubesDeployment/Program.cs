@@ -37,7 +37,7 @@ namespace CubesDeployment {
     static void Main(string[] args) {
 
 
-      DesignNew.SynchronizeDirs.synchronize(new DesignNew.fileSystemDriver(@"d:\temp\azure"));
+      DesignNew.SynchronizeDirs.synchronize("v1-0", new DesignNew.fileSystemDriver(@"d:\temp\azure", "v1-0"));
       return;
       //DesignNew.Deploy.generateMSBuildMinify(); return;
       //var fss = DesignNew.Deploy.validDesignIds.Select(skin => new Packager.ConfigLow { designId = skin }).SelectMany(cfg => Packager.RewApp.imgFontsEtc(cfg)).SelectMany(ss => ss);
