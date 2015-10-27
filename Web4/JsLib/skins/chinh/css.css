@@ -1,0 +1,27 @@
+.design-chinh .navbar .lm-logo-black {
+  background: url(img/logo.png) no-repeat 0 6px;
+  padding: 0;
+  margin-top: 0;
+  margin-left: 0;
+  height: 50px;
+  width: 183px;
+}
+@media (min-width: 768px) {
+  .design-chinh .navbar .lm-logo-black {
+    margin-left: -8px;
+  }
+}
+.design-chinh .navbar .lm-logo-black.lm-logo-black-small {
+  width: 50px;
+  margin-right: 5px;
+  margin-top: -4px;
+  background-image: url(img/logo-small.png);
+}
+@media (min-width: 768px) {
+  .design-chinh .navbar .lm-logo-black.lm-logo-black-small {
+    margin-left: -8px;
+  }
+}
+.design-chinh .app-login .login-langmaster {
+  background: url(img/login.png) no-repeat 0 6px;
+}

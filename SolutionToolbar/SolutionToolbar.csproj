@@ -378,20 +378,8 @@
       <Link>Resources\data\instr\std\yes_no_questions.xml</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="ClearScriptV8-32.dll">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="ClearScriptV8-64.dll">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="Resources\Package.ico" />
     <Content Include="RJSON.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="v8-ia32.dll">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="v8-x64.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
   </ItemGroup>

@@ -259,5 +259,9 @@ ndependout/
 
 SolutionToolbar/*.dll
 
-!Web4/blendedapi/styles/style.css
-!Web4/jslib/css/lm.css
+!Web4/font-awesome/lm/externals.css
+!Web4/blendedapi/styles/style.css 
+!Web4/jslib/css/lm.css 
+!Web4/JsLib/skins/chinh/css.css
+!Web4/JsLib/skins/skrivanek/css.css
+!Web4/JsLib/skins/grafia/css.css
