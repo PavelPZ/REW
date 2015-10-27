@@ -904,7 +904,7 @@ namespace Packager {
         if (batch.isScormExNet35)
           genScormExNet35(batch, zipFn);
         else {
-          jsCramblerAdjust(batchFn, v);
+          if (batch.version==versions.minified) jsCramblerAdjust(batchFn, v);
           genWebLow(batch, webBatchId, batchFn, zipFn);
         }
       }
