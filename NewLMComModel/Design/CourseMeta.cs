@@ -115,7 +115,8 @@ namespace CourseMeta {
     [XmlIgnore]
     public WebDataBatch owner;
     [XmlAttribute]
-    public string id { get { return _id; } set { _id = value.ToLower(); } } string _id;
+    public string id { get { return _id; } set { _id = value.ToLower(); } }
+    string _id;
     [XmlAttribute]
     public dictTypes dictType;
     [XmlAttribute]
@@ -132,28 +133,26 @@ namespace CourseMeta {
       return products.AsParallel().SelectMany(bp => bp.getFiles(cache, logger, sm));
     }
 
-    public static void writeVirtualFiles(IEnumerable<Packager.Consts.file> files_) {
+    public static void writeVirtualFiles(string buildId, IEnumerable<Packager.Consts.file> files_) {
       var files = files_.ToArray();
 
       var dirs = files.Select(f => f.destDir + "\\" + f.name.Replace('/', '\\')).ToArray();
-      
+
 
       Parallel.ForEach(files.Where(f => f != null).Distinct(constsFileComparer), /*lib.parallelOptions,*/ file => {
         var data = file.srcData;
         var fn = Machines.rootPath + file.destDir + "\\" + file.name.Replace('/', '\\');
         LowUtils.AdjustFileDir(fn);
-        if (data == null) { //obalka mm souboru se etagem
-          var mmfn = fn + ".mm"; if (File.Exists(mmfn)) return;
-          using (var md5 = MD5.Create())
-          using (var str = File.OpenRead(fn)) {
-            var etag = Convert.ToBase64String(md5.ComputeHash(str));
-            File.WriteAllText(mmfn, etag);
-          }
+        if (data == null) { //obalka mm souboru s etagem
+          buildEnvelope.adjustEnvelope(buildId, fn);
         } else {
-          if (File.Exists(fn)) File.Delete(fn);
-          File.WriteAllBytes(fn, data);
-          if (Path.GetExtension(fn) == ".js")
-            new FileInfo(fn).Attributes = FileAttributes.Hidden; //hidden atributy
+          if (Path.GetExtension(fn) == ".js") {
+            buildEnvelope.adjustEnvelope(buildId, fn, data);
+            //new FileInfo(fn).Attributes = FileAttributes.Hidden; //hidden atributy
+          } else {
+            if (File.Exists(fn)) File.Delete(fn);
+            File.WriteAllBytes(fn, data);
+          }
         }
       });
     }
@@ -164,7 +163,7 @@ namespace CourseMeta {
       StringBuilder sb = new StringBuilder();
       foreach (var file in files.Where(f => f != null).Distinct(constsFileComparer)) {
         var data = file.srcData; if (data == null || !file.name.EndsWith(".js")) continue; //preskoc vse, mimo vytvorenych souboru (.js)
-        var url = "/" + file.destDir.Replace('\\', '/') + "/" + file.name.Replace(".js",null);
+        var url = "/" + file.destDir.Replace('\\', '/') + "/" + file.name.Replace(".js", null);
         var js = Encoding.UTF8.GetString(file.srcData);
         sb.Append(url); sb.Append("|"); sb.Append(js); sb.Append("###");
       }
@@ -240,6 +239,40 @@ namespace CourseMeta {
     }
     static DateTime zipStartDate = new DateTime(2014, 1, 12).AddSeconds(-(0xffffffff >> 2));
     static HashSet<string> gzipExt = new HashSet<string>() { ".txt", ".lst", ".json", ".rjson", ".js", ".css", ".html", ".otf", ".svg", ".woff", ".ttf", ".eot" };
+  }
+
+  public class buildEnvelope { //pro JS soubory i MM soubory obsahuje etag a info, ktereho buildu je soubor soucasti
+
+    public static void adjustEnvelope(string buildId, string fn, byte[] data = null) {
+      buildEnvelope env;
+      var envFn = fn + ".mm"; var envExists = File.Exists(envFn); bool buildIdAdded = false;
+      if (envExists) env = XmlUtils.FileToObject<buildEnvelope>(envFn); else env = new buildEnvelope() { buildIds = new List<string>() };
+      if (env.buildIds.IndexOf(buildId) < 0) { buildIdAdded = true; env.buildIds.Add(buildId); }
+      if (data != null) { //JS files
+        using (var md5 = MD5.Create()) {
+          var etag = Convert.ToBase64String(md5.ComputeHash(data));
+          if (env.etag != etag) {
+            env.etag = etag;
+            if (!envExists) Directory.CreateDirectory(Path.GetDirectoryName(fn));
+            File.WriteAllBytes(fn, data);
+            XmlUtils.ObjectToFile(envFn, env);
+          } else if (buildIdAdded)
+            XmlUtils.ObjectToFile(envFn, env);
+        }
+      } else { //MM files
+        if (!envExists || File.GetLastWriteTimeUtc(fn) > File.GetLastWriteTimeUtc(envFn)) { //spocitej etag
+          using (var md5 = MD5.Create())
+          using (var str = File.OpenRead(fn)) {
+            var etag = Convert.ToBase64String(md5.ComputeHash(str));
+            if (etag != env.etag) { env.etag = etag; XmlUtils.ObjectToFile(envFn, env); }
+          }
+        } else if (buildIdAdded)
+          XmlUtils.ObjectToFile(envFn, env);
+      }
+    }
+
+    public string etag;
+    public List<string> buildIds;
   }
 
   public class buildProduct {
@@ -368,7 +401,7 @@ namespace CourseMeta {
         return sb.ToString();
       }
     }
-    public struct KeysValue { public string[] keys; public string value; public int idx;}
+    public struct KeysValue { public string[] keys; public string value; public int idx; }
   }
 
   public class CacheDict {
@@ -419,7 +452,8 @@ namespace CourseMeta {
 
     public IEnumerable<Packager.Consts.file> getFiles() {
       yield return new Packager.Consts.file(page.url + ".js", json);
-      if (externals != null) foreach (var ext in externals) {
+      if (externals != null)
+        foreach (var ext in externals) {
           if (ext.json != null)
             yield return new Packager.Consts.file(ext.url + ".js", ext.json);
           else
@@ -610,7 +644,8 @@ namespace CourseMeta {
     }
     public static Dictionary<string, product> runtimeProdExpanded() {
       return _runtimeProdExpanded ?? (_runtimeProdExpanded = XmlUtils.FileToObject<products>(prodsExpandedFn).Items.Cast<product>().ToDictionary(p => p.url, p => p));
-    } static Dictionary<string, product> _runtimeProdExpanded;
+    }
+    static Dictionary<string, product> _runtimeProdExpanded;
 
     //nejmensi spolecna mnozina lokalizaci. Lokalizace je budto v parents allLocs nebo (kdyz je null) v bigLocs
     public static IEnumerable<Langs> getAllLocs(Langs[] bigLocs, data dt, LoggerMemory logger, sitemap sm = null) {
@@ -743,7 +778,7 @@ namespace CourseMeta {
       if (!reinit && File.Exists(oldProjFn))
         oldPrj = XmlUtils.FileToObject<project>(oldProjFn);
       else {
-        oldPrj = new project { title = "oldea", spaceId = "/lm/oldea/"};
+        oldPrj = new project { title = "oldea", spaceId = "/lm/oldea/" };
 
         var xml = XElement.Load(Machines.rootPath + @"Schools\Design\Statistic_CourseStructureEx.xml");
         var grammXml = XElement.Load(Machines.rootPath + @"Schools\Design\Statistic_Grammar.xml");
@@ -758,16 +793,16 @@ namespace CourseMeta {
       }
 
       //zbyle XML z oldea
-      
+
 
       var lmPubl = sitemap.readFromFilesystem(Machines.rootPath + "lm\\meta.xml");
-      lmPubl.Items = new data[] { 
+      lmPubl.Items = new data[] {
         oldPrj,
-        sitemap.fromFileSystem("/lm/russian4/", log), 
-        sitemap.fromFileSystem("/lm/examples/", log), 
-        sitemap.fromFileSystem("/lm/docExamples/", log), 
-        sitemap.fromFileSystem("/lm/pjExamples/", log), 
-        sitemap.fromFileSystem("/lm/etestme/", log), 
+        sitemap.fromFileSystem("/lm/russian4/", log),
+        sitemap.fromFileSystem("/lm/examples/", log),
+        sitemap.fromFileSystem("/lm/docExamples/", log),
+        sitemap.fromFileSystem("/lm/pjExamples/", log),
+        sitemap.fromFileSystem("/lm/etestme/", log),
         sitemap.fromFileSystem("/lm/author/", log),
         sitemap.fromFileSystem("/lm/blended/", log),
         sitemap.fromFileSystem("/lm/ea/", log),
@@ -779,12 +814,12 @@ namespace CourseMeta {
       //newdProjects[0].items = XExtension.Create(oldPrj).Concat(newdProjects[0].items).ToArray();
       //var cssFn = Machines.basicPath + @"rew\Web4\RowType\style.css";
       sitemap res = (sitemap)sitemap.readFromFilesystem(Machines.rootPath + @"meta.xml");
-      res.Items = new data[] { 
-        lmPubl, 
+      res.Items = new data[] {
+        lmPubl,
         sitemap.fromFileSystem("/grafia/", log),
         sitemap.fromFileSystem("/data/instr/", log),
-        sitemap.fromFileSystem("/skrivanek/", log), 
-        sitemap.fromFileSystem("/edusoft/", log), 
+        sitemap.fromFileSystem("/skrivanek/", log),
+        sitemap.fromFileSystem("/edusoft/", log),
       };
       return res;
     }
@@ -983,9 +1018,10 @@ namespace CourseMeta {
           sents = sents.Concat(Machines.getTradosContext(false).Sentences.Where(s => s.Page.FileName.Contains(rd) && s.SrcLang == (short)Langs.cs_cz && s.TransLang == (short)Langs.en_gb)).ToArray();
         //do {{}} zavorek pridej anglicky zdroj, z Tradosu
         var loc2 = sents.Where(s => s.TransText != null).ToDictionary(s => s.Name, s => extractHref.Replace(s.TransText, m => { var g = m.Groups["href"]; return "href=\"" + normalizeHref(g.Value, true) + "\""; }));
-        foreach (var tag in page.scan()) tag.modifyTexts(text => {
-          return CourseMeta.locLib.initOldEALocalizeText(text, loc2, key => { logger.ErrorLine(ex.url, key + ": " + text); });
-        });
+        foreach (var tag in page.scan())
+          tag.modifyTexts(text => {
+            return CourseMeta.locLib.initOldEALocalizeText(text, loc2, key => { logger.ErrorLine(ex.url, key + ": " + text); });
+          });
 
         var exXml = page.ToElement(); //kontrola
         makeHtml5(exXml); CourseModel.tag.oldEAImport_InsertFakeBlankChar(exXml);
@@ -1094,7 +1130,8 @@ namespace CourseMeta {
           Encoding.UTF8
         );
       };
-    } static Regex endWithNumbers = new Regex(@".*/\d+$");
+    }
+    static Regex endWithNumbers = new Regex(@".*/\d+$");
 
     public static void tidyHtmlFileToXml(string fileWithoutExt) {
       var cmd = string.Format(@"""c:\Program Files (x86)\tidy\tidy.exe"" -config ""c:\Program Files (x86)\tidy\tidy.cfg"" ""{0}.html"" > ""{0}.xml""", fileWithoutExt);

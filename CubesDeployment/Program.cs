@@ -37,8 +37,8 @@ namespace CubesDeployment {
     static void Main(string[] args) {
 
 
-      DesignNew.SynchronizeDirs.synchronize("v1-0", new DesignNew.fileSystemDriver(@"d:\temp\azure", "v1-0"));
-      return;
+      //DesignNew.SynchronizeDirs.synchronize("v1-0", new DesignNew.fileSystemDriver(@"d:\temp\azure", "v1-0"));
+      //return;
       //DesignNew.Deploy.generateMSBuildMinify(); return;
       //var fss = DesignNew.Deploy.validDesignIds.Select(skin => new Packager.ConfigLow { designId = skin }).SelectMany(cfg => Packager.RewApp.imgFontsEtc(cfg)).SelectMany(ss => ss);
       //var swf = File.ReadAllLines(@"D:\LMCom\rew\CubesDeployment\AddWebSoftwareFiles.txt");
@@ -58,7 +58,7 @@ namespace CubesDeployment {
           Machines.appData = @"d:\LMCom\rew\Web4\App_Data\";
           CourseMeta.Lib.init(lg10, @"d:\lmcom\", false);
           if (!lg10.hasError) {
-            var meta = CourseMeta.WebDataBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + bi + ".xml");
+            var meta = CourseMeta.WebDataBatch.Load(@"d:\LMCom\rew\Web4\Deploy\batchs\data-" + bi + ".xml");
             //meta.locs = null; //vsechny lokalizace
             var files = meta.getWebBatchFiles(lg10, true);
             if (isZip) {
@@ -66,7 +66,7 @@ namespace CubesDeployment {
               var zfn = string.Format(@"d:\LMCom\ReleaseDeploy\packs\{0}.zip", bi); if (File.Exists(zfn)) File.Delete(zfn);
               buildLib.zipVirtualFiles(zfn, files, lg10, f => !ignExts.Contains(Path.GetExtension(f.srcPath)), File.Exists(zfn));
             } else
-              buildLib.writeVirtualFiles(files);
+              buildLib.writeVirtualFiles(bi, files);
           }
         } catch (Exception exp) {
           lg10.ErrorLine("Exception", LowUtils.ExceptionToString(exp));
@@ -399,8 +399,8 @@ namespace CubesDeployment {
               //File.Move(tempZip, zipFn);
 
               /***** refresh LM web *****/
-              CourseMeta.Lib.init(logger, @"d:\lmcom\", true);
-              CourseMeta.buildLib.writeVirtualFiles(CourseMeta.WebDataBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\LM_Data_New.xml").getWebBatchFiles(logger));
+              //CourseMeta.Lib.init(logger, @"d:\lmcom\", true);
+              //CourseMeta.buildLib.writeVirtualFiles(CourseMeta.WebDataBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\LM_Data_New.xml").getWebBatchFiles(logger));
               break;
             case '8':
               LoggerMemory lg3 = new LoggerMemory(true);

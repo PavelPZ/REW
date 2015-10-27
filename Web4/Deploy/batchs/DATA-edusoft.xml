@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WebDataBatch xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" url="/lm/lm_data_new/" dictType="no" 
+              locs="vi_vn en_gb cs_cz">
+  <products>
+    <BatchProduct id="/edusoft/prods/etestme-demo/english/demo/t01/" />
+    <BatchProduct id="/edusoft/prods/etestme-demo/english/demo/t02/" />
+    <BatchProduct id="/edusoft/prods/etestme-demo/english/demo/t03/" />
+    <BatchProduct id="/edusoft/prods/etestme-demo/english/demo/t04/" />
+    <BatchProduct id="/edusoft/prods/etestme-demo/english/demo/t05/" />
+    <BatchProduct id="/edusoft/prods/etestme-demo/english/demo/t06/" />
+    <BatchProduct id="/edusoft/prods/etestme-demo/english/demo/t07/" />
+    <BatchProduct id="/edusoft/prods/etestme-demo/english/demo/t08/" />
+    <BatchProduct id="/edusoft/prods/etestme-demo/english/demo/t09/" />
+    <BatchProduct id="/edusoft/prods/etestme-demo/english/demo/t10/" />
+  </products>
+</WebDataBatch>

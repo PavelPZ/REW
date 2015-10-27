@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WebDataBatch xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" url="/lm/lm_data/" dictType="no" 
+              locs="cs_cz" >
+  <products>
+    <BatchProduct id="/grafia/od1_administrativ/" />
+    <BatchProduct id="/grafia/od2_geschaftsverhandlungen/" />
+    <BatchProduct id="/grafia/od3_hotel/" />
+    <BatchProduct id="/grafia/od4_seniorenpflege/" />
+    <BatchProduct id="/grafia/od5_logistik/" />
+    <BatchProduct id="/grafia/od6_autoteile/" />
+    <BatchProduct id="/grafia/od7_elektrotechnik/" />
+    <BatchProduct id="/grafia/od8_maschinenbau/" />
+  </products>
+</WebDataBatch>
