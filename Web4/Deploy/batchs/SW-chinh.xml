@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BatchLow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="WebSoftwareBatch" locs="en_gb vi_vn">
+  <newEA>true</newEA>
+  <target>web</target>
+  <noCpv>true</noCpv>
+  <failLimit>75</failLimit>
+  <canSkipCourse>true</canSkipCourse>
+  <canResetCourse>true</canResetCourse>
+  <canSkipTest>true</canSkipTest>
+  <canResetTest>true</canResetTest>
+  <actBatchVersion>release</actBatchVersion>
+  <designId>chinh</designId>
+  <batchVersions>
+    <BatchVersion version="release">
+      <licenceConfig isDynamic="false" domain="test.langmaster.com" serviceUrl="https://www.langmaster.com/services/service.ashx" rewVersion="435335750" courseVersion="2019002105" extVersion="3290161233" groundVersion="1563850535" />
+      <LoggerEmails>support@langmaster.com</LoggerEmails>
+      <!--<SSASConnectionString>data source=195.250.145.26;user id=lm-virtual-1\lmadmin;password=@LangMast3r07;</SSASConnectionString>-->
+      <ConnectionString>Data Source=195.250.145.26\MSSQLSERVER,1433;initial catalog=chinhtest;Integrated Security=False;User ID=lmcomdatatest;Password=lmcomdatatest;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False###System.Data.SqlClient</ConnectionString>
+      <smtp>LANGMaster</smtp>
+      <basicPath>q:\rew\chinhtest\</basicPath>
+    </BatchVersion>
+  </batchVersions>
+  <products></products>
+  <version>debug</version>
+  <persistType>persistNewEA</persistType>
+  <scorm_driver>no</scorm_driver>
+  <testGroup_debug>false</testGroup_debug>
+</BatchLow>

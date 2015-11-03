@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebDataBatch xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" url="/lm/lm_data/" dictType="L" 
+              locs="cs_cz vi_vn sp_sp ru_ru sk_sk en_gb de_de fr_fr it_it pl_pl">
+  <products>
+    <BatchProduct id="/lm/english_0_10/" />
+    <BatchProduct id="/lm/english_0_2/" />
+    <BatchProduct id="/lm/english_0_1/" />
+    <BatchProduct id="/lm/english_1_1/" />
+    <BatchProduct id="/lm/english_2_2/" />
+    <BatchProduct id="/lm/english_2_1/" />
+    <BatchProduct id="/lm/english_3_1/" />
+    <BatchProduct id="/lm/english_4_2/" />
+    <BatchProduct id="/lm/english_4_1/" />
+    <BatchProduct id="/lm/english_5_1/" />
+    <BatchProduct id="/lm/english_6_2/" />
+    <BatchProduct id="/lm/english_6_1/" />
+    <BatchProduct id="/lm/english_7_1/" />
+    <BatchProduct id="/lm/english_8_2/" />
+    <BatchProduct id="/lm/english_8_1/" />
+    <BatchProduct id="/lm/english_9_1/" />
+    <BatchProduct id="/lm/englishe_0_10/" />
+    <BatchProduct id="/lm/englishe_0_2/" />
+    <BatchProduct id="/lm/englishe_0_1/" />
+    <BatchProduct id="/lm/englishe_1_1/" />
+    <BatchProduct id="/lm/englishe_2_2/" />
+    <BatchProduct id="/lm/englishe_2_1/" />
+    <BatchProduct id="/lm/englishe_3_1/" />
+    <BatchProduct id="/lm/englishe_4_2/" />
+    <BatchProduct id="/lm/englishe_4_1/" />
+    <BatchProduct id="/lm/englishe_5_1/" />
+    <BatchProduct id="/lm/englishe_6_2/" />
+    <BatchProduct id="/lm/englishe_6_1/" />
+    <BatchProduct id="/lm/englishe_7_1/" />
+    <BatchProduct id="/lm/englishe_8_2/" />
+    <BatchProduct id="/lm/englishe_8_1/" />
+    <BatchProduct id="/lm/englishe_9_1/" />
+
+    <BatchProduct id="/lm/english_a1_czu1/" />
+    <BatchProduct id="/lm/english_a1_czu2/" />
+    <BatchProduct id="/lm/english_a1_czu3/" />
+    <BatchProduct id="/lm/english_a1_czu4/" />
+    <BatchProduct id="/lm/english_a1_1/" />
+    <BatchProduct id="/lm/english_a1_2/" />
+    <BatchProduct id="/lm/english_a1_3/" />
+    <BatchProduct id="/lm/english_a1_4/" />
+    <BatchProduct id="/lm/english_a2_1/" />
+    <BatchProduct id="/lm/english_a2_2/" />
+    <BatchProduct id="/lm/english_a2_3/" />
+    <BatchProduct id="/lm/english_a2_4/" />
+    <BatchProduct id="/lm/english_b1_1/" />
+    <BatchProduct id="/lm/english_b1_2/" />
+    <BatchProduct id="/lm/english_b1_3/" />
+    <BatchProduct id="/lm/english_b1_4/" />
+    <BatchProduct id="/lm/english_b2_1/" />
+    <BatchProduct id="/lm/english_b2_2/" />
+    <BatchProduct id="/lm/english_b2_3/" />
+    <BatchProduct id="/lm/english_b2_4/" />
+    
+
+  </products>
+</WebDataBatch>

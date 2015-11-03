@@ -1,0 +1,1 @@
+robocopy.exe \\192.168.0.14\q\rew\alpha\rew\EduAuthorNew\ d:\LMCom\rew\EduAuthorNew\  *.* /mir /XF \\192.168.0.14\q\rew\alpha\rew\EduAuthorNew\Web.config 

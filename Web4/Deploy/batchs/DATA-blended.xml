@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebDataBatch xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" url="/lm/lm_data/" locs="en_gb cs_cz">
+  <products>
+    <BatchProduct id="/lm/blcourse/langmastermanager.product/" />
+    <BatchProduct id="/lm/blcourse/schoolmanager.product/" />
+
+    <BatchProduct id="/lm/prods_lm_blcourse_english/" />
+    <BatchProduct id="/lm/prods_lm_blcourse_french/" />
+    <BatchProduct id="/lm/prods_lm_blcourse_german/" />
+    <!--<BatchProduct id="/lm/prods_lm_blended_english_lessons_lesson_a1_1/" />
+    <BatchProduct id="/lm/prods_lm_blended_english_pretesta1/" />
+    <BatchProduct id="/lm/prods_lm_blended_english_pretesta2/" />
+    <BatchProduct id="/lm/prods_lm_blended_english_pretestb1/" />
+    <BatchProduct id="/lm/prods_lm_blended_english_pretestb2/" />
+    <BatchProduct id="/lm/prods_lm_blended_english_tests_checkpointtesta1_1/" />-->
+  </products>
+</WebDataBatch>

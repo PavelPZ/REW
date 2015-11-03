@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WebDataBatch xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" url="/lm/lm_data/" dictType="no" 
+              locs="cs_cz vi_vn sp_sp ru_ru sk_sk en_gb">
+  <products>
+    <BatchProduct id="/lm/prods/etestme-comp/english/a1/" />
+    <BatchProduct id="/lm/prods/etestme-std/english/a1/" />
+    <BatchProduct id="/lm/prods/etestme-comp/english/a2/" />
+    <BatchProduct id="/lm/prods/etestme-std/english/a2/" />
+    <BatchProduct id="/lm/prods/etestme-comp/english/b1/" />
+    <BatchProduct id="/lm/prods/etestme-std/english/b1/" />
+    <BatchProduct id="/lm/prods/etestme-comp/english/b2/" />
+    <BatchProduct id="/lm/prods/etestme-std/english/b2/" />
+    <BatchProduct id="/lm/prods/etestme-comp/english/c1/" />
+    <BatchProduct id="/lm/prods/etestme-std/english/c1/" />
+    <BatchProduct id="/lm/prods/etestme-comp/english/c2/" />
+    <BatchProduct id="/lm/prods/etestme-std/english/c2/" />
+    <BatchProduct id="/lm/prods/etestme-comp/english/all/" />
+    <BatchProduct id="/lm/prods/etestme-std/english/all/" />
+
+    <BatchProduct id="/lm/prods/etestme-std-demo/english/a1/" />
+    <BatchProduct id="/lm/prods/etestme-std-demo/english/a2/" />
+    <BatchProduct id="/lm/prods/etestme-std-demo/english/b1/" />
+    <BatchProduct id="/lm/prods/etestme-std-demo/english/b2/" />
+    <BatchProduct id="/lm/prods/etestme-std-demo/english/c1/" />
+    <BatchProduct id="/lm/prods/etestme-std-demo/english/c2/" />
+    <BatchProduct id="/lm/prods/etestme-comp-demo/english/a1/" />
+    <BatchProduct id="/lm/prods/etestme-comp-demo/english/a2/" />
+    <BatchProduct id="/lm/prods/etestme-comp-demo/english/b1/" />
+    <BatchProduct id="/lm/prods/etestme-comp-demo/english/b2/" />
+    <BatchProduct id="/lm/prods/etestme-comp-demo/english/c1/" />
+    <BatchProduct id="/lm/prods/etestme-comp-demo/english/c2/" />
+  
+  </products>
+</WebDataBatch>

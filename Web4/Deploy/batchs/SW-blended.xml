@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BatchLow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="WebSoftwareBatch" locs="cs_cz en_gb vi_vn">
+  <newEA>true</newEA>
+  <target>web</target>
+  <noCpv>true</noCpv>
+  <failLimit>75</failLimit>
+  <canSkipCourse>true</canSkipCourse>
+  <canResetCourse>true</canResetCourse>
+  <canSkipTest>true</canSkipTest>
+  <canResetTest>true</canResetTest>
+  <actBatchVersion>release</actBatchVersion>
+  <batchVersions>
+    <BatchVersion version="release">
+      <licenceConfig isDynamic="false" domain="blended.langmaster.com" serviceUrl="https://www.langmaster.com/services/service.ashx" rewVersion="1603512748" courseVersion="528220923" extVersion="3657945516" groundVersion="329375007" />
+      <LoggerEmails>support@langmaster.com</LoggerEmails>
+      <!--<SSASConnectionString>data source=195.250.145.26;user id=lm-virtual-1\lmadmin;password=@LangMast3r07;</SSASConnectionString>-->
+      <ConnectionString>Data Source=195.250.145.26\MSSQLSERVER,1433;initial catalog=blended;Integrated Security=False;User ID=lmcomdatatest;Password=lmcomdatatest;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False###System.Data.SqlClient</ConnectionString>
+      <smtp>LANGMaster</smtp>
+      <basicPath>q:\rew\blended\</basicPath>
+    </BatchVersion>
+  </batchVersions>
+  <products></products>
+  <version>debug</version>
+  <persistType>persistNewEA</persistType>
+  <scorm_driver>no</scorm_driver>
+  <testGroup_debug>false</testGroup_debug>
+</BatchLow>
