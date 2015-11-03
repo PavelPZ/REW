@@ -1,8 +1,10 @@
-﻿using LMNetLib;
+﻿using LMComLib;
+using LMNetLib;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -12,6 +14,65 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace DesignNew {
+
+  public class buildEnvelopes {
+
+    public buildEnvelope[] items { get { return dir.Values.ToArray(); } set { dir = value.ToDictionary(v => v.url); } }
+    [XmlIgnore]
+    public Dictionary<string, buildEnvelope> dir;
+    string fn;
+
+    public static buildEnvelopes adjust(string fn) {
+      var res = File.Exists(fn) ? XmlUtils.FileToObject<buildEnvelopes>(fn) : new buildEnvelopes { dir = new Dictionary<string, buildEnvelope>() };
+      res.fn = fn;
+      return res;
+    }
+    public void save() { XmlUtils.ObjectToFile(fn, this); }
+
+    public void adjustEnvelope(string buildId, string url, byte[] data = null) {
+      var fn = Machines.rootDir + url.Replace('/', '\\');
+      url = url.ToLower();
+      buildEnvelope env;
+      lock (dir) {
+        if (!dir.TryGetValue(url, out env)) dir.Add(url, env = new buildEnvelope() { buildIdLst = new List<string>(), lastWriteTime = DateTime.MinValue, url = url });
+      }
+      if (env.buildIdLst.IndexOf(buildId) < 0) env.buildIdLst.Add(buildId);
+      if (data != null) { //JS files a ostatni vytvorene souboru
+        using (var md5 = MD5.Create()) {
+          var etag = Convert.ToBase64String(md5.ComputeHash(data));
+          if (env.etag != etag) {
+            env.etag = etag;
+            File.WriteAllBytes(fn, data);
+          }
+        }
+      } else { //MM files
+        var lastWriteTime = File.GetLastWriteTimeUtc(fn);
+        if (lastWriteTime > env.lastWriteTime) { //mm soubor je novejsi => spocitej etag
+          using (var md5 = MD5.Create())
+          using (var str = File.OpenRead(fn)) {
+            env.etag = Convert.ToBase64String(md5.ComputeHash(str));
+            env.lastWriteTime = lastWriteTime;
+          }
+        }
+      }
+    }
+  }
+
+  public class buildEnvelope { //pro JS soubory i MM soubory obsahuje etag a info, ktereho buildu je soubor soucasti
+    [XmlAttribute]
+    public string etag;
+    [XmlAttribute]
+    public string url;
+    [XmlIgnore]
+    public DateTime lastWriteTime; //pro mm soubory: datum souboru ve filesystemu, kvuli zjisteni jeho zmeny a novemu spocitan etagu
+    [XmlAttribute, DefaultValue(0)]
+    public long modified { get { return lastWriteTime == DateTime.MinValue ? 0 : lastWriteTime.Ticks; } set { lastWriteTime = new DateTime(value); } }
+    [XmlIgnore]
+    public List<string> buildIdLst;
+    [XmlAttribute]
+    public string buildIds { get { return buildIdLst.Aggregate((r, i) => r + "," + i); } set { buildIdLst = value.Split(',').ToList(); } }
+
+  }
 
   public static class SynchronizeDirs {
     public static void synchronize(string container, IDriver driver) {

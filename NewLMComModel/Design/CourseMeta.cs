@@ -1,10 +1,12 @@
-﻿using LMComLib;
+﻿using DesignNew;
+using LMComLib;
 using LMNetLib;
 using Newtonsoft.Json;
 //using System.Xml;
 using schools;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.IO;
 using System.IO.Compression;
@@ -133,28 +135,32 @@ namespace CourseMeta {
       return products.AsParallel().SelectMany(bp => bp.getFiles(cache, logger, sm));
     }
 
-    public static void writeVirtualFiles(string buildId, IEnumerable<Packager.Consts.file> files_) {
-      var files = files_.ToArray();
+    public static void writeVirtualFiles(string buildId, IEnumerable<Packager.Consts.file> constFiles) {
 
+      var envs = buildEnvelopes.adjust(@"d:\LMCom\rew\Web4\Deploy\envelopes.xml");
+
+      var files = constFiles.ToArray();
       var dirs = files.Select(f => f.destDir + "\\" + f.name.Replace('/', '\\')).ToArray();
-
 
       Parallel.ForEach(files.Where(f => f != null).Distinct(constsFileComparer), /*lib.parallelOptions,*/ file => {
         var data = file.srcData;
-        var fn = Machines.rootPath + file.destDir + "\\" + file.name.Replace('/', '\\');
+        var url = "/" + (file.destDir != null ? file.destDir.Replace('\\', '/') + "/" : null) + file.name;
+        var fn = Machines.rootDir + url.Replace('/', '\\');
         LowUtils.AdjustFileDir(fn);
-        if (data == null) { //obalka mm souboru s etagem
-          buildEnvelope.adjustEnvelope(buildId, fn);
-        } else {
-          if (Path.GetExtension(fn) == ".js") {
-            buildEnvelope.adjustEnvelope(buildId, fn, data);
-            //new FileInfo(fn).Attributes = FileAttributes.Hidden; //hidden atributy
-          } else {
-            if (File.Exists(fn)) File.Delete(fn);
-            File.WriteAllBytes(fn, data);
-          }
-        }
+        envs.adjustEnvelope(buildId, url, data);
+        //if (data == null) { //obalka mm souboru s etagem
+        //envs.adjustEnvelope(buildId, url);
+        //} else {
+        //if (Path.GetExtension(fn) == ".js") {
+        //envs.adjustEnvelope(buildId, url, data);
+        //new FileInfo(fn).Attributes = FileAttributes.Hidden; //hidden atributy
+        //} else {
+        //if (File.Exists(fn)) File.Delete(fn);
+        //File.WriteAllBytes(fn, data);
+        //}
+        //}
       });
+      envs.save();
     }
     public static string getServerScript(string url, string content) {
       return "<script type=\"text/inpagefiles\" data-id=\"" + url + "\">" + content + "</script>";
@@ -239,40 +245,6 @@ namespace CourseMeta {
     }
     static DateTime zipStartDate = new DateTime(2014, 1, 12).AddSeconds(-(0xffffffff >> 2));
     static HashSet<string> gzipExt = new HashSet<string>() { ".txt", ".lst", ".json", ".rjson", ".js", ".css", ".html", ".otf", ".svg", ".woff", ".ttf", ".eot" };
-  }
-
-  public class buildEnvelope { //pro JS soubory i MM soubory obsahuje etag a info, ktereho buildu je soubor soucasti
-
-    public static void adjustEnvelope(string buildId, string fn, byte[] data = null) {
-      buildEnvelope env;
-      var envFn = fn + ".mm"; var envExists = File.Exists(envFn); bool buildIdAdded = false;
-      if (envExists) env = XmlUtils.FileToObject<buildEnvelope>(envFn); else env = new buildEnvelope() { buildIds = new List<string>() };
-      if (env.buildIds.IndexOf(buildId) < 0) { buildIdAdded = true; env.buildIds.Add(buildId); }
-      if (data != null) { //JS files
-        using (var md5 = MD5.Create()) {
-          var etag = Convert.ToBase64String(md5.ComputeHash(data));
-          if (env.etag != etag) {
-            env.etag = etag;
-            if (!envExists) Directory.CreateDirectory(Path.GetDirectoryName(fn));
-            File.WriteAllBytes(fn, data);
-            XmlUtils.ObjectToFile(envFn, env);
-          } else if (buildIdAdded)
-            XmlUtils.ObjectToFile(envFn, env);
-        }
-      } else { //MM files
-        if (!envExists || File.GetLastWriteTimeUtc(fn) > File.GetLastWriteTimeUtc(envFn)) { //spocitej etag
-          using (var md5 = MD5.Create())
-          using (var str = File.OpenRead(fn)) {
-            var etag = Convert.ToBase64String(md5.ComputeHash(str));
-            if (etag != env.etag) { env.etag = etag; XmlUtils.ObjectToFile(envFn, env); }
-          }
-        } else if (buildIdAdded)
-          XmlUtils.ObjectToFile(envFn, env);
-      }
-    }
-
-    public string etag;
-    public List<string> buildIds;
   }
 
   public class buildProduct {

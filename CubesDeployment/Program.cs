@@ -65,8 +65,9 @@ namespace CubesDeployment {
               //var zfn = @"c:\temp\build.zip";
               var zfn = string.Format(@"d:\LMCom\ReleaseDeploy\packs\{0}.zip", bi); if (File.Exists(zfn)) File.Delete(zfn);
               buildLib.zipVirtualFiles(zfn, files, lg10, f => !ignExts.Contains(Path.GetExtension(f.srcPath)), File.Exists(zfn));
-            } else
+            } else {
               buildLib.writeVirtualFiles(bi, files);
+            }
           }
         } catch (Exception exp) {
           lg10.ErrorLine("Exception", LowUtils.ExceptionToString(exp));
