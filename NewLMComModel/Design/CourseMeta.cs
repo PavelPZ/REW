@@ -137,7 +137,7 @@ namespace CourseMeta {
 
     public static void writeVirtualFiles(string buildId, IEnumerable<Packager.Consts.file> constFiles) {
 
-      var envs = buildEnvelopes.adjust(@"d:\LMCom\rew\Web4\Deploy\envelopes.xml");
+      var envs = buildEnvelopes.adjust();
 
       var files = constFiles.ToArray();
       var dirs = files.Select(f => f.destDir + "\\" + f.name.Replace('/', '\\')).ToArray();
