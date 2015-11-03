@@ -51,7 +51,8 @@ namespace CubesDeployment {
           Machines.appData = @"d:\LMCom\rew\Web4\App_Data\";
           CourseMeta.Lib.init(lg10, @"d:\lmcom\", false);
           if (!lg10.hasError) {
-            var meta = CourseMeta.WebDataBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + bi + ".xml");
+            //var meta = CourseMeta.WebDataBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\" + bi + ".xml");
+            var meta = CourseMeta.WebDataBatch.Load(@"d:\LMCom\rew\Web4\Deploy\batchs\data-" + bi + ".xml");
             //meta.locs = null; //vsechny lokalizace
             var files = meta.getWebBatchFiles(lg10, true);
             if (isZip) {

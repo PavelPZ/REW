@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<WebDataBatch url="/lm/lm_data_new/" globalsOnly="true">
+  <productPtrs>
+    <!--<string>d:\LMCom\rew\Downloads\Common\batches\webs\LM_Data_New-grafia.xml</string>-->
+    <!--<string>d:\LMCom\rew\Downloads\Common\batches\webs\LM_Data_New-italian.xml</string>
+    <string>d:\LMCom\rew\Downloads\Common\batches\webs\LM_Data_New-french.xml</string>
+    <string>d:\LMCom\rew\Downloads\Common\batches\webs\LM_Data_New-russian.xml</string>
+    <string>d:\LMCom\rew\Downloads\Common\batches\webs\LM_Data_New-english.xml</string>
+    <string>d:\LMCom\rew\Downloads\Common\batches\webs\LM_Data_New-german.xml</string>
+    <string>d:\LMCom\rew\Downloads\Common\batches\webs\LM_Data_New-spanish.xml</string>
+    <string>d:\LMCom\rew\Downloads\Common\batches\webs\LM_Data_New-lmtests.xml</string>
+    <string>d:\LMCom\rew\Downloads\Common\batches\webs\LM_Data_New-skrivanek.xml</string>
+    <string>d:\LMCom\rew\Downloads\Common\batches\webs\LM_Data_New-edusoft.xml</string>-->
+    <string>d:\LMCom\rew\Downloads\Common\batches\webs\LM_Data_blended.xml</string>
+  </productPtrs>
+</WebDataBatch>
