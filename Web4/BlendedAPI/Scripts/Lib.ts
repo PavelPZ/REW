@@ -22,6 +22,7 @@
   var startGui = new Date().getTime();
 
   export var baseUrlRelToRoot = '..'; //jak se z root stranky dostat do rootu webu
+  export var baseBlobUrl = cfg.blobJS ? cfg.blobJS : '..'; //jak se z root stranky dostat do rootu webu
 
   export function downloadExcelFile(url: string) {
     var hiddenIFrameID = 'hiddenDownloader';

@@ -55,6 +55,8 @@ export interface seeAlsoLink {
   type: seeAlsoType;
 }
 export interface config {
+  blobJS: string;
+  blobMM: string;
   dataBatchUrl: string;
   failLimit: number;
   canSkipCourse: boolean;

@@ -399,7 +399,8 @@ module CourseMeta {
     //zajisti existenci adresare vsech produktu
     export function adjustAllProductList(completed: () => void) {
       if (allProductList) { completed(); return; }
-      load(urlStripLast(cfg.dataBatchUrl ? cfg.dataBatchUrl : '/siteroot/'), (obj: CourseMeta.data) => { allProductList = obj ? obj.Items : null; if (Login.finishMyData) Login.finishMyData(); completed(); });
+      var prodRootUrl = (cfg.dataBatchUrl ? urlStripLast(cfg.dataBatchUrl) : '/siteroot');
+      load(prodRootUrl, (obj: CourseMeta.data) => { allProductList = obj ? obj.Items : null; if (Login.finishMyData) Login.finishMyData(); completed(); });
     }
 
     //zajisteni existence instrukci
@@ -626,32 +627,30 @@ module CourseMeta {
   //persist.readFiles muze byt nahrazeno JS soubory, ulozenymi  primo v HTML strance v <script type="text/inpagefiles" data-id="url"> scriptu.
   //json soubory jsou ulozeny ve strance jako <script type="text/inpagefiles" data-id="url">. Pouziva se pro Author, v d:\LMCom\rew\NewLMComModel\Design\CourseMeta.cs, getServerScript 
   export function loadFiles(urls: string[], completed: (data: string[]) => void) {
-    if (!inPageFiles) {
-      inPageFiles = {};
-      $('script[type="text/inpagefiles"]').each((idx, el) => {
-        var sc = $(el);
-        inPageFiles[sc.attr('data-id').toLowerCase()] = sc.html().replace(/^\s*/, '');
-        //inPageAny = true; //existuje-li jediny type="text/inpagefiles", pak se vsechny JS berou z inPageFiles
-      });
-    }
-    //priorita - nacti soubor z script[type="text/inpagefiles"]
-    var values = _.map(urls, url => inPageFiles[url.substr(2).toLowerCase()]); //url zacina ../
-    var fromScript = _.zip(urls, values);
+    //if (!inPageFiles) {
+    //  inPageFiles = {};
+    //  $('script[type="text/inpagefiles"]').each((idx, el) => {
+    //    var sc = $(el);
+    //    inPageFiles[sc.attr('data-id').toLowerCase()] = sc.html().replace(/^\s*/, '');
+    //    //inPageAny = true; //existuje-li jediny type="text/inpagefiles", pak se vsechny JS berou z inPageFiles
+    //  });
+    //}
+    ////priorita - nacti soubor z script[type="text/inpagefiles"]
+    //var values = _.map(urls, url => inPageFiles[url.toLowerCase()]); //url zacina ../
+    //var fromScript = _.zip(urls, values);
     //nenactene ze scriptu => nacti z webu
-    var webUrls = _.map(_.filter(fromScript, uv => !uv[1]), uv => uv[0]); //nenactene ze scriptu
-    if (webUrls.length > 0) { //je potreba neco nacist z webu
-      persist.readFiles(webUrls, webValues => { //nateni z webu
-        //merge fromScript a fromWeb
-        var fromWeb = _.zip(webUrls, webValues); var fromWebIdx = 0;
-        _.each(fromScript, kv => {
-          if (kv[1]) return;
-          kv[1] = fromWeb[fromWebIdx][1]; fromWebIdx++;
-        });
-        //vrat values z merged
-        completed(_.map(fromScript, kv => kv[1]));
-      });
-    } else
-      completed(values); //vse nactene ze scriptu
+    //var webUrls = _.map(_.filter(fromScript, uv => !uv[1]), uv => uv[0]); //nenactene ze scriptu
+    var webUrls = _.map(urls, u => (cfg.blobJS ? cfg.blobJS : '..') + u);
+    persist.readFiles(webUrls, webValues => { //nateni z webu
+      //merge fromScript a fromWeb
+      var fromWeb = _.zip(webUrls, webValues); //var fromWebIdx = 0;
+      //_.each(fromScript, kv => {
+      //  if (kv[1]) return;
+      //  kv[1] = fromWeb[fromWebIdx][1]; fromWebIdx++;
+      //});
+      //vrat values z merged
+      completed(_.map(fromWeb, kv => kv[1]));
+    });
   } var inPageFiles: { [urlExt: string]: string; }; //var inPageAny = false;
 
   export function loadResponseScript(serverAndUrl: string, completed: (loaded: boolean) => void) {
@@ -671,7 +670,7 @@ module CourseMeta {
   }
 
   export function load(href: string, completed: (dt: Object) => void) {
-    loadFiles(['..' + href + jsExt], ress => completed(jsonParse(ress[0])));
+    loadFiles([href + jsExt], ress => completed(jsonParse(ress[0])));
   }
 
   function urlStripLast(url: string): string {
@@ -683,7 +682,7 @@ module CourseMeta {
   export function loadLocalizedProductAndInstrs(url: string, completed: (prod: productImpl) => void) {
     url = decodeURIComponent(url);
     var href = urlStripLast(url);
-    href = '..' + (href[0] == '/' ? '' : '/') + href;
+    href = (href[0] == '/' ? '' : '/') + href;
     loadFiles([href + jsExt, href + '.' + Trados.actLangStr + jsExt, href + '_instrs.js'], ress => {
       //sitemap
       var prod: productImpl = <productImpl>(jsonParse(ress[0])); if (!prod) throw 'error loading ' + href;

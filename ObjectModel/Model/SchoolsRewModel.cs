@@ -229,6 +229,8 @@ namespace schools
 
   public class config {
     public config() { EADataPath = "eaimgmp3/"; }
+    public string blobJS; //path s JS datovymi soubory, napr. https://lmdata.blob.core.windows.net/v1-0
+    public string blobMM; //path s MM soubory
     public string dataBatchUrl; //pro web: CourseMeta.WebBatch.url. Identifikace buildu dat, aby se vedelo, ktery seznam produktu ladovat (napr. laduje se d:\LMCom\rew\Web4\prod\lm_debug.json)
     public int failLimit;
     public bool canSkipCourse;
@@ -283,6 +285,8 @@ namespace schools
     public bool vocabulary; //kurz s rewise apod. slovnickem. Nejedna se o Dictionary (= slovnik)
 
     public config copyTo(config cfg) {
+      cfg.blobJS = blobJS;
+      cfg.blobMM = blobMM;
       cfg.dataBatchUrl = dataBatchUrl;
       cfg.failLimit = failLimit;
       cfg.canSkipCourse = canSkipCourse;

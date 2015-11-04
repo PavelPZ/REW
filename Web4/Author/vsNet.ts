@@ -49,7 +49,7 @@
               boot.minInit();
               //napln instrukce
               CourseMeta.instructions = {};
-              CourseMeta.loadFiles(_.map(th.ex.page.instrs, s => '..' + s + '.js'), instrs => {
+              CourseMeta.loadFiles(_.map(th.ex.page.instrs, s => s + '.js'), instrs => {
                 for(var i = 0; i < instrs.length; i++) CourseMeta.finishInstr(th.ex.page.instrs[i], JSON.parse(instrs[i]), {});
               });
               //pouzij instrukce

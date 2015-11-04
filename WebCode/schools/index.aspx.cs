@@ -16,6 +16,8 @@ namespace WebCode {
       //}
 
       cfg = new Packager.Config() {
+        blobJS = "https://lmdata.blob.core.windows.net/v1-0",
+        blobMM = "https://lmdata.blob.core.windows.net/v1-0",
         target = LMComLib.Targets.web,
         version = isDebug ? schools.versions.debug : schools.versions.minified,
         dataBatchUrl = "/lm/lm_data_new/",

@@ -2,6 +2,8 @@
 
 <%
   Packager.Config cfg = new Packager.Config() {
+    blobJS = "https://lmdata.blob.core.windows.net/v1-0",
+    blobMM = "https://lmdata.blob.core.windows.net/v1-0",
     target = LMNetLib.LowUtils.EnumParse<LMComLib.Targets>(Request["target"] ?? "web"),
     version = schools.versions.debug,
     dictNoSound = false,
@@ -19,7 +21,7 @@
     //dataBatchUrl = Request["dataBatchUrl"] ?? "/lm/lm_data_new/", 
     designId = "",
 
-    dataBatchUrl = "/lm/lm_data_new/",
+    dataBatchUrl = "/lm/lm_data/",
     //dataBatchUrl = "/lm/lm_data/",
     //dataBatchUrl = "/skrivanek",
     //dataBatchUrl = "/siteroot.all",

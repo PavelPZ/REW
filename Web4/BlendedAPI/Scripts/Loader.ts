@@ -42,10 +42,10 @@ module blended {
   export function getPersistWrapper<T extends IPersistNodeUser>(dataNode: CourseMeta.data, taskid: string, createProc?: () => T): IPersistNodeItem<T> {
     if (createProc) {
       if (!dataNode.userData) dataNode.userData = {};
-      var res = dataNode.userData[taskid]; if (res && res.shortData) return <IPersistNodeItem<T>> res;
+      var res = dataNode.userData[taskid]; if (res && res.shortData) return <IPersistNodeItem<T>>res;
       res = { longData: null, shortData: createProc(), modified: true };
       dataNode.userData[taskid] = res;
-      return <IPersistNodeItem<T>> res;
+      return <IPersistNodeItem<T>>res;
     } else {
       if (!dataNode.userData) return null;
       return <IPersistNodeItem<T>>(dataNode.userData[taskid]);
@@ -167,71 +167,64 @@ module blended {
         if (!fromCache.startReading) return; //produkt se zacal nacitat jiz drive - deferred se pouze ulozi do seznamu deferreds.
         //novy start nacitani produktu
         var href = ctx.productUrl.substr(0, ctx.productUrl.length - 1);
-        var promises = _.map(
-          [href + '.js', href + '.' + LMComLib.Langs[ctx.loc] + '.js', href + '_instrs.js'],
-          url => ctx.$http.get(baseUrlRelToRoot + url, { transformResponse: s => CourseMeta.jsonParse(s) }));
-        ctx.$q.all(promises).then(
-          (files: Array<ng.IHttpPromiseCallbackArg<any>>) => {
-            var prod: IProductEx = files[0].data; prod.url = ctx.productUrl; prod.instructions = {}; prod.nodeDir = {}; prod.nodeList = [];
-            finishProduktStart(prod);
-            var loc: { [id: string]: any; } = files[1].data; if (!loc) loc = {};
-            var instrs: Array<any> = files[2].data;
-            //vypln seznamy a adresar nodes
-            var scan: (dt: CourseMeta.data) => void;
-            scan = dt => {
-              prod.nodeDir[dt.url] = dt; prod.nodeList.push(dt);
-              if (dt.other) dt = $.extend(dt, JSON.parse(dt.other.replace(/'/g, '"')));
-              _.each(dt.Items, it => { it.parent = dt; scan(it); });
-            };
-            scan(prod);
-            //lokalizace produktu
-            _.each(prod.nodeList, dt => dt.title = CourseMeta.localizeString(dt.url, dt.title, loc));
-            //finish instrukce
-            if (instrs) for (var p in instrs) {
-              var pg = CourseMeta.extractEx(instrs[p]); if (pg == null) { debugger; throw 'missing instr'; }
-              pg.Items = _.filter(pg.Items, it => !_.isString(it));
-              Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, loc));
-              Course.scanEx(pg, tg => { if (!_.isString(tg)) delete tg.id; }); //instrukce nemohou mit tag.id, protoze se ID tlucou s ID ze cviceni
-              prod.instructions[p] = JsRenderTemplateEngine.render("c_genitems", pg);
-            }
-            if (ctx.finishProduct) ctx.finishProduct(prod);
-            //user data
-            proxies.vyzva57services.getShortProductDatas(ctx.companyid, ctx.userDataId(), ctx.productUrl, res => {
-              _.each(res, it => {
-                var node = prod.nodeDir[it.url]; if (!node) debugger/*something wrong*/;
-                if (!node.userData) node.userData = {};
-                var taskData = node.userData[it.taskId];
-                var shortLong: IPersistNodeItem<any> = { modified: false, longData: null, shortData: JSON.parse(it.shortData) };
-                if (!taskData) node.userData[it.taskId] = shortLong;
-                //else debugger; /*something wrong*/
-              });
-              //product nacten, resolve vsechny cekajici deferreds
-              productCache.resolveDefereds(fromCache.startReading, prod);
+        var urls = [href + '.js', href + '.' + LMComLib.Langs[ctx.loc] + '.js', href + '_instrs.js'];
+        CourseMeta.loadFiles(urls, files => {
+          var prod: IProductEx = CourseMeta.jsonParse(files[0]); prod.url = ctx.productUrl; prod.instructions = {}; prod.nodeDir = {}; prod.nodeList = [];
+          finishProduktStart(prod);
+          var loc: { [id: string]: any; } = CourseMeta.jsonParse(files[1]); if (!loc) loc = {};
+          var instrs: Array<any> = CourseMeta.jsonParse(files[2]);
+          //vypln seznamy a adresar nodes
+          var scan: (dt: CourseMeta.data) => void;
+          scan = dt => {
+            prod.nodeDir[dt.url] = dt; prod.nodeList.push(dt);
+            if (dt.other) dt = $.extend(dt, JSON.parse(dt.other.replace(/'/g, '"')));
+            _.each(dt.Items, it => { it.parent = dt; scan(it); });
+          };
+          scan(prod);
+          //lokalizace produktu
+          _.each(prod.nodeList, dt => dt.title = CourseMeta.localizeString(dt.url, dt.title, loc));
+          //finish instrukce
+          if (instrs) for (var p in instrs) {
+            var pg = CourseMeta.extractEx(instrs[p]); if (pg == null) { debugger; throw 'missing instr'; }
+            pg.Items = _.filter(pg.Items, it => !_.isString(it));
+            Course.localize(pg, s => CourseMeta.localizeString(pg.url, s, loc));
+            Course.scanEx(pg, tg => { if (!_.isString(tg)) delete tg.id; }); //instrukce nemohou mit tag.id, protoze se ID tlucou s ID ze cviceni
+            prod.instructions[p] = JsRenderTemplateEngine.render("c_genitems", pg);
+          }
+          if (ctx.finishProduct) ctx.finishProduct(prod);
+          //user data
+          proxies.vyzva57services.getShortProductDatas(ctx.companyid, ctx.userDataId(), ctx.productUrl, res => {
+            _.each(res, it => {
+              var node = prod.nodeDir[it.url]; if (!node) debugger/*something wrong*/;
+              if (!node.userData) node.userData = {};
+              var taskData = node.userData[it.taskId];
+              var shortLong: IPersistNodeItem<any> = { modified: false, longData: null, shortData: JSON.parse(it.shortData) };
+              if (!taskData) node.userData[it.taskId] = shortLong;
+              //else debugger; /*something wrong*/
             });
-          },
-          errors => {
-            deferred.reject();
+            //product nacten, resolve vsechny cekajici deferreds
+            productCache.resolveDefereds(fromCache.startReading, prod);
           });
+        });
       } finally { return deferred.promise; }
     }
+
     function adjustModule(ctx: learnContext, modData: CourseMeta.data, prod: IProductEx): ng.IPromise<cachedModule> {
       ctx = finishContext(ctx);
       var deferred = ctx.$q.defer();
       try {
         var mod = prod.moduleCache.fromCache(ctx.moduleUrl, null);
         if (mod) { deferred.resolve(mod); return; }
-        var href = baseUrlRelToRoot + ctx.moduleUrl.substr(0, ctx.moduleUrl.length - 1) + '.' + LMComLib.Langs[ctx.loc] + '.js';
-        ctx.$http.get(href).then(
-          (file: ng.IHttpPromiseCallbackArg<any>) => {
-            mod = new cachedModule(file.data, modData);
-            prod.moduleCache.toCache(ctx.moduleUrl, null, mod);
-            deferred.resolve(mod);
-          },
-          errors => {
-            deferred.reject();
-          });
+        var href = [ctx.moduleUrl.substr(0, ctx.moduleUrl.length - 1) + '.' + LMComLib.Langs[ctx.loc] + '.js'];
+        CourseMeta.loadFiles(href, files => {
+          var data = files[0] ? CourseMeta.jsonParse(files[0]) : {};
+          mod = new cachedModule(data, modData);
+          prod.moduleCache.toCache(ctx.moduleUrl, null, mod);
+          deferred.resolve(mod);
+        });
       } finally { return deferred.promise; }
     }
+
     export function adjustEx(ctx: learnContext): ng.IPromise<cacheExercise> {
       ctx = finishContext(ctx);
       var deferred = ctx.$q.defer<cacheExercise>();
@@ -244,32 +237,16 @@ module blended {
           adjustModule(modCtx, modData, prod).then(mod => {
             var exServ = mod.cacheOfPages.fromCache(ctx.Url, ctx.taskid);
             if (exServ) { deferred.resolve(exServ); return; }
-            var href = baseUrlRelToRoot + ctx.Url + '.js';
-            ctx.$http.get(href, { transformResponse: s => CourseMeta.jsonParse(s) }).then(
-              (file: ng.IHttpPromiseCallbackArg<Array<any>>) => {
-                var exServ = new cacheExercise(mod, exNode, file.data);
-                mod.cacheOfPages.toCache(ctx.Url, ctx.taskid, exServ);
-                deferred.resolve(exServ);
-              },
-              errors => {
-                deferred.reject();
-              });
+            var href = [ctx.Url + '.js'];
+            CourseMeta.loadFiles(href, files => {
+              var exServ = new cacheExercise(mod, exNode, CourseMeta.jsonParse(files[0]));
+              mod.cacheOfPages.toCache(ctx.Url, ctx.taskid, exServ);
+              deferred.resolve(exServ);
+            });
           });
         });
       } finally { return deferred.promise; }
     }
-
-    //export function adjustExSimple(ctx: learnContext): ng.IPromise<Array<any>> {
-    //  debugger;
-    //  var deferred = ctx.$q.defer<Array<any>>();
-    //  try {
-    //    var href = baseUrlRelToRoot + ctx.Url + '.js';
-    //    ctx.$http.get(href, { transformResponse: s => CourseMeta.jsonParse(s) }).then(
-    //      (file: ng.IHttpPromiseCallbackArg<Array<any>>) => deferred.resolve(file.data),
-    //      errors => deferred.reject());
-    //  } finally { return deferred.promise; }
-    //}
-
 
     //*************** globalni CACHE produktu
     export interface fromCacheRsult {
