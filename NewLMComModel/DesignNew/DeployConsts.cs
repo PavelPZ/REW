@@ -7,17 +7,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DesignNew {
-  public static partial class Deploy {
 
-    //**************************** Data group
-    public enum DataGroups {
-      blended,
-      edusoft,
-      english, french, german, italian, russian, spanish,
-      grafia,
-      lmtests,
-      skrivanek
-    }
+  //**************************** Data group
+  public enum BuildIds {
+    blended,
+    edusoft,
+    english, french, german, italian, russian, spanish,
+    grafia,
+    lmtests,
+    skrivanek
+  }
+
+  public static partial class Deploy {
 
     public static HashSet<string> validDesignIds = new HashSet<string>(new string[] { "skrivanek", "grafia", "chinh" });
     public static Langs[] validLangs = new Langs[] { Langs.cs_cz, Langs.en_gb };
@@ -27,6 +28,7 @@ namespace DesignNew {
     public static Dictionary<string, string> contentTypes = new Dictionary<string, string> {
       {".js", "application/x-javascript"},
       {".html", "text/html"},
+      {".xml", "text/xml"},
       {".css", "text/css"},
       {".svg", "image/svg+xml"},
       {".ttf", "application/x-font-ttf"},
@@ -40,6 +42,7 @@ namespace DesignNew {
       {".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
 
       {".mp4", "video/mp4"},
+      {".mp3", "audio/mpeg"},
       {".webm", "video/webm"},
       {".gif", "image/gif"},
       {".png", "image/png"},

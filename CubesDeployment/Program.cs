@@ -37,8 +37,9 @@ namespace CubesDeployment {
     static void Main(string[] args) {
 
 
-      //DesignNew.SynchronizeDirs.synchronize("v1-0", new DesignNew.fileSystemDriver(@"d:\temp\azure", "v1-0"));
-      //return;
+      //DesignNew.SynchronizeDirs.synchronize(new DesignNew.fileSystemDriver(@"d:\temp\azure", "v1-0"), new DesignNew.BuildIds[] { DesignNew.BuildIds .blended }, new Langs[] { Langs .cs_cz });
+      DesignNew.SynchronizeDirs.synchronize(new DesignNew.azureDriver("lmdata", "Hx//uWeo6vDSA2BHbBJP7HZviSSE6D8qZhGV7f4G778yPcfGOiBODF6o7Cg6029JiqnpMm1U8KrlD3+hycYiEw==", "v1-0"), new DesignNew.BuildIds[] { DesignNew.BuildIds.blended }, new Langs[] { Langs.cs_cz });
+      return;
       //DesignNew.Deploy.generateMSBuildMinify(); return;
       //var fss = DesignNew.Deploy.validDesignIds.Select(skin => new Packager.ConfigLow { designId = skin }).SelectMany(cfg => Packager.RewApp.imgFontsEtc(cfg)).SelectMany(ss => ss);
       //var swf = File.ReadAllLines(@"D:\LMCom\rew\CubesDeployment\AddWebSoftwareFiles.txt");
@@ -66,7 +67,7 @@ namespace CubesDeployment {
               var zfn = string.Format(@"d:\LMCom\ReleaseDeploy\packs\{0}.zip", bi); if (File.Exists(zfn)) File.Delete(zfn);
               buildLib.zipVirtualFiles(zfn, files, lg10, f => !ignExts.Contains(Path.GetExtension(f.srcPath)), File.Exists(zfn));
             } else {
-              buildLib.writeVirtualFiles(bi, files);
+              buildLib.writeVirtualFiles(LowUtils.EnumParse<DesignNew.BuildIds>(bi), files);
             }
           }
         } catch (Exception exp) {

@@ -135,7 +135,7 @@ namespace CourseMeta {
       return products.AsParallel().SelectMany(bp => bp.getFiles(cache, logger, sm));
     }
 
-    public static void writeVirtualFiles(string buildId, IEnumerable<Packager.Consts.file> constFiles) {
+    public static void writeVirtualFiles(BuildIds buildId, IEnumerable<Packager.Consts.file> constFiles) {
 
       var envs = buildEnvelopes.adjust();
 

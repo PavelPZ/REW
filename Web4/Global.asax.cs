@@ -7,6 +7,7 @@ using System.Web.SessionState;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
 using System.Reflection;
+using System.Web.Http.Cors;
 
 namespace web4 {
 
@@ -14,6 +15,7 @@ namespace web4 {
 
     public static class WebApiConfig {
       public static void Register(HttpConfiguration config) {
+        config.EnableCors(new EnableCorsAttribute("*", "*", "*")); //http://www.asp.net/web-api/overview/security/enabling-cross-origin-requests-in-web-api
         config.MapHttpAttributeRoutes();
         config.Routes.MapHttpRoute(
             name: "DefaultApi",
@@ -28,7 +30,7 @@ namespace web4 {
       //System.Diagnostics.Debugger.Break();
       //GlobalConfiguration.Configuration.Services.Replace(typeof(IAssembliesResolver), new ProductsApp.Controllers.CustomAssemblyResolver());
       //GlobalConfiguration.Configure(config => config.MapHttpAttributeRoutes());//config.RegisterProxyRoutes();
-
+      
       GlobalConfiguration.Configure(WebApiConfig.Register);
       NewData.Lib.lmcomSeed();
     }
