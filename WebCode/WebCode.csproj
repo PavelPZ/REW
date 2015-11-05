@@ -187,7 +187,10 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\htmlFile.txt" />
+    <Content Include="App_Data\htmlchinh.txt" />
+    <Content Include="App_Data\htmlgrafia.txt" />
+    <Content Include="App_Data\htmlno.txt" />
+    <Content Include="App_Data\htmlskrivanek.txt" />
     <Content Include="bin\libmp3lame.dll" />
     <Content Include="bin\sqlite3.dll" />
     <Content Include="Global.asax" />

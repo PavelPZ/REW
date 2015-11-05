@@ -8,7 +8,7 @@
   <Target Name="web">
     <minify basicPath="D:\LMCom\rew\Web4\" />
     <zipSWFiles basicPath="D:\LMCom\rew\Web4\" zipFile="d:\lmcom\rew\webcode\app_data\swfiles.zip"/>
-    <htmlFiles designId="" htmlFile="d:\lmcom\rew\webcode\app_data\htmlFile.txt"/>
+    <htmlFiles htmlFile="d:\lmcom\rew\webcode\app_data\html{0}.txt"/>
 
     <!--<ItemGroup>
       <CssFiles Include="../font-awesome/lm/externals.css; ../blendedapi/styles/style.css; ../jslib/css/lm.css" />

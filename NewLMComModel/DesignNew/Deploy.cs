@@ -9,6 +9,7 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Yahoo.Yui.Compressor;
 using System.Text;
+using LMNetLib;
 
 namespace DesignNew {
 
@@ -19,12 +20,13 @@ namespace DesignNew {
     public override bool Execute() {
       Log.LogMessage(">>> htmlFiles START");
       Log.LogMessage(htmlFile);
-      var res = Packager.MainPage.htmls(Packager.RewApp.htmlNewEA(true, designId));
-      File.WriteAllText(htmlFile, res);
+      foreach (var designId in LowUtils.EnumGetValues<DesignIds>()) {
+        var res = Packager.MainPage.htmls(Packager.RewApp.htmlNewEA(true, designId==DesignIds.no ? null : designId.ToString()));
+        File.WriteAllText(string.Format(htmlFile, designId), res);
+      }
       Log.LogMessage(">>> htmlFiles END");
       return true;
     }
-    public string designId { get; set; }
     [Required]
     public string htmlFile { get; set; }
   }
@@ -79,8 +81,8 @@ namespace DesignNew {
 
     //******************* soubory pro SW deployment
     public static IEnumerable<string> allSWFiles(string basicPath) {
-      var JSs = validDesignIds.SelectMany(skin => validLangStrs.SelectMany(lang => new bool[] { true, false }.Select(bol => new { skin, lang, bol }))).SelectMany(slb => allJS(slb.bol, slb.lang, slb.skin));
-      var CSSs = validDesignIds.SelectMany(skin => new bool[] { true, false }.Select(bol => new { skin, bol })).SelectMany(slb => allCSS(slb.bol, slb.skin));
+      var JSs = validDesignIds.SelectMany(designId => validLangStrs.SelectMany(lang => new bool[] { true, false }.Select(isMin => new { designId, lang, isMin }))).SelectMany(slb => allJS(slb.isMin, slb.lang, slb.designId));
+      var CSSs = validDesignIds.SelectMany(designId => new bool[] { true, false }.Select(isMin => new { designId, isMin })).SelectMany(slb => allCSS(slb.isMin, slb.designId));
       var other = File.ReadAllLines(basicPath + @"Deploy\otherServer.txt").Concat(File.ReadAllLines(basicPath + @"Deploy\otherClient.txt"));
       return JSs.Concat(CSSs).Concat(other).Where(s => !string.IsNullOrEmpty(s)).Select(s => s.ToLower()).Distinct().OrderBy(s => s);
     }

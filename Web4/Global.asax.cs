@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Security;
-using System.Web.SessionState;
+﻿using LMComLib;
+using System;
+using System.Web.Hosting;
 using System.Web.Http;
-using System.Web.Http.Dispatcher;
-using System.Reflection;
 using System.Web.Http.Cors;
 
 namespace web4 {
@@ -26,11 +21,12 @@ namespace web4 {
     }
 
     protected void Application_Start(object sender, EventArgs e) {
+      NewData.MachinesLow.rootDir = Machines._rootDir = HostingEnvironment.MapPath("~");
       //https://gist.github.com/HenrikFrystykNielsen/2907767
       //System.Diagnostics.Debugger.Break();
       //GlobalConfiguration.Configuration.Services.Replace(typeof(IAssembliesResolver), new ProductsApp.Controllers.CustomAssemblyResolver());
       //GlobalConfiguration.Configure(config => config.MapHttpAttributeRoutes());//config.RegisterProxyRoutes();
-      
+
       GlobalConfiguration.Configure(WebApiConfig.Register);
       NewData.Lib.lmcomSeed();
     }

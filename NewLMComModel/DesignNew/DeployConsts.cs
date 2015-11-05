@@ -1,4 +1,5 @@
 ﻿using LMComLib;
+using LMNetLib;
 using Packager;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,10 @@ using System.Threading.Tasks;
 namespace DesignNew {
 
   //**************************** Data group
+  public enum DesignIds {
+    no, chinh, skrivanek, grafia
+  }
+
   public enum BuildIds {
     blended,
     edusoft,
@@ -20,7 +25,7 @@ namespace DesignNew {
 
   public static partial class Deploy {
 
-    public static HashSet<string> validDesignIds = new HashSet<string>(new string[] { "skrivanek", "grafia", "chinh" });
+    public static HashSet<string> validDesignIds = new HashSet<string>(LowUtils.EnumGetValues<DesignIds>().Select(id => id==DesignIds.no ? null : id.ToString()));
     public static Langs[] validLangs = new Langs[] { Langs.cs_cz, Langs.en_gb };
     public static string[] validLangStrs = validLangs.Select(l => l.ToString().Replace('_', '-')).ToArray();
     public static string[] validExtensions = new string[] { ".css", ".eot", ".gif", ".html", ".jpg", ".js", ".otf", ".pdf", ".png", ".svg", ".ttf", ".woff", ".woff2", ".xap", ".xlsx" };
