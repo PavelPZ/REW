@@ -19,7 +19,7 @@ namespace DesignNew {
     public static void synchronize(IDriver driver, BuildIds[] buildIds, Langs[] locs) {
       var src = buildEnvelopes.adjust();
       var dest = driver.readMap();
-      var delta = src.synchronize(dest, buildIds, locs); if (delta == null) return;
+      var delta = src.synchronize(dest, buildIds, locs); //if (delta == null) return;
       driver.update(delta);
     }
   }
@@ -150,10 +150,11 @@ namespace DesignNew {
   //http://justazure.com/azure-blob-storage-part-6-blob-properties-metadata-etc/
   public class azureDriver : IDriver {
     CloudBlobContainer container;
+    CloudBlobClient blobClient;
     public azureDriver(string accountName, string accountKey, string containerName) {
       var connStr = string.Format("DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1}", accountName, accountKey);
       CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connStr);
-      CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+      blobClient = storageAccount.CreateCloudBlobClient();
       var props = blobClient.GetServiceProperties();
       if (props.Cors.CorsRules.Count == 0) {
         props.Cors.CorsRules.Add(new CorsRule() {
@@ -177,7 +178,29 @@ namespace DesignNew {
     //https://cmatskas.com/working-with-azure-blobs-through-the-net-sdk/
     //https://msdn.microsoft.com/en-us/library/wa_storage_30_reference_home.aspx
     public void update(dirItemsDelta delta) {
-      if (delta.empty()) return;
+      var rootContainer = blobClient.GetContainerReference("$root");
+      if (rootContainer.CreateIfNotExists()) rootContainer.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
+
+      var slAccess = rootContainer.GetBlockBlobReference("clientaccesspolicy.xml");
+      slAccess.Properties.ContentType = "text/xml; charset=utf-8";
+      slAccess.UploadText(
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<access-policy>
+  <cross-domain-access>
+    <policy>
+      <allow-from http-methods=""*"" http-request-headers=""*"">
+        <domain uri=""*"" />
+        <domain uri=""http://*"" />
+        <domain uri=""https://*"" />
+      </allow-from>
+      <grant-to>
+        <resource path=""/"" include-subpaths=""true"" />
+      </grant-to>
+    </policy>
+  </cross-domain-access>
+</access-policy>");
+
+      if (delta==null || delta.empty()) return;
       Parallel.ForEach(delta.delete, new ParallelOptions { MaxDegreeOfParallelism = paralelCount }, it => container.GetBlockBlobReference(it.url.Substring(1)).Delete());
       Parallel.ForEach(delta.update.Concat(delta.insert), new ParallelOptions { MaxDegreeOfParallelism = paralelCount }, it => {
         var blob = container.GetBlockBlobReference(it.url.Substring(1));
@@ -187,6 +210,7 @@ namespace DesignNew {
       });
       var map = container.GetBlockBlobReference("map.map");
       map.UploadFromByteArray(delta.fileMap, 0, delta.fileMap.Length);
+
     }
     const int paralelCount = 10;
   }

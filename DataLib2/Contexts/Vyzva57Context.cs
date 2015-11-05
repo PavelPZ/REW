@@ -14,7 +14,7 @@ namespace NewData {
     protected override void OnConfiguring(DbContextOptionsBuilder options) {
       base.OnConfiguring(options);
       var config = ConfigurationManager.ConnectionStrings["Vyzva57-sqlite"];
-      var conn = new SqliteConnection(config.ConnectionString);
+      var conn = new SqliteConnection("Data Source=" + MachinesLow.rootDir +  config.ConnectionString);
       options.UseSqlite(conn);
     }
   }

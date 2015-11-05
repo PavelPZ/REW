@@ -488,18 +488,21 @@ namespace Packager {
       var skinCss = string.Format(Machines.rootPath + @"JsLib\skins\{0}\css.css", cfg.designId);
       if (File.Exists(skinCss)) yield return new string[] { string.Format(@"JsLib/skins/{0}/css.css", cfg.designId).ToLower() };
     }
-    
-    public static IEnumerable<IEnumerable<string>> htmlNewEA(ConfigLow cfg) {
+
+    public static IEnumerable<IEnumerable<string>> htmlNewEA(bool webTarget, string designId) {
       yield return Consts.htmlJsLib;
-      if (cfg.target == Targets.web) yield return Consts.htmlLogin;
-      if (cfg.target == Targets.web) yield return Consts.htmlAdmin;
+      if (webTarget) yield return Consts.htmlLogin;
+      if (webTarget) yield return Consts.htmlAdmin;
       //if (cfg.target == Targets.web || cfg.target == Targets.author) yield return Consts.htmlAuthor;
       yield return Consts.htmlCourse;
       yield return Consts.htmlSchool;
       //yield return Consts.angularHtml;
-      var skinHtml = string.Format(Machines.rootPath + @"JsLib\skins\{0}\html.html", cfg.designId);
-      if (File.Exists(skinHtml)) yield return new string[] { string.Format(@"JsLib/skins/{0}/html.html", cfg.designId) };
+      var skinHtml = string.Format(Machines.rootPath + @"JsLib\skins\{0}\html.html", designId);
+      if (File.Exists(skinHtml)) yield return new string[] { string.Format(@"JsLib/skins/{0}/html.html", designId) };
 
+    }
+    public static IEnumerable<IEnumerable<string>> htmlNewEA(ConfigLow cfg) {
+      return htmlNewEA(cfg.target==Targets.web, cfg.designId);
     }
 
 

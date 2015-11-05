@@ -627,32 +627,11 @@ module CourseMeta {
   //persist.readFiles muze byt nahrazeno JS soubory, ulozenymi  primo v HTML strance v <script type="text/inpagefiles" data-id="url"> scriptu.
   //json soubory jsou ulozeny ve strance jako <script type="text/inpagefiles" data-id="url">. Pouziva se pro Author, v d:\LMCom\rew\NewLMComModel\Design\CourseMeta.cs, getServerScript 
   export function loadFiles(urls: string[], completed: (data: string[]) => void) {
-    //if (!inPageFiles) {
-    //  inPageFiles = {};
-    //  $('script[type="text/inpagefiles"]').each((idx, el) => {
-    //    var sc = $(el);
-    //    inPageFiles[sc.attr('data-id').toLowerCase()] = sc.html().replace(/^\s*/, '');
-    //    //inPageAny = true; //existuje-li jediny type="text/inpagefiles", pak se vsechny JS berou z inPageFiles
-    //  });
-    //}
-    ////priorita - nacti soubor z script[type="text/inpagefiles"]
-    //var values = _.map(urls, url => inPageFiles[url.toLowerCase()]); //url zacina ../
-    //var fromScript = _.zip(urls, values);
-    //nenactene ze scriptu => nacti z webu
-    //var webUrls = _.map(_.filter(fromScript, uv => !uv[1]), uv => uv[0]); //nenactene ze scriptu
     var webUrls = _.map(urls, u => (cfg.blobJS ? cfg.blobJS : '..') + u);
-    persist.readFiles(webUrls, webValues => { //nateni z webu
-      //merge fromScript a fromWeb
-      var fromWeb = _.zip(webUrls, webValues); //var fromWebIdx = 0;
-      //_.each(fromScript, kv => {
-      //  if (kv[1]) return;
-      //  kv[1] = fromWeb[fromWebIdx][1]; fromWebIdx++;
-      //});
-      //vrat values z merged
-      completed(_.map(fromWeb, kv => kv[1]));
-    });
-  } var inPageFiles: { [urlExt: string]: string; }; //var inPageAny = false;
+    persist.readFiles(webUrls, webValues => completed(webValues));
+  } 
 
+  //OBSOLETE
   export function loadResponseScript(serverAndUrl: string, completed: (loaded: boolean) => void) {
     $.ajax(serverAndUrl, {
       async: true,
@@ -668,6 +647,7 @@ module CourseMeta {
       completed(false);
     });
   }
+  var inPageFiles: { [urlExt: string]: string; }; //var inPageAny = false;
 
   export function load(href: string, completed: (dt: Object) => void) {
     loadFiles([href + jsExt], ress => completed(jsonParse(ress[0])));

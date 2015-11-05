@@ -14,6 +14,21 @@ namespace DesignNew {
 
   //******************* MS BUILD TASKS
 
+  //HTML files do d:\LMCom\rew\WebCode\App_Data\htmlfiles.txt
+  public class htmlFiles : Task {
+    public override bool Execute() {
+      Log.LogMessage(">>> htmlFiles START");
+      Log.LogMessage(htmlFile);
+      var res = Packager.MainPage.htmls(Packager.RewApp.htmlNewEA(true, designId));
+      File.WriteAllText(htmlFile, res);
+      Log.LogMessage(">>> htmlFiles END");
+      return true;
+    }
+    public string designId { get; set; }
+    [Required]
+    public string htmlFile { get; set; }
+  }
+
   //SW files do d:\LMCom\rew\WebCode\App_Data\swfiles.zip
   public class zipSWFiles : Task { 
     public override bool Execute() {

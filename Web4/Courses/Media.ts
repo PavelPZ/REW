@@ -133,7 +133,7 @@ module Course {
     adjustMediaUrl(dr: SndLow.MediaDriver): void {
       if (this.medieUrlAdjusted) return;
       this.medieUrlAdjusted = true;
-      var start = ((cfg.baseTagUrl ? cfg.baseTagUrl : Pager.basicDir) + this.mediaUrl).toLowerCase();
+      var start = ((cfg.blobMM ? cfg.blobMM : (cfg.baseTagUrl ? cfg.baseTagUrl: Pager.basicDir)) + this.mediaUrl).toLowerCase();
 
       //*** audio url
       if (!this.isVideo()) { this.mediaUrl = /*!Utils.endsWith(this.audioUrl, '.mp3') ? start + '.mp3' :*/ start; return; }

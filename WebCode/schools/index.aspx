@@ -35,6 +35,6 @@
   <script id='dummy' type='text/x-jsrender' data-for='Dummy'>
     {{for ~ActPage()}}{{/for}}
   </script>
-  <%=Packager.MainPage.htmls(Packager.RewApp.htmlNewEA(cfg))%>
+  <%=htmls()%>
 </body>
 </html>

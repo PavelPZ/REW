@@ -187,11 +187,16 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\htmlFile.txt" />
+    <Content Include="bin\libmp3lame.dll" />
+    <Content Include="bin\sqlite3.dll" />
     <Content Include="Global.asax" />
     <Content Include="links.html" />
     <Content Include="schools\index.aspx" />
     <Content Include="schools\lmconsoleinit.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global.asax.cs">
@@ -217,13 +222,13 @@
     <Content Include="mp3Uploader.ashx" />
     <Content Include="App_Data\gitarchive.zip" />
     <Content Include="App_Data\swfiles.zip" />
-    <None Include="Web - Copy._config" />
-    <None Include="Web.AppSetting.config">
+    <None Include="Properties\PublishProfiles\LMWebCode.pubxml" />
+    <Content Include="Web.AppSetting.config">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Web.ConnectionStrings.config">
+    </Content>
+    <Content Include="Web.ConnectionStrings.config">
       <SubType>Designer</SubType>
-    </None>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataLib2\DataLib2.csproj">

@@ -1,5 +1,6 @@
 ﻿using LMComLib;
 using System;
+using System.Web.Hosting;
 using System.Web.Http;
 
 namespace WebCode {
@@ -18,7 +19,7 @@ namespace WebCode {
     }
 
     protected void Application_Start(object sender, EventArgs e) {
-      Machines._rootDir = @"d:\LMCom\rew\Web4";
+      NewData.MachinesLow.rootDir = Machines._rootDir = HostingEnvironment.MapPath("~");
       //System.Diagnostics.Debugger.Break();
       GlobalConfiguration.Configure(WebApiConfig.Register);
       NewData.Lib.lmcomSeed();

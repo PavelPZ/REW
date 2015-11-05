@@ -83,9 +83,6 @@
     <Compile Include="Wave\StringExtensions.cs" />
     <Compile Include="Wave\WaveFormatExtensible.cs" />
     <Compile Include="Wave\WaveMediaStreamSource2.cs" />
-    <None Include="Media\WaveMediaStreamSource.cs_" />
-    <None Include="Media\Player.cs_" />
-    <None Include="Media\ZipWrapper.cs_" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -103,9 +100,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MoSync\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

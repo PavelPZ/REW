@@ -2,8 +2,8 @@
 
 <%
   Packager.Config cfg = new Packager.Config() {
-    blobJS = "https://lmdata.blob.core.windows.net/v1-0",
-    blobMM = "https://lmdata.blob.core.windows.net/v1-0",
+    blobJS = "http://lmdata.blob.core.windows.net/v1-0",
+    blobMM = "http://lmdata.blob.core.windows.net/v1-0",
     target = LMNetLib.LowUtils.EnumParse<LMComLib.Targets>(Request["target"] ?? "web"),
     version = schools.versions.debug,
     dictNoSound = false,

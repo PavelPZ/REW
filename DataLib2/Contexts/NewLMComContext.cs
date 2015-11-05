@@ -1,9 +1,14 @@
 using Microsoft.Data.Entity;
+using Microsoft.Data.Sqlite;
+using System;
 using System.Configuration;
 using System.Data.SqlClient;
-using Microsoft.Data.Sqlite;
 
 namespace NewData {
+
+  public static class MachinesLow {
+    public static string rootDir;
+  }
 
   public class NewLMComContext_Sqlite : Container {
 
@@ -12,7 +17,7 @@ namespace NewData {
     protected override void OnConfiguring(DbContextOptionsBuilder options) {
       base.OnConfiguring(options);
       var config = ConfigurationManager.ConnectionStrings["Container-sqlite"];
-      var conn = new SqliteConnection(config.ConnectionString);
+      var conn = new SqliteConnection("Data Source=" + MachinesLow.rootDir + config.ConnectionString);
       options.UseSqlite(conn);
     }
   }

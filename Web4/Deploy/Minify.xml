@@ -2,11 +2,13 @@
 <Project xmlns="http://schemas.microsoft.com/developer/MsBuild/2003">
   <!--<UsingTask TaskName="JavaScriptCompressorTask" AssemblyFile="d:\LMCom\YuiCompressor\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
   <UsingTask TaskName="CssCompressorTask" AssemblyFile="d:\LMCom\YuiCompressor\Yahoo.Yui.Compressor.Build.MsBuild.dll" />-->
+  <UsingTask TaskName="DesignNew.htmlFiles" AssemblyFile="d:\LMCom\rew\NewLMComModel\bin\Debug\NewLMComModel.dll" />
   <UsingTask TaskName="DesignNew.minify" AssemblyFile="d:\LMCom\rew\NewLMComModel\bin\Debug\NewLMComModel.dll" />
   <UsingTask TaskName="DesignNew.zipSWFiles" AssemblyFile="d:\LMCom\rew\NewLMComModel\bin\Debug\NewLMComModel.dll" />
   <Target Name="web">
     <minify basicPath="D:\LMCom\rew\Web4\" />
     <zipSWFiles basicPath="D:\LMCom\rew\Web4\" zipFile="d:\lmcom\rew\webcode\app_data\swfiles.zip"/>
+    <htmlFiles designId="" htmlFile="d:\lmcom\rew\webcode\app_data\htmlFile.txt"/>
 
     <!--<ItemGroup>
       <CssFiles Include="../font-awesome/lm/externals.css; ../blendedapi/styles/style.css; ../jslib/css/lm.css" />

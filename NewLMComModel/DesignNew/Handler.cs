@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LMComLib;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -81,7 +82,7 @@ namespace WebCode {
 
     void IHttpModule.Dispose() { }
 
-    string relPath(string localPath) { return localPath.Substring(HostingEnvironment.ApplicationVirtualPath.Length + 1).ToLower(); }
+    string relPath(string localPath) { return localPath.Substring(HostingEnvironment.ApplicationVirtualPath.Length + (HostingEnvironment.ApplicationVirtualPath=="/" ? 0 : 1)).ToLower(); }
 
     public class swFile {
 
