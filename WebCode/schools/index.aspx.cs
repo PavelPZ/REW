@@ -6,6 +6,7 @@ using System.IO;
 using LMComLib;
 using DesignNew;
 using LMNetLib;
+using Newtonsoft.Json;
 
 namespace WebCode {
 
@@ -14,7 +15,7 @@ namespace WebCode {
       string designId = Request["designId"] ?? ConfigurationManager.AppSettings["cfg-designId"];
       bool isDebug = (Request["isDebug"] ?? ConfigurationManager.AppSettings["cfg-isDebug"]) == "true";
       var lang = Request["lang"] ?? "en_gb";
-      cfg = new Packager.Config() {
+      cfg = new schools.config() {
         blobJS = ConfigurationManager.AppSettings["cfg-blobJS"],
         blobMM = ConfigurationManager.AppSettings["cfg-blobMM"],
         target = Targets.web,
@@ -33,11 +34,12 @@ namespace WebCode {
 
     static DateTime appLoadTime = DateTime.Now;
 
-    protected Packager.Config cfg;
+    protected schools.config cfg;
     protected string pageTitle;
     protected string scripts() {
       StringBuilder sb = new StringBuilder();
-      foreach (var s in DesignNew.Deploy.allJS(cfg.version != schools.versions.debug, cfg.langStr, cfg.designId)) script(sb, s);
+      var langStr = cfg.lang == Langs.no ? null : cfg.lang.ToString().Replace('_', '-');
+      foreach (var s in DesignNew.Deploy.allJS(cfg.version != schools.versions.debug, langStr, cfg.designId)) script(sb, s);
       return sb.ToString();
     }
     protected string csss() {
@@ -51,6 +53,8 @@ namespace WebCode {
     }
     static void script(StringBuilder sb, string url) { sb.AppendFormat(@"  <script src='../{0}' type='text/javascript'></script>", url); sb.AppendLine(); }
     static void css(StringBuilder sb, string url) { sb.AppendFormat(@"  <link href='../{0}' rel='stylesheet' type='text/css' />", url); sb.AppendLine(); }
+
+    protected string writeCfg() { return string.Format("<script type='text/javascript'>\r\nvar cfg = {0};\r\n</script>\r\n", JsonConvert.SerializeObject(cfg)); }
 
     bool isCached() {
       if (cfg.version!=schools.versions.minified) return false;

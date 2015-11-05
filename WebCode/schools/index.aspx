@@ -8,7 +8,7 @@
   <meta name='viewport' content='width=device-width' />
   <title><%=pageTitle%></title>
   <%=csss() %>
-  <%=Packager.RewApp.writeCfg(cfg)%>
+  <%=writeCfg()%>
   <script type='text/javascript' src='lmconsoleinit.js'></script>
   <%=scripts() %>
 </head>
