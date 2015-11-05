@@ -1,0 +1,1 @@
+"c:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe" D:\LMCom\rew\Web4\Deploy\publishWebData.xml

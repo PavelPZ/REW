@@ -319,13 +319,13 @@
     <Content Include="Author\Author.html" />
     <Content Include="bin\libmp3lame.dll" />
     <Content Include="bin\sqlite3.dll" />
+    <Content Include="Deploy\publishWebData.xml" />
     <Content Include="Deploy\cs-cz.min.js" />
     <Content Include="Deploy\en-gb.min.js" />
     <Content Include="Deploy\externals.min.js" />
     <Content Include="Deploy\otherServer.txt" />
     <Content Include="Deploy\otherClient.txt" />
-    <None Include="Deploy\MinifyTemplate.xml_" />
-    <Content Include="Deploy\Minify.xml" />
+    <Content Include="Deploy\buildWebCode.xml" />
     <Content Include="Deploy\web.min.js" />
     <Content Include="JsLib\css\lm.min.css" />
     <Content Include="JsLib\Scripts\jquery.js" />
@@ -582,7 +582,7 @@
     <Content Include="BlendedAPI\vyzva\Server\Excels\StudyAll.xlsx" />
     <Content Include="Deploy\typescript.cmd" />
     <Content Include="Deploy\jsDeploy.json" />
-    <Content Include="Deploy\Azure.cmd" />
+    <Content Include="Deploy\publishWebData.cmd" />
     <Content Include="Deploy\vhd.cmd" />
     <Content Include="Deploy\getGitArchive.cmd" />
     <Content Include="Deploy\buildWebCode.cmd" />

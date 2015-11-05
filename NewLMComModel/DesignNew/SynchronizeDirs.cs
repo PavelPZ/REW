@@ -16,11 +16,13 @@ namespace DesignNew {
 
   //****************************** SYNCHRONIZE dirs library
   public static class SynchronizeDirs {
-    public static void synchronize(IDriver driver, BuildIds[] buildIds, Langs[] locs) {
+    public static string synchronize(bool isJS, IDriver driver, IEnumerable<BuildIds> buildIds, IEnumerable<Langs> locs) {
       var src = buildEnvelopes.adjust();
       var dest = driver.readMap();
-      var delta = src.synchronize(dest, buildIds, locs); //if (delta == null) return;
+      var delta = src.synchronize(dest, isJS, buildIds, locs);
+      if (delta == null) return "Up-to-date";
       driver.update(delta);
+      return string.Format("Deleted: {0}, updated: {1}, inserted: {2}", delta.delete.Count, delta.update.Count, delta.insert.Count);
     }
   }
 
@@ -70,10 +72,13 @@ namespace DesignNew {
       }
     }
 
-    public dirItemsDelta synchronize(dirItems dest, IEnumerable<BuildIds> buildIds, IEnumerable<Langs> locs) {
+    public dirItemsDelta synchronize(dirItems dest, bool isJS, IEnumerable<BuildIds> buildIds, IEnumerable<Langs> langs) {
       //filter
-      HashSet<BuildIds> bids = new HashSet<BuildIds>(buildIds); HashSet<Langs> lcs = new HashSet<Langs>(locs);
-      var filterDir = dir.Values.Where(v => (v.lang == Langs.no || lcs.Contains(v.lang)) && v.buildIdLst.Any(bid => bids.Contains(bid))).ToDictionary(v => v.url);
+      HashSet<BuildIds> bids = new HashSet<BuildIds>(buildIds); HashSet<Langs> lcs = new HashSet<Langs>(langs);
+      var filterDir = dir.Values.Where(v => {
+        if (v.url.EndsWith(".js") != isJS) return false;
+        return (v.lang == Langs.no || lcs.Contains(v.lang)) && v.buildIdLst.Any(bid => bids.Contains(bid));
+      }).ToDictionary(v => v.url);
       //sync
       var res = new dirItemsDelta();
       HashSet<string> srcDone = new HashSet<string>();
@@ -178,29 +183,29 @@ namespace DesignNew {
     //https://cmatskas.com/working-with-azure-blobs-through-the-net-sdk/
     //https://msdn.microsoft.com/en-us/library/wa_storage_30_reference_home.aspx
     public void update(dirItemsDelta delta) {
-      var rootContainer = blobClient.GetContainerReference("$root");
-      if (rootContainer.CreateIfNotExists()) rootContainer.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
+//      var rootContainer = blobClient.GetContainerReference("$root");
+//      if (rootContainer.CreateIfNotExists()) rootContainer.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
 
-      var slAccess = rootContainer.GetBlockBlobReference("clientaccesspolicy.xml");
-      slAccess.Properties.ContentType = "text/xml; charset=utf-8";
-      slAccess.UploadText(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<access-policy>
-  <cross-domain-access>
-    <policy>
-      <allow-from http-methods=""*"" http-request-headers=""*"">
-        <domain uri=""*"" />
-        <domain uri=""http://*"" />
-        <domain uri=""https://*"" />
-      </allow-from>
-      <grant-to>
-        <resource path=""/"" include-subpaths=""true"" />
-      </grant-to>
-    </policy>
-  </cross-domain-access>
-</access-policy>");
+//      var slAccess = rootContainer.GetBlockBlobReference("clientaccesspolicy.xml");
+//      slAccess.Properties.ContentType = "text/xml; charset=utf-8";
+//      slAccess.UploadText(
+//@"<?xml version=""1.0"" encoding=""utf-8""?>
+//<access-policy>
+//  <cross-domain-access>
+//    <policy>
+//      <allow-from http-methods=""*"" http-request-headers=""*"">
+//        <domain uri=""*"" />
+//        <domain uri=""http://*"" />
+//        <domain uri=""https://*"" />
+//      </allow-from>
+//      <grant-to>
+//        <resource path=""/"" include-subpaths=""true"" />
+//      </grant-to>
+//    </policy>
+//  </cross-domain-access>
+//</access-policy>");
 
-      if (delta==null || delta.empty()) return;
+      if (delta==null || delta.empty());
       Parallel.ForEach(delta.delete, new ParallelOptions { MaxDegreeOfParallelism = paralelCount }, it => container.GetBlockBlobReference(it.url.Substring(1)).Delete());
       Parallel.ForEach(delta.update.Concat(delta.insert), new ParallelOptions { MaxDegreeOfParallelism = paralelCount }, it => {
         var blob = container.GetBlockBlobReference(it.url.Substring(1));
@@ -210,7 +215,6 @@ namespace DesignNew {
       });
       var map = container.GetBlockBlobReference("map.map");
       map.UploadFromByteArray(delta.fileMap, 0, delta.fileMap.Length);
-
     }
     const int paralelCount = 10;
   }

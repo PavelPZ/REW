@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/MsBuild/2003">
+  <UsingTask TaskName="DesignNew.htmlFiles" AssemblyFile="d:\LMCom\rew\NewLMComModel\bin\Debug\NewLMComModel.dll" />
+  <UsingTask TaskName="DesignNew.minify" AssemblyFile="d:\LMCom\rew\NewLMComModel\bin\Debug\NewLMComModel.dll" />
+  <UsingTask TaskName="DesignNew.zipSWFiles" AssemblyFile="d:\LMCom\rew\NewLMComModel\bin\Debug\NewLMComModel.dll" />
+  <Target Name="web">
+    <minify basicPath="D:\LMCom\rew\Web4\" />
+    <zipSWFiles basicPath="D:\LMCom\rew\Web4\" zipFile="d:\lmcom\rew\webcode\app_data\swfiles.zip"/>
+    <htmlFiles htmlFile="d:\lmcom\rew\webcode\app_data\html{0}.txt"/>
+  </Target>
+</Project>

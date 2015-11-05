@@ -1,3 +1,0 @@
-azCopy /source:d:\temp\azure\v1-0\ /Dest:https://lmdata.blob.core.windows.net/v1-0  /Y /XO /S /SetContentType /DestKey:Hx//uWeo6vDSA2BHbBJP7HZviSSE6D8qZhGV7f4G778yPcfGOiBODF6o7Cg6029JiqnpMm1U8KrlD3+hycYiEw==
-
-rem azCopy /source:https://lmdata.blob.core.windows.net/webdata /dest:d:\temp\blob /V:d:\temp\azure.txt /S /Y /XO /MT /SourceKey:Hx//uWeo6vDSA2BHbBJP7HZviSSE6D8qZhGV7f4G778yPcfGOiBODF6o7Cg6029JiqnpMm1U8KrlD3+hycYiEw== 

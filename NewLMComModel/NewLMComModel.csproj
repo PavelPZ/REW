@@ -242,6 +242,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DesignNew\BuildTasks.cs" />
     <Compile Include="DesignNew\DeployConsts.cs" />
     <Compile Include="DesignNew\Deploy.cs" />
     <Compile Include="DesignNew\SynchronizeDirs.cs" />

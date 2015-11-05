@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/MsBuild/2003">
+  <UsingTask TaskName="DesignNew.deployToAzure" AssemblyFile="d:\LMCom\rew\NewLMComModel\bin\Debug\NewLMComModel.dll" />
+  <Target Name="web">
+    <deployToAzure accountName="lmdata" accountKey="Hx//uWeo6vDSA2BHbBJP7HZviSSE6D8qZhGV7f4G778yPcfGOiBODF6o7Cg6029JiqnpMm1U8KrlD3+hycYiEw=="
+                   langs="cs_cz" buildIds="blended" isJS="true" container="js-v001"/>
+    <deployToAzure accountName="lmdata" accountKey="Hx//uWeo6vDSA2BHbBJP7HZviSSE6D8qZhGV7f4G778yPcfGOiBODF6o7Cg6029JiqnpMm1U8KrlD3+hycYiEw=="
+                   langs="cs_cz" buildIds="blended" isJS="false" container="mm-v001"/>
+  </Target>
+</Project>
