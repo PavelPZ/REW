@@ -83,9 +83,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Common\flux\Index.html" />
     <Content Include="Common\uiRouter\index.html" />
     <Content Include="Common\uiRouter\urlMatcherFactory.js" />
     <Content Include="Global.asax" />
+    <Content Include="scripts\core.js" />
+    <Content Include="scripts\freezer.js" />
+    <Content Include="scripts\react-bootstrap.js" />
+    <Content Include="scripts\react-dom.js" />
+    <Content Include="scripts\react-with-addons.js" />
+    <Content Include="scripts\react.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -108,9 +115,15 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Common\flux\test.tsx" />
     <TypeScriptCompile Include="Common\uiRouter\angularCommon.ts" />
+    <TypeScriptCompile Include="Common\uiRouter\router.ts" />
     <TypeScriptCompile Include="Common\uiRouter\routerCommon.ts" />
-    <TypeScriptCompile Include="Common\uiRouter\testRouter.ts" />
+    <TypeScriptCompile Include="scripts\typings\core-js.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\freezer.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\react-bootstrap.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\react-global.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\react.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -120,6 +133,21 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptModuleKind>None</TypeScriptModuleKind>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
