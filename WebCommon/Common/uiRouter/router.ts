@@ -11,17 +11,24 @@
 namespace angular {
 
   export interface IRouterAction extends common.IDispatchAction {
-    isRoute: boolean;
+    isRouteAction: boolean;
   }
 
   export class States {
+    states: Array<State> = [];
+    dir: { [name: string]: State; } = {};
+
     add(name, pattern, par?: any): States {
       var st = new State(name, pattern, par);
       this.states.push(st);
       this.dir[st.name] = st;
       return this;
     }
-    dispatch(hash?: string): IRouterAction {
+    dispatch(hash?: string) {
+      flux.trigger(this.hashToAction(hash));
+    }
+
+    hashToAction(hash?: string): IRouterAction {
       if (!hash) hash = window.location.hash;
       if (!hash || hash.length < 1) hash = '#';
       if (hash[0] == '#') hash = hash.substr(1);
@@ -34,13 +41,11 @@ namespace angular {
       var res: IRouterAction = null;
       this.states.find(st => {
         var match = st.matcher.exec(path, query); if (!match) return false;
-        res = { type: st.name, payload: match, isRoute: true };
+        res = { type: st.name, payload: match, isRouteAction: true };
         return true;
       });
       return res;
     }
-    states: Array<State> = [];
-    dir: { [name: string]: State; } = {};
   }
   export class State {
     constructor(public name: string, pattern: string, public par: any) {
@@ -60,15 +65,18 @@ namespace angular {
       .add('login.login', '/login.login')
       .add('x', '/user/:id/name/:name?opt1&opt2')
     ;
-    var d1 = states.dispatch('/login.select');
-    var d2 = states.dispatch('/useR/123/Name/alex?opt1=xxx&opt2=yyy');
-    var d3 = states.dispatch('/login.login');
+    var d1 = states.hashToAction('/login.select');
+    var d2 = states.hashToAction('/useR/123/Name/alex?opt1=xxx&opt2=yyy');
+    var d3 = states.hashToAction('/login.login');
   }
   new $UrlMatcherFactory();
 
   export var states: States = new States();
 
-  window.addEventListener('hashchange', () => states.dispatch());
+  setTimeout(() => {
+    window.addEventListener('hashchange', () => states.dispatch());
+    states.dispatch();
+  }, 1);
 }
 
 

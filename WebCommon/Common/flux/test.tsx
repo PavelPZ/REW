@@ -58,7 +58,7 @@ namespace testReactRouter {
     }
     render() {
       return <div>
-        <div onClick={() => store.trigger(mod1.createAppClickAction()) }>{this.state.clickTitle}</div>
+        <div onClick={() => flux.trigger(mod1.createAppClickAction()) }>{this.state.clickTitle}</div>
         <HelloMessage initState={this.state.hello1} is1={true}/>
         <HelloMessage initState={this.state.hello2} is1={false}/>
         </div >;
@@ -69,7 +69,7 @@ namespace testReactRouter {
 
   class HelloMessage extends flux.SmartComponent<IHelloWorldProps, IHelloWorldStates>{
     render() {
-      return <div onClick={() => store.trigger(mod1.createClickAction(this.props.is1)) }>Hello {this.state.actName}</div >;
+      return <div onClick={() => flux.trigger(mod1.createClickAction(this.props.is1)) }>Hello {this.state.actName}</div >;
     }
   };
   interface IHelloWorldProps extends flux.IProps<IHelloWorldStates> { is1: boolean; }
