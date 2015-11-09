@@ -17,67 +17,66 @@
 
 namespace testReactRouter {
 
-  interface IAction { type: string; }
+  //*********************** DISPATCH MODULE definition
+  interface IAppClickAction extends common.IDispatchAction { }
+  interface IClickAction extends common.IDispatchAction { is1: boolean; }
 
-  //************* FREEZER-REACT updatable component helper
-  interface IFreezerProps<S> extends React.Props<any> { initState: S; }
-  export class FreezerReactComponent<T extends IFreezerProps<any>, S extends IFreezerState<any>> extends React.Component<T, S>{
-    constructor(props: T, initState: S) {
-      super(props);
-      this.state = props.initState;
+  class mod1 extends flux.Module {
+    constructor() {
+      super(mod1.modName);
     }
-    componentWillReceiveProps = (nextProps: T, nextContext: any) => { if (nextProps.initState !== this.state) this.setState(nextProps.initState, () => this.state = nextProps.initState); }
-    shouldComponentUpdate = (nextProps: T, nextState: S, nextContext: any) => this.state !== nextState;
-    componentDidMount = () => this.state.getListener().on('update', newState => this.setState(newState, () => this.state = newState));
-    componentWillUnmount = () => this.state.getListener().off('update');
-    render() { return null; }
+    //type appClickAction = number;
+    dispatchAction(type: string, action: common.IDispatchAction) {
+      var old = store.state.get();
+      switch (type) {
+        case 'appclick':
+          store.state.get().set('hello1', { actName: old.hello1.actName + '*' });
+          store.state.get().set('hello2', { actName: old.hello2.actName + '*' });
+          store.state.get().set('clickTitle', old.clickTitle + '*');
+          break;
+        case 'click':
+          let act = action as IClickAction;
+          if (act.is1) old.hello1.set('actName', old.hello1.actName + '*');
+          else old.hello2.set('actName', old.hello2.actName + '*');
+          //var ok = old.hello1 === store.state.get().hello1;
+          break;
+      }
+    }
+    static modName = 'mod1';
+    static createAppClickAction(): IAppClickAction { return { type: mod1.modName + '.appclick' }; }
+    static createClickAction(is1: boolean): IClickAction { return { type: mod1.modName + '.click', is1: is1 }; }
   }
 
-  interface IAppProps extends IFreezerProps<IAppStates> { }
-  interface IAppStates extends IFreezerState<IAppStates> { hello1?: IHelloWorldStates; hello2?: IHelloWorldStates; clickTitle: string }
-  class App extends FreezerReactComponent<IAppProps, IAppStates>{
+  //************* VIEW
+  class App extends flux.FreezerReactComponent<IAppProps, IAppStates>{
     render() {
       return <div>
-        <div onClick={() => State.trigger(APPCLICK) }>{this.state.clickTitle}</div>
+        <div onClick={() => store.trigger(mod1.createAppClickAction()) }>{this.state.clickTitle}</div>
         <HelloMessage initState={this.state.hello1} is1={true}/>
         <HelloMessage initState={this.state.hello2} is1={false}/>
         </div >;
     }
   };
+  interface IAppProps extends flux.IFreezerProps<IAppStates> { }
+  interface IAppStates extends IFreezerState<IAppStates> { hello1?: IHelloWorldStates; hello2?: IHelloWorldStates; clickTitle: string }
 
-  interface IHelloWorldProps extends IFreezerProps<IHelloWorldStates> { is1: boolean; }
-  interface IHelloWorldStates extends IFreezerState<IHelloWorldStates> { actName?: string; }
-
-  class HelloMessage extends FreezerReactComponent<IHelloWorldProps, IHelloWorldStates>{
+  class HelloMessage extends flux.FreezerReactComponent<IHelloWorldProps, IHelloWorldStates>{
     render() {
-      return <div onClick={() => State.trigger(CLICK, this.props.is1) }>Hello {this.state.actName}</div >;
+      return <div onClick={() => store.trigger(mod1.createClickAction(this.props.is1)) }>Hello {this.state.actName}</div >;
     }
   };
+  interface IHelloWorldProps extends flux.IFreezerProps<IHelloWorldStates> { is1: boolean; }
+  interface IHelloWorldStates extends IFreezerState<IHelloWorldStates> { actName?: string; }
 
-  var CLICK = 'click';
-  var APPCLICK = 'appclick';
-
-  var State = new Freezer<IAppStates>({
+  //************* WHOLE APP
+  var store = new flux.Flux<IAppStates>([new mod1()], {
     clickTitle: 'Click',
     hello1: { actName: 'John' },
     hello2: { actName: 'Marthy' }
-  });
-
-  State.on(APPCLICK, () => {
-    var old = State.get();
-    //2 moznosti
-    State.get().set('hello1', { actName: old.hello1.actName + '*' }); State.get().set('hello2', { actName: old.hello2.actName + '*' }); State.get().set('clickTitle', old.clickTitle + '*'); 
-    //State.get().hello1.set('actName', old.hello1.actName + '*'); State.get().hello2.set('actName', old.hello2.actName + '*');
-  });
-  State.on(CLICK, (is1: boolean) => {
-    var old = State.get();
-    if (is1) old.hello1.set('actName', old.hello1.actName + '*');
-    else old.hello2.set('actName', old.hello2.actName + '*');
-    var ok = old.hello1 === State.get().hello1;
-  });
+  })
 
   class AppContainer extends React.Component<any, any> {
-    render() { var state = State.get(); return <App initState={ state } />; }
+    render() { var state = store.state.get(); return <App initState={ state } />; }
   }
 
   ReactDOM.render(
