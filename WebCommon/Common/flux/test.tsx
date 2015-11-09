@@ -27,13 +27,13 @@ namespace testReactRouter {
     }
     //type appClickAction = number;
     dispatchAction(type: string, action: common.IDispatchAction, complete: (action: common.IDispatchAction) => void) {
-      var old = store.getStatus();
+      var old = store.getState();
       switch (type) {
         case 'appclick':
           setTimeout(() => {
-            store.getStatus().set('hello1', { actName: old.hello1.actName + '*' });
-            store.getStatus().set('hello2', { actName: old.hello2.actName + '*' });
-            store.getStatus().set('clickTitle', old.clickTitle + '*');
+            store.getState().set('hello1', { actName: old.hello1.actName + '*' });
+            store.getState().set('hello2', { actName: old.hello2.actName + '*' });
+            store.getState().set('clickTitle', old.clickTitle + '*');
             if (complete) complete(action);
           }, 100);
           break;
@@ -52,7 +52,11 @@ namespace testReactRouter {
   }
 
   //************* VIEW
-  class App extends flux.SmartComponent<IAppProps, IAppStates>{
+  export class App extends flux.SmartComponent<IAppProps, IAppStates>{
+    constructor(props, initState) {
+      super(props, initState);
+      flux.rootComponent = this;
+    }
     render() {
       return <div>
         <div onClick={() => store.trigger(mod1.createAppClickAction()) }>{this.state.clickTitle}</div>
@@ -79,12 +83,18 @@ namespace testReactRouter {
     hello2: { actName: 'Marthy' }
   })
 
-  class AppContainer extends React.Component<any, any> {
-    render() { var state = store.getStatus(); return <App initState={ state } />; }
-  }
+  //class AppContainer extends flux.SmartComponent<P, S> {
+  //  render() { var state = store.getStatus(); return <App initState={ state } />; }
+  //}
 
+  //flux.render<IAppProps>(App, { initState: store.getStatus() }, document.getElementById('app'));
+
+  //ReactDOM.render(
+  //  <flux.RootComponent/>,
+  //  document.getElementById('app')
+  //);
   ReactDOM.render(
-    <AppContainer/>,
+    <App initState={store.getState() }/>,
     document.getElementById('app')
   );
   //var str = React.renderToStaticMarkup(<HelloMessage initName="John" />);
