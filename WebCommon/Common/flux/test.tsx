@@ -35,14 +35,13 @@ namespace testReactRouter {
             store.getState().set('hello2', { actName: old.hello2.actName + '*' });
             store.getState().set('clickTitle', old.clickTitle + '*');
             if (complete) complete(action);
-          }, 100);
+          }, 300);
           break;
         case 'click':
           let act = action as IClickAction;
           if (act.is1) old.hello1.set('actName', old.hello1.actName + '*');
           else old.hello2.set('actName', old.hello2.actName + '*');
           if (complete) complete(action);
-          //var ok = old.hello1 === store.state.get().hello1;
           break;
       }
     }
@@ -83,16 +82,6 @@ namespace testReactRouter {
     hello2: { actName: 'Marthy' }
   })
 
-  //class AppContainer extends flux.SmartComponent<P, S> {
-  //  render() { var state = store.getStatus(); return <App initState={ state } />; }
-  //}
-
-  //flux.render<IAppProps>(App, { initState: store.getStatus() }, document.getElementById('app'));
-
-  //ReactDOM.render(
-  //  <flux.RootComponent/>,
-  //  document.getElementById('app')
-  //);
   ReactDOM.render(
     <App initState={store.getState() }/>,
     document.getElementById('app')

@@ -65,7 +65,7 @@
     }
 
     recordStart() { this.recording = { initStatus: JSON.parse(JSON.stringify(this.getState())), actions: [] }; }
-    recordEnd(): string { try { return JSON.stringify(this.recording); } finally { this.recording = null; } }
+    recordEnd(): string { try { return JSON.stringify(this.recording, null, 2); } finally { this.recording = null; } }
     play(recStr: string, interval: number, completed: () => void) {
       if (!rootComponent || !recStr) return;
       var rec = JSON.parse(recStr);
@@ -79,7 +79,7 @@
       rootComponent.setState(this.getState());
       rootComponent.forceUpdate(() => {
         if (!rec.actions || rec.actions.length == 0) return;
-        setTimeout(() => doPlay(), 1000);
+        setTimeout(() => doPlay(), interval);
       });
     }
     recording: IRecording<S>;
