@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9b22b6ea02124f31b8667d1ca453fc74" Name="Diagram1" ZoomLevel="96">
+        <EntityTypeShape EntityType="NewLMCom_Model.Company" Width="1.5" PointX="2.875" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewLMCom_Model.CompanyDepartment" Width="1.5" PointX="5" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewLMCom_Model.CompanyLicence" Width="1.5" PointX="2.875" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewLMCom_Model.CompanyUser" Width="1.5" PointX="5" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewLMCom_Model.CourseData" Width="1.5" PointX="9.375" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewLMCom_Model.CourseUser" Width="1.5" PointX="7.25" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewLMCom_Model.UserLicence" Width="1.5" PointX="7.375" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewLMCom_Model.User" Width="1.5" PointX="0.5" PointY="4.625" IsExpanded="true" />
+        <AssociationConnector Association="NewLMCom_Model.FK_CompanyDepartments_Companies_CompanyId" ManuallyRouted="false" />
+        <AssociationConnector Association="NewLMCom_Model.FK_CompanyLicences_Companies_CompanyId" ManuallyRouted="false" />
+        <AssociationConnector Association="NewLMCom_Model.FK_CompanyUsers_Companies_CompanyId" ManuallyRouted="false" />
+        <AssociationConnector Association="NewLMCom_Model.FK_Users_Companies_MyPublisherId" ManuallyRouted="false" />
+        <AssociationConnector Association="NewLMCom_Model.FK_CompanyDepartments_CompanyDepartments_ParentId" ManuallyRouted="false" />
+        <AssociationConnector Association="NewLMCom_Model.FK_CompanyUsers_CompanyDepartments_DepartmentId" ManuallyRouted="false" />
+        <AssociationConnector Association="NewLMCom_Model.FK_UserLicences_CompanyLicences_LicenceId" ManuallyRouted="false" />
+        <AssociationConnector Association="NewLMCom_Model.FK_CompanyUsers_Users_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="NewLMCom_Model.FK_CourseUsers_CompanyUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="NewLMCom_Model.FK_CourseDatas_CourseUsers_CourseUserId" ManuallyRouted="false" />
+        <AssociationConnector Association="NewLMCom_Model.FK_UserLicences_CourseUsers_UserId" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

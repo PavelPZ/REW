@@ -1,0 +1,21 @@
+﻿PACKAGES
+Install-Package Microsoft.AspNet.WebApi
+Install-Package Newtonsoft.Json
+Install-Package WindowsAzure.Storage
+Install-Package Microsoft.AspNet.WebApi.Cors 
+
+D.JS
+ZIP v https://github.com/DefinitelyTyped/DefinitelyTyped
+https://www.nuget.org/packages/react-bootstrap.TypeScript.DefinitelyTyped/
+
+JS
+https://cdnjs.com/libraries/redux
+https://cdnjs.com/libraries/core-js
+https://cdnjs.com/libraries/react/ react+react-dom+react-addon (https://facebook.github.io/react/blog/2015/10/07/react-v0.14.html, https://facebook.github.io/react/docs/addons.html)
+https://cdnjs.com/libraries/react-redux
+https://cdnjs.com/libraries/react-router
+https://cdnjs.com/libraries/react-bootstrap (https://react-bootstrap.github.io/)
+
+CSS
+http://cdnjs.com/libraries/twitter-bootstrap/3.3.5
+https://fortawesome.github.io/Font-Awesome/

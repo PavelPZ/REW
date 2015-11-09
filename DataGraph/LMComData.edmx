@@ -1,0 +1,732 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="NewLMCom_Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Companies">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="HumanEvalPaymentConfig" Type="nvarchar(max)" />
+          <Property Name="IntervalsConfig" Type="nvarchar(max)" />
+          <Property Name="ScormHost" Type="nvarchar" MaxLength="240" />
+          <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompanyDepartments">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompanyLicences">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Days" Type="smallint" Nullable="false" />
+          <Property Name="LastCounter" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="CompanyUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="DepartmentId" Type="int" />
+          <Property Name="RolePar" Type="nvarchar(max)" />
+          <Property Name="Roles" Type="bigint" Nullable="false" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CourseDatas">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CourseUserId" Type="int" Nullable="false" />
+          <Property Name="Data" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Date" Type="bigint" Nullable="false" />
+          <Property Name="Flags" Type="bigint" Nullable="false" />
+          <Property Name="Key" Type="nvarchar" MaxLength="120" Nullable="false" />
+          <Property Name="ShortData" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="CourseUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="HumanAssigned" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="HumanCompanyUserId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="nvarchar" MaxLength="240" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserLicences">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Counter" Type="int" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="LicenceId" Type="int" Nullable="false" />
+          <Property Name="Started" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="EMail" Type="nvarchar" MaxLength="120" />
+          <Property Name="FirstName" Type="nvarchar(max)" />
+          <Property Name="LastName" Type="nvarchar(max)" />
+          <Property Name="Login" Type="nvarchar(max)" />
+          <Property Name="LoginEMail" Type="nvarchar(max)" />
+          <Property Name="MyPublisherId" Type="int" />
+          <Property Name="OtherData" Type="nvarchar(max)" />
+          <Property Name="OtherId" Type="nvarchar" MaxLength="80" />
+          <Property Name="OtherType" Type="smallint" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" />
+          <Property Name="Roles" Type="bigint" Nullable="false" />
+          <Property Name="VerifyStatus" Type="smallint" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CompanyDepartments_Companies_CompanyId">
+          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+          <End Role="CompanyDepartments" Type="Self.CompanyDepartments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyDepartments">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyDepartments_CompanyDepartments_ParentId">
+          <End Role="CompanyDepartments" Type="Self.CompanyDepartments" Multiplicity="0..1" />
+          <End Role="CompanyDepartments1" Type="Self.CompanyDepartments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyDepartments">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyDepartments1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyLicences_Companies_CompanyId">
+          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+          <End Role="CompanyLicences" Type="Self.CompanyLicences" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyLicences">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyUsers_Companies_CompanyId">
+          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+          <End Role="CompanyUsers" Type="Self.CompanyUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyUsers">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyUsers_CompanyDepartments_DepartmentId">
+          <End Role="CompanyDepartments" Type="Self.CompanyDepartments" Multiplicity="0..1" />
+          <End Role="CompanyUsers" Type="Self.CompanyUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyDepartments">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyUsers">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyUsers_Users_UserId">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="CompanyUsers" Type="Self.CompanyUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyUsers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourseDatas_CourseUsers_CourseUserId">
+          <End Role="CourseUsers" Type="Self.CourseUsers" Multiplicity="1" />
+          <End Role="CourseDatas" Type="Self.CourseDatas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourseDatas">
+              <PropertyRef Name="CourseUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourseUsers_CompanyUsers_UserId">
+          <End Role="CompanyUsers" Type="Self.CompanyUsers" Multiplicity="1" />
+          <End Role="CourseUsers" Type="Self.CourseUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourseUsers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserLicences_CompanyLicences_LicenceId">
+          <End Role="CompanyLicences" Type="Self.CompanyLicences" Multiplicity="1" />
+          <End Role="UserLicences" Type="Self.UserLicences" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyLicences">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserLicences">
+              <PropertyRef Name="LicenceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserLicences_CourseUsers_UserId">
+          <End Role="CourseUsers" Type="Self.CourseUsers" Multiplicity="1" />
+          <End Role="UserLicences" Type="Self.UserLicences" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserLicences">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Companies_MyPublisherId">
+          <End Role="Companies" Type="Self.Companies" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="MyPublisherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NewLMCom_ModelStoreContainer">
+          <EntitySet Name="Companies" EntityType="Self.Companies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompanyDepartments" EntityType="Self.CompanyDepartments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompanyLicences" EntityType="Self.CompanyLicences" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompanyUsers" EntityType="Self.CompanyUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourseDatas" EntityType="Self.CourseDatas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourseUsers" EntityType="Self.CourseUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserLicences" EntityType="Self.UserLicences" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CompanyDepartments_Companies_CompanyId" Association="Self.FK_CompanyDepartments_Companies_CompanyId">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanyDepartments" EntitySet="CompanyDepartments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyDepartments_CompanyDepartments_ParentId" Association="Self.FK_CompanyDepartments_CompanyDepartments_ParentId">
+            <End Role="CompanyDepartments" EntitySet="CompanyDepartments" />
+            <End Role="CompanyDepartments1" EntitySet="CompanyDepartments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyLicences_Companies_CompanyId" Association="Self.FK_CompanyLicences_Companies_CompanyId">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanyLicences" EntitySet="CompanyLicences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyUsers_Companies_CompanyId" Association="Self.FK_CompanyUsers_Companies_CompanyId">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanyUsers" EntitySet="CompanyUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyUsers_CompanyDepartments_DepartmentId" Association="Self.FK_CompanyUsers_CompanyDepartments_DepartmentId">
+            <End Role="CompanyDepartments" EntitySet="CompanyDepartments" />
+            <End Role="CompanyUsers" EntitySet="CompanyUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyUsers_Users_UserId" Association="Self.FK_CompanyUsers_Users_UserId">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="CompanyUsers" EntitySet="CompanyUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourseDatas_CourseUsers_CourseUserId" Association="Self.FK_CourseDatas_CourseUsers_CourseUserId">
+            <End Role="CourseUsers" EntitySet="CourseUsers" />
+            <End Role="CourseDatas" EntitySet="CourseDatas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourseUsers_CompanyUsers_UserId" Association="Self.FK_CourseUsers_CompanyUsers_UserId">
+            <End Role="CompanyUsers" EntitySet="CompanyUsers" />
+            <End Role="CourseUsers" EntitySet="CourseUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserLicences_CompanyLicences_LicenceId" Association="Self.FK_UserLicences_CompanyLicences_LicenceId">
+            <End Role="CompanyLicences" EntitySet="CompanyLicences" />
+            <End Role="UserLicences" EntitySet="UserLicences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserLicences_CourseUsers_UserId" Association="Self.FK_UserLicences_CourseUsers_UserId">
+            <End Role="CourseUsers" EntitySet="CourseUsers" />
+            <End Role="UserLicences" EntitySet="UserLicences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Companies_MyPublisherId" Association="Self.FK_Users_Companies_MyPublisherId">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NewLMCom_Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="HumanEvalPaymentConfig" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IntervalsConfig" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ScormHost" Type="String" MaxLength="240" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="CompanyDepartments" Relationship="Self.FK_CompanyDepartments_Companies_CompanyId" FromRole="Companies" ToRole="CompanyDepartments" />
+          <NavigationProperty Name="CompanyLicences" Relationship="Self.FK_CompanyLicences_Companies_CompanyId" FromRole="Companies" ToRole="CompanyLicences" />
+          <NavigationProperty Name="CompanyUsers" Relationship="Self.FK_CompanyUsers_Companies_CompanyId" FromRole="Companies" ToRole="CompanyUsers" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Users_Companies_MyPublisherId" FromRole="Companies" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="CompanyDepartment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_CompanyDepartments_Companies_CompanyId" FromRole="CompanyDepartments" ToRole="Companies" />
+          <NavigationProperty Name="CompanyDepartments1" Relationship="Self.FK_CompanyDepartments_CompanyDepartments_ParentId" FromRole="CompanyDepartments" ToRole="CompanyDepartments1" />
+          <NavigationProperty Name="CompanyDepartment1" Relationship="Self.FK_CompanyDepartments_CompanyDepartments_ParentId" FromRole="CompanyDepartments1" ToRole="CompanyDepartments" />
+          <NavigationProperty Name="CompanyUsers" Relationship="Self.FK_CompanyUsers_CompanyDepartments_DepartmentId" FromRole="CompanyDepartments" ToRole="CompanyUsers" />
+        </EntityType>
+        <EntityType Name="CompanyLicence">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Days" Type="Int16" Nullable="false" />
+          <Property Name="LastCounter" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_CompanyLicences_Companies_CompanyId" FromRole="CompanyLicences" ToRole="Companies" />
+          <NavigationProperty Name="UserLicences" Relationship="Self.FK_UserLicences_CompanyLicences_LicenceId" FromRole="CompanyLicences" ToRole="UserLicences" />
+        </EntityType>
+        <EntityType Name="CompanyUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="DepartmentId" Type="Int32" />
+          <Property Name="RolePar" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Roles" Type="Int64" Nullable="false" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_CompanyUsers_Companies_CompanyId" FromRole="CompanyUsers" ToRole="Companies" />
+          <NavigationProperty Name="CompanyDepartment" Relationship="Self.FK_CompanyUsers_CompanyDepartments_DepartmentId" FromRole="CompanyUsers" ToRole="CompanyDepartments" />
+          <NavigationProperty Name="User" Relationship="Self.FK_CompanyUsers_Users_UserId" FromRole="CompanyUsers" ToRole="Users" />
+          <NavigationProperty Name="CourseUsers" Relationship="Self.FK_CourseUsers_CompanyUsers_UserId" FromRole="CompanyUsers" ToRole="CourseUsers" />
+        </EntityType>
+        <EntityType Name="CourseData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourseUserId" Type="Int32" Nullable="false" />
+          <Property Name="Data" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Date" Type="Int64" Nullable="false" />
+          <Property Name="Flags" Type="Int64" Nullable="false" />
+          <Property Name="Key" Type="String" MaxLength="120" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ShortData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CourseUser" Relationship="Self.FK_CourseDatas_CourseUsers_CourseUserId" FromRole="CourseDatas" ToRole="CourseUsers" />
+        </EntityType>
+        <EntityType Name="CourseUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="HumanAssigned" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="HumanCompanyUserId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="String" MaxLength="240" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CompanyUser" Relationship="Self.FK_CourseUsers_CompanyUsers_UserId" FromRole="CourseUsers" ToRole="CompanyUsers" />
+          <NavigationProperty Name="CourseDatas" Relationship="Self.FK_CourseDatas_CourseUsers_CourseUserId" FromRole="CourseUsers" ToRole="CourseDatas" />
+          <NavigationProperty Name="UserLicences" Relationship="Self.FK_UserLicences_CourseUsers_UserId" FromRole="CourseUsers" ToRole="UserLicences" />
+        </EntityType>
+        <EntityType Name="UserLicence">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Counter" Type="Int32" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="LicenceId" Type="Int32" Nullable="false" />
+          <Property Name="Started" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CompanyLicence" Relationship="Self.FK_UserLicences_CompanyLicences_LicenceId" FromRole="UserLicences" ToRole="CompanyLicences" />
+          <NavigationProperty Name="CourseUser" Relationship="Self.FK_UserLicences_CourseUsers_UserId" FromRole="UserLicences" ToRole="CourseUsers" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="EMail" Type="String" MaxLength="120" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Login" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LoginEMail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MyPublisherId" Type="Int32" />
+          <Property Name="OtherData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OtherId" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="OtherType" Type="Int16" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Roles" Type="Int64" Nullable="false" />
+          <Property Name="VerifyStatus" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_Users_Companies_MyPublisherId" FromRole="Users" ToRole="Companies" />
+          <NavigationProperty Name="CompanyUsers" Relationship="Self.FK_CompanyUsers_Users_UserId" FromRole="Users" ToRole="CompanyUsers" />
+        </EntityType>
+        <Association Name="FK_CompanyDepartments_Companies_CompanyId">
+          <End Role="Companies" Type="Self.Company" Multiplicity="1" />
+          <End Role="CompanyDepartments" Type="Self.CompanyDepartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyDepartments">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyLicences_Companies_CompanyId">
+          <End Role="Companies" Type="Self.Company" Multiplicity="1" />
+          <End Role="CompanyLicences" Type="Self.CompanyLicence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyLicences">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyUsers_Companies_CompanyId">
+          <End Role="Companies" Type="Self.Company" Multiplicity="1" />
+          <End Role="CompanyUsers" Type="Self.CompanyUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyUsers">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Companies_MyPublisherId">
+          <End Role="Companies" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="MyPublisherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyDepartments_CompanyDepartments_ParentId">
+          <End Role="CompanyDepartments" Type="Self.CompanyDepartment" Multiplicity="0..1" />
+          <End Role="CompanyDepartments1" Type="Self.CompanyDepartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyDepartments">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyDepartments1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyUsers_CompanyDepartments_DepartmentId">
+          <End Role="CompanyDepartments" Type="Self.CompanyDepartment" Multiplicity="0..1" />
+          <End Role="CompanyUsers" Type="Self.CompanyUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyDepartments">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyUsers">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserLicences_CompanyLicences_LicenceId">
+          <End Role="CompanyLicences" Type="Self.CompanyLicence" Multiplicity="1" />
+          <End Role="UserLicences" Type="Self.UserLicence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyLicences">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserLicences">
+              <PropertyRef Name="LicenceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyUsers_Users_UserId">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="CompanyUsers" Type="Self.CompanyUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyUsers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourseUsers_CompanyUsers_UserId">
+          <End Role="CompanyUsers" Type="Self.CompanyUser" Multiplicity="1" />
+          <End Role="CourseUsers" Type="Self.CourseUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourseUsers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourseDatas_CourseUsers_CourseUserId">
+          <End Role="CourseUsers" Type="Self.CourseUser" Multiplicity="1" />
+          <End Role="CourseDatas" Type="Self.CourseData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourseDatas">
+              <PropertyRef Name="CourseUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserLicences_CourseUsers_UserId">
+          <End Role="CourseUsers" Type="Self.CourseUser" Multiplicity="1" />
+          <End Role="UserLicences" Type="Self.UserLicence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserLicences">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NewLMCom" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <EntitySet Name="CompanyDepartments" EntityType="Self.CompanyDepartment" />
+          <EntitySet Name="CompanyLicences" EntityType="Self.CompanyLicence" />
+          <EntitySet Name="CompanyUsers" EntityType="Self.CompanyUser" />
+          <EntitySet Name="CourseDatas" EntityType="Self.CourseData" />
+          <EntitySet Name="CourseUsers" EntityType="Self.CourseUser" />
+          <EntitySet Name="UserLicences" EntityType="Self.UserLicence" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_CompanyDepartments_Companies_CompanyId" Association="Self.FK_CompanyDepartments_Companies_CompanyId">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanyDepartments" EntitySet="CompanyDepartments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyLicences_Companies_CompanyId" Association="Self.FK_CompanyLicences_Companies_CompanyId">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanyLicences" EntitySet="CompanyLicences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyUsers_Companies_CompanyId" Association="Self.FK_CompanyUsers_Companies_CompanyId">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanyUsers" EntitySet="CompanyUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Companies_MyPublisherId" Association="Self.FK_Users_Companies_MyPublisherId">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyDepartments_CompanyDepartments_ParentId" Association="Self.FK_CompanyDepartments_CompanyDepartments_ParentId">
+            <End Role="CompanyDepartments" EntitySet="CompanyDepartments" />
+            <End Role="CompanyDepartments1" EntitySet="CompanyDepartments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyUsers_CompanyDepartments_DepartmentId" Association="Self.FK_CompanyUsers_CompanyDepartments_DepartmentId">
+            <End Role="CompanyDepartments" EntitySet="CompanyDepartments" />
+            <End Role="CompanyUsers" EntitySet="CompanyUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserLicences_CompanyLicences_LicenceId" Association="Self.FK_UserLicences_CompanyLicences_LicenceId">
+            <End Role="CompanyLicences" EntitySet="CompanyLicences" />
+            <End Role="UserLicences" EntitySet="UserLicences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyUsers_Users_UserId" Association="Self.FK_CompanyUsers_Users_UserId">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="CompanyUsers" EntitySet="CompanyUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourseUsers_CompanyUsers_UserId" Association="Self.FK_CourseUsers_CompanyUsers_UserId">
+            <End Role="CompanyUsers" EntitySet="CompanyUsers" />
+            <End Role="CourseUsers" EntitySet="CourseUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourseDatas_CourseUsers_CourseUserId" Association="Self.FK_CourseDatas_CourseUsers_CourseUserId">
+            <End Role="CourseUsers" EntitySet="CourseUsers" />
+            <End Role="CourseDatas" EntitySet="CourseDatas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserLicences_CourseUsers_UserId" Association="Self.FK_UserLicences_CourseUsers_UserId">
+            <End Role="CourseUsers" EntitySet="CourseUsers" />
+            <End Role="UserLicences" EntitySet="UserLicences" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="NewLMCom_ModelStoreContainer" CdmEntityContainer="NewLMCom">
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="NewLMCom_Model.Company">
+              <MappingFragment StoreEntitySet="Companies">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="HumanEvalPaymentConfig" ColumnName="HumanEvalPaymentConfig" />
+                <ScalarProperty Name="IntervalsConfig" ColumnName="IntervalsConfig" />
+                <ScalarProperty Name="ScormHost" ColumnName="ScormHost" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompanyDepartments">
+            <EntityTypeMapping TypeName="NewLMCom_Model.CompanyDepartment">
+              <MappingFragment StoreEntitySet="CompanyDepartments">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompanyLicences">
+            <EntityTypeMapping TypeName="NewLMCom_Model.CompanyLicence">
+              <MappingFragment StoreEntitySet="CompanyLicences">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Days" ColumnName="Days" />
+                <ScalarProperty Name="LastCounter" ColumnName="LastCounter" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompanyUsers">
+            <EntityTypeMapping TypeName="NewLMCom_Model.CompanyUser">
+              <MappingFragment StoreEntitySet="CompanyUsers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+                <ScalarProperty Name="RolePar" ColumnName="RolePar" />
+                <ScalarProperty Name="Roles" ColumnName="Roles" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourseDatas">
+            <EntityTypeMapping TypeName="NewLMCom_Model.CourseData">
+              <MappingFragment StoreEntitySet="CourseDatas">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CourseUserId" ColumnName="CourseUserId" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Flags" ColumnName="Flags" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="ShortData" ColumnName="ShortData" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourseUsers">
+            <EntityTypeMapping TypeName="NewLMCom_Model.CourseUser">
+              <MappingFragment StoreEntitySet="CourseUsers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="HumanAssigned" ColumnName="HumanAssigned" />
+                <ScalarProperty Name="HumanCompanyUserId" ColumnName="HumanCompanyUserId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLicences">
+            <EntityTypeMapping TypeName="NewLMCom_Model.UserLicence">
+              <MappingFragment StoreEntitySet="UserLicences">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Counter" ColumnName="Counter" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="LicenceId" ColumnName="LicenceId" />
+                <ScalarProperty Name="Started" ColumnName="Started" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="NewLMCom_Model.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="LoginEMail" ColumnName="LoginEMail" />
+                <ScalarProperty Name="MyPublisherId" ColumnName="MyPublisherId" />
+                <ScalarProperty Name="OtherData" ColumnName="OtherData" />
+                <ScalarProperty Name="OtherId" ColumnName="OtherId" />
+                <ScalarProperty Name="OtherType" ColumnName="OtherType" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Roles" ColumnName="Roles" />
+                <ScalarProperty Name="VerifyStatus" ColumnName="VerifyStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

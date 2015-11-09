@@ -1,0 +1,62 @@
+﻿//Redux portal: https://github.com/xgrommx/awesome-redux
+//React "Hello World" Examples: https://gist.github.com/danawoodman/9cfddb1a0c934a35f31a
+//https://facebook.github.io/react/docs/component-api.html
+//https://facebook.github.io/react/docs/top-level-api.html#reactdom.finddomnode
+//http://redux.js.org/docs/introduction/
+//https://github.com/rackt/react-redux/releases
+//Imutable helper: https://facebook.github.io/react/docs/update.html, https://facebook.github.io/react/docs/advanced-performance.html
+//HELP: https://github.com/rackt/react-redux/blob/master/docs/api.md
+
+//D:\LMCom\rew\WebLogin\scripts\typings\react-redux.d.ts
+//export function connect<P>(mapStateToProps?: MapStateToProps,
+//  mapDispatchToProps?: MapDispatchToPropsFunction | MapDispatchToPropsObject,
+//  mergeProps?: MergeProps,
+//  options?: Options): (cls: React.ClassicComponentClass<P>) => React.ClassicComponentClass<P>;
+
+//D:\LMCom\rew\WebLogin\scripts\typings\react-global.d.ts
+//import ReactDOM = __React; 
+
+namespace testReactRouter {
+
+  interface IAction { type: string; }
+  interface IHelloWorldProps extends React.Props<any>, IHelloWorldStates { dispatch?: (action: IAction) => void; }
+  interface IHelloWorldStates { actName?: string; }
+
+  type HelloMessageType = React.ClassicComponent<IHelloWorldProps, IHelloWorldStates>;
+  var HelloMessage = React.createClass<IHelloWorldProps, IHelloWorldStates>({
+    render() {
+      var th = this as HelloMessageType;
+      return <div onClick={() => th.props.dispatch({ type: CLICK }) }>Hello {th.props.actName}</div >;
+    },
+    //shouldComponentUpdate: (nextProps, nextState, nextContext) => {
+    //  var th = this as HelloMessageType;
+    //  return th.state != nextState && th.props != nextProps;
+    //}
+  });
+  HelloMessage = ReactRedux.connect<IHelloWorldStates, IHelloWorldProps>((s, props) => s)(HelloMessage);
+
+  var CLICK = 'click';
+
+  //var reduxReducer = ReduxActions.handleActions<IHelloWorldStates>({
+  //  [CLICK]: (st, act) => { return { actName: st.actName + '*' }; }
+  //}, { actName: 'John2' });
+  //const rootReducer = Redux.combineReducers({ reduxReducer });
+
+  function modifyNameReducer(old: IHelloWorldStates, action: ReduxActions.Action): IHelloWorldStates {
+    switch (action.type) {
+      //case CLICK: return old; 
+      //case CLICK: old.actName = old.actName + '*'; return old;
+      case CLICK: return { actName: old.actName + '*' };
+      default: return old ? old : { actName: 'John' };
+    }
+  }
+
+  ReactDOM.render(
+    <ReactRedux.Provider store={Redux.createStore(modifyNameReducer) }><HelloMessage/></ReactRedux.Provider>,
+    document.getElementById('app')
+  );
+  //var str = React.renderToStaticMarkup(<HelloMessage initName="John" />);
+  //alert(str);
+  //var str = React.renderToString(<HelloMessage initName="John" />);
+  //alert(str);
+}

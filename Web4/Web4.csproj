@@ -319,7 +319,9 @@
     <Content Include="Author\Author.html" />
     <Content Include="bin\libmp3lame.dll" />
     <Content Include="bin\sqlite3.dll" />
-    <Content Include="Deploy\publishWebData.xml" />
+    <Content Include="Deploy\publishWebData.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Deploy\cs-cz.min.js" />
     <Content Include="Deploy\en-gb.min.js" />
     <Content Include="Deploy\externals.min.js" />
@@ -1603,7 +1605,9 @@
     <Content Include="Trados\Unlock.aspx" />
     <None Include="configs\Web.Alpha.AppSetting.config" />
     <None Include="configs\Web.Alpha.ConnectionStrings.config" />
-    <Content Include="Temp\TextFile3.json" />
+    <Content Include="Temp\TextFile3.json">
+      <LastGenOutput>TextFile3.txt</LastGenOutput>
+    </Content>
     <Content Include="Temp\TextTemplate1.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>TextTemplate1.txt</LastGenOutput>
@@ -2123,7 +2127,9 @@
     <TypeScriptCompile Include="Schools\GenLMComLib.ts" />
     <Content Include="Schools\Loc\tradosData.vi-vn.js" />
     <Content Include="Schools\Loc\tradosData.cs-cz.js" />
-    <Content Include="Temp\TextFile1.txt" />
+    <Content Include="Temp\TextFile1.txt">
+      <LastGenOutput>TextFile11.txt</LastGenOutput>
+    </Content>
     <Content Include="Temp\TextFile2.txt" />
     <Content Include="Temp\WebForm1.aspx" />
     <Content Include="Web.config">
