@@ -1,4 +1,4 @@
-﻿namespace uiRouter {
+﻿namespace angular {
   export function isNumber(value) { return typeof value === 'number'; }
   export function toJson(obj, pretty) {
     if (typeof obj === 'undefined') return undefined;

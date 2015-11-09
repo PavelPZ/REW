@@ -15,7 +15,7 @@
 //D:\LMCom\rew\WebLogin\scripts\typings\react-global.d.ts
 //import ReactDOM = __React; 
 
-namespace fluxTest {
+namespace testReactRouter {
 
   //*********************** DISPATCH MODULE definition
   interface IAppClickAction extends common.IDispatchAction { }

@@ -1,4 +1,4 @@
-﻿declare namespace uiRouter {
+﻿declare namespace angular {
   class UrlMatcher {
     constructor(pattern: string);
     exec(url: string, query?: {}): {};
@@ -8,7 +8,7 @@
   }
 }
 
-namespace uiRouter {
+namespace angular {
 
   export interface IRouterAction extends common.IDispatchAction {
     isRouteAction: boolean;
@@ -25,7 +25,7 @@ namespace uiRouter {
       return this;
     }
     dispatch(hash?: string) {
-      if (common.$flux$trigger) common.$flux$trigger(this.hashToAction(hash));
+      flux.trigger(this.hashToAction(hash));
     }
 
     hashToAction(hash?: string): IRouterAction {

@@ -117,9 +117,17 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Common\flux\Index.html" />
+    <Content Include="Common\uiRouter\index.html" />
+    <Content Include="Common\uiRouter\urlMatcherFactory.js" />
     <Content Include="packages.config" />
     <Content Include="README.md" />
+    <Content Include="scripts\core.js" />
     <Content Include="scripts\freezer.js" />
+    <Content Include="scripts\react-bootstrap.js" />
+    <Content Include="scripts\react-dom.js" />
+    <Content Include="scripts\react-with-addons.js" />
+    <Content Include="scripts\react.js" />
     <Content Include="styles\css\bootstrap.css" />
     <Content Include="styles\css\font-awesome.css" />
     <Content Include="styles\fonts\fontawesome-webfont.eot" />
@@ -137,14 +145,6 @@
   <ItemGroup>
     <Content Include="Index.html" />
     <Content Include="packages.txt" />
-    <Content Include="scripts\core.js" />
-    <Content Include="scripts\react-bootstrap.js" />
-    <Content Include="scripts\react-dom.js" />
-    <Content Include="scripts\react-redux.js" />
-    <Content Include="scripts\react-with-addons.js" />
-    <Content Include="scripts\react.js" />
-    <Content Include="scripts\reactRouter.js" />
-    <Content Include="scripts\redux.js" />
     <Content Include="styles\fonts\fontawesome-webfont.svg" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -155,23 +155,21 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="knowHows\reactBaseFreezer.tsx" />
-    <None Include="knowHows\reactBase.tsx_" />
-    <None Include="knowHows\reactBaseSingle.tsx_" />
-    <TypeScriptCompile Include="knowHows\reactRouter.tsx" />
-    <TypeScriptCompile Include="scripts\reduxActions.ts" />
+    <TypeScriptCompile Include="Common\Common.ts" />
+    <TypeScriptCompile Include="Common\flux\flux.ts" />
+    <TypeScriptCompile Include="Common\flux\test.tsx" />
+    <TypeScriptCompile Include="Common\uiRouter\angularCommon.ts" />
+    <TypeScriptCompile Include="Common\uiRouter\router.ts" />
+    <TypeScriptCompile Include="Common\uiRouter\routerCommon.ts" />
+    <TypeScriptCompile Include="login\module.ts" />
+    <TypeScriptCompile Include="login\test.tsx" />
     <TypeScriptCompile Include="scripts\typings\core-js.d.ts" />
     <TypeScriptCompile Include="scripts\typings\freezer.d.ts" />
     <TypeScriptCompile Include="scripts\typings\react-bootstrap.d.ts" />
     <TypeScriptCompile Include="scripts\typings\react-global.d.ts" />
-    <TypeScriptCompile Include="scripts\typings\react-redux.d.ts" />
-    <TypeScriptCompile Include="scripts\typings\react-router.d.ts" />
     <TypeScriptCompile Include="scripts\typings\react.d.ts" />
-    <TypeScriptCompile Include="scripts\typings\redux.d.ts" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="login\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

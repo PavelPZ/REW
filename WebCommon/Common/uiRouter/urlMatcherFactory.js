@@ -1,5 +1,5 @@
-var angular;
-(function (angular) {
+var uiRouter;
+(function (uiRouter) {
   var $$UMFP; // reference to $UrlMatcherFactoryProvider
   /**
    * @ngdoc object
@@ -67,7 +67,7 @@ var angular;
    * @returns {Object}  New `UrlMatcher` object
    */
   function UrlMatcher(pattern, config, parentMatcher) {
-    config = angular.extend({ params: {}, caseInsensitive: true }, angular.isObject(config) ? config : {});
+    config = uiRouter.extend({ params: {}, caseInsensitive: true }, uiRouter.isObject(config) ? config : {});
     // Find all placeholders and create a compiled pattern, using either classic or curly syntax:
     //   '*' name
     //   ':' name
@@ -121,7 +121,7 @@ var angular;
       segment = pattern.substring(last, m.index);
       regexp = isSearch ? m[4] : m[4] || (m[1] == '*' ? '.*' : null);
       if (regexp) {
-        type = $$UMFP.type(regexp) || angular.inherit($$UMFP.type("string"), { pattern: new RegExp(regexp, config.caseInsensitive ? 'i' : undefined) });
+        type = $$UMFP.type(regexp) || uiRouter.inherit($$UMFP.type("string"), { pattern: new RegExp(regexp, config.caseInsensitive ? 'i' : undefined) });
       }
       return {
         id: id, regexp: regexp, segment: segment, type: type, cfg: cfg
@@ -194,7 +194,7 @@ var angular;
       strict: $$UMFP.strictMode(),
       squash: $$UMFP.defaultSquashPolicy()
     };
-    return new UrlMatcher(this.sourcePath + pattern + this.sourceSearch, angular.extend(defaultConfig, config), this);
+    return new UrlMatcher(this.sourcePath + pattern + this.sourceSearch, uiRouter.extend(defaultConfig, config), this);
   };
   UrlMatcher.prototype.toString = function () {
     return this.source;
@@ -235,8 +235,8 @@ var angular;
       function reverseString(str) { return str.split("").reverse().join(""); }
       function unquoteDashes(str) { return str.replace(/\\-/g, "-"); }
       var split = reverseString(string).split(/-(?!\\)/);
-      var allReversed = angular.map(split, reverseString);
-      return angular.map(allReversed, unquoteDashes).reverse();
+      var allReversed = uiRouter.map(split, reverseString);
+      return uiRouter.map(allReversed, unquoteDashes).reverse();
     }
     for (i = 0; i < nPath; i++) {
       paramName = paramNames[i];
@@ -269,7 +269,7 @@ var angular;
    *    pattern has no parameters, an empty array is returned.
    */
   UrlMatcher.prototype.parameters = function (param) {
-    if (!angular.isDefined(param))
+    if (!uiRouter.isDefined(param))
       return this.$$paramNames;
     return this.params[param] || null;
   };
@@ -327,8 +327,8 @@ var angular;
         var isFinalPathParam = i + 1 === nPath;
         if (squash === false) {
           if (encoded != null) {
-            if (angular.isArray(encoded)) {
-              result += angular.map(encoded, encodeDashes).join("-");
+            if (uiRouter.isArray(encoded)) {
+              result += uiRouter.map(encoded, encodeDashes).join("-");
             }
             else {
               result += encodeURIComponent(encoded);
@@ -340,7 +340,7 @@ var angular;
           var capture = result.match(/\/$/) ? /\/?(.*)/ : /(.*)/;
           result += nextSegment.match(capture)[1];
         }
-        else if (angular.isString(squash)) {
+        else if (uiRouter.isString(squash)) {
           result += squash + nextSegment;
         }
         if (isFinalPathParam && param.squash === true && result.slice(-1) === '/')
@@ -349,9 +349,9 @@ var angular;
       else {
         if (encoded == null || (isDefaultValue && squash !== false))
           continue;
-        if (!angular.isArray(encoded))
+        if (!uiRouter.isArray(encoded))
           encoded = [encoded];
-        encoded = angular.map(encoded, encodeURIComponent).join('&' + name + '=');
+        encoded = uiRouter.map(encoded, encodeURIComponent).join('&' + name + '=');
         result += (search ? '&' : '?') + (name + '=' + encoded);
         search = true;
       }
@@ -378,7 +378,7 @@ var angular;
    *   decode: function(val) { return parseInt(val, 10); },
    *   encode: function(val) { return val && val.toString(); },
    *   equals: function(a, b) { return this.is(a) && a === b; },
-   *   is: function(val) { return angular.isNumber(val) isFinite(val) && val % 1 === 0; },
+   *   is: function(val) { return uiRouter.isNumber(val) isFinite(val) && val % 1 === 0; },
    *   pattern: /\d+/
    * }
    * </pre>
@@ -389,7 +389,7 @@ var angular;
    * @returns {Object}  Returns a new `Type` object.
    */
   function Type(config) {
-    angular.extend(this, config);
+    uiRouter.extend(this, config);
   }
   /**
    * @ngdoc function
@@ -490,7 +490,7 @@ var angular;
         };
       }
       // Wrap non-array value as array
-      function arrayWrap(val) { return angular.isArray(val) ? val : (angular.isDefined(val) ? [val] : []); }
+      function arrayWrap(val) { return uiRouter.isArray(val) ? val : (uiRouter.isDefined(val) ? [val] : []); }
       // Unwrap array value for "auto" mode. Return undefined for empty array.
       function arrayUnwrap(val) {
         switch (val.length) {
@@ -504,9 +504,9 @@ var angular;
       function arrayHandler(callback, allTruthyMode) {
         return function handleArray(val) {
           val = arrayWrap(val);
-          var result = angular.map(val, callback);
+          var result = uiRouter.map(val, callback);
           if (allTruthyMode === true)
-            return angular.filter(result, falsey).length === 0;
+            return uiRouter.filter(result, falsey).length === 0;
           return arrayUnwrap(result);
         };
       }
@@ -553,13 +553,13 @@ var angular;
         decode: valFromString,
         // TODO: in 1.0, make string .is() return false if value is undefined/null by default.
         // In 0.2.x, string params are optional by default for backwards compat
-        is: function (val) { return val == null || !angular.isDefined(val) || typeof val === "string"; },
+        is: function (val) { return val == null || !uiRouter.isDefined(val) || typeof val === "string"; },
         pattern: /[^/]*/
       },
       int: {
         encode: valToString,
         decode: function (val) { return parseInt(val, 10); },
-        is: function (val) { return angular.isDefined(val) && this.decode(val.toString()) === val; },
+        is: function (val) { return uiRouter.isDefined(val) && this.decode(val.toString()) === val; },
         pattern: /\d+/
       },
       bool: {
@@ -589,16 +589,16 @@ var angular;
         capture: /([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/
       },
       json: {
-        encode: angular.toJson,
-        decode: angular.fromJson,
-        is: angular.isObject,
-        equals: angular.equals,
+        encode: uiRouter.toJson,
+        decode: uiRouter.fromJson,
+        is: uiRouter.isObject,
+        equals: uiRouter.equals,
         pattern: /[^/]*/
       },
       any: {
-        encode: angular.identity,
-        decode: angular.identity,
-        equals: angular.equals,
+        encode: uiRouter.identity,
+        decode: uiRouter.identity,
+        equals: uiRouter.equals,
         pattern: /.*/
       }
     };
@@ -609,7 +609,7 @@ var angular;
       };
     }
     function isInjectable(value) {
-      return (angular.isFunction(value) || (angular.isArray(value) && angular.isFunction(value[value.length - 1])));
+      return (uiRouter.isFunction(value) || (uiRouter.isArray(value) && uiRouter.isFunction(value[value.length - 1])));
     }
     /**
      * [Internal] Get the default value of a parameter, which may be an injectable function.
@@ -633,7 +633,7 @@ var angular;
      * @returns {boolean} the current value of caseInsensitive
      */
     this.caseInsensitive = function (value) {
-      if (angular.isDefined(value))
+      if (uiRouter.isDefined(value))
         isCaseInsensitive = value;
       return isCaseInsensitive;
     };
@@ -649,7 +649,7 @@ var angular;
      * @returns {boolean} the current value of strictMode
      */
     this.strictMode = function (value) {
-      if (angular.isDefined(value))
+      if (uiRouter.isDefined(value))
         isStrictMode = value;
       return isStrictMode;
     };
@@ -669,9 +669,9 @@ var angular;
      *             the parameter value from the URL and replace it with this string.
      */
     this.defaultSquashPolicy = function (value) {
-      if (!angular.isDefined(value))
+      if (!uiRouter.isDefined(value))
         return defaultSquashPolicy;
-      if (value !== true && value !== false && !angular.isString(value))
+      if (value !== true && value !== false && !uiRouter.isString(value))
         throw new Error("Invalid squash policy: " + value + ". Valid policies: false, true, arbitrary-string");
       defaultSquashPolicy = value;
       return value;
@@ -689,7 +689,7 @@ var angular;
      * @returns {UrlMatcher}  The UrlMatcher.
      */
     this.compile = function (pattern, config) {
-      return new UrlMatcher(pattern, angular.extend(getDefaultConfig(), config));
+      return new UrlMatcher(pattern, uiRouter.extend(getDefaultConfig(), config));
     };
     /**
      * @ngdoc function
@@ -704,12 +704,12 @@ var angular;
      *          implementing all the same methods.
      */
     this.isMatcher = function (o) {
-      if (!angular.isObject(o))
+      if (!uiRouter.isObject(o))
         return false;
       var result = true;
-      angular.forEach(UrlMatcher.prototype, function (val, name) {
-        if (angular.isFunction(val)) {
-          result = result && (angular.isDefined(o[name]) && angular.isFunction(o[name]));
+      uiRouter.forEach(UrlMatcher.prototype, function (val, name) {
+        if (uiRouter.isFunction(val)) {
+          result = result && (uiRouter.isDefined(o[name]) && uiRouter.isFunction(o[name]));
         }
       });
       return result;
@@ -796,7 +796,7 @@ var angular;
      *     },
      *     is: function(object, key) {
      *       // Check that object is a valid dbObject
-     *       return angular.isObject(object) && object.id && services[key];
+     *       return uiRouter.isObject(object) && object.id && services[key];
      *     }
      *     equals: function(a, b) {
      *       // Check the equality of decoded objects by comparing
@@ -822,11 +822,11 @@ var angular;
      * </pre>
      */
     this.type = function (name, definition, definitionFn) {
-      if (!angular.isDefined(definition))
+      if (!uiRouter.isDefined(definition))
         return $types[name];
       if ($types.hasOwnProperty(name))
         throw new Error("A type named '" + name + "' has already been defined.");
-      $types[name] = new Type(angular.extend({ name: name }, definition));
+      $types[name] = new Type(uiRouter.extend({ name: name }, definition));
       if (definitionFn) {
         typeQueue.push({ name: name, def: definitionFn });
         if (!enqueue)
@@ -840,19 +840,19 @@ var angular;
         var type = typeQueue.shift();
         if (type.pattern)
           throw new Error("You cannot override a type's .pattern at runtime.");
-        angular.extend($types[type.name], injector.invoke(type.def));
+        uiRouter.extend($types[type.name], injector.invoke(type.def));
       }
     }
     // Register default types. Store them in the prototype of $types.
-    angular.forEach(defaultTypes, function (type, name) { $types[name] = new Type(angular.extend({ name: name }, type)); });
+    uiRouter.forEach(defaultTypes, function (type, name) { $types[name] = new Type(uiRouter.extend({ name: name }, type)); });
     //LM
-    $types = angular.inherit($types, {});
+    $types = uiRouter.inherit($types, {});
     /* No need to document $get, since it returns this */
     this.$get = ['$injector', function ($injector) {
       injector = $injector;
       enqueue = false;
       flushTypeQueue();
-      angular.forEach(defaultTypes, function (type, name) {
+      uiRouter.forEach(defaultTypes, function (type, name) {
         if (!$types[name])
           $types[name] = new Type(type);
       });
@@ -870,9 +870,9 @@ var angular;
       var squash = getSquashPolicy(config, isOptional);
       var replace = getReplace(config, arrayMode, isOptional, squash);
       function unwrapShorthand(config) {
-        var keys = angular.isObject(config) ? angular.objectKeys(config) : [];
-        var isShorthand = angular.indexOf(keys, "value") === -1 && angular.indexOf(keys, "type") === -1 &&
-            angular.indexOf(keys, "squash") === -1 && angular.indexOf(keys, "array") === -1;
+        var keys = uiRouter.isObject(config) ? uiRouter.objectKeys(config) : [];
+        var isShorthand = uiRouter.indexOf(keys, "value") === -1 && uiRouter.indexOf(keys, "type") === -1 &&
+            uiRouter.indexOf(keys, "squash") === -1 && uiRouter.indexOf(keys, "array") === -1;
         if (isShorthand)
           config = { value: config };
         config.$$fn = isInjectable(config.value) ? config.value : function () { return config.value; };
@@ -885,7 +885,7 @@ var angular;
           return urlType;
         if (!config.type)
           return (location === "config" ? $types.any : $types.string);
-        if (angular.isString(config.type))
+        if (uiRouter.isString(config.type))
           return $types[config.type];
         if (config.type instanceof Type)
           return config.type;
@@ -895,7 +895,7 @@ var angular;
       function getArrayMode() {
         var arrayDefaults = { array: (location === "search" ? "auto" : false) };
         var arrayParamNomenclature = id.match(/\[\]$/) ? { array: true } : {};
-        return angular.extend(arrayDefaults, arrayParamNomenclature, config).array;
+        return uiRouter.extend(arrayDefaults, arrayParamNomenclature, config).array;
       }
       /**
        * returns false, true, or the squash value to indicate the "default parameter url squash policy".
@@ -904,9 +904,9 @@ var angular;
         var squash = config.squash;
         if (!isOptional || squash === false)
           return false;
-        if (!angular.isDefined(squash) || squash == null)
+        if (!uiRouter.isDefined(squash) || squash == null)
           return defaultSquashPolicy;
-        if (squash === true || angular.isString(squash))
+        if (squash === true || uiRouter.isString(squash))
           return squash;
         throw new Error("Invalid squash policy: '" + squash + "'. Valid policies: false, true, or arbitrary string");
       }
@@ -915,11 +915,11 @@ var angular;
             { from: "", to: (isOptional || arrayMode ? undefined : "") },
             { from: null, to: (isOptional || arrayMode ? undefined : "") }
         ];
-        replace = angular.isArray(config.replace) ? config.replace : [];
-        if (angular.isString(squash))
+        replace = uiRouter.isArray(config.replace) ? config.replace : [];
+        if (uiRouter.isString(squash))
           replace.push({ from: squash, to: undefined });
-        configuredKeys = angular.map(replace, function (item) { return item.from; });
-        return angular.filter(defaultPolicy, function (item) { return angular.indexOf(configuredKeys, item.from) === -1; }).concat(replace);
+        configuredKeys = uiRouter.map(replace, function (item) { return item.from; });
+        return uiRouter.filter(defaultPolicy, function (item) { return uiRouter.indexOf(configuredKeys, item.from) === -1; }).concat(replace);
       }
       /**
        * [Internal] Get the default value of a parameter, which may be an injectable function.
@@ -941,14 +941,14 @@ var angular;
       function $value(value) {
         function hasReplaceVal(val) { return function (obj) { return obj.from === val; }; }
         function $replace(value) {
-          var replacement = angular.map(angular.filter(self.replace, hasReplaceVal(value)), function (obj) { return obj.to; });
+          var replacement = uiRouter.map(uiRouter.filter(self.replace, hasReplaceVal(value)), function (obj) { return obj.to; });
           return replacement.length ? replacement[0] : value;
         }
         value = $replace(value);
-        return !angular.isDefined(value) ? $$getDefaultValue() : self.type.$normalize(value);
+        return !uiRouter.isDefined(value) ? $$getDefaultValue() : self.type.$normalize(value);
       }
       function toString() { return "{Param:" + id + " " + type + " squash: '" + squash + "' optional: " + isOptional + "}"; }
-      angular.extend(this, {
+      uiRouter.extend(this, {
         id: id,
         type: type,
         location: location,
@@ -963,22 +963,22 @@ var angular;
       });
     };
     function ParamSet(params) {
-      angular.extend(this, params || {});
+      uiRouter.extend(this, params || {});
     }
     ParamSet.prototype = {
       $$new: function () {
-        return angular.inherit(this, angular.extend(new ParamSet(), { $$parent: this }));
+        return uiRouter.inherit(this, uiRouter.extend(new ParamSet(), { $$parent: this }));
       },
       $$keys: function () {
-        var keys = [], chain = [], parent = this, ignore = angular.objectKeys(ParamSet.prototype);
+        var keys = [], chain = [], parent = this, ignore = uiRouter.objectKeys(ParamSet.prototype);
         while (parent) {
           chain.push(parent);
           parent = parent.$$parent;
         }
         chain.reverse();
-        angular.forEach(chain, function (paramset) {
-          angular.forEach(angular.objectKeys(paramset), function (key) {
-            if (angular.indexOf(keys, key) === -1 && angular.indexOf(ignore, key) === -1)
+        uiRouter.forEach(chain, function (paramset) {
+          uiRouter.forEach(uiRouter.objectKeys(paramset), function (key) {
+            if (uiRouter.indexOf(keys, key) === -1 && uiRouter.indexOf(ignore, key) === -1)
               keys.push(key);
           });
         });
@@ -986,14 +986,14 @@ var angular;
       },
       $$values: function (paramValues) {
         var values = {}, self = this;
-        angular.forEach(self.$$keys(), function (key) {
+        uiRouter.forEach(self.$$keys(), function (key) {
           values[key] = self[key].value(paramValues && paramValues[key]);
         });
         return values;
       },
       $$equals: function (paramValues1, paramValues2) {
         var equal = true, self = this;
-        angular.forEach(self.$$keys(), function (key) {
+        uiRouter.forEach(self.$$keys(), function (key) {
           var left = paramValues1 && paramValues1[key], right = paramValues2 && paramValues2[key];
           if (!self[key].type.equals(left, right))
             equal = false;
@@ -1011,7 +1011,7 @@ var angular;
           if (!param.type.is(normalized))
             return false; // The value was not of the correct Type, and could not be decoded to the correct Type
           encoded = param.type.encode(normalized);
-          if (angular.isString(encoded) && !param.type.pattern.exec(encoded))
+          if (uiRouter.isString(encoded) && !param.type.pattern.exec(encoded))
             return false; // The value was of the correct type, but when encoded, did not match the Type's regexp
         }
         return true;
@@ -1020,6 +1020,6 @@ var angular;
     };
     this.ParamSet = ParamSet;
   }
-  angular.UrlMatcher = UrlMatcher;
-  angular.$UrlMatcherFactory = $UrlMatcherFactory;
-})(angular || (angular = {}));
+  uiRouter.UrlMatcher = UrlMatcher;
+  uiRouter.$UrlMatcherFactory = $UrlMatcherFactory;
+})(uiRouter || (uiRouter = {}));

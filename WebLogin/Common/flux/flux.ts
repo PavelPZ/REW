@@ -23,7 +23,6 @@
     constructor(public modules: Array<Module>, initStatus: S) {
       store = this;
       this.setState(initStatus);
-      common.$flux$trigger = this.trigger;
     }
 
     setState(status: S) { if (!this.state) this.state = new Freezer<S>(status); else this.state.set(status); }
