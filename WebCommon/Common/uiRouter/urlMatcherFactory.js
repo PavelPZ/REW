@@ -65,7 +65,7 @@ var $$UMFP; // reference to $UrlMatcherFactoryProvider
  * @returns {Object}  New `UrlMatcher` object
  */
 function UrlMatcher(pattern, config, parentMatcher) {
-    config = Object.assign({ params: {} }, angular.isObject(config) ? config : {});
+    config = angular.extend({ params: {} }, angular.isObject(config) ? config : {});
     // Find all placeholders and create a compiled pattern, using either classic or curly syntax:
     //   '*' name
     //   ':' name
@@ -119,7 +119,7 @@ function UrlMatcher(pattern, config, parentMatcher) {
         segment = pattern.substring(last, m.index);
         regexp = isSearch ? m[4] : m[4] || (m[1] == '*' ? '.*' : null);
         if (regexp) {
-            type = $$UMFP.type(regexp) || inherit($$UMFP.type("string"), { pattern: new RegExp(regexp, config.caseInsensitive ? 'i' : undefined) });
+          type = $$UMFP.type(regexp) || angular.inherit($$UMFP.type("string"), { pattern: new RegExp(regexp, config.caseInsensitive ? 'i' : undefined) });
         }
         return {
             id: id, regexp: regexp, segment: segment, type: type, cfg: cfg
@@ -192,7 +192,7 @@ UrlMatcher.prototype.concat = function (pattern, config) {
         strict: $$UMFP.strictMode(),
         squash: $$UMFP.defaultSquashPolicy()
     };
-    return new UrlMatcher(this.sourcePath + pattern + this.sourceSearch, Object.assign(defaultConfig, config), this);
+    return new UrlMatcher(this.sourcePath + pattern + this.sourceSearch, angular.extend(defaultConfig, config), this);
 };
 UrlMatcher.prototype.toString = function () {
     return this.source;
@@ -387,7 +387,7 @@ UrlMatcher.prototype.format = function (values) {
  * @returns {Object}  Returns a new `Type` object.
  */
 function Type(config) {
-    Object.assign(this, config);
+    angular.extend(this, config);
 }
 /**
  * @ngdoc function
@@ -687,7 +687,7 @@ function $UrlMatcherFactory() {
      * @returns {UrlMatcher}  The UrlMatcher.
      */
     this.compile = function (pattern, config) {
-        return new UrlMatcher(pattern, Object.assign(getDefaultConfig(), config));
+        return new UrlMatcher(pattern, angular.extend(getDefaultConfig(), config));
     };
     /**
      * @ngdoc function
@@ -824,7 +824,7 @@ function $UrlMatcherFactory() {
             return $types[name];
         if ($types.hasOwnProperty(name))
             throw new Error("A type named '" + name + "' has already been defined.");
-        $types[name] = new Type(Object.assign({ name: name }, definition));
+        $types[name] = new Type(angular.extend({ name: name }, definition));
         if (definitionFn) {
             typeQueue.push({ name: name, def: definitionFn });
             if (!enqueue)
@@ -838,13 +838,13 @@ function $UrlMatcherFactory() {
             var type = typeQueue.shift();
             if (type.pattern)
                 throw new Error("You cannot override a type's .pattern at runtime.");
-            Object.assign($types[type.name], injector.invoke(type.def));
+            angular.extend($types[type.name], injector.invoke(type.def));
         }
     }
     // Register default types. Store them in the prototype of $types.
-    angular.forEach(defaultTypes, function (type, name) { $types[name] = new Type(Object.assign({ name: name }, type)); });
+    angular.forEach(defaultTypes, function (type, name) { $types[name] = new Type(angular.extend({ name: name }, type)); });
     //LM
-    //$types = inherit($types, {});
+    $types = angular.inherit($types, {});
     /* No need to document $get, since it returns this */
     this.$get = ['$injector', function ($injector) {
             injector = $injector;
@@ -893,7 +893,7 @@ function $UrlMatcherFactory() {
         function getArrayMode() {
             var arrayDefaults = { array: (location === "search" ? "auto" : false) };
             var arrayParamNomenclature = id.match(/\[\]$/) ? { array: true } : {};
-            return Object.assign(arrayDefaults, arrayParamNomenclature, config).array;
+            return angular.extend(arrayDefaults, arrayParamNomenclature, config).array;
         }
         /**
          * returns false, true, or the squash value to indicate the "default parameter url squash policy".
@@ -946,7 +946,7 @@ function $UrlMatcherFactory() {
             return !angular.isDefined(value) ? $$getDefaultValue() : self.type.$normalize(value);
         }
         function toString() { return "{Param:" + id + " " + type + " squash: '" + squash + "' optional: " + isOptional + "}"; }
-        Object.assign(this, {
+        angular.extend(this, {
             id: id,
             type: type,
             location: location,
@@ -961,11 +961,11 @@ function $UrlMatcherFactory() {
         });
     };
     function ParamSet(params) {
-        Object.assign(this, params || {});
+        angular.extend(this, params || {});
     }
     ParamSet.prototype = {
         $$new: function () {
-            return inherit(this, Object.assign(new ParamSet(), { $$parent: this }));
+            return angular.inherit(this, angular.extend(new ParamSet(), { $$parent: this }));
         },
         $$keys: function () {
             var keys = [], chain = [], parent = this, ignore = angular.objectKeys(ParamSet.prototype);

@@ -187,7 +187,7 @@
     return Object.create(null);
   }
 
-  export function extend(...dst) {
+  export var extend: any = function(dst) {
     return baseExtend(dst, slice.call(arguments, 1), false);
   }
 
