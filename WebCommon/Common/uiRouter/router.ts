@@ -10,10 +10,6 @@
 
 namespace uiRouter {
 
-  export interface IRouterAction extends common.IDispatchAction {
-    isRouteAction: boolean;
-  }
-
   export class States {
     states: Array<State> = [];
     dir: { [name: string]: State; } = {};
@@ -28,7 +24,7 @@ namespace uiRouter {
       if (common.$flux$trigger) common.$flux$trigger(this.hashToAction(hash));
     }
 
-    hashToAction(hash?: string): IRouterAction {
+    hashToAction(hash?: string): common.IRouterAction {
       if (!hash) hash = window.location.hash;
       if (!hash || hash.length < 1) hash = '#';
       if (hash[0] == '#') hash = hash.substr(1);
@@ -38,7 +34,7 @@ namespace uiRouter {
         var nv = p.split('=');
         query[nv[0]] = nv[1];
       });
-      var res: IRouterAction = null;
+      var res: common.IRouterAction = null;
       this.states.find(st => {
         var match = st.matcher.exec(path, query); if (!match) return false;
         res = { type: st.name, payload: match, isRouteAction: true };

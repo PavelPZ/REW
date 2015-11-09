@@ -86,8 +86,8 @@ namespace fluxTest {
     <App initState={store.getState() }/>,
     document.getElementById('app')
   );
-  //var str = React.renderToStaticMarkup(<HelloMessage initName="John" />);
+  //var str = ReactDOM.renderToStaticMarkup(<App initState={store.getState() }/>);
   //alert(str);
-  //var str = React.renderToString(<HelloMessage initName="John" />);
+  //var str = ReactDOM.renderToString(<App initState={store.getState() }/>);
   //alert(str);
 }

@@ -51,6 +51,7 @@
       res.dispatchAction(moduleIds[moduleIds.length - 1], action, complete);
     }
 
+    //****************** ACTION and STATUS recording
     recordStart() { this.recording = { initStatus: this.getState(), actions: [] }; }
     recordEnd(): string { try { return JSON.stringify(this.recording, null, 2); } finally { this.recording = null; } }
     play(recStr: string, interval: number, completed: () => void) {
