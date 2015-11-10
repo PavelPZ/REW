@@ -46,7 +46,7 @@
       <validation.Input validator={{ type: validation.types.required, id: 'psw' }}/><br/>
       <validation.Input validator={{ type: validation.types.equalTo, equalToId: 'psw' }}/>
         </validation.Group>
-      <p><validation.Input/></p>
+      <p><validation.Input/></p> 
       {/*
       <validation.Group>
         <p><validation.Input validator={{ type: validation.types.email | validation.types.email }}/></p>

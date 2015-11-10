@@ -6,7 +6,6 @@
   }
 }
 
-
 namespace validation {
 
   export interface IValidPars {
@@ -40,6 +39,7 @@ namespace validation {
     error: groupError;
     validate() {
       var th = this;
+      //validace stejnych hesel
       th.inputs.filter(sp => sp.validator && sp.state.blured && (sp.validator.type & types.equalTo) != 0).forEach(sp => {
         var pp = th.inputs.find(p => p.validator && p.state.blured && p.validator.id == sp.validator.equalToId); if (!pp) return;
         sp.state.error = pp.state.value != sp.state.value ? messages.equalTo() : null;
@@ -73,12 +73,12 @@ namespace validation {
       if (this.group) this.group.validate();
       var len = !st.value ? 0 : st.value.length;
       if ((th.validator.type & types.required) != 0) {
-        if (len<1) { st.error = messages.required(); return; }
+        if (len < 1) { st.error = messages.required(); return; }
       }
       if ((th.validator.type & types.stringLength) != 0) {
         if (th.validator.minLength && th.validator.maxLength) {
           if (len < th.validator.minLength || len > th.validator.maxLength) { st.error = messages.rangelength(th.validator.minLength, th.validator.maxLength); return; }
-        } else if (th.validator.minLength) { 
+        } else if (th.validator.minLength) {
           if (len < th.validator.minLength) { st.error = messages.minlength(th.validator.minLength); return; }
         } else if (th.validator.maxLength) {
           if (len > th.validator.maxLength) { st.error = messages.maxlength(th.validator.maxLength); return; }
@@ -125,10 +125,62 @@ namespace validation {
     equalTo: () => "Please enter the same value again.",
     maxlength: (v1) => `Please enter no more than ${v1} characters.`,
     minlength: (v1) => `Please enter at least ${v1} characters.`,
-    rangelength: (v1,v2) => `Please enter a value between ${v1} and ${v2} characters long.`,
+    rangelength: (v1, v2) => `Please enter a value between ${v1} and ${v2} characters long.`,
     range: (v1, v2) => `Please enter a value between ${v1} and ${v2}.`,
     max: (v1) => `Please enter a value less than or equal to ${v1}.`,
     min: (v1) => `Please enter a value greater than or equal to ${v1}.`
   };
 
+  //*********************** COMPONENTS
+  export interface IGroupContext { validation: group; }
+
+  //--- IMPUT
+  export class Input extends flux.Component<IInputProps, any>{ 
+    constructor(prop, ctx: IGroupContext) {
+      super(prop, ctx);
+      this.driver = new inputDriver(ctx ? ctx.validation : null, this.props.validator, this.props.initValue, () => this.setState(this.driver.state));
+    }
+    static contextTypes = { validation: React.PropTypes.any }; //, ctx: React.PropTypes.any };
+    driver: inputDriver;
+    render() {
+      var templ: IInputTemplate = {
+        valueLink: { value: this.driver.state.value, requestChange: newVal => this.driver.change(newVal) }, //https://facebook.github.io/react/docs/two-way-binding-helpers.html
+        blur: () => this.driver.blur(),
+        keyDown: ev => this.driver.keyDown(ev),
+        error: this.driver.state.error
+      };
+      return getInputTemplate(templ);
+    }
+  }
+  interface IInputProps extends flux.IComponentProps { validator?: IValidPars; initValue?: string; }
+
+  export interface IInputTemplate {
+    valueLink: React.ReactLink<string>;
+    blur: () => void;
+    keyDown: React.KeyboardEventHandler;
+    error: string;
+  }
+
+  //--- GROUP
+  export class Group extends React.Component<any, any>{
+    static childContextTypes = { validation: React.PropTypes.element };
+    getChildContext: () => IGroupContext = () => { return { validation: this.driver = new group() }; }
+    render() { return React.createElement("div", null, this.props.children, " "); }
+    driver: group;
+  }
+
+  //--- GROUP ERROR
+  export class GroupError extends flux.Component<any, IGroupErrorState>{
+    constructor(prop, ctx: IGroupContext) {
+      super(prop, ctx);
+      this.driver = new groupError(ctx ? ctx.validation : null, () => this.setState(this.driver.state));
+    }
+    driver: groupError;
+    static contextTypes = { validation: React.PropTypes.any, ctx: React.PropTypes.any };
+    render() { return getGroupErrorTemplate({ value: this.driver.state.value }); }
+  }
+
+  export interface IGroupErrorTemplate {
+    value: string;
+  }
 }

@@ -127,7 +127,7 @@
     <TypeScriptCompile Include="Common\uiRouter\routerCommon.ts" />
     <TypeScriptCompile Include="Common\validation\lib.ts" />
     <TypeScriptCompile Include="Common\validation\test.tsx" />
-    <TypeScriptCompile Include="Common\validation\components.tsx" />
+    <TypeScriptCompile Include="Common\validation\templates.tsx" />
     <TypeScriptCompile Include="scripts\typings\core-js.d.ts" />
     <TypeScriptCompile Include="scripts\typings\freezer.d.ts" />
     <TypeScriptCompile Include="scripts\typings\react-bootstrap.d.ts" />
