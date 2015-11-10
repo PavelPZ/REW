@@ -34,6 +34,7 @@ namespace validation {
 
   //********************************* VALIDATE LOGIC
 
+  //---- GROUP
   export class group {
     inputs: Array<inputDriver> = [];
     error: groupError;
@@ -55,26 +56,28 @@ namespace validation {
   }
   export interface IGroupErrorState { value: string; }
 
+  //---- INPUT
   export class inputDriver {
     constructor(public group: group, public validator: IValidPars, initValue: string, public onStateChanged: () => void) {
       this.state = { value: initValue ? initValue : '' };
-      if (group) group.inputs.push(this);
+      if (group) group.inputs.push(this); //registrace self v ramci cele grupy
     }
-    state: IInputState;
-    pars: IValidPars;
-    keyDown(ev: React.KeyboardEvent) { if (ev.keyCode != 13) return; this.blur(); }
-    blur() { this.state.blured = true; this.validate(); this.onStateChanged(); }
-    change(newVal: string) {
-      this.state.value = newVal; if (this.state.blured) this.validate(); this.onStateChanged();
-    }
+    state: IInputState; //STATE input komponenty
+    pars: IValidPars; //parametry validace
+    keyDown(ev: React.KeyboardEvent) { if (ev.keyCode != 13) return; this.blur(); } //ENTER
+    blur() { this.state.blured = true; this.validate(); this.onStateChanged(); } //ztrata fokusu
+    change(newVal: string) { this.state.value = newVal; if (this.state.blured) this.validate(); this.onStateChanged(); } //zmena hodnoty
     validate() {
-      var th = this; var st = th.state; st.error = null;
-      if (!th.validator) return;
-      if (this.group) this.group.validate();
+      var th = this; if (!th.validator) return;
+      var st = th.state; st.error = null;
+      //na urovni GROUP, napr. EQUAL TO
+      if (this.group) this.group.validate(); 
       var len = !st.value ? 0 : st.value.length;
+      //REQUIRED
       if ((th.validator.type & types.required) != 0) {
         if (len < 1) { st.error = messages.required(); return; }
       }
+      //STRING LENGTH
       if ((th.validator.type & types.stringLength) != 0) {
         if (th.validator.minLength && th.validator.maxLength) {
           if (len < th.validator.minLength || len > th.validator.maxLength) { st.error = messages.rangelength(th.validator.minLength, th.validator.maxLength); return; }
@@ -84,6 +87,7 @@ namespace validation {
           if (len > th.validator.maxLength) { st.error = messages.maxlength(th.validator.maxLength); return; }
         }
       }
+      //.. with MASK
       var mask: RegExp = null; var error: string;
       if ((th.validator.type & (types.number | types.numberRange)) != 0) {
         mask = /^(?:-?\d+|-?\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/;
@@ -98,6 +102,7 @@ namespace validation {
       if (mask) {
         if (len == 0 || !mask.test(st.value)) { st.error = error; return; }
       }
+      //NUMBER RANGE
       var defined = v => typeof v != 'undefined';
       if ((th.validator.type & types.numberRange) != 0) {
         var num = parseFloat(st.value);
@@ -165,7 +170,7 @@ namespace validation {
   export class Group extends React.Component<any, any>{
     static childContextTypes = { validation: React.PropTypes.element };
     getChildContext: () => IGroupContext = () => { return { validation: this.driver = new group() }; }
-    render() { return React.createElement("div", null, this.props.children, " "); }
+    render() { return React.createElement("div", null, this.props.children); } //nikdy nebude mit vizualni podobu
     driver: group;
   }
 
@@ -179,8 +184,5 @@ namespace validation {
     static contextTypes = { validation: React.PropTypes.any, ctx: React.PropTypes.any };
     render() { return getGroupErrorTemplate({ value: this.driver.state.value }); }
   }
-
-  export interface IGroupErrorTemplate {
-    value: string;
-  }
+  export interface IGroupErrorTemplate { value: string; }
 }
