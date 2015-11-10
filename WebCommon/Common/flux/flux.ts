@@ -11,31 +11,35 @@ namespace flux {
   export var rootComponent: SmartComponent<any, any>; //v musi se naplnit v konstruktoru root komponenty. Kvuli recordingu.
   export function trigger(action: common.IDispatchAction) { store.trigger(action); }
 
-  export class DummyComponent<T, S> extends React.Component<T, S>{
+  export class Component<T extends React.Props<any>, S> extends React.Component<T, S> {
+    props: T; state: S;
+  }
+  export interface IComponentProps extends React.Props<any> { }
+
+  export class DummyComponent<T, S> extends Component<T, S>{
     static childContextTypes = { ctx: React.PropTypes.any }
     static contextTypes = { ctx: React.PropTypes.any }
     context: common.IGlobalContext;
   }
-  export class SmartComponent<T extends IProps<any>, S extends IFreezerState<any>> extends DummyComponent<T, S>{
-    constructor(props: T, initState: S) {
-      super(props);
-      this.state = props.initState;
+  export class SmartComponent<T extends ISmartProps<any>, S extends IFreezerState<any>> extends DummyComponent<T & ISmartProps<S>, IFreezerState<S>>{
+    constructor(props, ctx: any) {
+      super(props, ctx);
+      this.state = this.props.initState;
     }
-    componentWillReceiveProps = (nextProps: T, nextContext: any) => {
+    props: T; state: S;
+    componentWillReceiveProps = (nextProps: T & ISmartProps<S>, nextContext: any) => {
       if (nextProps.initState !== this.state) this.setState(nextProps.initState, () => this.state = nextProps.initState);
     }
     shouldComponentUpdate = (nextProps: T, nextState: S, nextContext: any) => this.state !== nextState;
     componentDidMount = () => this.state.getListener().on('update', newState => this.setState(newState, () => this.state = newState));
     componentWillUnmount = () => this.state.getListener().off('update');
     render() { return null; }
-    props: T;
-    state: S;
   }
-  export interface IProps<S> extends React.Props<any> { initState: S; }
+  export interface ISmartProps<S> extends IComponentProps { initState: S; }
 
-  export class RootComponent<T extends IProps<any>, S extends IFreezerState<any>> extends SmartComponent<T, S>{
-    constructor(props: T, initState: S) {
-      super(props, initState);
+  export class RootComponent<T extends ISmartProps<any>, S extends IFreezerState<any>> extends SmartComponent<T, S>{
+    constructor(props: T, ctx: any) {
+      super(props, ctx);
       flux.rootComponent = this;
     }
     getChildContext = () => { return common.globalContext; }

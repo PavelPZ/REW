@@ -3,6 +3,9 @@ declare namespace __React {
   interface HTMLAttributes {
     valueLink?;
   }
+  interface FormEvent {
+    target: HTMLInputElement;
+  }
 }
 
 namespace common {

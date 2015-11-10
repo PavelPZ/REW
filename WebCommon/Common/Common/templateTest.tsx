@@ -30,19 +30,19 @@ namespace xxx {
   }
 
   //************* VIEW
-  export class Xxx extends flux.RootComponent<IXxxProps, IXxxStates>{
+  export class Xxx extends flux.RootComponent<IXxxProps, IXxxState>{
     render() {
       return <div>
         <div onClick={() => flux.trigger(xxx.createAppClickAction()) }>Click</div>
         </div >;
     }
   };
-  interface IXxxProps extends flux.IProps<IXxxStates> { }
-  interface IXxxStates extends IFreezerState<IXxxStates> {  }
+  interface IXxxState extends IFreezerState<IXxxState> {  }
+  interface IXxxProps extends flux.ISmartProps<IXxxState> { }
 
 
   //************* WHOLE APP
-  var store = new flux.Flux<IXxxStates>([new xxx()], {
+  var store = new flux.Flux<IXxxState>([new xxx()], {
   })
 
   ReactDOM.render(

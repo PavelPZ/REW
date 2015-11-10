@@ -1,16 +1,8 @@
-﻿namespace common {
-  export interface IGlobalCtx {
-    valTest: {
-    };
-  }
-}
-
-namespace valTest {
+﻿namespace valTest {
 
   //*********************** DISPATCH MODULE definition
   interface IValTestClickAction extends common.IDispatchAction { }
 
-  common.globalContext.ctx.valTest = {};
   var modName = 'valTest';
 
   class valTest extends flux.Module {
@@ -34,11 +26,12 @@ namespace valTest {
     render() {
       return <div>
         <div onClick={() => flux.trigger(valTest.createAppClickAction()) }>Click</div>
-        </div >;
+        {this.props.children}
+        </div>;
     }
   };
-  interface IValTestProps extends flux.IProps<IValTestStates> { }
-  interface IValTestStates extends IFreezerState<IValTestStates> {  }
+  interface IValTestStates extends IFreezerState<IValTestStates> { }
+  interface IValTestProps extends flux.ISmartProps<IValTestStates> { }
 
 
   //************* WHOLE APP
@@ -46,7 +39,25 @@ namespace valTest {
   })
 
   ReactDOM.render(
-    <ValTest initState={store.getState() }></ValTest>,
+    <ValTest initState={store.getState() }>
+      {/*<validation.Input validator={{ type: validation.types.stringLength | validation.types.stringLength, minLength: 2, maxLength: 4 }}/>*/}
+      {/*<validation.Input validator={{ type: validation.types.email }}/>*/}
+      <validation.Input validator={{ type: validation.types.number }}/>
+      {/*
+      <validation.Group>
+        <p><validation.Input validator={{ type: validation.types.email | validation.types.email }}/></p>
+        <p><validation.Input/></p>
+        <p><validation.GroupError/></p>
+        </validation.Group>
+      <hr/>
+      <p><validation.Input/></p>
+      <hr/>
+      <validation.Group>
+        <p><validation.Input/></p>
+        <p><validation.Input/></p>
+        <p><validation.GroupError/></p>
+        </validation.Group>*/}
+      </ValTest>,
     document.getElementById('app')
   );
 }

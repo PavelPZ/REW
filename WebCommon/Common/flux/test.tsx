@@ -61,50 +61,28 @@ namespace fluxTest {
   }
 
   //************* VIEW
-  export class App extends flux.RootComponent<IAppProps, IAppStates>{
+  export class App extends flux.RootComponent<IAppProps, IAppState>{
     render() {
       return <div>
-        <InputTest/>
         <div onClick={() => flux.trigger(mod1.createAppClickAction()) }>{this.state.clickTitle}</div>
         <HelloMessage initState={this.state.hello1} is1={true}/>
         <HelloMessage initState={this.state.hello2} is1={false}/>
         </div >;
     }
   };
-  interface IAppProps extends flux.IProps<IAppStates> { }
-  interface IAppStates extends IFreezerState<IAppStates> { hello1?: IHelloWorldStates; hello2?: IHelloWorldStates; clickTitle: string, inputValue?: string }
+  interface IAppProps extends flux.ISmartProps<IAppState> { }
+  interface IAppState extends IFreezerState<IAppState> { hello1?: IHelloWorldState; hello2?: IHelloWorldState; clickTitle: string, inputValue?: string }
 
-  class HelloMessage extends flux.SmartComponent<IHelloWorldProps, IHelloWorldStates>{
+  class HelloMessage extends flux.SmartComponent<IHelloWorldProps, IHelloWorldState>{
     render() {
       return <div onClick={() => flux.trigger(mod1.createClickAction(this.props.is1)) }>{this.context.ctx.mod1.prefix } {this.state.actName}</div >;
     }
   };
-  interface IHelloWorldProps extends flux.IProps<IHelloWorldStates> { is1: boolean; }
-  interface IHelloWorldStates extends IFreezerState<IHelloWorldStates> { actName?: string; }
-
-  //https://facebook.github.io/react/docs/two-way-binding-helpers.html
-  export class InputTest extends flux.DummyComponent<any, IInputTestStates>{
-    constructor() { super(); this.state = { value: '' }; }
-    //mixins = [React.addons.LinkedStateMixin]; nefunguje, https://facebook.github.io/react/docs/reusable-components.html
-    render() {
-      var valueLink: React.ReactLink<string> = {
-        value: this.state.value,
-        requestChange: newVal => this.setState({ value: newVal })
-      };
-      return <span>
-        <input type="text" valueLink={valueLink}  /><span>{this.state.value}</span>
-        </span>;
-    }
-  }
-  interface IInputTestStates { value: string; error?: string; }
-  interface IInputTestProps { }
-  enum validators {
-    email, required, minLen
-  }
-
+  interface IHelloWorldProps extends flux.ISmartProps<IHelloWorldState> { is1: boolean; }
+  interface IHelloWorldState extends IFreezerState<IHelloWorldState> { actName?: string; }
 
   //************* WHOLE APP
-  var store = new flux.Flux<IAppStates>([new mod1()], {
+  var store = new flux.Flux<IAppState>([new mod1()], {
     clickTitle: 'Click',
     hello1: { actName: 'John' },
     hello2: { actName: 'Marthy' }
