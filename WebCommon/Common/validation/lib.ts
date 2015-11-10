@@ -35,7 +35,7 @@ namespace validation {
   //********************************* VALIDATE LOGIC
 
   //---- GROUP
-  export class group {
+  class group {
     inputs: Array<inputDriver> = [];
     error: groupError;
     validate() {
@@ -48,16 +48,16 @@ namespace validation {
       });
     }
   }
-  export class groupError {
+  class groupError {
     constructor(public group: group, public onStateChanged: () => void) {
       if (group) group.error = this;
     }
     state: IGroupErrorState = { value: '' };
   }
-  export interface IGroupErrorState { value: string; }
+  interface IGroupErrorState { value: string; }
 
   //---- INPUT
-  export class inputDriver {
+  class inputDriver {
     constructor(public group: group, public validator: IValidPars, initValue: string, public onStateChanged: () => void) {
       this.state = { value: initValue ? initValue : '' };
       if (group) group.inputs.push(this); //registrace self v ramci cele grupy
@@ -116,7 +116,7 @@ namespace validation {
       }
     }
   }
-  export interface IInputState { value: string; blured?: boolean; error?: string; }
+  interface IInputState { value: string; blured?: boolean; error?: string; }
 
   var messages = {
     required: () => "This field is required.",
@@ -137,7 +137,7 @@ namespace validation {
   };
 
   //*********************** COMPONENTS
-  export interface IGroupContext { validation: group; }
+  interface IGroupContext { validation: group; }
 
   //--- IMPUT
   export class Input extends flux.Component<IInputProps, any>{ 
@@ -160,10 +160,10 @@ namespace validation {
   interface IInputProps extends flux.IComponentProps { validator?: IValidPars; initValue?: string; }
 
   export interface IInputTemplate {
-    valueLink: React.ReactLink<string>;
-    blur: () => void;
-    keyDown: React.KeyboardEventHandler;
-    error: string;
+    valueLink: React.ReactLink<string>; //two way binding
+    blur: () => void; //ztrata fokusu
+    keyDown: React.KeyboardEventHandler; //enter
+    error: string; //validation error
   }
 
   //--- GROUP
