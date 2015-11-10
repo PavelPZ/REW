@@ -42,7 +42,11 @@
     <ValTest initState={store.getState() }>
       {/*<validation.Input validator={{ type: validation.types.stringLength | validation.types.stringLength, minLength: 2, maxLength: 4 }}/>*/}
       {/*<validation.Input validator={{ type: validation.types.email }}/>*/}
-      <validation.Input validator={{ type: validation.types.number }}/>
+      <validation.Group>
+      <validation.Input validator={{ type: validation.types.required, id: 'psw' }}/><br/>
+      <validation.Input validator={{ type: validation.types.equalTo, equalToId: 'psw' }}/>
+        </validation.Group>
+      <p><validation.Input/></p>
       {/*
       <validation.Group>
         <p><validation.Input validator={{ type: validation.types.email | validation.types.email }}/></p>

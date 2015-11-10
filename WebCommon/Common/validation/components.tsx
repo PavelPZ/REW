@@ -15,10 +15,8 @@
     constructor(prop, ctx: IGroupContext) {
       super(prop, ctx);
       this.driver = new inputDriver(ctx ? ctx.validation : null, this.props.validator, this.props.initValue, () => {
-        //setTimeout(() => {
-          this.setState(this.driver.state);
-          this.forceUpdate();
-        //}, 1);
+        this.setState(this.driver.state);
+        this.forceUpdate();
       });
     }
     static contextTypes = { validation: React.PropTypes.any }; //, ctx: React.PropTypes.any };

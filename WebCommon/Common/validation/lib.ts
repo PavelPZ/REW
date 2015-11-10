@@ -38,6 +38,14 @@ namespace validation {
   export class group {
     inputs: Array<inputDriver> = [];
     error: groupError;
+    validate() {
+      var th = this;
+      th.inputs.filter(sp => sp.validator && sp.state.blured && (sp.validator.type & types.equalTo) != 0).forEach(sp => {
+        var pp = th.inputs.find(p => p.validator && p.state.blured && p.validator.id == sp.validator.equalToId); if (!pp) return;
+        sp.state.error = pp.state.value != sp.state.value ? messages.equalTo() : null;
+        sp.onStateChanged();
+      });
+    }
   }
   export class groupError {
     constructor(public group: group, public onStateChanged: () => void) {
@@ -56,10 +64,13 @@ namespace validation {
     pars: IValidPars;
     keyDown(ev: React.KeyboardEvent) { if (ev.keyCode != 13) return; this.blur(); }
     blur() { this.state.blured = true; this.validate(); this.onStateChanged(); }
-    change(newVal: string) { this.state.value = newVal;  if (this.state.blured) this.validate(); this.onStateChanged(); }
+    change(newVal: string) {
+      this.state.value = newVal; if (this.state.blured) this.validate(); this.onStateChanged();
+    }
     validate() {
       var th = this; var st = th.state; st.error = null;
       if (!th.validator) return;
+      if (this.group) this.group.validate();
       var len = !st.value ? 0 : st.value.length;
       if ((th.validator.type & types.required) != 0) {
         if (len<1) { st.error = messages.required(); return; }
