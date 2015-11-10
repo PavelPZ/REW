@@ -1,10 +1,22 @@
-﻿namespace flux {
+﻿namespace common {
+  export interface IGlobalCtx {
+    flux: {
+      trigger: (action: common.IDispatchAction) => void;
+    };
+  }
+}
+namespace flux {
 
   export var store: Flux<any>; //flux store, obsahujici root state
   export var rootComponent: SmartComponent<any, any>; //v musi se naplnit v konstruktoru root komponenty. Kvuli recordingu.
   export function trigger(action: common.IDispatchAction) { store.trigger(action); }
 
-  export class SmartComponent<T extends IProps<any>, S extends IFreezerState<any>> extends React.Component<T, S>{
+  export class DummyComponent<T, S> extends React.Component<T, S>{
+    static childContextTypes = { ctx: React.PropTypes.any }
+    static contextTypes = { ctx: React.PropTypes.any }
+    context: common.IGlobalContext;
+  }
+  export class SmartComponent<T extends IProps<any>, S extends IFreezerState<any>> extends DummyComponent<T, S>{
     constructor(props: T, initState: S) {
       super(props);
       this.state = props.initState;
@@ -16,14 +28,25 @@
     componentDidMount = () => this.state.getListener().on('update', newState => this.setState(newState, () => this.state = newState));
     componentWillUnmount = () => this.state.getListener().off('update');
     render() { return null; }
+    props: T;
+    state: S;
   }
   export interface IProps<S> extends React.Props<any> { initState: S; }
+
+  export class RootComponent<T extends IProps<any>, S extends IFreezerState<any>> extends SmartComponent<T, S>{
+    constructor(props: T, initState: S) {
+      super(props, initState);
+      flux.rootComponent = this;
+    }
+    getChildContext = () => { return common.globalContext; }
+  }
 
   export class Flux<S> {
     constructor(public modules: Array<Module>, initStatus: S) {
       store = this;
       this.setState(initStatus);
-      common.$flux$trigger = this.trigger;
+      common.globalContext.ctx.flux = { trigger: this.trigger };
+      //common.$flux$trigger = this.trigger;
     }
 
     setState(status: S) { if (!this.state) this.state = new Freezer<S>(status); else this.state.set(status); }

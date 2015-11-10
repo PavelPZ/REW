@@ -1,19 +1,4 @@
-﻿namespace common {
-
-  export interface IDispatchAction {
-    type: string;
-    payload?: {};
-    meta?: string;
-    //error?: string;
-  }
-
-  export interface IRouterAction extends common.IDispatchAction {
-    isRouteAction: boolean;
-  }
-
-  //******************* napojeni mezi FLUX a uiROUTER
-  export var $flux$trigger: (action: common.IDispatchAction) => void;
-
+﻿namespace ajax {
   //******************* AJAX
   //https://developer.mozilla.org/en-US/docs/AJAX/Getting_Started, https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest, https://msdn.microsoft.com/cs-cz/library/ms535874(v=vs.85).aspx
   export function ajax(url: string, method: ajaxMethod = ajaxMethod.GET, option: ajaxOptions): Promise<IAjaxResult> {

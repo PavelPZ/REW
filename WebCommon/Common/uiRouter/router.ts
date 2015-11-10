@@ -21,7 +21,7 @@ namespace uiRouter {
       return this;
     }
     dispatch(hash?: string) {
-      if (common.$flux$trigger) common.$flux$trigger(this.hashToAction(hash));
+      if (common.globalContext.ctx.flux && common.globalContext.ctx.flux.trigger) common.globalContext.ctx.flux.trigger(this.hashToAction(hash));
     }
 
     hashToAction(hash?: string): common.IRouterAction {
