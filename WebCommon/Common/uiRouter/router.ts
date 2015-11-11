@@ -19,18 +19,18 @@ namespace common {
 
 namespace uiRouter {
 
-  //navazan routeru na hash change notifikaci
+  //navazan routeru na HASH change notifikaci
   export function listenHashChange() {
     window.addEventListener('hashchange', () => dispatch());
     dispatch();
   }
 
   //NAVIGATE
-  export interface IHashSource<T> { state: State<T>; par: IStatePar; }
   export function getHashStr(src: IHashSource<any>): string { return src.state.getHashStr(src.par); }
   export function navigate(src: IHashSource<any>) { src.state.navigate(src.par); }
+  export interface IHashSource<T> { state: State<T>; par: IStatePar; }
 
-  //pojmenovane stavy aplikace
+  //pojmenovane globalne dostupne a typed router stavy
   export var namedState: INamedState = <any>{};
   export interface INamedState { };
 
@@ -42,26 +42,36 @@ namespace uiRouter {
   //predchudce vsech router state parametru
   export interface IStatePar { }
 
-  //*** inicailizace 
-  export function init(...roots: Array<State<any>>): void {
-    roots.forEach(s => s.createFinish(null));
+  //*** inicilizace 
+  export function init(...roots: Array<State<any>>): void { //definice stavu
+    roots.forEach(s => s.afterConstructor(null));
   }
-  export function setDefault<T extends IStatePar>(state: State<T>, par: T) { defaultSource = { state: state, par: par } }
+  export function setDefault<T extends IStatePar>(state: State<T>, par: T) { defaultSource = { state: state, par: par } } //definice difotniho stavu
 
-  //*** parses
+  //*** DISPATCH
+  export function dispatch(hashStr?: string) {
+    if (!common.globalContext.ctx.flux || !common.globalContext.ctx.flux.trigger) return;
+    var res = parseHashStr(hashStr);
+    if (!res) res = defaultSource;
+    if (!res) throw 'Missing uiRouter.States.setDefault call';
+    var act = res.state.createAction(res.par);
+    common.globalContext.ctx.flux.trigger(act);
+  }
+
+  //*** PARSES
   export function parseHashStr<T>(hashStr?: string): IHashSource<T> { return parseHash<T>(preParseHashStr(hashStr)); }
   export function parseHash<T>(pre: IPreParseHashStrResult): IHashSource<T> {
     //angular uiRouter match
     var res: IHashSource<T> = null;
     states.find(st => {
-      var hash = st.stringToHash(pre.path, pre.query); if (!hash) return false;
-      res = { par: hash, state: st };
+      var par = st.parseHash(pre); if (!par) return false;
+      res = { par: par, state: st };
       return true;
     });
     return res;
   }
   export function preParseHashStr(hashStr?: string): IPreParseHashStrResult {
-    //normalizacu hash: zacina '/', neobsahuje '#'
+    //normalizacu par: zacina '/', neobsahuje '#'
     if (!hashStr) hashStr = window.location.hash;
     if (hashStr && hashStr.length > 0 && hashStr[0] == '#') hashStr = hashStr.substr(1);
     if (!hashStr || hashStr.length < 1) hashStr = '/';
@@ -77,43 +87,32 @@ namespace uiRouter {
   }
   export interface IPreParseHashStrResult { path: string; query: common.TDirectory<string>; }
 
-  export function dispatch(hashStr?: string) {
-    if (!common.globalContext.ctx.flux || !common.globalContext.ctx.flux.trigger) return;
-    var res = parseHashStr(hashStr);
-    if (!res) res = defaultSource;
-    if (!res) throw 'Missing uiRouter.States.setDefault call';
-    var act = res.state.createAction(res.par);
-    common.globalContext.ctx.flux.trigger(act);
-  }
-
   //**** locals
   var states: Array<State<any>> = [];
   var dir: { [name: string]: State<any>; } = {};
   var defaultSource: IHashSource<any>;
-  function add(st: State<any>) { states.push(st); this.dir[st.name] = st; }
+  function add(st: State<any>) { states.push(st); dir[st.name] = st; }
 
   //**** STATE
   export class State<T extends IStatePar> {
 
     constructor(public name: string, public pattern: string, ...childs: Array<State<any>>) {
-      if (childs) childs.forEach(ch => ch.createFinish(this));
+      if (childs) childs.forEach(ch => ch.afterConstructor(this));
     }
 
-    getHashStr(hash: T): string { return this.matcher.format(hash); }
+    getHashStr(par: T): string { return this.matcher.format(par); }
     navigate(par: T) { window.location.href = this.getHashStr(par); }
 
     setFinishHashAction(finishHash: (h: T) => void): State<T> { this.finishHash = finishHash; return this; }
-    private finishHash: (h: T) => void;
 
-    stringToHash(path: string, query: common.TDirectory<string>): T {
-      var res = this.matcher.exec<T>(path, query);
-      if (this.finishHash) this.finishHash(res);
+    parseHash(pre: IPreParseHashStrResult): T {
+      var res = this.matcher.exec<T>(pre.path, pre.query);
+      if (res && this.finishHash) this.finishHash(res);
       return res;
     }
-    createAction(hash: T): flux.IAction { return Object.assign({ type: this.name }, hash); }
+    createAction(par: T): flux.IAction { return Object.assign({ type: this.name }, par); }
 
-    createFinish(parent: State<any>) {
-      this.parent = parent;
+    afterConstructor(parent: State<any>) {
       if (parent) {
         this.pattern = parent.pattern + this.pattern;
         this.name = parent.name + '.' + this.name;
@@ -122,7 +121,7 @@ namespace uiRouter {
       add(this);
     }
     private matcher: UrlMatcher;
-    private parent: State<any>;
+    private finishHash: (h: T) => void;
   }
 
   new $UrlMatcherFactory();

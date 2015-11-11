@@ -26,7 +26,7 @@ namespace routerTest {
     uiRouter.setDefault<ITestHash>(uiRouter.namedState.routerTest$Default, { id: 1, opt1: '', opt2: '' });
 
     //*** rucni MATCH
-    var par = uiRouter.namedState.routerTest$Default.parseHashStr('/useR/123/Name/alex?opt1=xxx&opt2=yyy');
+    var par = uiRouter.namedState.routerTest$Default.parseHash(uiRouter.preParseHashStr('/useR/123/Name/alex?opt1=xxx&opt2=yyy'));
     var d1 = uiRouter.parseHashStr('/login.select');
     var d2 = uiRouter.parseHashStr('/useR/123/Name/alex?opt1=xxx&opt2=yyy');
     var d3 = uiRouter.parseHashStr('/login.login');

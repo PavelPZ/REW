@@ -22,23 +22,9 @@ namespace common {
 
 }
 
-//underscore like isXXX functions
-declare namespace _ {
-  function isArguments(obj): boolean;
-  function isFunction(obj): boolean;
-  function isString(obj): boolean;
-  function isNumber(obj): boolean;
-  function isDate(obj): boolean;
-  function isRegExp(obj): boolean;
-  function isArray(obj): boolean;
-}
-['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', "Array"].forEach(name => {
-  _['is' + name] = obj => {
-    return toString.call(obj) === '[object ' + name + ']';
-  };
-});
-
 namespace _ {
+  export function isString(obj): boolean { return typeof obj === 'string'; }
+  export function isNumber(value) { return typeof value === 'number'; }
   export function isEmpty(obj): boolean {
     if (!obj) return true;
     if (_.isString(obj) && obj == '') return true;
