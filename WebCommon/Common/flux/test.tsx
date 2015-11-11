@@ -15,8 +15,8 @@
 //D:\LMCom\rew\WebLogin\scripts\typings\react-global.d.ts
 //import ReactDOM = __React; 
 
-namespace common {
-  export interface IGlobalCtx {
+namespace config {
+  export interface IData {
     mod1: {
       prefix: string;
     };
@@ -29,7 +29,7 @@ namespace fluxTest {
   interface IAppClickAction extends flux.IAction { }
   interface IClickAction extends flux.IAction { is1: boolean; }
 
-  common.globalContext.ctx.mod1 = { prefix: 'Hello' };
+  config.cfg.data.mod1 = { prefix: 'Hello' };
 
   class mod1 extends flux.Module {
     constructor() {
@@ -75,7 +75,7 @@ namespace fluxTest {
 
   class HelloMessage extends flux.SmartComponent<IHelloWorldProps, IHelloWorldState>{
     render() {
-      return <div onClick={() => flux.trigger(mod1.createClickAction(this.props.is1)) }>{this.context.ctx.mod1.prefix } {this.state.actName}</div >;
+      return <div onClick={() => flux.trigger(mod1.createClickAction(this.props.is1)) }>{this.context.data.mod1.prefix } {this.state.actName}</div >;
     }
   };
   interface IHelloWorldProps extends flux.ISmartProps<IHelloWorldState> { is1: boolean; }

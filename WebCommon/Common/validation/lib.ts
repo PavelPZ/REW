@@ -1,5 +1,5 @@
-﻿namespace common {
-  export interface IGlobalCtx {
+﻿namespace config {
+  export interface IData {
     validation: {
       group: validation.Group;
     };
@@ -145,7 +145,7 @@ namespace validation {
       super(prop, ctx);
       this.driver = new inputDriver(ctx ? ctx.validation : null, this.props.validator, this.props.initValue, () => this.setState(this.driver.state));
     }
-    static contextTypes = { validation: React.PropTypes.any }; //, ctx: React.PropTypes.any };
+    static contextTypes = { validation: React.PropTypes.any }; //, [config.ctxPropName]: React.PropTypes.any };
     driver: inputDriver;
     render() {
       var templ: IInputTemplate = {
@@ -181,7 +181,7 @@ namespace validation {
       this.driver = new groupError(ctx ? ctx.validation : null, () => this.setState(this.driver.state));
     }
     driver: groupError;
-    static contextTypes = { validation: React.PropTypes.any, ctx: React.PropTypes.any };
+    static contextTypes = { validation: React.PropTypes.any, [config.ctxPropName]: React.PropTypes.any };
     render() { return getGroupErrorTemplate({ value: this.driver.state.value }); }
   }
   export interface IGroupErrorTemplate { value: string; }

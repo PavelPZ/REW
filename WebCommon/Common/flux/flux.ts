@@ -1,5 +1,5 @@
-﻿namespace common {
-  export interface IGlobalCtx {
+﻿namespace config {
+  export interface IData {
     flux: {
       trigger: (action: flux.IAction) => void;
     };
@@ -17,9 +17,9 @@ namespace flux {
   export interface IComponentProps extends React.Props<any> { }
 
   export class DummyComponent<T, S> extends Component<T, S>{
-    static childContextTypes = { ctx: React.PropTypes.any }
-    static contextTypes = { ctx: React.PropTypes.any }
-    context: common.IGlobalContext;
+    static childContextTypes = { [config.ctxPropName]: React.PropTypes.any }
+    static contextTypes = { [config.ctxPropName]: React.PropTypes.any }
+    context: config.IObj;
   }
   export class SmartComponent<T extends ISmartProps<any>, S extends IFreezerState<any>> extends DummyComponent<T & ISmartProps<S>, IFreezerState<S>>{
     constructor(props, ctx: any) {
@@ -42,14 +42,14 @@ namespace flux {
       super(props, ctx);
       flux.rootComponent = this;
     }
-    getChildContext = () => { return common.globalContext; }
+    getChildContext = () => { return config.cfg; }
   }
 
   export class Flux<S> {
     constructor(public modules: Array<Module>, initStatus: S) {
       store = this;
       this.setState(initStatus);
-      common.globalContext.ctx.flux = { trigger: this.trigger };
+      config.cfg.data.flux = { trigger: this.trigger };
       //common.$flux$trigger = this.trigger;
     }
 

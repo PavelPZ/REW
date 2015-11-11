@@ -21,7 +21,7 @@ namespace routerTest {
         new uiRouter.State('login', '/login'),
         new uiRouter.State('select', '/select')
       ),
-      uiRouter.namedState.routerTest$Default = new uiRouter.State<ITestHash>('x', '/user/:id/name/:name?opt1&opt2').setFinishHashAction(st => { st.id = _.toNumber(st.id); })
+      uiRouter.namedState.routerTest$Default = new uiRouter.State<ITestHash>('x', '/user/:id/name/:name?opt1&opt2').setFinishHashAction(st => { st.id = utils.toNumber(st.id); })
     );
     uiRouter.setDefault<ITestHash>(uiRouter.namedState.routerTest$Default, { id: 1, opt1: '', opt2: '' });
 

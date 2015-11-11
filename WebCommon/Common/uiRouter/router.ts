@@ -1,16 +1,16 @@
 ﻿declare namespace uiRouter {
   class UrlMatcher {
     constructor(pattern: string);
-    exec<T extends uiRouter.IStatePar>(url: string, query?: common.TDirectory<string>): T;
-    exec(url: string, query?: common.TDirectory<string>): uiRouter.IStatePar;
+    exec<T extends uiRouter.IStatePar>(url: string, query?: utils.TDirectory<string>): T;
+    exec(url: string, query?: utils.TDirectory<string>): uiRouter.IStatePar;
     format(params: uiRouter.IStatePar): string;
   }
   class $UrlMatcherFactory {
   }
 }
 
-namespace common {
-  export interface IGlobalCtx {
+namespace config {
+  export interface IData {
     uiRouter: {
     };
   }
@@ -50,12 +50,12 @@ namespace uiRouter {
 
   //*** DISPATCH
   export function dispatch(hashStr?: string) {
-    if (!common.globalContext.ctx.flux || !common.globalContext.ctx.flux.trigger) return;
+    if (!config.cfg.data.flux || !config.cfg.data.flux.trigger) return;
     var res = parseHashStr(hashStr);
     if (!res) res = defaultSource;
     if (!res) throw 'Missing uiRouter.States.setDefault call';
     var act = res.state.createAction(res.par);
-    common.globalContext.ctx.flux.trigger(act);
+    config.cfg.data.flux.trigger(act);
   }
 
   //*** PARSES
@@ -78,14 +78,14 @@ namespace uiRouter {
     if (hashStr[0] != '/') hashStr = hashStr = '/' + hashStr;
     //oddeleni a parse query stringu
     var parts = hashStr.split('?'); var path = parts[0];
-    var query: common.TDirectory<string> = {};
+    var query: utils.TDirectory<string> = {};
     if (parts[1]) parts[1].split('&').forEach(p => {
       var nv = p.split('=');
       query[nv[0]] = nv[1];
     });
     return { path: parts[0], query: query }
   }
-  export interface IPreParseHashStrResult { path: string; query: common.TDirectory<string>; }
+  export interface IPreParseHashStrResult { path: string; query: utils.TDirectory<string>; }
 
   //**** locals
   var states: Array<State<any>> = [];

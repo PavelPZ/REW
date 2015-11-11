@@ -1,5 +1,5 @@
-﻿namespace common {
-  export interface IGlobalCtx {
+﻿namespace config {
+  export interface IData {
     xxx: {
     };
   }
@@ -10,7 +10,7 @@ namespace xxx {
   //*********************** DISPATCH MODULE definition
   interface IXxxClickAction extends flux.IAction { }
 
-  common.globalContext.ctx.xxx = {};
+  config.cfg.data.xxx = {};
   var modName = 'xxx';
 
   class xxx extends flux.Module {

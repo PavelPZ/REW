@@ -1,5 +1,5 @@
-﻿namespace common {
-  export interface IGlobalCtx {
+﻿namespace config {
+  export interface IData {
     loginTest: {
     };
   }
@@ -10,7 +10,7 @@ namespace loginTest {
   //*********************** DISPATCH MODULE definition
   interface ILoginTestClickAction extends flux.IAction { }
 
-  common.globalContext.ctx.loginTest = {};
+  config.cfg.data.loginTest = {};
   var modName = 'loginTest';
 
   class loginTest extends flux.Module {
