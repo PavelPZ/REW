@@ -8,7 +8,26 @@
   }
 }
 
+namespace common {
+  export interface IGlobalCtx {
+    uiRouter: {
+    };
+  }
+}
+
+
 namespace uiRouter {
+
+  export function initHashDispatch() {
+    setTimeout(() => {
+      window.addEventListener('hashchange', () => states.dispatch());
+      states.dispatch();
+    }, 1);
+  }
+
+  export interface config {
+    
+  }
 
   export class States {
     states: Array<State> = [];
@@ -50,29 +69,10 @@ namespace uiRouter {
     matcher: UrlMatcher;
   }
 
-  export function testRouter() {
-    //*** UrlMatcher test
-    var urlMatcher = new UrlMatcher('/user/:id/name/:name?opt1&opt2');
-    var pars = urlMatcher.exec('/useR/123/Name/alex', { opt1: 'xxx', opt2: 'yyy' });
-    var url = urlMatcher.format(pars);
-    //*** States test
-    states
-      .add('login.select', '/login.select')
-      .add('login.login', '/login.login')
-      .add('x', '/user/:id/name/:name?opt1&opt2')
-    ;
-    var d1 = states.hashToAction('/login.select');
-    var d2 = states.hashToAction('/useR/123/Name/alex?opt1=xxx&opt2=yyy');
-    var d3 = states.hashToAction('/login.login');
-  }
-  new $UrlMatcherFactory();
-
   export var states: States = new States();
 
-  setTimeout(() => {
-    window.addEventListener('hashchange', () => states.dispatch());
-    states.dispatch();
-  }, 1);
+  new $UrlMatcherFactory();
+
 }
 
 

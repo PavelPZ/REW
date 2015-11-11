@@ -34,7 +34,7 @@ namespace xxx {
     render() {
       return <div>
         <div onClick={() => flux.trigger(xxx.createAppClickAction()) }>Click</div>
-        </div >;
+        </div>;
     }
   };
   interface IXxxState extends IFreezerState<IXxxState> {  }
