@@ -1,7 +1,7 @@
 ﻿namespace common {
   export interface IGlobalCtx {
     flux: {
-      trigger: (action: common.IDispatchAction) => void;
+      trigger: (action: flux.IAction) => void;
     };
   }
 }
@@ -9,7 +9,7 @@ namespace flux {
 
   export var store: Flux<any>; //flux store, obsahujici root state
   export var rootComponent: SmartComponent<any, any>; //v musi se naplnit v konstruktoru root komponenty. Kvuli recordingu.
-  export function trigger(action: common.IDispatchAction) { store.trigger(action); }
+  export function trigger(action: IAction) { store.trigger(action); }
 
   export class Component<T extends React.Props<any>, S> extends React.Component<T, S> {
     props: T; state: S;
@@ -57,7 +57,7 @@ namespace flux {
     getState(): S { return this.state.get(); }
     state: IFreezerRoot<S>;
 
-    trigger(action: common.IDispatchAction, complete?: (action: common.IDispatchAction) => void) {
+    trigger(action: IAction, complete?: (action: IAction) => void) {
       if (!action || !action.type) throw '!action || !action.type';
       var moduleIds = action.type.split('.');
       var mods = this.modules;
@@ -96,11 +96,11 @@ namespace flux {
     }
     recording: IRecording<S>;
   }
-  interface IRecording<S> { initStatus: S; actions: Array<common.IDispatchAction>; }
+  interface IRecording<S> { initStatus: S; actions: Array<IAction>; }
 
   export class Module {
     constructor(public type: string) { }
     childs: Array<Module>;
-    dispatchAction(type: string, action: common.IDispatchAction, complete: (action: common.IDispatchAction) => void) { throw 'notImplemented'; }
+    dispatchAction(type: string, action: IAction, complete: (action: IAction) => void) { throw 'notImplemented'; }
   }
 }

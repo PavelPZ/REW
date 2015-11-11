@@ -10,7 +10,7 @@
 
 namespace angular {
 
-  export interface IRouterAction extends common.IDispatchAction {
+  export interface IRouterAction extends flux.IDispatchAction {
     isRouteAction: boolean;
   }
 

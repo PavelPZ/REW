@@ -8,7 +8,7 @@
 namespace xxx {
 
   //*********************** DISPATCH MODULE definition
-  interface IXxxClickAction extends common.IDispatchAction { }
+  interface IXxxClickAction extends flux.IAction { }
 
   common.globalContext.ctx.xxx = {};
   var modName = 'xxx';
@@ -17,7 +17,7 @@ namespace xxx {
     constructor() {
       super(modName);
     }
-    dispatchAction(type: string, action: common.IDispatchAction, complete: (action: common.IDispatchAction) => void) {
+    dispatchAction(type: string, action: flux.IAction, complete: (action: flux.IAction) => void) {
       var old = store.getState();
       switch (type) {
         case 'click':

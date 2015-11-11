@@ -2,7 +2,7 @@
 
   export var store: Flux<any>; //flux store, obsahujici root state
   export var rootComponent: SmartComponent<any, any>; //v musi se naplnit v konstruktoru root komponenty. Kvuli recordingu.
-  export function trigger(action: common.IDispatchAction) { store.trigger(action); }
+  export function trigger(action: flux.IDispatchAction) { store.trigger(action); }
 
   export class SmartComponent<T extends IProps<any>, S extends IFreezerState<any>> extends React.Component<T, S>{
     constructor(props: T, initState: S) {
@@ -29,7 +29,7 @@
     getState(): S { return this.state.get(); }
     state: IFreezerRoot<S>;
 
-    trigger(action: common.IDispatchAction, complete?: (action: common.IDispatchAction) => void) {
+    trigger(action: flux.IDispatchAction, complete?: (action: flux.IDispatchAction) => void) {
       if (!action || !action.type) throw '!action || !action.type';
       var moduleIds = action.type.split('.');
       var mods = this.modules;
@@ -67,11 +67,11 @@
     }
     recording: IRecording<S>;
   }
-  interface IRecording<S> { initStatus: S; actions: Array<common.IDispatchAction>; }
+  interface IRecording<S> { initStatus: S; actions: Array<flux.IDispatchAction>; }
 
   export class Module {
     constructor(public type: string) { }
     childs: Array<Module>;
-    dispatchAction(type: string, action: common.IDispatchAction, complete: (action: common.IDispatchAction) => void) { throw 'notImplemented'; }
+    dispatchAction(type: string, action: flux.IDispatchAction, complete: (action: flux.IDispatchAction) => void) { throw 'notImplemented'; }
   }
 }

@@ -1,7 +1,7 @@
 ﻿namespace valTest {
 
   //*********************** DISPATCH MODULE definition
-  interface IValTestClickAction extends common.IDispatchAction { }
+  interface IValTestClickAction extends flux.IAction { }
 
   var modName = 'valTest';
 
@@ -9,7 +9,7 @@
     constructor() {
       super(modName);
     }
-    dispatchAction(type: string, action: common.IDispatchAction, complete: (action: common.IDispatchAction) => void) {
+    dispatchAction(type: string, action: flux.IAction, complete: (action: flux.IAction) => void) {
       var old = store.getState();
       switch (type) {
         case 'click':

@@ -18,15 +18,15 @@
 namespace testReactRouter {
 
   //*********************** DISPATCH MODULE definition
-  interface IAppClickAction extends common.IDispatchAction { }
-  interface IClickAction extends common.IDispatchAction { is1: boolean; }
+  interface IAppClickAction extends flux.IAction { }
+  interface IClickAction extends flux.IAction { is1: boolean; }
 
   class mod1 extends flux.Module {
     constructor() {
       super(mod1.modName);
     }
     //type appClickAction = number;
-    dispatchAction(type: string, action: common.IDispatchAction, complete: (action: common.IDispatchAction) => void) {
+    dispatchAction(type: string, action: flux.IAction, complete: (action: flux.IAction) => void) {
       var old = store.getState();
       switch (type) {
         case 'appclick':

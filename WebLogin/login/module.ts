@@ -5,7 +5,7 @@
       super(modName);
     }
     //type appClickAction = number;
-    dispatchAction(type: string, action: common.IDispatchAction, complete: (action: common.IDispatchAction) => void) {
+    dispatchAction(type: string, action: flux.IDispatchAction, complete: (action: flux.IDispatchAction) => void) {
       var old = store.getState();
       switch (type) {
         case 'appclick':
