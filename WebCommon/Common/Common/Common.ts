@@ -20,6 +20,8 @@ namespace config {
   export var ctxPropName = 'data';
 }
 
+//ECM6 x underscore: https://www.reindex.io/blog/you-might-not-need-underscore/
+//https://babeljs.io/docs/learn-es2015/
 namespace utils {
 
   export type TDirectory<T> = { [name: string]: T; };
@@ -28,9 +30,9 @@ namespace utils {
   export function isNumber(value) { return typeof value === 'number'; }
   export function isEmpty(obj): boolean {
     if (!obj) return true;
-    if (utils.isString(obj) && obj == '') return true;
+    if (isString(obj) && obj == '') return true;
     return false;
   }
-  export function isNaN(obj): boolean { return utils.isNumber(obj) && obj !== +obj; }
-  export function toNumber(par: any, def: number = 0): number { var res = parseFloat(par); return utils.isNaN(res) ? 0 : res; }
+  export function isNaN(obj): boolean { return isNumber(obj) && obj !== +obj; }
+  export function toNumber(par: any, def: number = 0): number { var res = parseFloat(par); return isNaN(res) ? 0 : res; }
 }
