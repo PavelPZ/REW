@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <WebDataBatch url="/lm/lm_data_new/" globalsOnly="true">
   <productPtrs>
-    <string>d:\LMCom\rew\Downloads\Common\batches\webs\LM_Data_blended.xml</string>
+    <string>D:\LMCom\rew\Web4\Deploy\batchs\DATA-blended.xml</string>
   </productPtrs>
 </WebDataBatch>

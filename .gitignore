@@ -231,6 +231,7 @@ web4/siteroot.all.js
 Web4/Schools/SLExtension.dll
 
 *.js
+*.map
 *.css
 *.dll
 *.exe
