@@ -7,10 +7,8 @@
 }
 namespace flux {
 
-  export interface IWebState { }
-
   //export var rootComponent: SmartComponent<any, any>; //v musi se naplnit v konstruktoru root komponenty. Kvuli recordingu.
-  export var rootComponent: React.Component<any, any>;
+  export var rootComponent: Web;
 
   export class Component<T extends React.Props<any>, S> extends React.Component<T, S> {
     props: T; state: S;
@@ -33,19 +31,24 @@ namespace flux {
       //var newInitState = this.props.initState !== nextProps.initState;
       if (nextProps.initState !== this.state) this.setState(nextProps.initState, () => this.state = nextProps.initState);
     }
-    shouldComponentUpdate = (nextProps: T, nextState: S, nextContext: any) => this.state !== nextState;
+    shouldComponentUpdate = (nextProps: T, nextState: S, nextContext: any) => {
+      var res = this.state !== nextState;
+      return res;
+    }
+    //componentDidMount = () => this.state.getListener().on('update', newState => this.setState(newState, () => this.state = newState));
     componentDidMount = () => this.state.getListener().on('update', newState => this.setState(newState, () => this.state = newState));
     componentWillUnmount = () => this.state.getListener().off('update');
   }
   export interface ISmartProps<S> extends IComponentProps { initState: S; }
 
-  export function initWebState(webState: IWebState, doRootRender: () => void) {
-    state = new Freezer<IWebState>(webState);
-    rootRender = doRootRender;
-    rootRender();
+  export function initWebState(webState: IWebAppState, doRootRender: () => void) {
+    state = new Freezer<IWebAppState>(webState);
+    //rootRender = doRootRender;
+    doRootRender();
   }
 
-  export function getState(): IWebState { return state.get(); }
+  export function getState(): IWebState { return state.get().data; }
+  export function getWebAppState(): IWebAppState { return state.get(); }
   export function trigger(action: IAction, complete?: (action: IAction) => void) {
     if (!action || !action.moduleId || !action.actionId) throw '!action || !action.type';
     var res = allModules[action.moduleId]; if (!res) throw 'Cannot find module ' + action.moduleId;
@@ -64,26 +67,28 @@ namespace flux {
       var act = rec.actions.splice(0, 1);
       trigger(act[0], act => setTimeout(() => doPlay(), interval));
     };
-    state = new Freezer<IWebState>(rec.initStatus);
-    ReactDOM.unmountComponentAtNode(document.getElementById('app'));
-    rootRender();
+    //state = new Freezer<IWebAppState>(rec.initStatus);
+    //ReactDOM.unmountComponentAtNode(document.getElementById('app'));
+    //rootRender();
+    //state.get().set('data', rec.initStatus);
+    state.get().set('data', rec.initStatus);
+    //rootComponent.props
     setTimeout(() => doPlay(), interval);
   }
 
-  interface IRecording { initStatus: IWebState; actions: Array<IAction>; }
-  var recording: IRecording;
-  var state: IFreezerRoot<IWebState>;
-  config.cfg.data.flux = { trigger: trigger };
-  var rootRender: () => void;
-
-  export class Web extends flux.SmartComponent<ISmartProps<any>, IWebState>{
+  export class Web extends flux.SmartComponent<IWebAppProps, IWebAppState>{
     constructor(props: any, ctx: any) {
       super(props, ctx);
       flux.rootComponent = this;
     }
-    render() { return React.createElement('div', null, this.props.children); }
+    //render() { return React.createElement('div', null, this.props.children); }
+    render() { return React.createElement(<any>fluxTest.PlaceHolder, { "initState": flux.getState().placeHolder}); }
     getChildContext = () => { return config.cfg; }
   }
+  export interface IWebState { }
+  export interface IWebAppState extends IFreezerState<IWebAppState> { data: IWebState; }
+  export interface IWebAppProps extends flux.ISmartProps<IWebAppState> { }
+  //export interface IWebAppProps extends flux.ISmartProps<IWebAppState> { }
 
   export class Module {
     constructor(public id: string) {
@@ -93,6 +98,18 @@ namespace flux {
     childs: Array<Module>;
     dispatchAction(action: IAction, complete: (action: IAction) => void) { throw 'notImplemented'; }
   }
+
+  export class PlaceHolder {
+  }
+  export interface IPlaceHolderStatus {
+  }
+
+  interface IRecording { initStatus: IWebState; actions: Array<IAction>; }
+  var recording: IRecording;
+  var state: IFreezerRoot<IWebAppState>;
+  config.cfg.data.flux = { trigger: trigger };
+  //var rootRender: () => void;
   var allModules: { [id: string]: Module; } = {};
+
 
 }

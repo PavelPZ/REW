@@ -3,8 +3,8 @@
     login: {
     };
   }
+  cfg.data.login = {};
 }
-config.cfg.data.login = {};
 
 namespace uiRouter {
   export interface INamedState {
@@ -18,15 +18,22 @@ namespace uiRouter {
       pswChanged: uiRouter.StateDef;
     }
   };
+  namedState.login = <any>{};
 }
-uiRouter.namedState.login = {} as any;
+
+namespace flux {
+  export interface IWebState {
+    login?: login.ILoginRootState;
+  }
+}
+
 
 namespace login {
   //***** ROUTE init
   var namedState = uiRouter.namedState.login; //pojmenovane stavy
 
   uiRouter.init(
-    namedState.index = new uiRouter.State(moduleLogin.moduleId, '/login',
+    namedState.index = new uiRouter.State(moduleIndex.moduleId, '/login',
       namedState.login = new uiRouter.State(moduleLMLogin.moduleId, '/login'),
       namedState.register = new uiRouter.State('??', '/register'),
       namedState.registered = new uiRouter.State('??', '/registered'),
@@ -35,18 +42,8 @@ namespace login {
       namedState.pswChanged = new uiRouter.State('??', '/psw-changed')
     )
   );
-  //uiRouter.setDefault(namedState.index, {});
 
-  //*********************** DISPATCH MODULE definition
-  //root login module
-  export class moduleLogin extends flux.Module {
-    static moduleId = 'login';
-    constructor() {
-      super(moduleLogin.moduleId);
-      this.childs = [ //registrace LM login stranek
-        new moduleIndex(),
-      ];
-    }
-  }
+  export interface ILoginRootState { }
+  //uiRouter.setDefault(namedState.index, {});
 
 }

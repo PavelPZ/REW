@@ -71,9 +71,9 @@ namespace xxx {
   //************* WHOLE APP
   new xxx();
   flux.initWebState(
-    { xxx: {} },
+    { data: { xxx: {} }},
     () => ReactDOM.render(
-      <flux.Web initState={flux.getState() }><Xxx initState={flux.getState().xxx }></Xxx></flux.Web>,
+      <flux.Web initState={flux.getWebAppState() }><Xxx initState={flux.getState().xxx }></Xxx></flux.Web>,
       document.getElementById('app')
     )
   );

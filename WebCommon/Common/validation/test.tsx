@@ -42,9 +42,9 @@ namespace valTest {
   //************* WHOLE APP
   new valTest();
   flux.initWebState(
-    { valTest: {} },
+    { data: { valTest: {} }},
     () => ReactDOM.render(
-      <flux.Web initState={flux.getState() }>
+      <flux.Web initState={flux.getWebAppState() }>
     <ValTest initState={flux.getState().valTest }>
       {/*<validation.Input validator={{ type: validation.types.stringLength | validation.types.stringLength, minLength: 2, maxLength: 4 }}/>*/}
       {/*<validation.Input validator={{ type: validation.types.email }}/>*/}

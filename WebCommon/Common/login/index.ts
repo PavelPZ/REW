@@ -6,7 +6,7 @@
       switch (action.actionId) {
         case uiRouter.routerActionId: //naladuj index stranku
           break;
-        case 'get-provider': //jdi na oauth stranku
+        case 'get-provider': //reakce na vybrani OAuth providera
           break;
       }
     }
@@ -14,6 +14,11 @@
   }
   export interface IGotoProviderAction extends flux.IAction {
     provider;
+  }
+  new moduleIndex();
+
+  export class IndexPage extends flux.SmartComponent<any, any>{
+    //static create () : any
   }
 
 }
