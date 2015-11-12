@@ -140,7 +140,7 @@ namespace validation {
   interface IGroupContext { validation: group; }
 
   //--- IMPUT
-  export class Input extends flux.Component<IInputProps, any>{ 
+  export class Input extends flux.DumpComponent<IInputProps, any>{ 
     constructor(prop, ctx: IGroupContext) {
       super(prop, ctx);
       this.driver = new inputDriver(ctx ? ctx.validation : null, this.props.validator, this.props.initValue, () => this.setState(this.driver.state));
@@ -175,7 +175,7 @@ namespace validation {
   }
 
   //--- GROUP ERROR
-  export class GroupError extends flux.Component<any, IGroupErrorState>{
+  export class GroupError extends flux.DumpComponent<any, IGroupErrorState>{
     constructor(prop, ctx: IGroupContext) {
       super(prop, ctx);
       this.driver = new groupError(ctx ? ctx.validation : null, () => this.setState(this.driver.state));

@@ -21,7 +21,7 @@ namespace config {
       prefix: string;
     };
   }
-  cfg.data.xxx = {};
+  cfg.data.mod1 = {} as any;
 }
 namespace flux {
   export interface IWebState {
@@ -36,7 +36,7 @@ namespace fluxTest {
   interface IAppClickAction extends flux.IAction { }
   interface IClickAction extends flux.IAction { is1: number; }
 
-  config.cfg.data.mod1 = { prefix: 'Hello' };
+  config.cfg.data.mod1.prefix = 'Hello';
 
   class mod1 extends flux.Module {
     constructor() {
@@ -119,6 +119,7 @@ namespace fluxTest {
   //************* WHOLE APP
   new mod1();
   flux.initWebState(
+    document.getElementById('app'),
     {
       data: {
         fluxTest: {
@@ -132,7 +133,6 @@ namespace fluxTest {
         }
       }
     },
-    document.getElementById('app'),
     () => <PlaceHolder initState={flux.getState().placeHolder }/>
   );
   /*

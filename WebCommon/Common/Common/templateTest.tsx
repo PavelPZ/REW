@@ -6,7 +6,7 @@ namespace config {
     xxx: { //konfigurace aplikace
     };
   }
-  cfg.data.xxx = {};
+  cfg.data.xxx = {} as any;
 }
 
 namespace uiRouter {
@@ -70,10 +70,10 @@ namespace xxx {
 
   //************* WHOLE APP
   new xxx();
-  //flux.initWebState(
-  //  { data: { xxx: {} } },
-  //  document.getElementById('app'),
-  //  () => <flux.Web initState={flux.getWebAppState() }><Xxx initState={flux.getState().xxx }></Xxx></flux.Web>
-  //);
+  flux.initWebState(
+    document.getElementById('app'),
+    { data: { xxx: {} } },
+    () => <Xxx initState={flux.getState().xxx }/>
+  );
 
 }

@@ -41,35 +41,19 @@ namespace valTest {
 
   //************* WHOLE APP
   new valTest();
-  //flux.initWebState(
-  //  { data: { valTest: {} } },
-  //  document.getElementById('app'),
-  //  () =>
-  //    <flux.Web initState={flux.getWebAppState() }>
-  //  <ValTest initState={flux.getState().valTest }>
-  //    {/*<validation.Input validator={{ type: validation.types.stringLength | validation.types.stringLength, minLength: 2, maxLength: 4 }}/>*/}
-  //    {/*<validation.Input validator={{ type: validation.types.email }}/>*/}
-  //    <validation.Group>
-  //    <validation.Input validator={{ type: validation.types.required, id: 'psw' }}/><br/>
-  //    <validation.Input validator={{ type: validation.types.equalTo, equalToId: 'psw' }}/>
-  //      </validation.Group>
-  //    <p><validation.Input/></p>
-  //    {/*
-  //    <validation.Group>
-  //      <p><validation.Input validator={{ type: validation.types.email | validation.types.email }}/></p>
-  //      <p><validation.Input/></p>
-  //      <p><validation.GroupError/></p>
-  //      </validation.Group>
-  //    <hr/>
-  //    <p><validation.Input/></p>
-  //    <hr/>
-  //    <validation.Group>
-  //      <p><validation.Input/></p>
-  //      <p><validation.Input/></p>
-  //      <p><validation.GroupError/></p>
-  //      </validation.Group>*/}
-  //    </ValTest>
-  //      </flux.Web>
-  //);
+  flux.initWebState(
+    document.getElementById('app'),
+    { data: { valTest: {} } },
+    () =>
+      <ValTest initState={flux.getState().valTest }>
+      {/*<validation.Input validator={{ type: validation.types.stringLength | validation.types.stringLength, minLength: 2, maxLength: 4 }}/>*/}
+      {/*<validation.Input validator={{ type: validation.types.email }}/>*/}
+      <validation.Group>
+      <validation.Input validator={{ type: validation.types.required, id: 'psw' }}/><br/>
+      <validation.Input validator={{ type: validation.types.equalTo, equalToId: 'psw' }}/>
+        </validation.Group>
+      <p><validation.Input/></p>
+        </ValTest>
+  );
 
 }
