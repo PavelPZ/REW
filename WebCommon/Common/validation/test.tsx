@@ -1,4 +1,10 @@
-﻿namespace valTest {
+﻿namespace flux {
+  export interface IWebState {
+    valTest?: any; //cast globalniho flux.IFluxState, patrici aplikaci
+  }
+}
+
+namespace valTest {
 
   //*********************** DISPATCH MODULE definition
   interface IValTestClickAction extends flux.IAction { }
@@ -8,7 +14,7 @@
       super(valTest.moduleId);
     }
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
-      var old = store.getState();
+      var old = flux.getState();
       switch (action.actionId) {
         case 'click':
           alert('click');
@@ -21,7 +27,7 @@
   }
 
   //************* VIEW
-  export class ValTest extends flux.RootComponent<IValTestProps, IValTestStates>{
+  export class ValTest extends flux.SmartComponent<IValTestProps, IValTestStates>{
     render() {
       return <div>
         <div onClick={() => flux.trigger(valTest.createAppClickAction()) }>Click</div>
@@ -34,18 +40,19 @@
 
 
   //************* WHOLE APP
-  var store = new flux.Flux<IValTestStates>([new valTest()], {
-  })
-
-  ReactDOM.render(
-    <ValTest initState={store.getState() }>
+  new valTest();
+  flux.initWebState(
+    { valTest: {} },
+    () => ReactDOM.render(
+      <flux.Web initState={flux.getState() }>
+    <ValTest initState={flux.getState().valTest }>
       {/*<validation.Input validator={{ type: validation.types.stringLength | validation.types.stringLength, minLength: 2, maxLength: 4 }}/>*/}
       {/*<validation.Input validator={{ type: validation.types.email }}/>*/}
       <validation.Group>
       <validation.Input validator={{ type: validation.types.required, id: 'psw' }}/><br/>
       <validation.Input validator={{ type: validation.types.equalTo, equalToId: 'psw' }}/>
         </validation.Group>
-      <p><validation.Input/></p> 
+      <p><validation.Input/></p>
       {/*
       <validation.Group>
         <p><validation.Input validator={{ type: validation.types.email | validation.types.email }}/></p>
@@ -60,7 +67,10 @@
         <p><validation.Input/></p>
         <p><validation.GroupError/></p>
         </validation.Group>*/}
-      </ValTest>,
-    document.getElementById('app')
+      </ValTest>
+        </flux.Web>,
+      document.getElementById('app')
+    )
   );
+
 }

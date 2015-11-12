@@ -1,17 +1,16 @@
 ﻿namespace config {
   export interface IData {
     flux: {
-      trigger: (action: flux.IAction) => void;
+      trigger: (action: flux.IAction, completed?: (action: flux.IAction) => void) => void;
     };
   }
 }
 namespace flux {
 
-  export interface IFluxState { }
+  export interface IWebState { }
 
-  export var store: Flux<IFluxState>; //flux store, obsahujici root state
-  export var rootComponent: SmartComponent<any, any>; //v musi se naplnit v konstruktoru root komponenty. Kvuli recordingu.
-  export function trigger(action: IAction) { store.trigger(action); }
+  //export var rootComponent: SmartComponent<any, any>; //v musi se naplnit v konstruktoru root komponenty. Kvuli recordingu.
+  export var rootComponent: React.Component<any, any>;
 
   export class Component<T extends React.Props<any>, S> extends React.Component<T, S> {
     props: T; state: S;
@@ -30,62 +29,61 @@ namespace flux {
     }
     props: T; state: S;
     componentWillReceiveProps = (nextProps: T & ISmartProps<S>, nextContext: any) => {
-      var newProp = this.props !== nextProps;
-      var newInitState = this.props.initState !== nextProps.initState;
+      //var newProp = this.props !== nextProps;
+      //var newInitState = this.props.initState !== nextProps.initState;
       if (nextProps.initState !== this.state) this.setState(nextProps.initState, () => this.state = nextProps.initState);
     }
     shouldComponentUpdate = (nextProps: T, nextState: S, nextContext: any) => this.state !== nextState;
     componentDidMount = () => this.state.getListener().on('update', newState => this.setState(newState, () => this.state = newState));
     componentWillUnmount = () => this.state.getListener().off('update');
-    render() { return null; }
   }
   export interface ISmartProps<S> extends IComponentProps { initState: S; }
 
-  export class RootComponent<T extends ISmartProps<any>, S extends IFreezerState<any>> extends SmartComponent<T, S>{
-    constructor(props: T, ctx: any) {
+  export function initWebState(webState: IWebState, doRootRender: () => void) {
+    state = new Freezer<IWebState>(webState);
+    rootRender = doRootRender;
+    rootRender();
+  }
+
+  export function getState(): IWebState { return state.get(); }
+  export function trigger(action: IAction, complete?: (action: IAction) => void) {
+    if (!action || !action.moduleId || !action.actionId) throw '!action || !action.type';
+    var res = allModules[action.moduleId]; if (!res) throw 'Cannot find module ' + action.moduleId;
+    if (recording) recording.actions.push(action);
+    res.dispatchAction(action, complete);
+  }
+
+  export function recordStart() { recording = { initStatus: getState(), actions: [] }; }
+  export function recordEnd(): string { try { return recording ? JSON.stringify(recording, null, 2) : null; } finally { recording = null; } }
+  export function play(recStr: string, interval: number, completed: () => void) {
+    if (!rootComponent || !recStr) return;
+    var rec: IRecording = JSON.parse(recStr);
+    var doPlay: () => void;
+    doPlay = () => {
+      if (rec.actions.length == 0) { completed(); return; }
+      var act = rec.actions.splice(0, 1);
+      trigger(act[0], act => setTimeout(() => doPlay(), interval));
+    };
+    state = new Freezer<IWebState>(rec.initStatus);
+    ReactDOM.unmountComponentAtNode(document.getElementById('app'));
+    rootRender();
+    setTimeout(() => doPlay(), interval);
+  }
+
+  interface IRecording { initStatus: IWebState; actions: Array<IAction>; }
+  var recording: IRecording;
+  var state: IFreezerRoot<IWebState>;
+  config.cfg.data.flux = { trigger: trigger };
+  var rootRender: () => void;
+
+  export class Web extends flux.SmartComponent<ISmartProps<any>, IWebState>{
+    constructor(props: any, ctx: any) {
       super(props, ctx);
       flux.rootComponent = this;
     }
+    render() { return React.createElement('div', null, this.props.children); }
     getChildContext = () => { return config.cfg; }
   }
-
-  export class Flux<S> {
-    constructor(public modules: Array<Module>, initStatus: S) {
-      store = this;
-      this.setState(initStatus);
-      config.cfg.data.flux = { trigger: this.trigger };
-    }
-
-    setState(status: S) { if (!this.state) this.state = new Freezer<S>(status); else this.state.set(status); }
-    getState(): S { return this.state.get(); }
-    state: IFreezerRoot<S>;
-
-    trigger(action: IAction, complete?: (action: IAction) => void) {
-      if (!action || !action.moduleId || !action.actionId) throw '!action || !action.type';
-      var res = allModules[action.moduleId]; if (!res) throw 'Cannot find module ' + action.moduleId;
-      if (this.recording) this.recording.actions.push(action);
-      res.dispatchAction(action, complete);
-    }
-
-    //****************** ACTION and STATUS recording
-    recordStart() { this.recording = { initStatus: this.getState(), actions: [] }; }
-    recordEnd(): string { try { return JSON.stringify(this.recording, null, 2); } finally { this.recording = null; } }
-    play(recStr: string, interval: number, completed: () => void) {
-      if (!rootComponent || !recStr) return;
-      var rec = JSON.parse(recStr);
-      var doPlay: () => void;
-      doPlay = () => {
-        if (rec.actions.length == 0) { completed(); return; }
-        var act = rec.actions.splice(0, 1);
-        this.trigger(act[0], act => setTimeout(() => doPlay(), interval));
-      };
-      this.setState(rec.initStatus);
-      rootComponent.setState(this.getState());
-      setTimeout(() => doPlay(), interval);
-    }
-    recording: IRecording<S>;
-  }
-  interface IRecording<S> { initStatus: S; actions: Array<IAction>; }
 
   export class Module {
     constructor(public id: string) {

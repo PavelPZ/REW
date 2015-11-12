@@ -1,19 +1,28 @@
-﻿namespace config {
+﻿//******************* Xxx aplikace
+//Hiearchie Web (webApp) -> aplikace -> moduly -> akce, komponenty
+
+namespace config {
   export interface IData {
-    xxx: {
+    xxx: { //konfigurace aplikace
     };
   }
+  cfg.data.xxx = {};
 }
-config.cfg.data.xxx = {};
 
 namespace uiRouter {
   export interface INamedState {
-    xxx: {
-      default: uiRouter.State<xxx.ITestPar>;
+    xxx: { //pojmenovane uiRouter.State's aplikace
+      default: uiRouter.State<xxx.ITestPar>; //uiRouter.State hlavni stranky aplikace
     }
   };
+  namedState.xxx = {} as any;
 }
-uiRouter.namedState.xxx = {} as any;
+
+namespace flux {
+  export interface IWebState {
+    xxx?: xxx.IXxxState; //cast globalniho flux.IFluxState, patrici aplikaci
+  }
+}
 
 namespace xxx {
   //***** ROUTE init
@@ -37,7 +46,6 @@ namespace xxx {
       super(xxx.moduleId);
     }
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
-      var old = store.getState();
       switch (action.actionId) {
         case 'click':
           alert('click');
@@ -50,23 +58,24 @@ namespace xxx {
   }
 
   //************* VIEW
-  export class Xxx extends flux.RootComponent<IXxxProps, IXxxState>{
+  export class Xxx extends flux.SmartComponent<IXxxProps, IXxxState>{
     render() {
       return <div>
         <div onClick={() => flux.trigger(xxx.createAppClickAction()) }>Click</div>
         </div>;
     }
   };
-  interface IXxxState extends IFreezerState<IXxxState> {  }
+  export interface IXxxState extends IFreezerState<IXxxState> { }
   interface IXxxProps extends flux.ISmartProps<IXxxState> { }
 
-
   //************* WHOLE APP
-  var store = new flux.Flux<IXxxState>([new xxx()], {
-  })
-
-  ReactDOM.render(
-    <Xxx initState={store.getState() }></Xxx>,
-    document.getElementById('app')
+  new xxx();
+  flux.initWebState(
+    { xxx: {} },
+    () => ReactDOM.render(
+      <flux.Web initState={flux.getState() }><Xxx initState={flux.getState().xxx }></Xxx></flux.Web>,
+      document.getElementById('app')
+    )
   );
+
 }

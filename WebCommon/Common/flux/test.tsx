@@ -21,6 +21,12 @@ namespace config {
       prefix: string;
     };
   }
+  cfg.data.xxx = {};
+}
+namespace flux {
+  export interface IWebState {
+    fluxTest?: IFreezerState<fluxTest.IAppState> & fluxTest.IAppState;
+  }
 }
 
 namespace fluxTest {
@@ -37,13 +43,13 @@ namespace fluxTest {
     }
     //type appClickAction = number;
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
-      var old = store.getState();
+      var old = flux.getState().fluxTest;
       switch (action.actionId) {
         case 'appclick':
           setTimeout(() => {
-            store.getState().set('hello1', { actName: old.hello1.actName + '*' });
-            store.getState().set('hello2', { actName: old.hello2.actName + '*' });
-            store.getState().set('clickTitle', old.clickTitle + '*');
+            flux.getState().fluxTest.set('hello1', { actName: old.hello1.actName + '*' });
+            flux.getState().fluxTest.set('hello2', { actName: old.hello2.actName + '*' });
+            flux.getState().fluxTest.set('clickTitle', old.clickTitle + '*');
             if (complete) complete(action);
           }, 300);
           break;
@@ -61,7 +67,7 @@ namespace fluxTest {
   }
 
   //************* VIEW
-  export class App extends flux.RootComponent<IAppProps, IAppState>{
+  export class App extends flux.SmartComponent<IAppProps, IAppState>{
     render() {
       return <div>
         <p>
@@ -78,34 +84,31 @@ namespace fluxTest {
     }
   };
   interface IAppProps extends flux.ISmartProps<IAppState> { }
-  interface IAppState extends IFreezerState<IAppState> { hello1?: IHelloWorldState; hello2?: IHelloWorldState; clickTitle: string, inputValue?: string }
+  export interface IAppState extends IFreezerState<IAppState> { hello1?: IHelloWorldState; hello2?: IHelloWorldState; clickTitle: string, inputValue?: string }
 
   class HelloMessage extends flux.SmartComponent<IHelloWorldProps, IHelloWorldState>{
     render() {
       return <div onClick={() => flux.trigger(mod1.createClickAction(this.props.is1)) }>{this.context.data.mod1.prefix } {this.state.actName}</div >;
     }
-    static locateState() { return store.getState().hello1; }
-    static locateState2() { return store.getState().hello2; }
+    static locateState() { return flux.getState().fluxTest.hello1; }
+    static locateState2() { return flux.getState().fluxTest.hello2; }
   };
   interface IHelloWorldProps extends flux.ISmartProps<IHelloWorldState> { is1: boolean; }
   interface IHelloWorldState extends IFreezerState<IHelloWorldState> { actName?: string; }
 
   //************* WHOLE APP
-  var store = new flux.Flux<IAppState>(
-    [new mod1()], //dispatch modules
-    { //app state
-      clickTitle: 'Click',
-      hello1: { actName: 'John' },
-      hello2: { actName: 'Marthy' }
-    }
+  new mod1();
+  flux.initWebState(
+    {
+      fluxTest: {
+        clickTitle: 'Click',
+        hello1: { actName: 'John' },
+        hello2: { actName: 'Marthy' }
+      }
+    },
+    () => ReactDOM.render(
+      <flux.Web initState={flux.getState() }><App initState={flux.getState().fluxTest }/></flux.Web>,
+      document.getElementById('app')
+    )
   );
-
-  ReactDOM.render(
-    <App initState={store.getState() }></App>,
-    document.getElementById('app')
-  );
-  //var str = ReactDOM.renderToStaticMarkup(<App initState={store.getState() }/>);
-  //alert(str);
-  //var str = ReactDOM.renderToString(<App initState={store.getState() }/>);
-  //alert(str);
 }

@@ -5,6 +5,12 @@
   }
 }
 
+namespace flux {
+  export interface IWebState {
+    loginTest?: loginTest.ILoginTestState;
+  }
+}
+
 namespace loginTest {
 
   //*********************** DISPATCH MODULE definition
@@ -17,7 +23,7 @@ namespace loginTest {
       super(loginTest.moduleId);
     }
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
-      var old = store.getState();
+      var old = flux.getState();
       switch (action.actionId) {
         case 'click':
           alert('click');
@@ -30,23 +36,24 @@ namespace loginTest {
   }
 
   //************* VIEW
-  export class LoginTest extends flux.RootComponent<ILoginTestProps, ILoginTestState>{
+  export class LoginTest extends flux.SmartComponent<ILoginTestProps, ILoginTestState>{
     render() {
       return <div>
         <div onClick={() => flux.trigger(loginTest.createAppClickAction()) }>Click</div>
         </div>;
     }
   };
-  interface ILoginTestState extends IFreezerState<ILoginTestState> {  }
+  export interface ILoginTestState extends IFreezerState<ILoginTestState> { }
   interface ILoginTestProps extends flux.ISmartProps<ILoginTestState> { }
 
 
   //************* WHOLE APP
-  var store = new flux.Flux<ILoginTestState>([new loginTest()], {
-  })
-
-  ReactDOM.render(
-    <LoginTest initState={store.getState() }></LoginTest>,
-    document.getElementById('app')
+  new loginTest();
+  flux.initWebState(
+    { loginTest: {} },
+    () => ReactDOM.render(
+      <flux.Web initState={flux.getState() }><LoginTest initState={flux.getState().loginTest}></LoginTest></flux.Web>,
+      document.getElementById('app')
+    )
   );
 }
