@@ -27,6 +27,7 @@ namespace flux {
   export interface IWebState {
     fluxTest?: fluxTest.IAppState;
     placeHolder?: fluxTest.IPlaceHolderState;
+    place?: flux.IPlaceHolderState;
   }
 }
 
@@ -96,8 +97,6 @@ namespace fluxTest {
     render() {
       return <div onClick={() => flux.trigger(mod1.createClickAction(this.props.is1)) }>{this.context.data.mod1.prefix } {this.state.actName}</div >;
     }
-    static locateState() { return flux.getState().fluxTest.hello1; }
-    static locateState2() { return flux.getState().fluxTest.hello2; }
   };
   interface IHelloWorldProps extends flux.ISmartProps<IHelloWorldState> { is1: number; }
   interface IHelloWorldState extends IFreezerState<IHelloWorldState> { actName?: string; }
@@ -130,13 +129,21 @@ namespace fluxTest {
         placeHolder: {
           isApp: false,
           hello: { actName: 'hello' },
-        }
+        },
+        place: { placeId: 'place' }
       }
     },
-    () => <PlaceHolder initState={flux.getState().placeHolder }/>
+    () => <flux.PlaceHolder initState={flux.getState().place} contents={{
+      app: () => <App initState={flux.getState().fluxTest }/>,
+      place: () => <PlaceHolder initState={flux.getState().placeHolder }/>
+    }}/> 
   );
   /*
-  () => <App initState={flux.getState().fluxTest }/>
-  () => <PlaceHolder initState={flux.getState().placeHolder }/
+    () => <flux.PlaceHolder initState={flux.getState().place} contents={{
+      app: () => <App initState={flux.getState().fluxTest }/>,
+      place: () => <PlaceHolder initState={flux.getState().placeHolder }/>
+    }}/> 
+    () => <App initState={flux.getState().fluxTest }/>
+    () => <PlaceHolder initState={flux.getState().placeHolder }/>
   */
 }

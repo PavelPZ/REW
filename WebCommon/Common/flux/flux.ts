@@ -32,6 +32,7 @@ namespace flux {
       if (nextProps.initState !== this.state) this.setState(nextProps.initState, () => this.state = nextProps.initState);
     }
     shouldComponentUpdate = (nextProps: T, nextState: S, nextContext: any) => {
+      return true;
       var res = this.state !== nextState;
       return res;
     }
@@ -82,9 +83,17 @@ namespace flux {
     dispatchAction(action: IAction, complete: (action: IAction) => void) { throw 'notImplemented'; }
   }
 
-  export class PlaceHolder {
+  export class PlaceHolder extends flux.SmartComponent<IPlaceHolderProps, IPlaceHolderState> {
+    render() {
+      var cont = this.props.contents[this.state.placeId]; if (!cont) return null;
+      return cont();
+    }
   }
-  export interface IPlaceHolderStatus {
+  export interface IPlaceHolderProps extends flux.ISmartProps<IPlaceHolderState> {
+    contents: { [placeId: string]: () => JSX.Element; }
+  }
+  export interface IPlaceHolderState extends IFreezerState<IPlaceHolderState> {
+    placeId: string;
   }
 
   //**************** PRIVATE
