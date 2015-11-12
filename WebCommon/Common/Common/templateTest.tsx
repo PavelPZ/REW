@@ -70,12 +70,10 @@ namespace xxx {
 
   //************* WHOLE APP
   new xxx();
-  flux.initWebState(
-    { data: { xxx: {} }},
-    () => ReactDOM.render(
-      <flux.Web initState={flux.getWebAppState() }><Xxx initState={flux.getState().xxx }></Xxx></flux.Web>,
-      document.getElementById('app')
-    )
-  );
+  //flux.initWebState(
+  //  { data: { xxx: {} } },
+  //  document.getElementById('app'),
+  //  () => <flux.Web initState={flux.getWebAppState() }><Xxx initState={flux.getState().xxx }></Xxx></flux.Web>
+  //);
 
 }

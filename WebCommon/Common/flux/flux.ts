@@ -41,12 +41,6 @@ namespace flux {
   }
   export interface ISmartProps<S> extends IComponentProps { initState: S; }
 
-  export function initWebState(webState: IWebAppState, doRootRender: () => void) {
-    state = new Freezer<IWebAppState>(webState);
-    //rootRender = doRootRender;
-    doRootRender();
-  }
-
   export function getState(): IWebState { return state.get().data; }
   export function getWebAppState(): IWebAppState { return state.get(); }
   export function trigger(action: IAction, complete?: (action: IAction) => void) {
@@ -76,18 +70,27 @@ namespace flux {
     setTimeout(() => doPlay(), interval);
   }
 
+  export function initWebState(webState: IWebAppState, dom: Element, render: () => JSX.Element) {
+    state = new Freezer<IWebAppState>(webState);
+    webRender = render;
+    //rootRender = doRootRender;
+    ReactDOM.render(React.createElement(<any>Web, { "initState": flux.getWebAppState() }), dom);
+    //doRootRender();
+  }
+
   export class Web extends flux.SmartComponent<IWebAppProps, IWebAppState>{
     constructor(props: any, ctx: any) {
       super(props, ctx);
       flux.rootComponent = this;
     }
     //render() { return React.createElement('div', null, this.props.children); }
-    render() { return React.createElement(<any>fluxTest.PlaceHolder, { "initState": flux.getState().placeHolder}); }
+    render() { return webRender(); }
+    //render() { return this.props.render(); }
     getChildContext = () => { return config.cfg; }
   }
   export interface IWebState { }
   export interface IWebAppState extends IFreezerState<IWebAppState> { data: IWebState; }
-  export interface IWebAppProps extends flux.ISmartProps<IWebAppState> { }
+  export interface IWebAppProps extends flux.ISmartProps<IWebAppState> { render: () => JSX.Element; }
   //export interface IWebAppProps extends flux.ISmartProps<IWebAppState> { }
 
   export class Module {
@@ -109,6 +112,7 @@ namespace flux {
   var state: IFreezerRoot<IWebAppState>;
   config.cfg.data.flux = { trigger: trigger };
   //var rootRender: () => void;
+  var webRender: () => JSX.Element;
   var allModules: { [id: string]: Module; } = {};
 
 

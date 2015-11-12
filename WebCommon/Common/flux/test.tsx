@@ -132,13 +132,11 @@ namespace fluxTest {
         }
       }
     },
-    () => ReactDOM.render(
-      <flux.Web initState={flux.getWebAppState() }/>,
-      document.getElementById('app')
-    )
+    document.getElementById('app'),
+    () => <PlaceHolder initState={flux.getState().placeHolder }/>
   );
   /*
-  <flux.Web initState={flux.getState() }><App initState={flux.getState().fluxTest }/></flux.Web>,
-  <flux.Web initState={flux.getState() }><PlaceHolder initState={flux.getState().placeHolder }/></flux.Web>,
+  () => <App initState={flux.getState().fluxTest }/>
+  () => <PlaceHolder initState={flux.getState().placeHolder }/
   */
 }
