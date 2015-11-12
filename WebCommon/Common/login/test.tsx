@@ -11,22 +11,22 @@ namespace loginTest {
   interface ILoginTestClickAction extends flux.IAction { }
 
   config.cfg.data.loginTest = {};
-  var modName = 'loginTest';
 
   class loginTest extends flux.Module {
     constructor() {
-      super(modName);
+      super(loginTest.moduleId);
     }
-    dispatchAction(type: string, action: flux.IAction, complete: (action: flux.IAction) => void) {
+    dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
       var old = store.getState();
-      switch (type) {
+      switch (action.actionId) {
         case 'click':
           alert('click');
           if (complete) complete(action);
           break;
       }
     }
-    static createAppClickAction(): ILoginTestClickAction { return { type: modName + '.click' }; }
+    static createAppClickAction(): ILoginTestClickAction { return { moduleId: loginTest.moduleId, actionId: 'click' }; }
+    static moduleId = 'login.loginTest';
   }
 
   //************* VIEW

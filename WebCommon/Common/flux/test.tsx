@@ -33,12 +33,12 @@ namespace fluxTest {
 
   class mod1 extends flux.Module {
     constructor() {
-      super(mod1.modName);
+      super(mod1.moduleId);
     }
     //type appClickAction = number;
-    dispatchAction(type: string, action: flux.IAction, complete: (action: flux.IAction) => void) {
+    dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
       var old = store.getState();
-      switch (type) {
+      switch (action.actionId) {
         case 'appclick':
           setTimeout(() => {
             store.getState().set('hello1', { actName: old.hello1.actName + '*' });
@@ -55,19 +55,26 @@ namespace fluxTest {
           break;
       }
     }
-    static modName = 'mod1';
-    static createAppClickAction(): IAppClickAction { return { type: mod1.modName + '.appclick' }; }
-    static createClickAction(is1: boolean): IClickAction { return { type: mod1.modName + '.click', is1: is1 }; }
+    static moduleId = 'mod1';
+    static createAppClickAction(): IAppClickAction { return { moduleId: mod1.moduleId, actionId: 'appclick' }; }
+    static createClickAction(is1: boolean): IClickAction { return { moduleId: mod1.moduleId, actionId: 'click', is1: is1 }; }
   }
 
   //************* VIEW
   export class App extends flux.RootComponent<IAppProps, IAppState>{
     render() {
       return <div>
-        <div onClick={() => flux.trigger(mod1.createAppClickAction()) }>{this.state.clickTitle}</div>
-        <HelloMessage initState={this.state.hello1} is1={true}/>
-        <HelloMessage initState={this.state.hello2} is1={false}/>
-        </div >;
+        <p>
+          <div onClick={() => flux.trigger(mod1.createAppClickAction()) }>{this.state.clickTitle}</div>
+          <HelloMessage initState={HelloMessage.locateState() } is1={true}/>
+          <HelloMessage initState={HelloMessage.locateState2() } is1={false}/>
+          </p>
+        {/*<p>
+          <div onClick={() => flux.trigger(mod1.createAppClickAction()) }>{this.state.clickTitle}</div>
+          <HelloMessage initState={this.state.hello1} is1={true}/>
+          <HelloMessage initState={this.state.hello2} is1={false}/>
+          </p>*/}
+        </div>;
     }
   };
   interface IAppProps extends flux.ISmartProps<IAppState> { }
@@ -77,16 +84,21 @@ namespace fluxTest {
     render() {
       return <div onClick={() => flux.trigger(mod1.createClickAction(this.props.is1)) }>{this.context.data.mod1.prefix } {this.state.actName}</div >;
     }
+    static locateState() { return store.getState().hello1; }
+    static locateState2() { return store.getState().hello2; }
   };
   interface IHelloWorldProps extends flux.ISmartProps<IHelloWorldState> { is1: boolean; }
   interface IHelloWorldState extends IFreezerState<IHelloWorldState> { actName?: string; }
 
   //************* WHOLE APP
-  var store = new flux.Flux<IAppState>([new mod1()], {
-    clickTitle: 'Click',
-    hello1: { actName: 'John' },
-    hello2: { actName: 'Marthy' }
-  })
+  var store = new flux.Flux<IAppState>(
+    [new mod1()], //dispatch modules
+    { //app state
+      clickTitle: 'Click',
+      hello1: { actName: 'John' },
+      hello2: { actName: 'Marthy' }
+    }
+  );
 
   ReactDOM.render(
     <App initState={store.getState() }></App>,

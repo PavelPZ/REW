@@ -7,7 +7,9 @@
 }
 namespace flux {
 
-  export var store: Flux<any>; //flux store, obsahujici root state
+  export interface IFluxState { }
+
+  export var store: Flux<IFluxState>; //flux store, obsahujici root state
   export var rootComponent: SmartComponent<any, any>; //v musi se naplnit v konstruktoru root komponenty. Kvuli recordingu.
   export function trigger(action: IAction) { store.trigger(action); }
 
@@ -28,6 +30,8 @@ namespace flux {
     }
     props: T; state: S;
     componentWillReceiveProps = (nextProps: T & ISmartProps<S>, nextContext: any) => {
+      var newProp = this.props !== nextProps;
+      var newInitState = this.props.initState !== nextProps.initState;
       if (nextProps.initState !== this.state) this.setState(nextProps.initState, () => this.state = nextProps.initState);
     }
     shouldComponentUpdate = (nextProps: T, nextState: S, nextContext: any) => this.state !== nextState;
@@ -50,7 +54,6 @@ namespace flux {
       store = this;
       this.setState(initStatus);
       config.cfg.data.flux = { trigger: this.trigger };
-      //common.$flux$trigger = this.trigger;
     }
 
     setState(status: S) { if (!this.state) this.state = new Freezer<S>(status); else this.state.set(status); }
@@ -58,24 +61,10 @@ namespace flux {
     state: IFreezerRoot<S>;
 
     trigger(action: IAction, complete?: (action: IAction) => void) {
-      if (!action || !action.type) throw '!action || !action.type';
-      var moduleIds = action.type.split('.');
-      var mods = this.modules;
-      var res: Module = null;
-      if (moduleIds.length > 1)
-        moduleIds.find((id, idx) => {
-          var mod = mods.find(m => m.type == id); if (!mod) return false;
-          if (idx < moduleIds.length - 2) {
-            if (!mod.childs) return true;
-            mods = mod.childs;
-            return false;
-          }
-          res = mod;
-          return true;
-        });
-      if (!res) throw 'Cannot find module ' + action.type;
+      if (!action || !action.moduleId || !action.actionId) throw '!action || !action.type';
+      var res = allModules[action.moduleId]; if (!res) throw 'Cannot find module ' + action.moduleId;
       if (this.recording) this.recording.actions.push(action);
-      res.dispatchAction(moduleIds[moduleIds.length - 1], action, complete);
+      res.dispatchAction(action, complete);
     }
 
     //****************** ACTION and STATUS recording
@@ -99,8 +88,13 @@ namespace flux {
   interface IRecording<S> { initStatus: S; actions: Array<IAction>; }
 
   export class Module {
-    constructor(public type: string) { }
+    constructor(public id: string) {
+      if (allModules[id]) throw 'Module "' + id + '" already exists.';
+      else allModules[id] = this;
+    }
     childs: Array<Module>;
-    dispatchAction(type: string, action: IAction, complete: (action: IAction) => void) { throw 'notImplemented'; }
+    dispatchAction(action: IAction, complete: (action: IAction) => void) { throw 'notImplemented'; }
   }
+  var allModules: { [id: string]: Module; } = {};
+
 }

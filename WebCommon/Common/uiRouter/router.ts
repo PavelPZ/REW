@@ -19,7 +19,7 @@ namespace config {
 
 namespace uiRouter {
 
-  export var routerPostfix = 'router';
+  export var routerActionId = 'router-action'; //actionId pro router action
   //navazan routeru na HASH change notifikaci
   export function listenHashChange() {
     window.addEventListener('hashchange', () => dispatch());
@@ -90,9 +90,9 @@ namespace uiRouter {
 
   //**** locals
   var states: Array<State<any>> = [];
-  var dir: { [name: string]: State<any>; } = {};
+  //var dir: { [name: string]: State<any>; } = {};
   var defaultSource: IHashSource<any>;
-  function add(st: State<any>) { states.push(st); dir[st.name] = st; }
+  function add(st: State<any>) { states.push(st); /*dir[st.name] = st;*/ }
 
   //**** STATE
   export type StateDef = State<IStatePar>;
@@ -106,15 +106,15 @@ namespace uiRouter {
     navigate(par: T) { window.location.href = this.getHashStr(par); }
 
     finishStatePar(finishHash: (h: T) => void): State<T> { this.finishHash = finishHash; return this; }
-    setActionType(actionType: string): State<T> { this.actionType = actionType; return this; }
+    //setActionType(actionType: string): State<T> { this.actionType = actionType; return this; }
 
     parseHash(pre: IPreParseHashStrResult): T {
       var res = this.matcher.exec<T>(pre.path, pre.query);
       if (res && this.finishHash) this.finishHash(res);
       return res;
     }
-    createAction(par: T): flux.IAction { return Object.assign({ type: (this.actionType || this.name) + '.' + routerPostfix }, par); }
-    actionType: string; //pro pripad, ze action.type!=this.name
+    createAction(par: T): flux.IAction { return Object.assign({ type: this.name + '.' + routerActionId}, par); }
+    //actionType: string; //pro pripad, ze action.type!=this.name
 
     afterConstructor(parent: State<any>) {
       if (parent) {

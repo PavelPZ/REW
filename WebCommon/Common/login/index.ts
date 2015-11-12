@@ -1,15 +1,16 @@
 ﻿namespace login {
   export class moduleIndex extends flux.Module {
-    static prefix = moduleLogin.prefix + '.index';
-    constructor() { super(moduleIndex.prefix); }
-    dispatchAction(type: string, action: flux.IAction, complete: (action: flux.IAction) => void) {
-      switch (type) {
-        case uiRouter.routerPostfix: //login.index.router action => naladuj index stranku
+    static moduleId = 'login.index';
+    constructor() { super(moduleIndex.moduleId); }
+    dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
+      switch (action.actionId) {
+        case uiRouter.routerActionId: //naladuj index stranku
           break;
-        case 'provider': //jdi na oauth stranku
+        case 'get-provider': //jdi na oauth stranku
+          break;
       }
     }
-    static gotoProviderAction(provider): IGotoProviderAction { return { type: moduleIndex.prefix + '.provider', provider: provider }; }
+    static gotoProviderAction(provider): IGotoProviderAction { return { moduleId: moduleIndex.moduleId, actionId: 'get-provider', provider: provider }; }
   }
   export interface IGotoProviderAction extends flux.IAction {
     provider;

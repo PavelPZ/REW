@@ -7,7 +7,8 @@ declare namespace __React {
 
 namespace flux {
   export interface IAction {
-    type: string;
+    moduleId: string; 
+    actionId: string; 
     meta?: string;
   }
 }

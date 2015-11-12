@@ -32,22 +32,21 @@ namespace xxx {
   //*********************** DISPATCH MODULE definition
   interface IXxxClickAction extends flux.IAction { }
 
-  var modName = 'xxx';
-
   class xxx extends flux.Module {
     constructor() {
-      super(modName);
+      super(xxx.moduleId);
     }
-    dispatchAction(type: string, action: flux.IAction, complete: (action: flux.IAction) => void) {
+    dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
       var old = store.getState();
-      switch (type) {
+      switch (action.actionId) {
         case 'click':
           alert('click');
           if (complete) complete(action);
           break;
       }
     }
-    static createAppClickAction(): IXxxClickAction { return { type: modName + '.click' }; }
+    static moduleId = 'xxx';
+    static createAppClickAction(): IXxxClickAction { return { moduleId: xxx.moduleId, actionId: 'click' }; }
   }
 
   //************* VIEW
