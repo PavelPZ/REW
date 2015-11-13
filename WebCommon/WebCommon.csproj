@@ -91,7 +91,6 @@
     <Content Include="Common\validation\Index.html" />
     <Content Include="Global.asax" />
     <Content Include="scripts\core.js" />
-    <Content Include="scripts\freezer.js" />
     <Content Include="scripts\react-bootstrap.js" />
     <Content Include="scripts\react-dom.js" />
     <Content Include="scripts\react-with-addons.js" />
@@ -135,7 +134,6 @@
     <TypeScriptCompile Include="Common\validation\test.tsx" />
     <TypeScriptCompile Include="Common\validation\templates.tsx" />
     <TypeScriptCompile Include="scripts\typings\core-js.d.ts" />
-    <TypeScriptCompile Include="scripts\typings\freezer.d.ts" />
     <TypeScriptCompile Include="scripts\typings\react-bootstrap.d.ts" />
     <TypeScriptCompile Include="scripts\typings\react-global.d.ts" />
     <TypeScriptCompile Include="scripts\typings\react.d.ts" />

@@ -35,25 +35,25 @@ namespace valTest {
         </div>;
     }
   };
-  interface IValTestStates extends IFreezerState<IValTestStates> { }
+  interface IValTestStates extends flux.ISmartState { }
   interface IValTestProps extends flux.ISmartProps<IValTestStates> { }
 
 
   //************* WHOLE APP
   new valTest();
-  flux.initWebState(
-    document.getElementById('app'),
-    { data: { valTest: {} } },
-    () =>
-      <ValTest initState={flux.getState().valTest }>
-      {/*<validation.Input validator={{ type: validation.types.stringLength | validation.types.stringLength, minLength: 2, maxLength: 4 }}/>*/}
-      {/*<validation.Input validator={{ type: validation.types.email }}/>*/}
-      <validation.Group>
-      <validation.Input validator={{ type: validation.types.required, id: 'psw' }}/><br/>
-      <validation.Input validator={{ type: validation.types.equalTo, equalToId: 'psw' }}/>
-        </validation.Group>
-      <p><validation.Input/></p>
-        </ValTest>
-  );
+  //flux.initWebState(
+  //  document.getElementById('app'),
+  //  { data: { valTest: {} } },
+  //  () =>
+  //    <ValTest initState={flux.getState().valTest }>
+  //    {/*<validation.Input validator={{ type: validation.types.stringLength | validation.types.stringLength, minLength: 2, maxLength: 4 }}/>*/}
+  //    {/*<validation.Input validator={{ type: validation.types.email }}/>*/}
+  //    <validation.Group>
+  //    <validation.Input validator={{ type: validation.types.required, id: 'psw' }}/><br/>
+  //    <validation.Input validator={{ type: validation.types.equalTo, equalToId: 'psw' }}/>
+  //      </validation.Group>
+  //    <p><validation.Input/></p>
+  //      </ValTest>
+  //);
 
 }

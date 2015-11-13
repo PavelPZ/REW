@@ -26,8 +26,8 @@ namespace config {
 namespace flux {
   export interface IWebState {
     fluxTest?: fluxTest.IAppState;
-    placeHolder?: fluxTest.IPlaceHolderState;
-    place?: flux.IPlaceHolderState;
+    fluxTestPlacer?: fluxTest.IPlaceHolderState;
+    fluxTestSwitcher?: flux.IPlaceHolderState;
   }
 }
 
@@ -35,7 +35,7 @@ namespace fluxTest {
 
   //*********************** DISPATCH MODULE definition
   interface IAppClickAction extends flux.IAction { }
-  interface IClickAction extends flux.IAction { is1: number; }
+  interface IClickAction extends flux.IAction { scopeComponent: string; /*akce nad self, ktera meni self stav*/}
 
   config.cfg.data.mod1.prefix = 'Hello';
 
@@ -43,30 +43,30 @@ namespace fluxTest {
     constructor() {
       super(mod1.moduleId);
     }
-    //type appClickAction = number;
+
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
-      var old = flux.getState().fluxTest;
-      var oldPlace = flux.getState().placeHolder;
+      let old = flux.getState().fluxTest;
+      var oldPlace = flux.getState().fluxTestPlacer;
       switch (action.actionId) {
         case 'appclick':
           setTimeout(() => {
-            flux.getState().fluxTest.set('hello1', { actName: old.hello1.actName + '*' });
-            flux.getState().fluxTest.set('hello2', { actName: old.hello2.actName + '*' });
-            flux.getState().fluxTest.set('clickTitle', old.clickTitle + '*');
+            let old = flux.getState().fluxTest;
+            old.hello1.actName += '*';
+            old.hello2.actName += '*';
+            old.clickTitle += '*';
+            flux.onStateChanged(old);
             if (complete) complete(action); //async complete, musi nasledovat return;
           }, 300);
           return;
           break;
         case 'click':
           let act = action as IClickAction;
-          switch (act.is1) {
-            case 1: old.hello1.set('actName', old.hello1.actName + '*'); break;
-            case 2: old.hello2.set('actName', old.hello2.actName + '*'); break;
-            case 3: oldPlace.hello.set('actName', oldPlace.hello.actName + '*'); break;
-          }
+          var comp = flux.findComponent<HelloMessage>(act.scopeComponent);
+          comp.props.initState.actName += '*';
+          flux.onStateChanged(comp.props.initState);
           break;
         case 'placehloderClick':
-          oldPlace.set('isApp', !oldPlace.isApp);
+          oldPlace.isApp = !oldPlace.isApp; flux.onStateChanged(oldPlace);
           break;
       }
       //sync complete
@@ -75,46 +75,50 @@ namespace fluxTest {
     static moduleId = 'mod1';
     static createAppClickAction(): IAppClickAction { return { moduleId: mod1.moduleId, actionId: 'appclick' }; }
     static createPlaceholderClickAction(): flux.IAction { return { moduleId: mod1.moduleId, actionId: 'placehloderClick' }; }
-    static createClickAction(is1: number): IClickAction { return { moduleId: mod1.moduleId, actionId: 'click', is1: is1 }; }
+    static createClickAction(scopeComponent: string/*akce nad self, ktera meni self stav*/): IClickAction { return { moduleId: mod1.moduleId, actionId: 'click', scopeComponent: scopeComponent }; }
   }
 
   //************* VIEW hvezdicky
   export class App extends flux.SmartComponent<IAppProps, IAppState>{
     render() {
+      super.render(); 
       var st = this.myState();
       return <div>
         <p>
           <div onClick={() => flux.trigger(mod1.createAppClickAction()) }>{st.clickTitle}</div>
-          <HelloMessage initState={st.hello1 } is1={1}/>
-          <HelloMessage initState={st.hello2 } is1={2}/>
+          <HelloMessage initState={st.hello1 } is1={1} parent={this} id='fluxTest.HelloMessage1'/>
+          <HelloMessage initState={st.hello2 } is1={2} parent={this} id='fluxTest.HelloMessage2'/>
           </p>
         </div>;
     }
   };
   interface IAppProps extends flux.ISmartProps<IAppState> { }
-  export interface IAppState extends IFreezerState<IAppState> { hello1?: IHelloWorldState; hello2?: IHelloWorldState; clickTitle: string, inputValue?: string }
+  export interface IAppState extends flux.ISmartState { hello1?: IHelloWorldState; hello2?: IHelloWorldState; clickTitle: string, inputValue?: string }
 
   class HelloMessage extends flux.SmartComponent<IHelloWorldProps, IHelloWorldState>{
     render() {
-      return <div onClick={() => flux.trigger(mod1.createClickAction(this.props.is1)) }>{this.context.data.mod1.prefix } {this.myState().actName}</div >;
+      super.render();
+      return <div onClick={() => flux.trigger(mod1.createClickAction(this.id)) }>{this.context.data.mod1.prefix } {this.myState().actName}</div >;
     }
+    props: IHelloWorldProps;
   };
   interface IHelloWorldProps extends flux.ISmartProps<IHelloWorldState> { is1: number; }
-  interface IHelloWorldState extends IFreezerState<IHelloWorldState> { actName?: string; }
+  interface IHelloWorldState extends flux.ISmartState { actName?: string; }
 
   //************* VIEW placeholder
-  export class PlaceHolder extends flux.SmartComponent<IPlaceHolderProps, IPlaceHolderState>{
+  export class Switcher extends flux.SmartComponent<IPlaceHolderProps, IPlaceHolderState>{
     render() {
+      super.render(); 
       var st = this.myState();
       return <div>
         <p onClick={() => flux.trigger(mod1.createPlaceholderClickAction()) }>click</p>
-        <div>{st.isApp ? (<App initState={flux.getState().fluxTest}/>) : (<HelloMessage initState={st.hello} is1={3}/>) }</div>
+        <div>{st.isApp ? (<App initState={flux.getState().fluxTest} parent={this} id='fluxTest.App'/>) : (<HelloMessage initState={st.hello} is1={3} parent={this} id='fluxTest.HelloMessage' />) }</div>
         </div>
         ;
     }
   }
   interface IPlaceHolderProps extends flux.ISmartProps<IPlaceHolderState> { }
-  export interface IPlaceHolderState extends IFreezerState<IPlaceHolderState> { isApp: boolean; hello: IHelloWorldState; }
+  export interface IPlaceHolderState extends flux.ISmartState { isApp: boolean; hello: IHelloWorldState; }
 
 
   //************* WHOLE APP
@@ -128,16 +132,16 @@ namespace fluxTest {
           hello1: { actName: 'John' },
           hello2: { actName: 'Marthy' }
         },
-        placeHolder: {
+        fluxTestPlacer: {
           isApp: false,
           hello: { actName: 'hello' },
         },
-        place: { placeId: 'place' }
+        fluxTestSwitcher: { placeId: 'place' }
       }
     },
-    () => <flux.PlaceHolder initState={flux.getState().place} contents={{
-      app: () => <App initState={flux.getState().fluxTest }/>,
-      place: () => <PlaceHolder initState={flux.getState().placeHolder }/>
+    (p1) => <flux.PlaceHolder initState={flux.getState().fluxTestSwitcher} parent={p1} id='flux.PlaceHolder' contents={{
+      app: (p2) => <App initState={flux.getState().fluxTest} parent={p2} id='fluxTest.App'/>,
+      place: (p3) => <Switcher initState={flux.getState().fluxTestPlacer} parent={p3} id='fluxTest.Switcher'/>
     }}/>
   );
   /*

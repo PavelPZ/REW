@@ -65,15 +65,15 @@ namespace xxx {
         </div>;
     }
   };
-  export interface IXxxState extends IFreezerState<IXxxState> { }
+  export interface IXxxState extends flux.ISmartState { }
   interface IXxxProps extends flux.ISmartProps<IXxxState> { }
 
   //************* WHOLE APP
   new xxx();
-  flux.initWebState(
-    document.getElementById('app'),
-    { data: { xxx: {} } },
-    () => <Xxx initState={flux.getState().xxx }/>
-  );
+  //flux.initWebState(
+  //  document.getElementById('app'),
+  //  { data: { xxx: {} } },
+  //  () => <Xxx initState={flux.getState().xxx }/>
+  //);
 
 }

@@ -8,7 +8,7 @@
 namespace flux {
 
   //**************** getState, trigger
-  export function getState(): IWebState { return state.get().data; }
+  export function getState(): IWebState { return state.data; }
   export function trigger(action: IAction, complete?: (action: IAction) => void) {
     if (!action || !action.moduleId || !action.actionId) throw '!action || !action.type';
     var res = allModules[action.moduleId]; if (!res) throw 'Cannot find module ' + action.moduleId;
@@ -19,39 +19,59 @@ namespace flux {
   //*********** COMPONENTS
   export class DumpComponent<T extends React.Props<any>, S> extends React.Component<T, S> { props: T; }
 
-  export class SmartComponent<T extends ISmartProps<any>, S extends IFreezerState<any>> extends DumpComponent<T, IFreezerState<S>>{
-    constructor(props, ctx: any) {
+  export class SmartComponent<T extends ISmartProps<any>, S extends ISmartState> extends DumpComponent<T, S>{
+    constructor(props:T, ctx: any) {
       super(props, ctx);
+      //vypocet id a registrace
+      this.id = props.parent ? props.parent.id + '/' + props.id : props.id;
+      if (allComponents[this.id]) throw 'allComponents[this.id]: '+ this.id;
+      allComponents[this.id] = this;
+      //self id do meho state
+      var st = this.myState();
+      if (!st.ids) st.ids = [];
+      //if (st.ids.indexOf(this.id) >= 0) throw 'st.ids.indexOf(this.id) >= 0: ' + this.id;
+      st.ids.push(this.id);
+      console.log('>' + this.id + '-new');
     }
     context: config.IObj;
-    props: T; oldState:S;
+    props: T; id: string;
     static contextTypes = { [config.ctxPropName]: React.PropTypes.any }
     static childContextTypes = { [config.ctxPropName]: React.PropTypes.any }
-    componentWillReceiveProps = (nextProps: T, nextContext: any) => {
-      if (nextProps.initState !== this.props) this.setState(nextProps.initState);
-    }
-    shouldComponentUpdate = (nextProps: T, nextState: S, nextContext: any) => {
-      //var res = this.myState() !== nextState;
-      //var res = this.myState() !== nextState; if (!res) return;
-      var res = this.state !== nextState; if (!res) return;
-      this.props.initState = nextState;
-      return res;
-    }
     myState(): S { return this.props.initState; }
-    //componentDidMount = () => this.myState().getListener().on('update', newState => this.forceUpdate());
-    componentDidMount = () => {
-      var th = this; th.myState().getListener().on('update', newState => { th.setState(newState); th.state = newState; th.forceUpdate(); })
+    componentWillUnmount = () => {
+      //clear state a unregister
+      var st = this.myState();
+      var idx = st.ids.indexOf(this.id); if (idx >= 0) st.ids.splice(idx,1);
+      delete allComponents[this.id.toString()];
+      console.log('>' + this.id + '-componentWillUnmount');
     };
-    componentWillUnmount = () => this.myState().getListener().off('update');
+    render() {
+      console.log('>' + this.id + '-render');
+      return null;
+    }
   }
-  export interface ISmartProps<S> extends IComponentProps { initState: S; }
+  export interface ISmartProps<S> extends IComponentProps { initState: S; parent: SmartComponent<any, any>, id: string }
+  export interface ISmartState  { ids?:Array<string> }
   export interface IComponentProps extends React.Props<any> { }
 
+  //**** SET STATE => rerender
+  export function onStateChanged(st: ISmartState) {
+    if (!st) throw 'onStateChanged: !st';
+    if (!st.ids) st.ids = [];
+    st.ids.forEach(id => {
+      var comp = allComponents[id]; if (!comp) return;
+      console.log('>' + id + '-setState: ' + JSON.stringify(st));
+      comp.setState(st);
+    });
+  }
+  export function findComponent<C extends SmartComponent<any,any>>(id: string): C { return <C>(allComponents[id]); }
+
   //****************  RECORDING
-  export function recordStart() { recording = { initStatus: getState(), actions: [] }; }
+  export function recordStart() { recording = { initStatus: JSON.parse(JSON.stringify(getState()/*, (k,v) => k=='ids' ? undefined : v*/)), actions: [] }; }
   export function recordEnd(): string { try { return recording ? JSON.stringify(recording, null, 2) : null; } finally { recording = null; } }
   export function play(recStr: string, interval: number, completed: () => void) {
     if (!recStr) return;
+    console.log('>play: ' + recStr);
     var rec: IRecording = JSON.parse(recStr);
     var doPlay: () => void;
     doPlay = () => {
@@ -59,24 +79,26 @@ namespace flux {
       var act = rec.actions.splice(0, 1);
       trigger(act[0], act => setTimeout(() => doPlay(), interval));
     };
-    state.get().set('data', rec.initStatus);
+    state.data = rec.initStatus; 
+    onStateChanged(state);
     setTimeout(() => doPlay(), interval);
   }
 
   //****************  WEB START
-  export function initWebState(dom: Element, webState: IWebAppState, render: () => JSX.Element) {
-    state = new Freezer<IWebAppState>(webState); //globalni STORE
+  export function initWebState(dom: Element, webState: IWebAppState, render: (parent: SmartComponent<any, any>) => JSX.Element) {
+    state = webState; //globalni STORE
     webRender = render; //Web app render
-    ReactDOM.render(React.createElement(<any>Web, { "initState": state.get() }), dom); //INIT
+    var webProp: IWebAppProps = { "initState": state, id: 'web', parent: null };
+    ReactDOM.render(React.createElement(<any>Web, webProp), dom); //INIT
   }
 
-  export class Web extends flux.SmartComponent<IWebAppProps, IWebAppState>{
-    render() { return webRender(); }
+  export class Web extends SmartComponent<IWebAppProps, IWebAppState>{
+    render() { super.render(); return webRender(this); }
     getChildContext = () => { return config.cfg; }
   }
   export interface IWebState { }
-  export interface IWebAppState extends IFreezerState<IWebAppState> { data: IWebState; }
-  export interface IWebAppProps extends flux.ISmartProps<IWebAppState> { render: () => JSX.Element; }
+  export interface IWebAppState extends ISmartState { data: IWebState; }
+  export interface IWebAppProps extends ISmartProps<IWebAppState> { }
 
   //************ MODULE
   export class Module {
@@ -88,27 +110,28 @@ namespace flux {
     dispatchAction(action: IAction, complete: (action: IAction) => void) { throw 'notImplemented'; }
   }
 
-  export class PlaceHolder extends flux.SmartComponent<IPlaceHolderProps, IPlaceHolderState> {
+  export class PlaceHolder extends SmartComponent<IPlaceHolderProps, IPlaceHolderState> {
     render() {
-      var cont = this.props.contents[this.myState().placeId]; if (!cont) return null;
-      return cont();
+      super.render(); 
+      var cont = this.props.contents[this.myState().placeId];
+      if (!cont) throw 'flux.PlaceHolder.render: wrong place ' + this.myState().placeId;
+      return cont(this);
     }
   }
-  export interface IPlaceHolderProps extends flux.ISmartProps<IPlaceHolderState> {
-    contents: { [placeId: string]: () => JSX.Element; }
+  export interface IPlaceHolderProps extends ISmartProps<IPlaceHolderState> {
+    contents: { [placeId: string]: (parent: SmartComponent<any,any>) => JSX.Element; }
   }
-  export interface IPlaceHolderState extends IFreezerState<IPlaceHolderState> {
+  export interface IPlaceHolderState extends ISmartState {
     placeId: string;
   }
 
   //**************** PRIVATE
   interface IRecording { initStatus: IWebState; actions: Array<IAction>; }
   var recording: IRecording;
-  var state: IFreezerRoot<IWebAppState>;
+  var state: IWebAppState;
   config.cfg.data.flux = { trigger: trigger };
-  var webRender: () => JSX.Element;
+  var webRender: (parent: SmartComponent<any,any>) => JSX.Element;
   var allModules: { [id: string]: Module; } = {};
-  var allComponents: { [id: string]: SmartComponent<any,any>; } = {};
-
+  var allComponents: { [id: string]: SmartComponent<any, any>; } = {};
 
 }
