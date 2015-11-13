@@ -17,27 +17,32 @@ namespace flux {
   }
 
   //*********** COMPONENTS
-  export class DumpComponent<T extends React.Props<any>, S> extends React.Component<T, S> { props: T; state: S; }
+  export class DumpComponent<T extends React.Props<any>, S> extends React.Component<T, S> { props: T; }
 
   export class SmartComponent<T extends ISmartProps<any>, S extends IFreezerState<any>> extends DumpComponent<T, IFreezerState<S>>{
     constructor(props, ctx: any) {
       super(props, ctx);
-      this.state = this.props.initState;
     }
     context: config.IObj;
-    props: T; state: S;
+    props: T; oldState:S;
     static contextTypes = { [config.ctxPropName]: React.PropTypes.any }
     static childContextTypes = { [config.ctxPropName]: React.PropTypes.any }
-    componentWillReceiveProps = (nextProps: T & ISmartProps<S>, nextContext: any) => {
-      if (nextProps.initState !== this.state) this.setState(nextProps.initState, () => this.state = nextProps.initState);
+    componentWillReceiveProps = (nextProps: T, nextContext: any) => {
+      if (nextProps.initState !== this.props) this.setState(nextProps.initState);
     }
     shouldComponentUpdate = (nextProps: T, nextState: S, nextContext: any) => {
-      return true;
-      var res = this.state !== nextState;
+      //var res = this.myState() !== nextState;
+      //var res = this.myState() !== nextState; if (!res) return;
+      var res = this.state !== nextState; if (!res) return;
+      this.props.initState = nextState;
       return res;
     }
-    componentDidMount = () => this.state.getListener().on('update', newState => this.setState(newState, () => this.state = newState));
-    componentWillUnmount = () => this.state.getListener().off('update');
+    myState(): S { return this.props.initState; }
+    //componentDidMount = () => this.myState().getListener().on('update', newState => this.forceUpdate());
+    componentDidMount = () => {
+      var th = this; th.myState().getListener().on('update', newState => { th.setState(newState); th.state = newState; th.forceUpdate(); })
+    };
+    componentWillUnmount = () => this.myState().getListener().off('update');
   }
   export interface ISmartProps<S> extends IComponentProps { initState: S; }
   export interface IComponentProps extends React.Props<any> { }
@@ -85,7 +90,7 @@ namespace flux {
 
   export class PlaceHolder extends flux.SmartComponent<IPlaceHolderProps, IPlaceHolderState> {
     render() {
-      var cont = this.props.contents[this.state.placeId]; if (!cont) return null;
+      var cont = this.props.contents[this.myState().placeId]; if (!cont) return null;
       return cont();
     }
   }
@@ -103,6 +108,7 @@ namespace flux {
   config.cfg.data.flux = { trigger: trigger };
   var webRender: () => JSX.Element;
   var allModules: { [id: string]: Module; } = {};
+  var allComponents: { [id: string]: SmartComponent<any,any>; } = {};
 
 
 }

@@ -81,11 +81,12 @@ namespace fluxTest {
   //************* VIEW hvezdicky
   export class App extends flux.SmartComponent<IAppProps, IAppState>{
     render() {
+      var st = this.myState();
       return <div>
         <p>
-          <div onClick={() => flux.trigger(mod1.createAppClickAction()) }>{this.state.clickTitle}</div>
-          <HelloMessage initState={this.state.hello1 } is1={1}/>
-          <HelloMessage initState={this.state.hello2 } is1={2}/>
+          <div onClick={() => flux.trigger(mod1.createAppClickAction()) }>{st.clickTitle}</div>
+          <HelloMessage initState={st.hello1 } is1={1}/>
+          <HelloMessage initState={st.hello2 } is1={2}/>
           </p>
         </div>;
     }
@@ -95,7 +96,7 @@ namespace fluxTest {
 
   class HelloMessage extends flux.SmartComponent<IHelloWorldProps, IHelloWorldState>{
     render() {
-      return <div onClick={() => flux.trigger(mod1.createClickAction(this.props.is1)) }>{this.context.data.mod1.prefix } {this.state.actName}</div >;
+      return <div onClick={() => flux.trigger(mod1.createClickAction(this.props.is1)) }>{this.context.data.mod1.prefix } {this.myState().actName}</div >;
     }
   };
   interface IHelloWorldProps extends flux.ISmartProps<IHelloWorldState> { is1: number; }
@@ -104,9 +105,10 @@ namespace fluxTest {
   //************* VIEW placeholder
   export class PlaceHolder extends flux.SmartComponent<IPlaceHolderProps, IPlaceHolderState>{
     render() {
+      var st = this.myState();
       return <div>
         <p onClick={() => flux.trigger(mod1.createPlaceholderClickAction()) }>click</p>
-        <div>{this.state.isApp ? (<App initState={flux.getState().fluxTest}/>) : (<HelloMessage initState={this.state.hello } is1={3}/>) }</div>
+        <div>{st.isApp ? (<App initState={flux.getState().fluxTest}/>) : (<HelloMessage initState={st.hello} is1={3}/>) }</div>
         </div>
         ;
     }
@@ -136,7 +138,7 @@ namespace fluxTest {
     () => <flux.PlaceHolder initState={flux.getState().place} contents={{
       app: () => <App initState={flux.getState().fluxTest }/>,
       place: () => <PlaceHolder initState={flux.getState().placeHolder }/>
-    }}/> 
+    }}/>
   );
   /*
     () => <flux.PlaceHolder initState={flux.getState().place} contents={{
