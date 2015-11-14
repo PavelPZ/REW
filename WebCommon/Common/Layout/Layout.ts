@@ -39,12 +39,12 @@ namespace layout {
     var sceneOK = sceneId == layState.scene.placeId;
     for (var newPl of playgrounds) {
       var plId = newPl.id || defaultPlaygroundId;
+      if (!layState.playgrounds) layState.playgrounds = {};
       var oldPl = layState.playgrounds[plId];
-      if (!oldPl) throw 'Cannot find playground in layout state: ' + plId;
+      if (!oldPl) layState.playgrounds[plId] = oldPl = { id: plId, contentId: undefined }; //throw 'Cannot find playground in layout state: ' + plId;
       if (oldPl.contentId == newPl.contentId) continue;
       oldPl.contentId = newPl.contentId;
       if (sceneOK) {
-        //if (!flux.stateConnected(oldPl)) throw 'Scene Placeholder does not exist: ' + plId;
         flux.onStateChanged(oldPl);
       }
     }
@@ -60,16 +60,19 @@ namespace layout {
   }
 
   export type TRenderFunction = (parent: flux.SmartComponent<any, any>) => JSX.Element;
-  export function sceneState(): IPlaceHolderState { return flux.getState().layout.scene; }
+  export function sceneState(): IPlaceHolderState {
+    var st = flux.getState(); if (!st.layout) st.layout = {};
+    var l = st.layout; return l.scene ? l.scene : l.scene = {};
+  }
   export function playGroundState(id: string = defaultPlaygroundId): IPlaygroundState { return flux.getState().layout.playgrounds[id]; }
 
   export interface IRootState {
-    scene: layout.IPlaceHolderState;
-    playgrounds: {
+    scene?: layout.IPlaceHolderState;
+    playgrounds?: {
       [id: string]: layout.IPlaygroundState;
     }
   }
-  export const defaultState: IRootState = { scene: { placeId: defaultSceneId }, playgrounds: { [defaultPlaygroundId]: { id: defaultPlaygroundId, contentId: null } } };
+  //export const defaultState: IRootState = { scene: { placeId: defaultSceneId }, playgrounds: { [defaultPlaygroundId]: { id: defaultPlaygroundId, contentId: null } } };
 
   //******************** PLAYGROUND
   export class Playground extends flux.SmartComponent<IPlaygroundProps, IPlaygroundState> {

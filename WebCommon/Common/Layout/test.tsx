@@ -109,13 +109,6 @@ namespace layoutTest {
     {
       data: {
         layoutTest: {},
-        layout: {
-          scene: { },
-          playgrounds: {
-            [layout.defaultPlaygroundId]: { id: layout.defaultPlaygroundId, contentId: null },
-            [otherPlayground]: { id: otherPlayground, contentId: null },
-          }
-        }
       }
     },
     (web) => <div>

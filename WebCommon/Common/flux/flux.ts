@@ -87,6 +87,11 @@ namespace flux {
     onStateChanged(state);
     setTimeout(() => doPlay(), interval);
   }
+  export function resetState() {
+    if (!recording) return;
+    state.data = recording.initStatus; recording.actions = [];
+    onStateChanged(state);
+  }
 
   //****************  WEB START
   export function initWebState(dom: Element, webState: IWebAppState, render: (parent: SmartComponent<any, any>) => JSX.Element) {

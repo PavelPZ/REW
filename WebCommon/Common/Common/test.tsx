@@ -84,9 +84,8 @@ namespace xxx {
     document.getElementById('app'),
     {
       data: {
-        xxx: {
-          xxxModuleState: {}
-        }
+        xxx: { xxxModuleState: {} },
+        layout: {}
       }
     },
     (web) => <layout.Scene initState={layout.sceneState() } parent={web} id='layout.Scene' contents={{
