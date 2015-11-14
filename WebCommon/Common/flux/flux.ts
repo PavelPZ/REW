@@ -29,9 +29,9 @@ namespace flux {
       allComponents[this.id] = this;
       //self id do meho state
       var st = this.getState();
+      console.log('>' + this.id + '-new, initState=' + JSON.stringify(st, (key, value) => key=='ids' ? undefined : value));
       if (!st.ids) st.ids = [];
       st.ids.push(this.id);
-      console.log('>' + this.id + '-new, initState=' + JSON.stringify(st));
     }
     context: config.IObj;
     props: T; id: string;
@@ -60,7 +60,7 @@ namespace flux {
     if (!st.ids) st.ids = [];
     st.ids.forEach(id => {
       var comp = allComponents[id]; if (!comp) return;
-      console.log('>' + id + '-setState: ' + JSON.stringify(st));
+      console.log('>' + id + '-setState: ' + JSON.stringify(st, (key, value) => key == 'ids' ? undefined : value));
       comp.setState(st);
     });
   }
