@@ -79,6 +79,8 @@ namespace xxx {
   //** SCENE configuration
   layout.setScenePlaceRender(layout.defaultScenePlaceId, xxx.plDefaultContentId, parent => <Xxx initState={flux.getState().xxx } parent={parent} id='Xxx.xxx'/>);
 
+  var Header: React.StatelessComponent<{ name: string }> = (p, ctx) => <h3>{p.name}</h3>;
+
   //** STATE initialization
   flux.initWebState(
     document.getElementById('app'),
@@ -90,7 +92,7 @@ namespace xxx {
     },
     (web) => <layout.Scene initState={layout.sceneState() } parent={web} id='layout.Scene' cases={{
       [layout.defaultSceneId]: parent => <div>
-        <h1>Xxx Header</h1>
+        {Header({ name:'Stateless function call'})}
         <layout.ScenePlace initState={layout.scenePlaceState() } parent={parent} id='layout.ScenePlace'/>
         <div>Xxx Footer</div>
         </div>

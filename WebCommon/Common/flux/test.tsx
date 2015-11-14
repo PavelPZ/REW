@@ -13,7 +13,7 @@
 //  options?: Options): (cls: React.ClassicComponentClass<P>) => React.ClassicComponentClass<P>;
 
 //D:\LMCom\rew\WebLogin\scripts\typings\react-global.d.ts
-//import ReactDOM = __React; 
+
 
 namespace config {
   export interface IData {
