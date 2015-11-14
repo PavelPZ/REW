@@ -110,7 +110,7 @@ namespace layoutTest {
       data: {
         layoutTest: {},
         layout: {
-          scene: { placeId: layout.defaultSceneId },
+          scene: { },
           playgrounds: {
             [layout.defaultPlaygroundId]: { id: layout.defaultPlaygroundId, contentId: null },
             [otherPlayground]: { id: otherPlayground, contentId: null },

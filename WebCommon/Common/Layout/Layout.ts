@@ -90,7 +90,7 @@ namespace layout {
   export class PlaceHolder extends flux.SmartComponent<IPlaceHolderProps, IPlaceHolderState> {
     render() {
       super.render();
-      var placeId = this.props.initState.placeId;
+      var placeId = this.props.initState.placeId; if (!placeId) return null;
       var cont = this.props.contents[placeId];
       if (!cont) throw 'flux.PlaceHolder.render: wrong place ' + placeId;
       return cont(this);
@@ -100,7 +100,7 @@ namespace layout {
     contents: { [placeId: string]: TRenderFunction; }
   }
   export interface IPlaceHolderState extends flux.ISmartState {
-    placeId: string;
+    placeId?: string;
   }
 
   //******************** SCENE
