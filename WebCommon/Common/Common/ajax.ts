@@ -32,6 +32,7 @@
   }
   export enum ajaxMethod { GET, PUT, POST, DELETE, MERGE }
   export enum ajaxContentType { formUrlencoded, txt, json, javascript }
+  //IIS mime maps, napr. D:\LMCom\rew\.vs\config\applicationhost.config
   function getAjaxContentType(type: ajaxContentType): string {
     if (!type) return null;
     switch (type) {

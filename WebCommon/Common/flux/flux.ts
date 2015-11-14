@@ -25,13 +25,13 @@ namespace flux {
       super(props, ctx);
       //vypocet id a registrace
       this.id = props.parent ? props.parent.id + '/' + props.id : props.id;
-      if (allComponents[this.id]) throw 'allComponents[this.id]: '+ this.id;
+      if (allComponents[this.id]) throw 'Just created component: '+ this.id + ' already exists (allComponents[this.id]: ';
       allComponents[this.id] = this;
       //self id do meho state
       var st = this.getState();
       if (!st.ids) st.ids = [];
       st.ids.push(this.id);
-      console.log('>' + this.id + '-new');
+      console.log('>' + this.id + '-new, initState=' + JSON.stringify(st));
     }
     context: config.IObj;
     props: T; id: string;

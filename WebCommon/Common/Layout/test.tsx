@@ -12,7 +12,7 @@ namespace config {
 namespace uiRouter {
   export interface INamedState {
     layoutTest: { //pojmenovane uiRouter.State's aplikace
-      default: uiRouter.State<layoutTest.IDefaultPar>; //uiRouter.State hlavni stranky aplikace
+      default: uiRouter.State<layoutTest.ILayoutTestModulePar>; //uiRouter.State hlavni stranky aplikace
     }
   };
   namedState.layoutTest = {} as any;
@@ -20,44 +20,60 @@ namespace uiRouter {
 
 namespace flux {
   export interface IWebState {
-    layoutTest?: layoutTest.ILayoutTestState; //cast globalniho flux.IFluxState, patrici aplikaci
+    layoutTest?: {}; //cast globalniho flux.IFluxState, patrici aplikaci
   }
 }
 
 namespace layoutTest {
-  export interface IDefaultPar extends uiRouter.IStatePar { id: number; opt1: string; } //jeden z route PAR
 
   //*********************** DISPATCH MODULE definition
-  interface ILayoutTestClickAction extends flux.IAction { }
-
   class layoutTest extends flux.Module {
     constructor() {
       super(layoutTest.moduleId);
     }
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
       switch (action.actionId) {
-        case uiRouter.routerActionId: layout.changeLayout(action); break;
+        case uiRouter.routerActionId:
+          layout.changeLayout(action,
+            { contentId: layoutTest.plContentIdDefault },
+            { id: otherPlayground, contentId: layoutTest.plContentIdOther }
+          );
+          break;
         case 'click':
           alert('click');
-          if (complete) complete(action);
           break;
       }
+      if (complete) complete(action);
     }
     static moduleId = 'layoutTest';
+    static plContentIdDefault = layoutTest.moduleId + '/Default';
+    static plContentIdOther = layoutTest.moduleId + '/Other';
     static createAppClickAction(): ILayoutTestClickAction { return { moduleId: layoutTest.moduleId, actionId: 'click' }; }
   }
+  interface ILayoutTestClickAction extends flux.IAction { }
 
-  //************* VIEW
-  export class LayoutTest extends flux.SmartComponent<ILayoutTestProps, ILayoutTestState>{
+  //************* VIEWs
+  export class LayoutContent extends flux.SmartComponent<flux.ISmartProps<any>, flux.ISmartState>{
     render() {
       super.render();
       return <div>
+        <h2>Content</h2>
         <div onClick={() => flux.trigger(layoutTest.createAppClickAction()) }>Click</div>
+        {namedState.default.getHashStr({ sceneId: layout.defaultSceneId }) }<br/>
+        {namedState.default.getHashStr({ sceneId: otherScene }) }
+        <hr/>
         </div>;
     }
   };
-  export interface ILayoutTestState extends flux.ISmartState { }
-  interface ILayoutTestProps extends flux.ISmartProps<ILayoutTestState> { }
+  //
+  export class LayoutPanel extends flux.SmartComponent<flux.ISmartProps<any>, flux.ISmartState>{
+    render() {
+      super.render();
+      return <div>
+        <h2>Panel</h2>
+        </div>;
+    }
+  };
 
   //************* WHOLE APP
   //** definice DISPATCH modulu
@@ -65,14 +81,31 @@ namespace layoutTest {
 
   //** ROUTE configuration
   export var namedState = uiRouter.namedState.layoutTest; //pojmenovane stavy
+  export interface ILayoutTestModulePar extends uiRouter.IStatePar { sceneId: string } //route PAR pro LayoutTestModule
+
   uiRouter.init(
-    namedState.default = new uiRouter.State<IDefaultPar>(layoutTest.moduleId, '/layoutTest-home')
+    namedState.default = new uiRouter.State<ILayoutTestModulePar>(layoutTest.moduleId, '/layoutTest/:sceneId')
   );
-  uiRouter.setDefault<IDefaultPar>(namedState.default, { id: 1, opt1: '' });
+  uiRouter.setDefault<ILayoutTestModulePar>(namedState.default, { sceneId: layout.defaultSceneId });
   setTimeout(() => uiRouter.listenHashChange());
 
   //** SCENE configuration
-  layout.setPlayGroundRender(layoutTest.moduleId, parent => <LayoutTest initState={flux.getState().layoutTest } parent={parent} id='LayoutTest.layoutTest'/>);
+  var otherPlayground = 'otherPlayground';
+  var otherScene = 'otherScene';
+
+  config.cfg.data.layout.routeActionToSceneId = (action: uiRouter.IStateAction<ILayoutTestModulePar>) => {
+    return action.sceneId;
+  };
+  layout.setPlayGroundRender(
+    layout.defaultPlaygroundId,
+    layoutTest.plContentIdDefault,
+    parent => <LayoutContent initState={flux.getState().layoutTest } parent={parent} id='LayoutTest.LayoutContent'/>
+  );
+  layout.setPlayGroundRender(
+    otherPlayground,
+    layoutTest.plContentIdOther,
+    parent => <LayoutPanel initState={flux.getState().layoutTest } parent={parent} id='LayoutTest.LayoutPanel'/>
+  );
 
   //** STATE initialization
   flux.initWebState(
@@ -80,14 +113,27 @@ namespace layoutTest {
     {
       data: {
         layoutTest: {},
-        layout: layout.defaultState
+        layout: {
+          scene: { placeId: layout.defaultSceneId },
+          playgrounds: {
+            [layout.defaultPlaygroundId]: { id: layout.defaultPlaygroundId, contentId: null },
+            [otherPlayground]: { id: otherPlayground, contentId: null },
+          }
+        }
       }
     },
     (web) => <layout.Scene initState={layout.sceneState() } parent={web} id='layout.Scene' contents={{
       [layout.defaultSceneId]: parent => <div>
         <h1>LayoutTest Header</h1>
-        <layout.Playground initState={layout.playGroundState() } parent={parent} id='layout.Playground'/>
+        <layout.Playground initState={layout.playGroundState() } parent={parent} id='layout.Playground1'/>
+        <layout.Playground initState={layout.playGroundState(otherPlayground) } parent={parent} id='layout.Playground2'/>
         <div>LayoutTest Footer</div>
+        </div>,
+      [otherScene]: parent => <div>
+        <div>LayoutTest Footer</div>
+        <layout.Playground initState={layout.playGroundState(otherPlayground) } parent={parent} id='layout.Playground3'/>
+        <layout.Playground initState={layout.playGroundState() } parent={parent} id='layout.Playground4'/>
+        <h1>LayoutTest Header</h1>
         </div>
     }}/>
   );

@@ -12,7 +12,7 @@ namespace config {
 namespace uiRouter {
   export interface INamedState {
     xxx: { //pojmenovane uiRouter.State's aplikace
-      default: uiRouter.State<xxx.IDefaultPar>; //uiRouter.State hlavni stranky aplikace
+      default: uiRouter.State<xxx.IXxxModulePar>; //uiRouter.State hlavni stranky aplikace
     }
   };
   namedState.xxx = {} as any;
@@ -20,12 +20,14 @@ namespace uiRouter {
 
 namespace flux {
   export interface IWebState {
-    xxx?: xxx.IXxxState; //cast globalniho flux.IFluxState, patrici aplikaci
+    xxx?: {
+      xxxModuleState: xxx.IXxxState; //cast globalniho flux.IFluxState, patrici aplikaci
+    }
   }
 }
 
 namespace xxx {
-  export interface IDefaultPar extends uiRouter.IStatePar { id: number; opt1: string; } //jeden z route PAR
+  export interface IXxxModulePar extends uiRouter.IStatePar { id: number; opt1: string; } //route PAR pro XxxModule
 
   //*********************** DISPATCH MODULE definition
   interface IXxxClickAction extends flux.IAction { }
@@ -36,14 +38,17 @@ namespace xxx {
     }
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
       switch (action.actionId) {
-        case uiRouter.routerActionId: layout.changeLayout(action); break;
+        case uiRouter.routerActionId:
+          layout.changeLayout(action, xxx.plDefaultContentId);
+          break;
         case 'click':
           alert('click');
-          if (complete) complete(action);
           break;
       }
+      if (complete) complete(action);
     }
     static moduleId = 'xxx';
+    static plDefaultContentId = xxx.moduleId + '/default';
     static createAppClickAction(): IXxxClickAction { return { moduleId: xxx.moduleId, actionId: 'click' }; }
   }
 
@@ -66,21 +71,22 @@ namespace xxx {
   //** ROUTE configuration
   export var namedState = uiRouter.namedState.xxx; //pojmenovane stavy
   uiRouter.init(
-    namedState.default = new uiRouter.State<IDefaultPar>(xxx.moduleId, '/xxx-home')
+    namedState.default = new uiRouter.State<IXxxModulePar>(xxx.moduleId, '/xxx-home')
   );
-  uiRouter.setDefault<IDefaultPar>(namedState.default, { id: 1, opt1: '' });
+  uiRouter.setDefault<IXxxModulePar>(namedState.default, { id: 1, opt1: '' });
   setTimeout(() => uiRouter.listenHashChange());
 
   //** SCENE configuration
-  layout.setPlayGroundRender(xxx.moduleId, parent => <Xxx initState={flux.getState().xxx } parent={parent} id='Xxx.xxx'/>);
+  layout.setPlayGroundRender(layout.defaultPlaygroundId, xxx.plDefaultContentId, parent => <Xxx initState={flux.getState().xxx } parent={parent} id='Xxx.xxx'/>);
 
   //** STATE initialization
   flux.initWebState(
     document.getElementById('app'),
     {
       data: {
-        xxx: {},
-        layout: layout.defaultState
+        xxx: {
+          xxxModuleState: {}
+        }
       }
     },
     (web) => <layout.Scene initState={layout.sceneState() } parent={web} id='layout.Scene' contents={{

@@ -40,12 +40,13 @@ namespace loginTest {
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
       switch (action.actionId) {
         case uiRouter.routerActionId:
+          throw 'todo';
           break;
         case 'click':
           alert('click');
-          if (complete) complete(action);
           break;
       }
+      if (complete) complete(action);
     }
     static moduleId = 'loginTest';
     static createAppClickAction(): ILoginTestClickAction { return { moduleId: loginTest.moduleId, actionId: 'click' }; }
@@ -80,12 +81,7 @@ namespace loginTest {
     document.getElementById('app'),
     {
       data: {
-        layout: {
-          scene: { placeId: 'login' },
-          playgrounds: {
-            [layout.defaultPlaygroundId]: { id: layout.defaultPlaygroundId, contentId:''}
-          }
-        }
+        layoutTest: {}
       }
     },
     (p1) => <layout.PlaceHolder initState={flux.getState().fluxTestSwitcher} parent={p1} id='layout.PlaceHolder' contents={{

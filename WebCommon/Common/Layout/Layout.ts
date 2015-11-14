@@ -7,15 +7,15 @@ namespace config {
     layout: { //konfigurace layout aplikace
       routeActionToSceneId: (routeAction: flux.IAction) => string;
       playgroundContents: { //definuj RENDER obsah
-        [id: string]: { //pro kazdy PlayGround
-          [routeAction: string]: layout.TRenderFunction; //a pro kaztou route action. routeAction je flux.actionPath(IAction)
+        [playGroundId: string]: { //pro kazdy PlayGround
+          [contentId: string]: layout.TRenderFunction; //a pro kazde contentId
         }
       }
     };
   }
   cfg.data.layout = {
     routeActionToSceneId: action => layout.defaultSceneId,
-    playgroundContents: { [layout.defaultPlaygroundId]: {} }
+    playgroundContents: {}
   }
 }
 
@@ -27,8 +27,10 @@ namespace flux {
 
 namespace layout {
 
-  export function changeLayout(routeAction: flux.IAction, playgs?: Array<IPlaygroundState>) {
-    var playgrounds = !playgs ? [{ id: layout.defaultPlaygroundId, contentId: flux.actionPath(routeAction) }] : playgs;
+  export function changeLayout(routeAction: flux.IAction, first: IPlaygroundState | string, ...other: Array<IPlaygroundState>) {
+    console.log('>changeLayout ' + routeAction.moduleId + '/' + routeAction.actionId);
+    var firstPs: IPlaygroundState = utils.isString(first) ? { contentId: <string>first } : <IPlaygroundState>first;
+    var playgrounds = [firstPs].concat(other);
     var layCfg = config.cfg.data.layout;
     if (!layCfg.routeActionToSceneId) throw 'Missing config.cfg.data.layout.routeActionToSceneId config';
     var sceneId = layCfg.routeActionToSceneId(routeAction);
@@ -36,27 +38,30 @@ namespace layout {
     if (!flux.stateConnected(layState.scene)) throw 'Scene PlaceHolder component does not exists or does not bind to flux.getState().layout.scene state';
     var sceneOK = sceneId == layState.scene.placeId;
     for (var newPl of playgrounds) {
-      var oldPl = layState.playgrounds[newPl.id];
-      if (!oldPl) throw 'Cannot find playground in layout state: ' + newPl.id;
-      if (!flux.stateConnected(oldPl)) throw 'Scene Placeholder does not exist: ' + newPl.id;
+      var plId = newPl.id || defaultPlaygroundId;
+      var oldPl = layState.playgrounds[plId];
+      if (!oldPl) throw 'Cannot find playground in layout state: ' + plId;
       if (oldPl.contentId == newPl.contentId) continue;
       oldPl.contentId = newPl.contentId;
-      if (sceneOK) flux.onStateChanged(oldPl);
+      if (sceneOK) {
+        //if (!flux.stateConnected(oldPl)) throw 'Scene Placeholder does not exist: ' + plId;
+        flux.onStateChanged(oldPl);
+      }
     }
     if (sceneOK) return;
     layState.scene.placeId = sceneId;
     flux.onStateChanged(layState.scene);
   }
 
-  export function setPlayGroundRender(moduleId: string, render: layout.TRenderFunction, playgroundId: string = layout.defaultPlaygroundId, actionId: string = uiRouter.routerActionId) {
+  export function setPlayGroundRender(playgroundId: string, contentId: string, render: layout.TRenderFunction) {
     var playContents = config.cfg.data.layout.playgroundContents;
     if (!playContents[playgroundId]) playContents[playgroundId] = {};
-    playContents[playgroundId][flux.actionPath({ moduleId: moduleId, actionId: actionId })] = render;
+    playContents[playgroundId][contentId] = render;
   }
 
   export type TRenderFunction = (parent: flux.SmartComponent<any, any>) => JSX.Element;
   export function sceneState(): IPlaceHolderState { return flux.getState().layout.scene; }
-  export function playGroundState(id: string = defaultPlaygroundId): IPlaygroundState { return flux.getState().layout.playgrounds[layout.defaultPlaygroundId]; }
+  export function playGroundState(id: string = defaultPlaygroundId): IPlaygroundState { return flux.getState().layout.playgrounds[id]; }
 
   export interface IRootState {
     scene: layout.IPlaceHolderState;
@@ -64,7 +69,7 @@ namespace layout {
       [id: string]: layout.IPlaygroundState;
     }
   }
-  export const defaultState: IRootState = { scene: { placeId: defaultSceneId }, playgrounds: { [defaultPlaygroundId]: { id: defaultPlaygroundId } } };
+  export const defaultState: IRootState = { scene: { placeId: defaultSceneId }, playgrounds: { [defaultPlaygroundId]: { id: defaultPlaygroundId, contentId: null } } };
 
   //******************** PLAYGROUND
   export class Playground extends flux.SmartComponent<IPlaygroundProps, IPlaygroundState> {
@@ -76,8 +81,8 @@ namespace layout {
     }
   }
   export interface IPlaygroundState extends flux.ISmartState {
-    id: string;
-    contentId?: string;
+    id?: string; //!id => defaultPlaygroundId
+    contentId: string;
   }
   export interface IPlaygroundProps extends flux.ISmartProps<IPlaygroundState> { }
 

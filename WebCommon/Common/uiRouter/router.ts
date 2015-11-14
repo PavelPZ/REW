@@ -42,6 +42,7 @@ namespace uiRouter {
 
   //predchudce vsech router state parametru
   export interface IStatePar { }
+  export type IStateAction<T extends IStatePar> = flux.IAction & T;
 
   //*** inicilizace 
   export function init(...roots: Array<State<any>>): void { //definice stavu
