@@ -157,7 +157,7 @@ namespace validation {
       return getInputTemplate(templ);
     }
   }
-  interface IInputProps extends flux.IComponentProps { validator?: IValidPars; initValue?: string; }
+  interface IInputProps extends flux.IComponentProps { validator?: IValidPars; initValue?: string; title: string;}
 
   export interface IInputTemplate {
     valueLink: React.ReactLink<string>; //two way binding

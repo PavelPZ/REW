@@ -15,6 +15,7 @@ namespace flux {
     if (recording) recording.actions.push(action);
     res.dispatchAction(action, complete);
   }
+  export function actionPath(act: IAction) { return act.moduleId + '/' + act.actionId; }
 
   //*********** COMPONENTS
   export class DumpComponent<T extends React.Props<any>, S> extends React.Component<T, S> { props: T; }
@@ -27,9 +28,8 @@ namespace flux {
       if (allComponents[this.id]) throw 'allComponents[this.id]: '+ this.id;
       allComponents[this.id] = this;
       //self id do meho state
-      var st = this.myState();
+      var st = this.getState();
       if (!st.ids) st.ids = [];
-      //if (st.ids.indexOf(this.id) >= 0) throw 'st.ids.indexOf(this.id) >= 0: ' + this.id;
       st.ids.push(this.id);
       console.log('>' + this.id + '-new');
     }
@@ -37,10 +37,10 @@ namespace flux {
     props: T; id: string;
     static contextTypes = { [config.ctxPropName]: React.PropTypes.any }
     static childContextTypes = { [config.ctxPropName]: React.PropTypes.any }
-    myState(): S { return this.props.initState; }
+    getState(): S { return this.props.initState; }
     componentWillUnmount = () => {
       //clear state a unregister
-      var st = this.myState();
+      var st = this.getState();
       var idx = st.ids.indexOf(this.id); if (idx >= 0) st.ids.splice(idx,1);
       delete allComponents[this.id.toString()];
       console.log('>' + this.id + '-componentWillUnmount');
@@ -63,6 +63,10 @@ namespace flux {
       console.log('>' + id + '-setState: ' + JSON.stringify(st));
       comp.setState(st);
     });
+  }
+  export function stateConnected(st: ISmartState): boolean {
+    if (!st || !st.ids) return false;
+    return !!st.ids.find(id => !!allComponents[id]);
   }
   export function findComponent<C extends SmartComponent<any,any>>(id: string): C { return <C>(allComponents[id]); }
 
@@ -108,21 +112,6 @@ namespace flux {
     }
     childs: Array<Module>;
     dispatchAction(action: IAction, complete: (action: IAction) => void) { throw 'notImplemented'; }
-  }
-
-  export class PlaceHolder extends SmartComponent<IPlaceHolderProps, IPlaceHolderState> {
-    render() {
-      super.render(); 
-      var cont = this.props.contents[this.myState().placeId];
-      if (!cont) throw 'flux.PlaceHolder.render: wrong place ' + this.myState().placeId;
-      return cont(this);
-    }
-  }
-  export interface IPlaceHolderProps extends ISmartProps<IPlaceHolderState> {
-    contents: { [placeId: string]: (parent: SmartComponent<any,any>) => JSX.Element; }
-  }
-  export interface IPlaceHolderState extends ISmartState {
-    placeId: string;
   }
 
   //**************** PRIVATE

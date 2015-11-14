@@ -34,6 +34,7 @@ namespace valTest {
         {this.props.children}
         </div>;
     }
+    props: IValTestProps;
   };
   interface IValTestStates extends flux.ISmartState { }
   interface IValTestProps extends flux.ISmartProps<IValTestStates> { }
@@ -41,19 +42,19 @@ namespace valTest {
 
   //************* WHOLE APP
   new valTest();
-  //flux.initWebState(
-  //  document.getElementById('app'),
-  //  { data: { valTest: {} } },
-  //  () =>
-  //    <ValTest initState={flux.getState().valTest }>
-  //    {/*<validation.Input validator={{ type: validation.types.stringLength | validation.types.stringLength, minLength: 2, maxLength: 4 }}/>*/}
-  //    {/*<validation.Input validator={{ type: validation.types.email }}/>*/}
-  //    <validation.Group>
-  //    <validation.Input validator={{ type: validation.types.required, id: 'psw' }}/><br/>
-  //    <validation.Input validator={{ type: validation.types.equalTo, equalToId: 'psw' }}/>
-  //      </validation.Group>
-  //    <p><validation.Input/></p>
-  //      </ValTest>
-  //);
+  flux.initWebState(
+    document.getElementById('app'),
+    { data: { valTest: {} } },
+    (web) =>
+      <ValTest initState={flux.getState().valTest} id='valTest.ValTest' parent={web} >
+      {/*<validation.Input validator={{ type: validation.types.stringLength | validation.types.stringLength, minLength: 2, maxLength: 4 }}/>*/}
+      {/*<validation.Input validator={{ type: validation.types.email }}/>*/}
+      <validation.Group>
+      <validation.Input validator={{ type: validation.types.required, id: 'psw' }} title='Password'/><br/>
+      <validation.Input validator={{ type: validation.types.equalTo, equalToId: 'psw' }} title='Confirm password'/>
+        </validation.Group>
+      <p><validation.Input title='???'/></p>
+        </ValTest>
+  );
 
 }

@@ -36,3 +36,5 @@ namespace routerTest {
     var d3 = uiRouter.parseHashStr('/login.login');
   }
 }
+
+routerTest.testRouterLow();

@@ -23,15 +23,16 @@ namespace uiRouter {
 
 namespace flux {
   export interface IWebState {
-    login?: login.ILoginRootState;
+    login?: login.IRootState;
   }
 }
 
 
 namespace login {
-  //***** ROUTE init
-  var namedState = uiRouter.namedState.login; //pojmenovane stavy
 
+
+  //***** ROUTE init
+  const namedState = uiRouter.namedState.login; //pojmenovane stavy
   uiRouter.init(
     namedState.index = new uiRouter.State(moduleIndex.moduleId, '/login',
       namedState.login = new uiRouter.State(moduleLMLogin.moduleId, '/login'),
@@ -41,9 +42,15 @@ namespace login {
       namedState.pswChange = new uiRouter.State('??', '/psw-change'),
       namedState.pswChanged = new uiRouter.State('??', '/psw-changed')
     )
-  );
+  ); 
 
-  export interface ILoginRootState { }
-  //uiRouter.setDefault(namedState.index, {});
-
+  export interface IRootState {
+    user?: IUser
+  }
+  export interface IUser {
+    email: string;
+    firstName: string;
+    lastName: string;
+  }
+  
 }

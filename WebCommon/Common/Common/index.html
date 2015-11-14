@@ -1,13 +1,19 @@
-﻿<html>
+﻿<!DOCTYPE html>
+<html>
 <head>
   <title></title>
   <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <script type="text/javascript" src="../../scripts/core.js"></script>
   <script type="text/javascript" src="../../scripts/react.js"></script>
   <script type="text/javascript" src="../../scripts/react-dom.js"></script>
   <script type="text/javascript" src="../../scripts/react-with-addons.js"></script>
   <script type="text/javascript" src="../common/common.js"></script>
   <script type="text/javascript" src="../flux/flux.js"></script>
+  <script type="text/javascript" src="../layout/layout.js"></script>
+
   <script type="text/javascript" src="../validation/lib.js"></script>
   <script type="text/javascript" src="../validation/templates.js"></script>
   <script type="text/javascript" src="../uiRouter/angularCommon.js"></script>
@@ -17,6 +23,11 @@
 </head>
 <body>
   <div id="app"></div>
-  <script type="text/javascript" src="templateTest.js"></script>
+  <hr />
+  <p>
+    <a href="#" onclick="flux.recordStart()">recordStart</a><br />
+    <a href="#" onclick="flux.play(flux.recordEnd(), 300, function(){/*alert('done');*/})">recordEnd and play</a><br />
+  </p>
+  <script type="text/javascript" src="test.js"></script>
 </body>
 </html>

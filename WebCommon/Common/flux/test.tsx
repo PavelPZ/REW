@@ -27,7 +27,7 @@ namespace flux {
   export interface IWebState {
     fluxTest?: fluxTest.IAppState;
     fluxTestPlacer?: fluxTest.IPlaceHolderState;
-    fluxTestSwitcher?: flux.IPlaceHolderState;
+    fluxTestSwitcher?: layout.IPlaceHolderState;
   }
 }
 
@@ -82,12 +82,17 @@ namespace fluxTest {
   export class App extends flux.SmartComponent<IAppProps, IAppState>{
     render() {
       super.render(); 
-      var st = this.myState();
+      var st = this.getState();
       return <div>
         <p>
           <div onClick={() => flux.trigger(mod1.createAppClickAction()) }>{st.clickTitle}</div>
           <HelloMessage initState={st.hello1 } is1={1} parent={this} id='fluxTest.HelloMessage1'/>
           <HelloMessage initState={st.hello2 } is1={2} parent={this} id='fluxTest.HelloMessage2'/>
+          </p>
+        <p>
+          <div onClick={() => flux.trigger(mod1.createAppClickAction()) }>{st.clickTitle}</div>
+          <HelloMessage initState={st.hello1 } is1={1} parent={this} id='fluxTest.HelloMessage3'/>
+          <HelloMessage initState={st.hello2 } is1={2} parent={this} id='fluxTest.HelloMessage4'/>
           </p>
         </div>;
     }
@@ -98,7 +103,7 @@ namespace fluxTest {
   class HelloMessage extends flux.SmartComponent<IHelloWorldProps, IHelloWorldState>{
     render() {
       super.render();
-      return <div onClick={() => flux.trigger(mod1.createClickAction(this.id)) }>{this.context.data.mod1.prefix } {this.myState().actName}</div >;
+      return <div onClick={() => flux.trigger(mod1.createClickAction(this.id)) }>{this.context.data.mod1.prefix } {this.getState().actName}</div >;
     }
     props: IHelloWorldProps;
   };
@@ -109,7 +114,7 @@ namespace fluxTest {
   export class Switcher extends flux.SmartComponent<IPlaceHolderProps, IPlaceHolderState>{
     render() {
       super.render(); 
-      var st = this.myState();
+      var st = this.getState();
       return <div>
         <p onClick={() => flux.trigger(mod1.createPlaceholderClickAction()) }>click</p>
         <div>{st.isApp ? (<App initState={flux.getState().fluxTest} parent={this} id='fluxTest.App'/>) : (<HelloMessage initState={st.hello} is1={3} parent={this} id='fluxTest.HelloMessage' />) }</div>
@@ -139,7 +144,7 @@ namespace fluxTest {
         fluxTestSwitcher: { placeId: 'place' }
       }
     },
-    (p1) => <flux.PlaceHolder initState={flux.getState().fluxTestSwitcher} parent={p1} id='flux.PlaceHolder' contents={{
+    (p1) => <layout.PlaceHolder initState={flux.getState().fluxTestSwitcher} parent={p1} id='layout.PlaceHolder' contents={{
       app: (p2) => <App initState={flux.getState().fluxTest} parent={p2} id='fluxTest.App'/>,
       place: (p3) => <Switcher initState={flux.getState().fluxTestPlacer} parent={p3} id='fluxTest.Switcher'/>
     }}/>

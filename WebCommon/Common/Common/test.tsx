@@ -12,7 +12,7 @@ namespace config {
 namespace uiRouter {
   export interface INamedState {
     xxx: { //pojmenovane uiRouter.State's aplikace
-      default: uiRouter.State<xxx.ITestPar>; //uiRouter.State hlavni stranky aplikace
+      default: uiRouter.State<xxx.IDefaultPar>; //uiRouter.State hlavni stranky aplikace
     }
   };
   namedState.xxx = {} as any;
@@ -25,18 +25,7 @@ namespace flux {
 }
 
 namespace xxx {
-  //***** ROUTE init
-  var namedState = uiRouter.namedState.xxx; //pojmenovane stavy
-
-  export interface ITestPar extends uiRouter.IStatePar { id: number; opt1: string; } //jeden z route PAR
-  uiRouter.init(
-    //new uiRouter.State('login', '/login',
-    //  new uiRouter.State('login', '/login'),
-    //  new uiRouter.State('select', '/select')
-    //),
-    namedState.default = new uiRouter.State<ITestPar>('xxx', '/user/:id?opt1').finishStatePar(st => { st.id = utils.toNumber(st.id); })
-  );
-  uiRouter.setDefault<ITestPar>(namedState.default, { id: 1, opt1: '' });
+  export interface IDefaultPar extends uiRouter.IStatePar { id: number; opt1: string; } //jeden z route PAR
 
   //*********************** DISPATCH MODULE definition
   interface IXxxClickAction extends flux.IAction { }
@@ -47,6 +36,7 @@ namespace xxx {
     }
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
       switch (action.actionId) {
+        case uiRouter.routerActionId: layout.changeLayout(action); break;
         case 'click':
           alert('click');
           if (complete) complete(action);
@@ -60,6 +50,7 @@ namespace xxx {
   //************* VIEW
   export class Xxx extends flux.SmartComponent<IXxxProps, IXxxState>{
     render() {
+      super.render();
       return <div>
         <div onClick={() => flux.trigger(xxx.createAppClickAction()) }>Click</div>
         </div>;
@@ -69,11 +60,35 @@ namespace xxx {
   interface IXxxProps extends flux.ISmartProps<IXxxState> { }
 
   //************* WHOLE APP
+  //** definice DISPATCH modulu
   new xxx();
-  //flux.initWebState(
-  //  document.getElementById('app'),
-  //  { data: { xxx: {} } },
-  //  () => <Xxx initState={flux.getState().xxx }/>
-  //);
 
+  //** ROUTE configuration
+  export var namedState = uiRouter.namedState.xxx; //pojmenovane stavy
+  uiRouter.init(
+    namedState.default = new uiRouter.State<IDefaultPar>(xxx.moduleId, '/xxx-home')
+  );
+  uiRouter.setDefault<IDefaultPar>(namedState.default, { id: 1, opt1: '' });
+  setTimeout(() => uiRouter.listenHashChange());
+
+  //** SCENE configuration
+  layout.setPlayGroundRender(xxx.moduleId, parent => <Xxx initState={flux.getState().xxx } parent={parent} id='Xxx.xxx'/>);
+
+  //** STATE initialization
+  flux.initWebState(
+    document.getElementById('app'),
+    {
+      data: {
+        xxx: {},
+        layout: layout.defaultState
+      }
+    },
+    (web) => <layout.Scene initState={layout.sceneState() } parent={web} id='layout.Scene' contents={{
+      [layout.defaultSceneId]: parent => <div>
+        <h1>Xxx Header</h1>
+        <layout.Playground initState={layout.playGroundState() } parent={parent} id='layout.Playground'/>
+        <div>Xxx Footer</div>
+        </div>
+    }}/>
+  );
 }

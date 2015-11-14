@@ -113,7 +113,10 @@ namespace uiRouter {
       if (res && this.finishHash) this.finishHash(res);
       return res;
     }
-    createAction(par: T): flux.IAction { return Object.assign({ type: this.name + '.' + routerActionId}, par); }
+    createAction(par: T): flux.IAction {
+      var res: flux.IAction = { moduleId: this.name, actionId: routerActionId };
+      return Object.assign(res, par);
+    }
     //actionType: string; //pro pripad, ze action.type!=this.name
 
     afterConstructor(parent: State<any>) {

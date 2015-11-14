@@ -29,6 +29,7 @@ namespace utils {
 
   export function isString(obj): boolean { return typeof obj === 'string'; }
   export function isNumber(value) { return typeof value === 'number'; }
+  export var isArray = Array.isArray;
   export function isEmpty(obj): boolean {
     if (!obj) return true;
     if (isString(obj) && obj == '') return true;
