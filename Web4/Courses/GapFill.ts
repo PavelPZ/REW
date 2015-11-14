@@ -106,7 +106,7 @@
         if (this.width > 0) return this.width;
         var arr = this.correctValue.split('|');
         arr = _.map(arr, a => a.length == 1 ? 'x' : (a.length == 2 ? 'xx' : (a.length == 3 ? 'xxx' : a)));
-        if (isGapFill) { var gp = <gapFill>this; if (gp.initValue) arr.push(gp.initValue); if (gp.hint) arr.push(gp.hint); }
+        if (isGapFill) { var gp = <gapFill><any>this; if (gp.initValue) arr.push(gp.initValue); if (gp.hint) arr.push(gp.hint); }
         if (offerWords != null && offerWords.length > 0) arr.pushArray(offerWords);
         var growby = 1;
         if (isGapFill) {

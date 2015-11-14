@@ -36,8 +36,8 @@ module CourseMeta {
     each<T extends dataImpl>(action: (it: T) => void) { if (this.Items) _.each(this.Items,(it: T) => action(it)); }
     find<TRes extends dataImpl, TCond extends dataImpl>(cond: (it: TCond) => boolean): TRes { return <TRes>(_.find(this.Items,(it: TCond) => cond(it))); }
     findParent<TRes extends dataImpl>(cond: (it: data) => boolean): TRes {
-      var c = this;
-      while (c != null) { if (cond(c)) return <TRes>c; c = c.parent; }
+      var c = <any>this;
+      while (c != null) { if (cond(c)) return c; c = c.parent; }
       return null;
     }
     hrefCompl(companyId: number, productUrl: string, persistence: string): string {
@@ -52,7 +52,7 @@ module CourseMeta {
     }
 
     iconId(): string {
-      if (this == actCourseRoot) return "book";
+      if (this == <any>actCourseRoot) return "book";
       else if (isType(this, runtimeType.ex)) return isType(this, runtimeType.grammar) ? "file-o" : "edit";
       else return "folder-open";
     }

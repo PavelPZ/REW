@@ -185,7 +185,7 @@
       while (t) {
         var newt = t.adjustChild();
         if (!newt) return { stateName: t.state.name, pars: t.ctx };
-        t = newt;
+        t = <any>newt;
       }
     }
 

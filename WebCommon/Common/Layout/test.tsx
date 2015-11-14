@@ -36,7 +36,7 @@ namespace layoutTest {
         case uiRouter.routerActionId:
           layout.changeLayout(action,
             { contentId: layoutTest.plContentIdDefault },
-            { id: otherScenePlace, contentId: layoutTest.plContentIdOther }
+            { id: otherScenePlaceId, contentId: layoutTest.plContentIdOther }
           );
           break;
         case 'click':
@@ -86,7 +86,7 @@ namespace layoutTest {
   setTimeout(() => uiRouter.listenHashChange());
 
   //** SCENE configuration
-  var otherScenePlace = 'scenePlace-other';
+  var otherScenePlaceId = 'scenePlace-other';
   var otherScene = 'scene-other';
 
   config.cfg.data.layout.routeActionToSceneId = (action: uiRouter.IStateAction<ILayoutTestModulePar>) => {
@@ -98,7 +98,7 @@ namespace layoutTest {
     parent => <LayoutContent initState={flux.getState().layoutTest } parent={parent} id='LayoutTest.LayoutContent'/>
   );
   layout.setScenePlaceRender(
-    otherScenePlace,
+    otherScenePlaceId,
     layoutTest.plContentIdOther,
     parent => <LayoutPanel initState={flux.getState().layoutTest } parent={parent} id='LayoutTest.LayoutPanel'/>
   );
@@ -120,14 +120,14 @@ namespace layoutTest {
         <h1>Scene: {layout.defaultSceneId}</h1>
         <layout.ScenePlace initState={layout.scenePlaceState() } parent={parent} id='layout.ScenePlace-1'/>
         --------------------
-        <layout.ScenePlace initState={layout.scenePlaceState(otherScenePlace) } parent={parent} id='layout.ScenePlace-2'/>
+        <layout.ScenePlace initState={layout.scenePlaceState(otherScenePlaceId) } parent={parent} id='layout.ScenePlace-2'/>
         <br/>
         <div>Footer: {layout.defaultSceneId}</div>
           </div>,
 
         [otherScene]: parent => <div>
         <h1>Scene: {otherScene}</h1>
-        <layout.ScenePlace initState={layout.scenePlaceState(otherScenePlace) } parent={parent} id='layout.ScenePlace-3'/>
+        <layout.ScenePlace initState={layout.scenePlaceState(otherScenePlaceId) } parent={parent} id='layout.ScenePlace-3'/>
         ====================
         <layout.ScenePlace initState={layout.scenePlaceState() } parent={parent} id='layout.ScenePlace-4'/>
         <br/>

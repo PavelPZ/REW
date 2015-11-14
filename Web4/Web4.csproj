@@ -24,7 +24,7 @@
     <TypeScriptModuleKind>none</TypeScriptModuleKind>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
     <IsCompassProject>True</IsCompassProject>
-    <TypeScriptToolsVersion>1.6</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.7</TypeScriptToolsVersion>
     <TargetFrameworkProfile />
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
@@ -1717,7 +1717,6 @@
       <Compile>False</Compile>
       <Minify>False</Minify>
     </Content>
-    <Content Include="Schools\SLExtension.xap" />
     <Content Include="Temp\DBClearUnusedLMComUserData.aspx" />
     <Content Include="Temp\TransformerUtils.js" />
     <Content Include="Web.ConnectionStrings.config">

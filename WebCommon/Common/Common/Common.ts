@@ -1,11 +1,4 @@
-﻿//error v react.d.ts - chybi value link pro input element
-declare namespace __React {
-  interface HTMLAttributes {
-    valueLink?;
-  }
-}
-
-namespace flux {
+﻿namespace flux {
   export interface IAction {
     moduleId: string; 
     actionId: string; 

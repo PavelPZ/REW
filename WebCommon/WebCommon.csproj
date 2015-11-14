@@ -25,7 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TypeScriptToolsVersion>1.6</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.7</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -141,8 +141,17 @@
     <TypeScriptCompile Include="Common\validation\templates.tsx" />
     <TypeScriptCompile Include="scripts\typings\core-js.d.ts" />
     <TypeScriptCompile Include="scripts\typings\react-bootstrap.d.ts" />
-    <TypeScriptCompile Include="scripts\typings\react-global.d.ts" />
-    <TypeScriptCompile Include="scripts\typings\react.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\react\react-addons-create-fragment.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\react\react-addons-css-transition-group.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\react\react-addons-linked-state-mixin.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\react\react-addons-perf.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\react\react-addons-pure-render-mixin.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\react\react-addons-test-utils.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\react\react-addons-transition-group.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\react\react-addons-update.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\react\react-dom.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\react\react-global.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\react\react.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
