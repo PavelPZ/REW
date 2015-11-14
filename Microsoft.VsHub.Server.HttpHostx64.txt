@@ -1,0 +1,4 @@
+http://stackoverflow.com/questions/31452435/how-do-i-disable-vshub-exe-in-the-system-tray
+1. vypnout vs.net
+2. vypnout VsHub.exe task
+3. vymazet c:\Program Files (x86)\Common Files\Microsoft Shared\VsHub\
