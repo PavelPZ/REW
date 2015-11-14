@@ -36,7 +36,7 @@ namespace layoutTest {
         case uiRouter.routerActionId:
           layout.changeLayout(action,
             { contentId: layoutTest.plContentIdDefault },
-            { id: otherPlayground, contentId: layoutTest.plContentIdOther }
+            { id: otherScenePlace, contentId: layoutTest.plContentIdOther }
           );
           break;
         case 'click':
@@ -86,19 +86,19 @@ namespace layoutTest {
   setTimeout(() => uiRouter.listenHashChange());
 
   //** SCENE configuration
-  var otherPlayground = 'playground-other';
+  var otherScenePlace = 'scenePlace-other';
   var otherScene = 'scene-other';
 
   config.cfg.data.layout.routeActionToSceneId = (action: uiRouter.IStateAction<ILayoutTestModulePar>) => {
     return action.sceneId;
   };
   layout.setScenePlaceRender(
-    layout.defaultPlaygroundId,
+    layout.defaultScenePlaceId,
     layoutTest.plContentIdDefault,
     parent => <LayoutContent initState={flux.getState().layoutTest } parent={parent} id='LayoutTest.LayoutContent'/>
   );
   layout.setScenePlaceRender(
-    otherPlayground,
+    otherScenePlace,
     layoutTest.plContentIdOther,
     parent => <LayoutPanel initState={flux.getState().layoutTest } parent={parent} id='LayoutTest.LayoutPanel'/>
   );
@@ -118,18 +118,18 @@ namespace layoutTest {
 
         [layout.defaultSceneId]: parent => <div>
         <h1>Scene: {layout.defaultSceneId}</h1>
-        <layout.ScenePlace initState={layout.playGroundState() } parent={parent} id='layout.Playground-1'/>
+        <layout.ScenePlace initState={layout.scenePlaceState() } parent={parent} id='layout.ScenePlace-1'/>
         --------------------
-        <layout.ScenePlace initState={layout.playGroundState(otherPlayground) } parent={parent} id='layout.Playground-2'/>
+        <layout.ScenePlace initState={layout.scenePlaceState(otherScenePlace) } parent={parent} id='layout.ScenePlace-2'/>
         <br/>
         <div>Footer: {layout.defaultSceneId}</div>
           </div>,
 
         [otherScene]: parent => <div>
         <h1>Scene: {otherScene}</h1>
-        <layout.ScenePlace initState={layout.playGroundState(otherPlayground) } parent={parent} id='layout.Playground-3'/>
+        <layout.ScenePlace initState={layout.scenePlaceState(otherScenePlace) } parent={parent} id='layout.ScenePlace-3'/>
         ====================
-        <layout.ScenePlace initState={layout.playGroundState() } parent={parent} id='layout.Playground-4'/>
+        <layout.ScenePlace initState={layout.scenePlaceState() } parent={parent} id='layout.ScenePlace-4'/>
         <br/>
         <div>Footer: {otherScene}</div>
           </div>

@@ -77,7 +77,7 @@ namespace xxx {
   setTimeout(() => uiRouter.listenHashChange());
 
   //** SCENE configuration
-  layout.setScenePlaceRender(layout.defaultPlaygroundId, xxx.plDefaultContentId, parent => <Xxx initState={flux.getState().xxx } parent={parent} id='Xxx.xxx'/>);
+  layout.setScenePlaceRender(layout.defaultScenePlaceId, xxx.plDefaultContentId, parent => <Xxx initState={flux.getState().xxx } parent={parent} id='Xxx.xxx'/>);
 
   //** STATE initialization
   flux.initWebState(
@@ -91,7 +91,7 @@ namespace xxx {
     (web) => <layout.Scene initState={layout.sceneState() } parent={web} id='layout.Scene' cases={{
       [layout.defaultSceneId]: parent => <div>
         <h1>Xxx Header</h1>
-        <layout.ScenePlace initState={layout.playGroundState() } parent={parent} id='layout.Playground'/>
+        <layout.ScenePlace initState={layout.scenePlaceState() } parent={parent} id='layout.ScenePlace'/>
         <div>Xxx Footer</div>
         </div>
     }}/>
