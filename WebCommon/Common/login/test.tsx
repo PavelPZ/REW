@@ -84,7 +84,7 @@ namespace loginTest {
         layoutTest: {}
       }
     },
-    (p1) => <layout.PlaceHolder initState={flux.getState().fluxTestSwitcher} parent={p1} id='layout.PlaceHolder' contents={{
+    (p1) => <layout.Switcher initState={flux.getState().fluxTestSwitcher} parent={p1} id='layout.Switcher' cases={{
       default: (p3) => <TestPage initState={{}} parent={p3} id='loginTest.TestPage'/>,
       login: (p2) => <LoginScene initState={{}} parent={p2} id='loginTest.LoginScene'/>,
     }}/>

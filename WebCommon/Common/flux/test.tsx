@@ -27,7 +27,7 @@ namespace flux {
   export interface IWebState {
     fluxTest?: fluxTest.IAppState;
     fluxTestPlacer?: fluxTest.IPlaceHolderState;
-    fluxTestSwitcher?: layout.IPlaceHolderState;
+    fluxTestSwitcher?: layout.ISwitcherState;
   }
 }
 
@@ -141,10 +141,10 @@ namespace fluxTest {
           isApp: false,
           hello: { actName: 'hello' },
         },
-        fluxTestSwitcher: { placeId: 'place' }
+        fluxTestSwitcher: { caseId: 'place' }
       }
     },
-    (p1) => <layout.PlaceHolder initState={flux.getState().fluxTestSwitcher} parent={p1} id='layout.PlaceHolder' contents={{
+    (p1) => <layout.Switcher initState={flux.getState().fluxTestSwitcher} parent={p1} id='layout.PlaceHolder' cases={{
       app: (p2) => <App initState={flux.getState().fluxTest} parent={p2} id='fluxTest.App'/>,
       place: (p3) => <Switcher initState={flux.getState().fluxTestPlacer} parent={p3} id='fluxTest.Switcher'/>
     }}/>

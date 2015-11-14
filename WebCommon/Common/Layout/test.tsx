@@ -92,12 +92,12 @@ namespace layoutTest {
   config.cfg.data.layout.routeActionToSceneId = (action: uiRouter.IStateAction<ILayoutTestModulePar>) => {
     return action.sceneId;
   };
-  layout.setPlayGroundRender(
+  layout.setScenePlaceRender(
     layout.defaultPlaygroundId,
     layoutTest.plContentIdDefault,
     parent => <LayoutContent initState={flux.getState().layoutTest } parent={parent} id='LayoutTest.LayoutContent'/>
   );
-  layout.setPlayGroundRender(
+  layout.setScenePlaceRender(
     otherPlayground,
     layoutTest.plContentIdOther,
     parent => <LayoutPanel initState={flux.getState().layoutTest } parent={parent} id='LayoutTest.LayoutPanel'/>
@@ -114,20 +114,22 @@ namespace layoutTest {
     (web) => <div>
       <a href={'#' + namedState.default.getHashStr({ sceneId: layout.defaultSceneId }) }>Default Scene</a> |
       <a href={'#' + namedState.default.getHashStr({ sceneId: otherScene }) }>Other Scene</a>
-      <layout.Scene initState={layout.sceneState() } parent={web} id='layout.Scene' contents={{
+      <layout.Scene initState={layout.sceneState() } parent={web} id='layout.Scene' cases={{
+
         [layout.defaultSceneId]: parent => <div>
         <h1>Scene: {layout.defaultSceneId}</h1>
-        <layout.Playground initState={layout.playGroundState() } parent={parent} id='layout.Playground-1'/>
+        <layout.ScenePlace initState={layout.playGroundState() } parent={parent} id='layout.Playground-1'/>
         --------------------
-        <layout.Playground initState={layout.playGroundState(otherPlayground) } parent={parent} id='layout.Playground-2'/>
+        <layout.ScenePlace initState={layout.playGroundState(otherPlayground) } parent={parent} id='layout.Playground-2'/>
         <br/>
         <div>Footer: {layout.defaultSceneId}</div>
           </div>,
+
         [otherScene]: parent => <div>
         <h1>Scene: {otherScene}</h1>
-        <layout.Playground initState={layout.playGroundState(otherPlayground) } parent={parent} id='layout.Playground-3'/>
+        <layout.ScenePlace initState={layout.playGroundState(otherPlayground) } parent={parent} id='layout.Playground-3'/>
         ====================
-        <layout.Playground initState={layout.playGroundState() } parent={parent} id='layout.Playground-4'/>
+        <layout.ScenePlace initState={layout.playGroundState() } parent={parent} id='layout.Playground-4'/>
         <br/>
         <div>Footer: {otherScene}</div>
           </div>
