@@ -23,7 +23,6 @@
       }
       //Navrat z auth response. V cookie je IAuthRequestCookie
       let authReqCook = utils.jsonParseEx<IAuthRequestCookie>(cookies.get(authrequestCookieName) as string);
-      if (!authReqCook) return;
       cookies.remove(authrequestCookieName);
       if (authReqCook.state != authResponse.state) throw 'authReqCook.state != authResponse.state';
       let provider = getProvider(authReqCook.providerId);
