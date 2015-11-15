@@ -720,9 +720,7 @@ module LowUtils {
     }
     return data;
   }
-  //function EncryptLowEx(data: number[], key: number): void {
-  //  for (var i = 0; i < data.length; i++) { data[i] = (data[i] ^ (key >> 8)) & 0xFF; key = ((data[i] + key) * 52845 + 22719) & 0xFFFF; }
-  //}
+
   function DecryptLow(data: number[], start: number, len: number, key: number): number[] {
     var old;
     for (var i = 0; i < data.length; i++) {

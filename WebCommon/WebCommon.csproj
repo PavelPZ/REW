@@ -83,10 +83,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Common\closure\sha1.js" />
+    <Content Include="Common\closure\cookies.js" />
+    <Content Include="Common\closure\crypt.js" />
     <Content Include="Common\Common\index.html" />
     <Content Include="Common\flux\Index.html" />
     <Content Include="Common\Layout\index.html" />
     <Content Include="Common\login\index.html" />
+    <Content Include="login.html" />
     <Content Include="Common\uiRouter\index.html" />
     <Content Include="Common\uiRouter\urlMatcherFactory.js" />
     <Content Include="Common\validation\Index.html" />
@@ -120,8 +124,14 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Common\closure\hash.d.ts" />
+    <TypeScriptCompile Include="Common\closure\sha1.d.ts" />
     <TypeScriptCompile Include="Common\Common\ajax.ts" />
     <TypeScriptCompile Include="Common\Common\Common.ts" />
+    <TypeScriptCompile Include="Common\closure\cookies.d.ts" />
+    <TypeScriptCompile Include="Common\closure\crypt.d.ts" />
+    <TypeScriptCompile Include="Common\Common\crypt.ts" />
+    <TypeScriptCompile Include="Common\Common\oauth.ts" />
     <TypeScriptCompile Include="Common\Common\test.tsx" />
     <TypeScriptCompile Include="Common\flux\flux.ts" />
     <TypeScriptCompile Include="Common\flux\test.tsx" />
@@ -130,6 +140,8 @@
     <TypeScriptCompile Include="Common\login\index.ts" />
     <TypeScriptCompile Include="Common\login\lib.ts" />
     <TypeScriptCompile Include="Common\login\lm\login.ts" />
+    <TypeScriptCompile Include="Common\Common\oAuth-low.ts" />
+    <TypeScriptCompile Include="Common\login\login-html.ts" />
     <TypeScriptCompile Include="Common\login\test.tsx" />
     <TypeScriptCompile Include="Common\uiRouter\angularCommon.ts" />
     <TypeScriptCompile Include="Common\uiRouter\router.ts" />

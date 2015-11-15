@@ -1504,7 +1504,6 @@
     <Content Include="Temp\HtmlPage3.html" />
     <Content Include="Temp\htmlPublishing.aspx" />
     <Content Include="Temp\JavaScript1.js" />
-    <Content Include="Temp\jsonml-xml.js" />
     <Content Include="Temp\htmlPublishing\index.html" />
     <Content Include="Temp\LFE3.html" />
     <Content Include="Temp\local.html" />
