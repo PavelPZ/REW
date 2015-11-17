@@ -10,6 +10,8 @@ namespace WebApplication5 {
 
     public void Configure(IApplicationBuilder app) {
 
+      app.UseIISPlatformHandler();
+
       app.Use(async (context, next) => {
         Console.WriteLine(context.Request.Path);
         try {

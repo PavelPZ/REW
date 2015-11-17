@@ -1,0 +1,19 @@
+﻿https://www.microsoft.com/en-us/download/details.aspx?id=49442, pak zmenit Web app DEBUG options v vs.net
+
+package management console
+  dnvm setup
+  dnvm upgrade
+
+V public void Configure(IApplicationBuilder app) {
+   // Add the platform handler to the request pipeline.
+   app.UseIISPlatformHandler();
+
+
+Install-Package Microsoft.AspNet.Mvc -Pre
+Install-Package Microsoft.Framework.Configuration.Json -Pre
+Install-Package Microsoft.AspNet.Server.WebListener -Pre
+Install-Package Microsoft.Dnx.Runtime -Pre
+Install-Package Newtonsoft.Json -Version 7.0.1
+
+Install-Package EntityFramework.Commands -Pre
+Install-Package WindowsAzure.Storage -Version 6.1.0
