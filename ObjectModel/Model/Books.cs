@@ -268,16 +268,16 @@ namespace Rewise {
 
     XElement meta(string name, string value) { return new XElement(CommonLib.html + "meta", new XAttribute("name", name), new XAttribute("content", value ?? string.Empty)); }
 
-    public static Book FromZip(Stream str) {
-      using (ZipOutStream zipStr = new ZipOutStream(str))
-      using (MemoryStream ms = new MemoryStream()) {
-        zipStr.Decompress(zipStr.Files().First(), ms);
-        byte[] buf = ms.GetBuffer();
-        string s = Encoding.UTF8.GetString(buf, 0, buf.Length);
-        ms.Seek(0, SeekOrigin.Begin);
-        return Book.Load(ms);
-      }
-    }
+    //public static Book FromZip(Stream str) {
+    //  using (ZipOutStream zipStr = new ZipOutStream(str))
+    //  using (MemoryStream ms = new MemoryStream()) {
+    //    zipStr.Decompress(zipStr.Files().First(), ms);
+    //    byte[] buf = ms.GetBuffer();
+    //    string s = Encoding.UTF8.GetString(buf, 0, buf.Length);
+    //    ms.Seek(0, SeekOrigin.Begin);
+    //    return Book.Load(ms);
+    //  }
+    //}
 
     static string licenceUrl(Rw.CreativeCommonLic lic) {
       switch (lic) {

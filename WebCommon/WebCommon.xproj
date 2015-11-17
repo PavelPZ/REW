@@ -16,5 +16,12 @@
     <DevelopmentServerPort>56212</DevelopmentServerPort>
     <IISExpressAnonymousAuthentication>Enabled</IISExpressAnonymousAuthentication>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataLib2\DataLib2.csproj" />
+    <ProjectReference Include="..\EPPlus\EPPlus.csproj" />
+    <ProjectReference Include="..\LMComLib\LMComLib.csproj" />
+    <ProjectReference Include="..\NewLMComModel\NewLMComModel.csproj" />
+    <ProjectReference Include="..\ObjectModel\ObjectModel.csproj" />
+  </ItemGroup>
   <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.targets" Condition="'$(VSToolsPath)' != ''" />
 </Project>

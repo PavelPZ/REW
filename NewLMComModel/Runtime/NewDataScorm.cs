@@ -73,7 +73,11 @@ namespace NewData {
       testResultHelper test = Newtonsoft.Json.JsonConvert.DeserializeObject<testResultHelper>(resStr);
       GeneratePdfItem[] items = CreateCert(test, Langs.en_gb);
       //var designId = ReleaseDeploy.Lib.signature().cfg.designId;
-      var designId = ReleaseDeploy.Lib.adjustActConfig().designId;
+      //!!!! 
+      //11 /17/2015: ReleaseDeploy.Lib.adjustActConfig().designId prevedeno do DesignTimeLib. Je nutno zjistovat jinak 
+      //radeji exception
+      throw new Exception("//11 /17/2015: ReleaseDeploy.Lib.adjustActConfig().designId prevedeno do DesignTimeLib. Je nutno zjistovat jinak ");
+      string designId = null; // ReleaseDeploy.Lib.adjustActConfig().designId;
       var skins = string.IsNullOrEmpty(designId) ? Enumerable.Empty<string>() : XExtension.Create(designId);
       var locs = par.loc == Langs.no ? Enumerable.Empty<string>() : XExtension.Create("_" + par.loc.ToString());
       string fn = null;

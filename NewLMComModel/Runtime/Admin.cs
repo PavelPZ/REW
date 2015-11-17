@@ -485,66 +485,66 @@ namespace NewData {
         return new RpcResponse(AlocKeys(par));
       });
 
-      /* CmdDsgnReadFile */
-      Handlers.CmdService.registerCommand<CmdDsgnReadFile, string>(par => {
-        try {
-          return new RpcResponse(File.ReadAllText(Machines.basicPath + par.FileName));
-        } catch {
-          return new RpcResponse(1, Machines.basicPath + par.FileName);
-        }
-      });
+      ///* CmdDsgnReadFile */
+      //Handlers.CmdService.registerCommand<CmdDsgnReadFile, string>(par => {
+      //  try {
+      //    return new RpcResponse(File.ReadAllText(Machines.basicPath + par.FileName));
+      //  } catch {
+      //    return new RpcResponse(1, Machines.basicPath + par.FileName);
+      //  }
+      //});
 
-      /* CmdDsgnReadFiles */
-      Handlers.CmdService.registerCommand<CmdDsgnReadFiles, CmdDsgnResult>(par => {
-        List<string> res = new List<string>();
-        foreach (var fn in par.FileNames)
-          try {
-            res.Add(File.ReadAllText(Machines.basicPath + fn));
-          } catch {
-            res.Add(null);
-          }
-        return new RpcResponse(new CmdDsgnResult() { Data = res.ToArray() });
-      });
+      ///* CmdDsgnReadFiles */
+      //Handlers.CmdService.registerCommand<CmdDsgnReadFiles, CmdDsgnResult>(par => {
+      //  List<string> res = new List<string>();
+      //  foreach (var fn in par.FileNames)
+      //    try {
+      //      res.Add(File.ReadAllText(Machines.basicPath + fn));
+      //    } catch {
+      //      res.Add(null);
+      //    }
+      //  return new RpcResponse(new CmdDsgnResult() { Data = res.ToArray() });
+      //});
 
-      /* CmdDsgnWriteFile */
-      Handlers.CmdService.registerCommand<CmdDsgnWriteDictWords, bool>(par => {
-        try {
-          var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<schools.DictWords>(par.Data);
-          var f = obj.courses.First();
-          XmlUtils.ObjectToFile(Machines.rootPath + @"RwDicts\UsedWords\" + par.FileName + "_" + f.lang.ToString() + ".xml", new schools.DictCrsWords() {
-            lang = f.lang,
-            exs = obj.courses.SelectMany(c => c.exs).ToArray()
-          });
-          return new RpcResponse(true);
-        } catch {
-          return new RpcResponse(1, Machines.basicPath + par.FileName);
-        }
-      });
+      ///* CmdDsgnWriteFile */
+      //Handlers.CmdService.registerCommand<CmdDsgnWriteDictWords, bool>(par => {
+      //  try {
+      //    var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<schools.DictWords>(par.Data);
+      //    var f = obj.courses.First();
+      //    XmlUtils.ObjectToFile(Machines.rootPath + @"RwDicts\UsedWords\" + par.FileName + "_" + f.lang.ToString() + ".xml", new schools.DictCrsWords() {
+      //      lang = f.lang,
+      //      exs = obj.courses.SelectMany(c => c.exs).ToArray()
+      //    });
+      //    return new RpcResponse(true);
+      //  } catch {
+      //    return new RpcResponse(1, Machines.basicPath + par.FileName);
+      //  }
+      //});
 
-      /* CmdDsgnWriteFile */
-      Handlers.CmdService.registerCommand<DictEntryCmd, DictEntryRes>(par => {
-        return new RpcResponse(dictLingea.processCommand(par));
-      });
+      ///* CmdDsgnWriteFile */
+      //Handlers.CmdService.registerCommand<DictEntryCmd, DictEntryRes>(par => {
+      //  return new RpcResponse(dictLingea.processCommand(par));
+      //});
 
-      /* CmdGetPublProjects */
-      Handlers.CmdService.registerCommand<CmdGetPublProjects, CmdGetPublProjectsResult>(par => {
-        return new RpcResponse(GetPublProjects(par));
-      });
+      ///* CmdGetPublProjects */
+      //Handlers.CmdService.registerCommand<CmdGetPublProjects, CmdGetPublProjectsResult>(par => {
+      //  return new RpcResponse(GetPublProjects(par));
+      //});
 
-      /* CmdCreatePublProject */
-      Handlers.CmdService.registerCommand<CmdPublChangePassword, bool>(par => {
-        return new RpcResponse(PublChangePassword(par));
-      });
+      ///* CmdCreatePublProject */
+      //Handlers.CmdService.registerCommand<CmdPublChangePassword, bool>(par => {
+      //  return new RpcResponse(PublChangePassword(par));
+      //});
 
-      /* CmdPublBuild */
-      Handlers.CmdService.registerCommand<CmdPublBuild, bool>(par => {
-        return new RpcResponse(PublBuild(par));
-      });
+      ///* CmdPublBuild */
+      //Handlers.CmdService.registerCommand<CmdPublBuild, bool>(par => {
+      //  return new RpcResponse(PublBuild(par));
+      //});
 
-      /* CmdCreatePublProject */
-      Handlers.CmdService.registerCommand<CmdCreatePublProject, bool>(par => {
-        return new RpcResponse(CreatePublProject(par));
-      });
+      ///* CmdCreatePublProject */
+      //Handlers.CmdService.registerCommand<CmdCreatePublProject, bool>(par => {
+      //  return new RpcResponse(CreatePublProject(par));
+      //});
 
     }
 

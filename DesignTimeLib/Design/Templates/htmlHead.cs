@@ -7,22 +7,24 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace NewData.Design.Templates
+namespace DesignTimeLib.Design.Templates
 {
     using System.Linq;
     using System.Text;
     using System.Collections.Generic;
     using LMComLib;
     using LMNetLib;
+    using Packager;
+    using schools;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\LMCom\rew\NewLMComModel\Design\Templates\ImsManifest.tt"
+    #line 1 "D:\LMCom\rew\DesignTimeLib\Design\Templates\htmlHead.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class ImsManifest : ImsManifestBase
+    public partial class htmlHead : htmlHeadBase
     {
 #line hidden
         /// <summary>
@@ -32,144 +34,104 @@ namespace NewData.Design.Templates
         {
             this.Write(" \r\n");
             this.Write(" \r\n");
-            this.Write(" \r\n\r\n");
+            this.Write(" \r\n");
+            this.Write(" \r\n");
+            this.Write(" \r\n\r\n\r\n");
             
-            #line 9 "D:\LMCom\rew\NewLMComModel\Design\Templates\ImsManifest.tt"
- 
-  const string producerId = "com";
-  const string producer = "LANGMaster.com"; 
-  var line = cfg.line; 
-  var productTitle = cfg.title;
-  var productNum = cfg.prodUrl; 
-  var dictId = CommonLib.LineIdToLang(line).ToString().Replace('_', '-');
-  string uniqueId = producerId + "-" + productNum.Replace('/','-') + "-" + cfg.langStr; 
+            #line 12 "D:\LMCom\rew\DesignTimeLib\Design\Templates\htmlHead.tt"
+ //**************** BOOT
+  var min = cfg.version == versions.minified ? ".min" : "";
+  var themeId = cfg.themeId!=null ? cfg.themeId : "";
+
+  if (!string.IsNullOrEmpty(cfg.baseTagUrl)) WriteLine(string.Format("<base href=\"{0}/schools/\" />", cfg.baseTagUrl));
+
 
             
             #line default
             #line hidden
-            this.Write(@"<?xml version=""1.0"" encoding=""utf-8""?>
-<manifest xmlns=""http://www.imsproject.org/xsd/imscp_rootv1p1p2"" xmlns:imsmd=""http://www.imsproject.org/xsd/ims_md_rootv1p1"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:adlcp=""http://www.adlnet.org/xsd/adlcp_rootv1p2"" xsi:schemaLocation=""http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd http://www.imsproject.org/xsd/ims_md_rootv1p1 ims_md_rootv1p1.xsd http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd""
-   identifier=""MANIFEST-");
+            this.Write("  <link href=\"../font-awesome/lm/externals");
             
-            #line 20 "D:\LMCom\rew\NewLMComModel\Design\Templates\ImsManifest.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(uniqueId));
+            #line 19 "D:\LMCom\rew\DesignTimeLib\Design\Templates\htmlHead.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(themeId));
             
             #line default
             #line hidden
-            this.Write("\">\r\n  <metadata>\r\n    <schema>ADL SCORM</schema>\r\n    <schemaversion>1.2</schemav" +
-                    "ersion>\r\n    <lom xmlns=\"http://www.imsglobal.org/xsd/imsmd_rootv1p2p1\">  \r\n    " +
-                    "  <general>\r\n        <title>\r\n          <langstring>");
+            this.Write(".css\" rel=\"stylesheet\"/>\r\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"../jslib" +
+                    "/ea/ea.css\" />\r\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"../blendedapi/sty" +
+                    "les/style.css\" />\r\n  <link href=\"../jslib/css/lm");
             
-            #line 27 "D:\LMCom\rew\NewLMComModel\Design\Templates\ImsManifest.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(productTitle));
-            
-            #line default
-            #line hidden
-            this.Write("</langstring>\r\n        </title>\r\n        <description>\r\n          <langstring>");
-            
-            #line 30 "D:\LMCom\rew\NewLMComModel\Design\Templates\ImsManifest.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(productTitle));
+            #line 22 "D:\LMCom\rew\DesignTimeLib\Design\Templates\htmlHead.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(themeId));
             
             #line default
             #line hidden
-            this.Write("</langstring>\r\n        </description>\r\n      </general>\r\n    </lom>\r\n  </metadata" +
-                    ">\r\n  <organizations default=\"ORG-");
+            this.Write(".css\" rel=\"stylesheet\"/>\r\n\r\n");
             
-            #line 35 "D:\LMCom\rew\NewLMComModel\Design\Templates\ImsManifest.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(uniqueId));
-            
-            #line default
-            #line hidden
-            this.Write("\"> \r\n    <organization identifier=\"ORG-");
-            
-            #line 36 "D:\LMCom\rew\NewLMComModel\Design\Templates\ImsManifest.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(uniqueId));
+            #line 24 "D:\LMCom\rew\DesignTimeLib\Design\Templates\htmlHead.tt"
+
+  WriteLine(MainPage.writeCss(RewApp.publisherSkinCss(cfg)));
+  WriteLine(RewApp.writeCfg(cfg));
+
             
             #line default
             #line hidden
-            this.Write("\" structure=\"hierarchical\">\r\n      <title>");
+            this.Write("  <script type=\'text/javascript\' src=\'../jslib/js/lmconsoleinit.js\'></script>\r\n\r\n" +
+                    "  <script type=\'text/javascript\' src=\'../jslib/scripts/jquery");
             
-            #line 37 "D:\LMCom\rew\NewLMComModel\Design\Templates\ImsManifest.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(producer));
-            
-            #line default
-            #line hidden
-            this.Write("</title>\r\n      <item isvisible=\"true\" identifier=\"ITEM1-");
-            
-            #line 38 "D:\LMCom\rew\NewLMComModel\Design\Templates\ImsManifest.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(uniqueId));
+            #line 30 "D:\LMCom\rew\DesignTimeLib\Design\Templates\htmlHead.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(min));
             
             #line default
             #line hidden
-            this.Write("\" identifierref=\"RES1-");
+            this.Write(".js\'></script>\r\n  <script type=\'text/javascript\' src=\'../jslib/scripts/underscore" +
+                    "");
             
-            #line 38 "D:\LMCom\rew\NewLMComModel\Design\Templates\ImsManifest.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(uniqueId));
-            
-            #line default
-            #line hidden
-            this.Write("\"> \r\n        <adlcp:masteryscore>75</adlcp:masteryscore> \r\n        <title>");
-            
-            #line 40 "D:\LMCom\rew\NewLMComModel\Design\Templates\ImsManifest.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(productTitle));
+            #line 31 "D:\LMCom\rew\DesignTimeLib\Design\Templates\htmlHead.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(min));
             
             #line default
             #line hidden
-            this.Write("</title>\r\n      </item>  \r\n    </organization>\r\n  </organizations>\r\n  <resources>" +
-                    "\r\n    <resource identifier=\"RES1-");
+            this.Write(@".js'></script>
+  <script src=""../jslib/scripts/angular.js"" type=""text/javascript""></script>
+
+  <script src=""../jslib/scripts/angular-route.js"" type=""text/javascript""></script>
+  <script src=""../jslib/scripts/angular-animate.js"" type=""text/javascript""></script>
+  <script src=""../jslib/scripts/angular-cookies.js"" type=""text/javascript""></script>
+  <script src=""../jslib/scripts/angular-ui-router.js"" type=""text/javascript""></script>
+  <script src=""../jslib/scripts/ui-bootstrap-tpls.js"" type=""text/javascript""></script>
+");
             
-            #line 45 "D:\LMCom\rew\NewLMComModel\Design\Templates\ImsManifest.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(uniqueId));
-            
-            #line default
-            #line hidden
-            this.Write("\" href=\"schools/index.htm\" type=\"webcontent\" adlcp:scormtype=\"sco\">\r\n      <file " +
-                    "href=\"schools/index.htm\" />\r\n      <dependency identifierref=\"RES2-");
-            
-            #line 47 "D:\LMCom\rew\NewLMComModel\Design\Templates\ImsManifest.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(uniqueId));
-            
-            #line default
-            #line hidden
-            this.Write("\" />\r\n    </resource>\r\n    <resource identifier=\"RES2-");
-            
-            #line 49 "D:\LMCom\rew\NewLMComModel\Design\Templates\ImsManifest.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(uniqueId));
+            #line 39 "D:\LMCom\rew\DesignTimeLib\Design\Templates\htmlHead.tt"
+
+  if (cfg.version == versions.minified) {
+
             
             #line default
             #line hidden
-            this.Write("\" href=\"\" type=\"webcontent\" adlcp:scormtype=\"asset\">\r\n      ");
+            this.Write(@"  <script type='text/javascript'>var isOk = true;</script>
+  <!--[if lt IE 8]><script type='text/javascript'>isOk = false; alert('Internet Explorer 8 or better is required!');</script><![endif]-->
+  <script type='text/javascript'>
+  function jsUrl(stUrl, dynUrl, dynVer) {
+    if (!document.cookie || !_.any(document.cookie.toLowerCase().split(';'), function (c) { return c.trim() == 'dynamicjs=true'; })) return stUrl;
+    return cfg.licenceConfig.serviceUrl + '?type=' + dynUrl + '&version=' + dynVer;
+  }
+");
             
-            #line 50 "D:\LMCom\rew\NewLMComModel\Design\Templates\ImsManifest.tt"
- foreach (var f in files) {
-            
-            #line default
-            #line hidden
-            this.Write("      <file href=\"");
-            
-            #line 51 "D:\LMCom\rew\NewLMComModel\Design\Templates\ImsManifest.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(f));
-            
-            #line default
-            #line hidden
-            this.Write("\" />\r\n      ");
-            
-            #line 52 "D:\LMCom\rew\NewLMComModel\Design\Templates\ImsManifest.tt"
- } 
-            
-            #line default
-            #line hidden
-            this.Write("    ");
-            
-            #line 53 "D:\LMCom\rew\NewLMComModel\Design\Templates\ImsManifest.tt"
- /*
-#include SourcePath + "scormGlobalFiles.iss"
-#include SourcePath + "products\" + productId + "_scorm_files.iss"
-*/ 
+            #line 49 "D:\LMCom\rew\DesignTimeLib\Design\Templates\htmlHead.tt"
+
+    if (cfg.licenceConfig.domain != null) WriteLine(string.Format("  if (window.location.host.toLowerCase().indexOf('{0}') < 0) {{ alert('Wrong domain: {0}'); isOk = false; }}", cfg.licenceConfig.domain.ToLower()));
+    if (cfg.licenceConfig.intExpiration > 0) WriteLine("  if (new Date().getTime() > {0}) {{ alert('Trial version expired at {1}'); isOk = false; }}", cfg.licenceConfig.intExpiration, cfg.licenceConfig.expiration.ToString("yyyy-MM-dd"));
+    WriteLine(RewApp.writeJS(cfg, forStatistics));
+    WriteLine("</script>");
+  } else if (cfg.version == versions.not_minified) { 
+    WriteLine(RewApp.writeJS(cfg, forStatistics));
+  } else {
+    WriteLine(RewApp.writeJS(cfg, forStatistics));
+  }
+
             
             #line default
             #line hidden
-            this.Write("    </resource>\r\n  </resources>\r\n</manifest>");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -181,7 +143,7 @@ namespace NewData.Design.Templates
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class ImsManifestBase
+    public class htmlHeadBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

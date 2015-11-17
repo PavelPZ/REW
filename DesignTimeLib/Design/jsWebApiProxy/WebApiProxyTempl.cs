@@ -7,24 +7,20 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace NewData.Design.Templates
+namespace DesignTimeLib.Design.jsWebApiProxy
 {
     using System.Linq;
     using System.Text;
     using System.Collections.Generic;
-    using LMComLib;
-    using LMNetLib;
-    using Packager;
-    using schools;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
+    #line 1 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class htmlHead : htmlHeadBase
+    public partial class WebApiProxyTempl : WebApiProxyTemplBase
     {
 #line hidden
         /// <summary>
@@ -32,106 +28,79 @@ namespace NewData.Design.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write(" \r\n");
-            this.Write(" \r\n");
-            this.Write(" \r\n");
-            this.Write(" \r\n");
-            this.Write(" \r\n\r\n\r\n");
+            this.Write("\r\n");
             
-            #line 12 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
- //**************** BOOT
-  var min = cfg.version == versions.minified ? ".min" : "";
-  var themeId = cfg.themeId!=null ? cfg.themeId : "";
-
-  if (!string.IsNullOrEmpty(cfg.baseTagUrl)) WriteLine(string.Format("<base href=\"{0}/schools/\" />", cfg.baseTagUrl));
-
-
+            #line 7 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+ //https://github.com/faniereynders/WebApiProxy/blob/master/WebApiProxy.Server/Templates/JsProxyTemplate.tt 
             
             #line default
             #line hidden
-            this.Write("  <link href=\"../font-awesome/lm/externals");
-            
-            #line 19 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(themeId));
-            
-            #line default
-            #line hidden
-            this.Write(".css\" rel=\"stylesheet\"/>\r\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"../jslib" +
-                    "/ea/ea.css\" />\r\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"../blendedapi/sty" +
-                    "les/style.css\" />\r\n  <link href=\"../jslib/css/lm");
-            
-            #line 22 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(themeId));
-            
-            #line default
-            #line hidden
-            this.Write(".css\" rel=\"stylesheet\"/>\r\n\r\n");
-            
-            #line 24 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
+            this.Write(@"module proxies {
 
-  WriteLine(MainPage.writeCss(RewApp.publisherSkinCss(cfg)));
-  WriteLine(RewApp.writeCfg(cfg));
-
-            
-            #line default
-            #line hidden
-            this.Write("  <script type=\'text/javascript\' src=\'../jslib/js/lmconsoleinit.js\'></script>\r\n\r\n" +
-                    "  <script type=\'text/javascript\' src=\'../jslib/scripts/jquery");
-            
-            #line 30 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(min));
-            
-            #line default
-            #line hidden
-            this.Write(".js\'></script>\r\n  <script type=\'text/javascript\' src=\'../jslib/scripts/underscore" +
-                    "");
-            
-            #line 31 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(min));
-            
-            #line default
-            #line hidden
-            this.Write(@".js'></script>
-  <script src=""../jslib/scripts/angular.js"" type=""text/javascript""></script>
-
-  <script src=""../jslib/scripts/angular-route.js"" type=""text/javascript""></script>
-  <script src=""../jslib/scripts/angular-animate.js"" type=""text/javascript""></script>
-  <script src=""../jslib/scripts/angular-cookies.js"" type=""text/javascript""></script>
-  <script src=""../jslib/scripts/angular-ui-router.js"" type=""text/javascript""></script>
-  <script src=""../jslib/scripts/ui-bootstrap-tpls.js"" type=""text/javascript""></script>
-");
-            
-            #line 39 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
-
-  if (cfg.version == versions.minified) {
-
-            
-            #line default
-            #line hidden
-            this.Write(@"  <script type='text/javascript'>var isOk = true;</script>
-  <!--[if lt IE 8]><script type='text/javascript'>isOk = false; alert('Internet Explorer 8 or better is required!');</script><![endif]-->
-  <script type='text/javascript'>
-  function jsUrl(stUrl, dynUrl, dynVer) {
-    if (!document.cookie || !_.any(document.cookie.toLowerCase().split(';'), function (c) { return c.trim() == 'dynamicjs=true'; })) return stUrl;
-    return cfg.licenceConfig.serviceUrl + '?type=' + dynUrl + '&version=' + dynVer;
-  }
-");
-            
-            #line 49 "D:\LMCom\rew\NewLMComModel\Design\Templates\htmlHead.tt"
-
-    if (cfg.licenceConfig.domain != null) WriteLine(string.Format("  if (window.location.host.toLowerCase().indexOf('{0}') < 0) {{ alert('Wrong domain: {0}'); isOk = false; }}", cfg.licenceConfig.domain.ToLower()));
-    if (cfg.licenceConfig.intExpiration > 0) WriteLine("  if (new Date().getTime() > {0}) {{ alert('Trial version expired at {1}'); isOk = false; }}", cfg.licenceConfig.intExpiration, cfg.licenceConfig.expiration.ToString("yyyy-MM-dd"));
-    WriteLine(RewApp.writeJS(cfg, forStatistics));
-    WriteLine("</script>");
-  } else if (cfg.version == versions.not_minified) { 
-    WriteLine(RewApp.writeJS(cfg, forStatistics));
-  } else {
-    WriteLine(RewApp.writeJS(cfg, forStatistics));
+  function invoke(url: string, type: string, queryPars: Object, body: string, completed: (res) => void): void {
+    var ajaxOption: JQueryAjaxSettings = { type : type, contentType : ""application/json"" };
+    ajaxOption.url = Pager.basicUrl + url; if (queryPars != null) ajaxOption.url += ""?"" + $.param(queryPars);
+    if (body) ajaxOption.data = body;
+    $.ajax(ajaxOption).done(data => completed(data)).fail(() => { debugger; Logger.error('proxies.ajax', url, ''); });
   }
 
+");
+            
+            #line 17 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+ foreach(var definition in Definitions) { 
             
             #line default
             #line hidden
+            this.Write("  export class ");
+            
+            #line 18 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(definition.Name.ToLower()));
+            
+            #line default
+            #line hidden
+            this.Write(" {\r\n  ");
+            
+            #line 19 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+ foreach(var method in definition.ActionMethods) {
+            
+            #line default
+            #line hidden
+            this.Write("  static ");
+            
+            #line 20 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(method.Name));
+            
+            #line default
+            #line hidden
+            this.Write("(");
+            
+            #line 20 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(declarePars(method)));
+            
+            #line default
+            #line hidden
+            this.Write("): void {\r\n\t\t  invoke(");
+            
+            #line 21 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(invokePars(method)));
+            
+            #line default
+            #line hidden
+            this.Write(");\r\n\t  } \r\n  ");
+            
+            #line 23 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write(" \r\n  };\r\n");
+            
+            #line 25 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -143,7 +112,7 @@ namespace NewData.Design.Templates
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class htmlHeadBase
+    public class WebApiProxyTemplBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

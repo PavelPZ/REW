@@ -66,7 +66,7 @@ namespace excelReport {
         var converter = new courseResultTypeConverter();
         var resObjs = resStr.Select(o => new {
           ctrlResults = ((Dictionary<string, CourseModel.Result>)Newtonsoft.Json.JsonConvert.DeserializeObject<object>(o.courseResult, converter)).Values.OfType<CourseModel.HumanEvalResult>().ToArray(),
-          prod = CourseMeta.Lib.getRuntimeProd(o.ProductId),
+          prod = CourseMeta.LibLow.getRuntimeProd(o.ProductId),
           HumanAssigned = LowUtils.dateToNum(o.HumanAssigned),
           o.HumanCompanyUserId,
           //RowVersion = BitConverter.ToUInt64(o.RowVersion.Reverse().ToArray(), 0),
@@ -201,7 +201,7 @@ namespace excelReport {
             lics = lics[str.CourseUserId].ToArray(),
             department = str.DepartmentId == null ? departmentNode._threeLevelsTitles : departments[(int)str.DepartmentId].threeLevelsTitles(),
             data = temp = JsonConvert.DeserializeObject<testMe.result>(str.Data),
-            prod = CourseMeta.Lib.getRuntimeProd(temp.productUrl)
+            prod = CourseMeta.LibLow.getRuntimeProd(temp.productUrl)
           }).Where(o => o.prod != null); //.ToArray();
         //naplneni excel souboru
         fillTests(testResults, xlsx.package);

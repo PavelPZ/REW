@@ -483,6 +483,12 @@ namespace LMNetLib {
   /// <summary>Uzitecne funkce.</summary>
   public static class LowUtils {
 
+    public static JsonSerializerSettings jsonSet = new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore };
+
+    public static string serializeObjectToJS(object obj) {
+      return JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented, jsonSet);
+    }
+
     public static string join(IEnumerable<string> lines, string d) {
       if (lines == null) return null;
       StringBuilder sb = new StringBuilder(); bool exists = false;

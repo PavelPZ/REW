@@ -329,7 +329,7 @@ namespace NewData {
         Select(cu => cu.ProductId).ToArray();
       //var prodMeta = CourseMeta.Lib.runtimeProdExpanded();
       var prodLines = prodIds.
-        Select(p => CourseMeta.Lib.getRuntimeProd(p)).
+        Select(p => CourseMeta.LibLow.getRuntimeProd(p)).
         Where(p => p != null).
         Select(p => p.line).
         GroupBy(l => l).
@@ -359,7 +359,7 @@ namespace NewData {
       //filter pres jazyk
       CourseMeta.product tempProd;
       //var prodMeta = CourseMeta.Lib.runtimeProdExpanded();
-      todoCourseUsers = todoCourseUsers.Where(c => (tempProd = CourseMeta.Lib.getRuntimeProd(c.ProductId)) != null && tempProd.line == par.courseLang).ToArray();
+      todoCourseUsers = todoCourseUsers.Where(c => (tempProd = CourseMeta.LibLow.getRuntimeProd(c.ProductId)) != null && tempProd.line == par.courseLang).ToArray();
       evaluators = evaluators.Where(e => LMComLib.CompUserRole.FromString(e.RolePar).HumanEvalatorInfos.Any(h => h.lang == par.courseLang)).ToArray();
 
       return new CmdHumanEvalManagerGetResult {

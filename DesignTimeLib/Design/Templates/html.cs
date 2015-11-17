@@ -7,20 +7,24 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace NewData.Design.jsWebApiProxy
+namespace DesignTimeLib.Design.Templates
 {
     using System.Linq;
     using System.Text;
     using System.Collections.Generic;
+    using LMComLib;
+    using LMNetLib;
+    using Packager;
+    using schools;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\LMCom\rew\NewLMComModel\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+    #line 1 "D:\LMCom\rew\DesignTimeLib\Design\Templates\html.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class WebApiProxyTempl : WebApiProxyTemplBase
+    public partial class html : htmlBase
     {
 #line hidden
         /// <summary>
@@ -28,79 +32,67 @@ namespace NewData.Design.jsWebApiProxy
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("\r\n");
+            this.Write(" \r\n");
+            this.Write(" \r\n");
+            this.Write(" \r\n");
+            this.Write(" \r\n");
+            this.Write(" \r\n\r\n<!DOCTYPE html>\r\n<html class=\'no-ie7 no-ie8\'>\r\n<head>\r\n  <meta http-equiv=\'X" +
+                    "-UA-Compatible\' content=\'IE=Edge\' />\r\n  <meta http-equiv=\'Content-Type\' content=" +
+                    "\'text/html; charset=utf-8\'>\r\n  <meta name=\'viewport\' content=\'width=device-width" +
+                    "\'/>\r\n  <title>");
             
-            #line 7 "D:\LMCom\rew\NewLMComModel\Design\jsWebApiProxy\WebApiProxyTempl.tt"
- //https://github.com/faniereynders/WebApiProxy/blob/master/WebApiProxy.Server/Templates/JsProxyTemplate.tt 
-            
-            #line default
-            #line hidden
-            this.Write(@"module proxies {
-
-  function invoke(url: string, type: string, queryPars: Object, body: string, completed: (res) => void): void {
-    var ajaxOption: JQueryAjaxSettings = { type : type, contentType : ""application/json"" };
-    ajaxOption.url = Pager.basicUrl + url; if (queryPars != null) ajaxOption.url += ""?"" + $.param(queryPars);
-    if (body) ajaxOption.data = body;
-    $.ajax(ajaxOption).done(data => completed(data)).fail(() => { debugger; Logger.error('proxies.ajax', url, ''); });
-  }
-
-");
-            
-            #line 17 "D:\LMCom\rew\NewLMComModel\Design\jsWebApiProxy\WebApiProxyTempl.tt"
- foreach(var definition in Definitions) { 
+            #line 17 "D:\LMCom\rew\DesignTimeLib\Design\Templates\html.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(pageTitle));
             
             #line default
             #line hidden
-            this.Write("  export class ");
+            this.Write("</title>\r\n  ");
             
-            #line 18 "D:\LMCom\rew\NewLMComModel\Design\jsWebApiProxy\WebApiProxyTempl.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(definition.Name.ToLower()));
-            
-            #line default
-            #line hidden
-            this.Write(" {\r\n  ");
-            
-            #line 19 "D:\LMCom\rew\NewLMComModel\Design\jsWebApiProxy\WebApiProxyTempl.tt"
- foreach(var method in definition.ActionMethods) {
+            #line 18 "D:\LMCom\rew\DesignTimeLib\Design\Templates\html.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(RewApp.headContent(false, cfg)));
             
             #line default
             #line hidden
-            this.Write("  static ");
+            this.Write("\r\n</head>\r\n<body ");
             
-            #line 20 "D:\LMCom\rew\NewLMComModel\Design\jsWebApiProxy\WebApiProxyTempl.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(method.Name));
-            
-            #line default
-            #line hidden
-            this.Write("(");
-            
-            #line 20 "D:\LMCom\rew\NewLMComModel\Design\jsWebApiProxy\WebApiProxyTempl.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(declarePars(method)));
+            #line 20 "D:\LMCom\rew\DesignTimeLib\Design\Templates\html.tt"
+if (cfg.noCpv) Write("class='hide-cpv'");
             
             #line default
             #line hidden
-            this.Write("): void {\r\n\t\t  invoke(");
+            this.Write(@">
+  <div id=""block-gui-element"" class=""block-gui-cls"" style=""display:none"" onclick=""return false"">
+    <i class='fa fa-spinner fa-spin'></i>
+  </div>
+  <div id='splash' class='rtl'>
+    <div class='container center splash-loading'>
+      <i class='fa fa-spinner fa-spin'></i><br/><br/>Loading, it could take a while...  
+    </div>  
+  </div>
+  <div id='global-media' class='rtl'></div>
+  <div id='lm-alert-place' class='rtl'></div>
+  <div id='lm-console-place' class='rtl'></div>
+  <div id='lm-docdlg-place' class='rtl'></div>
+  <div ng-app=""appRoot"" class=""bl""><div data-ui-view></div></div>
+  <div id='root'></div>
+  <script id='dummy' type='text/x-jsrender' data-for='Dummy'>
+    {{for ~ActPage()}}{{/for}}
+  </script>
+  ");
             
-            #line 21 "D:\LMCom\rew\NewLMComModel\Design\jsWebApiProxy\WebApiProxyTempl.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(invokePars(method)));
+            #line 38 "D:\LMCom\rew\DesignTimeLib\Design\Templates\html.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(MainPage.htmls(RewApp.htmlNewEA(cfg))));
             
             #line default
             #line hidden
-            this.Write(");\r\n\t  } \r\n  ");
+            this.Write("\r\n  ");
             
-            #line 23 "D:\LMCom\rew\NewLMComModel\Design\jsWebApiProxy\WebApiProxyTempl.tt"
- } 
-            
-            #line default
-            #line hidden
-            this.Write(" \r\n  };\r\n");
-            
-            #line 25 "D:\LMCom\rew\NewLMComModel\Design\jsWebApiProxy\WebApiProxyTempl.tt"
- } 
+            #line 39 "D:\LMCom\rew\DesignTimeLib\Design\Templates\html.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(serverScript??""));
             
             #line default
             #line hidden
-            this.Write("}\r\n");
+            this.Write("\r\n</body>\r\n</html>\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -112,7 +104,7 @@ namespace NewData.Design.jsWebApiProxy
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class WebApiProxyTemplBase
+    public class htmlBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

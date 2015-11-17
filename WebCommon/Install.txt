@@ -3,6 +3,7 @@
 package management console
   dnvm setup
   dnvm upgrade
+  dnu restore
 
 V public void Configure(IApplicationBuilder app) {
    // Add the platform handler to the request pipeline.
@@ -15,5 +16,9 @@ Install-Package Microsoft.AspNet.Server.WebListener -Pre
 Install-Package Microsoft.Dnx.Runtime -Pre
 Install-Package Newtonsoft.Json -Version 7.0.1
 
+http://ef.readthedocs.org/en/latest/getting-started/aspnet5.html
 Install-Package EntityFramework.Commands -Pre
 Install-Package WindowsAzure.Storage -Version 6.1.0
+
+
+Update-Package -ProjectName MyProject
