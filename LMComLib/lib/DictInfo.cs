@@ -25,6 +25,7 @@ namespace LMComLib {
         wordsTo = d.wordsFrom
       }}).ToArray();
       InstanceNew = XmlUtils.FileToObject<DictInfo>(Machines.rootPath + @"RwDicts\dictInfoNew.xml");
+      
     }
     public static DictInfo Instance;
     public static DictInfo InstanceNew;

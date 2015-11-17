@@ -5,8 +5,8 @@
     "removeComments": false,
     "sourceMap": true,
     "target": "es5",
-    "jsx" : "react"
-    // "outDir": "../wwwroot"
+    "jsx": "react",
+    "noEmitHelpers": false
   },
   "exclude": [
     "node_modules",

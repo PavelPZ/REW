@@ -1,5 +1,12 @@
-
 module Pager {
+
+  if (typeof proxies!='undefined')
+  proxies.invoke = (url: string, type: string, queryPars: Object, body: string, completed: (res) => void)=> {
+    var ajaxOption: JQueryAjaxSettings = { type: type, contentType: "application/json" };
+    ajaxOption.url = Pager.basicUrl + url; if (queryPars != null) ajaxOption.url += "?" + $.param(queryPars);
+    if (body) ajaxOption.data = body;
+    $.ajax(ajaxOption).done(data => completed(data)).fail(() => { debugger; Logger.error('proxies.ajax', url, ''); });
+  }
 
   export interface ajaxConfig {
     forceServiceUrl: string;

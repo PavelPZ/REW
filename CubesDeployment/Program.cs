@@ -30,7 +30,7 @@ namespace CubesDeployment {
 
     static void Main(string[] args) {
 
-
+      
       //DesignNew.SynchronizeDirs.synchronize(new DesignNew.fileSystemDriver(@"d:\temp\azure", "v1-0"), new DesignNew.BuildIds[] { DesignNew.BuildIds .blended }, new Langs[] { Langs .cs_cz });
       //DesignNew.SynchronizeDirs.synchronize(new DesignNew.azureDriver("lmdata", "Hx//uWeo6vDSA2BHbBJP7HZviSSE6D8qZhGV7f4G778yPcfGOiBODF6o7Cg6029JiqnpMm1U8KrlD3+hycYiEw==", "v1-0"), new DesignNew.BuildIds[] { DesignNew.BuildIds.blended }, new Langs[] { Langs.cs_cz });
       return;

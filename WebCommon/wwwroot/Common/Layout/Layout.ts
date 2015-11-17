@@ -8,7 +8,7 @@ namespace config {
       routeActionToSceneId: (routeAction: flux.IAction) => string;
       scenePlaceContents: { //definuj RENDER obsah
         [scenePlaceId: string]: { //pro kazdy ScenePlace
-          [contentId: string]: layout.TRenderFunction; //a pro kazde contentId
+          [contentId: string]: layout.TRenderFunction; //a pro kazde contentId  
         }
       }
     };

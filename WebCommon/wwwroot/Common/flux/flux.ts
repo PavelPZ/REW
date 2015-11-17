@@ -5,7 +5,7 @@
     };
   }
 }
-namespace flux {
+namespace flux {  
 
   //**************** getState, trigger
   export function getState(): IWebState { return state.data; }

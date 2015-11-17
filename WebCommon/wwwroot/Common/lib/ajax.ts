@@ -1,5 +1,5 @@
-﻿namespace ajax {
-  //******************* AJAX
+﻿namespace ajax { 
+  //******************* AJAX 
   //https://developer.mozilla.org/en-US/docs/AJAX/Getting_Started, https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest, https://msdn.microsoft.com/cs-cz/library/ms535874(v=vs.85).aspx
   export function ajax(url: string, method: ajaxMethod = ajaxMethod.GET, option?: ajaxOptions): Promise<IAjaxResult> {
     return new Promise<IAjaxResult>((resolve, reject) => ajaxLow(url, method, option, resolve, reject));

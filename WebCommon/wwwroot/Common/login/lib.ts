@@ -3,11 +3,11 @@
     login?: {
     };
   }
-  cfg.data.login = {};
+  cfg.data.login = { }; 
 }
 
 namespace uiRouter {
-  export interface INamedState {
+  export interface INamedState { 
     login: {
       index: uiRouter.StateDef;
       login: uiRouter.StateDef;
@@ -28,7 +28,7 @@ namespace flux {
 }
 
 
-namespace login {
+namespace login { 
 
 
   //***** ROUTE init

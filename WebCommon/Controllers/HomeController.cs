@@ -16,8 +16,8 @@ namespace Controllers {
 
   public class HomeController : Controller {
     // GET: /<controller>/
-    [Route(""), Route("home"), Route("home-{name}")]
-    public IActionResult Index(string name) {
+    [Route(""), Route("{p1}/{p2}/{p3}/{p4}"), Route("{p1}/{p2}/{p3}"), Route("{p1}/{p2}"), Route("{p1}")]
+    public IActionResult Index(string p1, string p2, string p3, string p4) {
       return View(); // DesignNew. name.ToLower());
     }
   }

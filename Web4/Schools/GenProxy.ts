@@ -1,12 +1,7 @@
 ﻿
 module proxies {
 
-  function invoke(url: string, type: string, queryPars: Object, body: string, completed: (res) => void): void {
-    var ajaxOption: JQueryAjaxSettings = { type : type, contentType : "application/json" };
-    ajaxOption.url = Pager.basicUrl + url; if (queryPars != null) ajaxOption.url += "?" + $.param(queryPars);
-    if (body) ajaxOption.data = body;
-    $.ajax(ajaxOption).done(data => completed(data)).fail(() => { debugger; Logger.error('proxies.ajax', url, ''); });
-  }
+  export var invoke: (url: string, type: string, queryPars: Object, body: string, completed: (res) => void) => void;
 
   export class vyzva57services {
     static lmAdminSendOrder(jsonorder: string, completed: () => void): void {

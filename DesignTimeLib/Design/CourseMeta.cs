@@ -25,6 +25,12 @@ using xml = System.Xml;
 namespace CourseMeta {
 
   public class WebDataBatch {
+
+    public static void csiExeTest() {
+      File.WriteAllText(@"d:\temp\pom.txt","hallo");
+    }
+
+
     [XmlAttribute]
     public string url;
     public BatchProduct[] products;

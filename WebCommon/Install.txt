@@ -1,4 +1,5 @@
 ﻿https://www.microsoft.com/en-us/download/details.aspx?id=49442, pak zmenit Web app DEBUG options v vs.net
+Typescript compile: http://mobilemancer.com/2015/08/14/getting-started-typescript-1-5-in-visual-studio-2015/
 
 package management console
   dnvm setup

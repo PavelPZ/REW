@@ -10,7 +10,7 @@
 //export function connect<P>(mapStateToProps?: MapStateToProps,
 //  mapDispatchToProps?: MapDispatchToPropsFunction | MapDispatchToPropsObject,
 //  mergeProps?: MergeProps,
-//  options?: Options): (cls: React.ClassicComponentClass<P>) => React.ClassicComponentClass<P>;
+//  options?: Options): (cls: React.ClassicComponentClass<P>) => React.ClassicComponentClass<P>; 
 
 //D:\LMCom\rew\WebLogin\scripts\typings\react-global.d.ts
 

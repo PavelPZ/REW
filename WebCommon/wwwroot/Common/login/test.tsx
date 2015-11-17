@@ -9,7 +9,7 @@ namespace config {
   cfg.data.loginTest = {} as any;
 }
 
-namespace uiRouter {
+namespace uiRouter { 
   export interface INamedState {
     loginTest: { //pojmenovane uiRouter.State's aplikace
       default: uiRouter.State<loginTest.IDefaultPar>; //uiRouter.State hlavni stranky aplikace
@@ -49,7 +49,7 @@ namespace loginTest {
       if (complete) complete(action);
     }
     static moduleId = 'loginTest';
-    static createAppClickAction(): ILoginTestClickAction { return { moduleId: loginTest.moduleId, actionId: 'click' }; }
+    static createAppClickAction(): ILoginTestClickAction { return { moduleId: loginTest.moduleId, actionId: 'click' }; }   
   }
 
   //************* VIEWS
