@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "net45": {
+      "bin": {
+        "assembly": "C:/Program Files/Microsoft SQL Server/110/SDK/Assemblies/Microsoft.SqlServer.Management.Sdk.Sfc.dll"
+      },
+      "dependencies": {
+        "Microsoft.SqlServer.ConnectionInfo": "1.0.0-*"
+      }
+    }
+  }
+}
