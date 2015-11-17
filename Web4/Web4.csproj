@@ -332,6 +332,7 @@
     <Content Include="JsLib\css\lm.min.css" />
     <Content Include="JsLib\Scripts\jquery.js" />
     <Content Include="JsLib\Scripts\jquery.min.js" />
+    <Content Include="Schools\SLExtension.xap" />
     <Content Include="Temp\Author.html" />
     <Content Include="BlendedAPI\Doc.txt" />
     <None Include="BlendedAPI\Styles\style.less" />

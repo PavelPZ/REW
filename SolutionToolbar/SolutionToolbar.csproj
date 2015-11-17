@@ -384,6 +384,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DesignTimeLib\DesignTimeLib.csproj">
+      <Project>{a13f5f36-5f50-4340-8c1b-55ba52823846}</Project>
+      <Name>DesignTimeLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LMComLib\LMComLib.csproj">
       <Project>{c4201447-b3c3-4f3a-9e5f-4ff9b5f48570}</Project>
       <Name>LMComLib</Name>

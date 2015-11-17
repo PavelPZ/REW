@@ -16,11 +16,6 @@ namespace Controllers {
 
   public class HomeController : Controller {
     // GET: /<controller>/
-    //[Route("about")]
-    public IActionResult Index2() {
-      return View();
-    }
-    // GET: /<controller>/
     [Route(""), Route("home"), Route("home-{name}")]
     public IActionResult Index(string name) {
       return View(); // DesignNew. name.ToLower());

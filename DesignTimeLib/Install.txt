@@ -7,4 +7,4 @@ Install-Package YUICompressor.NET
 Install-Package YUICompressor.NET.MSBuild
 Install-Package WindowsAzure.Storage -Version 6.1.0
 Install-Package HtmlAgilityPack
-Install-Package Microsoft.AspNet.WebApi
+Install-Package Microsoft.AspNet.WebApi (kvuli generaci TypeScript proxies z popisu services)
