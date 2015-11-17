@@ -85,15 +85,16 @@ namespace Author {
           //if (string.IsNullOrEmpty(sourceXml)) sourceXml = CourseMeta.buildLib.getServerScript(CourseMeta.vsNetServer.buildModFiles(url, out rootProductId, log2));
           //if (log2.hasError) { Response.Clear(); Response.Write(log2.Log().Replace("\r", "<br/>")); Response.End(); }
           break;
-        case authorModes.xref:
-          startProcName = "xref.Start";
-          hash = "#" + XExtension.Create("xref".ToLower(), "xrefbrowsemodel".ToLower()).Aggregate((r, i) => r + "@" + i);
-          Author.XrefContext.adjustXrefSitemap(new LoggerMemory(true));
+        //Author.XrefContext removed
+        //case authorModes.xref:
+        //  startProcName = "xref.Start";
+        //  hash = "#" + XExtension.Create("xref".ToLower(), "xrefbrowsemodel".ToLower()).Aggregate((r, i) => r + "@" + i);
+        //  Author.XrefContext.adjustXrefSitemap(new LoggerMemory(true));
 
-          if (string.IsNullOrEmpty(serverScript)) serverScript =
-            CourseMeta.buildLib.getServerScript("/author/xrefsitemap.js", File.ReadAllText(Machines.rootPath + @"Author\xrefSitemap.js")) +
-            CourseMeta.buildLib.getServerScript("/author/doc.js", CourseModel.doc.mapWithDoc());
-          break;
+        //  if (string.IsNullOrEmpty(serverScript)) serverScript =
+        //    CourseMeta.buildLib.getServerScript("/author/xrefsitemap.js", File.ReadAllText(Machines.rootPath + @"Author\xrefSitemap.js")) +
+        //    CourseMeta.buildLib.getServerScript("/author/doc.js", CourseModel.doc.mapWithDoc());
+        //  break;
         case authorModes.doc:
           if (string.IsNullOrEmpty(serverScript)) serverScript = CourseMeta.buildLib.getServerScript("/author/doc.js", CourseModel.doc.mapWithDoc());
           hash = "#" + XExtension.Create("doc".ToLower(), "doctypesModel".ToLower()/*, "/author/doc"*/).Aggregate((r, i) => r + "@" + i);
@@ -122,13 +123,14 @@ namespace Author {
       contentPlace.Controls.Add(new LiteralControl(pageContent));
     }
 
-    protected void checkAll_Click(object sender, EventArgs e) {
-      writeTxt(Author.XrefContext.checkAllError());
-    }
+    //Author.XrefContext removed
+    //protected void checkAll_Click(object sender, EventArgs e) {
+    //  writeTxt(Author.XrefContext.checkAllError());
+    //}
 
-    protected void allToRename(object sender, EventArgs e) {
-      Author.XrefContext.allToRename();
-    }
+    //protected void allToRename(object sender, EventArgs e) {
+    //  Author.XrefContext.allToRename();
+    //}
     protected void dumpXml_Click(object sender, EventArgs e) {
       string url = normalizeUrl(urlTxt.Text);
       if (url.EndsWith("/") || url.EndsWith("\\")) return;

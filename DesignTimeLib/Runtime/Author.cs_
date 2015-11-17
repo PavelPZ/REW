@@ -113,7 +113,7 @@ namespace Author {
           var sitemapUrl = urlFromDesignUrl(par.id, null); // /publ/0/5/
           var files = regs.Select(r => ex.fileNameFromUrl(r));
           var prods = new products { url = sitemapUrl, Items = files.Where(fn => File.Exists(fn)).Select(fn => data.readObject<product>(fn)).ToArray() };
-          File.WriteAllText(Path.ChangeExtension(ex.fileNameFromUrl(sitemapUrl + "siteroot"), ".js"), CourseMeta.Lib.serializeObjectToJS(prods), Encoding.UTF8);
+          File.WriteAllText(Path.ChangeExtension(ex.fileNameFromUrl(sitemapUrl + "siteroot"), ".js"), LowUtils.serializeObjectToJS(prods), Encoding.UTF8);
           break;
       }
       return res;

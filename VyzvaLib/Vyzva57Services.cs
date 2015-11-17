@@ -147,10 +147,11 @@ namespace blended {
     //cviceni a instrukce, zakodovane do <url>|<jsonml>###...
     [Route("authorGetExJsonML"), HttpGet]
     public string authorGetExJsonML(string url) {
-      var log = new LoggerMemory(true) { isVsNet = true };
-      var pages = vsNetServer.buildExFiles(url, log).ToArray();
-      if (log.hasError) throw new Exception(log.Log());
-      return CourseMeta.buildLib.getBlendedScript(pages);
+      throw new Exception("Cannot compile blended.Vyzva57ServicesController.authorGetExJsonML to ASP.NET 5 application");
+      //var log = new LoggerMemory(true) { isVsNet = true };
+      //var pages = vsNetServer.buildExFiles(url, log).ToArray();
+      //if (log.hasError) throw new Exception(log.Log());
+      //return CourseMeta.buildLib.getBlendedScript(pages);
     }
 
     //*************** vytvoreni demo company

@@ -20,7 +20,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-using Translator;
+//XX
+//using Translator;
 
 namespace Admin {
 
@@ -184,8 +185,10 @@ public static class LingeaDictionary {
         }));
   }
 
-  static Dictionary<Langs, wordInf[]> courseWords {
-    get {
+  static Dictionary<Langs, wordInf[]> courseWords
+  {
+    get
+    {
       if (_courseWords == null) {
         //var courses = courseWordFiles.SelectMany(f => JArray.Parse(File.ReadAllText(Machines.basicPath + @"rew\Web4\RwDicts\" + f + ".json")));
         //d:\LMCom\rew\Web4\RwDicts\CourseWords.xml, grafia.xml apod.
@@ -212,7 +215,8 @@ public static class LingeaDictionary {
       }
       return _courseWords;
     }
-  } static Dictionary<Langs, wordInf[]> _courseWords;
+  }
+  static Dictionary<Langs, wordInf[]> _courseWords;
 
   static void captureLingea(Langs courseLang, Langs nativeLang, string dictCode, bool updateOnly = true, bool tryNullEntries = false) {
     if (!DictLib.crsLangs.Contains(courseLang)) return;
@@ -406,8 +410,10 @@ public static class LingeaDictionary {
 
 
   //vsechny kombinace crsLang,nativeLang odvozene ze souboru z d:\LMCom\rew\Web4\RwDicts\
-  static IEnumerable<dicts> allDicts {
-    get {
+  static IEnumerable<dicts> allDicts
+  {
+    get
+    {
       if (_allDicts == null) {
         _allDicts = CommonLib.bigLocalizations.SelectMany(nat => DictLib.crsLangs.
           Where(crs => File.Exists(dicts.fileName(nat, crs))).
@@ -415,7 +421,8 @@ public static class LingeaDictionary {
       }
       return _allDicts;
     }
-  } static dicts[] _allDicts;
+  }
+  static dicts[] _allDicts;
 
   //static void LingeaToModules(IEnumerable<Langs> nativeLangs, DictWords allUsedWords, Func<XElement, transformEntryPar, XElement> hideLingea) {
   //  foreach (var langCrs in allUsedWords.courses) {
@@ -636,14 +643,17 @@ public static class LingeaDictionary {
     public IEnumerable<Langs> bothLangs() { return XExtension.Create(crsLang, natLang); }
     public string id() { return entryId; }
     public string wordId() { return entryId.Split('|')[2]; }
-    public string[] headWords {
-      get {
+    public string[] headWords
+    {
+      get
+      {
         return _headWords == null ?
           (_headWords = splitHeadwords(entry.DescendantsAttr("class", "entr").First().Value).Distinct().ToArray()) :
           _headWords;
       }
       set { _headWords = value; }
-    } string[] _headWords;
+    }
+    string[] _headWords;
 
     public DictEntryObj toNew(Impersonator imp) {
       using (WindowsIdentity.Impersonate(imp.token)) {
@@ -674,12 +684,15 @@ public static class LingeaDictionary {
     public string soundMaster;
     public string[] natWords;
     public string[] crsWords;
-    public Google.DetectRes[] crsDetects;
-    public Google.DetectRes[] natDetects;
+    //XXX
+    //public Google.DetectRes[] crsDetects;
+    //public Google.DetectRes[] natDetects;
+    public dynamic crsDetects;
+    public dynamic natDetects;
     public string id() { return entryId; }
   }
 
-  public struct LangCount { [XmlAttribute] public Langs lang; [XmlAttribute] public int count; [XmlAttribute] public string chars;}
+  public struct LangCount {[XmlAttribute] public Langs lang;[XmlAttribute] public int count;[XmlAttribute] public string chars; }
   public struct LangCounts {
     [XmlAttribute]
     public string crsCharsOk;
@@ -704,8 +717,11 @@ public static class LingeaDictionary {
   }
 
   public static void googleDetectLang(IEnumerable<DictEntry> entries, List<GoogleGelp> start, string fn) {
-    var goog = new Translator.Google();
-    Func<string[], Google.DetectRes[]> getDetect = words => {
+    //XXX
+    //var goog = new Translator.Google();
+    dynamic goog = null;
+    //dynamic
+    Func<string[], /*XXXGoogle.DetectRes[]*/dynamic> getDetect = words => {
       if (words.Length == 0) return null;
       var txt = words.Aggregate((r, i) => r + " " + i);
       if (txt.Length > 1800) txt = txt.Substring(0, 1800);
@@ -765,7 +781,8 @@ public static class LingeaDictionary {
         foreach (var v in m.Split(',')) yield return beg + v + end;
       }
     }
-  } static Regex brackets = new Regex(@"\(.*?\)"); static Regex wrongs = new Regex(@"(\*|1|2|\(s'\)|\(se\))");
+  }
+  static Regex brackets = new Regex(@"\(.*?\)"); static Regex wrongs = new Regex(@"(\*|1|2|\(s'\)|\(se\))");
 
   //public class modExs {
   //  public static modExs formMod(CourseMeta.modInfo mod) { return new modExs() { jsonId = mod.jsonId, exs = mod.exs.Select(e => e.compId).ToArray() }; }
@@ -1128,7 +1145,7 @@ public static class LingeaDictionary {
           nat => {
             foreach (var newDe in nat) {
               //merge
-              newDe.entry = allOld[newDe.entryId]; 
+              newDe.entry = allOld[newDe.entryId];
               //sound tag
               var snd = newDe.entry.Descendants("sound").FirstOrDefault();
               if (snd == null) {

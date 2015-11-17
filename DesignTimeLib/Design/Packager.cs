@@ -202,12 +202,12 @@ namespace Packager {
 
     public static string HomePage(Config cfg, string serverScript = "") {
       cfg.basicPath = Machines.basicPath;
-      var res = new NewData.Design.Templates.html() { cfg = cfg, serverScript = serverScript }.TransformText();
+      var res = new DesignTimeLib.Design.Templates.html() { cfg = cfg, serverScript = serverScript }.TransformText();
       return res;
     }
 
     public static string headContent(bool forStatistics, Config cfg) {
-      return new NewData.Design.Templates.htmlHead() { cfg = cfg, forStatistics = forStatistics }.TransformText();
+      return new DesignTimeLib.Design.Templates.htmlHead() { cfg = cfg, forStatistics = forStatistics }.TransformText();
     }
 
     //public static string headGroundContent(Config cfg) {
@@ -651,7 +651,7 @@ namespace Packager {
     }
 
     static string scormManifest(ScormBatch batch, ScormBatchItem cfg) {
-      var xml = new NewData.Design.Templates.ImsManifest() { cfg = cfg, batch = batch }.TransformText().Trim();
+      var xml = new DesignTimeLib.Design.Templates.ImsManifest() { cfg = cfg, batch = batch }.TransformText().Trim();
       var root = XElement.Parse(xml);
       using (var ms = new MemoryStream()) {
         using (var wr = XmlWriter.Create(ms, new XmlWriterSettings() { Encoding = Encoding.UTF8, Indent = true })) root.Save(wr);

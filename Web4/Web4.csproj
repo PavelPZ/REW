@@ -2790,6 +2790,10 @@
       <Project>{d6c78a04-6a43-4aa6-b552-e8c331d58460}</Project>
       <Name>DataLib2</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DesignTimeLib\DesignTimeLib.csproj">
+      <Project>{a13f5f36-5f50-4340-8c1b-55ba52823846}</Project>
+      <Name>DesignTimeLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EPPlus\EPPlus.csproj">
       <Project>{7b288026-5502-4a39-bf41-77e086f3e4a3}</Project>
       <Name>EPPlus</Name>

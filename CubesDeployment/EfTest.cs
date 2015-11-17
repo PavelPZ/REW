@@ -1,5 +1,4 @@
-﻿using AzureData;
-using LMComLib;
+﻿using LMComLib;
 using LMNetLib;
 using System;
 using System.Collections.Generic;

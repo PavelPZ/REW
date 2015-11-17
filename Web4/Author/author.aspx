@@ -20,11 +20,11 @@
       &nbsp;&nbsp;<asp:LinkButton ID="dumpXml" runat="server" Text="dump xml" OnClick="dumpXml_Click"/>
       &nbsp;&nbsp;<asp:LinkButton ID="oldEA" runat="server" Text="from oldEA" OnClick="oldEA_Click"/>
       <br />
-      <br />
-      <br />
+      <%-- 
       <asp:LinkButton runat="server" Text="Check ALL" OnClick="checkAll_Click" />
       <br />
       <asp:LinkButton runat="server" Text="Export All" OnClick="allToRename" />
+        --%>
       <br />
       <br />
       <p>

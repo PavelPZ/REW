@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using pr = jsWebApiProxy;
 
 
-namespace NewData.Design.jsWebApiProxy {
+namespace DesignTimeLib.Design.jsWebApiProxy {
 
   public partial class WebApiProxyTempl {
 

@@ -49,7 +49,7 @@ namespace jsWebApiProxy {
       var cfg = GlobalConfiguration.Configuration;
       var descriptions = cfg.Services.GetApiExplorer().ApiDescriptions;
       var defs = LMGetMetadata(descriptions);
-      var template = new NewData.Design.jsWebApiProxy.WebApiProxyTempl(defs);
+      var template = new DesignTimeLib.Design.jsWebApiProxy.WebApiProxyTempl(defs);
       return template.TransformText();
     }
 

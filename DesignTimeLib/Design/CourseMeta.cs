@@ -84,7 +84,7 @@ namespace CourseMeta {
         var its = prod.Items; prod.Items = null; clonedProds.Add((product)prod.clone()); prod.Items = its;
       }
       prods = new products { Items = clonedProds.ToArray(), url = "/prods/" };
-      string prodTree = Lib.serializeObjectToJS(prods);
+      string prodTree = LowUtils.serializeObjectToJS(prods);
       rjson = Encoding.UTF8.GetBytes(buildLib.rjsonSign + ClearScript.Lib.JSON2RJSON(prodTree));
       json = Encoding.UTF8.GetBytes(prodTree);
     }
@@ -281,7 +281,7 @@ namespace CourseMeta {
       //sitemap
       prod.adjustMaxScore(); //spocti resultMs (charMax score). musi byt az po adjustCacheForModules, kde se nacitaji cviceni a pocita resultMs
       if (logger.isVsNet && logger.vsNetGlobalPublisherDir != null) prod.modifyUrls(prod.url.Substring(0, LowUtils.nthIndexesOf(prod.url, '/', 2) + 1), logger.vsNetGlobalPublisherDir);
-      string prodTree = Lib.serializeObjectToJS(prod);
+      string prodTree = LowUtils.serializeObjectToJS(prod);
       yield return new Packager.Consts.file(prodFileBase + ".js", Encoding.UTF8.GetBytes(buildLib.rjsonSign + ClearScript.Lib.JSON2RJSON(prodTree)));
       prod.Items = null; prod.styleSheet = null; prod.ms = 0; prod.defaultDictType = dictTypes.unknown; prod.defaultLocs = null;
       yield return new Packager.Consts.file(prodFileBase + ".xml", Encoding.UTF8.GetBytes(data.writeObject(prod)));
@@ -349,7 +349,7 @@ namespace CourseMeta {
     byte[] locJson() {
       var locStr = locToTree(locKeyValue().ToArray());
       if ((dict == null || dict.dict == null) && locStr == null) return null;
-      var dictStr = dict == null || dict.dict == null ? null : Lib.serializeObjectToJS(dict.dict);
+      var dictStr = dict == null || dict.dict == null ? null : LowUtils.serializeObjectToJS(dict.dict);
       var res = "{\r\n\"loc\" : " + (locStr ?? "{}") + ",\r\n\"dict\" : " + (dictStr == null ? "null" : ClearScript.Lib.JSON2RJSON(dictStr)) + "\r\n}";
       return Encoding.UTF8.GetBytes(res);
     }
@@ -659,9 +659,9 @@ namespace CourseMeta {
         //xref.lib.generateXref();
       }
 
-      if (!reinit && File.Exists(prodsFn) && File.Exists(prodsExpandedFn)) {
+      if (!reinit && File.Exists(prodsFn) && File.Exists(LibLow.prodsExpandedFn)) {
         prods = XmlUtils.FileToObject<products>(prodsFn); prods.finishRead();
-        prodExpanded = XmlUtils.FileToObject<products>(prodsExpandedFn); prodExpanded.finishRead();
+        prodExpanded = XmlUtils.FileToObject<products>(LibLow.prodsExpandedFn); prodExpanded.finishRead();
       } else {
         try {
           prods = new products {
@@ -731,7 +731,7 @@ namespace CourseMeta {
             checkUnique.Add(id);
           }
         };
-        XmlUtils.ObjectToFile(prodsExpandedFn, prodExpanded);
+        XmlUtils.ObjectToFile(LibLow.prodsExpandedFn, prodExpanded);
         prods.finishRead();
         prodExpanded.finishRead();
       }

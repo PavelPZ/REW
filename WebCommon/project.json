@@ -19,6 +19,7 @@
       "dependencies": {
         "EPPlus": "1.0.0-*",
         "LMComLib": "1.0.0-*",
+        "NewLMComModel": "1.0.0-*",
         "ObjectModel": "1.0.0-*"
       }
     }

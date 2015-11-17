@@ -7,6 +7,7 @@
     blended.finishContext(ctx);
     var def = ctx.$q.defer<IGetExJsonML>();
     try {
+      throw 'D:\LMCom\rew\VyzvaLib\Vyzva57Services.cs: see exception "Cannot compile blended.Vyzva57ServicesController.authorGetExJsonML to ASP.NET 5 application"';
       proxies.vyzva57services.authorGetExJsonML(ctx.Url, res => {
         var urlObj: IGetExJsonML = { exJsonML: null, other: {} };
         _.map(res.split('###'), keyVal => {

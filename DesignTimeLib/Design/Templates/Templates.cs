@@ -3,7 +3,7 @@ using Packager;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NewData.Design.Templates {
+namespace DesignTimeLib.Design.Templates {
 
   public partial class ImsManifest {
     public ScormBatchItem cfg;
