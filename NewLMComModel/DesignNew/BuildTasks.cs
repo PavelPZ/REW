@@ -58,7 +58,7 @@ namespace DesignNew {
     public override bool Execute() {
       Log.LogMessage(">>> zipSWFiles START");
       Log.LogMessage(basicPath + " > " + zipFile);
-      Deploy.zipSWFiles(basicPath, zipFile);
+      Deploy.zipSWFiles(basicPath, zipFile, Deploy.allSWFiles);
       Log.LogMessage(">>> zipSWFiles END");
       return true;
     }

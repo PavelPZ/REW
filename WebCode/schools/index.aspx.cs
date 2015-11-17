@@ -16,8 +16,8 @@ namespace WebCode {
       bool isDebug = (Request["isDebug"] ?? ConfigurationManager.AppSettings["cfg-isDebug"]) == "true";
       var lang = Request["lang"] ?? "en_gb";
       cfg = new schools.config() {
-        blobJS = ConfigurationManager.AppSettings["cfg-blobJS"],
-        blobMM = ConfigurationManager.AppSettings["cfg-blobMM"],
+        blobJS = ConfigurationManager.AppSettings["cfg-blobJS"], //URL s JS se cvicenimi
+        blobMM = ConfigurationManager.AppSettings["cfg-blobMM"], //URL s obrazky, zvuky, videa, ...
         target = Targets.web,
         version = isDebug ? schools.versions.debug : schools.versions.minified,
         dataBatchUrl = "/lm/lm_data/",
@@ -49,7 +49,7 @@ namespace WebCode {
     }
     protected string htmls() {
       DesignIds dsgnId = LowUtils.EnumParse<DesignIds>(cfg.designId ?? "no");
-      return File.ReadAllText(Machines.rootPath + "app_data\\html" + dsgnId.ToString() + ".txt");
+      return File.ReadAllText(Machines.rootPath + "app_data\\htmls\\html" + dsgnId.ToString() + ".txt");
     }
     static void script(StringBuilder sb, string url) { sb.AppendFormat(@"  <script src='../{0}' type='text/javascript'></script>", url); sb.AppendLine(); }
     static void css(StringBuilder sb, string url) { sb.AppendFormat(@"  <link href='../{0}' rel='stylesheet' type='text/css' />", url); sb.AppendLine(); }

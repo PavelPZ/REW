@@ -247,6 +247,7 @@
     <Compile Include="DesignNew\Deploy.cs" />
     <Compile Include="DesignNew\SynchronizeDirs.cs" />
     <Compile Include="DesignNew\Handler.cs" />
+    <Compile Include="DesignNew\WebCommonDeploy.cs" />
     <Compile Include="Design\jsWebApiProxy\WebApiProxyTempl.cs">
       <DependentUpon>WebApiProxyTempl.tt</DependentUpon>
       <AutoGen>True</AutoGen>

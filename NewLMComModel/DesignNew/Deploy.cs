@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -7,18 +8,12 @@ namespace DesignNew {
 
   public static partial class Deploy {
 
-    //******************* soubory pro SW deployment
-    public static IEnumerable<string> allSWFiles(string basicPath) {
-      var JSs = validDesignIds.SelectMany(designId => validLangStrs.SelectMany(lang => new bool[] { true, false }.Select(isMin => new { designId, lang, isMin }))).SelectMany(slb => allJS(slb.isMin, slb.lang, slb.designId));
-      var CSSs = validDesignIds.SelectMany(designId => new bool[] { true, false }.Select(isMin => new { designId, isMin })).SelectMany(slb => allCSS(slb.isMin, slb.designId));
-      var other = File.ReadAllLines(basicPath + @"Deploy\otherServer.txt").Concat(File.ReadAllLines(basicPath + @"Deploy\otherClient.txt"));
-      return JSs.Concat(CSSs).Concat(other).Where(s => !string.IsNullOrEmpty(s)).Select(s => s.ToLower()).Distinct().OrderBy(s => s);
-    }
-    public static void zipSWFiles(string basicPath, string zipFile) {
+    //jadro deploymentu WEB aplikace (vytvoreni napr. swfiles.zip)
+    public static void zipSWFiles(string basicPath, string zipFile, Func<string,IEnumerable<string>> getFiles) {
       if (File.Exists(zipFile)) File.Delete(zipFile);
       using (var zipStr = File.OpenWrite(zipFile))
       using (ZipArchive zip = new ZipArchive(zipStr, ZipArchiveMode.Create)) {
-        foreach (var fn in allSWFiles(basicPath).Select(f => f.Replace('/', '\\'))) {
+        foreach (var fn in getFiles(basicPath).Select(f => f.Replace('/', '\\'))) {
           ZipArchiveEntry entry = zip.CreateEntry(fn);
           var inpFn = basicPath + fn;
           using (var inpStr = File.OpenRead(inpFn))
@@ -34,6 +29,14 @@ namespace DesignNew {
           }
         }
       }
+    }
+
+    //******************* soubory pro SW deployment
+    public static IEnumerable<string> allSWFiles(string basicPath) {
+      var JSs = validDesignIds.SelectMany(designId => validLangStrs.SelectMany(lang => new bool[] { true, false }.Select(isMin => new { designId, lang, isMin }))).SelectMany(slb => allJS(slb.isMin, slb.lang, slb.designId));
+      var CSSs = validDesignIds.SelectMany(designId => new bool[] { true, false }.Select(isMin => new { designId, isMin })).SelectMany(slb => allCSS(slb.isMin, slb.designId));
+      var other = File.ReadAllLines(basicPath + @"Deploy\otherServer.txt").Concat(File.ReadAllLines(basicPath + @"Deploy\otherClient.txt"));
+      return JSs.Concat(CSSs).Concat(other).Where(s => !string.IsNullOrEmpty(s)).Select(s => s.ToLower()).Distinct().OrderBy(s => s);
     }
 
     //******************* soubory pro generaci index.html

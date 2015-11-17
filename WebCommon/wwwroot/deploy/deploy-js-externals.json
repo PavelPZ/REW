@@ -1,0 +1,6 @@
+﻿{
+  "includes": [
+    "/common/closure/deploy-js.json",
+    "/scripts/deploy-js.json"
+  ]
+}
