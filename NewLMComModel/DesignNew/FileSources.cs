@@ -15,7 +15,7 @@ namespace DesignNew {
   public static class FileSources {
 
     public static IEnumerable<string> pathsFromDpl(string dplPath, Langs lang = Langs.no) {
-      var urls = filesFromDpl(dplPath, lang == Langs.no ? null : Consts.allSWLangs);
+      var urls = filesFromDpl(dplPath, lang == Langs.no ? null : Consts.swLangs);
       return urls.Select(f => pathFromUrl(f));
     }
 
@@ -30,7 +30,7 @@ namespace DesignNew {
     public static filter zipSWFilesFilter(params Consts.Apps[] apps) {
       return new filter {
         apps = apps.ToArray(), // LowUtils.EnumGetValues<Consts.Apps>().ToArray(),
-        langs = Consts.allSWLangs,
+        langs = Consts.swLangs,
         allBrendMasks = new string[] { brendJSMask, brendCSSMask, brendMMMask },
         allSkinMasks = new string[] { skinJSMask, skinCSSMask, skinMMMask },
         allFixs = new string[] { "js", "css", "jsmin", "cssmin", "mm", "js{loc}", "js{loc}min" },

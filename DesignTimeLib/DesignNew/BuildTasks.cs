@@ -97,7 +97,7 @@ namespace DesignNew {
         //JS minify
         minifier.jsMinify("/deploy/web4/js-externals.dpl.json", "/deploy/web4/mins/externals.min.js");
         minifier.jsMinify("/deploy/web4/js-web.dpl.json", "/deploy/web4/mins/web.min.js");
-        foreach (var lang in Consts.allSWLangs) minifier.jsMinify("/deploy/web4/js{loc}.dpl.json", string.Format("/deploy/web4/mins/{0}.min.js", FileSources.swLang(lang)), lang);
+        foreach (var lang in Consts.swLangs) minifier.jsMinify("/deploy/web4/js{loc}.dpl.json", string.Format("/deploy/web4/mins/{0}.min.js", FileSources.swLang(lang)), lang);
         //CSS minify
         minifier.cssInPlaceMinify("/deploy/web4/css.dpl.json");
         //index HTML parts minify

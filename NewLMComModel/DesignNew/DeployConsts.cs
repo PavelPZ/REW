@@ -22,7 +22,8 @@ namespace DesignNew {
     public enum Apps { web4, common }
     public static HashSet<string> allApps = new HashSet<string>(LowUtils.EnumGetValues<Apps>().Select(b => b.ToString()));
 
-    public static Langs[] allSWLangs = new Langs[] { Langs.ar_sa, Langs.bg_bg, Langs.bs, Langs.cs_cz, Langs.de_de, Langs.sp_sp, Langs.fr_fr, Langs.it_it, Langs.lt_lt, Langs.pl_pl, Langs.ru_ru, Langs.sk_sk, Langs.tr_tr, Langs.vi_vn, Langs.zh_cn };
+    public static Langs[] swLangs = new Langs[] { Langs.ar_sa, Langs.bg_bg, Langs.bs, Langs.cs_cz, Langs.de_de, Langs.sp_sp, Langs.fr_fr, Langs.it_it, Langs.lt_lt, Langs.pl_pl, Langs.ru_ru, Langs.sk_sk, Langs.tr_tr, Langs.vi_vn, Langs.zh_cn };
+    public static HashSet<string> allSwLangs = new HashSet<string>(swLangs.Select(l => l.ToString())); //dir vsech sw lokalizaci
 
     public static HashSet<string> gzipExtensions = new HashSet<string>(new string[] { ".css", ".html", ".js", ".otf", ".svg", ".woff", ".woff2", ".ttf", ".eot" });
     public static Dictionary<string, string> contentTypes = new Dictionary<string, string> {

@@ -1,14 +1,71 @@
-﻿using System;
+﻿using DesignNew;
+using LMComLib;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using System.Web.Hosting;
 
 namespace WebCode {
+
+  public class HomeViewPars {
+    public Consts.Apps app;
+    public Langs lang = Langs.en_gb;
+    public Consts.Brands brand;
+    public Consts.SkinIds skin;
+    public bool debug;
+    public string other;
+  }
+
+  public class HomeModel {
+    public HomeModel(HomeViewPars pars) {
+      var csss = FileSources.getUrls(FileSources.indexPartFilter(false, pars.app, pars.skin, pars.brand, pars.lang, !pars.debug));
+      css = urlsToTags(csss, false);
+      var jss = FileSources.getUrls(FileSources.indexPartFilter(true, pars.app, pars.skin, pars.brand, pars.lang, !pars.debug));
+      js = urlsToTags(jss, true);
+      title = pars.brand == Consts.Brands.skrivanek ? "Skřivánek" : "LANGMaster";
+    }
+    public string title;
+    public string css;
+    public string js;
+    //*** PRIVATE
+    static void cssTag(StringBuilder sb, string url) { sb.AppendFormat(@"  <link href='../{0}' rel='stylesheet' type='text/css' />", url); sb.AppendLine(); }
+    static void jsTag(StringBuilder sb, string url) { sb.AppendFormat(@"  <script src='../{0}' type='text/javascript'></script>", url); sb.AppendLine(); }
+    static string urlsToTags(IEnumerable<string> urls, bool isJs) {
+      var tag = isJs ? (Action<StringBuilder, string>)jsTag : cssTag;
+      StringBuilder sb = new StringBuilder();
+      foreach (var url in urls) tag(sb, url);
+      return sb.ToString();
+    }
+  }
+
+  public class HomeModelWeb4 : HomeModel {
+    public HomeModelWeb4(HomeViewPars pars) : base(pars) {
+      var cfgObj = new schools.config() {
+        //blobJS = ConfigurationManager.AppSettings["cfg-blobJS"], //URL s JS se cvicenimi
+        //blobMM = ConfigurationManager.AppSettings["cfg-blobMM"], //URL s obrazky, zvuky, videa, ...
+        target = Targets.web,
+        version = pars.debug ? schools.versions.debug : schools.versions.minified,
+        dataBatchUrl = "/lm/lm_data/",
+        lang = pars.lang,
+        designId = pars.brand.ToString(),
+        canSkipCourse = true,
+        canResetCourse = true,
+        canResetTest = true,
+        canSkipTest = true,
+        persistType = schools.persistTypes.persistNewEA,
+      };
+      cfg = string.Format("<script type='text/javascript'>\r\nvar cfg = {0};\r\n</script>\r\n", JsonConvert.SerializeObject(cfgObj));
+    }
+    public string htmls;
+    public string cfg;
+  }
 
   public class UrlRewrite : IHttpModule {
 
@@ -19,8 +76,8 @@ namespace WebCode {
 
       context.BeginRequest += (s, a) => {
         HttpApplication app = (HttpApplication)s;
-        var pth = relPath(app.Request.Url.LocalPath); 
-        if (pth == null) { app.Response.Redirect("~/schools/index.html"); return; } 
+        var pth = relPath(app.Request.Url.LocalPath);
+        if (pth == null) { app.Response.Redirect("~/schools/index.html"); return; }
         //**** software file (z swfiles.zip nebo schools/index-*.html) z cache
         swFile sf;
         lock (swFile.swFiles) swFile.swFiles.TryGetValue(pth, out sf);
@@ -48,10 +105,10 @@ namespace WebCode {
             case 5: lang = parts[1] + "-" + parts[2]; isDebug = parts[3]; designId = parts[4]; break;
             default: throw new Exception(pth);
           }
-          app.Server.TransferRequest("~/schools/index.aspx" + 
-            (lang==null ? null : "?lang=" + lang) + 
-            (isDebug==null ? null : "&isDebug=" + isDebug) +
-            (designId == null ? null : "&designId=" + designId), 
+          app.Server.TransferRequest("~/schools/index.aspx" +
+            (lang == null ? null : "?lang=" + lang) +
+            (isDebug == null ? null : "&isDebug=" + isDebug) +
+            (designId == null ? null : "&designId=" + designId),
             false, "GET", headers);
         }
 
