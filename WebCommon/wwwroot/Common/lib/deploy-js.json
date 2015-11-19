@@ -1,9 +1,0 @@
-﻿{
-  "includes": [
-    "common.js",
-    "oauth-low.js",
-    "encrypt.js",
-    "ajax.js",
-    "oauth.js"
-  ]
-}

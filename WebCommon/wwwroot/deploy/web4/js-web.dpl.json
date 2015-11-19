@@ -1,0 +1,12 @@
+﻿{
+  "includes": [
+    "lists/js-Ground.dpl.json",
+    "lists/js-Model.dpl.json",
+    "lists/js-Login.dpl.json",
+    "lists/js-Admin.dpl.json",
+    "lists/js-School-Start.dpl.json",
+    "lists/js-School-End.dpl.json",
+    "lists/js-Course.dpl.json",
+    "lists/js-Blended.dpl.json"
+  ]
+}

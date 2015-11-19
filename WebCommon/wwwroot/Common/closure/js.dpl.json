@@ -1,0 +1,7 @@
+﻿{
+  "includes": [
+    "cookies.js",
+    "crypt.js",
+    "sha1.js"
+  ]
+}

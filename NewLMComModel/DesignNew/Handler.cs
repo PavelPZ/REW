@@ -72,7 +72,7 @@ namespace WebCode {
     void makeResponseFromCache(swFile sf, HttpApplication app) {
       string eTag = app.Request.Headers["If-None-Match"];
       app.Response.AppendHeader("Etag", sf.eTag);
-      app.Response.ContentType = DesignNew.Deploy.contentTypes[sf.ext];
+      app.Response.ContentType = DesignNew.Consts.contentTypes[sf.ext];
       if (sf.eTag == eTag) { //souhlasi eTag => not modified
         app.Response.ClearContent();
         app.Response.StatusCode = (int)HttpStatusCode.NotModified;

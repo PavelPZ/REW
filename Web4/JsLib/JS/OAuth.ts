@@ -63,7 +63,7 @@ module OAuth {
       break;
     case "test.langmaster.com":
       client_type = location.protocol == "http:" ? "test_lm" : "s_test_lm"; break;
-    case "www.eduland.vn":
+    case "www.etestme.vn":
       client_type = location.protocol == "http:" ? "eduland" : "s_eduland"; break;
     case "langmaster.jjlearning.com.mx":
       client_type = location.protocol == "http:" ? "alan" : "s_alan"; break;

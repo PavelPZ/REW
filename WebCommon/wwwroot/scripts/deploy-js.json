@@ -1,7 +1,0 @@
-﻿{
-  "includes": [
-    "core.js",
-    "react-with-addons.js",
-    "react-dom.js"
-  ]
-}

@@ -228,6 +228,7 @@ web4/rwdicts/
 web4/rwtts/
 web4/skrivanek/
 web4/publ/
+web4/products/
 
 web4/data/productnames.txt
 web4/data/products.xml
@@ -237,6 +238,9 @@ web4/data/actproductsexpanded.xml
 web4/data/productsitemap.xml
 Web4/Deploy/envelopes.xml
 lmcom/
+
+webcommon/wwwroot/bs3/
+webcommon/wwwroot/font-awesome/
 
 web4/siteroot.js
 web4/siteroot.all.js

@@ -1,0 +1,6 @@
+﻿{
+  "includes": [
+    "lists/mm-client.dpl.json",
+    "lists/mm-server.dpl.json"
+  ]
+}

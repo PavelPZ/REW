@@ -1,0 +1,5 @@
+﻿{
+  "includes": [
+    "lists/js-external.dpl.json"
+  ]
+}

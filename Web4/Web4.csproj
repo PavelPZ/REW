@@ -265,10 +265,6 @@
     <Content Include="Admin\HumanEvalManager.html" />
     <Content Include="Admin\HumanEval.html" />
     <Content Include="Admin\UserResults.html" />
-    <Content Include="App_Data\vyzva57.mdf" />
-    <Content Include="App_Data\vyzva57_log.ldf">
-      <DependentUpon>vyzva57.mdf</DependentUpon>
-    </Content>
     <Content Include="AuthorWeb\dialogs\dlg-edit-inline.html" />
     <Content Include="AuthorWeb\dialogs\dlg-enum-value.html" />
     <Content Include="AuthorWeb\dialogs\dlg-prop-name.html" />
@@ -319,6 +315,20 @@
     <Content Include="Author\Author.html" />
     <Content Include="bin\libmp3lame.dll" />
     <Content Include="bin\sqlite3.dll" />
+    <Content Include="Deploy\batchs\DATA-blended.xml" />
+    <Content Include="Deploy\batchs\DATA-edusoft.xml" />
+    <Content Include="Deploy\batchs\DATA-english.xml" />
+    <Content Include="Deploy\batchs\DATA-french.xml" />
+    <Content Include="Deploy\batchs\DATA-german.xml" />
+    <Content Include="Deploy\batchs\DATA-grafia.xml" />
+    <Content Include="Deploy\batchs\DATA-italian.xml" />
+    <Content Include="Deploy\batchs\DATA-lmtests.xml" />
+    <Content Include="Deploy\batchs\DATA-russian.xml" />
+    <Content Include="Deploy\batchs\DATA-skrivanek.xml" />
+    <Content Include="Deploy\batchs\DATA-spanish.xml" />
+    <Content Include="Deploy\batchs\SW-blended.xml" />
+    <Content Include="Deploy\batchs\SW-chinh.xml" />
+    <Content Include="Deploy\batchs\SW-skrivanek.xml" />
     <Content Include="Deploy\publishWebData.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -332,6 +342,21 @@
     <Content Include="JsLib\css\lm.min.css" />
     <Content Include="JsLib\Scripts\jquery.js" />
     <Content Include="JsLib\Scripts\jquery.min.js" />
+    <Content Include="Schools\Loc\tradosData.ar-sa.js" />
+    <Content Include="Schools\Loc\tradosData.bg-bg.js" />
+    <Content Include="Schools\Loc\tradosData.bs-ba.js" />
+    <Content Include="Schools\Loc\tradosData.bs.js" />
+    <Content Include="Schools\Loc\tradosData.de-de.js" />
+    <Content Include="Schools\Loc\tradosData.en-gb.js" />
+    <Content Include="Schools\Loc\tradosData.es-es.js" />
+    <Content Include="Schools\Loc\tradosData.fr-fr.js" />
+    <Content Include="Schools\Loc\tradosData.it-it.js" />
+    <Content Include="Schools\Loc\tradosData.lt-lt.js" />
+    <Content Include="Schools\Loc\tradosData.pl-pl.js" />
+    <Content Include="Schools\Loc\tradosData.ru-ru.js" />
+    <Content Include="Schools\Loc\tradosData.sk-sk.js" />
+    <Content Include="Schools\Loc\tradosData.tr-tr.js" />
+    <Content Include="Schools\Loc\tradosData.zh-cn.js" />
     <Content Include="Schools\SLExtension.xap" />
     <Content Include="Temp\Author.html" />
     <Content Include="BlendedAPI\Doc.txt" />
@@ -589,6 +614,16 @@
     <Content Include="Deploy\vhd.cmd" />
     <Content Include="Deploy\getGitArchive.cmd" />
     <Content Include="Deploy\buildWebCode.cmd" />
+    <Content Include="Deploy\cmd\BUILD-all.cmd" />
+    <Content Include="Deploy\cmd\BUILD-blended.cmd" />
+    <Content Include="Deploy\cmd\BUILD-chinh.cmd" />
+    <Content Include="Deploy\cmd\BUILD-skrivanek-blended.cmd" />
+    <Content Include="Deploy\cmd\BUILD-skrivanek.cmd" />
+    <Content Include="Deploy\cmd\copyDataFromFE5.cmd" />
+    <Content Include="Deploy\cmd\copyDataToFE5.cmd" />
+    <Content Include="Deploy\cmd\copyEduAuthorNewFromFE5.cmd" />
+    <Content Include="Deploy\cmd\copyWebToFE5.cmd" />
+    <Content Include="Deploy\cmd\DelJS.cmd" />
     <None Include="JsLib\css\Author.less" />
     <Content Include="JsLib\css\img\flag-mid.png" />
     <Content Include="JsLib\css\img\flag-small.png" />

@@ -186,8 +186,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DesignNew\Deploy.cs" />
     <Compile Include="DesignNew\DeployConsts.cs" />
+    <Compile Include="DesignNew\FileSources.cs" />
     <Compile Include="DesignNew\Handler.cs" />
     <Compile Include="Design\CourseMeta.cs" />
     <Compile Include="Runtime\JSCrambler.cs" />

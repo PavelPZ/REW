@@ -22,7 +22,7 @@ namespace WebCode {
         version = isDebug ? schools.versions.debug : schools.versions.minified,
         dataBatchUrl = "/lm/lm_data/",
         lang = urlInfo.langStrToLang(lang),
-        designId = Deploy.validDesignIds.Contains(designId) ? designId : null,
+        designId = Consts.allBrands.Contains(designId) ? designId : null,
         canSkipCourse = true,
         canResetCourse = true,
         canResetTest = true,
@@ -39,16 +39,16 @@ namespace WebCode {
     protected string scripts() {
       StringBuilder sb = new StringBuilder();
       var langStr = cfg.lang == Langs.no ? null : cfg.lang.ToString().Replace('_', '-');
-      foreach (var s in DesignNew.Deploy.allJS(cfg.version != schools.versions.debug, langStr, cfg.designId)) script(sb, s);
+      //foreach (var s in DesignNew.Deploy.allJS(cfg.version != schools.versions.debug, langStr, cfg.designId)) script(sb, s);
       return sb.ToString();
     }
     protected string csss() {
       StringBuilder sb = new StringBuilder();
-      foreach (var s in DesignNew.Deploy.allCSS(cfg.version != schools.versions.debug, cfg.designId)) css(sb, s);
+      //foreach (var s in DesignNew.Deploy.allCSS(cfg.version != schools.versions.debug, cfg.designId)) css(sb, s);
       return sb.ToString();
     }
     protected string htmls() {
-      DesignIds dsgnId = LowUtils.EnumParse<DesignIds>(cfg.designId ?? "no");
+      Consts.Brands dsgnId = LowUtils.EnumParse<Consts.Brands>(cfg.designId ?? "lm");
       return File.ReadAllText(Machines.rootPath + "app_data\\htmls\\html" + dsgnId.ToString() + ".txt");
     }
     static void script(StringBuilder sb, string url) { sb.AppendFormat(@"  <script src='../{0}' type='text/javascript'></script>", url); sb.AppendLine(); }

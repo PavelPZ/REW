@@ -1,0 +1,8 @@
+﻿{
+  "includes": [
+    "angularCommon.js",
+    "routerCommon.js",
+    "urlMatcherFactory.js",
+    "router.js"
+  ]
+}

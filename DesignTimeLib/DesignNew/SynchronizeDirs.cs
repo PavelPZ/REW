@@ -6,6 +6,7 @@ using Microsoft.WindowsAzure.Storage.Shared.Protocol;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -27,7 +28,9 @@ namespace DesignNew {
   }
 
   //******************************** SOURCE FILE MAP
-  //d:\LMCom\rew\Web4\Deploy\envelopes.xml se seznamem souboru
+  //zpravuje d:\LMCom\rew\Web4\Deploy\envelopes.xml se seznamem souboru
+  //envelopes.xml se aktualizuje v DesignTimeLib.BuildLib.writeVirtualFiles. 
+  //Kazdy potrebny datovy soubor (JS nebo MM) se zaeviduje a zjisti se eTag a dalsi info (jazyk, buildId).
   public class buildEnvelopes {
 
     public buildEnvelope[] items { get { return dir.Values.ToArray(); } set { dir = value.ToDictionary(v => v.url); } }
@@ -35,12 +38,22 @@ namespace DesignNew {
     [XmlIgnore]
     public Dictionary<string, buildEnvelope> dir;
 
-    static HashSet<string> allLocs = new HashSet<string>(CommonLib.smallLocalizations.Select(l => l.ToString())); //dir vsech dostupnych lokalizaci
-
-    public static buildEnvelopes adjust() { return File.Exists(fn) ? XmlUtils.FileToObject<buildEnvelopes>(fn) : new buildEnvelopes { dir = new Dictionary<string, buildEnvelope>() }; }
+    //reset
+    public static void reset() {
+      if (!File.Exists(fn)) return;
+      Trace.WriteLine("Delete envelopes file: " + fn);
+      File.Delete(fn);
+    }
+    //otevreni
+    public static buildEnvelopes adjust() {
+      Trace.WriteLine("Open envelopes file: " + fn);
+      return File.Exists(fn) ? XmlUtils.FileToObject<buildEnvelopes>(fn) : new buildEnvelopes { dir = new Dictionary<string, buildEnvelope>() };
+    }
+    //ulozeni
     public void save() { XmlUtils.ObjectToFile(fn, this); }
     static string fn = Machines.rootPath + @"Deploy\envelopes.xml";
 
+    //aktualizace jednoho datoveho souboru (vcetne ev. zapisu kdyz se lisi eTag)
     public void adjustEnvelope(BuildIds buildId, string url, byte[] data = null) {
       var fn = Machines.rootDir + url.Replace('/', '\\');
       url = url.ToLower();
@@ -58,7 +71,7 @@ namespace DesignNew {
           }
           //lang
           var parts = url.Split('.');
-          if (parts[parts.Length - 1] == "js" && allLocs.Contains(parts[parts.Length - 2])) env.lang = LowUtils.EnumParse<Langs>(parts[parts.Length - 2]);
+          if (parts[parts.Length - 1] == "js" && Consts.allDataLocs.Contains(parts[parts.Length - 2])) env.lang = LowUtils.EnumParse<Langs>(parts[parts.Length - 2]);
         }
       } else { //MM files
         var lastWriteTime = File.GetLastWriteTimeUtc(fn);
@@ -149,6 +162,7 @@ namespace DesignNew {
   public interface IDriver {
     dirItems readMap();
     void update(dirItemsDelta delta);
+    void deleteContainer();
   }
 
   //http://blogs.msdn.com/b/windowsazurestorage/archive/2014/09/08/managing-concurrency-in-microsoft-azure-storage.aspx
@@ -156,8 +170,8 @@ namespace DesignNew {
   public class azureDriver : IDriver {
     CloudBlobContainer container;
     CloudBlobClient blobClient;
-    public azureDriver(string accountName, string accountKey, string containerName) {
-      var connStr = string.Format("DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1}", accountName, accountKey);
+    public azureDriver(string connStr, string containerName) {
+      //var connStr = string.Format("DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1}", accountName, accountKey);
       CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connStr);
       blobClient = storageAccount.CreateCloudBlobClient();
       var props = blobClient.GetServiceProperties();
@@ -174,8 +188,11 @@ namespace DesignNew {
       container = blobClient.GetContainerReference(containerName);
       if (container.CreateIfNotExists()) container.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
     }
+    public void deleteContainer() {
+      container.DeleteIfExists();
+    }
     public dirItems readMap() {
-      CloudBlockBlob blockBlob = container.GetBlockBlobReference("map.map");
+      CloudBlockBlob blockBlob = container.GetBlockBlobReference("container.content");
       if (blockBlob.Exists())
         using (var str = blockBlob.OpenRead()) return XmlUtils.StreamToObject<dirItems>(str);
       return new dirItems();
@@ -183,37 +200,37 @@ namespace DesignNew {
     //https://cmatskas.com/working-with-azure-blobs-through-the-net-sdk/
     //https://msdn.microsoft.com/en-us/library/wa_storage_30_reference_home.aspx
     public void update(dirItemsDelta delta) {
-//      var rootContainer = blobClient.GetContainerReference("$root");
-//      if (rootContainer.CreateIfNotExists()) rootContainer.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
+      //      var rootContainer = blobClient.GetContainerReference("$root");
+      //      if (rootContainer.CreateIfNotExists()) rootContainer.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
 
-//      var slAccess = rootContainer.GetBlockBlobReference("clientaccesspolicy.xml");
-//      slAccess.Properties.ContentType = "text/xml; charset=utf-8";
-//      slAccess.UploadText(
-//@"<?xml version=""1.0"" encoding=""utf-8""?>
-//<access-policy>
-//  <cross-domain-access>
-//    <policy>
-//      <allow-from http-methods=""*"" http-request-headers=""*"">
-//        <domain uri=""*"" />
-//        <domain uri=""http://*"" />
-//        <domain uri=""https://*"" />
-//      </allow-from>
-//      <grant-to>
-//        <resource path=""/"" include-subpaths=""true"" />
-//      </grant-to>
-//    </policy>
-//  </cross-domain-access>
-//</access-policy>");
+      //      var slAccess = rootContainer.GetBlockBlobReference("clientaccesspolicy.xml");
+      //      slAccess.Properties.ContentType = "text/xml; charset=utf-8";
+      //      slAccess.UploadText(
+      //@"<?xml version=""1.0"" encoding=""utf-8""?>
+      //<access-policy>
+      //  <cross-domain-access>
+      //    <policy>
+      //      <allow-from http-methods=""*"" http-request-headers=""*"">
+      //        <domain uri=""*"" />
+      //        <domain uri=""http://*"" />
+      //        <domain uri=""https://*"" />
+      //      </allow-from>
+      //      <grant-to>
+      //        <resource path=""/"" include-subpaths=""true"" />
+      //      </grant-to>
+      //    </policy>
+      //  </cross-domain-access>
+      //</access-policy>");
 
-      if (delta==null || delta.empty());
+      if (delta == null || delta.empty()) ;
       Parallel.ForEach(delta.delete, new ParallelOptions { MaxDegreeOfParallelism = paralelCount }, it => container.GetBlockBlobReference(it.url.Substring(1)).Delete());
       Parallel.ForEach(delta.update.Concat(delta.insert), new ParallelOptions { MaxDegreeOfParallelism = paralelCount }, it => {
         var blob = container.GetBlockBlobReference(it.url.Substring(1));
         var fn = Machines.rootDir + it.url.Replace('/', '\\');
-        blob.Properties.ContentType = Deploy.contentTypes[Path.GetExtension(fn)];
+        blob.Properties.ContentType = Consts.contentTypes[Path.GetExtension(fn)];
         blob.UploadFromFile(fn, FileMode.Open);
       });
-      var map = container.GetBlockBlobReference("map.map");
+      var map = container.GetBlockBlobReference("container.content");
       map.UploadFromByteArray(delta.fileMap, 0, delta.fileMap.Length);
     }
     const int paralelCount = 10;
@@ -223,8 +240,11 @@ namespace DesignNew {
     public fileSystemDriver(string basicPath, string container) { this.basicPath = basicPath + "\\" + container; }
     string basicPath;
     public dirItems readMap() {
-      var path = fileName("/map.map");
+      var path = fileName("/container.content");
       return File.Exists(path) ? XmlUtils.FileToObject<dirItems>(path) : new dirItems();
+    }
+    public void deleteContainer() {
+      Directory.Delete(basicPath, true);
     }
     public void update(dirItemsDelta delta) {
       if (delta.empty()) return;
@@ -233,7 +253,7 @@ namespace DesignNew {
         var fn = fileName(it.url); Directory.CreateDirectory(Path.GetDirectoryName(fn));
         File.Copy(Machines.rootDir + it.url.Replace('/', '\\'), fn, true);
       });
-      File.WriteAllBytes(fileName("/map.map"), delta.fileMap);
+      File.WriteAllBytes(fileName("/container.content"), delta.fileMap);
     }
     string fileName(string url) { return basicPath + url.Replace('/', '\\'); }
   }

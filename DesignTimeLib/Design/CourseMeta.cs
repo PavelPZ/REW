@@ -37,8 +37,8 @@ namespace CourseMeta {
     public string[] productPtrs;
     [XmlAttribute]
     public Langs[] locs;
-    [XmlAttribute]
-    public Langs[] allLocs;
+    //[XmlAttribute]
+    //public Langs[] allLocs;
     [XmlAttribute]
     public dictTypes dictType;
     [XmlAttribute]
@@ -52,16 +52,16 @@ namespace CourseMeta {
       if (res.productPtrs != null)
         res.products = res.productPtrs.Select(fn => XmlUtils.FileToObject<CourseMeta.WebDataBatch>(fn)).SelectMany(wb => wb.products).ToArray();
       if (res.products != null) foreach (var p in res.products) p.owner = res;
-      if (res.genDebugJS) res.allLocs = Cache.debugBigLocs;
-      else if (res.allLocs == null) res.allLocs = CommonLib.bigLocalizations;
+      //if (res.genDebugJS) res.allLocs = Cache.debugBigLocs;
+      //else if (res.allLocs == null) res.allLocs = CommonLib.bigLocalizations;
       return res;
     }
 
-    public IEnumerable<Packager.Consts.file> getWebGlobalFiles(product[] allProds, LoggerMemory logger) {
+    public IEnumerable<Packager.Consts.file> getWebGlobalFiles(product[] buildProds, LoggerMemory logger) {
       byte[] jsonProdTree, rjsonProdTree; products prods;
       var isLocalBuild = url == "/lm/lm_data/";
 
-      getJSSitemap(isLocalBuild ? Lib.prods.Items.Cast<product>() : allProds, out jsonProdTree, out rjsonProdTree, out prods);
+      getJSSitemap(isLocalBuild ? Lib.prods.Items.Cast<product>() : buildProds, out jsonProdTree, out rjsonProdTree, out prods);
       yield return new Packager.Consts.file("siteroot.js", rjsonProdTree);
       yield return new Packager.Consts.file(data.urlStripLast(url) + ".js", rjsonProdTree);
 
@@ -74,12 +74,35 @@ namespace CourseMeta {
       }
     }
 
-    public IEnumerable<Packager.Consts.file> getWebBatchFiles(LoggerMemory logger, bool incGlobalFiles = true) {
-
+    public IEnumerable<Packager.Consts.file> getWebBatchFilesNew(DesignNew.BuildIds buildId, LoggerMemory logger) {
       using (CourseMeta.Cache cache = new CourseMeta.Cache(logger)) {
-        var buildProds = products.SelectMany(p => p.getBuildProduct());
-        if (!globalsOnly)
-          foreach (var f in buildLib.getProductFiles(cache, buildProds, logger)) yield return f;
+        var buildProds = products.Select(p => p.getBuildProduct()).ToArray();
+        //files
+        var files = buildLib.getProductFiles(cache, buildProds, logger);
+        //globals
+        var prods = buildProds.Select(p => p.prod).ToArray();
+        byte[] jsonProdTree, rjsonProdTree; products prodProxies;
+        getJSSitemap(prods, out jsonProdTree, out rjsonProdTree, out prodProxies);
+        var build = buildId.ToString();
+        HashSet<string> prodUrls = new HashSet<string>(prodProxies.Items.Cast<product>().Select(p => p.url));
+        var expanded = new products { Items = Lib.prodExpanded.Items.Cast<product>().Where(p => prodUrls.Contains(p.url)).ToArray() };
+        var globals = XExtension.Create<Packager.Consts.file>(
+          new Packager.Consts.file("products/" + build + ".js", rjsonProdTree),
+          new Packager.Consts.file("products/" + build + ".xml", XmlUtils.ObjectToBytes(prodProxies)),
+          new Packager.Consts.file("products/" + build + "-expanded.xml", XmlUtils.ObjectToBytes(expanded))
+          );
+        return globals.Concat(files);
+      }
+    }
+
+
+
+    public IEnumerable<Packager.Consts.file> getWebBatchFiles(LoggerMemory logger, bool incGlobalFiles = true) {
+      using (CourseMeta.Cache cache = new CourseMeta.Cache(logger)) {
+        var buildProds = products.Select(p => p.getBuildProduct());
+        //datove soubory
+        if (!globalsOnly) foreach (var f in buildLib.getProductFiles(cache, buildProds, logger)) yield return f;
+        //sitemaps apod.
         if (incGlobalFiles) foreach (var f in getWebGlobalFiles(buildProds.Select(p => p.prod).ToArray(), logger)) yield return f;
       }
     }
@@ -104,7 +127,7 @@ namespace CourseMeta {
       return rjsonProdTree;
     }
 
-    public IEnumerable<buildProduct> getBuildProduct() {
+    public buildProduct getBuildProduct() {
       buildProduct res;
       try {
         var prod = Lib.prodExpanded.Items.Cast<product>().First(p => p.url == id);
@@ -117,7 +140,7 @@ namespace CourseMeta {
       } catch (Exception exp) {
         throw new Exception(id, exp);
       }
-      yield return res;
+      return res;
     }
 
     [XmlIgnore]
@@ -153,18 +176,8 @@ namespace CourseMeta {
         var url = "/" + (file.destDir != null ? file.destDir.Replace('\\', '/') + "/" : null) + file.name;
         var fn = Machines.rootDir + url.Replace('/', '\\');
         LowUtils.AdjustFileDir(fn);
+        //ev. zapis soubor na disk (napr. JS, MM soubory se nepisi) a aktualizuj obalku souboru s etagem do d:\LMCom\rew\Web4\Deploy\envelopes.xml
         envs.adjustEnvelope(buildId, url, data);
-        //if (data == null) { //obalka mm souboru s etagem
-        //envs.adjustEnvelope(buildId, url);
-        //} else {
-        //if (Path.GetExtension(fn) == ".js") {
-        //envs.adjustEnvelope(buildId, url, data);
-        //new FileInfo(fn).Attributes = FileAttributes.Hidden; //hidden atributy
-        //} else {
-        //if (File.Exists(fn)) File.Delete(fn);
-        //File.WriteAllBytes(fn, data);
-        //}
-        //}
       });
       envs.save();
     }

@@ -1,0 +1,9 @@
+{
+  "includes": [
+    "/common/lib/test.js",
+    "/common/flux/test.js",
+    "/common/layout/test.js",
+    "/common/uirouter/test.js",
+    "/common/validation/test.js"
+  ]
+}

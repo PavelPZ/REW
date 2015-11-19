@@ -1,0 +1,8 @@
+{
+  "regExs": null,
+  "includes": [
+    "/font-awesome/lm/externals.min.css",
+    "/blendedapi/styles/style.min.css",
+    "/jslib/css/lm.min.css"
+  ]
+}

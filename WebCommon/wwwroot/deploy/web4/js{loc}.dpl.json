@@ -1,0 +1,7 @@
+{
+  "regExs": null,
+  "includes": [
+    "/schools/loc/tradosdata.{0}.js",
+    "/jslib/scripts/cultures/globalize.culture.{0}.js"
+  ]
+}

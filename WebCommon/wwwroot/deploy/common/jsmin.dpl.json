@@ -1,0 +1,6 @@
+﻿{
+  "includes": [
+    "/deploy/common/mins/externals.min.js",
+    "/deploy/common/mins/common.min.js"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "regExs": null,
+  "includes": [
+    "/deploy/web4/mins/{0}.min.js"
+  ]
+}

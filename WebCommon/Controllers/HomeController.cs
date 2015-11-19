@@ -8,16 +8,14 @@ using Microsoft.AspNet.Mvc;
 
 namespace Controllers {
 
-  public class HomeView {
-    public string title;
-    public string csss() { return null; }
-    public string jss() { return null; }
+  public class HomeViewPars {
   }
 
   public class HomeController : Controller {
-    // GET: /<controller>/
-    [Route(""), Route("{p1}/{p2}/{p3}/{p4}"), Route("{p1}/{p2}/{p3}"), Route("{p1}/{p2}"), Route("{p1}")]
-    public IActionResult Index(string p1, string p2, string p3, string p4) {
+    //napr. test/common-cs_cz-skrivanek-mdl nebo schools/index
+    [Route(""), Route("{appId}/{appSubId}-{p1}-{p2}-{p3}-{p4}"), Route("{appId}/{appSubId}-{p1}-{p2}-{p3}"), Route("{appId}/{appSubId}-{p1}-{p2}"), Route("{appId}/{appSubId}-{p1}"), Route("{appId}/{appSubId}")]
+    public IActionResult Index(string appId, string appSubId, string p1, string p2, string p3, string p4) {
+      //aplikace x skin x brend x jazyk x "debug" x other
       return View(); // DesignNew. name.ToLower());
     }
   }

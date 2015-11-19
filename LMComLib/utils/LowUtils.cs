@@ -132,7 +132,7 @@ namespace LMNetLib {
 
 
     public LoggerMemory(bool strictChecking) { this.strictChecking = strictChecking; }
-    public LoggerMemory(): this(false) { }
+    public LoggerMemory() : this(false) { }
 
     protected override void write(string msg) { System.Diagnostics.Debugger.Break(); throw new NotImplementedException(); }
 
@@ -356,8 +356,10 @@ namespace LMNetLib {
 
     #endregion
     #region Private Properties
-    protected XmlSerializer ValueSerializer {
-      get {
+    protected XmlSerializer ValueSerializer
+    {
+      get
+      {
         if (valueSerializer == null) {
           valueSerializer = new XmlSerializer(typeof(TVal));
         }
@@ -365,8 +367,10 @@ namespace LMNetLib {
       }
     }
 
-    private XmlSerializer KeySerializer {
-      get {
+    private XmlSerializer KeySerializer
+    {
+      get
+      {
         if (keySerializer == null) {
           keySerializer = new XmlSerializer(typeof(TKey));
         }
@@ -492,7 +496,7 @@ namespace LMNetLib {
     public static string join(IEnumerable<string> lines, string d) {
       if (lines == null) return null;
       StringBuilder sb = new StringBuilder(); bool exists = false;
-      foreach (var l in lines) { exists = true;  sb.Append(l); sb.Append(d); }
+      foreach (var l in lines) { exists = true; sb.Append(l); sb.Append(d); }
       if (exists) sb.Length = sb.Length = sb.Length - d.Length;
       return sb.ToString();
       //return s.DefaultIfEmpty().Aggregate((r, i) => r + d + i);
@@ -572,7 +576,7 @@ namespace LMNetLib {
     }
     public static UInt16 pearsonHash16(byte[] data) { //concatenate vice hashes
       byte[] bres = new byte[] { pearsonHash8(data, 0), pearsonHash8(data, 1) };
-      return BitConverter.ToUInt16(bres,0);
+      return BitConverter.ToUInt16(bres, 0);
     }
     public static UInt16 pearsonHash16(string data) {
       return pearsonHash16(Encoding.UTF8.GetBytes(data));
@@ -979,6 +983,62 @@ namespace LMNetLib {
       try { Directory.Delete(dir); } catch { }
     }
 
+    public static string runCmdBatch(IEnumerable<string> lines) {
+      var procInfo = new System.Diagnostics.ProcessStartInfo() {
+        WindowStyle = System.Diagnostics.ProcessWindowStyle.Minimized,
+        CreateNoWindow = true,
+        FileName = @"c:\Windows\System32\cmd.exe",
+        UseShellExecute = false,
+        RedirectStandardOutput = true,
+        RedirectStandardInput = true,
+        RedirectStandardError = true,
+        WorkingDirectory = @"c:\temp\",
+        //Domain = "LANGMASTER",
+        //UserName = "pavel",
+        //Password = new System.Security.SecureString()
+      };
+      //string pas = "zvahov88_";
+      //for (int i = 0; i < pas.Length; i++) { procInfo.Password.AppendChar(pas[i]); }
+
+      using (var proc = System.Diagnostics.Process.Start(procInfo))
+      using (var sOut = proc.StandardOutput)
+      using (var sErr = proc.StandardError) {
+        using (var sIn = proc.StandardInput) {
+          foreach (var line in lines) sIn.WriteLine(line);
+          sIn.WriteLine("EXIT");
+        }
+        var output = sOut.ReadToEnd();
+        var err = sErr.ReadToEnd().Trim();
+        return err;
+        //output = null;
+      }
+    }
+
+    public static string runExecutable(string path, string arguments, out string output) {
+      var procInfo = new System.Diagnostics.ProcessStartInfo() {
+        WindowStyle = System.Diagnostics.ProcessWindowStyle.Minimized,
+        CreateNoWindow = true,
+        FileName = path,
+        Arguments = arguments,
+        UseShellExecute = false,
+        RedirectStandardOutput = true,
+        RedirectStandardInput = false,
+        RedirectStandardError = true,
+        WorkingDirectory = @"c:\temp\",
+      };
+
+      using (var proc = System.Diagnostics.Process.Start(procInfo))
+      using (var sErr = proc.StandardError)
+      using (var sOut = proc.StandardOutput) {
+        proc.WaitForExit();
+        var err = sErr.ReadToEnd().Trim();
+        output = sOut.ReadToEnd().Trim();
+        if (string.IsNullOrEmpty(output)) output = null;
+        return string.IsNullOrEmpty(err) ? null : err;
+      }
+    }
+
+
     public static void CopyFolder(string source, string destination) {
       string xcopyPath = Environment.GetEnvironmentVariable("WINDIR") + @"\System32\xcopy.exe";
       ProcessStartInfo info = new ProcessStartInfo(xcopyPath);
@@ -1271,26 +1331,26 @@ namespace LMNetLib {
     }
 
     public static string FormatEx(string mask, params object[] nameValues) {
-      return FormatEx(mask, delegate(string id) {
+      return FormatEx(mask, delegate (string id) {
         for (int j = 0; j < nameValues.Length; j += 2)
           if ((string)nameValues[j] == id) return nameValues[j + 1].ToString();
         return null;
       });
     }
     public static string FormatExDict(string mask, Dictionary<string, string> dict) {
-      return FormatEx(mask, delegate(string id) {
+      return FormatEx(mask, delegate (string id) {
         string res;
         return dict.TryGetValue(id, out res) ? res : null;
       }, null);
     }
     public static string FormatEx(string mask, Dictionary<string, string> dict, StringBuilder sb) {
-      return FormatEx(mask, delegate(string id) {
+      return FormatEx(mask, delegate (string id) {
         string res;
         return dict.TryGetValue(id, out res) ? res : null;
       }, sb);
     }
     public static string FormatEx(string mask, Dictionary<string, object> dict, StringBuilder sb) {
-      return FormatEx(mask, delegate(string id) {
+      return FormatEx(mask, delegate (string id) {
         object res;
         return dict.TryGetValue(id, out res) ? res.ToString() : null;
       }, sb);

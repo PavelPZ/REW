@@ -1,0 +1,17 @@
+{
+  "regExs": null,
+  "includes": [
+    "/app_data/reports/evaluators.xlsx",
+    "/app_data/reports/tests.xlsx",
+    "/blendedapi/vyzva/server/excels/studyall.xlsx",
+    "/jslib/skins/chinh/etestmecertifikat_en_gb.pdf",
+    "/jslib/skins/chinh/etestmecertifikat_std_en_gb.pdf",
+    "/jslib/skins/default/etestmecertifikat.pdf",
+    "/jslib/skins/default/etestmecertifikat_cs_cz.pdf",
+    "/jslib/skins/default/etestmecertifikat_en_gb.pdf",
+    "/jslib/skins/default/etestmecertifikat_std_en_gb.pdf",
+    "/jslib/skins/skrivanek/etestmecertifikat.pdf",
+    "/jslib/skins/skrivanek/etestmecertifikat_cs_cz.pdf",
+    "/jslib/skins/skrivanek/etestmecertifikat_std_cs_cz.pdf"
+  ]
+}

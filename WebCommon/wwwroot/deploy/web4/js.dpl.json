@@ -1,0 +1,6 @@
+{
+  "includes": [
+    "js-externals.dpl.json",
+    "js-web.dpl.json"
+  ]
+}

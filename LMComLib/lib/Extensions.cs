@@ -21,6 +21,10 @@ namespace LMComLib {
       foreach (var t in source) { sideFnc(t); yield return t; }
     }
 
+    public static string Join<T>(this IEnumerable<T> source, string delim = ",") {
+      return source.Select(s => s.ToString()).Aggregate((r, i) => r + delim + i);
+    }
+
     public static IEnumerable<T> DistinctBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> keySelector) {
       HashSet<TKey> keys = new HashSet<TKey>();
       foreach (T item in source) {

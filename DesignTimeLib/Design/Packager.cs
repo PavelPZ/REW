@@ -165,7 +165,7 @@ namespace Packager {
           products = new CourseMeta.BatchProduct[] { new CourseMeta.BatchProduct { dictType = pl.prod.dictType, id = pl.prod.id, locs = new Langs[] { pl.loc } } },
           url = data.url,
           locs = new Langs[] { pl.loc },
-          allLocs = data.allLocs,
+          //allLocs = data.allLocs,
           genDebugJS = data.genDebugJS
         }),
         cfg = createCfg(pl.loc, pl.prodData)
@@ -641,7 +641,7 @@ namespace Packager {
         ) : Enumerable.Empty<Consts.file>();
 
 
-      var a1 = cfg.webBatch.products[0].getBuildProduct().SelectMany(p => p.getFiles(cfg.cache, log));
+      var a1 = cfg.webBatch.products[0].getBuildProduct().getFiles(cfg.cache, log);
       //var a1 = CourseMeta.buildLib.getProductFiles(cfg.cache, XExtension.Create<CourseMeta.buildProduct>(cfg.webBatch.products[0].getBuildProduct())).ToArray(); //cfg.webBatch.getWebBatchFiles(log).ToArray();
       var a2 = zipExtra;
       var a3 = commonFiles(cfg.cfg);

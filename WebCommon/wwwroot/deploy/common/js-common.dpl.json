@@ -1,0 +1,9 @@
+﻿{
+  "includes": [
+    "/common/lib/js.dpl.json",
+    "/common/flux/flux.js",
+    "/common/layout/layout.js",
+    "/common/validation/lib.js",
+    "/common/uirouter/js.dpl.json"
+  ]
+}

@@ -212,9 +212,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DesignNew\Minify.cs" />
     <Compile Include="DesignNew\BuildTasks.cs" />
     <Compile Include="DesignNew\SynchronizeDirs.cs" />
-    <Compile Include="DesignNew\WebCommonDeploy.cs" />
     <Compile Include="Design\BingGoogleTranslators.cs" />
     <Compile Include="Design\Bundle.cs" />
     <Compile Include="Design\CourseMeta.cs" />

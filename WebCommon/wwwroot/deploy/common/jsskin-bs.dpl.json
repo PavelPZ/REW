@@ -1,0 +1,5 @@
+{
+  "includes": [
+    "/common/validation/templates-bs.js"
+  ]
+}
