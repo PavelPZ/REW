@@ -1027,6 +1027,28 @@
           "lib/dnx451/Microsoft.AspNet.Server.WebListener.dll": {}
         }
       },
+      "Microsoft.AspNet.StaticFiles/1.0.0-beta8": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.FileProviders.Abstractions": "1.0.0-beta8",
+          "Microsoft.AspNet.Hosting.Abstractions": "1.0.0-beta8",
+          "Microsoft.AspNet.Http.Extensions": "1.0.0-beta8",
+          "Microsoft.Framework.Logging.Abstractions": "1.0.0-beta8",
+          "Microsoft.Framework.WebEncoders": "1.0.0-beta8"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/dnx451/Microsoft.AspNet.StaticFiles.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Microsoft.AspNet.StaticFiles.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebUtilities/1.0.0-beta8": {
         "type": "package",
         "dependencies": {
@@ -3132,6 +3154,28 @@
         },
         "runtime": {
           "lib/dnx451/Microsoft.AspNet.Server.WebListener.dll": {}
+        }
+      },
+      "Microsoft.AspNet.StaticFiles/1.0.0-beta8": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.FileProviders.Abstractions": "1.0.0-beta8",
+          "Microsoft.AspNet.Hosting.Abstractions": "1.0.0-beta8",
+          "Microsoft.AspNet.Http.Extensions": "1.0.0-beta8",
+          "Microsoft.Framework.Logging.Abstractions": "1.0.0-beta8",
+          "Microsoft.Framework.WebEncoders": "1.0.0-beta8"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/dnx451/Microsoft.AspNet.StaticFiles.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Microsoft.AspNet.StaticFiles.dll": {}
         }
       },
       "Microsoft.AspNet.WebUtilities/1.0.0-beta8": {
@@ -5244,6 +5288,28 @@
           "lib/dnx451/Microsoft.AspNet.Server.WebListener.dll": {}
         }
       },
+      "Microsoft.AspNet.StaticFiles/1.0.0-beta8": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.FileProviders.Abstractions": "1.0.0-beta8",
+          "Microsoft.AspNet.Hosting.Abstractions": "1.0.0-beta8",
+          "Microsoft.AspNet.Http.Extensions": "1.0.0-beta8",
+          "Microsoft.Framework.Logging.Abstractions": "1.0.0-beta8",
+          "Microsoft.Framework.WebEncoders": "1.0.0-beta8"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/dnx451/Microsoft.AspNet.StaticFiles.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Microsoft.AspNet.StaticFiles.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebUtilities/1.0.0-beta8": {
         "type": "package",
         "dependencies": {
@@ -7077,6 +7143,20 @@
         "Microsoft.AspNet.Server.WebListener.nuspec"
       ]
     },
+    "Microsoft.AspNet.StaticFiles/1.0.0-beta8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "oI8Lss/NE3v1/cAJIK0XzbdAT772b4bCimiqpzSnYnYUjXhdwXOkXNgvgXWw92q9ZKSAiMkN02YKmt5ZY5EVrA==",
+      "files": [
+        "lib/dnx451/Microsoft.AspNet.StaticFiles.dll",
+        "lib/dnx451/Microsoft.AspNet.StaticFiles.xml",
+        "lib/dnxcore50/Microsoft.AspNet.StaticFiles.dll",
+        "lib/dnxcore50/Microsoft.AspNet.StaticFiles.xml",
+        "Microsoft.AspNet.StaticFiles.1.0.0-beta8.nupkg",
+        "Microsoft.AspNet.StaticFiles.1.0.0-beta8.nupkg.sha512",
+        "Microsoft.AspNet.StaticFiles.nuspec"
+      ]
+    },
     "Microsoft.AspNet.WebUtilities/1.0.0-beta8": {
       "type": "package",
       "serviceable": true,
@@ -8582,7 +8662,8 @@
       "EntityFramework.Commands >= 7.0.0-beta8",
       "Microsoft.AspNet.Http.Abstractions >= 1.0.0-beta8",
       "Microsoft.Framework.Configuration >= 1.0.0-beta8",
-      "Microsoft.AspNet.Diagnostics >= 1.0.0-beta8"
+      "Microsoft.AspNet.Diagnostics >= 1.0.0-beta8",
+      "Microsoft.AspNet.StaticFiles >= 1.0.0-beta8"
     ],
     "DNX,Version=v4.6": [
       "EPPlus >= 1.0.0-*",

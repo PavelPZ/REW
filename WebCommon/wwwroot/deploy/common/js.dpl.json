@@ -2,6 +2,5 @@
   "includes": [
     "js-externals.dpl.json",
     "js-common.dpl.json",
-    "js-tests.dpl.json"
   ]
 }

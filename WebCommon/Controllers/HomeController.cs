@@ -29,11 +29,11 @@ namespace WebApp {
     public IActionResult Schools() {
       return View("IndexWeb4", new ModelWeb4(new HomeViewPars(HttpContext, servConfig.Apps.web4)));
     }
-    [Route("common/{:testDir}")]
+    [Route("web/{testDir}")]
     public IActionResult CommonTest(string testDir) {
       return View("CommonTest", new ModelCommonTest(testDir, new HomeViewPars(HttpContext, servConfig.Apps.common)));
     }
-    [Route("common")]
+    [Route("web")]
     public IActionResult Common() {
       return View("DebugIndex");
     }
@@ -156,7 +156,7 @@ namespace WebApp {
   public class ModelCommonTest : ModelLow {
     public ModelCommonTest(string testDir, HomeViewPars pars) : base(pars) {
       cfg = "var servCfg = " + Cfg.toJS() + ";";
-      startJS = "<script type='text/javascript' src='../common/" + testDir + "test.js'></script>";
+      startJS = "<script type='text/javascript' src='../common/" + testDir + "/test.js'></script>";
     }
     public string cfg;
     public string startJS;
