@@ -17,6 +17,10 @@ namespace DesignNew {
 
   public static class buildTasks {
 
+    static buildTasks() {
+      Cfg.init(@"d:\lmcom\rew\webcommon\wwwroot\servconfig.js");
+    }
+
     //*********** AZURE_publish
     public static void AZURE_publish(
       string container, //napr. "js-v001" nebo "mm-v001"
@@ -26,7 +30,7 @@ namespace DesignNew {
       ) {
       runTask("AZURE_publish", () => {
         Trace.TraceWarning("container: {1}, isJS: {2}, buildIds: {3}, locs: {4}, connection: {0}",
-          WebConfig.cfg.persist.azure.connectionString,
+          Cfg.cfg.azure.connectionString,
           container,
           isJS,
           buildIds.Join(),
@@ -34,7 +38,7 @@ namespace DesignNew {
           );
         var msg = SynchronizeDirs.synchronize(
           isJS,
-          new azureDriver(WebConfig.cfg.persist.azure.connectionString, container),
+          new azureDriver(Cfg.cfg.azure.connectionString, container),
           buildIds,
           locs
         );
@@ -46,7 +50,7 @@ namespace DesignNew {
     //*********** AZURE_delete
     public static void AZURE_delete(string container/*napr. "js-v001" nebo "mm-v001"*/) {
       runTask("AZURE_delete", () => {
-        new azureDriver(WebConfig.cfg.persist.azure.connectionString, container).deleteContainer();
+        new azureDriver(Cfg.cfg.azure.connectionString, container).deleteContainer();
         Trace.WriteLine("Container: " + container);
         return null;
       });
@@ -128,10 +132,17 @@ namespace DesignNew {
     //*********** CODE
     public static void CODE() {
       runTask("CODE", () => {
-      File.WriteAllLines(@"d:\temp\list.txt", FileSources.getUrls(
-        //FileSources.indexPartFilter(true, Consts.Apps.web4, Consts.SkinIds.bs, Consts.Brands.skrivanek, Langs.cs_cz, true)
-        FileSources.zipSWFilesFilter(Consts.Apps.web4)
-        ));//.Select(url => FileSources.pathFromUrl(url)).Where(f => !File.Exists(f)));
+        return null;
+      });
+    }
+
+    //*********** TYPESCRIPT_GenerateCommon
+    public static void TYPESCRIPT_GenerateCommon() {
+      runTask("TYPESCRIPT_GenerateCommon", () => {
+        StringBuilder sb = new StringBuilder();
+        CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("servConfig", null, null, typeof(servConfig.Root), typeof(servConfig.Azure)));
+        sb.AppendLine();
+        File.WriteAllText(@"D:\LMCom\rew\WebCommon\wwwroot\Common\CsShared.ts", sb.ToString(), Encoding.ASCII);
         return null;
       });
     }

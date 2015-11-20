@@ -189,6 +189,7 @@
     <Compile Include="DesignNew\DeployConsts.cs" />
     <Compile Include="DesignNew\FileSources.cs" />
     <Compile Include="DesignNew\Handler.cs" />
+    <Compile Include="DesignNew\TsShared.cs" />
     <Compile Include="Design\CourseMeta.cs" />
     <Compile Include="Runtime\JSCrambler.cs" />
     <Compile Include="Runtime\LibMp3Lame.cs" />

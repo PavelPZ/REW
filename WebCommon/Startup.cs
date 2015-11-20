@@ -11,6 +11,7 @@ using Microsoft.AspNet.Routing;
 using Microsoft.AspNet.Routing.Template;
 using System.IO;
 using DesignNew;
+using Newtonsoft.Json;
 
 namespace WebApp {
 
@@ -18,18 +19,21 @@ namespace WebApp {
 
     public Startup(IHostingEnvironment env, IApplicationEnvironment appEnv) {
 
-      var builder = new ConfigurationBuilder()
-        .SetBasePath(appEnv.ApplicationBasePath)
-        .AddJsonFile("config.json")
-      //.AddEnvironmentVariables()
-      ;
-      Configuration = builder.Build();
+      //var builder = new ConfigurationBuilder()
+      //  .SetBasePath(appEnv.ApplicationBasePath)
+      //  .AddJsonFile("config.json")
+      ////.AddEnvironmentVariables()
+      //;
+      //Configuration = builder.Build();
+
+      //inicializace config souboru
+      Cfg.init(appEnv.ApplicationBasePath + @"\wwwroot\servConfig.js");
     }
     public IConfiguration Configuration { get; set; }
 
     public void ConfigureServices(IServiceCollection services) {
       //services.AddOptions();
-      services.Configure<AppSettings>(appset => appset.web4Dir = Configuration["AppSettings:web4Dir"]);
+      //services.Configure<AppSettings>(appset => appset.web4Dir = Configuration["AppSettings:web4Dir"]);
       //services.AddInstance(Configuration);
       services.AddMvc();
     }

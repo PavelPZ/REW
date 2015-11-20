@@ -42,6 +42,20 @@ namespace LMComLib {
     //string code();
   }
 
+  public class RegisterImpl : ICSharpToTypeScript {
+    public RegisterImpl(string nameSpace, string tsPath, IEnumerable<Type> enums, params Type[] types) { this.nameSpace = nameSpace; this.tsPath = tsPath; this.enums = enums==null ? new Type[0] : enums.ToArray(); this.types = types==null ? new Type[0] : types; }
+    string nameSpace; string tsPath; Type[] enums; Type[] types;
+    public virtual IEnumerable<Type> Types() { return types; }
+    public IEnumerable<Type> ExtendedTypes() { yield break; }
+    public virtual IEnumerable<Type> Enums() { return enums; }
+    public string TsPath() { return tsPath; }
+    public string Module() { return nameSpace; }
+    public IEnumerable<string> Uses() { yield break; }
+    public bool generateFeature(FeatureType type) { return false; }
+    public jsonMLMeta getJsonMLMeta() { return null; }
+  }
+
+
   public static class CSharpToTypeScript {
 
     static Assembly cmdAss;
@@ -60,13 +74,12 @@ namespace LMComLib {
     public static void GenerateFromInfos(IEnumerable<Object> infos) {
       Assembly ass = Assembly.GetCallingAssembly();
       cmdAss = Assembly.Load(ass.GetReferencedAssemblies().First(a => a.Name == "ObjectModel"));
-      foreach (var info in GetInfos(infos)) CSharpToTypeScript.Generate(info);
+      foreach (var info in GetInfos(infos)) Generate(info);
     }
     public static IEnumerable<Type> GeneratedTypes(IEnumerable<Object> infos) {
       return GetInfos(infos).SelectMany(inf => inf.Types());
     }
-    public static void Generate(ICSharpToTypeScript info) {
-      StringBuilder sb = new StringBuilder();
+    public static void GenerateStr(StringBuilder sb, ICSharpToTypeScript info) {
       foreach (var u in info.Uses()) {
         sb.Append("/// <reference path=\""); sb.Append(u); sb.AppendLine("\" />");
       }
@@ -97,6 +110,11 @@ namespace LMComLib {
       //GenInheritanceTree(info, sb);
       //sb.AppendLine(info.code());
       sb.AppendLine("}");
+      sb.AppendLine();
+    }
+    public static void Generate(ICSharpToTypeScript info) {
+      StringBuilder sb = new StringBuilder();
+      GenerateStr(sb, info);
       File.WriteAllText(info.TsPath(), sb.ToString(), Encoding.ASCII);
     }
 

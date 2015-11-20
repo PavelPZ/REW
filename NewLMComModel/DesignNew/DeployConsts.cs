@@ -53,18 +53,6 @@ namespace DesignNew {
 
   }
 
-  //Musi odpovidat JS strukture globalniho configu
-  public class WebConfig {
-    public class Persist {
-      public class Azure {
-        public string connectionString;
-      }
-      public Azure azure = new Azure { connectionString = ConfigurationManager.AppSettings["persist.azure.connectionString"] };
-    }
-    public Persist persist = new Persist();
-    public static WebConfig cfg = new WebConfig();
-  }
-
   //**************************** Data group
   public enum BuildIds {
     blended,

@@ -10,7 +10,13 @@ namespace DeployGUI {
     public object XElement { get; private set; }
 
     [TestMethod]
-    public void TYPESCRIPT_WebCommon() { buildTasks.TYPESCRIPT_compile(@"d:\LMCom\rew\WebCommon\wwwroot"); }
+    public void TYPESCRIPT_CompileCommon() { buildTasks.TYPESCRIPT_compile(@"d:\LMCom\rew\WebCommon\wwwroot"); }
+
+    [TestMethod]
+    public void TYPESCRIPT_GenerateCommon() { buildTasks.TYPESCRIPT_GenerateCommon(); }
+
+    [TestMethod]
+    public void TYPESCRIPT_GenerateWeb4() { Handlers.CSharpToTypescript.genAll(); }
 
     [TestMethod]
     public void CODE() { buildTasks.CODE(); }

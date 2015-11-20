@@ -27,23 +27,17 @@ namespace WebApp {
 
     [Route("web4")]
     public IActionResult Schools() {
-      return View("IndexWeb4", new HomeModelWeb4(getPars(HttpContext, Consts.Apps.web4)));
+      return View("IndexWeb4", new ModelWeb4(new HomeViewPars(HttpContext, Consts.Apps.web4)));
     }
-    [Route("common")]
+    [Route("common/{:testDir}")]
+    public IActionResult CommonTest(string testDir) {
+      return View("CommonTest", new ModelCommonTest(testDir, new HomeViewPars(HttpContext, Consts.Apps.common)));
+    }
+    [Route("common"), Route("")]
     public IActionResult Common() {
-      return View("Index", new HomeModel(getPars(HttpContext, Consts.Apps.common)));
+      return View("DebugIndex");
     }
 
-    public static HomeViewPars getPars(HttpContext ctx, Consts.Apps app) {
-      string par;
-      return new HomeViewPars {
-        app = app,
-        brand = Consts.allBrands.Contains(par = ctx.Request.Query["brand"]) ? LowUtils.EnumParse<Consts.Brands>(par) : Consts.Brands.lm,
-        skin = Consts.allSkins.Contains(par = ctx.Request.Query["skin"]) ? LowUtils.EnumParse<Consts.SkinIds>(par) : Consts.SkinIds.bs,
-        lang = Consts.allSwLangs.Contains(par = ctx.Request.Query["lang"]) ? LowUtils.EnumParse<Langs>(par) : Langs.cs_cz,
-        debug = ctx.Request.Query["debug"] == "true",
-      };
-    }
   }
 
   public static class Cache {
@@ -79,14 +73,17 @@ namespace WebApp {
       }
     }
 
+    //osetreni INDEX souboruu
     public static async Task onIndexRoute(RouteContext context, Consts.Apps app) {
-      var cacheKey = HomeController.getPars(context.HttpContext, app).getCacheKey();
+      var cacheKey = new HomeViewPars(context.HttpContext, app).getCacheKey();
       await makeResponseFromCache(cacheKey, context);
     }
+    //osetreni ostatnich souboruu
     public static async Task onOtherRoute(RouteContext context) {
       var cacheKey = context.HttpContext.Request.Path.Value;
       await makeResponseFromCache(cacheKey, context);
     }
+    //INDEX soubor neni v cache => dej ho tam
     public static async Task Middleware(HttpContext ctx, Func<Task> next) {
       //INDEX stranka?
       if (!ctx.Request.Path.HasValue) { await next(); return; }
@@ -95,7 +92,7 @@ namespace WebApp {
       if (!Consts.allApps.Contains(appStr)) { await next(); return; }
       //ano => index do cache
       var app = LowUtils.EnumParse<Consts.Apps>(appStr);
-      var pars = HomeController.getPars(ctx, app);
+      var pars = new HomeViewPars(ctx, app);
       using (var memStr = new MemoryStream()) {
         var bodyStr = ctx.Response.Body;
         ctx.Response.Body = memStr;
@@ -120,10 +117,21 @@ namespace WebApp {
     public string getCacheKey() {
       return string.Format("{0}/{1}/{2}/{3}/{4}", app, skin, brand, lang, debug).ToLower();
     }
+    public string getUrl() {
+      return string.Format("{0}/?skin={1}&brand={2}&lang={3}&debug={4}", app, skin, brand, lang, debug).ToLower();
+    }
+    public HomeViewPars(HttpContext ctx, Consts.Apps app) {
+      string par;
+      this.app = app;
+      brand = Consts.allBrands.Contains(par = ctx.Request.Query["brand"]) ? LowUtils.EnumParse<Consts.Brands>(par) : Consts.Brands.lm;
+      skin = Consts.allSkins.Contains(par = ctx.Request.Query["skin"]) ? LowUtils.EnumParse<Consts.SkinIds>(par) : Consts.SkinIds.bs;
+      lang = Consts.allSwLangs.Contains(par = ctx.Request.Query["lang"]) ? LowUtils.EnumParse<Langs>(par) : Langs.cs_cz;
+      debug = ctx.Request.Query["debug"] == "true";
+    }
   }
 
-  public class HomeModel {
-    public HomeModel(HomeViewPars pars) {
+  public class ModelLow {
+    public ModelLow(HomeViewPars pars) {
       var csss = FileSources.getUrls(FileSources.indexPartFilter(false, pars.app, pars.skin, pars.brand, pars.lang, !pars.debug));
       css = urlsToTags(csss, false);
       var jss = FileSources.getUrls(FileSources.indexPartFilter(true, pars.app, pars.skin, pars.brand, pars.lang, !pars.debug));
@@ -144,11 +152,19 @@ namespace WebApp {
     }
   }
 
-  public class HomeModelWeb4 : HomeModel {
-    public HomeModelWeb4(HomeViewPars pars) : base(pars) {
+  public class ModelCommonTest : ModelLow {
+    public ModelCommonTest(string testDir, HomeViewPars pars) : base(pars) {
+      cfg = "var servCfg = " + Cfg.toJS() + ";";
+      startJS = "<script type='text/javascript' src='../common/" + testDir + "test.js'></script>";
+    }
+    public string cfg;
+    public string startJS;
+  }
+  public class ModelWeb4 : ModelLow {
+    public ModelWeb4(HomeViewPars pars) : base(pars) {
       var cfgObj = new schools.config() {
-        //blobJS = ConfigurationManager.AppSettings["cfg-blobJS"], //URL s JS se cvicenimi
-        //blobMM = ConfigurationManager.AppSettings["cfg-blobMM"], //URL s obrazky, zvuky, videa, ...
+        blobJS = Cfg.cfg.azure.blobJS, //URL s JS se cvicenimi
+        blobMM = Cfg.cfg.azure.blobMM, //URL s obrazky, zvuky, videa, ...
         target = Targets.web,
         version = pars.debug ? schools.versions.debug : schools.versions.minified,
         dataBatchUrl = "/lm/lm_data/",

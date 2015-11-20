@@ -79,7 +79,7 @@ namespace Packager {
     public string SSASConnectionString;
     public string basicPath;
     public string smtp;
-    public void copyTo(config cfg) {
+    public void copyTo(schools.config cfg) {
       cfg.forceServiceUrl = forceServiceUrl;
       cfg.forceLoggerUrl = forceLoggerUrl;
       if (licenceConfig != null) cfg.licenceConfig = licenceConfig.copy();
