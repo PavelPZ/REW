@@ -42,24 +42,27 @@ namespace WebApp {
 
       app.UseIISPlatformHandler();
 
-      //login page - vraci prazdnou stranku
+      //login page - vraci prazdnou login stranku (pouze se scriptem na oAUth login)
       app.UseRouter(new TemplateRoute(new LoginRouter(), "login.html", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
-      //ev. vraceni cached INDEXes
+      //existuje-li index page v cache => vrati ji z cache a da isHandled=true
       app.UseRouter(new TemplateRoute(new IndexRoutePreview(servConfig.Apps.web4), "web4/index.html", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
       app.UseRouter(new TemplateRoute(new IndexRoutePreview(servConfig.Apps.web), "web/{testDir}.html", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
-      if (!Cfg.cfg.defaultPars.swFromFileSystem) {
+      if (Cfg.cfg.defaultPars.swFromFileSystem) {
+        //stranky z Web4 aplikace
+        //TODO
+        //stranky z filesystemu
+        app.UseStaticFiles();
+      } else {
+        //hleda URL v cache a kdyz najde, da isHandled=true
         //Vsechny URL - hleda je v cache
         app.UseRouter(new TemplateRoute(new OtherRoutePreview(), "{*url}", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
       }
 
+      //MVC zpracovani INDEX stranek: zacne middleware, ten v await next() vyvola MVC (na generaci INDEX), middleware pak da vysledek do cache (vcetne GZIP)
       //Cache middleware - sance na cache .CSHTML stranek (vcetne pripravy GZIPu)
       app.Use(Cache.Middleware);
       //MVC router
       app.UseMvc();
-
-
-      //vsechny ostatni stranky
-      app.UseStaticFiles();
 
       //app.UseExceptionHandler("/Home/Error");
 
