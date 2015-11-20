@@ -169,5 +169,5 @@
 
   function writeError(msg: string) { setTimeout(() => document.getElementById('error-place').innerHTML = msg, 1); }
 
-  loginPageEnter();
+  //loginPageEnter();
 }

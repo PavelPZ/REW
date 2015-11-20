@@ -99,9 +99,9 @@ namespace DesignNew {
     public static void SW_WEB4refresh() {
       runTask("SW_WEB4refresh", () => {
         //JS minify
-        minifier.jsMinify("/deploy/web4/js-externals.dpl.json", "/deploy/web4/mins/externals.min.js");
-        minifier.jsMinify("/deploy/web4/js-web.dpl.json", "/deploy/web4/mins/web.min.js");
-        foreach (var lang in Consts.swLangs) minifier.jsMinify("/deploy/web4/js{loc}.dpl.json", string.Format("/deploy/web4/mins/{0}.min.js", FileSources.swLang(lang)), lang);
+        minifier.jsMinify("/deploy/web4/js-externals.dpl.json", "/deploy/web4/mins/externals");
+        minifier.jsMinify("/deploy/web4/js-web.dpl.json", "/deploy/web4/mins/web");
+        foreach (var lang in Consts.swLangs) minifier.jsMinify("/deploy/web4/js{loc}.dpl.json", string.Format("/deploy/web4/mins/{0}", FileSources.swLang(lang)), lang);
         //CSS minify
         minifier.cssInPlaceMinify("/deploy/web4/css.dpl.json");
         //index HTML parts minify
@@ -119,8 +119,8 @@ namespace DesignNew {
       runTask("SW_deploy", () => {
         //*** COMMON refresh
         //JS minify
-        minifier.jsMinify("/deploy/common/js-externals.dpl.json", "/deploy/common/mins/externals.min.js");
-        minifier.jsMinify("/deploy/common/js-common.dpl.json", "/deploy/common/mins/common.min.js");
+        minifier.jsMinify("/deploy/common/js-externals.dpl.json", "/deploy/common/mins/externals");
+        minifier.jsMinify("/deploy/common/js-common.dpl.json", "/deploy/common/mins/common");
         //*** ZIP
         var files = FileSources.getUrls(FileSources.zipSWFilesFilter(servConfig.Apps.common, servConfig.Apps.web4)).ToArray();
         File.WriteAllLines(@"d:\temp\sw_dwploy.txt", files);

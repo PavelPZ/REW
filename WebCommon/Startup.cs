@@ -42,46 +42,27 @@ namespace WebApp {
 
       app.UseIISPlatformHandler();
 
-      //login page, nedela nic
+      //login page - vraci prazdnou stranku
       app.UseRouter(new TemplateRoute(new LoginRouter(), "login.html", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
-      //URL preview, ev. obslouzeni cache
+      //Aplikace
       app.UseRouter(new TemplateRoute(new IndexRoutePreview(servConfig.Apps.web4), "web4", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
-      app.UseRouter(new TemplateRoute(new IndexRoutePreview(servConfig.Apps.common), "common", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
-      app.UseRouter(new TemplateRoute(new OtherRoutePreview(), "{*url}", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
+      app.UseRouter(new TemplateRoute(new IndexRoutePreview(servConfig.Apps.common), "web", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
+      if (!Cfg.cfg.defaultPars.swFromFileSystem) {
+        //Vsechny URL - hleda je v cache
+        app.UseRouter(new TemplateRoute(new OtherRoutePreview(), "{*url}", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
+      }
 
-      //app.Use(async (ctx, next) => {
-      //  using (var memStr = new MemoryStream()) {
-      //    var bodyStr = ctx.Response.Body;
-      //    ctx.Response.Body = memStr;
-      //    await next();
-      //    memStr.Seek(0, SeekOrigin.Begin);
-      //    await memStr.CopyToAsync(bodyStr);
-      //  }
-      //});
+      //Cache middleware - sance na cache .CSHTML stranek (vcetne pripravy GZIPu)
       app.Use(Cache.Middleware);
-      //Console.WriteLine(context.Request.Path);
-      //try {
-      //  await next();
-      //} catch (Exception ex) {
-      //  Console.WriteLine(ex);
-      //}
 
+      //MVC router
       app.UseMvc();
 
+      //vsechny ostatni stranky
       app.UseStaticFiles();
 
       //app.UseExceptionHandler("/Home/Error");
 
-      // routes => {
-      //routes.MapRoute(
-      //  name: "Index1"
-      //  ,template: "{controller=Home}/{action=Index1}/{id?}"
-      //  ,defaults: new { }
-      //  );
-      //routes.MapRoute(
-      //  name: "Index2",
-      //  template: "{controller=Home}/{action=Index2}/{id?}");
-      //});
     }
   }
 

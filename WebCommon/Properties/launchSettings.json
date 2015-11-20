@@ -3,7 +3,6 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "common/flux/index.html",
       "environmentVariables": {
         "ASPNET_ENV": "Development"
       },

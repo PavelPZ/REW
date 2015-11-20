@@ -22,6 +22,7 @@ namespace servConfig {
     public Brands brand;
     public SkinIds skin;
     public bool debug;
+    public bool swFromFileSystem; //SW soubory se berou z filesystemu. Jinak ze swFiles.zip
   }
 
 }

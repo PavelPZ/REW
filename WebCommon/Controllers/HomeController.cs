@@ -155,7 +155,7 @@ namespace WebApp {
 
   public class ModelCommonTest : ModelLow {
     public ModelCommonTest(string testDir, HomeViewPars pars) : base(pars) {
-      cfg = "var servCfg = " + Cfg.toJS() + ";";
+      cfg = "<script type='text/javascript'>var servCfg = " + Cfg.toJS() + ";</script>";
       startJS = "<script type='text/javascript' src='../common/" + testDir + "/test.js'></script>";
     }
     public string cfg;

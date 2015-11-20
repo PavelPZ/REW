@@ -133,6 +133,7 @@ export interface ViewPars {
   brand: Brands;
   skin: SkinIds;
   debug: boolean;
+  swFromFileSystem: boolean;
 }
 }
 
