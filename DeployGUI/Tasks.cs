@@ -10,13 +10,13 @@ namespace DeployGUI {
     public object XElement { get; private set; }
 
     [TestMethod]
-    public void TYPESCRIPT_CompileCommon() { buildTasks.TYPESCRIPT_compile(@"d:\LMCom\rew\WebCommon\wwwroot"); }
+    public void TYPESCRIPT_compile_web() { buildTasks.TYPESCRIPT_compile(@"d:\LMCom\rew\WebCommon\wwwroot"); }
 
     [TestMethod]
-    public void TYPESCRIPT_GenerateCommon() { buildTasks.TYPESCRIPT_GenerateCommon(); }
+    public void CS_to_typescrit_web() { buildTasks.CS_to_typescrit_web(); }
 
     [TestMethod]
-    public void TYPESCRIPT_GenerateWeb4() { Handlers.CSharpToTypescript.genAll(); }
+    public void CS_to_typescrit_web4() { Handlers.CSharpToTypescript.genAll(); }
 
     [TestMethod]
     public void CODE() { buildTasks.CODE(); }
@@ -25,21 +25,21 @@ namespace DeployGUI {
   [TestClass]
   public class PUBLISH {
     [TestMethod]
-    public void AZURE_JSpublish() { buildTasks.AZURE_publish("js-v001", true, new BuildIds[] { BuildIds.blended }, new Langs[] { Langs.cs_cz, Langs.en_gb }); }
+    public void AZURE_JS_publish() { buildTasks.AZURE_publish("js-v001", true, new BuildIds[] { BuildIds.blended }, new Langs[] { Langs.cs_cz, Langs.en_gb }); }
     [TestMethod]
-    public void AZURE_JSdelete() { buildTasks.AZURE_delete("js-v001"); }
+    public void AZURE_JS_delete() { buildTasks.AZURE_delete("js-v001"); }
     [TestMethod]
-    public void AZURE_MMpublish() { buildTasks.AZURE_publish("mm-v001", false, new BuildIds[] { BuildIds.blended }, new Langs[] { Langs.cs_cz, Langs.en_gb }); }
+    public void AZURE_MM_publish() { buildTasks.AZURE_publish("mm-v001", false, new BuildIds[] { BuildIds.blended }, new Langs[] { Langs.cs_cz, Langs.en_gb }); }
     [TestMethod]
-    public void AZURE_MMdelete() { buildTasks.AZURE_delete("mm-v001"); }
+    public void AZURE_MM_delete() { buildTasks.AZURE_delete("mm-v001"); }
   }
 
   [TestClass]
   public class SW {
     [TestMethod]
-    public void SW_WEB4refresh() { buildTasks.SW_WEB4refresh(); }
+    public void SW_web4() { buildTasks.SW_web4(); }
     [TestMethod]
-    public void SW_deploy() { buildTasks.SW_deploy(); }
+    public void SW_web_and_web4() { buildTasks.SW_web_and_web4(); }
   }
 
   [TestClass]

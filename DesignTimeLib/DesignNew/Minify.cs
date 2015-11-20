@@ -17,26 +17,22 @@ namespace DesignNew {
 
   public static class minifier {
 
-    static jsMinifyResult jsMinify(IEnumerable<string> files) {
-      StringBuilder sb = new StringBuilder(); StringBuilder orig = new StringBuilder();
+    static string jsMinify(IEnumerable<string> files) {
+      StringBuilder sb = new StringBuilder(); 
       var compr = new JavaScriptCompressor();
       foreach (var fn in files) {
         var file = File.ReadAllText(fn, Encoding.UTF8);
         var res = compr.Compress(file);
-        sb.Append(res); orig.Append(file); orig.AppendLine();
+        sb.Append(res); 
       }
-      return new jsMinifyResult { min = sb.ToString(), orig = orig.ToString() };
+      return sb.ToString();
     }
-    public struct jsMinifyResult {
-      public string orig;
-      public string min;
-    }
+
     public static void jsMinify(string dplUrl, string dest, Langs lng = Langs.no) {
       var files = FileSources.pathsFromDpl(dplUrl, lng).ToArray();
       var destFn = FileSources.pathFromUrl(dest);
       var res = jsMinify(files);
-      File.WriteAllText(destFn + ".min.js", res.min);
-      File.WriteAllText(destFn + ".js", res.orig);
+      File.WriteAllText(destFn, res);
       Trace.TraceInformation("Minified JS: " + destFn);
     }
 
