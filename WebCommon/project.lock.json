@@ -2,7 +2,7 @@
   "locked": false,
   "version": 2,
   "targets": {
-    "DNX,Version=v4.5.1": {
+    "DNX,Version=v4.6": {
       "DataLib2/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5",
@@ -1947,11 +1947,15 @@
           "System.Runtime": "4.0.0",
           "System.Runtime.Extensions": "4.0.0"
         },
+        "frameworkAssemblies": [
+          "mscorlib",
+          "System.Numerics"
+        ],
         "compile": {
-          "ref/dotnet/System.Numerics.Vectors.dll": {}
+          "ref/net46/System.Numerics.Vectors.dll": {}
         },
         "runtime": {
-          "lib/dotnet/System.Numerics.Vectors.dll": {}
+          "lib/net46/System.Numerics.Vectors.dll": {}
         }
       },
       "System.Reflection/4.0.0": {
@@ -2102,7 +2106,7 @@
         }
       }
     },
-    "DNX,Version=v4.5.1/win7-x86": {
+    "DNX,Version=v4.6/win7-x86": {
       "DataLib2/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5",
@@ -4053,11 +4057,15 @@
           "System.Runtime": "4.0.0",
           "System.Runtime.Extensions": "4.0.0"
         },
+        "frameworkAssemblies": [
+          "mscorlib",
+          "System.Numerics"
+        ],
         "compile": {
-          "ref/dotnet/System.Numerics.Vectors.dll": {}
+          "ref/net46/System.Numerics.Vectors.dll": {}
         },
         "runtime": {
-          "lib/dotnet/System.Numerics.Vectors.dll": {}
+          "lib/net46/System.Numerics.Vectors.dll": {}
         }
       },
       "System.Reflection/4.0.0": {
@@ -4208,7 +4216,7 @@
         }
       }
     },
-    "DNX,Version=v4.5.1/win7-x64": {
+    "DNX,Version=v4.6/win7-x64": {
       "DataLib2/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5",
@@ -6159,11 +6167,15 @@
           "System.Runtime": "4.0.0",
           "System.Runtime.Extensions": "4.0.0"
         },
+        "frameworkAssemblies": [
+          "mscorlib",
+          "System.Numerics"
+        ],
         "compile": {
-          "ref/dotnet/System.Numerics.Vectors.dll": {}
+          "ref/net46/System.Numerics.Vectors.dll": {}
         },
         "runtime": {
-          "lib/dotnet/System.Numerics.Vectors.dll": {}
+          "lib/net46/System.Numerics.Vectors.dll": {}
         }
       },
       "System.Reflection/4.0.0": {
@@ -8572,7 +8584,7 @@
       "Microsoft.Framework.Configuration >= 1.0.0-beta8",
       "Microsoft.AspNet.Diagnostics >= 1.0.0-beta8"
     ],
-    "DNX,Version=v4.5.1": [
+    "DNX,Version=v4.6": [
       "EPPlus >= 1.0.0-*",
       "LMComLib >= 1.0.0-*",
       "NewLMComModel >= 1.0.0-*",

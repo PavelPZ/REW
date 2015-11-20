@@ -48,14 +48,17 @@ namespace WebApp {
 
   public static class Cache {
     static Cache() {
-      WebCode.UrlRewrite.swFile.extractSwFilesToCache(); //soubory z d:\LMCom\rew\WebCode\App_Data\swfiles.zip do cache
+      UrlRewrite.swFile.extractSwFilesToCache(); //soubory z d:\LMCom\rew\WebCode\App_Data\swfiles.zip do cache
     }
-    static async makeResponseFromCache(string cacheKey, RouteContext routeCtx) {
+    static async Task makeResponseFromCache(string cacheKey, RouteContext routeCtx) {
+      //tast na pritomnost v cache
+      if (string.IsNullOrEmpty(cacheKey)) { await Task.CompletedTask; return; }
       UrlRewrite.swFile sf;
-      lock (UrlRewrite.swFile.swFiles) UrlRewrite.swFile.swFiles.TryGetValue(cacheKey, out sf);
-      routeCtx.IsHandled = sf != null; if (!routeCtx.IsHandled) return;
-      System.Threading.Tasks.Task
+      lock (UrlRewrite.swFile.swFiles) UrlRewrite.swFile.swFiles.TryGetValue(cacheKey.ToLower(), out sf);
+      if (sf == null) { await Task.CompletedTask; return; }
 
+      //ano => vrat z cache
+      routeCtx.IsHandled = true;
       var ctx = routeCtx.HttpContext;
       string eTag = ctx.Request.Headers["If-None-Match"];
       ctx.Response.Headers["Etag"] = sf.eTag;
@@ -63,29 +66,34 @@ namespace WebApp {
       if (sf.eTag == eTag) { //souhlasi eTag => not modified
         ctx.Response.StatusCode = (int)HttpStatusCode.NotModified;
         ctx.Response.ContentLength = 0;
+        await Task.CompletedTask;
       } else { //nova stranka (a ev. jeji gzip verze)
         string acceptEncoding = ctx.Request.Headers["Accept-Encoding"];
         ctx.Response.StatusCode = (int)HttpStatusCode.OK;
         if (!string.IsNullOrEmpty(acceptEncoding) && acceptEncoding.Contains("gzip") && sf.gzipData != null) {
           ctx.Response.Headers["Content-Encoding"] = "gzip";
-          ctx.Response.Body.WriteAsync(sf.gzipData, 0, sf.gzipData.Length);
+          await ctx.Response.Body.WriteAsync(sf.gzipData, 0, sf.gzipData.Length);
         } else {
-          ctx.Response.Body.WriteAsync(sf.data, 0, sf.data.Length);
+          await ctx.Response.Body.WriteAsync(sf.data, 0, sf.data.Length);
         }
       }
     }
-    public static async void onIndexRoute(RouteContext context) {
-      var app = LowUtils.EnumParse<Consts.Apps>(context.HttpContext.Request.Path.Value);
+
+    public static async Task onIndexRoute(RouteContext context, Consts.Apps app) {
       var cacheKey = HomeController.getPars(context.HttpContext, app).getCacheKey();
       await makeResponseFromCache(cacheKey, context);
     }
-    public static async void onOtherRoute(RouteContext context) {
-      var cacheKey = context.HttpContext.Request.Path.Value.ToLower();
+    public static async Task onOtherRoute(RouteContext context) {
+      var cacheKey = context.HttpContext.Request.Path.Value;
       await makeResponseFromCache(cacheKey, context);
     }
     public static async Task Middleware(HttpContext ctx, Func<Task> next) {
+      //INDEX stranka?
+      if (!ctx.Request.Path.HasValue) { await next(); return; }
       var appStr = ctx.Request.Path.Value.ToLower();
+      if (!string.IsNullOrEmpty(appStr) && appStr.Length > 1) appStr = appStr.Substring(1);
       if (!Consts.allApps.Contains(appStr)) { await next(); return; }
+      //ano => index do cache
       var app = LowUtils.EnumParse<Consts.Apps>(appStr);
       var pars = HomeController.getPars(ctx, app);
       using (var memStr = new MemoryStream()) {
@@ -93,7 +101,8 @@ namespace WebApp {
         ctx.Response.Body = memStr;
         await next();
         //dej vygenerovanou stranku do cache
-        UrlRewrite.swFile.addToCache(pars.getCacheKey(), memStr.ToArray());
+        var sf = UrlRewrite.swFile.addToCache(pars.getCacheKey(), ".html", memStr.ToArray());
+        ctx.Response.Headers["Etag"] = sf.eTag;
         //form response
         memStr.Seek(0, SeekOrigin.Begin);
         await memStr.CopyToAsync(bodyStr);

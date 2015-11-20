@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Routing;
 using Microsoft.AspNet.Routing.Template;
 using System.IO;
+using DesignNew;
 
 namespace WebApp {
 
@@ -20,7 +21,7 @@ namespace WebApp {
       var builder = new ConfigurationBuilder()
         .SetBasePath(appEnv.ApplicationBasePath)
         .AddJsonFile("config.json")
-        //.AddEnvironmentVariables()
+      //.AddEnvironmentVariables()
       ;
       Configuration = builder.Build();
     }
@@ -40,17 +41,26 @@ namespace WebApp {
       //login page, nedela nic
       app.UseRouter(new TemplateRoute(new LoginRouter(), "login.html", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
       //URL preview, ev. obslouzeni cache
-      app.UseRouter( new TemplateRoute(new IndexRoute(),"web4",app.ApplicationServices.GetService<IInlineConstraintResolver>()));
-      app.UseRouter(new TemplateRoute(new IndexRoute(), "common", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
-      app.UseRouter(new TemplateRoute(new OtherRoute(), "{*url}", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
+      app.UseRouter(new TemplateRoute(new IndexRoutePreview(Consts.Apps.web4), "web4", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
+      app.UseRouter(new TemplateRoute(new IndexRoutePreview(Consts.Apps.common), "common", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
+      app.UseRouter(new TemplateRoute(new OtherRoutePreview(), "{*url}", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
 
+      //app.Use(async (ctx, next) => {
+      //  using (var memStr = new MemoryStream()) {
+      //    var bodyStr = ctx.Response.Body;
+      //    ctx.Response.Body = memStr;
+      //    await next();
+      //    memStr.Seek(0, SeekOrigin.Begin);
+      //    await memStr.CopyToAsync(bodyStr);
+      //  }
+      //});
       app.Use(Cache.Middleware);
-        //Console.WriteLine(context.Request.Path);
-        //try {
-        //  await next();
-        //} catch (Exception ex) {
-        //  Console.WriteLine(ex);
-        //}
+      //Console.WriteLine(context.Request.Path);
+      //try {
+      //  await next();
+      //} catch (Exception ex) {
+      //  Console.WriteLine(ex);
+      //}
 
       app.UseMvc();
 
@@ -73,11 +83,13 @@ namespace WebApp {
     public string web4Dir;
   }
 
-  public class IndexRoute : IRouter {
-    public async Task RouteAsync(RouteContext context) { await Cache.onIndexRoute(context); }
+  public class IndexRoutePreview : IRouter {
+    public IndexRoutePreview(Consts.Apps app) { this.app = app; }
+    public async Task RouteAsync(RouteContext context) { await Cache.onIndexRoute(context, app); }
     VirtualPathData IRouter.GetVirtualPath(VirtualPathContext context) { throw new NotImplementedException(); }
+    Consts.Apps app;
   }
-  public class OtherRoute : IRouter {
+  public class OtherRoutePreview : IRouter {
     public async Task RouteAsync(RouteContext context) { await Cache.onOtherRoute(context); }
     VirtualPathData IRouter.GetVirtualPath(VirtualPathContext context) { throw new NotImplementedException(); }
   }

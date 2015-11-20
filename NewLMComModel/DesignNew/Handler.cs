@@ -74,7 +74,7 @@ namespace WebCode {
         //zpracovani index.aspx
         MemoryStream filter = (MemoryStream)app.Response.Filter; //vygenerovana index-*.html stranka
         string oldPth = app.Request.Headers["Orig-url"]; //a jeji puvodni URL
-        var sf = swFile.addToCache(oldPth, filter.ToArray()); //vlozeni index-*.html do cache
+        var sf = swFile.addToCache(oldPth, ".html", filter.ToArray()); //vlozeni index-*.html do cache
         makeResponseFromCache(sf, app); //naplneni response
       };
     }
@@ -122,22 +122,22 @@ namespace WebCode {
       public byte[] data;
       public byte[] gzipData;
 
-      public static swFile addToCache(string name, byte[] data) { //index-*.html do cache
+      public static swFile addToCache(string name, string ext, byte[] data) { //index-*.html do cache
+        byte[] gzipData;
+        using (var ms = new MemoryStream()) {
+          using (var gzip = new GZipStream(ms, CompressionMode.Compress)) gzip.Write(data, 0, data.Length);
+          gzipData = ms.ToArray();
+        }
         lock (swFiles) {
           swFile actFile;
           if (swFiles.TryGetValue(name, out actFile)) return actFile;
-          swFiles.Add(name, actFile = new swFile(name));
-          using (MD5 md5 = MD5.Create()) actFile.setData(data, md5);
-          using (var ms = new MemoryStream()) {
-            using (var gzip = new GZipStream(ms, CompressionMode.Compress)) gzip.Write(data, 0, data.Length);
-            actFile.gzipData = ms.ToArray();
-          }
+          swFiles.Add(name, actFile = new swFile(name) { ext = ext, gzipData = gzipData });
           return actFile;
         }
       }
 
       public static void extractSwFilesToCache() { //soubory z d:\LMCom\rew\WebCode\App_Data\swfiles.zip do cache pri startu aplikace
-        var zipFn = HostingEnvironment.MapPath("~/app_data/swfiles.zip");
+        var zipFn = @"d:\LMCom\rew\WebCommon\swfiles.zip"; // HostingEnvironment.MapPath("~/app_data/swfiles.zip");
         var mStr = new MemoryStream();
         using (MD5 md5 = MD5.Create())
         using (var zipStr = File.OpenRead(zipFn))

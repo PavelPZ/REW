@@ -1,5 +1,6 @@
 {
   "includes": [
+    "/jslib/scripts/jquery.js",
     "js-externals.dpl.json",
     "js-web.dpl.json"
   ]
