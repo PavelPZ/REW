@@ -43,7 +43,7 @@ namespace LMComLib {
   }
 
   public class RegisterImpl : ICSharpToTypeScript {
-    public RegisterImpl(string nameSpace, string tsPath, IEnumerable<Type> enums, params Type[] types) { this.nameSpace = nameSpace; this.tsPath = tsPath; this.enums = enums==null ? new Type[0] : enums.ToArray(); this.types = types==null ? new Type[0] : types; }
+    public RegisterImpl(string nameSpace, string tsPath, IEnumerable<Type> enums, params Type[] types) { this.nameSpace = nameSpace; this.tsPath = tsPath; this.enums = enums == null ? new Type[0] : enums.ToArray(); this.types = types == null ? new Type[0] : types; }
     string nameSpace; string tsPath; Type[] enums; Type[] types;
     public virtual IEnumerable<Type> Types() { return types; }
     public IEnumerable<Type> ExtendedTypes() { yield break; }
@@ -138,8 +138,10 @@ namespace LMComLib {
       sb.Append("])");
     }
 
+    public static bool isConstantEnum = false;
+
     static void GenEnum(Type tp, StringBuilder sb) {
-      sb.Append("export enum "); sb.Append(tp.Name); sb.AppendLine(" {");
+      sb.Append("export " + (isConstantEnum ? "const " : null) + "enum "); sb.Append(tp.Name); sb.AppendLine(" {");
       try {
         var vals = Enum.GetValues(tp).Cast<object>();
         if (tp == typeof(CourseIds)) vals = vals.Where(v => (int)v < (int)CourseIds.eTestMe_EnglishSmall);
@@ -361,7 +363,7 @@ namespace LMComLib {
       }
     }
 
-    static Dictionary<string, string> jsTypes = new Dictionary<string, string>() { 
+    static Dictionary<string, string> jsTypes = new Dictionary<string, string>() {
       { "UInt16", "number" },
       { "UInt64", "number" },
       { "uint", "number" },

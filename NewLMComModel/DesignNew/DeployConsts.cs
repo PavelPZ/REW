@@ -13,14 +13,9 @@ namespace DesignNew {
     public static Langs[] dataLocs = CommonLib.smallLocalizations;
     public static HashSet<string> allDataLocs = new HashSet<string>(dataLocs.Select(l => l.ToString())); //dir vsech dostupnych lokalizaci
 
-    public enum Brands { lm, skrivanek, grafia, edusoft }
-    public static HashSet<string> allBrands = new HashSet<string>(LowUtils.EnumGetValues<Brands>().Select(b => b.ToString()));
-
-    public enum SkinIds { bs, mdl }
-    public static HashSet<string> allSkins = new HashSet<string>(LowUtils.EnumGetValues<SkinIds>().Select(b => b.ToString()));
-
-    public enum Apps { web4, common }
-    public static HashSet<string> allApps = new HashSet<string>(LowUtils.EnumGetValues<Apps>().Select(b => b.ToString()));
+    public static HashSet<string> allBrands = new HashSet<string>(LowUtils.EnumGetValues<servConfig.Brands>().Select(b => b.ToString()));
+    public static HashSet<string> allSkins = new HashSet<string>(LowUtils.EnumGetValues<servConfig.SkinIds>().Select(b => b.ToString()));
+    public static HashSet<string> allApps = new HashSet<string>(LowUtils.EnumGetValues<servConfig.Apps>().Select(b => b.ToString()));
 
     public static Langs[] swLangs = new Langs[] { Langs.ar_sa, Langs.bg_bg, Langs.bs, Langs.cs_cz, Langs.de_de, Langs.sp_sp, Langs.fr_fr, Langs.it_it, Langs.lt_lt, Langs.pl_pl, Langs.ru_ru, Langs.sk_sk, Langs.tr_tr, Langs.vi_vn, Langs.zh_cn };
     public static HashSet<string> allSwLangs = new HashSet<string>(swLangs.Select(l => l.ToString())); //dir vsech sw lokalizaci

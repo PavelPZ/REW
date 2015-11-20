@@ -107,7 +107,7 @@ namespace DesignNew {
         //index HTML parts minify
         var htmlFnMask = "/deploy/web4/index-parts/{0}.html";
         foreach (var brand in Consts.allBrands) {
-          var res = Packager.MainPage.htmls(Packager.RewApp.htmlNewEA(true, brand == Consts.Brands.lm.ToString() ? null : brand.ToString()));
+          var res = Packager.MainPage.htmls(Packager.RewApp.htmlNewEA(true, brand == servConfig.Brands.lm.ToString() ? null : brand.ToString()));
           File.WriteAllText(FileSources.pathFromUrl(string.Format(htmlFnMask, brand)), res);
         };
         return null;
@@ -122,7 +122,7 @@ namespace DesignNew {
         minifier.jsMinify("/deploy/common/js-externals.dpl.json", "/deploy/common/mins/externals.min.js");
         minifier.jsMinify("/deploy/common/js-common.dpl.json", "/deploy/common/mins/common.min.js");
         //*** ZIP
-        var files = FileSources.getUrls(FileSources.zipSWFilesFilter(Consts.Apps.common, Consts.Apps.web4)).ToArray();
+        var files = FileSources.getUrls(FileSources.zipSWFilesFilter(servConfig.Apps.common, servConfig.Apps.web4)).ToArray();
         var len = FileSources.zipSWFiles(@"D:\LMCom\rew\WebCommon\swfiles.zip", files);
         Trace.TraceWarning("ZIP files: {0}, len: {1}", files.Length, len);
         return null;
@@ -140,8 +140,13 @@ namespace DesignNew {
     public static void TYPESCRIPT_GenerateCommon() {
       runTask("TYPESCRIPT_GenerateCommon", () => {
         StringBuilder sb = new StringBuilder();
-        CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("servConfig", null, null, typeof(servConfig.Root), typeof(servConfig.Azure)));
-        sb.AppendLine();
+        CSharpToTypeScript.isConstantEnum = true;
+        CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("LMComLib", null,
+          new Type[] { typeof(Langs) },
+          null));
+        CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("servConfig", null,
+          new Type[] { typeof(servConfig.SkinIds), typeof(servConfig.Brands), typeof(servConfig.Apps)},
+          typeof(servConfig.Root), typeof(servConfig.Azure), typeof(servConfig.ViewPars)));
         File.WriteAllText(@"D:\LMCom\rew\WebCommon\wwwroot\Common\CsShared.ts", sb.ToString(), Encoding.ASCII);
         return null;
       });

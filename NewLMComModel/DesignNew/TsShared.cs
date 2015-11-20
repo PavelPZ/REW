@@ -4,12 +4,26 @@ using System.IO;
 namespace servConfig {
   public class Root {
     public Azure azure;
+    public ViewPars defaultPars;
   }
   public class Azure {
     public string connectionString;
     public string blobJS;
     public string blobMM;
   }
+
+  public enum Brands { lm, skrivanek, grafia, edusoft }
+  public enum SkinIds { bs, mdl }
+  public enum Apps { web4, common }
+
+  public class ViewPars {
+    public Apps app;
+    public LMComLib.Langs lang;
+    public Brands brand;
+    public SkinIds skin;
+    public bool debug;
+  }
+
 }
 
 //**************** CONFIG

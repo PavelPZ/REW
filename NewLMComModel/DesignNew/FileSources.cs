@@ -27,9 +27,9 @@ namespace DesignNew {
       return basicPath(url) + url.Replace('/', '\\');
     }
 
-    public static filter zipSWFilesFilter(params Consts.Apps[] apps) {
+    public static filter zipSWFilesFilter(params servConfig.Apps[] apps) {
       return new filter {
-        apps = apps.ToArray(), // LowUtils.EnumGetValues<Consts.Apps>().ToArray(),
+        apps = apps.ToArray(), // LowUtils.EnumGetValues<servConfig.Apps>().ToArray(),
         langs = Consts.swLangs,
         allBrendMasks = new string[] { brendJSMask, brendCSSMask, brendMMMask },
         allSkinMasks = new string[] { skinJSMask, skinCSSMask, skinMMMask },
@@ -39,9 +39,9 @@ namespace DesignNew {
       };
     }
 
-    public static filter indexPartFilter(bool isJS, Consts.Apps app, Consts.SkinIds skin, Consts.Brands brand, Langs lang, bool isMin) {
+    public static filter indexPartFilter(bool isJS, servConfig.Apps app, servConfig.SkinIds skin, servConfig.Brands brand, Langs lang, bool isMin) {
       return new filter {
-        apps = new Consts.Apps[] { app },
+        apps = new servConfig.Apps[] { app },
         langs = new Langs[] { lang },
         allBrendMasks = new string[] { isJS ? brendJSMask : brendCSSMask },
         allSkinMasks = new string[] { isJS ? skinJSMask : skinCSSMask },
@@ -59,7 +59,7 @@ namespace DesignNew {
     }
 
     public class filter {
-      public Consts.Apps[] apps;
+      public servConfig.Apps[] apps;
       public Langs[] langs;
       public string[] allFixs;
       public string[] allBrendMasks;
@@ -140,15 +140,15 @@ namespace DesignNew {
     const string skinCSSMask = "cssskin-{0}";
     const string skinMMMask = "mmskin-{0}";
 
-    //static string dplPath(Consts.Apps app, string name, string mask) { return string.Format(@"{0}\deploy\{1}\{2}.dpl.json", commonDir, app, mask == null ? name : string.Format(mask, name)); }
-    static string dplUrl(Consts.Apps app, string name, string mask) { return string.Format(@"/deploy/{0}/{1}.dpl.json", app, mask == null ? name : string.Format(mask, name)); }
+    //static string dplPath(servConfig.Apps app, string name, string mask) { return string.Format(@"{0}\deploy\{1}\{2}.dpl.json", commonDir, app, mask == null ? name : string.Format(mask, name)); }
+    static string dplUrl(servConfig.Apps app, string name, string mask) { return string.Format(@"/deploy/{0}/{1}.dpl.json", app, mask == null ? name : string.Format(mask, name)); }
 
-    static IEnumerable<string> existedDpls(Consts.Apps app, IEnumerable<string> names, string mask) { //dej dpl urls, ktere skutecne existuji
+    static IEnumerable<string> existedDpls(servConfig.Apps app, IEnumerable<string> names, string mask) { //dej dpl urls, ktere skutecne existuji
       return names.Select(n => dplUrl(app, n, mask)).Where(url => File.Exists(pathFromUrl(url)));
     }
 
     static IEnumerable<string> getDpls(filter filt = null) {
-      Func<Consts.Apps, IEnumerable<string>> allApp = app => {
+      Func<servConfig.Apps, IEnumerable<string>> allApp = app => {
         var fix = existedDpls(app, filt.allFixs, null);
         var brend = filt.allBrendMasks.SelectMany(m => existedDpls(app, filt.allBrands, m));
         var skin = filt.allSkinMasks.SelectMany(m => existedDpls(app, filt.allSkins, m));

@@ -45,8 +45,8 @@ namespace WebApp {
       //login page, nedela nic
       app.UseRouter(new TemplateRoute(new LoginRouter(), "login.html", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
       //URL preview, ev. obslouzeni cache
-      app.UseRouter(new TemplateRoute(new IndexRoutePreview(Consts.Apps.web4), "web4", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
-      app.UseRouter(new TemplateRoute(new IndexRoutePreview(Consts.Apps.common), "common", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
+      app.UseRouter(new TemplateRoute(new IndexRoutePreview(servConfig.Apps.web4), "web4", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
+      app.UseRouter(new TemplateRoute(new IndexRoutePreview(servConfig.Apps.common), "common", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
       app.UseRouter(new TemplateRoute(new OtherRoutePreview(), "{*url}", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
 
       //app.Use(async (ctx, next) => {
@@ -88,10 +88,10 @@ namespace WebApp {
   }
 
   public class IndexRoutePreview : IRouter {
-    public IndexRoutePreview(Consts.Apps app) { this.app = app; }
+    public IndexRoutePreview(servConfig.Apps app) { this.app = app; }
     public async Task RouteAsync(RouteContext context) { await Cache.onIndexRoute(context, app); }
     VirtualPathData IRouter.GetVirtualPath(VirtualPathContext context) { throw new NotImplementedException(); }
-    Consts.Apps app;
+    servConfig.Apps app;
   }
   public class OtherRoutePreview : IRouter {
     public async Task RouteAsync(RouteContext context) { await Cache.onOtherRoute(context); }

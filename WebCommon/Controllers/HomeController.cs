@@ -27,15 +27,21 @@ namespace WebApp {
 
     [Route("web4")]
     public IActionResult Schools() {
-      return View("IndexWeb4", new ModelWeb4(new HomeViewPars(HttpContext, Consts.Apps.web4)));
+      return View("IndexWeb4", new ModelWeb4(new HomeViewPars(HttpContext, servConfig.Apps.web4)));
     }
     [Route("common/{:testDir}")]
     public IActionResult CommonTest(string testDir) {
-      return View("CommonTest", new ModelCommonTest(testDir, new HomeViewPars(HttpContext, Consts.Apps.common)));
+      return View("CommonTest", new ModelCommonTest(testDir, new HomeViewPars(HttpContext, servConfig.Apps.common)));
     }
-    [Route("common"), Route("")]
+    [Route("common")]
     public IActionResult Common() {
       return View("DebugIndex");
+    }
+    [Route("")]
+    public IActionResult Empty() {
+      return Cfg.cfg.defaultPars.app == servConfig.Apps.common
+        ? View("DebugIndex")
+        : View("IndexWeb4", new ModelWeb4(new HomeViewPars(HttpContext, servConfig.Apps.web4)));
     }
 
   }
@@ -74,7 +80,7 @@ namespace WebApp {
     }
 
     //osetreni INDEX souboruu
-    public static async Task onIndexRoute(RouteContext context, Consts.Apps app) {
+    public static async Task onIndexRoute(RouteContext context, servConfig.Apps app) {
       var cacheKey = new HomeViewPars(context.HttpContext, app).getCacheKey();
       await makeResponseFromCache(cacheKey, context);
     }
@@ -91,7 +97,7 @@ namespace WebApp {
       if (!string.IsNullOrEmpty(appStr) && appStr.Length > 1) appStr = appStr.Substring(1);
       if (!Consts.allApps.Contains(appStr)) { await next(); return; }
       //ano => index do cache
-      var app = LowUtils.EnumParse<Consts.Apps>(appStr);
+      var app = LowUtils.EnumParse<servConfig.Apps>(appStr);
       var pars = new HomeViewPars(ctx, app);
       using (var memStr = new MemoryStream()) {
         var bodyStr = ctx.Response.Body;
@@ -107,12 +113,7 @@ namespace WebApp {
     }
   }
 
-  public class HomeViewPars {
-    public Consts.Apps app;
-    public Langs lang = Langs.en_gb;
-    public Consts.Brands brand;
-    public Consts.SkinIds skin;
-    public bool debug;
+  public class HomeViewPars : servConfig.ViewPars {
 
     public string getCacheKey() {
       return string.Format("{0}/{1}/{2}/{3}/{4}", app, skin, brand, lang, debug).ToLower();
@@ -120,13 +121,13 @@ namespace WebApp {
     public string getUrl() {
       return string.Format("{0}/?skin={1}&brand={2}&lang={3}&debug={4}", app, skin, brand, lang, debug).ToLower();
     }
-    public HomeViewPars(HttpContext ctx, Consts.Apps app) {
+    public HomeViewPars(HttpContext ctx, servConfig.Apps app) {
       string par;
       this.app = app;
-      brand = Consts.allBrands.Contains(par = ctx.Request.Query["brand"]) ? LowUtils.EnumParse<Consts.Brands>(par) : Consts.Brands.lm;
-      skin = Consts.allSkins.Contains(par = ctx.Request.Query["skin"]) ? LowUtils.EnumParse<Consts.SkinIds>(par) : Consts.SkinIds.bs;
-      lang = Consts.allSwLangs.Contains(par = ctx.Request.Query["lang"]) ? LowUtils.EnumParse<Langs>(par) : Langs.cs_cz;
-      debug = ctx.Request.Query["debug"] == "true";
+      brand = Consts.allBrands.Contains(par = ctx.Request.Query["brand"]) ? LowUtils.EnumParse<servConfig.Brands>(par) : Cfg.cfg.defaultPars.brand;
+      skin = Consts.allSkins.Contains(par = ctx.Request.Query["skin"]) ? LowUtils.EnumParse<servConfig.SkinIds>(par) : Cfg.cfg.defaultPars.skin;
+      lang = Consts.allSwLangs.Contains(par = ctx.Request.Query["lang"]) ? LowUtils.EnumParse<Langs>(par) : Cfg.cfg.defaultPars.lang;
+      debug = !string.IsNullOrEmpty(par = ctx.Request.Query["debug"]) ? par == "true" : Cfg.cfg.defaultPars.debug;
     }
   }
 
@@ -136,7 +137,7 @@ namespace WebApp {
       css = urlsToTags(csss, false);
       var jss = FileSources.getUrls(FileSources.indexPartFilter(true, pars.app, pars.skin, pars.brand, pars.lang, !pars.debug));
       js = urlsToTags(jss, true);
-      title = pars.brand == Consts.Brands.skrivanek ? "Skřivánek" : "LANGMaster";
+      title = pars.brand == servConfig.Brands.skrivanek ? "Skřivánek" : "LANGMaster";
     }
     public string title;
     public string css;

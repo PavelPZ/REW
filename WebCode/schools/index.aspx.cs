@@ -48,7 +48,7 @@ namespace WebCode {
       return sb.ToString();
     }
     protected string htmls() {
-      Consts.Brands dsgnId = LowUtils.EnumParse<Consts.Brands>(cfg.designId ?? "lm");
+      servConfig.Brands dsgnId = LowUtils.EnumParse<servConfig.Brands>(cfg.designId ?? "lm");
       return File.ReadAllText(Machines.rootPath + "app_data\\htmls\\html" + dsgnId.ToString() + ".txt");
     }
     static void script(StringBuilder sb, string url) { sb.AppendFormat(@"  <script src='../{0}' type='text/javascript'></script>", url); sb.AppendLine(); }
