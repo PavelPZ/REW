@@ -44,9 +44,9 @@ namespace WebApp {
 
       //login page - vraci prazdnou stranku
       app.UseRouter(new TemplateRoute(new LoginRouter(), "login.html", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
-      //Aplikace
-      app.UseRouter(new TemplateRoute(new IndexRoutePreview(servConfig.Apps.web4), "web4", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
-      app.UseRouter(new TemplateRoute(new IndexRoutePreview(servConfig.Apps.common), "web", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
+      //ev. vraceni cached INDEXes
+      app.UseRouter(new TemplateRoute(new IndexRoutePreview(servConfig.Apps.web4), "web4/index.html", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
+      app.UseRouter(new TemplateRoute(new IndexRoutePreview(servConfig.Apps.web), "web/{testDir}.html", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
       if (!Cfg.cfg.defaultPars.swFromFileSystem) {
         //Vsechny URL - hleda je v cache
         app.UseRouter(new TemplateRoute(new OtherRoutePreview(), "{*url}", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
@@ -54,9 +54,9 @@ namespace WebApp {
 
       //Cache middleware - sance na cache .CSHTML stranek (vcetne pripravy GZIPu)
       app.Use(Cache.Middleware);
-
       //MVC router
       app.UseMvc();
+
 
       //vsechny ostatni stranky
       app.UseStaticFiles();
@@ -70,16 +70,18 @@ namespace WebApp {
     public string web4Dir;
   }
 
-  public class IndexRoutePreview : IRouter {
+  public class IndexRoutePreview : IRouter { //cached INDEX pages
     public IndexRoutePreview(servConfig.Apps app) { this.app = app; }
     public async Task RouteAsync(RouteContext context) { await Cache.onIndexRoute(context, app); }
     VirtualPathData IRouter.GetVirtualPath(VirtualPathContext context) { throw new NotImplementedException(); }
     servConfig.Apps app;
   }
+  //cached other pages
   public class OtherRoutePreview : IRouter {
     public async Task RouteAsync(RouteContext context) { await Cache.onOtherRoute(context); }
     VirtualPathData IRouter.GetVirtualPath(VirtualPathContext context) { throw new NotImplementedException(); }
   }
+  //login page
   public class LoginRouter : IRouter {
     public async Task RouteAsync(RouteContext context) { await context.HttpContext.Response.WriteAsync(""); context.IsHandled = true; }
     VirtualPathData IRouter.GetVirtualPath(VirtualPathContext context) { throw new NotImplementedException(); }

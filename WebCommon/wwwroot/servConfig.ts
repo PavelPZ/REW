@@ -11,9 +11,9 @@
     app: servConfig.Apps.common,
     //app: servConfig.Apps.web4,
     brand: servConfig.Brands.lm,
-    debug: true,
+    debug: false,
     lang: LMComLib.Langs.cs_cz,
     skin: servConfig.SkinIds.bs,
-    swFromFileSystem: true
+    swFromFileSystem: false
   }
 }

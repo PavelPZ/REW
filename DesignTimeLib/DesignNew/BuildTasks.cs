@@ -119,10 +119,10 @@ namespace DesignNew {
       runTask("SW_deploy", () => {
         //*** COMMON refresh
         //JS minify
-        minifier.jsMinify("/deploy/common/js-externals.dpl.json", "/deploy/common/mins/externals.min.js");
-        minifier.jsMinify("/deploy/common/js-common.dpl.json", "/deploy/common/mins/common.min.js");
+        minifier.jsMinify("/deploy/web/js-externals.dpl.json", "/deploy/web/mins/externals.min.js");
+        minifier.jsMinify("/deploy/web/js-common.dpl.json", "/deploy/web/mins/common.min.js");
         //*** ZIP
-        var files = FileSources.getUrls(FileSources.zipSWFilesFilter(servConfig.Apps.common, servConfig.Apps.web4)).ToArray();
+        var files = FileSources.getUrls(FileSources.zipSWFilesFilter(servConfig.Apps.web, servConfig.Apps.web4)).ToArray();
         File.WriteAllLines(@"d:\temp\sw_dwploy.txt", files);
         var len = FileSources.zipSWFiles(@"D:\LMCom\rew\WebCommon\swfiles.zip", files);
         Trace.TraceWarning("ZIP files: {0}, len: {1}", files.Length, len);

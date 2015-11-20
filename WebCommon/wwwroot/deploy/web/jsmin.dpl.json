@@ -1,0 +1,6 @@
+﻿{
+  "includes": [
+    "mins/externals.min.js",
+    "mins/common.min.js"
+  ]
+}

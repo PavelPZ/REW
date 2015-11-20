@@ -25,13 +25,13 @@ namespace WebApp {
       var opt = appSettings.Value;
     }
 
-    [Route("web4")]
+    [Route("web4/index.html")]
     public IActionResult Schools() {
       return View("IndexWeb4", new ModelWeb4(new HomeViewPars(HttpContext, servConfig.Apps.web4)));
     }
-    [Route("web/{testDir}")]
+    [Route("web/{testDir}.html")]
     public IActionResult CommonTest(string testDir) {
-      return View("CommonTest", new ModelCommonTest(testDir, new HomeViewPars(HttpContext, servConfig.Apps.common)));
+      return View("CommonTest", new ModelCommonTest(testDir, new HomeViewPars(HttpContext, servConfig.Apps.web)));
     }
     [Route("web")]
     public IActionResult Common() {
@@ -39,7 +39,7 @@ namespace WebApp {
     }
     [Route("")]
     public IActionResult Empty() {
-      return Cfg.cfg.defaultPars.app == servConfig.Apps.common
+      return Cfg.cfg.defaultPars.app == servConfig.Apps.web
         ? View("DebugIndex")
         : View("IndexWeb4", new ModelWeb4(new HomeViewPars(HttpContext, servConfig.Apps.web4)));
     }
@@ -79,7 +79,7 @@ namespace WebApp {
       }
     }
 
-    //osetreni INDEX souboruu
+    //osetreni cached INDEX souboruu
     public static async Task onIndexRoute(RouteContext context, servConfig.Apps app) {
       var cacheKey = new HomeViewPars(context.HttpContext, app).getCacheKey();
       await makeResponseFromCache(cacheKey, context);
@@ -94,7 +94,7 @@ namespace WebApp {
       //INDEX stranka?
       if (!ctx.Request.Path.HasValue) { await next(); return; }
       var appStr = ctx.Request.Path.Value.ToLower();
-      if (!string.IsNullOrEmpty(appStr) && appStr.Length > 1) appStr = appStr.Substring(1);
+      if (!string.IsNullOrEmpty(appStr) && appStr.Length > 1) appStr = appStr.Substring(1).Split('/')[0];
       if (!Consts.allApps.Contains(appStr)) { await next(); return; }
       //ano => index do cache
       var app = LowUtils.EnumParse<servConfig.Apps>(appStr);

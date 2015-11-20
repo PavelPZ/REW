@@ -14,7 +14,7 @@ namespace servConfig {
 
   public enum Brands { lm, skrivanek, grafia, edusoft }
   public enum SkinIds { bs, mdl }
-  public enum Apps { web4, common }
+  public enum Apps { web4, web }
 
   public class ViewPars {
     public Apps app;
