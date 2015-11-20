@@ -2,6 +2,7 @@
 using LMComLib;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -11,68 +12,20 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.Hosting;
+using LMNetLib;
 
 namespace WebCode {
 
-  public class HomeViewPars {
-    public Consts.Apps app;
-    public Langs lang = Langs.en_gb;
-    public Consts.Brands brand;
-    public Consts.SkinIds skin;
-    public bool debug;
-    public string other;
+  public static class Handler {
   }
 
-  public class HomeModel {
-    public HomeModel(HomeViewPars pars) {
-      var csss = FileSources.getUrls(FileSources.indexPartFilter(false, pars.app, pars.skin, pars.brand, pars.lang, !pars.debug));
-      css = urlsToTags(csss, false);
-      var jss = FileSources.getUrls(FileSources.indexPartFilter(true, pars.app, pars.skin, pars.brand, pars.lang, !pars.debug));
-      js = urlsToTags(jss, true);
-      title = pars.brand == Consts.Brands.skrivanek ? "Skřivánek" : "LANGMaster";
-    }
-    public string title;
-    public string css;
-    public string js;
-    //*** PRIVATE
-    static void cssTag(StringBuilder sb, string url) { sb.AppendFormat(@"  <link href='../{0}' rel='stylesheet' type='text/css' />", url); sb.AppendLine(); }
-    static void jsTag(StringBuilder sb, string url) { sb.AppendFormat(@"  <script src='../{0}' type='text/javascript'></script>", url); sb.AppendLine(); }
-    static string urlsToTags(IEnumerable<string> urls, bool isJs) {
-      var tag = isJs ? (Action<StringBuilder, string>)jsTag : cssTag;
-      StringBuilder sb = new StringBuilder();
-      foreach (var url in urls) tag(sb, url);
-      return sb.ToString();
-    }
-  }
-
-  public class HomeModelWeb4 : HomeModel {
-    public HomeModelWeb4(HomeViewPars pars) : base(pars) {
-      var cfgObj = new schools.config() {
-        //blobJS = ConfigurationManager.AppSettings["cfg-blobJS"], //URL s JS se cvicenimi
-        //blobMM = ConfigurationManager.AppSettings["cfg-blobMM"], //URL s obrazky, zvuky, videa, ...
-        target = Targets.web,
-        version = pars.debug ? schools.versions.debug : schools.versions.minified,
-        dataBatchUrl = "/lm/lm_data/",
-        lang = pars.lang,
-        designId = pars.brand.ToString(),
-        canSkipCourse = true,
-        canResetCourse = true,
-        canResetTest = true,
-        canSkipTest = true,
-        persistType = schools.persistTypes.persistNewEA,
-      };
-      cfg = string.Format("<script type='text/javascript'>\r\nvar cfg = {0};\r\n</script>\r\n", JsonConvert.SerializeObject(cfgObj));
-    }
-    public string htmls;
-    public string cfg;
-  }
-
+  
   public class UrlRewrite : IHttpModule {
 
 
     void IHttpModule.Init(HttpApplication context) {
 
-      swFile.swFilesToCache(); //soubory z d:\LMCom\rew\WebCode\App_Data\swfiles.zip do cache
+      swFile.extractSwFilesToCache(); //soubory z d:\LMCom\rew\WebCode\App_Data\swfiles.zip do cache
 
       context.BeginRequest += (s, a) => {
         HttpApplication app = (HttpApplication)s;
@@ -121,7 +74,7 @@ namespace WebCode {
         //zpracovani index.aspx
         MemoryStream filter = (MemoryStream)app.Response.Filter; //vygenerovana index-*.html stranka
         string oldPth = app.Request.Headers["Orig-url"]; //a jeji puvodni URL
-        var sf = swFile.addIndexHtmlToCache(oldPth, filter.ToArray()); //vlozeni index-*.html do cache
+        var sf = swFile.addToCache(oldPth, filter.ToArray()); //vlozeni index-*.html do cache
         makeResponseFromCache(sf, app); //naplneni response
       };
     }
@@ -169,7 +122,7 @@ namespace WebCode {
       public byte[] data;
       public byte[] gzipData;
 
-      public static swFile addIndexHtmlToCache(string name, byte[] data) { //index-*.html do cache
+      public static swFile addToCache(string name, byte[] data) { //index-*.html do cache
         lock (swFiles) {
           swFile actFile;
           if (swFiles.TryGetValue(name, out actFile)) return actFile;
@@ -183,7 +136,7 @@ namespace WebCode {
         }
       }
 
-      public static void swFilesToCache() { //soubory z d:\LMCom\rew\WebCode\App_Data\swfiles.zip do cache pri startu aplikace
+      public static void extractSwFilesToCache() { //soubory z d:\LMCom\rew\WebCode\App_Data\swfiles.zip do cache pri startu aplikace
         var zipFn = HostingEnvironment.MapPath("~/app_data/swfiles.zip");
         var mStr = new MemoryStream();
         using (MD5 md5 = MD5.Create())

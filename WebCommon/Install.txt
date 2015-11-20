@@ -20,6 +20,7 @@ Install-Package Newtonsoft.Json -Version 7.0.1
 http://ef.readthedocs.org/en/latest/getting-started/aspnet5.html
 Install-Package EntityFramework.Commands -Pre
 Install-Package WindowsAzure.Storage -Version 6.1.0
+Install-Package Microsoft.Framework.Configuration -Pre
 
 
 Update-Package -ProjectName MyProject

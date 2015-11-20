@@ -1,11 +1,11 @@
 ﻿module chinh {
 
   export class defaultDesign implements EMailer.emailDesign {
-    domain = 'www.edusoft.com.vn';
-    from = "etestme@edusoft.com.vn";
+    domain = 'www.etestme.vn';
+    from = "admin@etestme.vn";
     wishSuccess(): string { return 'Chúng tôi chúc bạn thành công với các sản phẩm giáo dục của Edusoft.'; }
     LMTeam(): string { return 'Edusoft team'; }
-    contact(): string { return 'Edusoft.com.vn, address, Vietnam, <a href="mailto:etestme@edusoft.com.vn">etestme@edusoft.com.vn</a>, <a href="http://www.edusoft.com.vn">www.edusoft.com.vn</a>.'; }
+    contact(): string { return 'eTestMe.vn, address, Vietnam, <a href="mailto:admin@etestme.vn">admin@etestme.vn</a>, <a href="http://www.etestme.vn">www.etestme.vn</a>.'; }
     rights(): string { return '© Edusoft 2015'; }
   }
 

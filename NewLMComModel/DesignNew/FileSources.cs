@@ -100,8 +100,8 @@ namespace DesignNew {
 
     //************************ PRIVATES
     static HashSet<string> web4Dirs = new HashSet<string>(new string[] { "admin", "app_data", "author", "blendedapi", "courses", "jslib", "login", "schools", "testme" });
-    static string web4Dir = ConfigurationManager.AppSettings["filesources.web4"];
-    static string commonDir = ConfigurationManager.AppSettings["filesources.webcommon"];
+    static string web4Dir = ConfigurationManager.AppSettings["filesources.web4"] ?? @"d:\LMCom\rew\Web4";
+    static string commonDir = ConfigurationManager.AppSettings["filesources.webcommon"] ?? @"d:\LMCom\rew\WebCommon\wwwroot";
     static string basicPath(string url) { return web4Dirs.Contains(url.Split(new char[] { '/' }, 3)[1]) ? web4Dir : commonDir; }
     public static string urlFromPath(string path) { return path.Substring(path.StartsWith(web4Dir) ? web4Dir.Length : commonDir.Length); }
 
@@ -154,7 +154,8 @@ namespace DesignNew {
         var skin = filt.allSkinMasks.SelectMany(m => existedDpls(app, filt.allSkins, m));
         return fix.Concat(brend).Concat(skin);
       };
-      return filt.apps.SelectMany(app => allApp(app));
+      var res = filt.apps.SelectMany(app => allApp(app));
+      return res;
     }
 
   }

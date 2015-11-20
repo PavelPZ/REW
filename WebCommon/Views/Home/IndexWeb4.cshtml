@@ -1,4 +1,4 @@
-﻿@model WebCode.HomeModelWeb4
+﻿@model WebApp.HomeModelWeb4
 <!DOCTYPE html>
 <html class='no-ie7 no-ie8'>
 <head>
@@ -6,13 +6,13 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  @Model.css
-  @Model.cfg
+  @Html.Raw(Model.css)
+  @Html.Raw(Model.cfg)
   <script type='text/javascript'>
     var isLogging = false;
     var OAuthDefaultClient = { '2': { 'default': '125816694160413', }, };
   </script>
-  @Model.js
+  @Html.Raw(Model.js)
 </head>
 <body>
   <div id="block-gui-element" class="block-gui-cls" style="display: none" onclick="return false">
@@ -37,6 +37,6 @@
   <script id='dummy' type='text/x-jsrender' data-for='Dummy'>
     {{for ~ActPage()}}{{/for}}
   </script>
-  @Model.htmls
+  @Html.Raw(Model.htmls)
 </body>
 </html>
