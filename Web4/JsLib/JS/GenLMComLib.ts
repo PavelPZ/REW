@@ -795,3 +795,4 @@ export var LineToLang: Langs[] = [0,3,4,8,7,6,0,9,0,0,0,0,0,0,0,0,0,0,0,0,16,17,
 export var bigLocalizations = [3, 4, 8, 2, 5, 9, 6, 7, 70, 10, 85, 58, 45, 27, 93, 18];
 export var LangToEADir = {'2':'comcz','3':'comen','4':'comde','5':'comsk','6':'comfr','7':'comit','8':'comes','9':'comru','10':'comvi','11':'comes','27':'combg','29':'comth','45':'comcn','54':'comko','58':'comlt','70':'compl','82':'comhk','85':'comtr','93':'combs'};
 }
+

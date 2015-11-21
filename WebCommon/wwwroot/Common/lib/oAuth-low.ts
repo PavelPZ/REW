@@ -1,6 +1,6 @@
 ﻿namespace oauth {
 
-  export enum providerTypes {
+  export const enum oAuthProviders {
     no,
     google,
     facebook,
@@ -21,7 +21,7 @@
 
   //obsah cookie: vstupni informace pro login
   export interface IInputPar {
-    providerId: providerTypes;
+    providerId: servConfig.oAuthProviders;
     client_id: string;
     returnUrl: string; //v URL je na miste vysledneho encodeURIComponent(JSON.stringify(outputPar)) retezec '#$#$#'
   }

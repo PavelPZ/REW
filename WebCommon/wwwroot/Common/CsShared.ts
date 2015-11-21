@@ -101,6 +101,13 @@ export const enum Langs {
 }
 
 module servConfig {
+export const enum oAuthProviders {
+  no = 0,
+  google = 1,
+  facebook = 2,
+  microsoft = 3,
+}
+
 export const enum SkinIds {
   bs = 0,
   mdl = 1,
@@ -115,12 +122,14 @@ export const enum Brands {
 
 export const enum Apps {
   web4 = 0,
-  common = 1,
+  web = 1,
+  oauth = 2,
 }
 
 export interface Root {
   azure: Azure;
   defaultPars: ViewPars;
+  oAuth: oAuthConfig;
 }
 export interface Azure {
   connectionString: string;
@@ -134,6 +143,12 @@ export interface ViewPars {
   skin: SkinIds;
   debug: boolean;
   swFromFileSystem: boolean;
+}
+export interface oAuthConfig {
+  items: Array<oAuthItem>;
+}
+export interface oAuthItem {
+  clientId: string;
 }
 }
 

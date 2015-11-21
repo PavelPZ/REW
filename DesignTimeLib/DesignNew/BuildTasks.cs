@@ -119,10 +119,11 @@ namespace DesignNew {
       runTask("SW_deploy", () => {
         //*** COMMON refresh
         //JS minify
+        minifier.jsMinify("/deploy/oauth/js-all.dpl.json", "/deploy/oauth/mins/all.min.js");
         minifier.jsMinify("/deploy/web/js-externals.dpl.json", "/deploy/web/mins/externals.min.js");
         minifier.jsMinify("/deploy/web/js-common.dpl.json", "/deploy/web/mins/common.min.js");
         //*** ZIP
-        var files = FileSources.getUrls(FileSources.zipSWFilesFilter(servConfig.Apps.web, servConfig.Apps.web4)).ToArray();
+        var files = FileSources.getUrls(FileSources.zipSWFilesFilter(servConfig.Apps.web, servConfig.Apps.web4, servConfig.Apps.oauth)).ToArray();
         File.WriteAllLines(@"d:\temp\sw_dwploy.txt", files);
         var len = FileSources.zipSWFiles(@"D:\LMCom\rew\WebCommon\swfiles.zip", files);
         Trace.TraceWarning("ZIP files: {0}, len: {1}", files.Length, len);
@@ -141,13 +142,15 @@ namespace DesignNew {
     public static void CS_to_typescrit_web() {
       runTask("TYPESCRIPT_fromCS_web", () => {
         StringBuilder sb = new StringBuilder();
-        CSharpToTypeScript.isConstantEnum = true;
         CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("LMComLib", null,
-          new Type[] { typeof(Langs) },
-          null));
+          null,
+          new Type[] { typeof(Langs) }
+          ));
         CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("servConfig", null,
-          new Type[] { typeof(servConfig.SkinIds), typeof(servConfig.Brands), typeof(servConfig.Apps)},
-          typeof(servConfig.Root), typeof(servConfig.Azure), typeof(servConfig.ViewPars)));
+          null,
+          new Type[] { typeof(servConfig.oAuthProviders), typeof(servConfig.SkinIds), typeof(servConfig.Brands), typeof(servConfig.Apps)},
+          typeof(servConfig.Root), typeof(servConfig.Azure), typeof(servConfig.ViewPars),
+          typeof(servConfig.oAuthConfig), typeof(servConfig.oAuthItem)));
         File.WriteAllText(@"D:\LMCom\rew\WebCommon\wwwroot\Common\CsShared.ts", sb.ToString(), Encoding.ASCII);
         return null;
       });

@@ -60,3 +60,4 @@ export function Cmd_testCert_Create (loc: LMComLib.Langs, companyId: number, pro
   return {loc: loc, companyId: companyId, productId: productId, scormId: scormId, date: Utils.nowToInt(), lmcomId: lmcomId, sessionId: sessionId};
 }
 }
+

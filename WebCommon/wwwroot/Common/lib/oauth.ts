@@ -3,18 +3,18 @@
   const authrequestCookieName = 'authrequestCookieName';
 
   //funkce volana pri vstupu do stranky
-  //do stranky se vstupuje ve dvou kontextech: pri startu loginu a po navratu z OAuth providera
-  function loginPageEnter() {
+  //do stranky se vstupuje ve dvou kontextech: pri startu loginu a po navratu z OAuth providera 
+  export function loginPageEnter() {
     try {
       let authResponse = getAuthResponse();
       //neni navrat z Provider.authrequest => start loginu. V hash je zakodovan IInputPar
-      if (!authResponse) { 
+      if (!authResponse) {
         var inputParStr = window.location.hash; window.location.hash = '';
         if (inputParStr && inputParStr.length > 1 && inputParStr[0] == '#') inputParStr = inputParStr.substr(1);
         let inputPar = utils.urlParseQuery<IInputPar>(inputParStr);
         if (!inputPar || !inputPar.client_id || !inputPar.providerId) {
           //DEBUG: simulace volani stranky
-          inputPar = { client_id: '765138080284696'/*id pro http://localhost:56264, pavel.zika@langmaster.com, edurom1*/, returnUrl: null, providerId: providerTypes.facebook };
+          inputPar = { client_id: servCfg.oAuth.items[servConfig.oAuthProviders.facebook].clientId /*'765138080284696', id pro http://localhost:56264, pavel.zika@langmaster.com, edurom1*/, returnUrl: null, providerId: servConfig.oAuthProviders.facebook };
           //non DEBUG: throw '!inputPar || !inputPar.client_id || !inputPar.providerId: ' + inputParStr;
         }
         let provider = getProvider(inputPar.providerId);
@@ -27,7 +27,7 @@
       if (authReqCook.state != authResponse.state) throw 'authReqCook.state != authResponse.state';
       let provider = getProvider(authReqCook.providerId);
       getProfileFromProvider(provider, authResponse.access_token, res => {
-        if (res.error) throw 'res.error';
+        if (res.error) { writeError(res.error); return; }
         if (authReqCook.returnUrl) loginReturn(authReqCook.returnUrl, res);
         else writeError(JSON.stringify(res, null, 2));
       });
@@ -38,14 +38,13 @@
 
   class Provider {
     constructor(
-      public providerId: providerTypes,
+      public providerId: servConfig.oAuthProviders,
       public authorizationUrl: string, //url pro autorizaci
       public ajaxUrl: string, //url pro ziskani profile informaci
       public logoutUrl: string, //url pro ziskani profile informaci
       //public ajaxUrlJsonp: string, //url pro ziskani profile informaci pomoci jsonp
       public scopes: string //povol ziskani emailu apod.
-    ) {
-    }
+    ) { }
     parseProfile(obj: any): IOutputPar { throw 'not implemented'; } //vytazeni profile informaci z ajaxUrl
 
     authrequest(inputPar: IInputPar) {
@@ -73,7 +72,7 @@
 
   interface IAuthRequestCookie {
     state: string;
-    providerId: providerTypes;
+    providerId: servConfig.oAuthProviders;
     returnUrl: string;
   }
 
@@ -101,7 +100,7 @@
   //  client_id=&
   //  scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile
   class GoogleProvider extends Provider {
-    constructor(providerId: providerTypes) {
+    constructor(providerId: servConfig.oAuthProviders) {
       super(providerId, 'https://accounts.google.com/o/oauth2/auth', 'https://www.googleapis.com/oauth2/v1/userinfo', 'http://accounts.google.com/Logout',
         'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile');
     }
@@ -112,7 +111,7 @@
 
   //https://developers.facebook.com/docs/reference/dialogs/oauth/ pavel.zika@langmaster.com, edurom1
   class FacebookProvider extends Provider {
-    constructor(providerId: providerTypes) {
+    constructor(providerId: servConfig.oAuthProviders) {
       super(providerId, 'https://www.facebook.com/dialog/oauth', 'https://graph.facebook.com/me', 'https://www.facebook.com', 'email');
     }
     parseProfile(obj: any): IOutputPar { //vytazeni profile informaci z ajaxUrl
@@ -123,7 +122,7 @@
   //http://msdn.microsoft.com/en-us/library/live/hh826532.aspx
   //https://manage.dev.live.com/Applications/Index, pjanecek@langmaster.cz / cz.langmaster
   class MicrosoftProvider extends Provider {
-    constructor(providerId: providerTypes) {
+    constructor(providerId: servConfig.oAuthProviders) {
       super(providerId, 'https://login.live.com/oauth20_authorize.srf', 'https://apis.live.net/v5.0/me', 'https://login.live.com/', 'wl.signin wl.basic wl.emails');
     }
     parseProfile(obj: any): IOutputPar { //vytazeni profile informaci z ajaxUrl
@@ -142,7 +141,7 @@
   }
 
   function getProfileFromProvider(provider: Provider, accessToken: string, completed: (par: IOutputPar) => void) {
-    var data = provider.providerId == providerTypes.facebook ? { access_token: accessToken, fields: 'email,first_name,last_name' } : { access_token: accessToken };
+    var data = provider.providerId == servConfig.oAuthProviders.facebook ? { access_token: accessToken, fields: 'email,first_name,last_name' } : { access_token: accessToken };
     var url = utils.urlStringify(provider.ajaxUrl, data);
     ajax.ajaxLow(url, null, null,
       res => {
@@ -155,14 +154,14 @@
         res.error = JSON.stringify(err);
         completed(res);
       }
-    ); 
+    );
   }
 
-  function getProvider(providerId: providerTypes): Provider {
+  function getProvider(providerId: servConfig.oAuthProviders): Provider {
     switch (providerId) {
-      case providerTypes.google: return new GoogleProvider(providerId);
-      case providerTypes.microsoft: return new MicrosoftProvider(providerId);
-      case providerTypes.facebook: return new FacebookProvider(providerId);
+      case servConfig.oAuthProviders.google: return new GoogleProvider(providerId);
+      case servConfig.oAuthProviders.microsoft: return new MicrosoftProvider(providerId);
+      case servConfig.oAuthProviders.facebook: return new FacebookProvider(providerId);
       default: throw 'not implemented';
     }
   }

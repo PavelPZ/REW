@@ -4756,7 +4756,7 @@ namespace LMComLib {
         case Langs.te_in: return LineIds.Telugu;
         case Langs.cy_gb: return LineIds.Welsh;
 
-        default: throw new NotImplementedException();
+        default: return LineIds.no;
       }
     }
     public static Langs LineIdToLang(LineIds line) {

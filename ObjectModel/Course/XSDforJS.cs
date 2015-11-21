@@ -241,7 +241,7 @@ namespace metaJS {
       yield return typeof(xsdInheritsFrom);
       yield return typeof(xsdPropConstrains);
     }
-
+    public IEnumerable<Type> ConstEnums() { yield break; }
     public string TsPath() { return Machines.rootPath + @"authorWeb\js\MetaJSGen.ts"; }
     public string Module() { return "metaJS"; }
 

@@ -267,3 +267,4 @@ export interface HumanPayment {
   prices: { [id:string]: number};
 }
 }
+

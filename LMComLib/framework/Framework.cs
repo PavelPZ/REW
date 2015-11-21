@@ -678,7 +678,8 @@ namespace LMComLib {
         case Langs.th_th: return "comhk";
         case Langs.pl_pl: return "compl";
         case Langs.vi_vn: return "comvi";
-        default: throw new Exception("Missing code here");
+        default: return null; 
+        //default: throw new Exception("Missing code here");
       }
     }
 

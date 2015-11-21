@@ -5,6 +5,7 @@ namespace servConfig {
   public class Root {
     public Azure azure;
     public ViewPars defaultPars;
+    public oAuthConfig oAuth;
   }
   public class Azure {
     public string connectionString;
@@ -14,7 +15,7 @@ namespace servConfig {
 
   public enum Brands { lm, skrivanek, grafia, edusoft }
   public enum SkinIds { bs, mdl }
-  public enum Apps { web4, web }
+  public enum Apps { web4, web, oauth }
 
   public class ViewPars {
     public Apps app;
@@ -24,6 +25,16 @@ namespace servConfig {
     public bool debug;
     public bool swFromFileSystem; //SW soubory se berou z filesystemu. Jinak ze swFiles.zip
   }
+
+  public enum oAuthProviders { no = 0, google = 1, facebook = 2, microsoft = 3, }
+  public class oAuthConfig {
+    public oAuthItem[] items; //musi byt pevne poradi, napr. items[2] je facebook
+  }
+  public class oAuthItem {
+    public string clientId;
+  }
+
+
 
 }
 

@@ -34,6 +34,7 @@ namespace LMComLib {
     IEnumerable<Type> Types();
     IEnumerable<Type> ExtendedTypes();
     IEnumerable<Type> Enums();
+    IEnumerable<Type> ConstEnums();
     string TsPath();
     string Module();
     IEnumerable<string> Uses();
@@ -43,11 +44,16 @@ namespace LMComLib {
   }
 
   public class RegisterImpl : ICSharpToTypeScript {
-    public RegisterImpl(string nameSpace, string tsPath, IEnumerable<Type> enums, params Type[] types) { this.nameSpace = nameSpace; this.tsPath = tsPath; this.enums = enums == null ? new Type[0] : enums.ToArray(); this.types = types == null ? new Type[0] : types; }
-    string nameSpace; string tsPath; Type[] enums; Type[] types;
-    public virtual IEnumerable<Type> Types() { return types; }
+    public RegisterImpl(string nameSpace, string tsPath, IEnumerable<Type> enums, IEnumerable<Type> constEnums, params Type[] types) {
+      this.nameSpace = nameSpace; this.tsPath = tsPath;
+      this.enums = enums == null ? new Type[0] : enums.ToArray();
+      this.constEnums = constEnums == null ? new Type[0] : constEnums.ToArray();
+      this.types = types == null ? new Type[0] : types; }
+    string nameSpace; string tsPath; Type[] enums; Type[] constEnums; Type[] types;
+    public IEnumerable<Type> Types() { return types; }
     public IEnumerable<Type> ExtendedTypes() { yield break; }
-    public virtual IEnumerable<Type> Enums() { return enums; }
+    public IEnumerable<Type> Enums() { return enums; }
+    public IEnumerable<Type> ConstEnums() { return constEnums; }
     public string TsPath() { return tsPath; }
     public string Module() { return nameSpace; }
     public IEnumerable<string> Uses() { yield break; }
@@ -85,7 +91,8 @@ namespace LMComLib {
       }
       sb.Append("module "); sb.Append(info.Module()); sb.AppendLine(" {");
       //if (info.getJsonMLMeta() != null) sb.AppendLine(" export var meta: { [type:string]:CourseModel.jsClassMeta;} = null;"); //{'~rootTag':<any>'" + info.getJsonMLMeta().root.Name + "' };");
-      foreach (var en in info.Enums()) GenEnum(en, sb);
+      foreach (var en in info.Enums()) GenEnum(en, sb, false);
+      foreach (var en in info.ConstEnums()) GenEnum(en, sb, true);
       foreach (var en in info.Types()) {
         GenType(en, info.ExtendedTypes().ToArray(), info.Module(), sb);
         //finishCourseModelType(info, en, sb);
@@ -138,10 +145,8 @@ namespace LMComLib {
       sb.Append("])");
     }
 
-    public static bool isConstantEnum = false;
-
-    static void GenEnum(Type tp, StringBuilder sb) {
-      sb.Append("export " + (isConstantEnum ? "const " : null) + "enum "); sb.Append(tp.Name); sb.AppendLine(" {");
+    static void GenEnum(Type tp, StringBuilder sb, bool isConst) {
+      sb.Append("export " + (isConst ? "const " : null) + "enum "); sb.Append(tp.Name); sb.AppendLine(" {");
       try {
         var vals = Enum.GetValues(tp).Cast<object>();
         if (tp == typeof(CourseIds)) vals = vals.Where(v => (int)v < (int)CourseIds.eTestMe_EnglishSmall);

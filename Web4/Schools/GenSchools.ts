@@ -183,3 +183,4 @@ export interface ModUser {
   pages: Array<CourseModel.PageUser>;
 }
 }
+

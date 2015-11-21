@@ -54,3 +54,4 @@ export interface skillResult extends CourseModel.Score {
   elapsed: number;
 }
 }
+

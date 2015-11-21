@@ -93,6 +93,7 @@ namespace LMComLib {
       yield return typeof(BooleanEx);
       yield return typeof(VerifyStates);
     }
+    public IEnumerable<Type> ConstEnums() { yield break; }
     public string TsPath() { return Machines.rootPath + @"JsLib\JS\GenLMComLib.ts"; }
     public string Module() { return "LMComLib"; }
     public IEnumerable<string> Uses() { yield break; }
@@ -123,6 +124,7 @@ namespace AzureData {
       //yield return typeof(courseDataOper);
       yield break;
     }
+    public IEnumerable<Type> ConstEnums() { yield break; }
 
     public string TsPath() { return Machines.rootPath + @"schools\GenAzure.ts"; }
     public string Module() { return "AzureData"; }
@@ -148,7 +150,7 @@ namespace CourseModel {
     public IEnumerable<Type> Enums() {
       return getAll.Enums();
     }
-
+    public IEnumerable<Type> ConstEnums() { yield break; }
     public string TsPath() { return Machines.rootPath + @"Courses\GenCourseModel.ts"; }
     public string Module() { return "CourseModel"; }
 
@@ -193,7 +195,7 @@ namespace CourseMeta {
       yield return typeof(dictTypes);
       yield return typeof(testNeeds);
     }
-
+    public IEnumerable<Type> ConstEnums() { yield break; }
     public string TsPath() { return Machines.rootPath + @"Courses\GenCourseMeta.ts"; }
     public string Module() { return "CourseMeta"; }
 
@@ -231,7 +233,7 @@ namespace testMe {
       yield return typeof(Status);
       //yield return typeof(CmdSkrivanekErrors);
     }
-
+    public IEnumerable<Type> ConstEnums() { yield break; }
     public string TsPath() { return Machines.rootPath + @"testMe\GenTestModel.ts"; }
     public string Module() { return "testMe"; }
 
@@ -250,9 +252,8 @@ namespace schools {
     public IEnumerable<Type> ExtendedTypes() {
       yield break;
     }
-    public IEnumerable<Type> Enums() {
-      yield break;
-    }
+    public IEnumerable<Type> Enums() {yield break;    }
+    public IEnumerable<Type> ConstEnums() { yield break; }
     public string TsPath() { return Machines.rootPath + @"Schools\GenLMComLib.ts"; }
     public string Module() { return "LMComLib"; }
 
@@ -276,6 +277,7 @@ namespace schools {
       //yield return typeof(Course.TestStatus);
       //yield return typeof(Course.Skills);
     }
+    public IEnumerable<Type> ConstEnums() { yield break; }
     public string TsPath() { return Machines.rootPath + @"Schools\GenCourse.ts"; }
     public string Module() { return "Course"; }
 
@@ -349,6 +351,7 @@ namespace schools {
       //yield return typeof(LicenceType);
       //yield return typeof(DictUrltype);
     }
+    public IEnumerable<Type> ConstEnums() { yield break; }
     public string TsPath() { return Machines.rootPath + @"Schools\GenSchools.ts"; }
     public string Module() { return "schools"; }
 
@@ -369,6 +372,7 @@ namespace Rew {
     public IEnumerable<Type> ExtendedTypes() {
       yield break;
     }
+    public IEnumerable<Type> ConstEnums() { yield break; }
     public IEnumerable<Type> Enums() {
       yield return typeof(Rw.CreativeCommonLic);
     }
@@ -393,6 +397,7 @@ namespace Rew {
       yield return typeof(Rw.CreativeCommonLic);
       yield return typeof(FactTypes);
     }
+    public IEnumerable<Type> ConstEnums() { yield break; }
     public string TsPath() { return Machines.rootPath + @"Rewise\GenLMComLib.ts"; }
     public string Module() { return "LMComLib"; }
 
@@ -451,6 +456,7 @@ namespace Rew {
     public IEnumerable<Type> Enums() {
       yield return typeof(FactStatus);
     }
+    public IEnumerable<Type> ConstEnums() { yield break; }
     public string TsPath() { return Machines.rootPath + @"Rewise\GenRew.ts"; }
     public string Module() { return "Rew"; }
 
@@ -541,6 +547,7 @@ namespace Login {
       yield return typeof(EnterLicenceResult);
       yield return typeof(CmdReportType);
     }
+    public IEnumerable<Type> ConstEnums() { yield break; }
     public string TsPath() { return Machines.rootPath + @"Login\GenLogin.ts"; }
     public string Module() { return "Login"; }
 
@@ -633,6 +640,7 @@ namespace Admin {
       //yield return typeof(OKCrsReason);
       yield break;
     }
+    public IEnumerable<Type> ConstEnums() { yield break; }
     public string TsPath() { return Machines.rootPath + @"Admin\GenAdmin.ts"; }
     public string Module() { return "Admin"; }
 
@@ -700,6 +708,7 @@ namespace scorm {
     public IEnumerable<Type> Enums() {
       yield break;
     }
+    public IEnumerable<Type> ConstEnums() { yield break; }
     public string TsPath() { return Machines.rootPath + @"schools\GenScorm.ts"; }
     public string Module() { return "scorm"; }
 

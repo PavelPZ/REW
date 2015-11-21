@@ -36,6 +36,10 @@ namespace WebApp {
     public IActionResult CommonTest(string testDir) {
       return View("WebTest", new ModelCommonTest(testDir, new HomeViewPars(HttpContext, servConfig.Apps.web)));
     }
+    [Route("oauth")]
+    public IActionResult OAuth() {
+      return View("oAuth", new ModelOAuth(new HomeViewPars(HttpContext, servConfig.Apps.oauth)));
+    }
     [Route("web")]
     public IActionResult Common() {
       return View("WebIndex");
@@ -163,14 +167,24 @@ namespace WebApp {
     }
   }
 
-  public class ModelCommonTest : ModelLow {
-    public ModelCommonTest(string testDir, HomeViewPars pars) : base(pars) {
+  public abstract class ModelCommonCfg : ModelLow {
+    public ModelCommonCfg(HomeViewPars pars) : base(pars) {
       cfg = "<script type='text/javascript'>var servCfg = " + Cfg.toJS() + ";</script>";
-      startJS = "<script type='text/javascript' src='~/common/" + testDir + "/test.js'></script>";
     }
     public string cfg;
+  }
+
+  public class ModelOAuth : ModelCommonCfg {
+    public ModelOAuth(HomeViewPars pars) : base(pars) { }
+  }
+
+  public class ModelCommonTest : ModelCommonCfg {
+    public ModelCommonTest(string testDir, HomeViewPars pars) : base(pars) {
+      startJS = "<script type='text/javascript' src='~/common/" + testDir + "/test.js'></script>";
+    }
     public string startJS;
   }
+
   public class ModelWeb4 : ModelLow {
     public ModelWeb4(HomeViewPars pars) : base(pars) {
       var cfgObj = new schools.config() {

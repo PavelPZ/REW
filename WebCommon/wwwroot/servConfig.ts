@@ -8,12 +8,20 @@
     //blobMM: 'http://lmdata.blob.core.windows.net/mm-v001',  
   },
   defaultPars: {
-    app: servConfig.Apps.common,
+    app: servConfig.Apps.web,
     //app: servConfig.Apps.web4,
     brand: servConfig.Brands.lm,
-    debug: false,
+    debug: true,
     lang: LMComLib.Langs.cs_cz,
     skin: servConfig.SkinIds.bs,
     swFromFileSystem: true
+  },
+  oAuth: {
+    items: [
+      null,
+      { clientId: '' }, //google
+      { clientId: '765138080284696' }, //FB
+      { clientId: '' } //MS
+    ]
   }
 }
