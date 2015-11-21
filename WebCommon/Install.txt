@@ -24,3 +24,5 @@ Install-Package Microsoft.Framework.Configuration -Pre
 
 
 Update-Package -ProjectName MyProject
+
+WinLess konfigurace v C:\Program Files (x86)\Mark Lagendijk\WinLess\node_modules\less\bin\lessc

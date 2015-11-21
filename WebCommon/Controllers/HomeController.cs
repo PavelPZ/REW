@@ -27,6 +27,9 @@ namespace WebApp {
 
     [Route("web4/index.html")]
     public IActionResult Schools() {
+      //var hlp = Microsoft.AspNet.Http.Extensions.UriHelper.GetDisplayUrl(HttpContext.Request);
+      //var rq = HttpContext.Request; 
+      //var url = Microsoft.AspNet.Http.Extensions.UriHelper.Encode(rq.Scheme, rq.Host, rq.PathBase, rq.Path, rq.QueryString);
       return View("IndexWeb4", new ModelWeb4(new HomeViewPars(HttpContext, servConfig.Apps.web4)));
     }
     [Route("web/{testDir}.html")]
