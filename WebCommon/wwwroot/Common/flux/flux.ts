@@ -1,7 +1,7 @@
 ﻿namespace config {
   export interface IData {
     flux?: {
-      trigger: (action: flux.IAction, completed?: (action: flux.IAction) => void) => void;
+      trigger: (action: flux.IAction, completed?: (action: flux.IAction) => void) => void; 
     };
   }
 }
@@ -13,7 +13,9 @@ namespace flux {
     if (!action || !action.moduleId || !action.actionId) throw '!action || !action.type';
     var res = allModules[action.moduleId]; if (!res) throw 'Cannot find module ' + action.moduleId;
     if (recording) recording.actions.push(action);
+    loger.log('ACTION ' + JSON.stringify(action),1);
     res.dispatchAction(action, complete);
+    loger.log('action', -1);
   }
   export function actionPath(act: IAction) { return act.moduleId + '/' + act.actionId; }
 
@@ -24,12 +26,12 @@ namespace flux {
     constructor(props:T, ctx: any) {
       super(props, ctx);
       //vypocet id a registrace
-      this.id = props.parent ? props.parent.id + '/' + props.id : props.id;
+      this.id = props.parent && !utils.isEmpty(props.parent.id) ? props.id + '<' + props.parent.id : props.id; 
       if (allComponents[this.id]) throw 'Just created component: '+ this.id + ' already exists (allComponents[this.id]: ';
       allComponents[this.id] = this;
       //self id do meho state
       var st = this.getState();
-      console.log('>' + this.id + '-new, initState=' + JSON.stringify(st, (key, value) => key=='ids' ? undefined : value));
+      loger.log('>new ' + this.id + ', initState=' + JSON.stringify(st, (key, value) => key=='ids' ? undefined : value));
       if (!st.ids) st.ids = [];
       st.ids.push(this.id);
     }
@@ -43,10 +45,10 @@ namespace flux {
       var st = this.getState();
       var idx = st.ids.indexOf(this.id); if (idx >= 0) st.ids.splice(idx,1);
       delete allComponents[this.id.toString()];
-      console.log('>' + this.id + '-componentWillUnmount');
+      loger.log('>unmount ' + this.id);
     };
     render() {
-      console.log('>' + this.id + '-render');
+      //loger.log('>render ' + this.id);
       return null;
     }
   }
@@ -60,8 +62,9 @@ namespace flux {
     if (!st.ids) st.ids = [];
     st.ids.forEach(id => {
       var comp = allComponents[id]; if (!comp) return;
-      console.log('>' + id + '-setState: ' + JSON.stringify(st, (key, value) => key == 'ids' ? undefined : value));
+      loger.log('SetState ' + id + ' ' + JSON.stringify(st, (key, value) => key == 'ids' ? undefined : value),1);
       comp.setState(st);
+      loger.log('setstate', -1);
     });
   }
   export function stateConnected(st: ISmartState): boolean {
@@ -97,7 +100,7 @@ namespace flux {
   export function initWebState(dom: Element, webState: IWebAppState, render: (parent: SmartComponent<any, any>) => JSX.Element) {
     state = webState; //globalni STORE
     webRender = render; //Web app render
-    var webProp: IWebAppProps = { "initState": state, id: 'web', parent: null };
+    var webProp: IWebAppProps = { "initState": state, id: '', parent: null };
     ReactDOM.render(React.createElement(<any>Web, webProp), dom); //INIT
   }
 

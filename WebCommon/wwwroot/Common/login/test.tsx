@@ -11,8 +11,8 @@ namespace config {
 
 namespace uiRouter { 
   export interface INamedState {
-    loginTest: { //pojmenovane uiRouter.State's aplikace
-      default: uiRouter.State<loginTest.IDefaultPar>; //uiRouter.State hlavni stranky aplikace
+    loginTest: { //pojmenovane uiRouter.State's aplikace 
+      default: uiRouter.State<loginTest.IDefaultPar>; //uiRouter.State hlavni stranky aplikace 
     }
   };
   namedState.loginTest = {} as any;

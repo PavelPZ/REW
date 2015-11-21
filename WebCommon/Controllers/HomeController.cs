@@ -103,7 +103,7 @@ namespace WebApp {
     //ostatni soubory z filesystemu
     public static async Task onOtherFile(RouteContext context) {
       var url = itemUrl(context.HttpContext.Request.Path.Value);
-      await File.OpenRead(FileSources.pathFromUrl(url)).CopyToAsync(context.HttpContext.Response.Body);
+      using (var fs = File.OpenRead(FileSources.pathFromUrl(url))) await fs.CopyToAsync(context.HttpContext.Response.Body);
       context.IsHandled = true;
     }
     static string itemUrl(string url) { return url.Split('~')[1]; }

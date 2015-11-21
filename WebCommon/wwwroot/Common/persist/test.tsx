@@ -39,7 +39,7 @@ namespace persistTest {
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
       switch (action.actionId) {
         case uiRouter.routerActionId:
-          layout.changeLayout(action, persistTest.plDefaultContentId);
+          layout.changeScene(action, layout.sceneDefault, persistTest.plDefaultContentId);
           break;
         case 'click':
           alert('click');
@@ -80,7 +80,7 @@ namespace persistTest {
   setTimeout(() => uiRouter.listenHashChange());
 
   //** SCENE configuration
-  layout.setScenePlaceRender(layout.defaultScenePlaceId, persistTest.plDefaultContentId, parent => <PersistTest initState={flux.getState().persistTest } parent={parent} id='PersistTest.persistTest'/>);
+  layout.registerPlaceRenderer(layout.placeContent, persistTest.plDefaultContentId, parent => <PersistTest initState={flux.getState().persistTest } parent={parent} id='PersistTest.persistTest'/>);
 
   var Header: React.StatelessComponent<{ name: string }> = (p, ctx) => <h3>{p.name}</h3>;
 
@@ -94,7 +94,7 @@ namespace persistTest {
       }
     },
     (web) => <layout.Scene initState={layout.sceneState() } parent={web} id='layout.Scene' cases={{
-      [layout.defaultSceneId]: parent => <div>
+      [layout.sceneDefault]: parent => <div>
         {Header({ name:'Stateless function call'})}
         <layout.ScenePlace initState={layout.scenePlaceState() } parent={parent} id='layout.ScenePlace'/>
         <div>PersistTest Footer</div>

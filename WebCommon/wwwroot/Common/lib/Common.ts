@@ -31,6 +31,15 @@ namespace config {
 
 }
 
+namespace loger {
+  var indent = '';
+  export function log(msg: string, ind: number = 0) {
+    if (ind < 0 && indent.length >= 2) indent = indent.substr(2);
+    console.log(indent + msg);
+    if (ind > 0) indent += '  ';
+  }
+}
+
 //ECM6 x underscore: https://www.reindex.io/blog/you-might-not-need-underscore/
 //https://babeljs.io/docs/learn-es2015/
 namespace utils {

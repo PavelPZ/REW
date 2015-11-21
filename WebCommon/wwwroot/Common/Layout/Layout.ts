@@ -1,21 +1,21 @@
 ﻿namespace layout {
-  export const defaultScenePlaceId = 'scenePlace-default';
-  export const defaultSceneId = 'scene-default';
+  export const placeContent = 'place-content'; //misto pro difotni obsah stranky
+  export const sceneDefault = 'scene-default'; //difotni scena
 }
 namespace config {
   export interface IData {
     layout?: { //konfigurace layout aplikace
-      routeActionToSceneId: (routeAction: flux.IAction) => string;
-      scenePlaceContents: { //definuj RENDER obsah
+      //routeActionToSceneId: (routeAction: flux.IAction) => string; //globalni funkce
+      scenePlaceRenderers: { //definuj RENDER obsah
         [scenePlaceId: string]: { //pro kazdy ScenePlace
-          [contentId: string]: layout.TRenderFunction; //a pro kazde contentId  
+          [rendererId: string]: layout.TRenderFunction; //a pro kazdeho renderera
         }
       }
     };
   }
   cfg.data.layout = {
-    routeActionToSceneId: action => layout.defaultSceneId,
-    scenePlaceContents: {}
+    //routeActionToSceneId: action => layout.sceneDefault,
+    scenePlaceRenderers: {}
   }
 }
 
@@ -27,23 +27,26 @@ namespace flux {
 
 namespace layout {
 
-  export function changeLayout(routeAction: flux.IAction, first: IScenePlaceState | string, ...other: Array<IScenePlaceState>) {
-    console.log('>changeLayout ' + routeAction.moduleId + '/' + routeAction.actionId);
-    var firstPs: IScenePlaceState = utils.isString(first) ? { contentId: <string>first } : <IScenePlaceState>first;
+  export function changeScene(routeAction: flux.IAction, sceneId:string, first: IScenePlaceState | string, ...other: Array<IScenePlaceState>) {
+    loger.log('>changeLayout ' + routeAction.moduleId + '[' + routeAction.actionId + ']');
+    var firstPs: IScenePlaceState = utils.isString(first) ? { rendererId: <string>first } : <IScenePlaceState>first;
     var scenePlaces = [firstPs].concat(other);
     var layCfg = config.cfg.data.layout;
-    if (!layCfg.routeActionToSceneId) throw 'Missing config.cfg.data.layout.routeActionToSceneId config';
-    var sceneId = layCfg.routeActionToSceneId(routeAction);
+    //if (!layCfg.routeActionToSceneId) throw 'Missing config.cfg.data.layout.routeActionToSceneId config';
+    //var sceneId = layCfg.routeActionToSceneId(routeAction);
     var layState = flux.getState().layout;
     if (!flux.stateConnected(layState.scene)) throw 'Scene component does not exists or does not bind to flux.getState().layout.scene state';
     var sceneOK = sceneId == layState.scene.caseId;
     for (var newPl of scenePlaces) {
-      var plId = newPl.id || defaultScenePlaceId;
+      var plId = newPl.placeId || placeContent;
       if (!layState.scenePlaces) layState.scenePlaces = {};
       var oldPl = layState.scenePlaces[plId];
-      if (!oldPl) layState.scenePlaces[plId] = oldPl = { id: plId, contentId: undefined }; //throw 'Cannot find scenePlace in layout state: ' + plId;
-      if (oldPl.contentId == newPl.contentId) continue;
-      oldPl.contentId = newPl.contentId;
+      if (!oldPl) layState.scenePlaces[plId] = oldPl = { placeId: plId, rendererId: undefined }; //throw 'Cannot find scenePlace in layout state: ' + plId;
+      if (oldPl.rendererId == newPl.rendererId) continue;
+      oldPl.rendererId = newPl.rendererId;
+      //overeni existence renderera
+      var rends = config.cfg.data.layout.scenePlaceRenderers;
+      if (!rends[oldPl.placeId] || !rends[oldPl.placeId][oldPl.rendererId]) throw `Unregistered "${oldPl.rendererId}" renderer for "${oldPl.placeId}" place.`;
       if (sceneOK) {
         flux.onStateChanged(oldPl);
       }
@@ -53,15 +56,15 @@ namespace layout {
     flux.onStateChanged(layState.scene);
   }
 
-  export function setScenePlaceRender(scenePlaceId: string, contentId: string, render: layout.TRenderFunction) {
-    var playContents = config.cfg.data.layout.scenePlaceContents;
-    if (!playContents[scenePlaceId]) playContents[scenePlaceId] = {};
-    playContents[scenePlaceId][contentId] = render;
+  export function registerPlaceRenderer(scenePlaceId: string, rendererId: string, render: layout.TRenderFunction) {
+    var renderers = config.cfg.data.layout.scenePlaceRenderers;
+    if (!renderers[scenePlaceId]) renderers[scenePlaceId] = {};
+    renderers[scenePlaceId][rendererId] = render;
   }
 
   export type TRenderFunction = (parent: flux.SmartComponent<any, any>) => JSX.Element;
   export function sceneState(): ISwitcherState { var st = flux.getState(); if (!st.layout) st.layout = {}; var l = st.layout; return l.scene ? l.scene : l.scene = {}; }
-  export function scenePlaceState(id: string = defaultScenePlaceId): IScenePlaceState { return flux.getState().layout.scenePlaces[id]; }
+  export function scenePlaceState(id: string = placeContent): IScenePlaceState { return flux.getState().layout.scenePlaces[id]; }
 
   export interface IRootState {
     scene?: layout.ISwitcherState;
@@ -75,13 +78,13 @@ namespace layout {
     render() {
       super.render();
       var st = this.props.initState;
-      if (!st.contentId) return null;
-      return config.cfg.data.layout.scenePlaceContents[st.id][st.contentId](this);
+      if (!st.rendererId) return null;
+      return config.cfg.data.layout.scenePlaceRenderers[st.placeId][st.rendererId](this);
     }
   }
   export interface IScenePlaceState extends flux.ISmartState {
-    id?: string; //!id => defaultScenePlaceId
-    contentId: string;
+    placeId?: string; //!placeId => defaultScenePlaceId
+    rendererId: string; //ide renderera, zaregistrovaneho v config.cfg.data.layout.scenePlaceRenderers
   }
   export interface IScenePlaceProps extends flux.ISmartProps<IScenePlaceState> { }
 

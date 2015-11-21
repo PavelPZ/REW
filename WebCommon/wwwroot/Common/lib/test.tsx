@@ -40,7 +40,7 @@ namespace xxx {
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
       switch (action.actionId) {
         case uiRouter.routerActionId: //
-          layout.changeLayout(action, xxx.plDefaultContentId);
+          layout.changeScene(action, layout.sceneDefault, xxx.plDefaultContentId);
           break;
         case 'click':
           alert('click');
@@ -82,8 +82,8 @@ namespace xxx {
   setTimeout(() => uiRouter.listenHashChange());
 
   //** SCENE configuration
-  layout.setScenePlaceRender(
-    layout.defaultScenePlaceId,
+  layout.registerPlaceRenderer(
+    layout.placeContent,
     xxx.plDefaultContentId,
     parent => <Xxx initState={flux.getState().xxx } parent={parent} id='Xxx.xxx'/>);
 
@@ -99,7 +99,7 @@ namespace xxx {
       }
     },
     (web) => <layout.Scene initState={layout.sceneState() } parent={web} id='layout.Scene' cases={{
-      [layout.defaultSceneId]: parent => <div>
+      [layout.sceneDefault]: parent => <div>
         {Header({ name:'Stateless function call'})}
         <layout.ScenePlace initState={layout.scenePlaceState() } parent={parent} id='layout.ScenePlace'/>
         <div>Xxx Footer</div>
