@@ -46,7 +46,7 @@ namespace layout {
       oldPl.rendererId = newPl.rendererId;
       //overeni existence renderera
       var rends = config.cfg.data.layout.scenePlaceRenderers;
-      if (!rends[oldPl.placeId] || !rends[oldPl.placeId][oldPl.rendererId]) throw `Unregistered "${oldPl.rendererId}" renderer for "${oldPl.placeId}" place.`;
+      if (!rends[oldPl.placeId] || !rends[oldPl.placeId][oldPl.rendererId]) throw `Unregistered "{oldPl.rendererId}" renderer for "{oldPl.placeId}" place.`;
       if (sceneOK) {
         flux.onStateChanged(oldPl);
       }
@@ -56,10 +56,12 @@ namespace layout {
     flux.onStateChanged(layState.scene);
   }
 
-  export function registerPlaceRenderer(scenePlaceId: string, rendererId: string, render: layout.TRenderFunction) {
+  export function registerRenderer(scenePlaceId: string, rendererId: string, render: layout.TRenderFunction) {
     var renderers = config.cfg.data.layout.scenePlaceRenderers;
     if (!renderers[scenePlaceId]) renderers[scenePlaceId] = {};
-    renderers[scenePlaceId][rendererId] = render;
+    var place = renderers[scenePlaceId];
+    if (place[rendererId]) throw `Place renderer ${scenePlaceId}.${rendererId} already exists `;
+    place[rendererId] = render;
   }
 
   export type TRenderFunction = (parent: flux.SmartComponent<any, any>) => JSX.Element;

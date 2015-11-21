@@ -36,11 +36,9 @@ namespace layoutTest {
         case uiRouter.routerActionId:
           var act = action as uiRouter.IStateAction<ITestModuleRoutePar>;
           layout.changeScene(action,
-            act.defaultScene=='true' ? layout.sceneDefault : sceneSecond,
-            //{ placeId: layout.placeContent, rendererId: layoutTest.plRendererDefault},
-            //{ placeId: placeOther, rendererId: layoutTest.plRendererOther }
-            { placeId: layout.placeContent, rendererId: act.defaultPlaces != 'true' ? layoutTest.plRendererOther : layoutTest.plRendererDefault },
-            { placeId: placeOther, rendererId: act.defaultPlaces == 'true' ? layoutTest.plRendererOther : layoutTest.plRendererDefault }
+            act.defaultScene == 'true' ? layout.sceneDefault : sceneSecond,
+            { placeId: layout.placeContent, rendererId: act.defaultPlaces != 'true' ? 'cont-cont' : 'cont-panel' },
+            { placeId: placeOther, rendererId: act.defaultPlaces == 'true' ? 'other-cont' : 'other-panel' }
           );
           break;
         case 'click':
@@ -50,8 +48,6 @@ namespace layoutTest {
       if (complete) complete(action);
     }
     static moduleId = 'layoutTest';
-    static plRendererDefault = layoutTest.moduleId + '/Default';
-    static plRendererOther = layoutTest.moduleId + '/Other';
     static createAppClickAction(): ILayoutTestClickAction { return { moduleId: layoutTest.moduleId, actionId: 'click' }; }
   }
   interface ILayoutTestClickAction extends flux.IAction { }
@@ -69,9 +65,7 @@ namespace layoutTest {
   export class LayoutPanel extends flux.SmartComponent<flux.ISmartProps<any>, flux.ISmartState>{
     render() {
       super.render();
-      return <div>
-        <h2>Other</h2>
-        </div>;
+      return <div><h2>Other</h2></div>;
     }
   };
 
@@ -86,7 +80,7 @@ namespace layoutTest {
   export interface ITestModuleRoutePar extends uiRouter.IStatePar {
     defaultScene: string; //hlavni (layout.sceneDefault) nebo druha (sceneSecond) scena
     defaultPlaces: string; //zpusob navazani rendereru do places: layout.placeContent=>plRendererDefault a placeOther=>plRendererOther nebo naopak
-  } 
+  }
 
   uiRouter.init(
     namedState.default = new uiRouter.State<ITestModuleRoutePar>(layoutTest.moduleId, '/layoutTest/:defaultScene/:defaultPlaces')
@@ -97,33 +91,24 @@ namespace layoutTest {
   //** SCENE configuration
   // Jsou 2 sceny (layout.sceneDefault a sceneSecond)
   // kazda z nich ma 2 places (layout.placeContent a placeOther)
-
+  // jsou 4 renderery: 
+  // - LayoutContent a LayoutPanel do layout.placeContent
+  // - LayoutContent a LayoutPanel do placeOther
 
   var placeOther = 'place-other';
   var sceneSecond = 'scene-second';
 
-  //config.cfg.data.layout.routeActionToSceneId = (action: uiRouter.IStateAction<ITestModuleRoutePar>) => {
-  //  return action.defaultScene ? layout.sceneDefault : sceneSecond;
-  //};
-  layout.registerPlaceRenderer(
-    layout.placeContent, //jmen mista v scene, ktereho se definice tyka
-    layoutTest.plRendererDefault, //identifikace place renderera, pouzije se nastaveni 
-    parent => <LayoutContent initState={flux.getState().layoutTest } parent={parent} id='cont-renDef'/>
+  layout.registerRenderer(layout.placeContent, 'cont-cont',
+    parent => <LayoutContent initState={flux.getState().layoutTest } parent={parent} id='cont-cont'/>
   );
-  layout.registerPlaceRenderer(
-    layout.placeContent,
-    layoutTest.plRendererOther,
-    parent => <LayoutPanel initState={flux.getState().layoutTest } parent={parent} id='cont-rendPn'/>
+  layout.registerRenderer(layout.placeContent, 'cont-panel',
+    parent => <LayoutPanel initState={flux.getState().layoutTest } parent={parent} id='cont-panel'/>
   );
-  layout.registerPlaceRenderer(
-    placeOther, //jmen mista v scene, ktereho se definice tyka
-    layoutTest.plRendererDefault, //identifikace place renderera, pouzije se nastaveni 
-    parent => <LayoutContent initState={flux.getState().layoutTest } parent={parent} id='oth-renDef'/>
+  layout.registerRenderer(placeOther, 'other-cont',
+    parent => <LayoutContent initState={flux.getState().layoutTest } parent={parent} id='other-cont'/>
   );
-  layout.registerPlaceRenderer(
-    placeOther,
-    layoutTest.plRendererOther,
-    parent => <LayoutPanel initState={flux.getState().layoutTest } parent={parent} id='oth-renPn'/>
+  layout.registerRenderer(placeOther, 'other-panel',
+    parent => <LayoutPanel initState={flux.getState().layoutTest } parent={parent} id='other-panel'/>
   );
 
   //** STATE initialization
@@ -136,7 +121,7 @@ namespace layoutTest {
     },
     (web) => <div>
       <a href={'#' + namedState.default.getHashStr({ defaultScene: 'true', defaultPlaces: 'true' }) }>Default Scene, default places</a> |
-      <a href={'#' + namedState.default.getHashStr({ defaultScene: 'false', defaultPlaces: 'true'  }) }>Other Scene, default places</a> |
+      <a href={'#' + namedState.default.getHashStr({ defaultScene: 'false', defaultPlaces: 'true' }) }>Other Scene, default places</a> |
       <a href={'#' + namedState.default.getHashStr({ defaultScene: 'true', defaultPlaces: 'false' }) }>Default Scene, other places</a> |
       <a href={'#' + namedState.default.getHashStr({ defaultScene: 'false', defaultPlaces: 'false' }) }>Other Scene, other places</a> |
 

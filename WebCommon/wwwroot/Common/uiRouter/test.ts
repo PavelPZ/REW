@@ -34,9 +34,9 @@ namespace routerTest {
 
     //*** rucni MATCH
     var par = namesState.default.parseHash(uiRouter.preParseHashStr('/useR/123/Name/alex?opt1=xxx&opt2=yyy'));
-    var d1 = uiRouter.parseHashStr('/login.select');
-    var d2 = uiRouter.parseHashStr('/useR/123/Name/alex?opt1=xxx&opt2=yyy');
-    var d3 = uiRouter.parseHashStr('/login.login');
+    var d1 = uiRouter.hashToState('/login.select');
+    var d2 = uiRouter.hashToState('/useR/123/Name/alex?opt1=xxx&opt2=yyy');
+    var d3 = uiRouter.hashToState('/login.login');
   }
 }
 

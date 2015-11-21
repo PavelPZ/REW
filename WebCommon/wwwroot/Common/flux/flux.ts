@@ -47,10 +47,7 @@ namespace flux {
       delete allComponents[this.id.toString()];
       loger.log('>unmount ' + this.id);
     };
-    render() {
-      //loger.log('>render ' + this.id);
-      return null;
-    }
+    render(): JSX.Element { loger.log('>render ' + this.id); return null; }
   }
   export interface ISmartProps<S> extends IComponentProps { initState: S; parent: SmartComponent<any, any>, id: string }
   export interface ISmartState  { ids?:Array<string> }

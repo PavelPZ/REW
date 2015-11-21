@@ -80,7 +80,7 @@ namespace persistTest {
   setTimeout(() => uiRouter.listenHashChange());
 
   //** SCENE configuration
-  layout.registerPlaceRenderer(layout.placeContent, persistTest.plDefaultContentId, parent => <PersistTest initState={flux.getState().persistTest } parent={parent} id='PersistTest.persistTest'/>);
+  layout.registerRenderer(layout.placeContent, persistTest.plDefaultContentId, parent => <PersistTest initState={flux.getState().persistTest } parent={parent} id='PersistTest.persistTest'/>);
 
   var Header: React.StatelessComponent<{ name: string }> = (p, ctx) => <h3>{p.name}</h3>;
 

@@ -52,16 +52,17 @@ namespace uiRouter {
   //*** DISPATCH
   export function dispatch(hashStr?: string) {
     if (!config.cfg.data.flux || !config.cfg.data.flux.trigger) return;
-    var res = parseHashStr(hashStr);
+    var res = hashToState(hashStr);
     if (!res) res = defaultSource;
     if (!res) throw 'Missing uiRouter.States.setDefault call';
+
     var act = res.state.createAction(res.par);
     config.cfg.data.flux.trigger(act);
   }
 
   //*** PARSES
-  export function parseHashStr<T>(hashStr?: string): IStateWithPar<T> { return parseHash<T>(preParseHashStr(hashStr)); }
-  export function parseHash<T>(pre: IPreParseHashStrResult): IStateWithPar<T> {
+  export function hashToState<T>(hashStr?: string): IStateWithPar<T> { return preHashToState<T>(preParseHashStr(hashStr)); }
+  export function preHashToState<T>(pre: IPreParseHashStrResult): IStateWithPar<T> {
     //angular uiRouter match
     var res: IStateWithPar<T> = null;
     states.find(st => {

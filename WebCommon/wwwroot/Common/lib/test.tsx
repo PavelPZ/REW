@@ -82,7 +82,7 @@ namespace xxx {
   setTimeout(() => uiRouter.listenHashChange());
 
   //** SCENE configuration
-  layout.registerPlaceRenderer(
+  layout.registerRenderer(
     layout.placeContent,
     xxx.plDefaultContentId,
     parent => <Xxx initState={flux.getState().xxx } parent={parent} id='Xxx.xxx'/>);
