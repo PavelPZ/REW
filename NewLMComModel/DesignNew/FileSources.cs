@@ -103,7 +103,7 @@ namespace DesignNew {
     static string web4Dir = ConfigurationManager.AppSettings["filesources.web4"] ?? @"d:\LMCom\rew\Web4";
     static string commonDir = ConfigurationManager.AppSettings["filesources.webcommon"] ?? @"d:\LMCom\rew\WebCommon\wwwroot";
     static string basicPath(string url) { return web4Dirs.Contains(url.Split(new char[] { '/' }, 3)[1]) ? web4Dir : commonDir; }
-    public static string urlFromPath(string path) { return path.Substring(path.StartsWith(web4Dir) ? web4Dir.Length : commonDir.Length); }
+    public static string urlFromPath(string path) { return (path.Substring(path.StartsWith(web4Dir) ? web4Dir.Length : commonDir.Length)).Replace('\\','/'); }
 
     static IEnumerable<string> filesFromDpl(string dplUrl, Langs[] langs) {
       var dplPath = pathFromUrl(dplUrl);
@@ -116,10 +116,10 @@ namespace DesignNew {
       } else {
         //** regExs
         if (cfg.regExs != null) {
-          var files = Directory.GetFiles(pathFromUrl(relDir), "*.*", SearchOption.AllDirectories);
+          var urls = Directory.GetFiles(commonDir, "*.*", SearchOption.AllDirectories).Select(f => urlFromPath(f)).ToArray();
           foreach (var regEx in cfg.regExs) {
             var rx = new Regex(regEx, RegexOptions.IgnoreCase);
-            foreach (var fn in files) if (rx.IsMatch(fn)) res.Add(urlFromPath(fn));
+            foreach (var url in urls) if (rx.IsMatch(url)) res.Add(url);
           }
         }
         //** includes x excludes

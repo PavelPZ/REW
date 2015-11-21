@@ -20,7 +20,7 @@ namespace DesignNew {
     public static Langs[] swLangs = new Langs[] { Langs.ar_sa, Langs.bg_bg, Langs.bs, Langs.cs_cz, Langs.de_de, Langs.sp_sp, Langs.fr_fr, Langs.it_it, Langs.lt_lt, Langs.pl_pl, Langs.ru_ru, Langs.sk_sk, Langs.tr_tr, Langs.vi_vn, Langs.zh_cn };
     public static HashSet<string> allSwLangs = new HashSet<string>(swLangs.Select(l => l.ToString())); //dir vsech sw lokalizaci
 
-    public static HashSet<string> gzipExtensions = new HashSet<string>(new string[] { ".css", ".html", ".js", ".otf", ".svg", ".woff", ".woff2", ".ttf", ".eot" });
+    public static HashSet<string> gzipExtensions = new HashSet<string>(new string[] { ".css", ".html", ".js", ".otf", ".svg", ".woff", ".woff2", ".ttf", ".eot", ".map" });
     public static Dictionary<string, string> contentTypes = new Dictionary<string, string> {
       {".js", "application/x-javascript"},
       {".html", "text/html"},
@@ -32,6 +32,8 @@ namespace DesignNew {
       {".woff", "application/font-woff"},
       {".woff2", "application/font-woff2"},
       {".eot", "application/vnd.ms-fontobject"},
+      {".map", "application/json"},
+      
 
       {".pdf", "application/pdf"},
       {".xap", "application/x-silverlight-app"},

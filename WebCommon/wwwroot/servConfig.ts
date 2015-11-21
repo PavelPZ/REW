@@ -14,6 +14,6 @@
     debug: false,
     lang: LMComLib.Langs.cs_cz,
     skin: servConfig.SkinIds.bs,
-    swFromFileSystem: false
+    swFromFileSystem: true
   }
 }

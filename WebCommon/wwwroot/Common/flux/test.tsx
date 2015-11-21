@@ -12,7 +12,7 @@
 //  mergeProps?: MergeProps,
 //  options?: Options): (cls: React.ClassicComponentClass<P>) => React.ClassicComponentClass<P>; 
 
-//D:\LMCom\rew\WebLogin\scripts\typings\react-global.d.ts
+//D:\LMCom\rew\WebLogin\scripts\typings\react-global.d.ts 
 
 
 namespace config {
@@ -127,7 +127,7 @@ namespace fluxTest {
 
 
   //************* WHOLE APP
-  //** inicializace aplikace
+  //** inicializace aplikace x
   config.initApp();
 
   new mod1();
@@ -152,7 +152,7 @@ namespace fluxTest {
       place: (p3) => <Switcher initState={flux.getState().fluxTestPlacer} parent={p3} id='fluxTest.Switcher'/>
     }}/>
   );
-  /*
+  /* 
     () => <flux.PlaceHolder initState={flux.getState().place} contents={{
       app: () => <App initState={flux.getState().fluxTest }/>,
       place: () => <PlaceHolder initState={flux.getState().placeHolder }/>

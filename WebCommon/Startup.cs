@@ -44,18 +44,15 @@ namespace WebApp {
 
       //login page - vraci prazdnou login stranku (pouze se scriptem na oAUth login)
       app.UseRouter(new TemplateRoute(new LoginRouter(), "login.html", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
-      //existuje-li index page v cache => vrati ji z cache a da isHandled=true
-      app.UseRouter(new TemplateRoute(new IndexRoutePreview(servConfig.Apps.web4), "web4/index.html", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
-      app.UseRouter(new TemplateRoute(new IndexRoutePreview(servConfig.Apps.web), "web/{testDir}.html", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
       if (Cfg.cfg.defaultPars.swFromFileSystem) {
-        //stranky z Web4 aplikace
-        //TODO
-        //stranky z filesystemu
-        app.UseStaticFiles();
+        //soubory z filesystemu
+        app.UseRouter(new TemplateRoute(new OtherFilesRoute(), "{*url:regex(~)}", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
       } else {
-        //hleda URL v cache a kdyz najde, da isHandled=true
-        //Vsechny URL - hleda je v cache
-        app.UseRouter(new TemplateRoute(new OtherRoutePreview(), "{*url}", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
+        //zkus index page z cache
+        app.UseRouter(new TemplateRoute(new IndexCacheRoute(servConfig.Apps.web4), "web4/index.html", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
+        app.UseRouter(new TemplateRoute(new IndexCacheRoute(servConfig.Apps.web), "web/{testDir}.html", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
+        //zkus ostati file z cache
+        app.UseRouter(new TemplateRoute(new OtherCacheRoute(), "{*url:regex(~)}", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
       }
 
       //MVC zpracovani INDEX stranek: zacne middleware, ten v await next() vyvola MVC (na generaci INDEX), middleware pak da vysledek do cache (vcetne GZIP)
@@ -73,15 +70,21 @@ namespace WebApp {
     public string web4Dir;
   }
 
-  public class IndexRoutePreview : IRouter { //cached INDEX pages
-    public IndexRoutePreview(servConfig.Apps app) { this.app = app; }
-    public async Task RouteAsync(RouteContext context) { await Cache.onIndexRoute(context, app); }
+  //cached INDEX pages
+  public class IndexCacheRoute : IRouter { //cached INDEX pages
+    public IndexCacheRoute(servConfig.Apps app) { this.app = app; }
+    public async Task RouteAsync(RouteContext context) { await Cache.onIndexCache(context, app); }
     VirtualPathData IRouter.GetVirtualPath(VirtualPathContext context) { throw new NotImplementedException(); }
     servConfig.Apps app;
   }
   //cached other pages
-  public class OtherRoutePreview : IRouter {
-    public async Task RouteAsync(RouteContext context) { await Cache.onOtherRoute(context); }
+  public class OtherCacheRoute : IRouter {
+    public async Task RouteAsync(RouteContext context) { await Cache.onOtherCache(context); }
+    VirtualPathData IRouter.GetVirtualPath(VirtualPathContext context) { throw new NotImplementedException(); }
+  }
+  //other pages form filesystem
+  public class OtherFilesRoute : IRouter {
+    public async Task RouteAsync(RouteContext context) { await Cache.onOtherFile(context); }
     VirtualPathData IRouter.GetVirtualPath(VirtualPathContext context) { throw new NotImplementedException(); }
   }
   //login page

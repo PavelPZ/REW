@@ -82,16 +82,23 @@ namespace WebApp {
       }
     }
 
-    //osetreni cached INDEX souboruu
-    public static async Task onIndexRoute(RouteContext context, servConfig.Apps app) {
+    //cached INDEX soubory
+    public static async Task onIndexCache(RouteContext context, servConfig.Apps app) {
       var cacheKey = new HomeViewPars(context.HttpContext, app).getCacheKey();
       await makeResponseFromCache(cacheKey, context);
     }
-    //osetreni ostatnich souboruu
-    public static async Task onOtherRoute(RouteContext context) {
-      var cacheKey = context.HttpContext.Request.Path.Value;
-      await makeResponseFromCache(cacheKey, context);
+    //cache ostatnich souboruu
+    public static async Task onOtherCache(RouteContext context) {
+      var url = itemUrl(context.HttpContext.Request.Path.Value);
+      await makeResponseFromCache(url, context);
     }
+    //ostatni soubory z filesystemu
+    public static async Task onOtherFile(RouteContext context) {
+      var url = itemUrl(context.HttpContext.Request.Path.Value);
+      await File.OpenRead(FileSources.pathFromUrl(url)).CopyToAsync(context.HttpContext.Response.Body);
+      context.IsHandled = true;
+    }
+    static string itemUrl(string url) { return url.Split('~')[1]; }
     //INDEX soubor neni v cache => dej ho tam
     public static async Task Middleware(HttpContext ctx, Func<Task> next) {
       //INDEX stranka?
@@ -146,8 +153,8 @@ namespace WebApp {
     public string css;
     public string js;
     //*** PRIVATE
-    static void cssTag(StringBuilder sb, string url) { sb.AppendFormat(@"  <link href='..{0}' rel='stylesheet' type='text/css' />", url); sb.AppendLine(); }
-    static void jsTag(StringBuilder sb, string url) { sb.AppendFormat(@"  <script src='..{0}' type='text/javascript'></script>", url); sb.AppendLine(); }
+    static void cssTag(StringBuilder sb, string url) { sb.AppendFormat(@"  <link href='~{0}' rel='stylesheet' type='text/css' />", url); sb.AppendLine(); }
+    static void jsTag(StringBuilder sb, string url) { sb.AppendFormat(@"  <script src='~{0}' type='text/javascript'></script>", url); sb.AppendLine(); }
     static string urlsToTags(IEnumerable<string> urls, bool isJs) {
       var tag = isJs ? (Action<StringBuilder, string>)jsTag : cssTag;
       StringBuilder sb = new StringBuilder();
@@ -159,7 +166,7 @@ namespace WebApp {
   public class ModelCommonTest : ModelLow {
     public ModelCommonTest(string testDir, HomeViewPars pars) : base(pars) {
       cfg = "<script type='text/javascript'>var servCfg = " + Cfg.toJS() + ";</script>";
-      startJS = "<script type='text/javascript' src='../common/" + testDir + "/test.js'></script>";
+      startJS = "<script type='text/javascript' src='~/common/" + testDir + "/test.js'></script>";
     }
     public string cfg;
     public string startJS;
