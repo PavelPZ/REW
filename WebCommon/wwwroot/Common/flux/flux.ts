@@ -110,12 +110,12 @@ namespace flux {
   export interface IWebAppProps extends ISmartProps<IWebAppState> { }
 
   //************ MODULE
-  export class Module {
+  export class Dispatcher {
     constructor(public id: string) {
       if (allModules[id]) throw 'Module "' + id + '" already exists.';
       else allModules[id] = this;
     }
-    childs: Array<Module>;
+    childs: Array<Dispatcher>;
     dispatchAction(action: IAction, complete: (action: IAction) => void) { throw 'notImplemented'; }
   }
 
@@ -125,7 +125,7 @@ namespace flux {
   var state: IWebAppState;
   config.cfg.data.flux = { trigger: trigger };
   var webRender: (parent: SmartComponent<any,any>) => JSX.Element;
-  var allModules: { [id: string]: Module; } = {};
+  var allModules: { [id: string]: Dispatcher; } = {};
   var allComponents: { [id: string]: SmartComponent<any, any>; } = {};
 
 }

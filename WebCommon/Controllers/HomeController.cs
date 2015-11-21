@@ -21,22 +21,26 @@ namespace WebApp {
 
   public class HomeController : Controller {
 
+    public const string webTestMask = "web/{appPart}";
+    public const string web4Mask = "web4";
+    public const string oAuthMask = "oauth";
+
     public HomeController(IOptions<AppSettings> appSettings) : base() {
       var opt = appSettings.Value;
     }
 
-    [Route("web4")]
+    [Route(web4Mask)]
     public IActionResult Schools() {
       //var hlp = Microsoft.AspNet.Http.Extensions.UriHelper.GetDisplayUrl(HttpContext.Request);
       //var rq = HttpContext.Request; 
       //var url = Microsoft.AspNet.Http.Extensions.UriHelper.Encode(rq.Scheme, rq.Host, rq.PathBase, rq.Path, rq.QueryString);
       return View("Web4Index", new ModelWeb4(new HomeViewPars(HttpContext, servConfig.Apps.web4)));
     }
-    [Route("web/{testDir}")]
-    public IActionResult CommonTest(string testDir) {
-      return View("WebTest", new ModelCommonTest(testDir, new HomeViewPars(HttpContext, servConfig.Apps.web)));
+    [Route(webTestMask)]
+    public IActionResult CommonTest(string appPart) {
+      return View("WebTest", new ModelCommonTest(new HomeViewPars(HttpContext, servConfig.Apps.web) { appPart = appPart}));
     }
-    [Route("oauth")]
+    [Route(oAuthMask)]
     public IActionResult OAuth() {
       return View("oAuth", new ModelOAuth(new HomeViewPars(HttpContext, servConfig.Apps.oauth)));
     }
@@ -130,11 +134,9 @@ namespace WebApp {
   public class HomeViewPars : servConfig.ViewPars {
 
     public string getCacheKey() {
-      return string.Format("{0}/{1}/{2}/{3}/{4}", app, skin, brand, lang, debug).ToLower();
+      return string.Format("{0}/{1}/{2}/{3}/{4}/{5}", app, skin, brand, lang, debug, appPart).ToLower();
     }
-    public string getUrl() {
-      return string.Format("{0}/?skin={1}&brand={2}&lang={3}&debug={4}", app, skin, brand, lang, debug).ToLower();
-    }
+
     public HomeViewPars(HttpContext ctx, servConfig.Apps app) {
       string par;
       this.app = app;
@@ -179,8 +181,8 @@ namespace WebApp {
   }
 
   public class ModelCommonTest : ModelCommonCfg {
-    public ModelCommonTest(string testDir, HomeViewPars pars) : base(pars) {
-      startJS = "<script type='text/javascript' src='~/common/" + testDir + "/test.js'></script>";
+    public ModelCommonTest(HomeViewPars pars) : base(pars) {
+      startJS = "<script type='text/javascript' src='~/common/" + pars.appPart + "/test.js'></script>";
     }
     public string startJS;
   }

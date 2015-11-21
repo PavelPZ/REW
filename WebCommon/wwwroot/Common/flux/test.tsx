@@ -39,7 +39,7 @@ namespace fluxTest {
 
   config.cfg.data.mod1.prefix = 'Hello';
 
-  class mod1 extends flux.Module {
+  class mod1 extends flux.Dispatcher {
     constructor() {
       super(mod1.moduleId);
     }

@@ -27,7 +27,7 @@ namespace flux {
 namespace layoutTest {
 
   //*********************** DISPATCH MODULE definition
-  class layoutTest extends flux.Module {
+  class layoutTest extends flux.Dispatcher {
     constructor() {
       super(layoutTest.moduleId);
     }

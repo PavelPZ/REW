@@ -14,7 +14,8 @@
     debug: true,
     lang: LMComLib.Langs.cs_cz,
     skin: servConfig.SkinIds.bs,
-    swFromFileSystem: true
+    swFromFileSystem: true,
+    appPart: null,
   },
   oAuth: {
     items: [

@@ -49,9 +49,9 @@ namespace WebApp {
         app.UseRouter(new TemplateRoute(new OtherFilesRoute(), "{*url:regex(~)}", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
       } else {
         //zkus index page z cache
-        app.UseRouter(new TemplateRoute(new IndexCacheRoute(servConfig.Apps.web4), "web4/index.html", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
-        app.UseRouter(new TemplateRoute(new IndexCacheRoute(servConfig.Apps.oauth), "oauth", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
-        app.UseRouter(new TemplateRoute(new IndexCacheRoute(servConfig.Apps.web), "web/{testDir}.html", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
+        app.UseRouter(new TemplateRoute(new IndexCacheRoute(servConfig.Apps.web4), HomeController.web4Mask, app.ApplicationServices.GetService<IInlineConstraintResolver>()));
+        app.UseRouter(new TemplateRoute(new IndexCacheRoute(servConfig.Apps.oauth), HomeController.oAuthMask, app.ApplicationServices.GetService<IInlineConstraintResolver>()));
+        app.UseRouter(new TemplateRoute(new IndexCacheRoute(servConfig.Apps.web), HomeController.webTestMask, app.ApplicationServices.GetService<IInlineConstraintResolver>()));
         //zkus ostati file z cache
         app.UseRouter(new TemplateRoute(new OtherCacheRoute(), "{*url:regex(~)}", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
       }

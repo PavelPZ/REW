@@ -139,7 +139,7 @@ namespace validation {
   //*********************** COMPONENTS
   interface IGroupContext { validation: group; }
 
-  //--- IMPUT
+  //--- IPUT
   export class Input extends flux.DumpComponent<IInputProps, any>{ 
     constructor(prop, ctx: IGroupContext) {
       super(prop, ctx);
@@ -157,6 +157,7 @@ namespace validation {
       return getInputTemplate(templ);
     }
   }
+  
   interface IInputProps extends flux.IComponentProps { validator?: IValidPars; initValue?: string; title: string;}
 
   export interface IInputTemplate {

@@ -27,21 +27,20 @@ namespace uiRouter {
   }
 
   //NAVIGATE
-  export function getHashStr(src: IHashSource<any>): string { return src.state.getHashStr(src.par); }
-  export function navigate(src: IHashSource<any>) { src.state.navigate(src.par); }
-  export interface IHashSource<T> { state: State<T>; par: IStatePar; }
+  export function getHashStr(src: IStateWithPar<any>): string { return src.state.getHashStr(src.par); }
+  export function navigate(src: IStateWithPar<any>) { src.state.navigate(src.par); }
+  export interface IStateWithPar<T> { state: State<T>; par: IStatePar; }
 
   //pojmenovane globalne dostupne a typed router stavy
   export var namedState: INamedState = <any>{};
-  export interface INamedState { };
+  export interface INamedState { }; //rozsirovatelny interface s name router states
 
   //uiRouter config
-  export interface config {
-
-  }
+  //export interface config { } //
 
   //predchudce vsech router state parametru
   export interface IStatePar { }
+  //predchudce vsech router akci
   export type IStateAction<T extends IStatePar> = flux.IAction & T;
 
   //*** inicilizace 
@@ -61,10 +60,10 @@ namespace uiRouter {
   }
 
   //*** PARSES
-  export function parseHashStr<T>(hashStr?: string): IHashSource<T> { return parseHash<T>(preParseHashStr(hashStr)); }
-  export function parseHash<T>(pre: IPreParseHashStrResult): IHashSource<T> {
+  export function parseHashStr<T>(hashStr?: string): IStateWithPar<T> { return parseHash<T>(preParseHashStr(hashStr)); }
+  export function parseHash<T>(pre: IPreParseHashStrResult): IStateWithPar<T> {
     //angular uiRouter match
-    var res: IHashSource<T> = null;
+    var res: IStateWithPar<T> = null;
     states.find(st => {
       var par = st.parseHash(pre); if (!par) return false;
       res = { par: par, state: st };
@@ -92,7 +91,7 @@ namespace uiRouter {
   //**** locals
   var states: Array<State<any>> = [];
   //var dir: { [name: string]: State<any>; } = {};
-  var defaultSource: IHashSource<any>;
+  var defaultSource: IStateWithPar<any>;
   function add(st: State<any>) { states.push(st); /*dir[st.name] = st;*/ }
 
   //**** STATE

@@ -124,7 +124,7 @@ namespace DesignNew {
         minifier.jsMinify("/deploy/web/js-common.dpl.json", "/deploy/web/mins/common.min.js");
         //*** ZIP
         var files = FileSources.getUrls(FileSources.zipSWFilesFilter(servConfig.Apps.web, servConfig.Apps.web4, servConfig.Apps.oauth)).ToArray();
-        File.WriteAllLines(@"d:\temp\sw_dwploy.txt", files);
+        File.WriteAllLines(@"d:\temp\sw_deploy.txt", files);
         var len = FileSources.zipSWFiles(@"D:\LMCom\rew\WebCommon\swfiles.zip", files);
         Trace.TraceWarning("ZIP files: {0}, len: {1}", files.Length, len);
         return null;

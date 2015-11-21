@@ -2,43 +2,44 @@
 //Hiearchie Web (webApp) -> aplikace -> moduly -> akce, komponenty
 
 namespace config {
+  
   export interface IData {
-    xxx?: { //konfigurace aplikace
+    xxx?: { //deklarace casti globalniho configu, patrici modulu
     };
   }
-  cfg.data.xxx = {} as any;
+  cfg.data.xxx = {} as any; //vytvoreni objektu s deklaraci
 }
 
 namespace uiRouter {
   export interface INamedState {
-    xxx: { //pojmenovane uiRouter.State's aplikace
-      default: uiRouter.State<xxx.IXxxModulePar>; //uiRouter.State hlavni stranky aplikace
+    xxx: { //deklarace casti globalne pojmenovanych uiRouter.State's modulu
+      default: uiRouter.State<xxx.IXxxModulePar>; 
     }
   };
-  namedState.xxx = {} as any;
+  namedState.xxx = {} as any; //vytvoreni objektu s deklaraci
 }
 
 namespace flux {
   export interface IWebState {
     xxx?: {
-      xxxModuleState: xxx.IXxxState; //cast globalniho flux.IFluxState, patrici aplikaci
+      xxxModuleState: xxx.IXxxState; //cast globalniho flux.IFluxState, patrici modulu
     }
   }
 }
 
 namespace xxx {
-  export interface IXxxModulePar extends uiRouter.IStatePar { id: number; opt1: string; } //route PAR pro XxxModule
+  export interface IXxxModulePar extends uiRouter.IStatePar { id: number; opt1: string; } //jeden route PAR (parametrizujici route URL)
 
   //*********************** DISPATCH MODULE definition
-  interface IXxxClickAction extends flux.IAction { }
+  interface IXxxClickAction extends flux.IAction { } //jedna z dispatch-able akci modulu
 
-  class xxx extends flux.Module {
+  class xxx extends flux.Dispatcher { //dispatcher
     constructor() {
       super(xxx.moduleId);
     }
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
       switch (action.actionId) {
-        case uiRouter.routerActionId:
+        case uiRouter.routerActionId: //
           layout.changeLayout(action, xxx.plDefaultContentId);
           break;
         case 'click':
@@ -47,7 +48,7 @@ namespace xxx {
       }
       if (complete) complete(action);
     }
-    static moduleId = 'xxx';
+    static moduleId = 'xxx'; //identifikace modulu
     static plDefaultContentId = xxx.moduleId + '/default';
     static createAppClickAction(): IXxxClickAction { return { moduleId: xxx.moduleId, actionId: 'click' }; }
   }
@@ -68,23 +69,27 @@ namespace xxx {
   //** inicializace aplikace
   config.initApp();
 
-  //** definice DISPATCH modulu
+  //** registrace DISPATCH modulu (modul se self-registruje v constructoru)
   new xxx();
 
   //** ROUTE configuration
   export var namedState = uiRouter.namedState.xxx; //pojmenovane stavy
   uiRouter.init(
-    namedState.default = new uiRouter.State<IXxxModulePar>(xxx.moduleId, '/xxx-home')
+    namedState.default = new uiRouter.State<IXxxModulePar>(xxx.moduleId, '/xxx-home') //deklarace default named state
   );
-  uiRouter.setDefault<IXxxModulePar>(namedState.default, { id: 1, opt1: '' });
+  uiRouter.setDefault<IXxxModulePar>(namedState.default, { id: 1, opt1: '' }); //definice 
+  //start listen to hashChange
   setTimeout(() => uiRouter.listenHashChange());
 
   //** SCENE configuration
-  layout.setScenePlaceRender(layout.defaultScenePlaceId, xxx.plDefaultContentId, parent => <Xxx initState={flux.getState().xxx } parent={parent} id='Xxx.xxx'/>);
+  layout.setScenePlaceRender(
+    layout.defaultScenePlaceId,
+    xxx.plDefaultContentId,
+    parent => <Xxx initState={flux.getState().xxx } parent={parent} id='Xxx.xxx'/>);
 
   var Header: React.StatelessComponent<{ name: string }> = (p, ctx) => <h3>{p.name}</h3>;
 
-  //** STATE initialization
+  //** STATE initialization 
   flux.initWebState(
     document.getElementById('app'),
     {

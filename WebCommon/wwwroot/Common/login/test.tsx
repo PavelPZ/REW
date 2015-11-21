@@ -20,7 +20,7 @@ namespace uiRouter {
 
 namespace flux {
   export interface IWebState {
-    loginTest?: loginTest.ILoginSceneState; //cast globalniho flux.IFluxState, patrici aplikaci
+    loginTest?: loginTest.ILoginSceneState; //cast globalniho flux.IFluxState, patrici aplikaci 
   }
 }
 
@@ -33,7 +33,7 @@ namespace loginTest {
   //*********************** DISPATCH MODULE definition
   interface ILoginTestClickAction extends flux.IAction { }
 
-  class loginTest extends flux.Module {
+  class loginTest extends flux.Dispatcher {
     constructor() {
       super(loginTest.moduleId);
     }

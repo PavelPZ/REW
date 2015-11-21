@@ -32,7 +32,7 @@ namespace persistTest {
   //*********************** DISPATCH MODULE definition
   interface IPersistTestClickAction extends flux.IAction { }
 
-  class persistTest extends flux.Module {
+  class persistTest extends flux.Dispatcher {
     constructor() {
       super(persistTest.moduleId);
     }

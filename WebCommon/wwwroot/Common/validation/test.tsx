@@ -9,7 +9,7 @@ namespace valTest {
   //*********************** DISPATCH MODULE definition
   interface IValTestClickAction extends flux.IAction { }
 
-  class valTest extends flux.Module {
+  class valTest extends flux.Dispatcher {
     constructor() {
       super(valTest.moduleId);
     }

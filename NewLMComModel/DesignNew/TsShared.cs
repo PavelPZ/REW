@@ -19,6 +19,7 @@ namespace servConfig {
 
   public class ViewPars {
     public Apps app;
+    public string appPart;
     public LMComLib.Langs lang;
     public Brands brand;
     public SkinIds skin;

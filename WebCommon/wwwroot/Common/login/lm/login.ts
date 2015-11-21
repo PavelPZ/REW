@@ -1,5 +1,5 @@
 ﻿namespace login {
-  export class moduleLMLogin extends flux.Module {
+  export class moduleLMLogin extends flux.Dispatcher {
     static moduleId = 'login.lmlogin';
     constructor() { super(moduleIndex.moduleId); }
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {

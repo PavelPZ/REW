@@ -138,6 +138,7 @@ export interface Azure {
 }
 export interface ViewPars {
   app: Apps;
+  appPart: string;
   lang: LMComLib.Langs;
   brand: Brands;
   skin: SkinIds;

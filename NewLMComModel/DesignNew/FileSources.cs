@@ -33,7 +33,7 @@ namespace DesignNew {
         langs = Consts.swLangs,
         allBrendMasks = new string[] { brendJSMask, brendCSSMask, brendMMMask },
         allSkinMasks = new string[] { skinJSMask, skinCSSMask, skinMMMask },
-        allFixs = new string[] { "js", "css", "jsmin", "cssmin", "mm", "js{loc}", "js{loc}min" },
+        allFixs = new string[] { "js", "css", "jsmin", "cssmin", "mm", "js{loc}", "js{loc}min", "js-other" },
         allSkins = Consts.allSkins.ToArray(),
         allBrands = Consts.allBrands.ToArray()
       };
@@ -54,7 +54,7 @@ namespace DesignNew {
     }
 
     public class deplyConfig {
-      public string[] regExs; //regular expression filter na soubory v self adresari
+      //public string[] regExs; //regular expression filter na soubory v self adresari
       public string[] includes; //pridej soubory
     }
 
@@ -103,7 +103,7 @@ namespace DesignNew {
     static string web4Dir = ConfigurationManager.AppSettings["filesources.web4"] ?? @"d:\LMCom\rew\Web4";
     static string commonDir = ConfigurationManager.AppSettings["filesources.webcommon"] ?? @"d:\LMCom\rew\WebCommon\wwwroot";
     static string basicPath(string url) { return web4Dirs.Contains(url.Split(new char[] { '/' }, 3)[1]) ? web4Dir : commonDir; }
-    public static string urlFromPath(string path) { return (path.Substring(path.StartsWith(web4Dir) ? web4Dir.Length : commonDir.Length)).Replace('\\','/'); }
+    public static string urlFromPath(string path) { return (path.Substring(path.StartsWith(web4Dir) ? web4Dir.Length : commonDir.Length)).Replace('\\', '/'); }
 
     static IEnumerable<string> filesFromDpl(string dplUrl, Langs[] langs) {
       var dplPath = pathFromUrl(dplUrl);
@@ -114,18 +114,15 @@ namespace DesignNew {
       if (dplUrl.IndexOf("{loc}") > 0) {
         foreach (var inc in cfg.includes) foreach (var lng in langs) res.Add(string.Format(fullUrl(inc), swLang(lng)));
       } else {
-        //** regExs
-        if (cfg.regExs != null) {
-          var urls = Directory.GetFiles(commonDir, "*.*", SearchOption.AllDirectories).Select(f => urlFromPath(f)).ToArray();
-          foreach (var regEx in cfg.regExs) {
-            var rx = new Regex(regEx, RegexOptions.IgnoreCase);
-            foreach (var url in urls) if (rx.IsMatch(url)) res.Add(url);
-          }
-        }
-        //** includes x excludes
+        //** includes x excludes x regExs
         if (cfg.includes != null)
           foreach (var inc in cfg.includes) {
-            if (inc.EndsWith(".json")) res.UnionWith(filesFromDpl(fullUrl(inc), langs));
+            if (inc.StartsWith("@")) {
+              var regEx = inc.Substring(1);
+              var urls = Directory.GetFiles(commonDir, "*.*", SearchOption.AllDirectories).Select(f => urlFromPath(f)).ToArray();
+              var rx = new Regex(regEx, RegexOptions.IgnoreCase);
+              foreach (var url in urls) if (rx.IsMatch(url)) res.Add(url);
+            } else if (inc.EndsWith(".json")) res.UnionWith(filesFromDpl(fullUrl(inc), langs));
             else if (inc.StartsWith("!")) res.Remove(fullUrl(inc));
             else res.Add(fullUrl(inc));
           }

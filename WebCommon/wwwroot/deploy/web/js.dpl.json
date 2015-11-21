@@ -2,9 +2,5 @@
   "includes": [
     "js-externals.dpl.json",
     "js-common.dpl.json",
-    "js-common-tests.dpl.json"
-  ],
-  "regExs": [
-    "^/common/.*\\.map$"
   ]
 }
