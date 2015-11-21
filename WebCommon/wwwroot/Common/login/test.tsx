@@ -54,23 +54,13 @@ namespace loginTest {
 
   //************* VIEWS
 
-  //var LoginScene = (parent) => {return <div></div>;};
-
-  //const LoginScene = (props: { title: string }) => <h1>{props.title}</h1>;  
-
   export class LoginScene extends flux.SmartComponent<ILoginSceneProps, ILoginSceneState>{
-    render() {
-      return <div></div>;
-    }
+    render() { return <div></div>; }
   };
-  export interface ILoginSceneState extends flux.ISmartState { }
-  interface ILoginSceneProps extends flux.ISmartProps<ILoginSceneState> { }
 
   //************* VIEWS
   export class TestPage extends flux.SmartComponent<ILoginSceneProps, ILoginSceneState>{
-    render() {
-      return <div></div>;
-    }
+    render() { return <div></div>; }
   };
   export interface ILoginSceneState extends flux.ISmartState { }
   interface ILoginSceneProps extends flux.ISmartProps<ILoginSceneState> { }
