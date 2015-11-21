@@ -59,18 +59,18 @@ namespace DesignNew {
     //*********** COURSE_build
     public static void COURSE_build(BuildIds buildId, IEnumerable<Langs> locs, dictTypes dictType = dictTypes.no) {
       runTask("COURSE_build", () => {
-        Trace.TraceWarning("BuildId: {0}, locs: {1}, dictType: {0}", buildId, locs.Join(), dictType);
+        Trace.TraceWarning("BuildId: {0}, locs: {1}, dictType: {2}", buildId, locs.Join(), dictType);
         LoggerMemory log = new LoggerMemory(true);
         try {
           CourseMeta.Lib.init(log, @"d:\lmcom\", false);
           if (!log.hasError) {
             //vytvoreni WebDataBatch, vse je pripraveno nahradit DATA-{0}.xml pouhymi seznamy produkt IDS
-            var productIds = File.ReadAllLines(string.Format(@"D:\LMCom\rew\DeployGUI\BuildLists\{0}.txt", buildId));
+            var productIds = File.ReadAllLines(string.Format(@"D:\LMCom\rew\DeployGUI\Web4CourseProducts\{0}.txt", buildId));
             Trace.TraceWarning("Start build {0} products", productIds.Length);
             var batch = new WebDataBatch { dictType = dictType, locs = locs.ToArray(), products = productIds.Select(id => new BatchProduct { id = id }).ToArray() };
             WebDataBatch.FinishAfterLoad(batch);
             //seznam souboru, v product adresari jsou metainformace o produktech, v envelope jsou aktualizovane informace.
-            var files = batch.getWebBatchFilesNew(buildId, log);
+            var files = batch.getWebBatchFilesNew(buildId, log, @"d:\LMCom\rew\Web4\products\");
             buildLib.writeVirtualFiles(buildId, files);
           }
         } catch (Exception exp) {

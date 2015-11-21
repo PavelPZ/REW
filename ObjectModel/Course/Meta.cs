@@ -941,6 +941,11 @@ namespace CourseMeta {
     public override data clone() { return cloneLow<products>(); }
   }
 
+  //adresar skupin souboru dle buildId
+  public class buildsDir {
+    public Dictionary<string, products> builds;
+  }
+
   public class product : data {
     [XmlAttribute, DefaultValue(dictTypes.unknown)]
     public dictTypes defaultDictType;

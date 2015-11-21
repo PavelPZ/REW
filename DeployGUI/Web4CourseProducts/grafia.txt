@@ -1,0 +1,8 @@
+/grafia/od1_administrativ/
+/grafia/od2_geschaftsverhandlungen/
+/grafia/od3_hotel/
+/grafia/od4_seniorenpflege/
+/grafia/od5_logistik/
+/grafia/od6_autoteile/
+/grafia/od7_elektrotechnik/
+/grafia/od8_maschinenbau/

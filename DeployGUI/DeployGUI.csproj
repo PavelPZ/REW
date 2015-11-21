@@ -85,6 +85,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <None Include="Web4CourseProducts\blended.txt" />
+    <None Include="Web4CourseProducts\edusoft.txt" />
+    <None Include="Web4CourseProducts\english.txt" />
+    <None Include="Web4CourseProducts\french.txt" />
+    <None Include="Web4CourseProducts\german.txt" />
+    <None Include="Web4CourseProducts\grafia.txt" />
+    <None Include="Web4CourseProducts\italian.txt" />
+    <None Include="Web4CourseProducts\lmtests.txt" />
+    <None Include="Web4CourseProducts\russian.txt" />
+    <None Include="Web4CourseProducts\skrivanek.txt" />
+    <None Include="Web4CourseProducts\spanish.txt" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

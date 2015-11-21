@@ -27,7 +27,7 @@ namespace CourseMeta {
   public class WebDataBatch {
 
     public static void csiExeTest() {
-      File.WriteAllText(@"d:\temp\pom.txt","hallo");
+      File.WriteAllText(@"d:\temp\pom.txt", "hallo");
     }
 
 
@@ -74,28 +74,41 @@ namespace CourseMeta {
       }
     }
 
-    public IEnumerable<Packager.Consts.file> getWebBatchFilesNew(DesignNew.BuildIds buildId, LoggerMemory logger) {
+    public IEnumerable<Packager.Consts.file> getWebBatchFilesNew(DesignNew.BuildIds buildId, LoggerMemory logger, string prodDir) {
       using (CourseMeta.Cache cache = new CourseMeta.Cache(logger)) {
         var buildProds = products.Select(p => p.getBuildProduct()).ToArray();
         //files
         var files = buildLib.getProductFiles(cache, buildProds, logger);
-        //globals
+
+        List<Packager.Consts.file> globals = new List<Packager.Consts.file>();
+
+        //globals do products/
         var prods = buildProds.Select(p => p.prod).ToArray();
         byte[] jsonProdTree, rjsonProdTree; products prodProxies;
         getJSSitemap(prods, out jsonProdTree, out rjsonProdTree, out prodProxies);
         var build = buildId.ToString();
         HashSet<string> prodUrls = new HashSet<string>(prodProxies.Items.Cast<product>().Select(p => p.url));
         var expanded = new products { Items = Lib.prodExpanded.Items.Cast<product>().Where(p => prodUrls.Contains(p.url)).ToArray() };
-        var globals = XExtension.Create<Packager.Consts.file>(
-          new Packager.Consts.file("products/" + build + ".js", rjsonProdTree),
-          new Packager.Consts.file("products/" + build + ".xml", XmlUtils.ObjectToBytes(prodProxies)),
-          new Packager.Consts.file("products/" + build + "-expanded.xml", XmlUtils.ObjectToBytes(expanded))
-          );
-        return globals.Concat(files);
+        Packager.Consts.file actProdProxy;
+        globals.Add(new Packager.Consts.file("products/" + build + ".js", rjsonProdTree));
+        globals.Add(actProdProxy = new Packager.Consts.file("products/" + build + ".xml", XmlUtils.ObjectToBytes(prodProxies)));
+        globals.Add(new Packager.Consts.file("products/" + build + "-expanded.xml", XmlUtils.ObjectToBytes(expanded)));
+
+        //soucet vsech product proxies do products/builds.js: z <buildIds>.xml udela buildsDir, ten serializuje
+        buildsDir bd = new buildsDir() { builds = new Dictionary<string, products>() { { buildId.ToString(), prodProxies } } };
+        foreach (var bld in LowUtils.EnumGetValues<BuildIds>().Where(b => b != buildId)) {
+          var fn = string.Format(@"{0}{1}.xml", prodDir, bld); if (!File.Exists(fn)) continue;
+          var bldPrx = XmlUtils.FileToObject<products>(fn);
+          bd.builds.Add(bld.ToString(), bldPrx);
+        }
+        var bdJs = LowUtils.serializeObjectToJS(bd); var bdRjs = buildLib.rjsonSign + ClearScript.Lib.JSON2RJSON(bdJs);
+        globals.Add(new Packager.Consts.file("products/builds.js", Encoding.UTF8.GetBytes(bdRjs)));
+        globals.Add(new Packager.Consts.file("products/builds-plain.js", Encoding.UTF8.GetBytes(bdJs)));
+
+        //return
+        return files.Concat(globals);
       }
     }
-
-
 
     public IEnumerable<Packager.Consts.file> getWebBatchFiles(LoggerMemory logger, bool incGlobalFiles = true) {
       using (CourseMeta.Cache cache = new CourseMeta.Cache(logger)) {
@@ -110,7 +123,11 @@ namespace CourseMeta {
     public static void getJSSitemap(IEnumerable<product> products, out byte[] json, out byte[] rjson, out products prods) {
       List<product> clonedProds = new List<product>();
       foreach (var prod in products) {
-        var its = prod.Items; prod.Items = null; clonedProds.Add((product)prod.clone()); prod.Items = its;
+        var its = prod.Items; prod.Items = null;
+        var pr = (product)prod.clone(); clonedProds.Add(pr);
+        //vyhod nepotrebne props
+        pr.allLocs = pr.defaultLocs = null; pr.defaultDictType = dictTypes.unknown; pr.other = null;
+        prod.Items = its;
       }
       prods = new products { Items = clonedProds.ToArray(), url = "/prods/" };
       string prodTree = LowUtils.serializeObjectToJS(prods);

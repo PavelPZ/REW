@@ -1,0 +1,5 @@
+/lm/blcourse/langmastermanager.product/
+/lm/blcourse/schoolmanager.product/
+/lm/prods_lm_blcourse_english/
+/lm/prods_lm_blcourse_french/
+/lm/prods_lm_blcourse_german/

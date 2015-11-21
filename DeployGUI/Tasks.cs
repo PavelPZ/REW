@@ -39,7 +39,9 @@ namespace DeployGUI {
     [TestMethod]
     public void SW_web4() { buildTasks.SW_web4(); }
     [TestMethod]
-    public void SW_web_and_web4() { buildTasks.SW_web_and_web4(); }
+    public void SW_web_and_web4() {
+      buildTasks.TYPESCRIPT_compile(@"d:\LMCom\rew\WebCommon\wwwroot");
+      buildTasks.SW_web_and_web4(); }
   }
 
   [TestClass]
