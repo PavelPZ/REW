@@ -64,6 +64,7 @@ namespace utils {
 
   export function isNaN(obj): boolean { return isNumber(obj) && obj !== +obj; }
   export function toNumber(par: any, def: number = 0): number { var res = parseFloat(par); return isNaN(res) ? 0 : res; }
+  export function toBoolean(par: any, def: boolean = false): boolean { return par === 'true'; }
 
   export function guid(): string {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {

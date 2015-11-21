@@ -83,17 +83,19 @@ namespace fluxTest {
     render() {
       super.render();
       var st = this.getState();
-      return <div>
-        <p>
+      return <div key={flux.cnt() }>
+        <div>
           <div onClick={() => flux.trigger(mod1.createAppClickAction()) }>{st.clickTitle}</div>
           <HelloMessage initState={st.hello1 } is1={1} parent={this} id='fluxTest.HelloMessage1'/>
           <HelloMessage initState={st.hello2 } is1={2} parent={this} id='fluxTest.HelloMessage2'/>
-          </p>
-        <p>
+          <br/>
+          </div>
+        <div>
           <div onClick={() => flux.trigger(mod1.createAppClickAction()) }>{st.clickTitle}</div>
           <HelloMessage initState={st.hello1 } is1={1} parent={this} id='fluxTest.HelloMessage3'/>
           <HelloMessage initState={st.hello2 } is1={2} parent={this} id='fluxTest.HelloMessage4'/>
-          </p>
+          <br/>
+          </div>
         </div>;
     }
   };
@@ -103,7 +105,7 @@ namespace fluxTest {
   class HelloMessage extends flux.SmartComponent<IHelloWorldProps, IHelloWorldState>{
     render() {
       super.render();
-      return <div onClick={() => flux.trigger(mod1.createClickAction(this.id)) }>{this.context.data.mod1.prefix } {this.getState().actName}</div >;
+      return <div key={flux.cnt() } onClick={() => flux.trigger(mod1.createClickAction(this.id)) }>{this.context.data.mod1.prefix } {this.getState().actName}</div >;
     }
     props: IHelloWorldProps;
   };
@@ -115,7 +117,7 @@ namespace fluxTest {
     render() {
       super.render();
       var st = this.getState();
-      return <div>
+      return <div key={flux.cnt() }>
         <p onClick={() => flux.trigger(mod1.createPlaceholderClickAction()) }>click</p>
         <div>{st.isApp ? (<App initState={flux.getState().fluxTest} parent={this} id='fluxTest.App'/>) : (<HelloMessage initState={st.hello} is1={3} parent={this} id='fluxTest.HelloMessage' />) }</div>
         </div>
@@ -152,16 +154,8 @@ namespace fluxTest {
       }
     },
     (p1) => <layout.Switcher initState={flux.getState().fluxTestSwitcher} parent={p1} id='layout.PlaceHolder' cases={{
-      app: (p2) => <App initState={flux.getState().fluxTest} parent={p2} id='fluxTest.App'/>,
-      place: (p3) => <Switcher initState={flux.getState().fluxTestPlacer} parent={p3} id='fluxTest.Switcher'/>
+      app: (p2) => <App  key={flux.cnt() } initState={flux.getState().fluxTest} parent={p2} id='fluxTest.App'/>,
+      place: (p3) => <Switcher  key={flux.cnt() } initState={flux.getState().fluxTestPlacer} parent={p3} id='fluxTest.Switcher'/>
     }}/>
   );
-  /* 
-    () => <flux.PlaceHolder initState={flux.getState().place} contents={{
-      app: () => <App initState={flux.getState().fluxTest }/>,
-      place: () => <PlaceHolder initState={flux.getState().placeHolder }/>
-    }}/> 
-    () => <App initState={flux.getState().fluxTest }/>
-    () => <PlaceHolder initState={flux.getState().placeHolder }/>
-  */
 }

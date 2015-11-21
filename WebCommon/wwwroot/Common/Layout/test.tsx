@@ -36,9 +36,9 @@ namespace layoutTest {
         case uiRouter.routerActionId:
           var act = action as uiRouter.IStateAction<ITestModuleRoutePar>;
           layout.changeScene(action,
-            act.defaultScene == 'true' ? layout.sceneDefault : sceneSecond,
-            { ids: [], placeId: layout.placeContent, rendererId: act.defaultPlaces != 'true' ? 'cont-cont' : 'cont-panel' },
-            { ids: [], placeId: placeOther, rendererId: act.defaultPlaces == 'true' ? 'other-cont' : 'other-panel' }
+            act.defaultScene ? layout.sceneDefault : sceneSecond,
+            { ids: [], placeId: layout.placeContent, rendererId: act.defaultPlaces ? 'cont-cont' : 'cont-panel' },
+            { ids: [], placeId: placeOther, rendererId: act.defaultPlaces ? 'other-cont' : 'other-panel' }
           );
           break;
         case 'click':
@@ -61,15 +61,15 @@ namespace layoutTest {
 
   //
   export interface ITestModuleRoutePar extends uiRouter.IStatePar {
-    defaultScene: string; //hlavni (layout.sceneDefault) nebo druha (sceneSecond) scena
-    defaultPlaces: string; //zpusob navazani rendereru do places: layout.placeContent=>plRendererDefault a placeOther=>plRendererOther nebo naopak
+    defaultScene: boolean; //hlavni (layout.sceneDefault) nebo druha (sceneSecond) scena
+    defaultPlaces: boolean; //zpusob navazani rendereru do places
   }
 
   uiRouter.init(
-    namedState.default = new uiRouter.State<ITestModuleRoutePar>(layoutTest.moduleId, '/layoutTest/:defaultScene/:defaultPlaces')
+    namedState.default = new uiRouter.State<ITestModuleRoutePar>(layoutTest.moduleId, '/layoutTest/:defaultScene/:defaultPlaces').
+      finishStatePar(st => { st.defaultPlaces = utils.toBoolean(st.defaultPlaces); st.defaultScene = utils.toBoolean(st.defaultScene); })
   );
-  uiRouter.setDefault<ITestModuleRoutePar>(namedState.default, { defaultScene: 'true', defaultPlaces: 'true' });
-  setTimeout(() => uiRouter.listenHashChange());
+  uiRouter.setDefault<ITestModuleRoutePar>(namedState.default, { defaultScene: true, defaultPlaces: true });
 
   //** SCENE configuration
   // Jsou 2 sceny (layout.sceneDefault a sceneSecond)
@@ -79,29 +79,29 @@ namespace layoutTest {
   var placeOther = 'place-other';
   var sceneSecond = 'scene-second';
 
-  layout.registerRenderer(layout.placeContent, 'cont-cont', parent => <h2>Other 1</h2>);
-  layout.registerRenderer(layout.placeContent, 'cont-panel', parent => <h2>Panel 2</h2> );
-  layout.registerRenderer(placeOther, 'other-cont', parent => <h2>Other 3</h2> );
-  layout.registerRenderer(placeOther, 'other-panel', parent => <h2>Panel 4</h2> );
+  layout.registerRenderer(layout.placeContent, 'cont-cont', parent => <h2 key={flux.cnt() }>Other 1</h2>);
+  layout.registerRenderer(layout.placeContent, 'cont-panel', parent => <h2 key={flux.cnt() }>Panel 2</h2>);
+  layout.registerRenderer(placeOther, 'other-cont', parent => <h2 key={flux.cnt() }>Other 3</h2>);
+  layout.registerRenderer(placeOther, 'other-panel', parent => <h2 key={flux.cnt() }>Panel 4</h2>);
 
   //** STATE initialization
   flux.initWebState(
     document.getElementById('app'),
     {
-      ids:[],
+      ids: [],
       data: {
         layoutTest: {},
       }
     },
     (web) => <div>
-      <a href={'#' + namedState.default.getHashStr({ defaultScene: 'true', defaultPlaces: 'true' }) }>Default Scene, default places</a> |
-      <a href={'#' + namedState.default.getHashStr({ defaultScene: 'false', defaultPlaces: 'true' }) }>Other Scene, default places</a> |
-      <a href={'#' + namedState.default.getHashStr({ defaultScene: 'true', defaultPlaces: 'false' }) }>Default Scene, other places</a> |
-      <a href={'#' + namedState.default.getHashStr({ defaultScene: 'false', defaultPlaces: 'false' }) }>Other Scene, other places</a> |
+      <a href={'#' + namedState.default.getHashStr({ defaultScene: true, defaultPlaces: true }) }>Default Scene, default places</a> |
+      <a href={'#' + namedState.default.getHashStr({ defaultScene: false, defaultPlaces: true }) }>Other Scene, default places</a> |
+      <a href={'#' + namedState.default.getHashStr({ defaultScene: true, defaultPlaces: false }) }>Default Scene, other places</a> |
+      <a href={'#' + namedState.default.getHashStr({ defaultScene: false, defaultPlaces: false }) }>Other Scene, other places</a> |
 
       <layout.Scene initState={layout.sceneState() } parent={web} id='scene' cases={{
 
-        [layout.sceneDefault]: parent => <div key={flux.cnt()}>
+        [layout.sceneDefault]: parent => <div key={flux.cnt() }>
         <h1>Scene: {layout.sceneDefault}</h1>
         <layout.ScenePlace initState={layout.scenePlaceState(layout.placeContent) } parent={parent} id='place-defaultContent'/>
         --------------------
@@ -110,7 +110,7 @@ namespace layoutTest {
         <div>Footer: {layout.sceneDefault}</div>
           </div>,
 
-        [sceneSecond]: parent => <div key={flux.cnt()}>
+        [sceneSecond]: parent => <div key={flux.cnt() }>
         <h1>Scene: {sceneSecond}</h1>
         <layout.ScenePlace initState={layout.scenePlaceState(placeOther) } parent={parent} id='place-secondOther'/>
         ====================
@@ -120,5 +120,9 @@ namespace layoutTest {
           </div>
       }}/>
       </div>
+
   );
+
+  //Start listening
+  setTimeout(() => uiRouter.listenHashChange());
 }
