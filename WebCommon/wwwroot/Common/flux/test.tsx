@@ -35,7 +35,7 @@ namespace fluxTest {
 
   //*********************** DISPATCH MODULE definition
   interface IAppClickAction extends flux.IAction { }
-  interface IClickAction extends flux.IAction { scopeComponent: string; /*akce nad self, ktera meni self stav*/}
+  interface IClickAction extends flux.IAction { scopeComponent: string; /*akce nad self, ktera meni self stav*/ }
 
   config.cfg.data.mod1.prefix = 'Hello';
 
@@ -81,7 +81,7 @@ namespace fluxTest {
   //************* VIEW hvezdicky
   export class App extends flux.SmartComponent<IAppProps, IAppState>{
     render() {
-      super.render(); 
+      super.render();
       var st = this.getState();
       return <div>
         <p>
@@ -113,7 +113,7 @@ namespace fluxTest {
   //************* VIEW placeholder
   export class Switcher extends flux.SmartComponent<IPlaceHolderProps, IPlaceHolderState>{
     render() {
-      super.render(); 
+      super.render();
       var st = this.getState();
       return <div>
         <p onClick={() => flux.trigger(mod1.createPlaceholderClickAction()) }>click</p>
@@ -134,17 +134,21 @@ namespace fluxTest {
   flux.initWebState(
     document.getElementById('app'),
     {
+      ids: [],
       data: {
         fluxTest: {
+          ids: [],
           clickTitle: 'Click',
-          hello1: { actName: 'John' },
-          hello2: { actName: 'Marthy' }
+          hello1: { actName: 'John', ids: [] },
+          hello2: { actName: 'Marthy', ids: [] }
         },
         fluxTestPlacer: {
+          ids: [],
           isApp: false,
-          hello: { actName: 'hello' },
+          hello: { ids: [], actName: 'John' },
+          //hello: { actName: 'hello', ids: [] }
         },
-        fluxTestSwitcher: { caseId: 'place' }
+        fluxTestSwitcher: { ids: [], caseId: 'place' }
       }
     },
     (p1) => <layout.Switcher initState={flux.getState().fluxTestSwitcher} parent={p1} id='layout.PlaceHolder' cases={{

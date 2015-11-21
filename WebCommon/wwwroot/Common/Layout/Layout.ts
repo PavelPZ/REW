@@ -27,9 +27,9 @@ namespace flux {
 
 namespace layout {
 
-  export function changeScene(routeAction: flux.IAction, sceneId:string, first: IScenePlaceState | string, ...other: Array<IScenePlaceState>) {
+  export function changeScene(routeAction: flux.IAction, sceneId: string, first: IScenePlaceState | string, ...other: Array<IScenePlaceState>) {
     loger.log('>changeLayout ' + routeAction.moduleId + '[' + routeAction.actionId + ']');
-    var firstPs: IScenePlaceState = utils.isString(first) ? { rendererId: <string>first } : <IScenePlaceState>first;
+    var firstPs: IScenePlaceState = utils.isString(first) ? { ids:[], rendererId: <string>first } : <IScenePlaceState>first;
     var scenePlaces = [firstPs].concat(other);
     var layCfg = config.cfg.data.layout;
     //if (!layCfg.routeActionToSceneId) throw 'Missing config.cfg.data.layout.routeActionToSceneId config';
@@ -41,7 +41,7 @@ namespace layout {
       var plId = newPl.placeId || placeContent;
       if (!layState.scenePlaces) layState.scenePlaces = {};
       var oldPl = layState.scenePlaces[plId];
-      if (!oldPl) layState.scenePlaces[plId] = oldPl = { placeId: plId, rendererId: undefined }; //throw 'Cannot find scenePlace in layout state: ' + plId;
+      if (!oldPl) layState.scenePlaces[plId] = oldPl = { ids:[], placeId: plId, rendererId: undefined }; //throw 'Cannot find scenePlace in layout state: ' + plId;
       if (oldPl.rendererId == newPl.rendererId) continue;
       oldPl.rendererId = newPl.rendererId;
       //overeni existence renderera
@@ -65,7 +65,7 @@ namespace layout {
   }
 
   export type TRenderFunction = (parent: flux.SmartComponent<any, any>) => JSX.Element;
-  export function sceneState(): ISwitcherState { var st = flux.getState(); if (!st.layout) st.layout = {}; var l = st.layout; return l.scene ? l.scene : l.scene = {}; }
+  export function sceneState(): ISwitcherState { var st = flux.getState(); if (!st.layout) st.layout = {}; var l = st.layout; return l.scene ? l.scene : l.scene = { ids: [] }; }
   export function scenePlaceState(id: string = placeContent): IScenePlaceState { return flux.getState().layout.scenePlaces[id]; }
 
   export interface IRootState {

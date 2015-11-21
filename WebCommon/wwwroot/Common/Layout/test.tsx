@@ -37,8 +37,8 @@ namespace layoutTest {
           var act = action as uiRouter.IStateAction<ITestModuleRoutePar>;
           layout.changeScene(action,
             act.defaultScene == 'true' ? layout.sceneDefault : sceneSecond,
-            { placeId: layout.placeContent, rendererId: act.defaultPlaces != 'true' ? 'cont-cont' : 'cont-panel' },
-            { placeId: placeOther, rendererId: act.defaultPlaces == 'true' ? 'other-cont' : 'other-panel' }
+            { ids: [], placeId: layout.placeContent, rendererId: act.defaultPlaces != 'true' ? 'cont-cont' : 'cont-panel' },
+            { ids: [], placeId: placeOther, rendererId: act.defaultPlaces == 'true' ? 'other-cont' : 'other-panel' }
           );
           break;
         case 'click':
@@ -51,23 +51,6 @@ namespace layoutTest {
     static createAppClickAction(): ILayoutTestClickAction { return { moduleId: layoutTest.moduleId, actionId: 'click' }; }
   }
   interface ILayoutTestClickAction extends flux.IAction { }
-
-  //************* VIEWs
-  export class LayoutContent extends flux.SmartComponent<flux.ISmartProps<any>, flux.ISmartState>{
-    render() {
-      super.render();
-      return <div>
-        <h2>Content</h2>
-        </div>;
-    }
-  };
-  //
-  export class LayoutPanel extends flux.SmartComponent<flux.ISmartProps<any>, flux.ISmartState>{
-    render() {
-      super.render();
-      return <div><h2>Other</h2></div>;
-    }
-  };
 
   //************* WHOLE APP
   //** definice DISPATCH modulu
@@ -91,30 +74,21 @@ namespace layoutTest {
   //** SCENE configuration
   // Jsou 2 sceny (layout.sceneDefault a sceneSecond)
   // kazda z nich ma 2 places (layout.placeContent a placeOther)
-  // jsou 4 renderery: 
-  // - LayoutContent a LayoutPanel do layout.placeContent
-  // - LayoutContent a LayoutPanel do placeOther
+  // jsou 4 renderery: 'cont-cont', 'cont-panel', 'other-cont', 'other-panel'
 
   var placeOther = 'place-other';
   var sceneSecond = 'scene-second';
 
-  layout.registerRenderer(layout.placeContent, 'cont-cont',
-    parent => <LayoutContent initState={flux.getState().layoutTest } parent={parent} id='cont-cont'/>
-  );
-  layout.registerRenderer(layout.placeContent, 'cont-panel',
-    parent => <LayoutPanel initState={flux.getState().layoutTest } parent={parent} id='cont-panel'/>
-  );
-  layout.registerRenderer(placeOther, 'other-cont',
-    parent => <LayoutContent initState={flux.getState().layoutTest } parent={parent} id='other-cont'/>
-  );
-  layout.registerRenderer(placeOther, 'other-panel',
-    parent => <LayoutPanel initState={flux.getState().layoutTest } parent={parent} id='other-panel'/>
-  );
+  layout.registerRenderer(layout.placeContent, 'cont-cont', parent => <h2>Other 1</h2>);
+  layout.registerRenderer(layout.placeContent, 'cont-panel', parent => <h2>Panel 2</h2> );
+  layout.registerRenderer(placeOther, 'other-cont', parent => <h2>Other 3</h2> );
+  layout.registerRenderer(placeOther, 'other-panel', parent => <h2>Panel 4</h2> );
 
   //** STATE initialization
   flux.initWebState(
     document.getElementById('app'),
     {
+      ids:[],
       data: {
         layoutTest: {},
       }
@@ -127,7 +101,7 @@ namespace layoutTest {
 
       <layout.Scene initState={layout.sceneState() } parent={web} id='scene' cases={{
 
-        [layout.sceneDefault]: parent => <div>
+        [layout.sceneDefault]: parent => <div key={flux.cnt()}>
         <h1>Scene: {layout.sceneDefault}</h1>
         <layout.ScenePlace initState={layout.scenePlaceState(layout.placeContent) } parent={parent} id='place-defaultContent'/>
         --------------------
@@ -136,7 +110,7 @@ namespace layoutTest {
         <div>Footer: {layout.sceneDefault}</div>
           </div>,
 
-        [sceneSecond]: parent => <div>
+        [sceneSecond]: parent => <div key={flux.cnt()}>
         <h1>Scene: {sceneSecond}</h1>
         <layout.ScenePlace initState={layout.scenePlaceState(placeOther) } parent={parent} id='place-secondOther'/>
         ====================

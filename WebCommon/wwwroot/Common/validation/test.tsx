@@ -47,7 +47,7 @@ namespace valTest {
   new valTest();
   flux.initWebState(
     document.getElementById('app'),
-    { data: { valTest: {} } },
+    { ids:[], data: { valTest: {} } },
     (web) =>
       <ValTest initState={flux.getState().valTest} id='valTest.ValTest' parent={web} >
       {/*<validation.Input validator={{ type: validation.types.stringLength | validation.types.stringLength, minLength: 2, maxLength: 4 }}/>*/}

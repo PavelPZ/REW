@@ -20,9 +20,7 @@ namespace uiRouter {
 
 namespace flux {
   export interface IWebState {
-    persistTest?: {
-      persistTestModuleState: persistTest.IPersistTestState; //cast globalniho flux.IFluxState, patrici aplikaci
-    }
+    persistTest?: persistTest.IPersistTestState //cast globalniho flux.IFluxState, patrici aplikaci
   }
 }
 
@@ -88,8 +86,9 @@ namespace persistTest {
   flux.initWebState(
     document.getElementById('app'),
     {
+      ids: [],
       data: {
-        persistTest: { persistTestModuleState: {} },
+        persistTest: { ids:[] },
         layout: {}
       }
     },

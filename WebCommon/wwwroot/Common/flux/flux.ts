@@ -18,6 +18,7 @@ namespace flux {
     loger.log('action', -1);
   }
   export function actionPath(act: IAction) { return act.moduleId + '/' + act.actionId; }
+  export function cnt():string { return (_cnt++).toString(); } var _cnt = 0;
 
   //*********** COMPONENTS
   export class DumpComponent<T extends React.Props<any>, S> extends React.Component<T, S> { props: T; }
@@ -31,8 +32,9 @@ namespace flux {
       allComponents[this.id] = this;
       //self id do meho state
       var st = this.getState();
+      if (!st.ids) throw 'Not smart state';
       loger.log('>new ' + this.id + ', initState=' + JSON.stringify(st, (key, value) => key=='ids' ? undefined : value));
-      if (!st.ids) st.ids = [];
+      //if (!st.ids) st.ids = [];
       st.ids.push(this.id);
     }
     context: config.IObj;
@@ -49,14 +51,14 @@ namespace flux {
     };
     render(): JSX.Element { loger.log('>render ' + this.id); return null; }
   }
-  export interface ISmartProps<S> extends IComponentProps { initState: S; parent: SmartComponent<any, any>, id: string }
-  export interface ISmartState  { ids?:Array<string> }
+  export interface ISmartProps<S extends ISmartState> extends IComponentProps { initState: S; parent: SmartComponent<any, any>, id: string }
+  export interface ISmartState  { ids:Array<string> }
   export interface IComponentProps extends React.Props<any> { }
 
   //**** SET STATE => rerender
   export function onStateChanged(st: ISmartState) {
-    if (!st) throw 'onStateChanged: !st';
-    if (!st.ids) st.ids = [];
+    if (!st || !st.ids) throw 'Not smart state, onStateChanged: !st || !st.ids';
+    //if (!st.ids) st.ids = [];
     st.ids.forEach(id => {
       var comp = allComponents[id]; if (!comp) return;
       loger.log('SetState ' + id + ' ' + JSON.stringify(st, (key, value) => key == 'ids' ? undefined : value),1);

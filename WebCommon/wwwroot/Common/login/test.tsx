@@ -73,13 +73,14 @@ namespace loginTest {
   flux.initWebState(
     document.getElementById('app'),
     {
+      ids:[],
       data: {
         layoutTest: {}
       }
     },
     (p1) => <layout.Switcher initState={flux.getState().fluxTestSwitcher} parent={p1} id='layout.Switcher' cases={{
-      default: (p3) => <TestPage initState={{}} parent={p3} id='loginTest.TestPage'/>,
-      login: (p2) => <LoginScene initState={{}} parent={p2} id='loginTest.LoginScene'/>,
+      default: (p3) => <TestPage initState={{ids:[]}} parent={p3} id='loginTest.TestPage'/>,
+      login: (p2) => <LoginScene initState={{ ids: []}} parent={p2} id='loginTest.LoginScene'/>,
     }}/>
   );
   //(web) => <LoginTest initState={flux.getState().loginTest } parent={web} id='LoginTest.loginTest'/>

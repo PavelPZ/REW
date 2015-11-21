@@ -21,9 +21,7 @@ namespace uiRouter {
 
 namespace flux {
   export interface IWebState {
-    xxx?: {
-      xxxModuleState: xxx.IXxxState; //cast globalniho flux.IFluxState, patrici modulu
-    }
+    xxx?: xxx.IXxxState //cast globalniho flux.IFluxState, patrici modulu
   }
 }
 
@@ -93,9 +91,10 @@ namespace xxx {
   flux.initWebState(
     document.getElementById('app'),
     {
+      ids:[],
       data: {
-        xxx: { xxxModuleState: {} },
-        layout: {}
+        xxx: { ids: [] },
+        layout: { }
       }
     },
     (web) => <layout.Scene initState={layout.sceneState() } parent={web} id='layout.Scene' cases={{
