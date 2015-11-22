@@ -9,13 +9,13 @@ namespace config {
   cfg.data.layoutTest = {} as any;
 }
 
-namespace uiRouter {
-  export interface INamedState {
+namespace router {
+  export interface INamedRoutes {
     layoutTest: { //pojmenovane uiRouter.State's aplikace
-      default: uiRouter.State<layoutTest.ITestModuleRoutePar>; //uiRouter.State hlavni stranky aplikace
+      default: router.Route<layoutTest.ITestModuleRoutePar>; //uiRouter.State hlavni stranky aplikace
     }
   };
-  namedState.layoutTest = {} as any;
+  routes.layoutTest = {} as any;
 }
 
 namespace flux {
@@ -33,8 +33,8 @@ namespace layoutTest {
     }
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
       switch (action.actionId) {
-        case uiRouter.routerActionId:
-          var act = action as uiRouter.IStateAction<ITestModuleRoutePar>;
+        case router.routerActionId:
+          var act = action as router.IAction<ITestModuleRoutePar>;
           layout.changeScene(action,
             act.defaultScene ? layout.sceneDefault : sceneSecond,
             { ids: [], placeId: layout.placeContent, rendererId: act.defaultPlaces ? 'cont-cont' : 'cont-panel' },
@@ -57,19 +57,19 @@ namespace layoutTest {
   new layoutTest();
 
   //** ROUTE configuration
-  export var namedState = uiRouter.namedState.layoutTest; //pojmenovane stavy
+  export var namedState = router.routes.layoutTest; //pojmenovane stavy
 
   //
-  export interface ITestModuleRoutePar extends uiRouter.IStatePar {
+  export interface ITestModuleRoutePar extends router.IPar {
     defaultScene: boolean; //hlavni (layout.sceneDefault) nebo druha (sceneSecond) scena
     defaultPlaces: boolean; //zpusob navazani rendereru do places
   }
 
-  uiRouter.init(
-    namedState.default = new uiRouter.State<ITestModuleRoutePar>(layoutTest.moduleId, '/layoutTest/:defaultScene/:defaultPlaces').
+  router.init(
+    namedState.default = new router.Route<ITestModuleRoutePar>(layoutTest.moduleId, '/layoutTest/:defaultScene/:defaultPlaces').
       finishStatePar(st => { st.defaultPlaces = utils.toBoolean(st.defaultPlaces); st.defaultScene = utils.toBoolean(st.defaultScene); })
   );
-  uiRouter.setDefault<ITestModuleRoutePar>(namedState.default, { defaultScene: true, defaultPlaces: true });
+  router.setHome<ITestModuleRoutePar>(namedState.default, { defaultScene: true, defaultPlaces: true });
 
   //** SCENE configuration
   // Jsou 2 sceny (layout.sceneDefault a sceneSecond)
@@ -94,10 +94,10 @@ namespace layoutTest {
       }
     },
     (web) => <div>
-      <a href={'#' + namedState.default.getHashStr({ defaultScene: true, defaultPlaces: true }) }>Default Scene, default places</a> |
-      <a href={'#' + namedState.default.getHashStr({ defaultScene: false, defaultPlaces: true }) }>Other Scene, default places</a> |
-      <a href={'#' + namedState.default.getHashStr({ defaultScene: true, defaultPlaces: false }) }>Default Scene, other places</a> |
-      <a href={'#' + namedState.default.getHashStr({ defaultScene: false, defaultPlaces: false }) }>Other Scene, other places</a> |
+      <a href={'#' + namedState.default.getHash({ defaultScene: true, defaultPlaces: true }) }>Default Scene, default places</a> |
+      <a href={'#' + namedState.default.getHash({ defaultScene: false, defaultPlaces: true }) }>Other Scene, default places</a> |
+      <a href={'#' + namedState.default.getHash({ defaultScene: true, defaultPlaces: false }) }>Default Scene, other places</a> |
+      <a href={'#' + namedState.default.getHash({ defaultScene: false, defaultPlaces: false }) }>Other Scene, other places</a> |
 
       <layout.Scene initState={layout.sceneState() } parent={web} id='scene' cases={{
 
@@ -124,5 +124,5 @@ namespace layoutTest {
   );
 
   //Start listening
-  setTimeout(() => uiRouter.listenHashChange());
+  setTimeout(() => router.listenHashChange());
 }

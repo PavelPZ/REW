@@ -10,13 +10,13 @@ namespace config {
   cfg.data.xxx = {} as any; //vytvoreni objektu s deklaraci
 }
 
-namespace uiRouter {
-  export interface INamedState {
+namespace router {
+  export interface INamedRoutes {
     xxx: { //deklarace casti globalne pojmenovanych uiRouter.State's modulu
-      default: uiRouter.State<xxx.IXxxModulePar>; 
+      default: router.Route<xxx.IXxxModulePar>; 
     }
   };
-  namedState.xxx = {} as any; //vytvoreni objektu s deklaraci
+  routes.xxx = {} as any; //vytvoreni objektu s deklaraci
 }
 
 namespace flux {
@@ -26,7 +26,7 @@ namespace flux {
 }
 
 namespace xxx {
-  export interface IXxxModulePar extends uiRouter.IStatePar { id: number; opt1: string; } //jeden route PAR (parametrizujici route URL)
+  export interface IXxxModulePar extends router.IPar { id: number; opt1: string; } //jeden route PAR (parametrizujici route URL)
 
   //*********************** DISPATCH MODULE definition
   interface IXxxClickAction extends flux.IAction { } //jedna z dispatch-able akci modulu
@@ -37,7 +37,7 @@ namespace xxx {
     }
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
       switch (action.actionId) {
-        case uiRouter.routerActionId: //
+        case router.routerActionId: //
           layout.changeScene(action, layout.sceneDefault, xxx.plDefaultContentId);
           break;
         case 'click':
@@ -71,13 +71,13 @@ namespace xxx {
   new xxx();
 
   //** ROUTE configuration
-  export var namedState = uiRouter.namedState.xxx; //pojmenovane stavy
-  uiRouter.init(
-    namedState.default = new uiRouter.State<IXxxModulePar>(xxx.moduleId, '/xxx-home') //deklarace default named state
+  export var namedState = router.routes.xxx; //pojmenovane stavy
+  router.init(
+    namedState.default = new router.Route<IXxxModulePar>(xxx.moduleId, '/xxx-home') //deklarace default named state
   );
-  uiRouter.setDefault<IXxxModulePar>(namedState.default, { id: 1, opt1: '' }); //definice 
+  router.setHome<IXxxModulePar>(namedState.default, { id: 1, opt1: '' }); //definice 
   //start listen to hashChange
-  setTimeout(() => uiRouter.listenHashChange());
+  setTimeout(() => router.listenHashChange());
 
   //** SCENE configuration
   layout.registerRenderer(

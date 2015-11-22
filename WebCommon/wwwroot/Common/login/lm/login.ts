@@ -4,7 +4,7 @@
     constructor() { super(moduleIndex.moduleId); }
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
       switch (action.actionId) {
-        case uiRouter.routerActionId: //login.index.router action => naladuj index stranku
+        case router.routerActionId: //login.index.router action => naladuj index stranku
           break;
         case 'get-provider': //jdi na oauth stranku
       }

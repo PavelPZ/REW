@@ -9,13 +9,13 @@ namespace config {
   cfg.data.persistTest = {} as any;
 }
 
-namespace uiRouter {
-  export interface INamedState {
+namespace router {
+  export interface INamedRoutes {
     persistTest: { //pojmenovane uiRouter.State's aplikace
-      default: uiRouter.State<persistTest.IPersistTestModulePar>; //uiRouter.State hlavni stranky aplikace
+      default: router.Route<persistTest.IPersistTestModulePar>; //uiRouter.State hlavni stranky aplikace
     }
   };
-  namedState.persistTest = {} as any;
+  routes.persistTest = {} as any;
 }
 
 namespace flux {
@@ -25,7 +25,7 @@ namespace flux {
 }
 
 namespace persistTest {
-  export interface IPersistTestModulePar extends uiRouter.IStatePar { id: number; opt1: string; } //route PAR pro PersistTestModule
+  export interface IPersistTestModulePar extends router.IPar { id: number; opt1: string; } //route PAR pro PersistTestModule
 
   //*********************** DISPATCH MODULE definition
   interface IPersistTestClickAction extends flux.IAction { }
@@ -36,7 +36,7 @@ namespace persistTest {
     }
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
       switch (action.actionId) {
-        case uiRouter.routerActionId:
+        case router.routerActionId:
           layout.changeScene(action, layout.sceneDefault, persistTest.plDefaultContentId);
           break;
         case 'click':
@@ -70,12 +70,12 @@ namespace persistTest {
   new persistTest();
 
   //** ROUTE configuration
-  export var namedState = uiRouter.namedState.persistTest; //pojmenovane stavy
-  uiRouter.init(
-    namedState.default = new uiRouter.State<IPersistTestModulePar>(persistTest.moduleId, '/persistTest-home')
+  export var namedState = router.routes.persistTest; //pojmenovane stavy
+  router.init(
+    namedState.default = new router.Route<IPersistTestModulePar>(persistTest.moduleId, '/persistTest-home')
   );
-  uiRouter.setDefault<IPersistTestModulePar>(namedState.default, { id: 1, opt1: '' });
-  setTimeout(() => uiRouter.listenHashChange());
+  router.setHome<IPersistTestModulePar>(namedState.default, { id: 1, opt1: '' });
+  setTimeout(() => router.listenHashChange());
 
   //** SCENE configuration
   layout.registerRenderer(layout.placeContent, persistTest.plDefaultContentId, parent => <PersistTest initState={flux.getState().persistTest } parent={parent} id='PersistTest.persistTest'/>);

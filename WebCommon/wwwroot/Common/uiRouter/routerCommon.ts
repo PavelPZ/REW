@@ -1,4 +1,4 @@
-namespace uiRouter {
+namespace router {
   export function inherit(parent, extra) {
     return extend(new (extend(function () { }, { prototype: parent }))(), extra);
   }

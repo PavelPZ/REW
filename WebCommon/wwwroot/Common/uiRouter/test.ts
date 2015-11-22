@@ -1,42 +1,42 @@
-﻿namespace uiRouter {
-  export interface INamedState {
+﻿namespace router {
+  export interface INamedRoutes {
     routerTest: {
-      default: uiRouter.State<routerTest.ITestHash>;
+      default: router.Route<routerTest.ITestHash>;
     }
   };
 }
-uiRouter.namedState.routerTest = <any>{};
+router.routes.routerTest = <any>{};
 
 namespace routerTest {
-  var namesState = uiRouter.namedState.routerTest;
+  var namesState = router.routes.routerTest;
 
-  export interface ITestHash extends uiRouter.IStatePar { id: number; opt1: string; opt2: string; }
+  export interface ITestHash extends router.IPar { id: number; opt1: string; opt2: string; }
 
   export function testRouterLow() {
     //** inicializace aplikace
     config.initApp();
 
     //*** low level UrlMatcher test
-    var urlMatcher = new uiRouter.UrlMatcher('/user/:id/name/:name?opt1&opt2');
+    var urlMatcher = new router.UrlMatcher('/user/:id/name/:name?opt1&opt2');
     var pars = urlMatcher.exec('/useR/123/Name/alex', { opt1: 'xxx', opt2: 'yyy' });
     var url = urlMatcher.format(pars);
     url = urlMatcher.format({ id: 123, opt1: true, opt2: 'yyy' });
 
     //*** router konfiguration
-    uiRouter.init(
-      new uiRouter.State('login', '/login',
-        new uiRouter.State('login', '/login'),
-        new uiRouter.State('select', '/select')
+    router.init(
+      new router.Route('login', '/login',
+        new router.Route('login', '/login'),
+        new router.Route('select', '/select')
       ),
-      namesState.default = new uiRouter.State<ITestHash>('x', '/user/:id/name/:name?opt1&opt2').finishStatePar(st => { st.id = utils.toNumber(st.id); })
+      namesState.default = new router.Route<ITestHash>('x', '/user/:id/name/:name?opt1&opt2').finishStatePar(st => { st.id = utils.toNumber(st.id); })
     );
-    uiRouter.setDefault<ITestHash>(namesState.default, { id: 1, opt1: '', opt2: '' });
+    router.setHome<ITestHash>(namesState.default, { id: 1, opt1: '', opt2: '' });
 
     //*** rucni MATCH
-    var par = namesState.default.parseHash(uiRouter.preParseHashStr('/useR/123/Name/alex?opt1=xxx&opt2=yyy'));
-    var d1 = uiRouter.hashToState('/login.select');
-    var d2 = uiRouter.hashToState('/useR/123/Name/alex?opt1=xxx&opt2=yyy');
-    var d3 = uiRouter.hashToState('/login.login');
+    var par = namesState.default.parseHash(router.toQuery('/useR/123/Name/alex?opt1=xxx&opt2=yyy'));
+    var d1 = router.toUrl('/login.select');
+    var d2 = router.toUrl('/useR/123/Name/alex?opt1=xxx&opt2=yyy');
+    var d3 = router.toUrl('/login.login');
   }
 }
 
