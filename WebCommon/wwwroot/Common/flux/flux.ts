@@ -11,10 +11,12 @@ namespace flux {
   export function getState(): IAppState { return state; }
   export function trigger(action: IAction, complete?: (action: IAction) => void) {
     if (!action || !action.moduleId || !action.actionId) throw '!action || !action.type';
-    var res = allModules[action.moduleId]; if (!res) throw 'Cannot find module ' + action.moduleId;
     if (recording) recording.actions.push(action);
     loger.log('ACTION ' + JSON.stringify(action), 1);
-    res.dispatchAction(action, complete);
+    if (!router.tryDispatch(action)) {
+      var res = allModules[action.moduleId]; if (!res) throw 'Cannot find module ' + action.moduleId;
+      res.dispatchAction(action, complete);
+    }
     loger.log('action', -1);
   }
   export function actionPath(act: IAction) { return act.moduleId + '/' + act.actionId; }
@@ -35,7 +37,7 @@ namespace flux {
       if (!st.ids) throw 'Not smart state';
       loger.log('>new ' + this.id + ', initState=' + JSON.stringify(st, (key, value) => key == 'ids' ? undefined : value));
       //if (!st.ids) st.ids = [];
-      if (st.ids.indexOf(this.id)<0) st.ids.push(this.id);
+      if (st.ids.indexOf(this.id) < 0) st.ids.push(this.id);
     }
     //context: config.IObj;
     props: T; id: string;
@@ -86,24 +88,29 @@ namespace flux {
       var act = rec.actions.splice(0, 1);
       trigger(act[0], act => setTimeout(() => doPlay(), interval));
     };
-    refreshRoot(rec.initStatus);
+    state = rec.initStatus;
+    refreshRoot();
     setTimeout(() => doPlay(), interval);
   }
-  export function resetState() {
-    if (!recording) return;
-    recording.actions = [];
-    refreshRoot(recording.initStatus);
-  }
+  //export function resetState() {
+  //  if (!recording) return;
+  //  recording.actions = [];
+  //  refreshRoot(recording.initStatus);
+  //}
 
   //****************  WEB START
-  export function initApplication(dom: Element, webState: IAppState, root: () => JSX.Element) {
-    refreshRoot = st => {
-      state = st;
+  export function initApplication(dom: Element, root: () => JSX.Element) {
+    refreshRoot = () => {
       ReactDOM.unmountComponentAtNode(dom);
       ReactDOM.render(root(), dom);
     }
-    refreshRoot(webState);
-  } var refreshRoot: (webState: IAppState) => void;
+    config.callStateCreated();
+    refreshRoot();
+    router.listenHashChange();
+  } var refreshRoot: () => void;
+
+
+
   export interface IAppState { }
 
   //************ MODULE
@@ -119,7 +126,7 @@ namespace flux {
   //**************** PRIVATE
   interface IRecording { initStatus: IAppState; actions: Array<IAction>; }
   var recording: IRecording;
-  var state: IAppState;
+  var state: IAppState = {};
   config.cfg.data.flux = { trigger: trigger };
   //var webRender: (parentId: string) => JSX.Element;
   var allModules: { [id: string]: Dispatcher; } = {};

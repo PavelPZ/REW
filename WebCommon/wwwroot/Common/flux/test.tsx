@@ -130,7 +130,6 @@ namespace fluxTest {
 
   //************* WHOLE APP
   //** inicializace aplikace x
-  config.cfg.initProc(config.initProcPhase.start);
 
   new mod1();
 
@@ -139,22 +138,20 @@ namespace fluxTest {
     place: pid => <Switcher  key={flux.cnt() } initState={flux.getState().fluxTestPlacer} parentId={pid} id='fluxTest.Switcher'/>
   }}/>;
 
-  var state = {
-    fluxTest: {
-      ids: [],
-      clickTitle: 'Click',
-      hello1: { actName: 'John', ids: [] },
-      hello2: { actName: 'Marthy', ids: [] }
-    },
-    fluxTestPlacer: {
-      ids: [],
-      isApp: false,
-      hello: { ids: [], actName: 'John' },
-      //hello: { actName: 'hello', ids: [] }
-    },
-    fluxTestSwitcher: { ids: [], caseId: 'place' }
+  var st = flux.getState();
+  st.fluxTest = {
+    ids: [],
+    clickTitle: 'Click',
+    hello1: { actName: 'John', ids: [] },
+    hello2: { actName: 'Marthy', ids: [] }
   };
+  st.fluxTestPlacer = {
+    ids: [],
+    isApp: false,
+    hello: { ids: [], actName: 'John' },
+  };
+  st.fluxTestSwitcher = { ids: [], caseId: 'place' };
 
-  flux.initApplication(document.getElementById('app'), state, root);
+  flux.initApplication(document.getElementById('app'), root);
 
 }

@@ -42,7 +42,6 @@ namespace valTest {
 
   //************* WHOLE APP
   //** inicializace aplikace
-  config.cfg.initProc(config.initProcPhase.start);
 
   new valTest();
 
@@ -56,8 +55,8 @@ namespace valTest {
       <p><validation.Input title='???'/></p>
     </ValTest>;
 
-  var state: flux.IAppState = { valTest: { ids: [] } };
+  flux.getState().valTest = { ids: [] };
 
-  flux.initApplication(document.getElementById('app'), state, root);
+  flux.initApplication(document.getElementById('app'), root);
 
 }

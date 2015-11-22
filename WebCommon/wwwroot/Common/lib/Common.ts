@@ -9,25 +9,23 @@
 namespace config {
 
   export interface IData { }
-  export interface IObj { data: IData, initProc: (phase: initProcPhase) => void }
-  export var cfg: IObj = {
-    data: <any>{}, initProc: phase => {
-      //1. merge webconfig s cfg
-      utils.assignDeep(webConfig, cfg.data);
-      //2. init apps
-      for (var p in cfg.data) {
-        var modCfg = cfg.data[p];
-        var initProc = modCfg[initProcName] as initProcType;
-        if (!initProc || !utils.isFunction(initProc)) continue;
-        initProc(phase);
-      }
-    }
-  };
+  export interface IObj { data: IData }
+  export var cfg: IObj = { data: <any>{} };
+  export interface IInitProcConfig {
+    stateCreated?: () => void 
+  }
   export var ctxPropName = 'data';
   export var webConfig: IData;
-  export const initProcName = 'initProc';
-  export const enum initProcPhase {start}
-  export type initProcType = (phase: initProcPhase) => void;
+
+  export function callStateCreated() {
+    for (var p in cfg.data) {
+      var ic: IInitProcConfig = cfg.data[p];
+      if (ic.stateCreated) ic.stateCreated();
+    }
+  }
+  //export const initProcName = 'initProc';
+  //export const enum initProcPhase {start, stateCreated}
+  //export type initProcType = (phase: initProcPhase) => void;
 }
 
 namespace loger {
@@ -59,7 +57,7 @@ namespace utils {
     return false;
   }
   export function isObject(value) { return value !== null && typeof value === 'object'; }
-  export function isFunction(value) { return typeof value === 'export function'; }
+  export function isFunction(value) { return typeof value === 'function'; }
 
   export function isNaN(obj): boolean { return isNumber(obj) && obj !== +obj; }
   export function toNumber(par: any, def: number = 0): number { var res = parseFloat(par); return isNaN(res) ? 0 : res; }

@@ -14,7 +14,6 @@ namespace routerTest {
 
   export function testRouterLow() {
     //** inicializace aplikace
-    config.cfg.initProc(config.initProcPhase.start);
 
     //*** low level UrlMatcher test
     var urlMatcher = new uiRouter.UrlMatcher('/user/:id/name/:name?opt1&opt2');

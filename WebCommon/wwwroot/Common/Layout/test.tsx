@@ -35,8 +35,7 @@ namespace layoutTest {
       switch (action.actionId) {
         case 'r-default':
           var act = action as router.IAction<ITestModuleRoutePar>;
-          layout.changeScene(action,
-            act.par.defaultScene ? layout.sceneDefault : sceneSecond,
+          layout.changeScene(act.par.defaultScene ? layout.sceneDefault : sceneSecond,
             { ids: [], placeId: layout.placeContent, rendererId: act.par.defaultPlaces ? 'cont-cont' : 'cont-panel' },
             { ids: [], placeId: placeOther, rendererId: act.par.defaultPlaces ? 'other-cont' : 'other-panel' }
           );
@@ -90,7 +89,7 @@ namespace layoutTest {
       <a href={'#' + namedState.default.getHash({ defaultScene: true, defaultPlaces: false }) }>Default Scene, other places</a> |
       <a href={'#' + namedState.default.getHash({ defaultScene: false, defaultPlaces: false }) }>Other Scene, other places</a> |
 
-      <layout.Scene initState={layout.sceneState() } parentId={''} id='scene' cases={{
+      <layout.Scene initState={flux.getState().layout.scene } parentId={''} id='scene' cases={{
 
         [layout.sceneDefault]: pid => <div key={flux.cnt() }>
         <h1>Scene: {layout.sceneDefault}</h1>
@@ -112,12 +111,8 @@ namespace layoutTest {
       }}/>
     </div>;
 
-  var rootState: flux.IAppState = {
-      layoutTest: {},
-  };
+  flux.getState().layoutTest = {};
 
-  flux.initApplication(document.getElementById('app'), rootState, rootElement);
+  flux.initApplication(document.getElementById('app'), rootElement);
 
-  //Start listening
-  setTimeout(() => router.listenHashChange());
 }

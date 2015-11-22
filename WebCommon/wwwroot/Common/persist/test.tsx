@@ -64,7 +64,6 @@ namespace persistTest {
 
   //************* WHOLE APP
   //** inicializace aplikace
-  config.cfg.initProc(config.initProcPhase.start);
 
   //** definice DISPATCH modulu
   new persistTest();
@@ -75,7 +74,6 @@ namespace persistTest {
     namedState.default = new router.Route<IPersistTestModulePar>(persistTest.moduleId, 'default', '/persistTest-home')
   );
   router.setHome<IPersistTestModulePar>(namedState.default, { id: 1, opt1: '' });
-  setTimeout(() => router.listenHashChange());
 
   //** SCENE configuration
   layout.registerRenderer(layout.placeContent, persistTest.plDefaultContentId, parent => <PersistTest initState={flux.getState().persistTest } parentId={parent} id='PersistTest.persistTest'/>);
@@ -83,7 +81,7 @@ namespace persistTest {
   var Header: React.StatelessComponent<{ name: string }> = (p, ctx) => <h3>{p.name}</h3>;
 
   //** STATE initialization
-  var root = () => <layout.Scene key={flux.cnt() } initState={layout.sceneState() } parentId={''} id='layout.Scene' cases={{
+  var root = () => <layout.Scene key={flux.cnt() } initState={flux.getState().layout.scene } parentId={''} id='layout.Scene' cases={{
     [layout.sceneDefault]: pid => <div>
         {Header({ name: 'Stateless function call' }) }
         <layout.ScenePlace initState={layout.scenePlaceState() } parentId={pid} id='layout.ScenePlace'/>
@@ -91,11 +89,8 @@ namespace persistTest {
       </div>
   }}/>;
 
-  var state: flux.IAppState = {
-      persistTest: { ids: [] },
-      layout: {}
-  };
+  flux.getState().persistTest = { ids: [] };
 
-  flux.initApplication(document.getElementById('app'), state, root);
+  flux.initApplication(document.getElementById('app'), root);
 
 }

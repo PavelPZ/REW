@@ -60,7 +60,7 @@ namespace router {
     if (!config.cfg.data.flux || !config.cfg.data.flux.trigger) return;
     var url = toUrl(hashStr || '');
     if (!url) url = homeUrl;
-    if (!url) throw 'Missing uiRouter.States.setDefault call';
+    if (!url) return; //throw 'Missing uiRouter.States.setDefault call';
 
     var act = url.state.createAction(url.par);
     config.cfg.data.flux.trigger(act);

@@ -38,7 +38,7 @@ namespace xxx {
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
       switch (action.actionId) {
         case 'r-default': //
-          layout.changeScene(action, layout.sceneDefault, xxx.plDefaultContentId);
+          layout.changeScene(layout.sceneDefault, xxx.plDefaultContentId);
           break;
         case 'click':
           alert('click');
@@ -65,7 +65,6 @@ namespace xxx {
 
   //************* WHOLE APP
   //** inicializace aplikace
-  config.cfg.initProc(config.initProcPhase.start);
 
   //** registrace DISPATCH modulu (modul se self-registruje v constructoru)
   new xxx();
@@ -76,8 +75,7 @@ namespace xxx {
     namedState.default = new router.Route<IXxxModulePar>(xxx.moduleId, 'r-default', '/xxx-home') //deklarace default named state
   );
   router.setHome<IXxxModulePar>(namedState.default, { id: 1, opt1: '' }); //definice 
-  //start listen to hashChange
-  setTimeout(() => router.listenHashChange());
+
 
   //** SCENE configuration
   layout.registerRenderer(
@@ -87,7 +85,7 @@ namespace xxx {
 
   var Header: React.StatelessComponent<{ name: string }> = (p, ctx) => <h3>{p.name}</h3>;
 
-  var root = () => <layout.Scene key={flux.cnt() } initState={layout.sceneState() } parentId={''} id='layout.Scene' cases={{
+  var root = () => <layout.Scene key={flux.cnt() } initState={flux.getState().layout.scene } parentId={''} id='layout.Scene' cases={{
     [layout.sceneDefault]: pid => <div>
         {Header({ name: 'Stateless function call' }) }
         <layout.ScenePlace initState={layout.scenePlaceState() } parentId={pid} id='layout.ScenePlace'/>
@@ -95,10 +93,7 @@ namespace xxx {
       </div>
   }}/>;
 
-  var state: flux.IAppState = {
-      xxx: { ids: [] },
-      layout: {}
-  };
+  flux.getState().xxx = { ids: [] };
 
-  flux.initApplication(document.getElementById('app'), state, root);
+  flux.initApplication(document.getElementById('app'), root);
 }
