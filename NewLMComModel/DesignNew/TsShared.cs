@@ -29,6 +29,7 @@ namespace servConfig {
 
   public enum oAuthProviders { no = 0, google = 1, facebook = 2, microsoft = 3, }
   public class oAuthConfig {
+    public string loginUrl; //plna URL k oAuth login strance
     public oAuthItem[] items; //musi byt pevne poradi, napr. items[2] je facebook
   }
   public class oAuthItem {
@@ -49,8 +50,9 @@ public static class Cfg {
     js = js.Substring(idx1, idx2 - idx1);
     cfg = JsonConvert.DeserializeObject<servConfig.Root>(js);
   }
-  public static string toJS() {
+  public static string toJS(string loginUrl) {
     var copy = JsonConvert.DeserializeObject<servConfig.Root>(JsonConvert.SerializeObject(cfg));
+    copy.oAuth.loginUrl = loginUrl;
     copy.azure.connectionString = null;
     return JsonConvert.SerializeObject(copy);
   }

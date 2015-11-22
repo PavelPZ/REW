@@ -6,10 +6,10 @@
   //do stranky se vstupuje ve dvou kontextech: pri startu loginu a po navratu z OAuth providera 
   export function loginPageEnter() {
     try {
-      let authResponse = getAuthResponse();
+      var inputParStr = window.location.hash; window.location.hash = '';
+      let authResponse = getAuthResponse(inputParStr);
       //neni navrat z Provider.authrequest => start loginu. V hash je zakodovan IInputPar
       if (!authResponse) {
-        var inputParStr = window.location.hash; window.location.hash = '';
         if (inputParStr && inputParStr.length > 1 && inputParStr[0] == '#') inputParStr = inputParStr.substr(1);
         let inputPar = utils.urlParseQuery<IInputPar>(inputParStr);
         if (!inputPar || !inputPar.client_id || !inputPar.providerId) {
@@ -17,6 +17,7 @@
           inputPar = { client_id: servCfg.oAuth.items[servConfig.oAuthProviders.facebook].clientId /*'765138080284696', id pro http://localhost:56264, pavel.zika@langmaster.com, edurom1*/, returnUrl: null, providerId: servConfig.oAuthProviders.facebook };
           //non DEBUG: throw '!inputPar || !inputPar.client_id || !inputPar.providerId: ' + inputParStr;
         }
+        if (typeof inputPar.providerId == 'string') inputPar.providerId = parseInt(inputPar.providerId as any);
         let provider = getProvider(inputPar.providerId);
         provider.authrequest(inputPar);
         return;
@@ -130,14 +131,13 @@
     }
   }
 
-  function getAuthResponse(): IAuthResponse {
+  function getAuthResponse(hash:string): IAuthResponse {
     //check and normalize hash
-    var h = window.location.hash; window.location.hash = '';
-    if (!h) return null;
-    while (h.indexOf('#') >= 0) h = h.substring(h.indexOf('#') + 1);
-    if (h.indexOf('/') >= 0) h = h.substring(1);
-    if (h.indexOf("access_token=") === -1) return null;
-    return utils.urlParseQuery<IAuthResponse>(h);
+    if (!hash) return null;
+    while (hash.indexOf('#') >= 0) hash = hash.substring(hash.indexOf('#') + 1);
+    if (hash.indexOf('/') >= 0) hash = hash.substring(1);
+    if (hash.indexOf("access_token=") === -1) return null;
+    return utils.urlParseQuery<IAuthResponse>(hash);
   }
 
   function getProfileFromProvider(provider: Provider, accessToken: string, completed: (par: IOutputPar) => void) {
@@ -162,7 +162,7 @@
       case servConfig.oAuthProviders.google: return new GoogleProvider(providerId);
       case servConfig.oAuthProviders.microsoft: return new MicrosoftProvider(providerId);
       case servConfig.oAuthProviders.facebook: return new FacebookProvider(providerId);
-      default: throw 'not implemented';
+      default: throw 'oauth.getProvider: wrong providerId';
     }
   }
 

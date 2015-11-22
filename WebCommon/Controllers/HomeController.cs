@@ -34,15 +34,15 @@ namespace WebApp {
       //var hlp = Microsoft.AspNet.Http.Extensions.UriHelper.GetDisplayUrl(HttpContext.Request);
       //var rq = HttpContext.Request; 
       //var url = Microsoft.AspNet.Http.Extensions.UriHelper.Encode(rq.Scheme, rq.Host, rq.PathBase, rq.Path, rq.QueryString);
-      return View("Web4Index", new ModelWeb4(new HomeViewPars(HttpContext, servConfig.Apps.web4)));
+      return View("Web4Index", new ModelWeb4(HttpContext, new HomeViewPars(HttpContext, servConfig.Apps.web4)));
     }
     [Route(webTestMask)]
     public IActionResult CommonTest(string appPart) {
-      return View("WebTest", new ModelCommonTest(new HomeViewPars(HttpContext, servConfig.Apps.web) { appPart = appPart}));
+      return View("WebTest", new ModelCommonTest(HttpContext, new HomeViewPars(HttpContext, servConfig.Apps.web) { appPart = appPart}));
     }
     [Route(oAuthMask)]
     public IActionResult OAuth() {
-      return View("oAuth", new ModelOAuth(new HomeViewPars(HttpContext, servConfig.Apps.oauth)));
+      return View("oAuth", new ModelOAuth(HttpContext, new HomeViewPars(HttpContext, servConfig.Apps.oauth)));
     }
     [Route("web")]
     public IActionResult Common() {
@@ -52,7 +52,7 @@ namespace WebApp {
     public IActionResult Empty() {
       return Cfg.cfg.defaultPars.app == servConfig.Apps.web
         ? View("WebIndex")
-        : View("Web4Index", new ModelWeb4(new HomeViewPars(HttpContext, servConfig.Apps.web4)));
+        : View("Web4Index", new ModelWeb4(HttpContext, new HomeViewPars(HttpContext, servConfig.Apps.web4)));
     }
 
   }
@@ -148,7 +148,7 @@ namespace WebApp {
   }
 
   public class ModelLow {
-    public ModelLow(HomeViewPars pars) {
+    public ModelLow(HttpContext ctx, HomeViewPars pars) {
       var csss = FileSources.getUrls(FileSources.indexPartFilter(false, pars.app, pars.skin, pars.brand, pars.lang, !pars.debug));
       css = urlsToTags(csss, false);
       var jss = FileSources.getUrls(FileSources.indexPartFilter(true, pars.app, pars.skin, pars.brand, pars.lang, !pars.debug));
@@ -170,25 +170,27 @@ namespace WebApp {
   }
 
   public abstract class ModelCommonCfg : ModelLow {
-    public ModelCommonCfg(HomeViewPars pars) : base(pars) {
-      cfg = "<script type='text/javascript'>var servCfg = " + Cfg.toJS() + ";</script>";
+    public ModelCommonCfg(HttpContext ctx, HomeViewPars pars) : base(ctx, pars) {
+      var rq = ctx.Request;
+      var loginUrl = Microsoft.AspNet.Http.Extensions.UriHelper.Encode(rq.Scheme, rq.Host, rq.PathBase, new PathString("/" + HomeController.oAuthMask));
+      cfg = "<script type='text/javascript'>var servCfg = " + Cfg.toJS(loginUrl) + ";</script>";
     }
     public string cfg;
   }
 
   public class ModelOAuth : ModelCommonCfg {
-    public ModelOAuth(HomeViewPars pars) : base(pars) { }
+    public ModelOAuth(HttpContext ctx, HomeViewPars pars) : base(ctx, pars) { }
   }
 
   public class ModelCommonTest : ModelCommonCfg {
-    public ModelCommonTest(HomeViewPars pars) : base(pars) {
+    public ModelCommonTest(HttpContext ctx, HomeViewPars pars) : base(ctx, pars) {
       startJS = "<script type='text/javascript' src='~/common/" + pars.appPart + "/test.js'></script>";
     }
     public string startJS;
   }
 
   public class ModelWeb4 : ModelLow {
-    public ModelWeb4(HomeViewPars pars) : base(pars) {
+    public ModelWeb4(HttpContext ctx, HomeViewPars pars) : base(ctx, pars) {
       var cfgObj = new schools.config() {
         blobJS = Cfg.cfg.azure.blobJS, //URL s JS se cvicenimi
         blobMM = Cfg.cfg.azure.blobMM, //URL s obrazky, zvuky, videa, ...

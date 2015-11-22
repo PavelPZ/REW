@@ -1,8 +1,7 @@
-﻿namespace config {
-  export interface IData {
-  }
-  cfg.data.flux = {} as any;
-}
+﻿//namespace config {
+//  export interface IData {
+//  }
+//}
 namespace flux {  
 
   //**************** getState, trigger

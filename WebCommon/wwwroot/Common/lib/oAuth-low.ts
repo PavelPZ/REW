@@ -7,15 +7,15 @@
     microsoft,
   }
 
-  export function loginNavigate(loginHtmlUrl: string, par: IInputPar) {
-    var url = loginHtmlUrl + '#' + utils.urlStringifyQuery(par);
-    location.href = url;
+  export function loginNavigate(loginHtmlUrl: string, par: IInputPar): string {
+    return loginHtmlUrl + '#' + utils.urlStringifyQuery(par);
   }
 
   export function loginReturn(returnUrl: string, par: IOutputPar) {
     var parStr = encodeURIComponent(JSON.stringify(par));
-    var parts = returnUrl.split(outuptParPlace); if (parts.length != 2) throw 'parts.length != 2';
-    var url = parts[0] + parStr + parts[1];
+    //var parts = returnUrl.split(outuptParPlace); if (parts.length != 2) throw 'parts.length != 2';
+    //var url = parts[0] + parStr + parts[1];
+    var url = returnUrl + parStr;
     location.href = url;
   }
 
@@ -34,7 +34,7 @@
     firstName: string;
     lastName: string;
   }
-  export const outuptParPlace = '#$#$#';
+  //export const outuptParPlace = '#$#$#';
 
 }
 
@@ -58,7 +58,7 @@ namespace utils {
   export function urlStringifyQuery(query: Object): string {
     var res = '';
     for (var k in query) {
-      res += (res=='' ? '' : '&') + encodeURIComponent(k) + '=' + encodeURIComponent(query[k]);
+      res += (res == '' ? '' : '&') + encodeURIComponent(k) + '=' + encodeURIComponent(query[k]);
     }
     return res;
   }

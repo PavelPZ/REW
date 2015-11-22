@@ -146,6 +146,7 @@ export interface ViewPars {
   swFromFileSystem: boolean;
 }
 export interface oAuthConfig {
+  loginUrl: string;
   items: Array<oAuthItem>;
 }
 export interface oAuthItem {

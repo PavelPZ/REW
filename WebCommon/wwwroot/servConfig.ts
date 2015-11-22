@@ -18,6 +18,7 @@
     appPart: null,
   },
   oAuth: {
+    loginUrl:'',
     items: [
       null,
       { clientId: '' }, //google

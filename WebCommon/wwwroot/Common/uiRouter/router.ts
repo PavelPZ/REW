@@ -63,10 +63,12 @@ namespace router {
 
   //*** onHashChange
   function onHashChange(hashStr?: string) {
+    //hack pro navrat z oAuth loginu
+    if (auth.returnedFromOAuth(window.location.hash)) return;
+    //trigger
     var url = toUrl(hashStr || '');
     if (!url) url = homeUrl;
     if (!url) return; //throw 'Missing uiRouter.States.setDefault call';
-
     var act = url.route.createAction(url.par);
     flux.trigger(act);
   }
