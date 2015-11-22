@@ -15,7 +15,7 @@ namespace router {
       default: router.Route<persistTest.IPersistTestModulePar>; //uiRouter.State hlavni stranky aplikace
     }
   };
-  routes.persistTest = {} as any;
+  named.persistTest = {} as any;
 }
 
 namespace flux {
@@ -36,9 +36,9 @@ namespace persistTest {
     }
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
       switch (action.actionId) {
-        case router.routerActionId:
-          layout.changeScene(action, layout.sceneDefault, persistTest.plDefaultContentId);
-          break;
+        //case router.routerActionId:
+        //  layout.changeScene(action, layout.sceneDefault, persistTest.plDefaultContentId);
+        //  break;
         case 'click':
           alert('click');
           break;
@@ -70,9 +70,9 @@ namespace persistTest {
   new persistTest();
 
   //** ROUTE configuration
-  export var namedState = router.routes.persistTest; //pojmenovane stavy
+  export var namedState = router.named.persistTest; //pojmenovane stavy
   router.init(
-    namedState.default = new router.Route<IPersistTestModulePar>(persistTest.moduleId, '/persistTest-home')
+    namedState.default = new router.Route<IPersistTestModulePar>(persistTest.moduleId, 'default', '/persistTest-home')
   );
   router.setHome<IPersistTestModulePar>(namedState.default, { id: 1, opt1: '' });
   setTimeout(() => router.listenHashChange());

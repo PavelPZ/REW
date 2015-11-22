@@ -4,17 +4,17 @@
       root: router.Route<router.IPar>; 
     }
   };
-  routes.layoutTest = {} as any;
+  named.layoutTest = {} as any;
 }
 
 
 namespace login {
 
-  export var namedState = router.routes.login; //pojmenovane stavy
+  export var namedState = router.named.login; //pojmenovane stavy
   router.init(
-    namedState.root = new router.Route<router.IPar>(moduleId, '/login',
-      new router.Route<ILoginPar>(moduleId, '/login'),
-      new router.Route<ILoginPar>(moduleId, '/lm-login')
+    namedState.root = new router.Route<router.IPar>(moduleId, '/login', 'root',
+      new router.Route<ILoginPar>(moduleId, 'login', '/login'),
+      new router.Route<ILoginPar>(moduleId, 'lmlogin', '/lm-login')
     )
   );
 
@@ -27,7 +27,7 @@ namespace login {
     constructor() { super(moduleId); }
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
       switch (action.actionId) {
-        case 'login': doLogin(action as ILoginAction); break;
+        //case 'login': doLogin(action as ILoginAction); break;
         case 'logout': doLogout(action as ILogoutAction); break;
         case 'editProfile': doEditProfile(action as IEditProfileAction); break;
       }
@@ -36,7 +36,6 @@ namespace login {
   var moduleId = 'login';
 
   //*** LOGIN
-  export function loginAction(): ILoginAction { return { moduleId: moduleId, actionId: 'login', x:0 }; }
   export interface ILoginPar extends router.IPar { x: number; }
   export type ILoginAction = router.IAction<ILoginPar>;
   function doLogin(act: ILoginPar) {

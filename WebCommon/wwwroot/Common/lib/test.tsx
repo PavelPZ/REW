@@ -16,7 +16,7 @@ namespace router {
       default: router.Route<xxx.IXxxModulePar>; 
     }
   };
-  routes.xxx = {} as any; //vytvoreni objektu s deklaraci
+  named.xxx = {} as any; //vytvoreni objektu s deklaraci
 }
 
 namespace flux {
@@ -37,7 +37,7 @@ namespace xxx {
     }
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
       switch (action.actionId) {
-        case router.routerActionId: //
+        case 'r-default': //
           layout.changeScene(action, layout.sceneDefault, xxx.plDefaultContentId);
           break;
         case 'click':
@@ -71,9 +71,9 @@ namespace xxx {
   new xxx();
 
   //** ROUTE configuration
-  export var namedState = router.routes.xxx; //pojmenovane stavy
+  export var namedState = router.named.xxx; //pojmenovane stavy
   router.init(
-    namedState.default = new router.Route<IXxxModulePar>(xxx.moduleId, '/xxx-home') //deklarace default named state
+    namedState.default = new router.Route<IXxxModulePar>(xxx.moduleId, 'r-default', '/xxx-home') //deklarace default named state
   );
   router.setHome<IXxxModulePar>(namedState.default, { id: 1, opt1: '' }); //definice 
   //start listen to hashChange

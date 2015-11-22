@@ -15,7 +15,7 @@ namespace router {
       default: router.Route<layoutTest.ITestModuleRoutePar>; //uiRouter.State hlavni stranky aplikace
     }
   };
-  routes.layoutTest = {} as any;
+  named.layoutTest = {} as any;
 }
 
 namespace flux {
@@ -33,12 +33,12 @@ namespace layoutTest {
     }
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
       switch (action.actionId) {
-        case router.routerActionId:
+        case 'r-default':
           var act = action as router.IAction<ITestModuleRoutePar>;
           layout.changeScene(action,
-            act.defaultScene ? layout.sceneDefault : sceneSecond,
-            { ids: [], placeId: layout.placeContent, rendererId: act.defaultPlaces ? 'cont-cont' : 'cont-panel' },
-            { ids: [], placeId: placeOther, rendererId: act.defaultPlaces ? 'other-cont' : 'other-panel' }
+            act.par.defaultScene ? layout.sceneDefault : sceneSecond,
+            { ids: [], placeId: layout.placeContent, rendererId: act.par.defaultPlaces ? 'cont-cont' : 'cont-panel' },
+            { ids: [], placeId: placeOther, rendererId: act.par.defaultPlaces ? 'other-cont' : 'other-panel' }
           );
           break;
         case 'click':
@@ -57,7 +57,7 @@ namespace layoutTest {
   new layoutTest();
 
   //** ROUTE configuration
-  export var namedState = router.routes.layoutTest; //pojmenovane stavy
+  export var namedState = router.named.layoutTest; //pojmenovane stavy
 
   //
   export interface ITestModuleRoutePar extends router.IPar {
@@ -66,7 +66,7 @@ namespace layoutTest {
   }
 
   router.init(
-    namedState.default = new router.Route<ITestModuleRoutePar>(layoutTest.moduleId, '/layoutTest/:defaultScene/:defaultPlaces').
+    namedState.default = new router.Route<ITestModuleRoutePar>(layoutTest.moduleId, 'r-default', '/layoutTest/:defaultScene/:defaultPlaces').
       finishStatePar(st => { st.defaultPlaces = utils.toBoolean(st.defaultPlaces); st.defaultScene = utils.toBoolean(st.defaultScene); })
   );
   router.setHome<ITestModuleRoutePar>(namedState.default, { defaultScene: true, defaultPlaces: true });

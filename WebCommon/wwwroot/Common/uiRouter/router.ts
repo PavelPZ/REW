@@ -1,4 +1,4 @@
-﻿declare namespace router {
+﻿declare namespace uiRouter {
   class UrlMatcher {
     constructor(pattern: string);
     exec<T extends router.IPar>(url: string, query?: utils.TDirectory<string>): T;
@@ -20,27 +20,26 @@ namespace router {
   export var routerActionId = 'router-action'; //actionId pro router action
   //navazan routeru na HASH change notifikaci
   export function listenHashChange() {
-    window.addEventListener('hashchange', () => dispatch());
-    dispatch();
+    window.addEventListener('hashchange', () => onHashChange());
+    onHashChange();
   }
 
   //NAVIGATE
   export function getHash(src: IUrl<any>): string { return src.state.getHash(src.par); }
   export function navigate(src: IUrl<any>) { src.state.navigate(src.par); }
   export function goHome() { navigate(homeUrl); }
-  export interface IUrl<T extends IPar> { state: Route<T>; par: T; }
+
 
   //pojmenovane globalne dostupne a typed router stavy
-  export var routes: INamedRoutes = <any>{};
+  export var named: INamedRoutes = <any>{};
   export interface INamedRoutes { }; //rozsirovatelny interface s name router states
 
-  //uiRouter config
-  //export interface config { } //
-
+  //objektova reprezentace HASH casti URL
+  export interface IUrl<T extends IPar> { state: Route<T>; par: T; }
   //predchudce vsech router state parametru
   export interface IPar { }
   //predchudce vsech router akci
-  export type IAction<T extends IPar> = flux.IAction & T;
+  export interface IAction<T extends IPar> extends flux.IAction { par: T; }
   export type IActionType = IAction<IPar>;
 
   //*** inicilizace 
@@ -50,9 +49,9 @@ namespace router {
   export function setHome<T extends IPar>(state: Route<T>, par: T) { homeUrl = { state: state, par: par } } //definice difotniho stavu
 
   //*** DISPATCH
-  export function dispatch(hashStr?: string) {
+  export function onHashChange(hashStr?: string) {
     if (!config.cfg.data.flux || !config.cfg.data.flux.trigger) return;
-    var url = toUrl(hashStr);
+    var url = toUrl(hashStr || '');
     if (!url) url = homeUrl;
     if (!url) throw 'Missing uiRouter.States.setDefault call';
 
@@ -66,7 +65,7 @@ namespace router {
     if (typeof par === 'string') q = toQuery(par); else q = par as IQuery;
     //angular uiRouter match
     var res: IUrl<T> = null;
-    states.find((st: Route<T>) => {
+    routes.find((st: Route<T>) => {
       var par = st.parseHash(q) as T; if (!par) return false;
       res = { par: par, state: st };
       return true;
@@ -91,20 +90,21 @@ namespace router {
   export interface IQuery { path: string; query: utils.TDirectory<string>; }
 
   //**** locals
-  var states: Array<RouteType> = [];
+  var routes: Array<RouteType> = [];
+  var routeDir: { [name: string]: RouteType; } = {};
   //var dir: { [name: string]: State<any>; } = {};
   var homeUrl: IUrl<any>;
-  function add(st: RouteType) { states.push(st); /*dir[st.name] = st;*/ }
 
   //**** ROUTE
   export class Route<T extends IPar> {
 
-    constructor(public name: string, public pattern: string, ...childs: Array<RouteType>) {
+    constructor(public moduleId: string, public actionId: string, public pattern: string, ...childs: Array<RouteType>) {
       if (childs) childs.forEach(ch => ch.afterConstructor(this));
     }
 
     getHash(par: T): string { return this.matcher.format(par); }
     navigate(par: T) { window.location.href = this.getHash(par); }
+    globalId(): string { return this.moduleId + '/' + this.actionId; }
 
     finishStatePar(finishHash: (h: T) => void): Route<T> { this.finishHash = finishHash; return this; }
 
@@ -113,22 +113,24 @@ namespace router {
       if (res && this.finishHash) this.finishHash(res);
       return res;
     }
-    createAction(par: T): flux.IAction {
-      var res: flux.IAction = { moduleId: this.name, actionId: routerActionId };
-      return Object.assign(res, par);
+    createAction(par: T): IAction<T> {
+      return { moduleId: this.moduleId, actionId: this.actionId, par: par };
     }
 
     afterConstructor(parent: RouteType) {
       if (parent) {
         this.parent = parent;
         this.pattern = parent.pattern + this.pattern;
-        this.name = parent.name + '.' + this.name;
+        this.actionId = parent.actionId + '.' + this.actionId;
       }
-      this.matcher = new UrlMatcher(this.pattern);
-      add(this);
+      this.matcher = new uiRouter.UrlMatcher(this.pattern);
+      //self registrace
+      var nm = this.globalId();
+      if (routeDir[nm]) throw `Route ${nm} already exists`;
+      routeDir[nm] = this; routes.push(this);
     }
     private parent: RouteType;
-    private matcher: UrlMatcher;
+    private matcher: uiRouter.UrlMatcher;
     finishHash: (h: T) => void;
     //onEnter: (from: RouteType) => void;
     //onLeave: (to: RouteType) => void;
@@ -144,7 +146,7 @@ namespace router {
   //  needsAuthProc?: (par: T) => boolean;
   //}
 
-  new $UrlMatcherFactory();
+  new uiRouter.$UrlMatcherFactory();
 
 }
 

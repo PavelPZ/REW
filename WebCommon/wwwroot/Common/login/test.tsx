@@ -15,7 +15,7 @@ namespace router {
       default: router.Route<loginTest.IDefaultPar>; //uiRouter.State hlavni stranky aplikace 
     }
   };
-  routes.loginTest = {} as any;
+  named.loginTest = {} as any;
 }
 
 namespace flux {
@@ -26,7 +26,7 @@ namespace flux {
 
 namespace loginTest {
   //***** ROUTE init
-  var namedState = router.routes.loginTest; //pojmenovane stavy
+  var namedState = router.named.loginTest; //pojmenovane stavy
 
   export interface IDefaultPar extends router.IPar { id: number; opt1: string; } //jeden z route PAR
 
@@ -37,17 +37,17 @@ namespace loginTest {
     constructor() {
       super(loginTest.moduleId);
     }
-    dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
-      switch (action.actionId) {
-        case router.routerActionId:
-          throw 'todo';
-          break;
-        case 'click':
-          alert('click');
-          break;
-      }
-      if (complete) complete(action);
-    }
+    //dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
+    //  switch (action.actionId) {
+    //    case router.routerActionId:
+    //      throw 'todo';
+    //      break;
+    //    case 'click':
+    //      alert('click');
+    //      break;
+    //  }
+    //  if (complete) complete(action);
+    //}
     static moduleId = 'loginTest';
     static createAppClickAction(): ILoginTestClickAction { return { moduleId: loginTest.moduleId, actionId: 'click' }; }   
   }
@@ -85,7 +85,7 @@ namespace loginTest {
   );
   //(web) => <LoginTest initState={flux.getState().loginTest } parent={web} id='LoginTest.loginTest'/>
   router.init(
-    namedState.default = new router.Route<IDefaultPar>(loginTest.moduleId, '/login-test-home')
+    namedState.default = new router.Route<IDefaultPar>(loginTest.moduleId, 'default', '/login-test-home')
   );
   router.setHome<IDefaultPar>(namedState.default, { id: 1, opt1: '' });
 
