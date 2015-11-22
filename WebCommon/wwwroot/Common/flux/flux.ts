@@ -1,24 +1,23 @@
 ﻿namespace config {
   export interface IData {
-    flux?: {
-      trigger: (action: flux.IAction, completed?: (action: flux.IAction) => void) => void;
-    };
   }
+  cfg.data.flux = {} as any;
 }
 namespace flux {  
 
   //**************** getState, trigger
   export function getState(): IAppState { return state; }
-  export function trigger(action: IAction, complete?: (action: IAction) => void) {
+  export function trigger(action: IAction, complete?: triggerCompleted) {
     if (!action || !action.moduleId || !action.actionId) throw '!action || !action.type';
     if (recording) recording.actions.push(action);
     loger.log('ACTION ' + JSON.stringify(action), 1);
-    if (!router.tryDispatch(action)) {
+    if (!router.tryDispatch(action, complete)) {
       var res = allModules[action.moduleId]; if (!res) throw 'Cannot find module ' + action.moduleId;
       res.dispatchAction(action, complete);
     }
     loger.log('action', -1);
   }
+  export type triggerCompleted = (action: IAction) => void;
   export function actionPath(act: IAction) { return act.moduleId + '/' + act.actionId; }
   export function cnt(): string { return (_cnt++).toString(); } var _cnt = 0;
 
@@ -127,7 +126,6 @@ namespace flux {
   interface IRecording { initStatus: IAppState; actions: Array<IAction>; }
   var recording: IRecording;
   var state: IAppState = {};
-  config.cfg.data.flux = { trigger: trigger };
   //var webRender: (parentId: string) => JSX.Element;
   var allModules: { [id: string]: Dispatcher; } = {};
   var allComponents: { [id: string]: SmartComponent<any, any>; } = {};

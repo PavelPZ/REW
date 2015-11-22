@@ -17,17 +17,23 @@ namespace config {
 
 namespace router {
 
-  export var routerActionId = 'router-action'; //actionId pro router action
+  export var routerActionId = 'router-action'; //actionId pro router action 
   //navazan routeru na HASH change notifikaci
   export function listenHashChange() {
-    window.addEventListener('hashchange', () => onHashChange());
+    window.addEventListener('hashchange', () => {
+      console.log(">hashchange fired: " + window.location.href);
+      onHashChange();
+    });
     onHashChange();
   }
 
   //NAVIGATE
-  export function getHash(src: IUrl<any>): string { return src.state.getHash(src.par); }
-  export function navigate(src: IUrl<any>) { src.state.navigate(src.par); }
-  export function goHome() { navigate(homeUrl); }
+  export function getHashUrl(src: IUrl<any>): string { return '#' + src.route.getHash(src.par); }
+  export function getHash(route: RouteType, par?: IPar): string { return getHashUrl({ route: route, par: par }); }
+  export function gotoUrl(src: IUrl<any>, ev?: React.SyntheticEvent) { if (ev) ev.preventDefault(); src.route.navigate(src.par); }
+  export function goto(route: RouteType, par?: IPar, ev?: React.SyntheticEvent) { gotoUrl({ route: route, par: par }, ev); }
+  export function goHome(ev?: React.SyntheticEvent) { gotoUrl(homeUrl, ev); }
+  export function getHomeHash(): string { return getHashUrl(homeUrl); }
 
 
   //pojmenovane globalne dostupne a typed router stavy
@@ -35,7 +41,7 @@ namespace router {
   export interface INamedRoutes { }; //rozsirovatelny interface s name router states
 
   //objektova reprezentace HASH casti URL
-  export interface IUrl<T extends IPar> { state: Route<T>; par: T; }
+  export interface IUrl<T extends IPar> { route: Route<T>; par: T; }
   //predchudce vsech router state parametru
   export interface IPar { }
   //predchudce vsech router akci
@@ -46,24 +52,23 @@ namespace router {
   export function init(...roots: Array<RouteType>): void { //definice stavu
     roots.forEach(s => s.afterConstructor(null));
   }
-  export function setHome<T extends IPar>(state: Route<T>, par: T) { homeUrl = { state: state, par: par } } //definice difotniho stavu
+  export function setHome<T extends IPar>(state: Route<T>, par: T) { homeUrl = { route: state, par: par } } //definice difotniho stavu
 
-  export function tryDispatch(action: flux.IAction): boolean {
+  export function tryDispatch(action: flux.IAction, completed: flux.triggerCompleted): boolean {
     var stName = action.moduleId + '/' + action.actionId;
     var st = routeDir[stName]; if (!st || !st.dispatch) return false;
-    st.dispatch((action as IActionType).par);
+    st.dispatch((action as IActionType).par, completed);
     return true;
   }
 
   //*** onHashChange
   function onHashChange(hashStr?: string) {
-    if (!config.cfg.data.flux || !config.cfg.data.flux.trigger) return;
     var url = toUrl(hashStr || '');
     if (!url) url = homeUrl;
     if (!url) return; //throw 'Missing uiRouter.States.setDefault call';
 
-    var act = url.state.createAction(url.par);
-    config.cfg.data.flux.trigger(act);
+    var act = url.route.createAction(url.par);
+    flux.trigger(act);
   }
 
   //*** PARSES
@@ -74,7 +79,7 @@ namespace router {
     var res: IUrl<T> = null;
     routes.find((st: Route<T>) => {
       var par = st.parseHash(q) as T; if (!par) return false;
-      res = { par: par, state: st };
+      res = { par: par, route: st };
       return true;
     });
     return res;
@@ -110,7 +115,11 @@ namespace router {
     }
 
     getHash(par?: T): string { return this.matcher.format(par || {}); }
-    navigate(par?: T) { window.location.href = this.getHash(par); }
+    navigate(par?: T) {
+      var hash = this.getHash(par);
+      loger.log('>set hash: ' + hash);
+      window.location.hash = hash
+    }
     globalId(): string { return this.moduleId + '/' + this.actionId; }
 
     finishStatePar(finishHash: (h: T) => void): Route<T> { this.finishHash = finishHash; return this; }
@@ -139,7 +148,7 @@ namespace router {
     private parent: RouteType;
     private matcher: uiRouter.UrlMatcher;
     finishHash: (h: T) => void;
-    dispatch: (par: T) => void;
+    dispatch: (par: T, completed: flux.triggerCompleted) => void;
     //onEnter: (from: RouteType) => void;
     //onLeave: (to: RouteType) => void;
     //needsAuth: boolean;

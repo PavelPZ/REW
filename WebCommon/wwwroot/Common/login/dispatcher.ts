@@ -16,6 +16,8 @@
 
 namespace login {
 
+  export var moduleId = 'login';
+
   export var namedRoute = router.named.login; //pojmenovane stavy
   router.init(
     new router.RouteType(moduleId, moduleId, '/login',
@@ -29,18 +31,17 @@ namespace login {
     )
   );
 
-  export function setHome<T extends router.IPar>(state: router.Route<T>, par: T) { homeUrl = { state: state, par: par } }
-  export function goHome() { router.navigate(homeUrl); }
+  export function setHome<T extends router.IPar>(state: router.Route<T>, par: T) { homeUrl = { route: state, par: par } }
+  export function goHome() { router.gotoUrl(homeUrl); }
   var homeUrl: router.IUrl<any>;
 
   export class Dispatcher extends flux.Dispatcher {
     constructor() { super(moduleId); }
-    dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
-      if (router.tryDispatch(action)) return; //dispath proveden primo v route.dispatch
+    dispatchAction(action: flux.IAction, complete: flux.triggerCompleted) {
+      if (router.tryDispatch(action, complete)) return; //dispath proveden primo v route.dispatch
       throw `Missing action dispatch: ${action.actionId}`;
     }
   }
-  var moduleId = 'login';
 
   //*** LOGOUT
   function doLogout() { auth.logout(); router.goHome(); }

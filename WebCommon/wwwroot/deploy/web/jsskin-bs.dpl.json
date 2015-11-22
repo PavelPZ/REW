@@ -1,5 +1,6 @@
 {
   "includes": [
-    "/common/validation/templates-bs.js"
+    "/common/validation/templates-bs.js",
+    "/common/login/jsskin-bs.dpl.json"
   ]
 }

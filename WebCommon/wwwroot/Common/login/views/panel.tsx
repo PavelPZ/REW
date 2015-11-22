@@ -1,6 +1,11 @@
 ﻿module login {
   export class Panel extends flux.SmartComponent<IPanelProps, auth.IUser>{
-    render() { return <b>LOGIN PANEL</b>; }
+    render() {
+      if (auth.isLogged())
+        return <b>LOGIN PANEL</b>;
+      else
+        return <a href='#' onClick={ev=> router.goto(login.namedRoute.home,null,ev) } >LOGIN</a>;
+    }
   }
   interface IPanelProps extends flux.ISmartProps<auth.IUser> { }
 }

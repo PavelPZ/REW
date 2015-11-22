@@ -1,0 +1,5 @@
+﻿{
+  "includes": [
+    "views/home-bs.js",
+  ]
+}

@@ -1,3 +1,6 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
+﻿namespace login {
+  layout.registerRenderer(layout.placeContent, moduleId + '.home', pid => <h2 key={flux.cnt() }>Login home</h2>);
+  login.namedRoute.home.dispatch = (par, comp) => {
+    layout.changeScene(layout.sceneDefault, moduleId + '.home'); if (comp) comp(null);
+  }
+}
