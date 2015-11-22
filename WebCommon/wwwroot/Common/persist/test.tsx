@@ -64,7 +64,7 @@ namespace persistTest {
 
   //************* WHOLE APP
   //** inicializace aplikace
-  config.initApp();
+  config.cfg.initProc(config.initProcPhase.start);
 
   //** definice DISPATCH modulu
   new persistTest();

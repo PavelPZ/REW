@@ -48,8 +48,15 @@ namespace router {
   }
   export function setHome<T extends IPar>(state: Route<T>, par: T) { homeUrl = { state: state, par: par } } //definice difotniho stavu
 
-  //*** DISPATCH
-  export function onHashChange(hashStr?: string) {
+  export function tryDispatch(action: flux.IAction): boolean {
+    var stName = action.moduleId + '/' + action.actionId;
+    var st = routeDir[stName]; if (!st || !st.dispatch) return false;
+    st.dispatch((action as IActionType).par);
+    return true;
+  }
+
+  //*** onHashChange
+  function onHashChange(hashStr?: string) {
     if (!config.cfg.data.flux || !config.cfg.data.flux.trigger) return;
     var url = toUrl(hashStr || '');
     if (!url) url = homeUrl;
@@ -102,8 +109,8 @@ namespace router {
       if (childs) childs.forEach(ch => ch.afterConstructor(this));
     }
 
-    getHash(par: T): string { return this.matcher.format(par); }
-    navigate(par: T) { window.location.href = this.getHash(par); }
+    getHash(par?: T): string { return this.matcher.format(par || {}); }
+    navigate(par?: T) { window.location.href = this.getHash(par); }
     globalId(): string { return this.moduleId + '/' + this.actionId; }
 
     finishStatePar(finishHash: (h: T) => void): Route<T> { this.finishHash = finishHash; return this; }
@@ -132,12 +139,13 @@ namespace router {
     private parent: RouteType;
     private matcher: uiRouter.UrlMatcher;
     finishHash: (h: T) => void;
+    dispatch: (par: T) => void;
     //onEnter: (from: RouteType) => void;
     //onLeave: (to: RouteType) => void;
     //needsAuth: boolean;
     //needsAuthProc: (par: T) => boolean;
   }
-  export type RouteType = Route<IPar>;
+  export class RouteType extends Route<IPar> { }
   //export interface IStateEx<T extends IPar> {
   //  finishHash?: (h: T) => void;
   //  onEnter?: (from: RouteType) => void;

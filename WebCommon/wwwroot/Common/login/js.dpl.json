@@ -1,0 +1,7 @@
+﻿{
+  "includes": [
+    "auth.js",
+    "dispatcher.js",
+    "views/panel.js",
+  ]
+}

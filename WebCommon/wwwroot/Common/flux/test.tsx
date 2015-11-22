@@ -130,7 +130,7 @@ namespace fluxTest {
 
   //************* WHOLE APP
   //** inicializace aplikace x
-  config.initApp();
+  config.cfg.initProc(config.initProcPhase.start);
 
   new mod1();
   flux.initWebState(

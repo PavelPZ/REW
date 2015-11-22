@@ -42,7 +42,7 @@ namespace valTest {
 
   //************* WHOLE APP
   //** inicializace aplikace
-  config.initApp();
+  config.cfg.initProc(config.initProcPhase.start);
 
   new valTest();
   flux.initWebState(

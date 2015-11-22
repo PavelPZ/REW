@@ -39,9 +39,9 @@ namespace flux {
     }
     context: config.IObj;
     props: T; id: string;
+    //probublani contextu od parenta k childs
     static contextTypes = { [config.ctxPropName]: React.PropTypes.any }
     static childContextTypes = { [config.ctxPropName]: React.PropTypes.any }
-    getState(): S { return this.props.initState; }
     componentWillUnmount = () => {
       //clear state a unregister
       var st = this.getState();
@@ -50,6 +50,7 @@ namespace flux {
       loger.log('>unmount ' + this.id);
     };
     render(): JSX.Element { loger.log('>render ' + this.id); return null; }
+    getState(): S { return this.props.initState; }
   }
   export interface ISmartProps<S extends ISmartState> extends IComponentProps { initState: S; parent: SmartComponent<any, any>, id: string }
   export interface ISmartState  { ids:Array<string> }
@@ -99,7 +100,7 @@ namespace flux {
   export function initWebState(dom: Element, webState: IWebAppState, render: (parent: SmartComponent<any, any>) => JSX.Element) {
     state = webState; //globalni STORE
     webRender = render; //Web app render
-    var webProp: IWebAppProps = { "initState": state, id: '', parent: null };
+    var webProp: IWebAppProps = { initState: state, id: '', parent: null };
     ReactDOM.render(React.createElement(<any>Web, webProp), dom); //INIT
   }
 

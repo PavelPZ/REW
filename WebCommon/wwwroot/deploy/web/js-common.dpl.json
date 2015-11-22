@@ -4,6 +4,7 @@
     "/common/flux/flux.js",
     "/common/layout/layout.js",
     "/common/validation/lib.js",
-    "/common/uirouter/js.dpl.json"
+    "/common/uirouter/js.dpl.json",
+    "/common/login/js.dpl.json"
   ]
 }

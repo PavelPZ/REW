@@ -1,56 +1,48 @@
 ﻿namespace router {
   export interface INamedRoutes {
-    login: { //pojmenovane uiRouter.State's aplikace
-      root: router.Route<router.IPar>; 
+    login: {
+      home: router.RouteType;
+      login: router.RouteType;
+      register: router.RouteType;
+      confirmRegister: router.RouteType;
+      forgotPsw: router.RouteType;
+      confirmForgotPsw: router.RouteType;
+      editProfile: router.RouteType;
     }
   };
-  named.layoutTest = {} as any;
+  named.login = {} as any;
 }
 
 
 namespace login {
 
-  export var namedState = router.named.login; //pojmenovane stavy
+  export var namedRoute = router.named.login; //pojmenovane stavy
   router.init(
-    namedState.root = new router.Route<router.IPar>(moduleId, '/login', 'root',
-      new router.Route<ILoginPar>(moduleId, 'login', '/login'),
-      new router.Route<ILoginPar>(moduleId, 'lmlogin', '/lm-login')
+    new router.RouteType(moduleId, moduleId, '/login',
+      namedRoute.home = new router.RouteType(moduleId, 'r-home', '/home'),
+      namedRoute.login = new router.RouteType(moduleId, 'r-login', '/login'),
+      namedRoute.register = new router.RouteType(moduleId, 'r-register', '/login'),
+      namedRoute.confirmRegister = new router.RouteType(moduleId, 'r-confirmRegister', '/confirmRegister'),
+      namedRoute.forgotPsw = new router.RouteType(moduleId, 'r-forgotPsw', '/forgotPsw'),
+      namedRoute.confirmForgotPsw = new router.RouteType(moduleId, 'r-confirmForgotPsw', '/confirmForgotPsw'),
+      namedRoute.editProfile = new router.RouteType(moduleId, 'r-editProfile', '/editProfile')
     )
   );
 
-
-  export function setHome<T extends router.IPar>(state: router.Route<T>, par: T) { homeUrl = { state: state, par: par } } 
+  export function setHome<T extends router.IPar>(state: router.Route<T>, par: T) { homeUrl = { state: state, par: par } }
   export function goHome() { router.navigate(homeUrl); }
   var homeUrl: router.IUrl<any>;
 
   export class Dispatcher extends flux.Dispatcher {
     constructor() { super(moduleId); }
     dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
-      switch (action.actionId) {
-        //case 'login': doLogin(action as ILoginAction); break;
-        case 'logout': doLogout(action as ILogoutAction); break;
-        case 'editProfile': doEditProfile(action as IEditProfileAction); break;
-      }
+      if (router.tryDispatch(action)) return; //dispath proveden primo v route.dispatch
+      throw `Missing action dispatch: ${action.actionId}`;
     }
   }
   var moduleId = 'login';
 
-  //*** LOGIN
-  export interface ILoginPar extends router.IPar { x: number; }
-  export type ILoginAction = router.IAction<ILoginPar>;
-  function doLogin(act: ILoginPar) {
-    if (auth.isLogged()) return;
-  }
-
   //*** LOGOUT
-  export function logoutAction(): flux.IAction { return { moduleId: moduleId, actionId: 'logout' }; }
-  export interface ILogoutAction extends flux.IAction { }
-  function doLogout(act: ILogoutAction) {
-    if (!auth.isLogged()) return;
-  }
+  function doLogout() { auth.logout(); router.goHome(); }
 
-  //*** EDIT PROFILE
-  export function editProfileAction(): flux.IAction { return { moduleId: moduleId, actionId: 'editProfile' }; }
-  export interface IEditProfileAction extends flux.IAction { }
-  function doEditProfile(act: IEditProfileAction) { }
 }

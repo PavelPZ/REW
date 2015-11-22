@@ -1,34 +1,33 @@
 ﻿namespace flux {
   export interface IAction {
-    moduleId: string; 
-    actionId: string; 
+    moduleId: string;
+    actionId: string;
     meta?: string;
   }
 }
 
 namespace config {
 
-  export interface IData {
-    appId?: string; //identifikace aplikace, napr. 'web-common'
-  }
-  export interface IObj { data: IData }
-  export var cfg: IObj = { data: <any>{} };
+  export interface IData { }
+  export interface IObj { data: IData, initProc: (phase: initProcPhase) => void }
+  export var cfg: IObj = {
+    data: <any>{}, initProc: phase => {
+      //1. merge webconfig s cfg
+      utils.assignDeep(webConfig, cfg.data);
+      //2. init apps
+      for (var p in cfg.data) {
+        var modCfg = cfg.data[p];
+        var initProc = modCfg[initProcName] as initProcType;
+        if (!initProc || !utils.isFunction(initProc)) continue;
+        initProc(phase);
+      }
+    }
+  };
   export var ctxPropName = 'data';
   export var webConfig: IData;
-
   export const initProcName = 'initProc';
-  export function initApp() {
-    //1. merge webconfig s cfg
-    utils.assignDeep(webConfig, cfg.data);
-    //2. init apps
-    for (var p in cfg.data) {
-      var modCfg = cfg.data[p];
-      var initProc = modCfg[initProcName];
-      if (!initProc || !utils.isFunction(initProc)) continue;
-      initProc();
-    }
-  }
-
+  export const enum initProcPhase {start}
+  export type initProcType = (phase: initProcPhase) => void;
 }
 
 namespace loger {

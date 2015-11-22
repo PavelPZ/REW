@@ -65,7 +65,7 @@ namespace xxx {
 
   //************* WHOLE APP
   //** inicializace aplikace
-  config.initApp();
+  config.cfg.initProc(config.initProcPhase.start);
 
   //** registrace DISPATCH modulu (modul se self-registruje v constructoru)
   new xxx();
