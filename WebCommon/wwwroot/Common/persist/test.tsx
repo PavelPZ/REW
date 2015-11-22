@@ -19,7 +19,7 @@ namespace router {
 }
 
 namespace flux {
-  export interface IWebState {
+  export interface IAppState {
     persistTest?: persistTest.IPersistTestState //cast globalniho flux.IFluxState, patrici aplikaci
   }
 }
@@ -78,26 +78,24 @@ namespace persistTest {
   setTimeout(() => router.listenHashChange());
 
   //** SCENE configuration
-  layout.registerRenderer(layout.placeContent, persistTest.plDefaultContentId, parent => <PersistTest initState={flux.getState().persistTest } parent={parent} id='PersistTest.persistTest'/>);
+  layout.registerRenderer(layout.placeContent, persistTest.plDefaultContentId, parent => <PersistTest initState={flux.getState().persistTest } parentId={parent} id='PersistTest.persistTest'/>);
 
   var Header: React.StatelessComponent<{ name: string }> = (p, ctx) => <h3>{p.name}</h3>;
 
   //** STATE initialization
-  flux.initWebState(
-    document.getElementById('app'),
-    {
-      ids: [],
-      data: {
-        persistTest: { ids:[] },
-        layout: {}
-      }
-    },
-    (web) => <layout.Scene initState={layout.sceneState() } parent={web} id='layout.Scene' cases={{
-      [layout.sceneDefault]: parent => <div>
-        {Header({ name:'Stateless function call'})}
-        <layout.ScenePlace initState={layout.scenePlaceState() } parent={parent} id='layout.ScenePlace'/>
+  var root = () => <layout.Scene key={flux.cnt() } initState={layout.sceneState() } parentId={''} id='layout.Scene' cases={{
+    [layout.sceneDefault]: pid => <div>
+        {Header({ name: 'Stateless function call' }) }
+        <layout.ScenePlace initState={layout.scenePlaceState() } parentId={pid} id='layout.ScenePlace'/>
         <div>PersistTest Footer</div>
-        </div>
-    }}/>
-  );
+      </div>
+  }}/>;
+
+  var state: flux.IAppState = {
+      persistTest: { ids: [] },
+      layout: {}
+  };
+
+  flux.initApplication(document.getElementById('app'), state, root);
+
 }

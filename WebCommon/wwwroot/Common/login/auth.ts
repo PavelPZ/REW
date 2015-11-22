@@ -1,5 +1,5 @@
 ﻿namespace flux {
-  export interface IWebState {
+  export interface IAppState {
     auth?: auth.IUser;
   }
 }

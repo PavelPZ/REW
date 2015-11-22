@@ -1,6 +1,6 @@
 ﻿namespace flux {
-  export interface IWebState {
-    valTest?: any; //cast globalniho flux.IFluxState, patrici aplikaci
+  export interface IAppState {
+    valTest?: flux.ISmartState; //cast globalniho flux.IFluxState, patrici aplikaci
   }
 }
 
@@ -45,11 +45,8 @@ namespace valTest {
   config.cfg.initProc(config.initProcPhase.start);
 
   new valTest();
-  flux.initWebState(
-    document.getElementById('app'),
-    { ids:[], data: { valTest: {} } },
-    (web) =>
-      <ValTest initState={flux.getState().valTest} id='valTest.ValTest' parent={web} >
+
+  var root = () => <ValTest key={flux.cnt() } initState={flux.getState().valTest} id='valTest.ValTest' parentId={''} >
       {/*<validation.Input validator={{ type: validation.types.stringLength | validation.types.stringLength, minLength: 2, maxLength: 4 }}/>*/}
       {/*<validation.Input validator={{ type: validation.types.email }}/>*/}
       <validation.Group>
@@ -57,7 +54,10 @@ namespace valTest {
       <validation.Input validator={{ type: validation.types.equalTo, equalToId: 'psw' }} title='Confirm password'/>
         </validation.Group>
       <p><validation.Input title='???'/></p>
-        </ValTest>
-  );
+    </ValTest>;
+
+  var state: flux.IAppState = { valTest: { ids: [] } };
+
+  flux.initApplication(document.getElementById('app'), state, root);
 
 }

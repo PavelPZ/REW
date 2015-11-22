@@ -20,7 +20,7 @@ namespace router {
 }
 
 namespace flux {
-  export interface IWebState {
+  export interface IAppState {
     xxx?: xxx.IXxxState //cast globalniho flux.IFluxState, patrici modulu
   }
 }
@@ -83,26 +83,22 @@ namespace xxx {
   layout.registerRenderer(
     layout.placeContent,
     xxx.plDefaultContentId,
-    parent => <Xxx initState={flux.getState().xxx } parent={parent} id='Xxx.xxx'/>);
+    parent => <Xxx initState={flux.getState().xxx } parentId={parent} id='Xxx.xxx'/>);
 
   var Header: React.StatelessComponent<{ name: string }> = (p, ctx) => <h3>{p.name}</h3>;
 
-  //** STATE initialization 
-  flux.initWebState(
-    document.getElementById('app'),
-    {
-      ids:[],
-      data: {
-        xxx: { ids: [] },
-        layout: { }
-      }
-    },
-    (web) => <layout.Scene initState={layout.sceneState() } parent={web} id='layout.Scene' cases={{
-      [layout.sceneDefault]: parent => <div>
-        {Header({ name:'Stateless function call'})}
-        <layout.ScenePlace initState={layout.scenePlaceState() } parent={parent} id='layout.ScenePlace'/>
+  var root = () => <layout.Scene key={flux.cnt() } initState={layout.sceneState() } parentId={''} id='layout.Scene' cases={{
+    [layout.sceneDefault]: pid => <div>
+        {Header({ name: 'Stateless function call' }) }
+        <layout.ScenePlace initState={layout.scenePlaceState() } parentId={pid} id='layout.ScenePlace'/>
         <div>Xxx Footer</div>
-        </div>
-    }}/>
-  );
+      </div>
+  }}/>;
+
+  var state: flux.IAppState = {
+      xxx: { ids: [] },
+      layout: {}
+  };
+
+  flux.initApplication(document.getElementById('app'), state, root);
 }

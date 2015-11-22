@@ -44,37 +44,30 @@ namespace loginTest {
   //  static createAppClickAction(): ILoginTestClickAction { return { moduleId: loginTest.moduleId, actionId: 'click' }; }
   //}
   var moduleId = 'loginTest';
+
   //************* WHOLE APP
   //** inicializace aplikace
-  //config.initApp(config.initProcPhase);
+  config.cfg.initProc(config.initProcPhase.start);
 
   //new loginTest();
-  flux.initWebState(
-    document.getElementById('app'),
-    {
-      ids: [],
-      data: {
-        layoutTest: {}
-      }
-    },
-    (web) => <div>
-      <div><login.Panel initState={flux.getState().auth } parent={web} id='login-panel'/></div>
-      <layout.Scene initState={layout.sceneState() } parent={web} id='scene' cases={{
-        [layout.sceneDefault]: parent => <h2 key={flux.cnt() }>Login Test Page</h2>
-      }}/>
-      </div>
-  );
+
 
   router.init(
     namedState.default = new router.RouteType(moduleId, 'default', '/login-test-home')
   );
   router.setHome(namedState.default, {});
 
-  ReactDOM.render(<flux.Web initState={null} id='' parent={null}>
-      <div><login.Panel initState={flux.getState().auth } parent={null} id='login-panel'/></div>
-      <layout.Scene initState={layout.sceneState() } parent={null} id='scene' cases={{
+  var rootElement = () => <div key={flux.cnt() }>
+      <div><login.Panel initState={flux.getState().auth } parentId={null} id='login-panel'/></div>
+      <layout.Scene initState={layout.sceneState() } parentId={null} id='scene' cases={{
         [layout.sceneDefault]: parent => <h2 key={flux.cnt() }>Login Test Page</h2>
       }}/>
-    </flux.Web>, document.getElementById('app'));
+    </div>;
+
+  var rootState: flux.IAppState = {
+      layoutTest: {}
+  };
+
+  flux.initApplication(document.getElementById('app'), rootState, rootElement);
 
 }

@@ -24,7 +24,7 @@ namespace config {
   cfg.data.mod1 = {} as any;
 }
 namespace flux {
-  export interface IWebState {
+  export interface IAppState {
     fluxTest?: fluxTest.IAppState;
     fluxTestPlacer?: fluxTest.IPlaceHolderState;
     fluxTestSwitcher?: layout.ISwitcherState;
@@ -86,14 +86,14 @@ namespace fluxTest {
       return <div key={flux.cnt() }>
         <div>
           <div onClick={() => flux.trigger(mod1.createAppClickAction()) }>{st.clickTitle}</div>
-          <HelloMessage initState={st.hello1 } is1={1} parent={this} id='fluxTest.HelloMessage1'/>
-          <HelloMessage initState={st.hello2 } is1={2} parent={this} id='fluxTest.HelloMessage2'/>
+          <HelloMessage initState={st.hello1 } is1={1} parentId={this.id} id='fluxTest.HelloMessage1'/>
+          <HelloMessage initState={st.hello2 } is1={2} parentId={this.id} id='fluxTest.HelloMessage2'/>
           <br/>
           </div>
         <div>
           <div onClick={() => flux.trigger(mod1.createAppClickAction()) }>{st.clickTitle}</div>
-          <HelloMessage initState={st.hello1 } is1={1} parent={this} id='fluxTest.HelloMessage3'/>
-          <HelloMessage initState={st.hello2 } is1={2} parent={this} id='fluxTest.HelloMessage4'/>
+          <HelloMessage initState={st.hello1 } is1={1} parentId={this.id} id='fluxTest.HelloMessage3'/>
+          <HelloMessage initState={st.hello2 } is1={2} parentId={this.id} id='fluxTest.HelloMessage4'/>
           <br/>
           </div>
         </div>;
@@ -105,7 +105,7 @@ namespace fluxTest {
   class HelloMessage extends flux.SmartComponent<IHelloWorldProps, IHelloWorldState>{
     render() {
       super.render();
-      return <div key={flux.cnt() } onClick={() => flux.trigger(mod1.createClickAction(this.id)) }>{this.context.data.mod1.prefix } {this.getState().actName}</div >;
+      return <div key={flux.cnt() } onClick={() => flux.trigger(mod1.createClickAction(this.id)) }>{config.cfg.data.mod1.prefix } {this.getState().actName}</div >;
     }
     props: IHelloWorldProps;
   };
@@ -119,7 +119,7 @@ namespace fluxTest {
       var st = this.getState();
       return <div key={flux.cnt() }>
         <p onClick={() => flux.trigger(mod1.createPlaceholderClickAction()) }>click</p>
-        <div>{st.isApp ? (<App initState={flux.getState().fluxTest} parent={this} id='fluxTest.App'/>) : (<HelloMessage initState={st.hello} is1={3} parent={this} id='fluxTest.HelloMessage' />) }</div>
+        <div>{st.isApp ? (<App initState={flux.getState().fluxTest} parentId={this.id} id='fluxTest.App'/>) : (<HelloMessage initState={st.hello} is1={3} parentId={this.id} id='fluxTest.HelloMessage' />) }</div>
         </div>
         ;
     }
@@ -133,29 +133,28 @@ namespace fluxTest {
   config.cfg.initProc(config.initProcPhase.start);
 
   new mod1();
-  flux.initWebState(
-    document.getElementById('app'),
-    {
+
+  var root = () => <layout.Switcher key={flux.cnt() } initState={flux.getState().fluxTestSwitcher} parentId={''} id='layout.PlaceHolder' cases={{
+    app: pid => <App  key={flux.cnt() } initState={flux.getState().fluxTest} parentId={pid} id='fluxTest.App'/>,
+    place: pid => <Switcher  key={flux.cnt() } initState={flux.getState().fluxTestPlacer} parentId={pid} id='fluxTest.Switcher'/>
+  }}/>;
+
+  var state = {
+    fluxTest: {
       ids: [],
-      data: {
-        fluxTest: {
-          ids: [],
-          clickTitle: 'Click',
-          hello1: { actName: 'John', ids: [] },
-          hello2: { actName: 'Marthy', ids: [] }
-        },
-        fluxTestPlacer: {
-          ids: [],
-          isApp: false,
-          hello: { ids: [], actName: 'John' },
-          //hello: { actName: 'hello', ids: [] }
-        },
-        fluxTestSwitcher: { ids: [], caseId: 'place' }
-      }
+      clickTitle: 'Click',
+      hello1: { actName: 'John', ids: [] },
+      hello2: { actName: 'Marthy', ids: [] }
     },
-    (p1) => <layout.Switcher initState={flux.getState().fluxTestSwitcher} parent={p1} id='layout.PlaceHolder' cases={{
-      app: (p2) => <App  key={flux.cnt() } initState={flux.getState().fluxTest} parent={p2} id='fluxTest.App'/>,
-      place: (p3) => <Switcher  key={flux.cnt() } initState={flux.getState().fluxTestPlacer} parent={p3} id='fluxTest.Switcher'/>
-    }}/>
-  );
+    fluxTestPlacer: {
+      ids: [],
+      isApp: false,
+      hello: { ids: [], actName: 'John' },
+      //hello: { actName: 'hello', ids: [] }
+    },
+    fluxTestSwitcher: { ids: [], caseId: 'place' }
+  };
+
+  flux.initApplication(document.getElementById('app'), state, root);
+
 }

@@ -20,7 +20,7 @@ namespace config {
 }
 
 namespace flux {
-  export interface IWebState {
+  export interface IAppState {
     layout?: layout.IRootState;
   }
 }
@@ -64,7 +64,7 @@ namespace layout {
     place[rendererId] = render;
   }
 
-  export type TRenderFunction = (parent: flux.SmartComponent<any, any>) => JSX.Element;
+  export type TRenderFunction = (parentId: string) => JSX.Element;
   export function sceneState(): ISwitcherState { var st = flux.getState(); if (!st.layout) st.layout = {}; var l = st.layout; return l.scene ? l.scene : l.scene = { ids: [] }; }
   export function scenePlaceState(id: string = placeContent): IScenePlaceState { return flux.getState().layout.scenePlaces[id]; }
 
@@ -81,7 +81,7 @@ namespace layout {
       super.render();
       var st = this.props.initState;
       if (!st.rendererId) return null;
-      return config.cfg.data.layout.scenePlaceRenderers[st.placeId][st.rendererId](this);
+      return config.cfg.data.layout.scenePlaceRenderers[st.placeId][st.rendererId](this.id);
     }
   }
   export interface IScenePlaceState extends flux.ISmartState {
@@ -97,7 +97,7 @@ namespace layout {
       var caseId = this.props.initState.caseId; if (!caseId) return null;
       var cont = this.props.cases[caseId];
       if (!cont) throw 'flux.Switcher.render: wrong case ' + caseId;
-      return cont(this);
+      return cont(this.id);
     }
   }
   export interface ISwitcherProps extends flux.ISmartProps<ISwitcherState> {

@@ -19,7 +19,7 @@ namespace router {
 }
 
 namespace flux {
-  export interface IWebState {
+  export interface IAppState {
     layoutTest?: {}; //cast globalniho flux.IFluxState, patrici aplikaci
   }
 }
@@ -84,44 +84,39 @@ namespace layoutTest {
   layout.registerRenderer(placeOther, 'other-cont', parent => <h2 key={flux.cnt() }>Other 3</h2>);
   layout.registerRenderer(placeOther, 'other-panel', parent => <h2 key={flux.cnt() }>Panel 4</h2>);
 
-  //** STATE initialization
-  flux.initWebState(
-    document.getElementById('app'),
-    {
-      ids: [],
-      data: {
-        layoutTest: {},
-      }
-    },
-    (web) => <div>
+  var rootElement = () => <div key={flux.cnt() } >
       <a href={'#' + namedState.default.getHash({ defaultScene: true, defaultPlaces: true }) }>Default Scene, default places</a> |
       <a href={'#' + namedState.default.getHash({ defaultScene: false, defaultPlaces: true }) }>Other Scene, default places</a> |
       <a href={'#' + namedState.default.getHash({ defaultScene: true, defaultPlaces: false }) }>Default Scene, other places</a> |
       <a href={'#' + namedState.default.getHash({ defaultScene: false, defaultPlaces: false }) }>Other Scene, other places</a> |
 
-      <layout.Scene initState={layout.sceneState() } parent={web} id='scene' cases={{
+      <layout.Scene initState={layout.sceneState() } parentId={''} id='scene' cases={{
 
-        [layout.sceneDefault]: parent => <div key={flux.cnt() }>
+        [layout.sceneDefault]: pid => <div key={flux.cnt() }>
         <h1>Scene: {layout.sceneDefault}</h1>
-        <layout.ScenePlace initState={layout.scenePlaceState(layout.placeContent) } parent={parent} id='place-defaultContent'/>
+        <layout.ScenePlace initState={layout.scenePlaceState(layout.placeContent) } parentId={pid} id='place-defaultContent'/>
         --------------------
-        <layout.ScenePlace initState={layout.scenePlaceState(placeOther) } parent={parent} id='place-defaultOther'/>
+        <layout.ScenePlace initState={layout.scenePlaceState(placeOther) } parentId={pid} id='place-defaultOther'/>
         <br/>
         <div>Footer: {layout.sceneDefault}</div>
           </div>,
 
-        [sceneSecond]: parent => <div key={flux.cnt() }>
+        [sceneSecond]: pid => <div key={flux.cnt() }>
         <h1>Scene: {sceneSecond}</h1>
-        <layout.ScenePlace initState={layout.scenePlaceState(placeOther) } parent={parent} id='place-secondOther'/>
+        <layout.ScenePlace initState={layout.scenePlaceState(placeOther) } parentId={pid} id='place-secondOther'/>
         ====================
-        <layout.ScenePlace initState={layout.scenePlaceState(layout.placeContent) } parent={parent} id='place-secondContent'/>
+        <layout.ScenePlace initState={layout.scenePlaceState(layout.placeContent) } parentId={pid} id='place-secondContent'/>
         <br/>
         <div>Footer: {sceneSecond}</div>
           </div>
       }}/>
-      </div>
+    </div>;
 
-  );
+  var rootState: flux.IAppState = {
+      layoutTest: {},
+  };
+
+  flux.initApplication(document.getElementById('app'), rootState, rootElement);
 
   //Start listening
   setTimeout(() => router.listenHashChange());
