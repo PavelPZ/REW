@@ -31,7 +31,7 @@ namespace layoutTest {
     constructor() {
       super(layoutTest.moduleId);
     }
-    dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
+    dispatchAction(action: flux.IAction, compl: utils.TCallback) {
       switch (action.actionId) {
         case 'r-default':
           var act = action as router.IAction<ITestModuleRoutePar>;
@@ -44,7 +44,7 @@ namespace layoutTest {
           alert('click');
           break;
       }
-      if (complete) complete(action);
+      if (compl) compl();
     }
     static moduleId = 'layoutTest';
     static createAppClickAction(): ILayoutTestClickAction { return { moduleId: layoutTest.moduleId, actionId: 'click' }; }
@@ -65,8 +65,10 @@ namespace layoutTest {
   }
 
   router.init(
-    namedState.default = new router.Route<ITestModuleRoutePar>(layoutTest.moduleId, 'r-default', '/layoutTest/:defaultScene/:defaultPlaces').
-      finishStatePar(st => { st.defaultPlaces = utils.toBoolean(st.defaultPlaces); st.defaultScene = utils.toBoolean(st.defaultScene); })
+    namedState.default = new router.Route<ITestModuleRoutePar>(layoutTest.moduleId, 'r-default', '/layoutTest/:defaultScene/:defaultPlaces', {
+      needsAuth: true,
+      finishRoutePar: st => { st.defaultPlaces = utils.toBoolean(st.defaultPlaces); st.defaultScene = utils.toBoolean(st.defaultScene); } 
+    })
   );
   router.setHome<ITestModuleRoutePar>(namedState.default, { defaultScene: true, defaultPlaces: true });
 

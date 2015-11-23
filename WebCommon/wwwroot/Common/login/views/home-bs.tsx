@@ -1,6 +1,6 @@
 ﻿namespace login {
   login.namedRoute.home.dispatch = (par, comp) => {
-    layout.changeScene(layout.sceneDefault, moduleId + '.home'); if (comp) comp(null);
+    layout.changeScene(layout.sceneDefault, moduleId + '.home'); comp();
   };
   layout.registerRenderer(layout.placeContent, moduleId + '.home', pid =>
     <div key={flux.cnt() }>

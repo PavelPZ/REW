@@ -44,7 +44,7 @@ namespace fluxTest {
       super(mod1.moduleId);
     }
 
-    dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
+    dispatchAction(action: flux.IAction, compl: utils.TCallback) {
       let old = flux.getState().fluxTest;
       var oldPlace = flux.getState().fluxTestPlacer;
       switch (action.actionId) {
@@ -55,7 +55,7 @@ namespace fluxTest {
             old.hello2.actName += '*';
             old.clickTitle += '*';
             flux.onStateChanged(old);
-            if (complete) complete(action); //async complete, musi nasledovat return;
+            if (compl) compl(); //async complete, musi nasledovat return;
           }, 300);
           return;
           break;
@@ -70,7 +70,7 @@ namespace fluxTest {
           break;
       }
       //sync complete
-      if (complete) complete(action);
+      if (compl) compl();
     }
     static moduleId = 'mod1';
     static createAppClickAction(): IAppClickAction { return { moduleId: mod1.moduleId, actionId: 'appclick' }; }

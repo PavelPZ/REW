@@ -8,9 +8,12 @@ namespace config {
   }
   cfg.data.layout = {
     scenePlaceRenderers: {},
-    stateCreated: () => flux.getState().layout = {
-      scene: { ids: [], caseId: layout.sceneDefault },
-      scenePlaces: {}
+    stateCreated: (compl) => {
+      flux.getState().layout = {
+        scene: { ids: [], caseId: layout.sceneDefault },
+        scenePlaces: {}
+      };
+      compl();
     }
   }
 }

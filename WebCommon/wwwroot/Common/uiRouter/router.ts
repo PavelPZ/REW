@@ -1,4 +1,5 @@
-﻿declare namespace uiRouter {
+﻿
+declare namespace uiRouter {
   class UrlMatcher {
     constructor(pattern: string);
     exec<T extends router.IPar>(url: string, query?: utils.TDirectory<string>): T;
@@ -54,11 +55,20 @@ namespace router {
   }
   export function setHome<T extends IPar>(state: Route<T>, par: T) { homeUrl = { route: state, par: par } } //definice difotniho stavu
 
-  export function tryDispatch(action: flux.IAction, completed: flux.triggerCompleted): boolean {
+  //3 moznosti navratu:
+  //- potreba AUTH => nevola se COMPL callback
+  //- jedna se o router action => compl(true)
+  //- nejedna se o router action => compl(false)
+  export function tryDispatchRoute(action: flux.IAction, compl: (routerProcessed:boolean) => void): void {
     var stName = action.moduleId + '/' + action.actionId;
-    var st = routeDir[stName]; if (!st || !st.dispatch) return false;
-    st.dispatch((action as IActionType).par, completed);
-    return true;
+    var rt = routeDir[stName]; if (!rt) { compl(false); return; }
+    //route action => kontrola na authentifikaci a dispatch akce
+    onDispatchRouteAction(rt, action, needsAuth => {
+      if (needsAuth) return;
+      //dokonci dispatch
+      if (!rt.dispatch) throw 'Missing toute dispatch ' + rt.globalId();
+      rt.dispatch((action as IActionType).par, () => compl(true));
+    })
   }
 
   //*** onHashChange
@@ -109,10 +119,37 @@ namespace router {
   //var dir: { [name: string]: State<any>; } = {};
   var homeUrl: IUrl<any>;
 
-  //**** ROUTE
-  export class Route<T extends IPar> {
+  //**** route CHANGING
+  function onDispatchRouteAction(route: RouteType, action: flux.IAction, compl: (needsAuth:boolean) => void) {
+    //test na authentifikaci
+    if (route.needsAuth) {
+      var hash = route.getHash((action as IActionType).par);
+      if (auth.authRedirected(hash)) { compl(true); return; } //proveden redirect na prihlaseni (s navratem na HASH)
+    }
+    //route names, do kterych se vstupuje
+    var r = route; var newr: Array<string> = []; do { newr.push(r.globalId()); r = r.parent; } while (r != null);
+    actRoutes = newr;
+    //zjisti seznam novych a starych routes
+    var add: Array<string> = []; var del: Array<string> = [];
+    for (var n of newr) if (actRoutes.indexOf(n)<0) add.push(n);
+    for (var o of actRoutes) if (newr.indexOf(o)<0) del.push(o);
+    //leaved routes
+    if (del.length > 0) { del.sort(); del.reverse(); del.forEach(d => routeDir[d].onLeave()); }
+    //entered routes
+    if (newr.length > 0) {
+      newr.sort(); 
+      var callbacks = newr.map(n => new Promise((resolve, reject) => routeDir[n].onEnter(() => resolve())));
+      Promise.all(callbacks).then(() => compl(false));
+    } else compl(false);
+  }
+  var actRoutes: Array<string> = []; //names aktualnich routes, slouzi k notifikaci systemu o zmene route
 
-    constructor(public moduleId: string, public actionId: string, public pattern: string, ...childs: Array<RouteType>) {
+
+  //**** ROUTE
+  export class Route<T extends IPar> implements IConstruct<T> {
+
+    constructor(public moduleId: string, public actionId: string, public pattern: string, otherPar: IConstruct<T> = null, ...childs: Array<RouteType>) {
+      if (otherPar) Object.assign(this, otherPar);
       if (childs) childs.forEach(ch => ch.afterConstructor(this));
     }
 
@@ -124,11 +161,9 @@ namespace router {
     }
     globalId(): string { return this.moduleId + '/' + this.actionId; }
 
-    finishStatePar(finishHash: (h: T) => void): Route<T> { this.finishHash = finishHash; return this; }
-
     parseHash(pre: IQuery): T {
       var res = this.matcher.exec<T>(pre.path, pre.query);
-      if (res && this.finishHash) this.finishHash(res);
+      if (res && this.finishRoutePar) this.finishRoutePar(res);
       return res;
     }
     createAction(par: T): IAction<T> {
@@ -140,6 +175,7 @@ namespace router {
         this.parent = parent;
         this.pattern = parent.pattern + this.pattern;
         this.actionId = parent.actionId + '.' + this.actionId;
+        if (this.needsAuth === undefined) this.needsAuth = parent.needsAuth;
       }
       this.matcher = new uiRouter.UrlMatcher(this.pattern);
       //self registrace
@@ -147,23 +183,27 @@ namespace router {
       if (routeDir[nm]) throw `Route ${nm} already exists`;
       routeDir[nm] = this; routes.push(this);
     }
-    private parent: RouteType;
+    parent: RouteType;
     private matcher: uiRouter.UrlMatcher;
-    finishHash: (h: T) => void;
-    dispatch: (par: T, completed: flux.triggerCompleted) => void;
-    //onEnter: (from: RouteType) => void;
-    //onLeave: (to: RouteType) => void;
-    //needsAuth: boolean;
-    //needsAuthProc: (par: T) => boolean;
+    dispatch: (par: T, compl: utils.TCallback) => void; //sance osetrit dispatch mez Dispatch modulu
+
+    onLeave() { console.log('>routeLeave: ' + this.globalId()); if (this.onLeaveProc) this.onLeaveProc(); } //notifikace o opusteni route
+    onEnter(compl: utils.TCallback) { console.log('>routeEnter: ' + this.globalId()); if (this.onEnterProc) this.onEnterProc(compl); else compl(); } //notifikace o vstupu do route
+
+    //IConstruct
+    needsAuth: boolean;
+    finishRoutePar: (h: T) => void;
+    onLeaveProc: utils.TCallback;
+    onEnterProc: utils.TAsync<void>;
   }
   export class RouteType extends Route<IPar> { }
-  //export interface IStateEx<T extends IPar> {
-  //  finishHash?: (h: T) => void;
-  //  onEnter?: (from: RouteType) => void;
-  //  onLeave?: (to: RouteType) => void;
-  //  needsAuth?: boolean;
-  //  needsAuthProc?: (par: T) => boolean;
-  //}
+
+  export interface IConstruct<T extends IPar> {
+    needsAuth?: boolean;
+    finishRoutePar?: (h: T) => void;
+    onLeaveProc?: utils.TCallback;
+    onEnterProc?: utils.TAsync<void>;
+  }
 
   new uiRouter.$UrlMatcherFactory();
 

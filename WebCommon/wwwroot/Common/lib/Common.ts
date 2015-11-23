@@ -12,20 +12,24 @@ namespace config {
   export interface IObj { data: IData }
   export var cfg: IObj = { data: <any>{} };
   export interface IInitProcConfig {
-    stateCreated?: () => void 
+    stateCreated?: utils.TAsync<void>;
+    authKnown?: utils.TAsync<oauth.IAuthCookie>;
   }
   export var ctxPropName = 'data';
   export var webConfig: IData;
 
-  export function callStateCreated() {
-    for (var p in cfg.data) {
-      var ic: IInitProcConfig = cfg.data[p];
-      if (ic.stateCreated) ic.stateCreated();
-    }
+  export function callStateCreated(compl: utils.TCallback) {
+    var creates: Array<utils.TAsync<void>> = [];
+    for (var p in cfg.data) { var ic: IInitProcConfig = cfg.data[p]; if (ic.stateCreated) creates.push(ic.stateCreated); }
+    utils.callAsyncs<void>(creates, compl);
   }
-  //export const initProcName = 'initProc';
-  //export const enum initProcPhase {start, stateCreated}
-  //export type initProcType = (phase: initProcPhase) => void;
+
+  export function callAuthKnown(auth: oauth.IAuthCookie, compl: utils.TCallback) {
+    var creates: Array<utils.TAsync<oauth.IAuthCookie>> = [];
+    for (var p in cfg.data) { var ic: IInitProcConfig = cfg.data[p]; if (ic.authKnown) creates.push(ic.authKnown); }
+    utils.callAsyncs<oauth.IAuthCookie>(creates, compl);
+  }
+
 }
 
 namespace loger {
@@ -41,6 +45,7 @@ namespace loger {
 //https://babeljs.io/docs/learn-es2015/
 namespace utils {
 
+  export type TCallback = () => void;
   export type bytes = Array<number>;
   export type byte = number;
   export type char = string;
@@ -78,6 +83,13 @@ namespace utils {
       else dest[p] = sr;
     }
   }
+
+  export function callAsyncs<T>(creates: Array<TAsync<T>>, compl: utils.TCallback, par?: T) {
+    var promises = creates.map(create => new Promise((resolve, reject) => create(() => resolve(), par)));
+    Promise.all(promises).then(() => compl());
+  }
+  export type TAsync<T> = (compl: utils.TCallback, par?: T) => void;
+
 }
 
 namespace base64 {

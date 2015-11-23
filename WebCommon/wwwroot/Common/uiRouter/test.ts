@@ -23,11 +23,13 @@ namespace routerTest {
 
     //*** router konfiguration
     router.init(
-      new router.Route('m1', 'x1', '/login',
+      new router.Route('m1', 'x1', '/login', null,
         new router.Route('m1', 'x2', '/login'),
         new router.Route('m1', 'x3', '/select')
       ),
-      namesState.default = new router.Route<ITestHash>('m1', 'y', '/user/:id/name/:name?opt1&opt2').finishStatePar(st => { st.id = utils.toNumber(st.id); })
+      namesState.default = new router.Route<ITestHash>('m1', 'y', '/user/:id/name/:name?opt1&opt2', {
+        finishRoutePar: st => { st.id = utils.toNumber(st.id); }
+      })
     );
     router.setHome<ITestHash>(namesState.default, { id: 1, opt1: '', opt2: '' });
 

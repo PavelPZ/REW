@@ -6,15 +6,20 @@ namespace flux {
 
   //**************** getState, trigger
   export function getState(): IAppState { return state; }
-  export function trigger(action: IAction, complete?: triggerCompleted) {
+  export function trigger(action: IAction, compl?: utils.TCallback) {
     if (!action || !action.moduleId || !action.actionId) throw '!action || !action.type';
     if (recording) recording.actions.push(action);
     loger.log('ACTION ' + JSON.stringify(action), 1);
-    if (!router.tryDispatch(action, complete)) {
+    router.tryDispatchRoute(action, routerProcessed => {
+      if (routerProcessed) {
+        if (compl) compl();
+        loger.log('action', -1);
+        return;
+      }
       var res = allModules[action.moduleId]; if (!res) throw 'Cannot find module ' + action.moduleId;
-      res.dispatchAction(action, complete);
-    }
-    loger.log('action', -1);
+      res.dispatchAction(action, compl);
+      loger.log('action', -1);
+    })
   }
   export type triggerCompleted = (action: IAction) => void;
   export function actionPath(act: IAction) { return act.moduleId + '/' + act.actionId; }
@@ -84,10 +89,10 @@ namespace flux {
     doPlay = () => {
       if (rec.actions.length == 0) { completed(); return; }
       var act = rec.actions.splice(0, 1);
-      trigger(act[0], act => setTimeout(() => doPlay(), interval));
+      trigger(act[0], () => setTimeout(() => doPlay(), interval));
     };
     state = rec.initStatus;
-    refreshRoot();
+    buildDOMTree();
     setTimeout(() => doPlay(), interval);
   }
   //export function resetState() {
@@ -98,14 +103,15 @@ namespace flux {
 
   //****************  WEB START
   export function initApplication(dom: Element, root: () => JSX.Element) {
-    refreshRoot = () => {
+    buildDOMTree = () => {
       ReactDOM.unmountComponentAtNode(dom);
       ReactDOM.render(root(), dom);
     }
-    config.callStateCreated();
-    refreshRoot();
-    router.listenHashChange();
-  } var refreshRoot: () => void;
+    config.callStateCreated(() => config.callAuthKnown(getState().auth, () => {
+      buildDOMTree();
+      router.listenHashChange();
+    }));
+  } var buildDOMTree: () => void;
 
 
 
@@ -118,7 +124,7 @@ namespace flux {
       allModules[id] = this;
     }
     //childs: Array<Dispatcher>;
-    dispatchAction(action: IAction, complete: (action: IAction) => void) { throw 'notImplemented'; }
+    dispatchAction(action: IAction, complete: utils.TCallback) { throw 'notImplemented'; }
   }
 
   //**************** PRIVATE

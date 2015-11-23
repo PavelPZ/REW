@@ -12,11 +12,11 @@ namespace loginTest {
   //** ROUTERS and its dispatch
   var namedState = router.named.loginTest; //pojmenovane stavy
   router.init(
-    namedState.default = new router.RouteType(moduleId, 'default', '/login-test-home')
+    namedState.default = new router.RouteType(moduleId, 'default', '/login-test-home', { needsAuth: true })
   );
   router.setHome(namedState.default, {});
 
-  namedState.default.dispatch = (par, comp) => { layout.changeScene(layout.sceneDefault, moduleId + '.content'); if (comp) comp(null); };
+  namedState.default.dispatch = (par, comp) => { layout.changeScene(layout.sceneDefault, moduleId + '.content'); comp(); };
 
   //** LAYOUT
   layout.registerRenderer(layout.placeContent, moduleId + '.content', pid => <h2 key={flux.cnt() }>Login test home</h2>);

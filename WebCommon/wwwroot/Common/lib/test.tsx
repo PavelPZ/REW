@@ -35,7 +35,7 @@ namespace xxx {
     constructor() {
       super(xxx.moduleId);
     }
-    dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
+    dispatchAction(action: flux.IAction, compl: utils.TCallback) {
       switch (action.actionId) {
         case 'r-default': //
           layout.changeScene(layout.sceneDefault, xxx.plDefaultContentId);
@@ -44,7 +44,7 @@ namespace xxx {
           alert('click');
           break;
       }
-      if (complete) complete(action);
+      if (compl) compl();
     }
     static moduleId = 'xxx'; //identifikace modulu
     static plDefaultContentId = xxx.moduleId + '/default';

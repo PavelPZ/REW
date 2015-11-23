@@ -34,7 +34,7 @@ namespace persistTest {
     constructor() {
       super(persistTest.moduleId);
     }
-    dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
+    dispatchAction(action: flux.IAction, compl: utils.TCallback) {
       switch (action.actionId) {
         //case router.routerActionId:
         //  layout.changeScene(action, layout.sceneDefault, persistTest.plDefaultContentId);
@@ -43,7 +43,7 @@ namespace persistTest {
           alert('click');
           break;
       }
-      if (complete) complete(action);
+      if (compl) compl();
     }
     static moduleId = 'persistTest';
     static plDefaultContentId = persistTest.moduleId + '/default';

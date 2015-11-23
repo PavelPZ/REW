@@ -13,14 +13,14 @@ namespace valTest {
     constructor() {
       super(valTest.moduleId);
     }
-    dispatchAction(action: flux.IAction, complete: (action: flux.IAction) => void) {
+    dispatchAction(action: flux.IAction, compl: utils.TCallback) {
       var old = flux.getState();
       switch (action.actionId) {
         case 'click':
           alert('click');
-          if (complete) complete(action);
           break;
       }
+      if (compl) compl();
     }
     static createAppClickAction(): IValTestClickAction { return { moduleId: valTest.moduleId, actionId: 'click' }; }
     static moduleId = 'valTest';
