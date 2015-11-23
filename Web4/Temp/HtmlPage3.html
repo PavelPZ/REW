@@ -1,22 +1,21 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-  <title></title>
-  <meta charset="utf-8" />
-  <style type="text/css">
-    #the_iframe {
-      visibility:hidden;
+  <script type="text/javascript" >
+    var limit = 50000000;
+    var range = 10000;
+    var start = new Date().getTime();
+    var arr = [];
+    var hash = {};
+    for (var i = 0; i < limit; i++) {
+      arr[i] = { x: 5 }; if (i > range) delete arr[i - range];
+      //hash[i.toString()] = { x: 5 }; if (i > range) delete hash[(i - range).toString()];
     }
-  </style>
-  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    var end = new Date().getTime();
+    alert(Math.round((end - start) / 1000).toString());
+
+  </script>
 </head>
 <body>
-  <form id="myform" onsubmit="return false;" autocomplete="on" target="the_iframe">
-    <input type="button" value="Submit form" onclick="$('#myform')[0].submit()"/>
-  </form>
-  <iframe id="fake-automplete-form" name="the_iframe" src="about:blank" style="visibility:hidden"></iframe>
-  <script type="text/javascript">
-    $('#myform').prepend('<input type="text" id="email" name="email" vcard_name="email" autocomplete="on" />');
-  </script>
 </body>
 </html>
