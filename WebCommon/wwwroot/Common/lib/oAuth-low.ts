@@ -1,11 +1,6 @@
 ﻿namespace oauth {
 
-  export const enum oAuthProviders {
-    no,
-    google,
-    facebook,
-    microsoft,
-  }
+  export const enum oAuthProviders { no, google, facebook, microsoft, }
 
   //obsah cookie: vstupni informace pro login
   export interface IInputPar {
@@ -16,6 +11,7 @@
   //Login uzivatele
   export interface IAuthCookie {
     email: string;
+    providerId: oauth.oAuthProviders;
     firstName?: string;
     lastName?: string;
   }
@@ -25,31 +21,28 @@
     id: string; //id uzivatele u providera
   }
 
-  //*** AUTH cookie
+  //************ AUTH cookie
   const authCookieName = 'auth-cookie';
   export function authFromCookie(par: IAuthCookie) {
     par.email = par.firstName = par.lastName = null;
     let ck = utils.fromCookie<IAuthCookie>(authCookieName);
     if (!ck) return;
-    par.email = ck.email; par.firstName = ck.firstName; par.lastName = ck.lastName;
+    par.email = ck.email; par.firstName = ck.firstName; par.lastName = ck.lastName; par.providerId = ck.providerId;
   }
   const secondsPerDay = 60 * 60 * 24; //pocet vterin za den
   export function authToCookie(par: IAuthCookie, preserveDays?: number) {
-    var cook: IAuthCookie = par ? { email: par.email, firstName: par.firstName, lastName: par.lastName } : null;
+    var cook: IAuthCookie = par ? { email: par.email, firstName: par.firstName, lastName: par.lastName, providerId: par.providerId } : null;
     utils.toCookie(authCookieName, cook, preserveDays ? preserveDays * secondsPerDay : -1);
   }
 
-  //RETURN URL cookie
+  //************ RETURN URL cookie
   const authReturnUrlCookie = 'auth-return-url';
   export function saveLoginSourcePage(hash: string) { //URL stranky, ktera vyzaduje AUTH
     if (hash) cookies.set(authReturnUrlCookie, hash); else cookies.remove(authReturnUrlCookie);
   }
-  export function useLoginSourcePage(): string {
-    return cookies.get(authReturnUrlCookie) as string;
-  }
-  export function removeLoginSourcePage() {
-    cookies.remove(authReturnUrlCookie);
-  }
+  export function useLoginSourcePage(): string { return cookies.get(authReturnUrlCookie) as string; }
+
+  export function removeLoginSourcePage() { cookies.remove(authReturnUrlCookie); }
 
 }
 

@@ -30,7 +30,6 @@
       let provider = getProvider(authReqCook.providerId);
       getProfileFromProvider(provider, authResponse.access_token, res => {
         if (res.error) { writeError(res.error); return; }
-        debugger;
         authToCookie(res); //uloz AUTHO do cookie
         //navrat z oAuth stranky
         if (authReturnUrl) location.href = authReturnUrl; else writeError(JSON.stringify(res, null, 2));
@@ -110,7 +109,7 @@
         'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile');
     }
     parseProfile(obj: any): IOutputPar { //vytazeni profile informaci z ajaxUrl
-      var res: IOutputPar = { id: obj.id, email: obj.email, firstName: obj.given_name, lastName: obj.family_name }; return res;
+      var res: IOutputPar = { id: obj.id, email: obj.email, firstName: obj.given_name, lastName: obj.family_name, providerId: oAuthProviders.google }; return res;
     }
   }
 
@@ -120,7 +119,7 @@
       super(providerId, 'https://www.facebook.com/dialog/oauth', 'https://graph.facebook.com/me', 'https://www.facebook.com', 'email');
     }
     parseProfile(obj: any): IOutputPar { //vytazeni profile informaci z ajaxUrl
-      var res: IOutputPar = { id: obj.id, email: obj.email, firstName: obj.first_name, lastName: obj.last_name ? obj.last_name : obj.name }; return res;
+      var res: IOutputPar = { id: obj.id, email: obj.email, firstName: obj.first_name, lastName: obj.last_name ? obj.last_name : obj.name, providerId: oAuthProviders.facebook }; return res;
     }
   }
 
@@ -131,7 +130,7 @@
       super(providerId, 'https://login.live.com/oauth20_authorize.srf', 'https://apis.live.net/v5.0/me', 'https://login.live.com/', 'wl.signin wl.basic wl.emails');
     }
     parseProfile(obj: any): IOutputPar { //vytazeni profile informaci z ajaxUrl
-      var res: IOutputPar = { id: obj.id, email: '' /*TODO _.compact(_.values(obj.emails))[0]*/, firstName: obj.first_name, lastName: obj.last_name }; return res;
+      var res: IOutputPar = { id: obj.id, email: '' /*TODO _.compact(_.values(obj.emails))[0]*/, firstName: obj.first_name, lastName: obj.last_name, providerId: oAuthProviders.microsoft }; return res;
     }
   }
 
