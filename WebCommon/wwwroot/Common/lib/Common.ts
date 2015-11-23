@@ -53,14 +53,8 @@ namespace utils {
 
   export type TDirectory<T> = { [name: string]: T; };
 
-  export function isString(obj): boolean { return typeof obj === 'string'; }
   export function isNumber(value) { return typeof value === 'number'; }
   export var isArray = Array.isArray;
-  export function isEmpty(obj): boolean {
-    if (!obj) return true;
-    if (isString(obj) && obj == '') return true;
-    return false;
-  }
   export function isObject(value) { return value !== null && typeof value === 'object'; }
   export function isFunction(value) { return typeof value === 'function'; }
 

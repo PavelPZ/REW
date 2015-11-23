@@ -29,12 +29,31 @@ namespace router {
   }
 
   //NAVIGATE
-  export function getHashUrl(src: IUrl<any>): string { return '#' + src.route.getHash(src.par); }
-  export function getHash(route: RouteType, par?: IPar): string { return getHashUrl({ route: route, par: par }); }
-  export function gotoUrl(src: IUrl<any>, ev?: React.SyntheticEvent) { if (ev) ev.preventDefault(); src.route.navigate(src.par); }
-  export function goto(route: RouteType, par?: IPar, ev?: React.SyntheticEvent) { gotoUrl({ route: route, par: par }, ev); }
+  export function getHashUrl<T extends IPar>(src: IUrl<T>): string { return '#' + src.route.getHash(src.par); }
+  export function getHash<T extends IPar>(route: RouteType, par?: T): string { return getHashUrl({ route: route, par: par }); }
+  export function gotoUrl<T extends IPar>(src: IUrl<T>, ev?: React.SyntheticEvent) { if (ev) ev.preventDefault(); src.route.navigate(src.par); }
+  export function goto<T extends IPar>(route: RouteType, par?: T, ev?: React.SyntheticEvent) { gotoUrl({ route: route, par: par }, ev); }
+
+  //export function _getHashUrl(src: IUrl<any>): string { return '#' + src.route.getHash(src.par); }
+  //export function _getHash(route: RouteType, par?: IPar): string { return getHashUrl({ route: route, par: par }); }
+  //export function _gotoUrl(src: IUrl<any>, ev?: React.SyntheticEvent) { if (ev) ev.preventDefault(); src.route.navigate(src.par); }
+  //export function _goto(route: RouteType, par?: IPar, ev?: React.SyntheticEvent) { gotoUrl({ route: route, par: par }, ev); }
+
   export function goHome(ev?: React.SyntheticEvent) { gotoUrl(homeUrl, ev); }
   export function getHomeHash(): string { return getHashUrl(homeUrl); }
+
+  export function fullPath(hash: string): string { return location.href.split('#')[0] + hash; }
+
+  //URL stringify
+  const urlStrDelim = '~|~';
+  export function urlStringify(url: IUrlType): string {
+    return url.route.globalId() + urlStrDelim + (url.par ? JSON.stringify(url.par) : '');
+  }
+  export function urlParse(urlStr: string): IUrlType {
+    var parts = urlStr.split(urlStrDelim);
+    var par: IPar = utils.isEmpty(parts[1]) ? null : JSON.parse(parts[1]);
+    return { route: routeDir[parts[0]], par: par };
+  }
 
 
   //pojmenovane globalne dostupne a typed router stavy
@@ -43,6 +62,7 @@ namespace router {
 
   //objektova reprezentace HASH casti URL
   export interface IUrl<T extends IPar> { route: Route<T>; par: T; }
+  export type IUrlType = IUrl<IPar>;
   //predchudce vsech router state parametru
   export interface IPar { }
   //predchudce vsech router akci
@@ -59,7 +79,7 @@ namespace router {
   //- potreba AUTH => nevola se COMPL callback
   //- jedna se o router action => compl(true)
   //- nejedna se o router action => compl(false)
-  export function tryDispatchRoute(action: flux.IAction, compl: (routerProcessed:boolean) => void): void {
+  export function tryDispatchRoute(action: IActionType, compl: (routerProcessed:boolean) => void): void {
     var stName = action.moduleId + '/' + action.actionId;
     var rt = routeDir[stName]; if (!rt) { compl(false); return; }
     //route action => kontrola na authentifikaci a dispatch akce
@@ -74,9 +94,9 @@ namespace router {
   //*** onHashChange
   function onHashChange(hashStr?: string) {
     //hack pro navrat z oAuth loginu
-    if (auth.returnedFromOAuth(window.location.hash)) return;
+    //if (auth.returnedFromOAuth(window.location.hash)) return;
     //trigger
-    var url = toUrl(hashStr || '');
+    var url = toUrl(hashStr);
     if (!url) url = homeUrl;
     if (!url) return; //throw 'Missing uiRouter.States.setDefault call';
     var act = url.route.createAction(url.par);
@@ -86,12 +106,13 @@ namespace router {
   //*** PARSES
   export function toUrl<T extends IPar>(par: IQuery | string): IUrl<T> {
     var q: IQuery;
+    if (!par) par = '';
     if (typeof par === 'string') q = toQuery(par); else q = par as IQuery;
     //angular uiRouter match
     var res: IUrl<T> = null;
     routes.find((st: Route<T>) => {
       var par = st.parseHash(q) as T; if (!par) return false;
-      res = { par: par, route: st };
+      res = { route: st, par: par };
       return true;
     });
     return res;
@@ -117,14 +138,13 @@ namespace router {
   var routes: Array<RouteType> = [];
   var routeDir: { [name: string]: RouteType; } = {};
   //var dir: { [name: string]: State<any>; } = {};
-  var homeUrl: IUrl<any>;
+  export var homeUrl: IUrlType;
 
   //**** route CHANGING
-  function onDispatchRouteAction(route: RouteType, action: flux.IAction, compl: (needsAuth:boolean) => void) {
+  function onDispatchRouteAction(route: RouteType, action: IActionType, compl: (needsAuth:boolean) => void) {
     //test na authentifikaci
     if (route.needsAuth) {
-      var hash = route.getHash((action as IActionType).par);
-      if (auth.authRedirected(hash)) { compl(true); return; } //proveden redirect na prihlaseni (s navratem na HASH)
+      if (auth.loginRedirectWhenNeeded()) { compl(true); return; } //proveden redirect na prihlaseni (s navratem na HASH)
     }
     //route names, do kterych se vstupuje
     var r = route; var newr: Array<string> = []; do { newr.push(r.globalId()); r = r.parent; } while (r != null);

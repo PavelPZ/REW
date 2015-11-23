@@ -7,40 +7,24 @@
     microsoft,
   }
 
-  const authCookieName = 'auth-cookie-name';
+  //*** predani vysledku oAUTH pres cookie
+  const authCookieName = 'auth-cookie';
   export function fromCookie(par: IAuthCookie) {
     par.email = par.firstName = par.lastName = null;
-    let cook:string = cookies.get(authCookieName) as string; 
-    if (!cook || cook == '') return;
-    try {
-      let ck: IAuthCookie = JSON.parse(cook);
-      par.email = ck.email; par.firstName = ck.firstName; par.lastName = ck.lastName;
-    } catch (msg) {}
+    let ck = utils.fromCookie<IAuthCookie>(authCookieName);
+    if (!ck) return;
+    par.email = ck.email; par.firstName = ck.firstName; par.lastName = ck.lastName;
   }
-  export function toCookie(par: IAuthCookie, preserveDays: number) {
-    if (!par) { cookies.remove(authCookieName); return; }
-    const secondsPerDay = 60 * 60 * 24; //pocet vterin za den
-    var cook: IAuthCookie = { email: par.email, firstName: par.firstName, lastName: par.lastName };
-    cookies.set(authCookieName, JSON.stringify(cook), preserveDays ? secondsPerDay * preserveDays : -1);
-  }
-
-  export function loginNavigate(loginHtmlUrl: string, par: IInputPar): string {
-    return loginHtmlUrl + '#' + utils.urlStringifyQuery(par);
-  }
-
-  export function loginReturn(returnUrl: string, par: IOutputPar) {
-    let parStr = encodeURIComponent(JSON.stringify(par));
-    //var parts = returnUrl.split(outuptParPlace); if (parts.length != 2) throw 'parts.length != 2';
-    //var url = parts[0] + parStr + parts[1];
-    let url = returnUrl + parStr;
-    location.href = url;
+  const secondsPerDay = 60 * 60 * 24; //pocet vterin za den
+  export function toCookie(par: IAuthCookie, preserveDays: number = -1) {
+    var cook: IAuthCookie = par ? { email: par.email, firstName: par.firstName, lastName: par.lastName } : null;
+    utils.toCookie(authCookieName, cook, preserveDays * secondsPerDay);
   }
 
   //obsah cookie: vstupni informace pro login
   export interface IInputPar {
     providerId: servConfig.oAuthProviders;
     client_id: string;
-    returnUrl: string; //v URL je na miste vysledneho encodeURIComponent(JSON.stringify(outputPar)) retezec '#$#$#'
   }
   
   export interface IAuthCookie {
@@ -53,7 +37,17 @@
     error?: string; //login se nepodaril
     id: string; //id uzivatele u providera
   }
-  //export const outuptParPlace = '#$#$#';
+
+  const authReturnUrlCookie = 'auth-return-url';
+  export function saveLoginSourcePage(hash: string) { //URL stranky, ktera vyzaduje AUTH
+    if (hash) cookies.set(authReturnUrlCookie, hash); else cookies.remove(authReturnUrlCookie);
+  }
+  export function useLoginSourcePage(): string {
+    return cookies.get(authReturnUrlCookie) as string; 
+  }
+  export function removeLoginSourcePage() {
+    cookies.remove(authReturnUrlCookie);
+  }
 
 }
 
@@ -82,4 +76,20 @@ namespace utils {
     return res;
   }
 
+  export function fromCookie<T>(cookName: string): T {
+    var c = cookies.get(cookName) as string; if (isEmpty(c)) return null;
+    try { return JSON.parse(c); } catch (msg) { return null; }
+  }
+
+  export function toCookie(cookName: string, obj: any, expireSec: number = -1): void {
+    if (isEmpty(obj)) cookies.remove(cookName);
+    try { cookies.set(cookName, JSON.stringify(obj), expireSec); } catch (msg) { cookies.remove(cookName) }
+  }
+
+  export function isString(obj): boolean { return typeof obj === 'string'; }
+  export function isEmpty(obj): boolean {
+    if (!obj) return true;
+    if (isString(obj) && obj == '') return true;
+    return false;
+  }
 }

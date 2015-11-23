@@ -14,23 +14,26 @@
         let inputPar = utils.urlParseQuery<IInputPar>(inputParStr);
         if (!inputPar || !inputPar.client_id || !inputPar.providerId) {
           //DEBUG: simulace volani stranky
-          inputPar = { client_id: servCfg.oAuth.items[servConfig.oAuthProviders.facebook].clientId /*'765138080284696', id pro http://localhost:56264, pavel.zika@langmaster.com, edurom1*/, returnUrl: null, providerId: servConfig.oAuthProviders.facebook };
+          inputPar = { client_id: servCfg.oAuth.items[servConfig.oAuthProviders.facebook].clientId /*'765138080284696', id pro http://localhost:56264, pavel.zika@langmaster.com, edurom1*/, providerId: servConfig.oAuthProviders.facebook };
           //non DEBUG: throw '!inputPar || !inputPar.client_id || !inputPar.providerId: ' + inputParStr;
         }
-        if (typeof inputPar.providerId == 'string') inputPar.providerId = parseInt(inputPar.providerId as any);
+        if (utils.isString(inputPar.providerId)) inputPar.providerId = parseInt(inputPar.providerId as any);
         let provider = getProvider(inputPar.providerId);
         provider.authrequest(inputPar);
         return;
       }
       //Navrat z auth response. V cookie je IAuthRequestCookie
-      let authReqCook: IAuthRequestCookie = JSON.parse(cookies.get(authrequestCookieName) as string || 'null');
+      let authReqCook = utils.fromCookie<IAuthRequestCookie>(authrequestCookieName);
+      let authReturnUrl = useLoginSourcePage(); removeLoginSourcePage();
       cookies.remove(authrequestCookieName);
       if (authReqCook.state != authResponse.state) throw 'authReqCook.state != authResponse.state';
       let provider = getProvider(authReqCook.providerId);
       getProfileFromProvider(provider, authResponse.access_token, res => {
         if (res.error) { writeError(res.error); return; }
-        if (authReqCook.returnUrl) loginReturn(authReqCook.returnUrl, res);
-        else writeError(JSON.stringify(res, null, 2));
+        if (authReturnUrl) {
+          toCookie(res);
+          location.href = authReturnUrl;
+        } else writeError(JSON.stringify(res, null, 2));
       });
     } catch (msg) {
       writeError(msg);
@@ -52,8 +55,9 @@
       console.log("authrequest start: " + JSON.stringify(inputPar));
 
       //cookie content
-      var cookie: IAuthRequestCookie = { providerId: inputPar.providerId, state: new Date().getTime().toString(), returnUrl: inputPar.returnUrl };
-      cookies.set(authrequestCookieName, JSON.stringify(cookie));
+      var cookie: IAuthRequestCookie = { providerId: inputPar.providerId, state: new Date().getTime().toString() };
+      utils.toCookie(authrequestCookieName, cookie);
+      //cookies.set(authrequestCookieName, JSON.stringify(cookie));
 
       //request par
       var request: IAuthRequest = {
@@ -74,7 +78,7 @@
   interface IAuthRequestCookie {
     state: string;
     providerId: servConfig.oAuthProviders;
-    returnUrl: string;
+    //returnUrl: string;
   }
 
   //autorizacni request

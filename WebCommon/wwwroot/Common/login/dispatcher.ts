@@ -20,8 +20,8 @@ namespace login {
 
   export var namedRoute = router.named.login; //pojmenovane stavy
   router.init(
-    new router.RouteType(moduleId, moduleId, '/login', { needsAuth: false, onEnterProc: compl => { alert('root'); compl(); } },
-      namedRoute.home = new router.RouteType(moduleId, 'r-home', '/home', { onEnterProc: compl => { alert('home'); compl(); } }),
+    new router.RouteType(moduleId, moduleId, '/login', { needsAuth: false },
+      namedRoute.home = new router.Route(moduleId, 'r-home', '/home?{authReturnUrl}'),
       namedRoute.login = new router.RouteType(moduleId, 'r-login', '/login'),
       namedRoute.register = new router.RouteType(moduleId, 'r-register', '/login'),
       namedRoute.confirmRegister = new router.RouteType(moduleId, 'r-confirmRegister', '/confirmRegister'),
@@ -44,6 +44,6 @@ namespace login {
   }
 
   //*** LOGOUT
-  function doLogout() { auth.logout(); router.goHome(); }
+  //function doLogout() { auth.logout(); router.goHome(); }
 
 }
