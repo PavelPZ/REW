@@ -7,43 +7,45 @@
     microsoft,
   }
 
-  //*** predani vysledku oAUTH pres cookie
-  const authCookieName = 'auth-cookie';
-  export function fromCookie(par: IAuthCookie) {
-    par.email = par.firstName = par.lastName = null;
-    let ck = utils.fromCookie<IAuthCookie>(authCookieName);
-    if (!ck) return;
-    par.email = ck.email; par.firstName = ck.firstName; par.lastName = ck.lastName;
-  }
-  const secondsPerDay = 60 * 60 * 24; //pocet vterin za den
-  export function toCookie(par: IAuthCookie, preserveDays: number = -1) {
-    var cook: IAuthCookie = par ? { email: par.email, firstName: par.firstName, lastName: par.lastName } : null;
-    utils.toCookie(authCookieName, cook, preserveDays * secondsPerDay);
-  }
-
   //obsah cookie: vstupni informace pro login
   export interface IInputPar {
     providerId: servConfig.oAuthProviders;
     client_id: string;
   }
   
+  //Login uzivatele
   export interface IAuthCookie {
     email: string;
     firstName?: string;
     lastName?: string;
   }
   //obsah cookie: vystupni informace pro login
-  export interface IOutputPar extends IAuthCookie{
+  export interface IOutputPar extends IAuthCookie {
     error?: string; //login se nepodaril
     id: string; //id uzivatele u providera
   }
 
+  //*** AUTH cookie
+  const authCookieName = 'auth-cookie';
+  export function authFromCookie(par: IAuthCookie) {
+    par.email = par.firstName = par.lastName = null;
+    let ck = utils.fromCookie<IAuthCookie>(authCookieName);
+    if (!ck) return;
+    par.email = ck.email; par.firstName = ck.firstName; par.lastName = ck.lastName;
+  }
+  const secondsPerDay = 60 * 60 * 24; //pocet vterin za den
+  export function authToCookie(par: IAuthCookie, preserveDays?: number) {
+    var cook: IAuthCookie = par ? { email: par.email, firstName: par.firstName, lastName: par.lastName } : null;
+    utils.toCookie(authCookieName, cook, preserveDays ? preserveDays * secondsPerDay : -1);
+  }
+
+  //RETURN URL cookie
   const authReturnUrlCookie = 'auth-return-url';
   export function saveLoginSourcePage(hash: string) { //URL stranky, ktera vyzaduje AUTH
     if (hash) cookies.set(authReturnUrlCookie, hash); else cookies.remove(authReturnUrlCookie);
   }
   export function useLoginSourcePage(): string {
-    return cookies.get(authReturnUrlCookie) as string; 
+    return cookies.get(authReturnUrlCookie) as string;
   }
   export function removeLoginSourcePage() {
     cookies.remove(authReturnUrlCookie);

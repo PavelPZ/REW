@@ -10,7 +10,7 @@
   );
   function getOAuthLink(providerId: servConfig.oAuthProviders): string {
     var par = servCfg.oAuth.items[providerId];
-    var res = auth.loginNavigate(servCfg.oAuth.loginUrl, { client_id: par.clientId, providerId: providerId }); 
+    var res = auth.getOAuthLink(servCfg.oAuth.loginUrl, { client_id: par.clientId, providerId: providerId }); 
     return res;
   }
 }

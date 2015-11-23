@@ -30,10 +30,10 @@
       let provider = getProvider(authReqCook.providerId);
       getProfileFromProvider(provider, authResponse.access_token, res => {
         if (res.error) { writeError(res.error); return; }
-        if (authReturnUrl) {
-          toCookie(res);
-          location.href = authReturnUrl;
-        } else writeError(JSON.stringify(res, null, 2));
+        debugger;
+        authToCookie(res); //uloz AUTHO do cookie
+        //navrat z oAuth stranky
+        if (authReturnUrl) location.href = authReturnUrl; else writeError(JSON.stringify(res, null, 2));
       });
     } catch (msg) {
       writeError(msg);
