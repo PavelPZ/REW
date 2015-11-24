@@ -252,17 +252,17 @@ namespace LMComLib {
     public static StringBuilder sb = new StringBuilder();
     public static StringWriter wr = new StringWriter(sb); //wr = null;
 
-    //public static LMComData2.LMComDataContext getContext() {
-    //  return getContext(true);
-    //}
+    public static LMComData2.LMComDataContext getContext() {
+      return getContext(true);
+    }
 
-    //public static LMComData2.LMComDataContext getContext(bool objectTrackingEnabled) {
-    //  var cn = LMDataConnectionString(); if (cn == null) return null;
-    //  LMComData2.LMComDataContext ctx = new LMComData2.LMComDataContext(cn);
-    //  ctx.ObjectTrackingEnabled = objectTrackingEnabled;
-    //  if (isPZComp() && sb != null) ctx.Log = wr;
-    //  return ctx;
-    //}
+    public static LMComData2.LMComDataContext getContext(bool objectTrackingEnabled) {
+      var cn = LMDataConnectionString(); if (cn == null) return null;
+      LMComData2.LMComDataContext ctx = new LMComData2.LMComDataContext(cn);
+      ctx.ObjectTrackingEnabled = objectTrackingEnabled;
+      if (isPZComp() && sb != null) ctx.Log = wr;
+      return ctx;
+    }
 
     //public static Moodle.MoodleData getMoodleContext(bool objectTrackingEnabled) {
     //  Moodle.MoodleData ctx = new Moodle.MoodleData(ConfigurationManager.ConnectionStrings["MoodleData"].ConnectionString);
