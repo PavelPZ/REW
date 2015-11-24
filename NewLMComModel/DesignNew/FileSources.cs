@@ -1,14 +1,12 @@
-﻿using System;
+﻿using LMComLib;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using LMComLib;
-using LMNetLib;
 using System.Configuration;
+using System.IO;
 using System.IO.Compression;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 namespace DesignNew {
 
@@ -156,5 +154,58 @@ namespace DesignNew {
     }
 
   }
+
+  public class swFile {
+
+    public static Dictionary<string, swFile> swFiles = new Dictionary<string, swFile>(); //cache
+
+    public swFile(string nm) { name = nm; ext = Path.GetExtension(name); }
+
+    public void setData(byte[] d, MD5 md5) { data = d; eTag = Convert.ToBase64String(md5.ComputeHash(d)); }
+
+    public string name;
+    public string ext;
+    public string eTag;
+    public byte[] data;
+    public byte[] gzipData;
+
+    public static swFile addToCache(string name, string ext, byte[] data) { //index-*.html do cache
+      lock (swFiles) {
+        swFile actFile;
+        if (swFiles.TryGetValue(name, out actFile)) return actFile;
+        swFiles.Add(name, actFile = new swFile(name) { ext = ext });
+        using (MD5 md5 = MD5.Create()) actFile.setData(data, md5);
+        using (var ms = new MemoryStream()) {
+          using (var gzip = new GZipStream(ms, CompressionMode.Compress)) gzip.Write(data, 0, data.Length);
+          actFile.gzipData = ms.ToArray();
+        }
+        return actFile;
+      }
+    }
+
+    public static void extractSwFilesToCache(string path) { //soubory z d:\LMCom\rew\WebCode\App_Data\swfiles.zip do cache pri startu aplikace
+      var zipFn = path; // HostingEnvironment.MapPath("~/app_data/swfiles.zip");
+      var mStr = new MemoryStream();
+      using (MD5 md5 = MD5.Create())
+      using (var zipStr = File.OpenRead(zipFn))
+      using (ZipArchive zip = new ZipArchive(zipStr, ZipArchiveMode.Read)) {
+        foreach (var f in zip.Entries)
+          using (var fStr = f.Open()) {
+            mStr.SetLength(0);
+            fStr.CopyTo(mStr);
+            string name = f.FullName.Replace('\\', '/'); bool isGZip = false;
+            if (name.EndsWith(".gzip")) {
+              name = name.Substring(0, name.Length - 5);
+              isGZip = true;
+            }
+            swFile actFile;
+            if (!swFiles.TryGetValue(name, out actFile)) swFiles.Add(name, actFile = new swFile(name));
+            if (isGZip) actFile.gzipData = mStr.ToArray(); else actFile.setData(mStr.ToArray(), md5);
+          }
+      }
+    }
+  }
+
+
 }
 

@@ -14,6 +14,7 @@ using System.Net;
 using Microsoft.AspNet.Routing;
 using System.IO;
 using WebCode;
+using System.Diagnostics;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -48,7 +49,7 @@ namespace WebApp {
     public IActionResult Common() {
       return View("WebIndex");
     }
-    [Route("")]
+    [Route("index.html"),Route("")]
     public IActionResult Empty() {
       return Cfg.cfg.defaultPars.app == servConfig.Apps.web
         ? View("WebIndex")
@@ -58,14 +59,19 @@ namespace WebApp {
   }
 
   public static class Cache {
-    static Cache() {
-      UrlRewrite.swFile.extractSwFilesToCache(); //soubory z d:\LMCom\rew\WebCode\App_Data\swfiles.zip do cache
+    public static void init(string path) {
+      try {
+        Trace.TraceInformation("WebApp.Cache.init: " + path);
+        swFile.extractSwFilesToCache(path); //soubory z swfiles.zip do cache
+      } catch (Exception exp) {
+        Trace.TraceError(LowUtils.ExceptionToString(exp));
+      }
     }
     static async Task makeResponseFromCache(string cacheKey, RouteContext routeCtx) {
       //tast na pritomnost v cache
       if (string.IsNullOrEmpty(cacheKey)) { await Task.CompletedTask; return; }
-      UrlRewrite.swFile sf;
-      lock (UrlRewrite.swFile.swFiles) UrlRewrite.swFile.swFiles.TryGetValue(cacheKey.ToLower(), out sf);
+      swFile sf;
+      lock (swFile.swFiles) swFile.swFiles.TryGetValue(cacheKey.ToLower(), out sf);
       if (sf == null) { await Task.CompletedTask; return; }
 
       //ano => vrat z cache
@@ -122,7 +128,7 @@ namespace WebApp {
         ctx.Response.Body = memStr;
         await next();
         //dej vygenerovanou stranku do cache
-        var sf = UrlRewrite.swFile.addToCache(pars.getCacheKey(), ".html", memStr.ToArray());
+        var sf = swFile.addToCache(pars.getCacheKey(), ".html", memStr.ToArray());
         ctx.Response.Headers["Etag"] = sf.eTag;
         //form response
         memStr.Seek(0, SeekOrigin.Begin);

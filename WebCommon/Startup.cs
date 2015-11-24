@@ -12,12 +12,14 @@ using Microsoft.AspNet.Routing.Template;
 using System.IO;
 using DesignNew;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace WebApp {
 
   public class Startup {
 
     public Startup(IHostingEnvironment env, IApplicationEnvironment appEnv) {
+      Trace.TraceInformation("WebApp.Startup: " + appEnv.ApplicationBasePath);
 
       //var builder = new ConfigurationBuilder()
       //  .SetBasePath(appEnv.ApplicationBasePath)
@@ -28,8 +30,10 @@ namespace WebApp {
 
       //inicializace config souboru
       Cfg.init(appEnv.ApplicationBasePath + @"\wwwroot\servConfig.js");
+      applicationBasePath = appEnv.ApplicationBasePath;
     }
     public IConfiguration Configuration { get; set; }
+    string applicationBasePath;
 
     public void ConfigureServices(IServiceCollection services) {
       //services.AddOptions();
@@ -48,7 +52,8 @@ namespace WebApp {
         //soubory z filesystemu
         app.UseRouter(new TemplateRoute(new OtherFilesRoute(), "{*url:regex(~)}", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
       } else {
-        //zkus index page z cache
+        Cache.init(applicationBasePath + @"\swfiles.zip");
+        //zkus .CSHTML index straky z cache
         app.UseRouter(new TemplateRoute(new IndexCacheRoute(servConfig.Apps.web4), HomeController.web4Mask, app.ApplicationServices.GetService<IInlineConstraintResolver>()));
         app.UseRouter(new TemplateRoute(new IndexCacheRoute(servConfig.Apps.oauth), HomeController.oAuthMask, app.ApplicationServices.GetService<IInlineConstraintResolver>()));
         app.UseRouter(new TemplateRoute(new IndexCacheRoute(servConfig.Apps.web), HomeController.webTestMask, app.ApplicationServices.GetService<IInlineConstraintResolver>()));

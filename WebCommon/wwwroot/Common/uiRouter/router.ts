@@ -32,7 +32,7 @@ namespace router {
   export function getHashUrl<T extends IPar>(src: IUrl<T>): string { return '#' + src.route.getHash(src.par); }
   export function getHash<T extends IPar>(route: RouteType, par?: T): string { return getHashUrl({ route: route, par: par }); }
   export function gotoUrl<T extends IPar>(src: IUrl<T>, ev?: React.SyntheticEvent) { if (ev) ev.preventDefault(); src.route.navigate(src.par); }
-  export function goto<T extends IPar>(route: RouteType, par?: T, ev?: React.SyntheticEvent) { gotoUrl({ route: route, par: par }, ev); }
+  export function gotoRoute<T extends IPar>(route: RouteType, par?: T, ev?: React.SyntheticEvent) { gotoUrl({ route: route, par: par }, ev); }
 
   //export function _getHashUrl(src: IUrl<any>): string { return '#' + src.route.getHash(src.par); }
   //export function _getHash(route: RouteType, par?: IPar): string { return getHashUrl({ route: route, par: par }); }

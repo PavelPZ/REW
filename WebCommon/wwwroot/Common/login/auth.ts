@@ -38,7 +38,7 @@ namespace auth {
   export function loginRedirectWhenNeeded(): boolean {
     if (isLogged()) return false;
     oauth.saveLoginSourcePage(location.href); //URL pro navrat z uspesneho OAUTH
-    router.goto(login.namedRoute.home);
+    router.gotoRoute(login.namedRoute.home);
     return true;
   }
   oauth.saveLoginSourcePage(null); //nova browser session => vyhod uschovanou URL s login source page

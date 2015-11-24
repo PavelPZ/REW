@@ -1,0 +1,50 @@
+﻿[
+  {
+    "name": "data",
+    "size": 0,
+    "mtime": "2015-11-24T19:55:43.9102391+00:00",
+    "mime": "inode/directory",
+    "href": "https://web5app.scm.azurewebsites.net/api/vfs/data/",
+    "path": "D:\\home\\data"
+  },
+  {
+    "name": "LogFiles",
+    "size": 0,
+    "mtime": "2015-11-24T21:19:54.3859057+00:00",
+    "mime": "inode/directory",
+    "href": "https://web5app.scm.azurewebsites.net/api/vfs/LogFiles/",
+    "path": "D:\\home\\LogFiles"
+  },
+  {
+    "name": "site",
+    "size": 0,
+    "mtime": "2015-11-16T21:39:15.8562108+00:00",
+    "mime": "inode/directory",
+    "href": "https://web5app.scm.azurewebsites.net/api/vfs/site/",
+    "path": "D:\\home\\site"
+  },
+  {
+    "name": "SiteExtensions",
+    "size": 0,
+    "mtime": "2015-09-27T16:56:22.4064641+00:00",
+    "mime": "inode/directory",
+    "href": "https://web5app.scm.azurewebsites.net/api/vfs/SiteExtensions/",
+    "path": "D:\\home\\SiteExtensions"
+  },
+  {
+    "name": "SystemDrive",
+    "size": 0,
+    "mtime": "2015-11-23T09:29:14.14455+00:00",
+    "mime": "inode/shortcut",
+    "href": "https://web5app.scm.azurewebsites.net/api/vfs/SystemDrive/",
+    "path": "D:\\"
+  },
+  {
+    "name": "LocalSiteRoot",
+    "size": 0,
+    "mtime": "2015-11-24T21:22:43.6973497+00:00",
+    "mime": "inode/shortcut",
+    "href": "https://web5app.scm.azurewebsites.net/api/vfs/LocalSiteRoot/",
+    "path": "D:\\local"
+  }
+]

@@ -520,7 +520,7 @@
       "Microsoft.AspNet.JsonPatch/1.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
-          "Newtonsoft.Json": "6.0.6"
+          "Newtonsoft.Json": "7.0.1"
         },
         "frameworkAssemblies": [
           "Microsoft.CSharp",
@@ -687,7 +687,7 @@
         "dependencies": {
           "Microsoft.AspNet.JsonPatch": "1.0.0-rc1-final",
           "Microsoft.AspNet.Mvc.Core": "6.0.0-rc1-final",
-          "Newtonsoft.Json": "6.0.6"
+          "Newtonsoft.Json": "7.0.1"
         },
         "frameworkAssemblies": [
           "Microsoft.CSharp",
@@ -1217,7 +1217,7 @@
         "dependencies": {
           "Microsoft.Extensions.Configuration": "1.0.0-rc1-final",
           "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0-rc1-final",
-          "Newtonsoft.Json": "6.0.6"
+          "Newtonsoft.Json": "7.0.1"
         },
         "frameworkAssemblies": [
           "Microsoft.CSharp",
@@ -1497,12 +1497,12 @@
           "System.Numerics"
         ],
         "compile": {
-          "ref/net46/_._": {},
-          "ref/net46/System.Numerics.Vectors.dll": {}
+          "ref/net46/System.Numerics.Vectors.dll": {},
+          "ref/net46/_._": {}
         },
         "runtime": {
-          "lib/net46/_._": {},
-          "lib/net46/System.Numerics.Vectors.dll": {}
+          "lib/net46/System.Numerics.Vectors.dll": {},
+          "lib/net46/_._": {}
         }
       },
       "System.Reflection/4.0.0": {
@@ -2139,7 +2139,7 @@
       "Microsoft.AspNet.JsonPatch/1.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
-          "Newtonsoft.Json": "6.0.6"
+          "Newtonsoft.Json": "7.0.1"
         },
         "frameworkAssemblies": [
           "Microsoft.CSharp",
@@ -2306,7 +2306,7 @@
         "dependencies": {
           "Microsoft.AspNet.JsonPatch": "1.0.0-rc1-final",
           "Microsoft.AspNet.Mvc.Core": "6.0.0-rc1-final",
-          "Newtonsoft.Json": "6.0.6"
+          "Newtonsoft.Json": "7.0.1"
         },
         "frameworkAssemblies": [
           "Microsoft.CSharp",
@@ -2839,7 +2839,7 @@
         "dependencies": {
           "Microsoft.Extensions.Configuration": "1.0.0-rc1-final",
           "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0-rc1-final",
-          "Newtonsoft.Json": "6.0.6"
+          "Newtonsoft.Json": "7.0.1"
         },
         "frameworkAssemblies": [
           "Microsoft.CSharp",
@@ -3119,12 +3119,12 @@
           "System.Numerics"
         ],
         "compile": {
-          "ref/net46/_._": {},
-          "ref/net46/System.Numerics.Vectors.dll": {}
+          "ref/net46/System.Numerics.Vectors.dll": {},
+          "ref/net46/_._": {}
         },
         "runtime": {
-          "lib/net46/_._": {},
-          "lib/net46/System.Numerics.Vectors.dll": {}
+          "lib/net46/System.Numerics.Vectors.dll": {},
+          "lib/net46/_._": {}
         }
       },
       "System.Reflection/4.0.0": {
@@ -3761,7 +3761,7 @@
       "Microsoft.AspNet.JsonPatch/1.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
-          "Newtonsoft.Json": "6.0.6"
+          "Newtonsoft.Json": "7.0.1"
         },
         "frameworkAssemblies": [
           "Microsoft.CSharp",
@@ -3928,7 +3928,7 @@
         "dependencies": {
           "Microsoft.AspNet.JsonPatch": "1.0.0-rc1-final",
           "Microsoft.AspNet.Mvc.Core": "6.0.0-rc1-final",
-          "Newtonsoft.Json": "6.0.6"
+          "Newtonsoft.Json": "7.0.1"
         },
         "frameworkAssemblies": [
           "Microsoft.CSharp",
@@ -4461,7 +4461,7 @@
         "dependencies": {
           "Microsoft.Extensions.Configuration": "1.0.0-rc1-final",
           "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0-rc1-final",
-          "Newtonsoft.Json": "6.0.6"
+          "Newtonsoft.Json": "7.0.1"
         },
         "frameworkAssemblies": [
           "Microsoft.CSharp",
@@ -4741,12 +4741,12 @@
           "System.Numerics"
         ],
         "compile": {
-          "ref/net46/_._": {},
-          "ref/net46/System.Numerics.Vectors.dll": {}
+          "ref/net46/System.Numerics.Vectors.dll": {},
+          "ref/net46/_._": {}
         },
         "runtime": {
-          "lib/net46/_._": {},
-          "lib/net46/System.Numerics.Vectors.dll": {}
+          "lib/net46/System.Numerics.Vectors.dll": {},
+          "lib/net46/_._": {}
         }
       },
       "System.Reflection/4.0.0": {
@@ -6559,13 +6559,15 @@
       "Microsoft.Dnx.Runtime >= 1.0.0-rc1-final",
       "EntityFramework.Commands >= 7.0.0-rc1-final",
       "Microsoft.AspNet.Mvc >= 6.0.0-rc1-final",
-      "Newtonsoft.Json >= 7.0.1",
+      "Newtonsoft.Json >= 6.0.0-*",
       "Microsoft.AspNet.IISPlatformHandler >= 1.0.0-rc1-final",
       "Microsoft.AspNet.Server.Kestrel >= 1.0.0-rc1-final",
       "Microsoft.AspNet.Server.WebListener >= 1.0.0-rc1-final",
       "Microsoft.AspNet.Http.Abstractions >= 1.0.0-rc1-final",
       "Microsoft.AspNet.Diagnostics >= 1.0.0-rc1-final",
-      "Microsoft.AspNet.StaticFiles >= 1.0.0-rc1-final"
+      "Microsoft.AspNet.StaticFiles >= 1.0.0-rc1-final",
+      "Microsoft.Extensions.Configuration >= 1.0.0-rc1-final",
+      "Microsoft.Extensions.Configuration.Json >= 1.0.0-rc1-final"
     ],
     "DNX,Version=v4.6": [
       "LMComLib >= 1.0.0-*",
