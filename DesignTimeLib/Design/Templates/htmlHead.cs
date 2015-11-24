@@ -22,7 +22,7 @@ namespace DesignTimeLib.Design.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\NetNew\DesignTimeLib\Design\Templates\htmlHead.tt"
+    #line 1 "D:\LMCom\rew\DesignTimeLib\Design\Templates\htmlHead.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class htmlHead : htmlHeadBase
     {
@@ -38,7 +38,7 @@ namespace DesignTimeLib.Design.Templates
             this.Write(" \r\n");
             this.Write(" \r\n\r\n\r\n");
             
-            #line 12 "D:\NetNew\DesignTimeLib\Design\Templates\htmlHead.tt"
+            #line 12 "D:\LMCom\rew\DesignTimeLib\Design\Templates\htmlHead.tt"
  //**************** BOOT
   var min = cfg.version == versions.minified ? ".min" : "";
   var themeId = cfg.themeId!=null ? cfg.themeId : "";
@@ -51,7 +51,7 @@ namespace DesignTimeLib.Design.Templates
             #line hidden
             this.Write("  <link href=\"../font-awesome/lm/externals");
             
-            #line 19 "D:\NetNew\DesignTimeLib\Design\Templates\htmlHead.tt"
+            #line 19 "D:\LMCom\rew\DesignTimeLib\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(themeId));
             
             #line default
@@ -60,14 +60,14 @@ namespace DesignTimeLib.Design.Templates
                     "/ea/ea.css\" />\r\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"../blendedapi/sty" +
                     "les/style.css\" />\r\n  <link href=\"../jslib/css/lm");
             
-            #line 22 "D:\NetNew\DesignTimeLib\Design\Templates\htmlHead.tt"
+            #line 22 "D:\LMCom\rew\DesignTimeLib\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(themeId));
             
             #line default
             #line hidden
             this.Write(".css\" rel=\"stylesheet\"/>\r\n\r\n");
             
-            #line 24 "D:\NetNew\DesignTimeLib\Design\Templates\htmlHead.tt"
+            #line 24 "D:\LMCom\rew\DesignTimeLib\Design\Templates\htmlHead.tt"
 
   WriteLine(MainPage.writeCss(RewApp.publisherSkinCss(cfg)));
   WriteLine(RewApp.writeCfg(cfg));
@@ -78,7 +78,7 @@ namespace DesignTimeLib.Design.Templates
             this.Write("  <script type=\'text/javascript\' src=\'../jslib/js/lmconsoleinit.js\'></script>\r\n\r\n" +
                     "  <script type=\'text/javascript\' src=\'../jslib/scripts/jquery");
             
-            #line 30 "D:\NetNew\DesignTimeLib\Design\Templates\htmlHead.tt"
+            #line 30 "D:\LMCom\rew\DesignTimeLib\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(min));
             
             #line default
@@ -86,7 +86,7 @@ namespace DesignTimeLib.Design.Templates
             this.Write(".js\'></script>\r\n  <script type=\'text/javascript\' src=\'../jslib/scripts/underscore" +
                     "");
             
-            #line 31 "D:\NetNew\DesignTimeLib\Design\Templates\htmlHead.tt"
+            #line 31 "D:\LMCom\rew\DesignTimeLib\Design\Templates\htmlHead.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(min));
             
             #line default
@@ -101,7 +101,7 @@ namespace DesignTimeLib.Design.Templates
   <script src=""../jslib/scripts/ui-bootstrap-tpls.js"" type=""text/javascript""></script>
 ");
             
-            #line 39 "D:\NetNew\DesignTimeLib\Design\Templates\htmlHead.tt"
+            #line 39 "D:\LMCom\rew\DesignTimeLib\Design\Templates\htmlHead.tt"
 
   if (cfg.version == versions.minified) {
 
@@ -117,7 +117,7 @@ namespace DesignTimeLib.Design.Templates
   }
 ");
             
-            #line 49 "D:\NetNew\DesignTimeLib\Design\Templates\htmlHead.tt"
+            #line 49 "D:\LMCom\rew\DesignTimeLib\Design\Templates\htmlHead.tt"
 
     if (cfg.licenceConfig.domain != null) WriteLine(string.Format("  if (window.location.host.toLowerCase().indexOf('{0}') < 0) {{ alert('Wrong domain: {0}'); isOk = false; }}", cfg.licenceConfig.domain.ToLower()));
     if (cfg.licenceConfig.intExpiration > 0) WriteLine("  if (new Date().getTime() > {0}) {{ alert('Trial version expired at {1}'); isOk = false; }}", cfg.licenceConfig.intExpiration, cfg.licenceConfig.expiration.ToString("yyyy-MM-dd"));

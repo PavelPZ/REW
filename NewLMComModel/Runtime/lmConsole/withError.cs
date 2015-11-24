@@ -18,7 +18,7 @@ namespace NewData.Runtime.lmConsole
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\NetNew\NewLMComModel\Runtime\lmConsole\withError.tt"
+    #line 1 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\withError.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class withError : withErrorBase
     {
@@ -52,28 +52,28 @@ namespace NewData.Runtime.lmConsole
   <div class=""container"">
   ");
             
-            #line 28 "D:\NetNew\NewLMComModel\Runtime\lmConsole\withError.tt"
+            #line 28 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\withError.tt"
 foreach(var idx in Enumerable.Range(0, count)) {
             
             #line default
             #line hidden
             this.Write("  <a href=\"#b");
             
-            #line 29 "D:\NetNew\NewLMComModel\Runtime\lmConsole\withError.tt"
+            #line 29 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\withError.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(idx));
             
             #line default
             #line hidden
             this.Write("\" class=\"text-danger bold\">@");
             
-            #line 29 "D:\NetNew\NewLMComModel\Runtime\lmConsole\withError.tt"
+            #line 29 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\withError.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(idx));
             
             #line default
             #line hidden
             this.Write("</a>\r\n  ");
             
-            #line 30 "D:\NetNew\NewLMComModel\Runtime\lmConsole\withError.tt"
+            #line 30 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\withError.tt"
 }
             
             #line default
@@ -82,63 +82,63 @@ foreach(var idx in Enumerable.Range(0, count)) {
                     ">\r\n    <h3 class=\"panel-title\">\r\n      <a href=\"index.htm\" class=\"navbar-link\"><" +
                     "i class=\"fa fa-arrow-circle-left fa-lg\"></i></a>\r\n      ");
             
-            #line 37 "D:\NetNew\NewLMComModel\Runtime\lmConsole\withError.tt"
+            #line 37 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\withError.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(title));
             
             #line default
             #line hidden
             this.Write("\r\n    </h3>\r\n    ");
             
-            #line 39 "D:\NetNew\NewLMComModel\Runtime\lmConsole\withError.tt"
+            #line 39 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\withError.tt"
 if (send!=null) {
             
             #line default
             #line hidden
             this.Write("      <br/>\r\n      <p><b>User email: </b>");
             
-            #line 41 "D:\NetNew\NewLMComModel\Runtime\lmConsole\withError.tt"
+            #line 41 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\withError.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(send.email));
             
             #line default
             #line hidden
             this.Write("</p>\r\n      <p><b>Reply to email: </b>");
             
-            #line 42 "D:\NetNew\NewLMComModel\Runtime\lmConsole\withError.tt"
+            #line 42 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\withError.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(send.replEmail));
             
             #line default
             #line hidden
             this.Write("</p>\r\n      <p><b>Problem: </b>");
             
-            #line 43 "D:\NetNew\NewLMComModel\Runtime\lmConsole\withError.tt"
+            #line 43 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\withError.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(send.problem));
             
             #line default
             #line hidden
             this.Write("</p>\r\n      <p><b>Action: </b>");
             
-            #line 44 "D:\NetNew\NewLMComModel\Runtime\lmConsole\withError.tt"
+            #line 44 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\withError.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(send.action));
             
             #line default
             #line hidden
             this.Write("</p>\r\n      <p><b>Other: </b>");
             
-            #line 45 "D:\NetNew\NewLMComModel\Runtime\lmConsole\withError.tt"
+            #line 45 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\withError.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(send.other));
             
             #line default
             #line hidden
             this.Write("</p>\r\n    ");
             
-            #line 46 "D:\NetNew\NewLMComModel\Runtime\lmConsole\withError.tt"
+            #line 46 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\withError.tt"
 }
             
             #line default
             #line hidden
             this.Write("  </div>\r\n  <div class=\"panel-body\">\r\n  </div>\r\n</div>\r\n<pre>");
             
-            #line 51 "D:\NetNew\NewLMComModel\Runtime\lmConsole\withError.tt"
+            #line 51 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\withError.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(text));
             
             #line default

@@ -18,7 +18,7 @@ namespace NewData.Runtime.lmConsole
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\NetNew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
+    #line 1 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class serverComp : serverCompBase
     {
@@ -31,7 +31,7 @@ namespace NewData.Runtime.lmConsole
             this.Write(" \r\n");
             this.Write("\r\n<html>\r\n<head>\r\n  <meta charset=\"utf-8\" />\r\n  <title>");
             
-            #line 11 "D:\NetNew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
+            #line 11 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(title));
             
             #line default
@@ -57,7 +57,7 @@ namespace NewData.Runtime.lmConsole
         <p class=""navbar-text""><a href=""..\..\index.htm"" class=""navbar-link""><i class=""fa fa-arrow-circle-left fa-lg""></i></a></p>
         <p class=""navbar-text"">");
             
-            #line 30 "D:\NetNew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
+            #line 30 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(title));
             
             #line default
@@ -66,28 +66,28 @@ namespace NewData.Runtime.lmConsole
                     "    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">External errors</" +
                     "h3>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      ");
             
-            #line 39 "D:\NetNew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
+            #line 39 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
 foreach(var fn in externalErrors) {
             
             #line default
             #line hidden
             this.Write("      <a href=\"");
             
-            #line 40 "D:\NetNew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
+            #line 40 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(fn));
             
             #line default
             #line hidden
             this.Write("\" class=\"text-danger bold\">");
             
-            #line 40 "D:\NetNew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
+            #line 40 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(fn));
             
             #line default
             #line hidden
             this.Write("</a><br/>\r\n      ");
             
-            #line 41 "D:\NetNew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
+            #line 41 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
 }
             
             #line default
@@ -96,63 +96,63 @@ foreach(var fn in externalErrors) {
                     "heading\">\r\n      <h3 class=\"panel-title\">Content (computers -> send date)</h3>\r\n" +
                     "    </div>\r\n    <div class=\"panel-body\">\r\n      <ul>\r\n      ");
             
-            #line 50 "D:\NetNew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
+            #line 50 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
 foreach(var comp in comps) {
             
             #line default
             #line hidden
             this.Write("        <li>\r\n          <b>");
             
-            #line 52 "D:\NetNew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
+            #line 52 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(comp.compId));
             
             #line default
             #line hidden
             this.Write("</b>\r\n          <ul>\r\n          ");
             
-            #line 54 "D:\NetNew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
+            #line 54 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
 foreach(var send in comp.sends) {
             
             #line default
             #line hidden
             this.Write("            <li>\r\n              <a href=\"");
             
-            #line 56 "D:\NetNew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
+            #line 56 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(comp.compId));
             
             #line default
             #line hidden
             this.Write("-");
             
-            #line 56 "D:\NetNew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
+            #line 56 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(send.now));
             
             #line default
             #line hidden
             this.Write(".htm\" class=\"");
             
-            #line 56 "D:\NetNew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
+            #line 56 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(send.hasError ? "text-danger bold" : ""));
             
             #line default
             #line hidden
             this.Write("\">");
             
-            #line 56 "D:\NetNew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
+            #line 56 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(send.date));
             
             #line default
             #line hidden
             this.Write("</a>\r\n            </li>\r\n          ");
             
-            #line 58 "D:\NetNew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
+            #line 58 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
 }
             
             #line default
             #line hidden
             this.Write("          </ul>\r\n        </li>\r\n      ");
             
-            #line 61 "D:\NetNew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
+            #line 61 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\serverComp.tt"
 }
             
             #line default

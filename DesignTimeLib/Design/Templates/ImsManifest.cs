@@ -20,7 +20,7 @@ namespace DesignTimeLib.Design.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\NetNew\DesignTimeLib\Design\Templates\ImsManifest.tt"
+    #line 1 "D:\LMCom\rew\DesignTimeLib\Design\Templates\ImsManifest.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class ImsManifest : ImsManifestBase
     {
@@ -34,7 +34,7 @@ namespace DesignTimeLib.Design.Templates
             this.Write(" \r\n");
             this.Write(" \r\n\r\n");
             
-            #line 9 "D:\NetNew\DesignTimeLib\Design\Templates\ImsManifest.tt"
+            #line 9 "D:\LMCom\rew\DesignTimeLib\Design\Templates\ImsManifest.tt"
  
   const string producerId = "com";
   const string producer = "LANGMaster.com"; 
@@ -51,7 +51,7 @@ namespace DesignTimeLib.Design.Templates
 <manifest xmlns=""http://www.imsproject.org/xsd/imscp_rootv1p1p2"" xmlns:imsmd=""http://www.imsproject.org/xsd/ims_md_rootv1p1"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:adlcp=""http://www.adlnet.org/xsd/adlcp_rootv1p2"" xsi:schemaLocation=""http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd http://www.imsproject.org/xsd/ims_md_rootv1p1 ims_md_rootv1p1.xsd http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd""
    identifier=""MANIFEST-");
             
-            #line 20 "D:\NetNew\DesignTimeLib\Design\Templates\ImsManifest.tt"
+            #line 20 "D:\LMCom\rew\DesignTimeLib\Design\Templates\ImsManifest.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(uniqueId));
             
             #line default
@@ -60,14 +60,14 @@ namespace DesignTimeLib.Design.Templates
                     "ersion>\r\n    <lom xmlns=\"http://www.imsglobal.org/xsd/imsmd_rootv1p2p1\">  \r\n    " +
                     "  <general>\r\n        <title>\r\n          <langstring>");
             
-            #line 27 "D:\NetNew\DesignTimeLib\Design\Templates\ImsManifest.tt"
+            #line 27 "D:\LMCom\rew\DesignTimeLib\Design\Templates\ImsManifest.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(productTitle));
             
             #line default
             #line hidden
             this.Write("</langstring>\r\n        </title>\r\n        <description>\r\n          <langstring>");
             
-            #line 30 "D:\NetNew\DesignTimeLib\Design\Templates\ImsManifest.tt"
+            #line 30 "D:\LMCom\rew\DesignTimeLib\Design\Templates\ImsManifest.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(productTitle));
             
             #line default
@@ -75,42 +75,42 @@ namespace DesignTimeLib.Design.Templates
             this.Write("</langstring>\r\n        </description>\r\n      </general>\r\n    </lom>\r\n  </metadata" +
                     ">\r\n  <organizations default=\"ORG-");
             
-            #line 35 "D:\NetNew\DesignTimeLib\Design\Templates\ImsManifest.tt"
+            #line 35 "D:\LMCom\rew\DesignTimeLib\Design\Templates\ImsManifest.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(uniqueId));
             
             #line default
             #line hidden
             this.Write("\"> \r\n    <organization identifier=\"ORG-");
             
-            #line 36 "D:\NetNew\DesignTimeLib\Design\Templates\ImsManifest.tt"
+            #line 36 "D:\LMCom\rew\DesignTimeLib\Design\Templates\ImsManifest.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(uniqueId));
             
             #line default
             #line hidden
             this.Write("\" structure=\"hierarchical\">\r\n      <title>");
             
-            #line 37 "D:\NetNew\DesignTimeLib\Design\Templates\ImsManifest.tt"
+            #line 37 "D:\LMCom\rew\DesignTimeLib\Design\Templates\ImsManifest.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(producer));
             
             #line default
             #line hidden
             this.Write("</title>\r\n      <item isvisible=\"true\" identifier=\"ITEM1-");
             
-            #line 38 "D:\NetNew\DesignTimeLib\Design\Templates\ImsManifest.tt"
+            #line 38 "D:\LMCom\rew\DesignTimeLib\Design\Templates\ImsManifest.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(uniqueId));
             
             #line default
             #line hidden
             this.Write("\" identifierref=\"RES1-");
             
-            #line 38 "D:\NetNew\DesignTimeLib\Design\Templates\ImsManifest.tt"
+            #line 38 "D:\LMCom\rew\DesignTimeLib\Design\Templates\ImsManifest.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(uniqueId));
             
             #line default
             #line hidden
             this.Write("\"> \r\n        <adlcp:masteryscore>75</adlcp:masteryscore> \r\n        <title>");
             
-            #line 40 "D:\NetNew\DesignTimeLib\Design\Templates\ImsManifest.tt"
+            #line 40 "D:\LMCom\rew\DesignTimeLib\Design\Templates\ImsManifest.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(productTitle));
             
             #line default
@@ -118,7 +118,7 @@ namespace DesignTimeLib.Design.Templates
             this.Write("</title>\r\n      </item>  \r\n    </organization>\r\n  </organizations>\r\n  <resources>" +
                     "\r\n    <resource identifier=\"RES1-");
             
-            #line 45 "D:\NetNew\DesignTimeLib\Design\Templates\ImsManifest.tt"
+            #line 45 "D:\LMCom\rew\DesignTimeLib\Design\Templates\ImsManifest.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(uniqueId));
             
             #line default
@@ -126,42 +126,42 @@ namespace DesignTimeLib.Design.Templates
             this.Write("\" href=\"schools/index.htm\" type=\"webcontent\" adlcp:scormtype=\"sco\">\r\n      <file " +
                     "href=\"schools/index.htm\" />\r\n      <dependency identifierref=\"RES2-");
             
-            #line 47 "D:\NetNew\DesignTimeLib\Design\Templates\ImsManifest.tt"
+            #line 47 "D:\LMCom\rew\DesignTimeLib\Design\Templates\ImsManifest.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(uniqueId));
             
             #line default
             #line hidden
             this.Write("\" />\r\n    </resource>\r\n    <resource identifier=\"RES2-");
             
-            #line 49 "D:\NetNew\DesignTimeLib\Design\Templates\ImsManifest.tt"
+            #line 49 "D:\LMCom\rew\DesignTimeLib\Design\Templates\ImsManifest.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(uniqueId));
             
             #line default
             #line hidden
             this.Write("\" href=\"\" type=\"webcontent\" adlcp:scormtype=\"asset\">\r\n      ");
             
-            #line 50 "D:\NetNew\DesignTimeLib\Design\Templates\ImsManifest.tt"
+            #line 50 "D:\LMCom\rew\DesignTimeLib\Design\Templates\ImsManifest.tt"
  foreach (var f in files) {
             
             #line default
             #line hidden
             this.Write("      <file href=\"");
             
-            #line 51 "D:\NetNew\DesignTimeLib\Design\Templates\ImsManifest.tt"
+            #line 51 "D:\LMCom\rew\DesignTimeLib\Design\Templates\ImsManifest.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(f));
             
             #line default
             #line hidden
             this.Write("\" />\r\n      ");
             
-            #line 52 "D:\NetNew\DesignTimeLib\Design\Templates\ImsManifest.tt"
+            #line 52 "D:\LMCom\rew\DesignTimeLib\Design\Templates\ImsManifest.tt"
  } 
             
             #line default
             #line hidden
             this.Write("    ");
             
-            #line 53 "D:\NetNew\DesignTimeLib\Design\Templates\ImsManifest.tt"
+            #line 53 "D:\LMCom\rew\DesignTimeLib\Design\Templates\ImsManifest.tt"
  /*
 #include SourcePath + "scormGlobalFiles.iss"
 #include SourcePath + "products\" + productId + "_scorm_files.iss"
