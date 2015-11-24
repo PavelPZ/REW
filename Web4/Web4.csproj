@@ -2622,7 +2622,6 @@
     <Compile Include="Temp\CodeFile1.cs" />
     <Compile Include="Temp\DBClearUnusedLMComUserData.aspx.cs">
       <DependentUpon>DBClearUnusedLMComUserData.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Temp\DBClearUnusedLMComUserData.aspx.designer.cs">
       <DependentUpon>DBClearUnusedLMComUserData.aspx</DependentUpon>
