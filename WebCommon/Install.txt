@@ -26,3 +26,7 @@ Install-Package Microsoft.Framework.Configuration -Pre
 Update-Package -ProjectName MyProject
 
 WinLess konfigurace v C:\Program Files (x86)\Mark Lagendijk\WinLess\node_modules\less\bin\lessc
+
+dnu wrap "d:\LMCom\rew\LMComLib\bin\Debug\LMComLib.dll" --framework dnx46
+dnu wrap "d:\LMCom\rew\NewLMComModel\bin\Debug\NewLMComModel.dll" --framework dnx46
+dnu wrap "d:\LMCom\rew\DataLib2\bin\Debug\DataLib2.dll" --framework dnx46

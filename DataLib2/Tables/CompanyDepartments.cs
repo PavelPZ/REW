@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Microsoft.Data.Entity;
-using Microsoft.Data.Entity.Metadata;
 using System.Xml.Serialization;
 
 namespace NewData {

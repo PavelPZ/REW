@@ -168,7 +168,8 @@ namespace Author {
 
     // ***************** INIT
     static vsNetServer() {
-      Machines._tradosConnectionString = "Data Source=195.250.145.26;Initial Catalog=LMTrados;Persist Security Info=True;User ID=lmcomdatatest;Password=lmcomdatatest";
+      //TODO: k cemu je a kde chybi (11/24/2015)
+      //Machines._tradosConnectionString = "Data Source=195.250.145.26;Initial Catalog=LMTrados;Persist Security Info=True;User ID=lmcomdatatest;Password=lmcomdatatest";
     }
 
     public static LoggerMemory log = new LoggerMemory(true) { isVsNet = true };

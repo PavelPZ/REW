@@ -18,7 +18,7 @@ namespace NewData.Runtime.lmConsole
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\index.tt"
+    #line 1 "D:\NetNew\NewLMComModel\Runtime\lmConsole\index.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class index : indexBase
     {
@@ -50,7 +50,7 @@ namespace NewData.Runtime.lmConsole
 <body>
   ");
             
-            #line 26 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\index.tt"
+            #line 26 "D:\NetNew\NewLMComModel\Runtime\lmConsole\index.tt"
  foreach(var srv in data.OrderByDescending(g => g.Key)) {
             
             #line default
@@ -58,7 +58,7 @@ namespace NewData.Runtime.lmConsole
             this.Write("    <div class=\"panel panel-primary\">\r\n      <div class=\"panel-heading\">\r\n       " +
                     " <h3 class=\"panel-title\">");
             
-            #line 29 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\index.tt"
+            #line 29 "D:\NetNew\NewLMComModel\Runtime\lmConsole\index.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(srv.Key));
             
             #line default
@@ -66,42 +66,42 @@ namespace NewData.Runtime.lmConsole
             this.Write("</h3>\r\n      </div>\r\n      <div class=\"panel-body\">\r\n        <ul class=\"list-grou" +
                     "p\">\r\n        ");
             
-            #line 33 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\index.tt"
+            #line 33 "D:\NetNew\NewLMComModel\Runtime\lmConsole\index.tt"
  foreach(var dt in srv.OrderByDescending(d => d.server)) {
             
             #line default
             #line hidden
             this.Write("          <li class=\"list-group-item \"><a class=\"");
             
-            #line 34 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\index.tt"
+            #line 34 "D:\NetNew\NewLMComModel\Runtime\lmConsole\index.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dt.hasError ? "text-danger bold" : ""));
             
             #line default
             #line hidden
             this.Write("\" href=\"");
             
-            #line 34 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\index.tt"
+            #line 34 "D:\NetNew\NewLMComModel\Runtime\lmConsole\index.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dt.url));
             
             #line default
             #line hidden
             this.Write("\">");
             
-            #line 34 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\index.tt"
+            #line 34 "D:\NetNew\NewLMComModel\Runtime\lmConsole\index.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dt.server));
             
             #line default
             #line hidden
             this.Write("</a></li>\r\n        ");
             
-            #line 35 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\index.tt"
+            #line 35 "D:\NetNew\NewLMComModel\Runtime\lmConsole\index.tt"
 }
             
             #line default
             #line hidden
             this.Write("        </ul>\r\n      </div>\r\n    </div>\r\n  ");
             
-            #line 39 "D:\LMCom\rew\NewLMComModel\Runtime\lmConsole\index.tt"
+            #line 39 "D:\NetNew\NewLMComModel\Runtime\lmConsole\index.tt"
 }
             
             #line default

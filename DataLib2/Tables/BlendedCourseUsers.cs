@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Microsoft.Data.Entity;
-using Microsoft.Data.Entity.Metadata;
 
 namespace NewData {
   public class BlendedCourseUser {

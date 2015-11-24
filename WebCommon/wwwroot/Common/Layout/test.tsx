@@ -66,11 +66,19 @@ namespace layoutTest {
 
   router.init(
     namedState.default = new router.Route<ITestModuleRoutePar>(layoutTest.moduleId, 'r-default', '/layoutTest/:defaultScene/:defaultPlaces', {
-      needsAuth: true,
+      needsAuth: false,
       finishRoutePar: st => { st.defaultPlaces = utils.toBoolean(st.defaultPlaces); st.defaultScene = utils.toBoolean(st.defaultScene); } 
     })
   );
   router.setHome<ITestModuleRoutePar>(namedState.default, { defaultScene: true, defaultPlaces: true });
+
+  namedState.default.dispatch = (par, comp) => {
+    layout.changeScene(par.defaultScene ? layout.sceneDefault : sceneSecond,
+      { ids: [], placeId: layout.placeContent, rendererId: par.defaultPlaces ? 'cont-cont' : 'cont-panel' },
+      { ids: [], placeId: placeOther, rendererId: par.defaultPlaces ? 'other-cont' : 'other-panel' }
+    );
+    comp();
+  };
 
   //** SCENE configuration
   // Jsou 2 sceny (layout.sceneDefault a sceneSecond)

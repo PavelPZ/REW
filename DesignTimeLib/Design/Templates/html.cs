@@ -22,7 +22,7 @@ namespace DesignTimeLib.Design.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\LMCom\rew\DesignTimeLib\Design\Templates\html.tt"
+    #line 1 "D:\NetNew\DesignTimeLib\Design\Templates\html.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class html : htmlBase
     {
@@ -41,21 +41,21 @@ namespace DesignTimeLib.Design.Templates
                     "\'text/html; charset=utf-8\'>\r\n  <meta name=\'viewport\' content=\'width=device-width" +
                     "\'/>\r\n  <title>");
             
-            #line 17 "D:\LMCom\rew\DesignTimeLib\Design\Templates\html.tt"
+            #line 17 "D:\NetNew\DesignTimeLib\Design\Templates\html.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(pageTitle));
             
             #line default
             #line hidden
             this.Write("</title>\r\n  ");
             
-            #line 18 "D:\LMCom\rew\DesignTimeLib\Design\Templates\html.tt"
+            #line 18 "D:\NetNew\DesignTimeLib\Design\Templates\html.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(RewApp.headContent(false, cfg)));
             
             #line default
             #line hidden
             this.Write("\r\n</head>\r\n<body ");
             
-            #line 20 "D:\LMCom\rew\DesignTimeLib\Design\Templates\html.tt"
+            #line 20 "D:\NetNew\DesignTimeLib\Design\Templates\html.tt"
 if (cfg.noCpv) Write("class='hide-cpv'");
             
             #line default
@@ -80,14 +80,14 @@ if (cfg.noCpv) Write("class='hide-cpv'");
   </script>
   ");
             
-            #line 38 "D:\LMCom\rew\DesignTimeLib\Design\Templates\html.tt"
+            #line 38 "D:\NetNew\DesignTimeLib\Design\Templates\html.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(MainPage.htmls(RewApp.htmlNewEA(cfg))));
             
             #line default
             #line hidden
             this.Write("\r\n  ");
             
-            #line 39 "D:\LMCom\rew\DesignTimeLib\Design\Templates\html.tt"
+            #line 39 "D:\NetNew\DesignTimeLib\Design\Templates\html.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(serverScript??""));
             
             #line default

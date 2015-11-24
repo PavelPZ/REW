@@ -1,8 +1,6 @@
 ﻿using CourseMeta;
 using LMComLib;
 using LMNetLib;
-using Microsoft.Build.Framework;
-using Microsoft.Build.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -10,7 +8,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Xml.Linq;
 using Yahoo.Yui.Compressor;
 
 namespace DesignNew {

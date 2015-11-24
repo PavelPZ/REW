@@ -14,7 +14,8 @@ namespace NewData {
     protected override void OnConfiguring(DbContextOptionsBuilder options) {
       base.OnConfiguring(options);
       var config = ConfigurationManager.ConnectionStrings["Vyzva57-sqlite"];
-      var conn = new SqliteConnection("Data Source=" + MachinesLow.rootDir +  config.ConnectionString);
+      var conn = new SqliteConnection(config.ConnectionString);
+      //var conn = new SqliteConnection("Data Source=" + MachinesLow.rootDir +  config.ConnectionString);
       options.UseSqlite(conn);
     }
   }
@@ -50,22 +51,22 @@ namespace NewData {
       });
 
       modelBuilder.Entity<BlendedCourseData>(entity => {
-        entity.Index(c => c.Key);
-        entity.Index(c => c.TaskId);
+        entity.HasIndex(c => c.Key);
+        entity.HasIndex(c => c.TaskId);
         entity.Property(e => e.CourseUserId).IsRequired();
         entity.Property(e => e.Flags).IsRequired();
         entity.Property(e => e.Key).IsRequired().HasMaxLength(240);
         entity.Property(e => e.TaskId).HasMaxLength(32);
-        entity.HasOne(d => d.CourseUser).WithMany(p => p.CourseDatas).ForeignKey(d => d.CourseUserId);
+        entity.HasOne(d => d.CourseUser).WithMany(p => p.CourseDatas).HasForeignKey(d => d.CourseUserId);
       });
 
       modelBuilder.Entity<BlendedCourseUser>(entity => {
-        entity.Index(c => c.ProductUrl);
-        entity.Index(c => c.LMComId);
+        entity.HasIndex(c => c.ProductUrl);
+        entity.HasIndex(c => c.LMComId);
         entity.Property(e => e.CompanyId).IsRequired();
         entity.Property(e => e.LMComId).IsRequired();
         entity.Property(e => e.ProductUrl).IsRequired().HasMaxLength(120);
-        entity.HasOne(d => d.Company).WithMany(p => p.CourseUsers).ForeignKey(d => d.CompanyId);
+        entity.HasOne(d => d.Company).WithMany(p => p.CourseUsers).HasForeignKey(d => d.CompanyId);
       });
 
     }

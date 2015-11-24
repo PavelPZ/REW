@@ -7,7 +7,7 @@ using Microsoft.AspNet.Http;
 using DesignNew;
 using LMComLib;
 using LMNetLib;
-using Microsoft.Framework.OptionsModel;
+using Microsoft.Extensions.OptionsModel;
 using System.Text;
 using Newtonsoft.Json;
 using System.Net;

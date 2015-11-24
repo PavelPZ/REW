@@ -18,7 +18,7 @@ namespace DesignTimeLib.Design.jsWebApiProxy
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+    #line 1 "D:\NetNew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class WebApiProxyTempl : WebApiProxyTemplBase
     {
@@ -30,7 +30,7 @@ namespace DesignTimeLib.Design.jsWebApiProxy
         {
             this.Write("\r\n");
             
-            #line 7 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+            #line 7 "D:\NetNew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
  //https://github.com/faniereynders/WebApiProxy/blob/master/WebApiProxy.Server/Templates/JsProxyTemplate.tt 
             
             #line default
@@ -38,56 +38,56 @@ namespace DesignTimeLib.Design.jsWebApiProxy
             this.Write("module proxies {\r\n\r\n  export var invoke: (url: string, type: string, queryPars: O" +
                     "bject, body: string, completed: (res) => void) => void;\r\n\r\n");
             
-            #line 12 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+            #line 12 "D:\NetNew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
  foreach(var definition in Definitions) { 
             
             #line default
             #line hidden
             this.Write("  export class ");
             
-            #line 13 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+            #line 13 "D:\NetNew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(definition.Name.ToLower()));
             
             #line default
             #line hidden
             this.Write(" {\r\n  ");
             
-            #line 14 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+            #line 14 "D:\NetNew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
  foreach(var method in definition.ActionMethods) {
             
             #line default
             #line hidden
             this.Write("  static ");
             
-            #line 15 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+            #line 15 "D:\NetNew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(method.Name));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 15 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+            #line 15 "D:\NetNew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(declarePars(method)));
             
             #line default
             #line hidden
             this.Write("): void {\r\n\t\t  invoke(");
             
-            #line 16 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+            #line 16 "D:\NetNew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(invokePars(method)));
             
             #line default
             #line hidden
             this.Write(");\r\n\t  } \r\n  ");
             
-            #line 18 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+            #line 18 "D:\NetNew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
  } 
             
             #line default
             #line hidden
             this.Write(" \r\n  };\r\n");
             
-            #line 20 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
+            #line 20 "D:\NetNew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
  } 
             
             #line default

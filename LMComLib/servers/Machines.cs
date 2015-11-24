@@ -5,11 +5,11 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Linq;
 using System.Web;
-using System.DirectoryServices;
 using System.Configuration;
 using System.Web.UI.WebControls;
 using System.Runtime.InteropServices;
 using System.Web.Hosting;
+using System.DirectoryServices;
 
 namespace LMComLib {
 
@@ -252,17 +252,17 @@ namespace LMComLib {
     public static StringBuilder sb = new StringBuilder();
     public static StringWriter wr = new StringWriter(sb); //wr = null;
 
-    public static LMComData2.LMComDataContext getContext() {
-      return getContext(true);
-    }
+    //public static LMComData2.LMComDataContext getContext() {
+    //  return getContext(true);
+    //}
 
-    public static LMComData2.LMComDataContext getContext(bool objectTrackingEnabled) {
-      var cn = LMDataConnectionString(); if (cn == null) return null;
-      LMComData2.LMComDataContext ctx = new LMComData2.LMComDataContext(cn);
-      ctx.ObjectTrackingEnabled = objectTrackingEnabled;
-      if (isPZComp() && sb != null) ctx.Log = wr;
-      return ctx;
-    }
+    //public static LMComData2.LMComDataContext getContext(bool objectTrackingEnabled) {
+    //  var cn = LMDataConnectionString(); if (cn == null) return null;
+    //  LMComData2.LMComDataContext ctx = new LMComData2.LMComDataContext(cn);
+    //  ctx.ObjectTrackingEnabled = objectTrackingEnabled;
+    //  if (isPZComp() && sb != null) ctx.Log = wr;
+    //  return ctx;
+    //}
 
     //public static Moodle.MoodleData getMoodleContext(bool objectTrackingEnabled) {
     //  Moodle.MoodleData ctx = new Moodle.MoodleData(ConfigurationManager.ConnectionStrings["MoodleData"].ConnectionString);
@@ -274,25 +274,25 @@ namespace LMComLib {
     [DllImport("mpr.dll")]
     public static extern int WNetGetConnection(string localName, StringBuilder remoteName, int remoteNameLength);
 
-    public static Trados.TradosDataContext getTradosContext() {
-      Trados.TradosDataContext ctx = new Trados.TradosDataContext(TradosConnectionString());
-      ctx.CommandTimeout = 3000;
-      if (isPZComp()) ctx.Log = wr;
-      return ctx;
-    }
+    //public static Trados.TradosDataContext getTradosContext() {
+    //  Trados.TradosDataContext ctx = new Trados.TradosDataContext(TradosConnectionString());
+    //  ctx.CommandTimeout = 3000;
+    //  if (isPZComp()) ctx.Log = wr;
+    //  return ctx;
+    //}
 
-    public static Trados.TradosDataContext getTradosContext(bool ObjectTrackingEnabled) {
-      Trados.TradosDataContext ctx = new Trados.TradosDataContext(TradosConnectionString());
-      ctx.CommandTimeout = 1000;
-      ctx.ObjectTrackingEnabled = ObjectTrackingEnabled;
-      if (isPZComp()) ctx.Log = wr;
-      return ctx;
-    }
+    //public static Trados.TradosDataContext getTradosContext(bool ObjectTrackingEnabled) {
+    //  Trados.TradosDataContext ctx = new Trados.TradosDataContext(TradosConnectionString());
+    //  ctx.CommandTimeout = 1000;
+    //  ctx.ObjectTrackingEnabled = ObjectTrackingEnabled;
+    //  if (isPZComp()) ctx.Log = wr;
+    //  return ctx;
+    //}
 
-    public static string TradosConnectionString() {
-      return _tradosConnectionString ?? ConfigurationManager.ConnectionStrings["TradosData"].ConnectionString;
-    }
-    public static string _tradosConnectionString;
+    //public static string TradosConnectionString() {
+    //  return _tradosConnectionString ?? ConfigurationManager.ConnectionStrings["TradosData"].ConnectionString;
+    //}
+    //public static string _tradosConnectionString;
 
     public static string RewiseConnectionString() {
       string connName = data ? "Rewise" : "RewiseTest";

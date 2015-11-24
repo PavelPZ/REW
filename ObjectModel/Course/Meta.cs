@@ -280,26 +280,26 @@ namespace CourseMeta {
     public string[] pathParts { get { return _pathParts ?? (_pathParts = url.Substring(1).Split('/')); } }
     string[] _pathParts;
 
-    public static IEnumerable<TradosLib.tradosPage> tradosOper1Pages(IEnumerable<data> nodes, LoggerMemory log, bool isFakeRussian) {
-      return nodes.SelectMany(n => n.scan()).GroupBy(dt => dt.getTradosPage()).
-        Where(g => g.Key != null).
-        Select(g => new TradosLib.tradosPage {
-          srcLang = isFakeRussian ? Langs.cs_cz : Langs.en_gb,
-          FileName = g.Key,
-          sentences = g.OfType<ex>().SelectMany(e => e.toTransSentences(log)).Concat(
-            g.SelectMany(dt => locLib.getLocId2EnglishLoc(dt.title, dt.url, null).Select(nv => new NameValueString { Name = dt.url + "/" + nv.Name, Value = nv.Value }))
-        ).
-        Where(kv => isFakeRussian ? !kv.Name.EndsWith("ahtmltitle") : true).
-        ToArray()
-        });
-    }
-    public static void tradosOper1(IEnumerable<data> nodes, LoggerMemory log) {
-      var pages = tradosOper1Pages(nodes, log, false).ToArray();
-      TradosLib.oper1NewTradosPages(pages, false);
-    }
-    public void tradosOper1(LoggerMemory log) {
-      TradosLib.oper1NewTradosPages(tradosOper1Pages(XExtension.Create(this), log, false).ToArray(), false);
-    }
+    //public static IEnumerable<TradosLib.tradosPage> tradosOper1Pages(IEnumerable<data> nodes, LoggerMemory log, bool isFakeRussian) {
+    //  return nodes.SelectMany(n => n.scan()).GroupBy(dt => dt.getTradosPage()).
+    //    Where(g => g.Key != null).
+    //    Select(g => new TradosLib.tradosPage {
+    //      srcLang = isFakeRussian ? Langs.cs_cz : Langs.en_gb,
+    //      FileName = g.Key,
+    //      sentences = g.OfType<ex>().SelectMany(e => e.toTransSentences(log)).Concat(
+    //        g.SelectMany(dt => locLib.getLocId2EnglishLoc(dt.title, dt.url, null).Select(nv => new NameValueString { Name = dt.url + "/" + nv.Name, Value = nv.Value }))
+    //    ).
+    //    Where(kv => isFakeRussian ? !kv.Name.EndsWith("ahtmltitle") : true).
+    //    ToArray()
+    //    });
+    //}
+    //public static void tradosOper1(IEnumerable<data> nodes, LoggerMemory log) {
+    //  var pages = tradosOper1Pages(nodes, log, false).ToArray();
+    //  TradosLib.oper1NewTradosPages(pages, false);
+    //}
+    //public void tradosOper1(LoggerMemory log) {
+    //  TradosLib.oper1NewTradosPages(tradosOper1Pages(XExtension.Create(this), log, false).ToArray(), false);
+    //}
 
     public static T readObject<T>(string fn) where T : data {
       try {

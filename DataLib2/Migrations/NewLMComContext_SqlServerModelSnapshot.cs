@@ -13,8 +13,8 @@ namespace DataLib2.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .Annotation("ProductVersion", "7.0.0-beta8-15964")
-                .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("NewData.Companies", b =>
                 {
@@ -28,14 +28,14 @@ namespace DataLib2.Migrations
                     b.Property<string>("IntervalsConfig");
 
                     b.Property<string>("ScormHost")
-                        .Annotation("MaxLength", 240);
+                        .HasAnnotation("MaxLength", 240);
 
                     b.Property<string>("Title")
                         .IsRequired();
 
                     b.HasKey("Id");
 
-                    b.Index("ScormHost");
+                    b.HasIndex("ScormHost");
                 });
 
             modelBuilder.Entity("NewData.CompanyDepartments", b =>
@@ -46,8 +46,8 @@ namespace DataLib2.Migrations
                     b.Property<int>("CompanyId");
 
                     b.Property<int?>("ParentId")
-                        .Annotation("Relational:DefaultValue", "0")
-                        .Annotation("Relational:DefaultValueType", "System.Int32");
+                        .HasAnnotation("Relational:DefaultValue", "0")
+                        .HasAnnotation("Relational:DefaultValueType", "System.Int32");
 
                     b.Property<string>("Title")
                         .IsRequired();
@@ -106,20 +106,20 @@ namespace DataLib2.Migrations
                     b.Property<long>("Date");
 
                     b.Property<long>("Flags")
-                        .Annotation("Relational:DefaultValue", "0")
-                        .Annotation("Relational:DefaultValueType", "System.Int64");
+                        .HasAnnotation("Relational:DefaultValue", "0")
+                        .HasAnnotation("Relational:DefaultValueType", "System.Int64");
 
                     b.Property<string>("Key")
                         .IsRequired()
-                        .Annotation("MaxLength", 120);
+                        .HasAnnotation("MaxLength", 120);
 
                     b.Property<string>("ShortData");
 
                     b.HasKey("Id");
 
-                    b.Index("Flags");
+                    b.HasIndex("Flags");
 
-                    b.Index("Key");
+                    b.HasIndex("Key");
                 });
 
             modelBuilder.Entity("NewData.CourseUsers", b =>
@@ -132,17 +132,17 @@ namespace DataLib2.Migrations
                     b.Property<DateTime>("HumanAssigned");
 
                     b.Property<int>("HumanCompanyUserId")
-                        .Annotation("Relational:DefaultValue", "0")
-                        .Annotation("Relational:DefaultValueType", "System.Int32");
+                        .HasAnnotation("Relational:DefaultValue", "0")
+                        .HasAnnotation("Relational:DefaultValueType", "System.Int32");
 
                     b.Property<string>("ProductId")
-                        .Annotation("MaxLength", 240);
+                        .HasAnnotation("MaxLength", 240);
 
                     b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
-                    b.Index("ProductId");
+                    b.HasIndex("ProductId");
                 });
 
             modelBuilder.Entity("NewData.LANGMasterScorms", b =>
@@ -151,8 +151,8 @@ namespace DataLib2.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("ApiUrlCrc")
-                        .Annotation("Relational:DefaultValue", "0")
-                        .Annotation("Relational:DefaultValueType", "System.Int32");
+                        .HasAnnotation("Relational:DefaultValue", "0")
+                        .HasAnnotation("Relational:DefaultValueType", "System.Int32");
 
                     b.Property<long>("AttemptId");
 
@@ -197,8 +197,8 @@ namespace DataLib2.Migrations
 
                     b.HasKey("Id");
 
-                    b.Index("LicenceId", "Counter")
-                        .Unique();
+                    b.HasIndex("LicenceId", "Counter")
+                        .IsUnique();
                 });
 
             modelBuilder.Entity("NewData.Users", b =>
@@ -209,7 +209,7 @@ namespace DataLib2.Migrations
                     b.Property<DateTime>("Created");
 
                     b.Property<string>("EMail")
-                        .Annotation("MaxLength", 120);
+                        .HasAnnotation("MaxLength", 120);
 
                     b.Property<string>("FirstName");
 
@@ -224,7 +224,7 @@ namespace DataLib2.Migrations
                     b.Property<string>("OtherData");
 
                     b.Property<string>("OtherId")
-                        .Annotation("MaxLength", 80);
+                        .HasAnnotation("MaxLength", 80);
 
                     b.Property<short>("OtherType");
 
@@ -236,74 +236,74 @@ namespace DataLib2.Migrations
 
                     b.HasKey("Id");
 
-                    b.Index("EMail");
+                    b.HasIndex("EMail");
 
-                    b.Index("OtherId");
+                    b.HasIndex("OtherId");
                 });
 
             modelBuilder.Entity("NewData.CompanyDepartments", b =>
                 {
                     b.HasOne("NewData.Companies")
                         .WithMany()
-                        .ForeignKey("CompanyId");
+                        .HasForeignKey("CompanyId");
 
                     b.HasOne("NewData.CompanyDepartments")
                         .WithMany()
-                        .ForeignKey("ParentId");
+                        .HasForeignKey("ParentId");
                 });
 
             modelBuilder.Entity("NewData.CompanyLicences", b =>
                 {
                     b.HasOne("NewData.Companies")
                         .WithMany()
-                        .ForeignKey("CompanyId");
+                        .HasForeignKey("CompanyId");
                 });
 
             modelBuilder.Entity("NewData.CompanyUsers", b =>
                 {
                     b.HasOne("NewData.Companies")
                         .WithMany()
-                        .ForeignKey("CompanyId");
+                        .HasForeignKey("CompanyId");
 
                     b.HasOne("NewData.CompanyDepartments")
                         .WithMany()
-                        .ForeignKey("DepartmentId");
+                        .HasForeignKey("DepartmentId");
 
                     b.HasOne("NewData.Users")
                         .WithMany()
-                        .ForeignKey("UserId");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("NewData.CourseDatas", b =>
                 {
                     b.HasOne("NewData.CourseUsers")
                         .WithMany()
-                        .ForeignKey("CourseUserId");
+                        .HasForeignKey("CourseUserId");
                 });
 
             modelBuilder.Entity("NewData.CourseUsers", b =>
                 {
                     b.HasOne("NewData.CompanyUsers")
                         .WithMany()
-                        .ForeignKey("UserId");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("NewData.UserLicences", b =>
                 {
                     b.HasOne("NewData.CompanyLicences")
                         .WithMany()
-                        .ForeignKey("LicenceId");
+                        .HasForeignKey("LicenceId");
 
                     b.HasOne("NewData.CourseUsers")
                         .WithMany()
-                        .ForeignKey("UserId");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("NewData.Users", b =>
                 {
                     b.HasOne("NewData.Companies")
                         .WithMany()
-                        .ForeignKey("MyPublisherId");
+                        .HasForeignKey("MyPublisherId");
                 });
         }
     }

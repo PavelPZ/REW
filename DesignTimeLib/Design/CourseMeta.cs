@@ -1004,7 +1004,7 @@ namespace CourseMeta {
         page.Items = new CourseModel.tag[] { CourseModel.tag.FromElement<CourseModel.htmlTag>(div, null, null, false) };
         if (page.externals != null && page.externals.Length == 0) page.externals = null;
         var resFn2 = relPath.Insert(relPath.LastIndexOf('\\'), "\\app_localresources") + ".htm.resx";
-        var sents = Machines.getTradosContext(false).Sentences.Where(s => s.Page.FileName.EndsWith(resFn2) && s.SrcLang == (short)Langs.cs_cz && s.TransLang == (short)Langs.en_gb).ToArray();
+        var sents = TradosDT.TradosDB.getTradosContext(false).Sentences.Where(s => s.Page.FileName.EndsWith(resFn2) && s.SrcLang == (short)Langs.cs_cz && s.TransLang == (short)Langs.en_gb).ToArray();
         var sa = page.seeAlso;
         if (sa != null) {
           if (sa.Length == 0) page.seeAlsoStr = null;
@@ -1017,7 +1017,7 @@ namespace CourseMeta {
         lock (typeof(Lib)) if (russianDict == null) russianDict = File.ReadLines(Machines.rootPath + @"App_Data\russianDict.txt").Select(l => l.Split('=')).ToDictionary(l => @"/lm/oldea/" + l[0].Replace('\\', '/'), l => l[1].Insert(l[1].LastIndexOf('\\'), "\\app_localresources"));
         string rd;
         if (russianDict.TryGetValue(ex.url, out rd))
-          sents = sents.Concat(Machines.getTradosContext(false).Sentences.Where(s => s.Page.FileName.Contains(rd) && s.SrcLang == (short)Langs.cs_cz && s.TransLang == (short)Langs.en_gb)).ToArray();
+          sents = sents.Concat(TradosDT.TradosDB.getTradosContext(false).Sentences.Where(s => s.Page.FileName.Contains(rd) && s.SrcLang == (short)Langs.cs_cz && s.TransLang == (short)Langs.en_gb)).ToArray();
         //do {{}} zavorek pridej anglicky zdroj, z Tradosu
         var loc2 = sents.Where(s => s.TransText != null).ToDictionary(s => s.Name, s => extractHref.Replace(s.TransText, m => { var g = m.Groups["href"]; return "href=\"" + normalizeHref(g.Value, true) + "\""; }));
         foreach (var tag in page.scan())
