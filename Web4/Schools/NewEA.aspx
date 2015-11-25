@@ -35,7 +35,7 @@
       serviceUrl = LMComLib.Machines.isFE5() ? "http://test.langmaster.com/alpha/service.ashx" : "http://localhost/rew/service.ashx",
       //serviceUrl = "http://services.langmaster.com/services/dynamicscript.ashx",
     },
-    lang = LMComLib.urlInfo.langStrToLang(Request["lang"]),
+    lang = LMNetLib.LowUtils.EnumParse<LMComLib.Langs>((Request["lang"] ?? "cs-cz").Replace('-', '_')),
     canSkipCourse = true,
     canResetCourse = true,
     canResetTest = true,

@@ -63,74 +63,139 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework.Commands, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.Commands.7.0.0-rc1-final\lib\net451\EntityFramework.Commands.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.Core, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.Core.7.0.0-rc1-final\lib\net451\EntityFramework.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.MicrosoftSqlServer, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.MicrosoftSqlServer.7.0.0-rc1-final\lib\net451\EntityFramework.MicrosoftSqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.Relational, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.Relational.7.0.0-rc1-final\lib\net451\EntityFramework.Relational.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.Relational.Design, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.Relational.Design.7.0.0-rc1-final\lib\net451\EntityFramework.Relational.Design.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Cors, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.6.0.0-rc1-final\lib\net451\Microsoft.AspNet.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Http.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Http.Abstractions.1.0.0-rc1-final\lib\net451\Microsoft.AspNet.Http.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Http.Extensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Http.Extensions.1.0.0-rc1-final\lib\net451\Microsoft.AspNet.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Http.Features, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Http.Features.1.0.0-rc1-final\lib\net451\Microsoft.AspNet.Http.Features.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data.Linq">
+    <Reference Include="Microsoft.Extensions.Caching.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Caching.Abstractions.1.0.0-rc1-final\lib\net451\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Net.Http">
+    <Reference Include="Microsoft.Extensions.Caching.Memory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Caching.Memory.1.0.0-rc1-final\lib\net451\Microsoft.Extensions.Caching.Memory.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.Configuration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.1.0.0-rc1-final\lib\net451\Microsoft.Extensions.Configuration.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.1.0.0-rc1-final\lib\net451\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Binder, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Binder.1.0.0-rc1-final\lib\net451\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.1.0.0-rc1-final\lib\net451\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.0.0-rc1-final\lib\net451\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.1.0.0-rc1-final\lib\net451\Microsoft.Extensions.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.1.0.0-rc1-final\lib\net451\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.OptionsModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.OptionsModel.1.0.0-rc1-final\lib\net451\Microsoft.Extensions.OptionsModel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.1.0.0-rc1-final\lib\net451\Microsoft.Extensions.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.WebEncoders.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.WebEncoders.Core.1.0.0-rc1-final\lib\net451\Microsoft.Extensions.WebEncoders.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Net.Http.Headers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.Headers.1.0.0-rc1-final\lib\net451\Microsoft.Net.Http.Headers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.Linq, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Remotion.Linq.2.0.1\lib\net45\Remotion.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Collections.Concurrent" />
+    <Reference Include="System.Collections.Immutable, Version=1.1.36.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.1.36\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.0.0-beta-23516\lib\dotnet5.2\System.Diagnostics.DiagnosticSource.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Interactive.Async, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ix-Async.1.2.5\lib\net45\System.Interactive.Async.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Net.Http.WebRequest" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.DynamicData">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.Entity">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.ApplicationServices">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Data">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Drawing">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.Http.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.3\lib\net45\System.Web.Http.Cors.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml">
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Configuration">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.Services">
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml.Linq" />
@@ -1501,19 +1566,6 @@
     <Content Include="TestMe\forRecording.xml" />
     <Content Include="TestMe\TestResult.html" />
     <Content Include="TestMe\TestExercise.html" />
-    <Content Include="Trados\Default.aspx" />
-    <Content Include="Trados\EditPage.ascx" />
-    <Content Include="Trados\EditPage.aspx" />
-    <Content Include="Trados\LookupManager.aspx" />
-    <Content Include="Trados\Manager.aspx" />
-    <Content Include="Trados\ManagerBatch.aspx" />
-    <Content Include="Trados\_ManagerBatch.aspx" />
-    <Content Include="Trados\Partner.aspx" />
-    <Content Include="Trados\PartnerEdit.aspx" />
-    <Content Include="Trados\Partner_Search.aspx" />
-    <Content Include="Trados\Statistics.aspx" />
-    <Content Include="Trados\TopBar.ascx" />
-    <Content Include="Trados\Unlock.aspx" />
     <None Include="configs\Web.Alpha.AppSetting.config" />
     <None Include="configs\Web.Alpha.ConnectionStrings.config" />
     <Content Include="Temp\TextFile3.json">
@@ -1628,12 +1680,12 @@
       <Compile>False</Compile>
       <Minify>False</Minify>
     </Content>
-    <Content Include="Temp\DBClearUnusedLMComUserData.aspx" />
     <Content Include="Temp\TransformerUtils.js" />
     <Content Include="Web.ConnectionStrings.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="tsconfig.json" />
+    <Content Include="Trados\Trados.zip" />
     <None Include="Web.AppSetting.config">
       <SubType>Designer</SubType>
     </None>
@@ -2496,103 +2548,12 @@
       <DependentUpon>DictLingea.aspx</DependentUpon>
     </Compile>
     <Compile Include="Temp\CodeFile1.cs" />
-    <Compile Include="Temp\DBClearUnusedLMComUserData.aspx.cs">
-      <DependentUpon>DBClearUnusedLMComUserData.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Temp\DBClearUnusedLMComUserData.aspx.designer.cs">
-      <DependentUpon>DBClearUnusedLMComUserData.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Temp\WebForm1.aspx.cs">
       <DependentUpon>WebForm1.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Temp\WebForm1.aspx.designer.cs">
       <DependentUpon>WebForm1.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Trados\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Trados\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Trados\EditPage.ascx.cs">
-      <DependentUpon>EditPage.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Trados\EditPage.ascx.designer.cs">
-      <DependentUpon>EditPage.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Trados\EditPage.aspx.cs">
-      <DependentUpon>EditPage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Trados\EditPage.aspx.designer.cs">
-      <DependentUpon>EditPage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Trados\LookupManager.aspx.cs">
-      <DependentUpon>LookupManager.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Trados\LookupManager.aspx.designer.cs">
-      <DependentUpon>LookupManager.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Trados\Manager.aspx.cs">
-      <DependentUpon>Manager.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Trados\Manager.aspx.designer.cs">
-      <DependentUpon>Manager.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Trados\ManagerBatch.aspx.cs">
-      <DependentUpon>ManagerBatch.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Trados\ManagerBatch.aspx.designer.cs">
-      <DependentUpon>ManagerBatch.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Trados\Partner.aspx.cs">
-      <DependentUpon>Partner.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Trados\Partner.aspx.designer.cs">
-      <DependentUpon>Partner.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Trados\PartnerEdit.aspx.cs">
-      <DependentUpon>PartnerEdit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Trados\PartnerEdit.aspx.designer.cs">
-      <DependentUpon>PartnerEdit.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Trados\Partner_Search.aspx.cs">
-      <DependentUpon>Partner_Search.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Trados\Partner_Search.aspx.designer.cs">
-      <DependentUpon>Partner_Search.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Trados\Statistics.aspx.cs">
-      <DependentUpon>Statistics.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Trados\Statistics.aspx.designer.cs">
-      <DependentUpon>Statistics.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Trados\TopBar.ascx.cs">
-      <DependentUpon>TopBar.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Trados\TopBar.ascx.designer.cs">
-      <DependentUpon>TopBar.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Trados\Unlock.aspx.cs">
-      <DependentUpon>Unlock.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Trados\Unlock.aspx.designer.cs">
-      <DependentUpon>Unlock.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -2698,6 +2659,9 @@
     <Folder Include="Temp\Sql\" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\DataLib2\DataLib2.csproj">
       <Project>{d6c78a04-6a43-4aa6-b552-e8c331d58460}</Project>
       <Name>DataLib2</Name>
@@ -2705,6 +2669,10 @@
     <ProjectReference Include="..\DesignTimeLib\DesignTimeLib.csproj">
       <Project>{a13f5f36-5f50-4340-8c1b-55ba52823846}</Project>
       <Name>DesignTimeLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EPPlus\EPPlus.csproj">
+      <Project>{7b288026-5502-4a39-bf41-77e086f3e4a3}</Project>
+      <Name>EPPlus</Name>
     </ProjectReference>
     <ProjectReference Include="..\LMComLib\LMComLib.csproj">
       <Project>{c4201447-b3c3-4f3a-9e5f-4ff9b5f48570}</Project>
@@ -2718,13 +2686,18 @@
       <Project>{e88c653d-5518-4b96-9b99-6efbd46a9141}</Project>
       <Name>ObjectModel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PdfLibrary\PdfLibrary.csproj">
+      <Project>{c6af66f6-b749-4efa-8250-20198e57c309}</Project>
+      <Name>PdfLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TradosLib\TradosLib.csproj">
+      <Project>{c47b9422-0488-4ba2-9e3b-d8d83f1ae9f0}</Project>
+      <Name>TradosLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VyzvaLib\VyzvaLib.csproj">
       <Project>{88118662-e1e1-49fd-8498-67faacc5726d}</Project>
       <Name>VyzvaLib</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

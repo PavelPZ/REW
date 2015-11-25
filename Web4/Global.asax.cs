@@ -2,7 +2,6 @@
 using System;
 using System.Web.Hosting;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace web4 {
 
@@ -10,7 +9,8 @@ namespace web4 {
 
     public static class WebApiConfig {
       public static void Register(HttpConfiguration config) {
-        config.EnableCors(new EnableCorsAttribute("*", "*", "*")); //http://www.asp.net/web-api/overview/security/enabling-cross-origin-requests-in-web-api
+        //CORS TODO
+        //config.EnableCors(new EnableCorsAttribute("*", "*", "*")); //http://www.asp.net/web-api/overview/security/enabling-cross-origin-requests-in-web-api
         config.MapHttpAttributeRoutes();
         config.Routes.MapHttpRoute(
             name: "DefaultApi",
