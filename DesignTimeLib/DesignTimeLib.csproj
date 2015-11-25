@@ -81,6 +81,7 @@
     </Compile>
     <Compile Include="Design\Templates\Templates.cs" />
     <Compile Include="Design\TtsBuild.cs" />
+    <Compile Include="Design\ZipUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="Runtime\Author.cs_" />
     <Compile Include="Runtime\ModelCSharpToTypescript.cs" />

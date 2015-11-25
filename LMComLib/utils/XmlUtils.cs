@@ -1,14 +1,11 @@
 // $Header: /cvsroot/LMCom/lmcomlib/utils/XmlUtils.cs,v 1.11 2012/11/15 23:03:44 pavel Exp $
+using LMComLib;
 using System;
 using System.IO;
-using System.Collections;
-using System.Collections.Specialized;
-using System.Text;
+using System.IO.Compression;
 using System.Xml;
-using System.Xml.Serialization;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
-using LMComLib;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace LMNetLib {
   public static class XmlUtils {
@@ -180,10 +177,10 @@ namespace LMNetLib {
     }
 
     public static T DecompressAndDeserialize<T>(Stream input) {
-      using (Stream s2 = new InflaterInputStream(input)) return StreamToObject<T>(s2);
+      using (var zip = new GZipStream(input, CompressionMode.Decompress)) return StreamToObject<T>(zip);
     }
     public static T DecompressAndDeserialize<T>(byte[] data) {
-      using (MemoryStream ms = new MemoryStream(data)) using (Stream s2 = new InflaterInputStream(ms)) return StreamToObject<T>(s2);
+      using (MemoryStream ms = new MemoryStream(data)) using (var zip = new GZipStream(ms, CompressionMode.Decompress)) return StreamToObject<T>(zip);
     }
 
     public static void SerializeAndCompress(object inst, Stream str) {

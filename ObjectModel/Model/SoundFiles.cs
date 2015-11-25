@@ -62,15 +62,20 @@ namespace Design {
     //Save knihy plus pro LM Hueber produkty vytvori originalni Hueber klon dle tabulky cloneInfo
     static void CPVSaveAndCloneBookXml(Book bk, string basicBingData, string lineDescrFn, List<Book> folders) {
       bool first = true;
-    start:
+      start:
       string fnBingData = basicBingData + bk.Name;
       LowUtils.AdjustFileDir(fnBingData);
       //HTML header
       bk.ToXHtml().Save(fnBingData + ".htm");
       //ZIP s book content
       using (FileStream fs = new FileStream(fnBingData + ".olix", FileMode.Create))
-      using (ZipStream str = new ZipStream(fs))
-        str.AddFileToZip(bk.SaveToBytes(), "book.xml", DateTime.UtcNow);
+      using (ZipArchive zip = new ZipArchive(fs, ZipArchiveMode.Create)) {
+        ZipArchiveEntry entry = zip.CreateEntry("book.xml");
+        var data = bk.SaveToBytes();
+        using (var str = entry.Open()) str.Write(data, 0, data.Length);
+      }
+      //using (ZipStream str = new ZipStream(fs))
+      //str.AddFileToZip(bk.SaveToBytes(), "book.xml", DateTime.UtcNow);
       folders.Add(bk);
       //Clone:
       if (!first) return;
