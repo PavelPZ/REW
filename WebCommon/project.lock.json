@@ -6108,12 +6108,16 @@
       "Microsoft.AspNet.Mvc >= 6.0.0-rc1-final",
       "Newtonsoft.Json >= 7.0.1",
       "Microsoft.AspNet.Http.Abstractions >= 1.0.0-rc1-final",
-      "Microsoft.AspNet.Diagnostics >= 1.0.0-rc1-final"
+      "Microsoft.AspNet.Diagnostics >= 1.0.0-rc1-final",
+      "EntityFramework.Sqlite >= 7.0.0-rc1-final",
+      "EntityFramework.MicrosoftSqlServer >= 7.0.0-rc1-final",
+      "EntityFramework.Core >= 7.0.0-rc1-final",
+      "EntityFramework.Relational >= 7.0.0-rc1-final"
     ],
     "DNX,Version=v4.6": [
-      "LMComLib >= 1.0.0-*",
       "DataLib2 >= 1.0.0-*",
-      "NewLMComModel >= 1.0.0-*"
+      "NewLMComModel >= 1.0.0-*",
+      "LMComLib "
     ]
   }
 }

@@ -99,7 +99,7 @@ namespace LMComLib {
     public IEnumerable<string> Uses() { yield break; }
     public bool generateFeature(FeatureType type) {
       switch (type) {
-        case FeatureType.LangToEADir: return true;
+        //case FeatureType.LangToEADir: return true;
         case FeatureType.LineToLangNames: return true;
         case FeatureType.LangToLineNames: return true;
         case FeatureType.LangLists: return true;

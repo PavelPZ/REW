@@ -12,6 +12,132 @@ using System.Xml.Serialization;
 
 namespace LMComLib {
 
+  public enum OtherType {
+    no = 0,
+    Seznam = 1,
+    Facebook = 2,
+    Google = 3,
+    Moodle = 4,
+    Yahoo = 5,
+    MyOpenId = 6,
+    eTestMeId = 7,
+    Microsoft = 8,
+    LinkedIn = 9,
+    LANGMaster = 10,
+    LANGMasterNoEMail = 11,
+    scorm = 12, //login z LMS. User login je roven company host plus scorm user Id
+  }
+
+  public enum CookieIds {
+    lang,
+    LMTicket,
+    schools_info,
+    lms_licence,
+    subsite,
+    returnUrl,
+    oauth,
+    loginEMail,
+    loginLogin,
+    LMJSTicket,
+  }
+
+  [Flags]
+  public enum CompRole : int {
+    Keys = 0x1, //generace klicu pro firmu
+    Products = 0x2, //sprava produktu
+    Department = 0x4, //editace Company Department
+    Results = 0x8, //prohlizeni vysledku studentu
+    Publisher = 0x10, //pravo spravovat publisher projekty
+    HumanEvalManager = 0x20, //manager pro evaluaci
+    HumanEvalator = 0x40, //pravo hodnotit speaking a writing v testech apod.
+    Admin = 0x8000, //pridelovani CompRoles
+    All = Keys | Products | Department | Results | Publisher | HumanEvalManager | HumanEvalator | Admin, //vsechny role
+  }
+
+  public enum VerifyStates {
+    ok = 0,
+    waiting = 1, //uzivatel ceka na potvrzeni registrace
+    prepared = 2, //uzivatel je pripraven nekym jinym, chybi mu ale zadani hesla
+  }
+
+  [Flags]
+  public enum Role {
+    Admin = 0x1, //umoznuje pridavat System adminy. Pouze PZ
+    Comps = 0x2, //umoznuje pridavat firmy a jejich hlavni spravce (s roli CompRole.Admin)
+    All = 0xff, //vsechny role
+  }
+
+
+  public class MyCompanyLow {
+    public string Title;
+    public int Id;
+    //public CompRole Roles;
+    public CompUserRole RoleEx;
+    public MyCourse[] Courses;
+    public int? DepSelected; //selected department
+  }
+
+  public class CompUserRole {
+    public CompRole Role;
+    public HumanEvalInfo[] HumanEvalatorInfos; //jazyky HumanEvalator role
+    public override string ToString() { this.Role = this.Role & CompRole.All; return XmlUtils.ObjectToString(this); } //TODO ROLE
+    public static CompUserRole FromString(string value) { var res = string.IsNullOrEmpty(value) ? new CompUserRole() : XmlUtils.StringToObject<CompUserRole>(value); if (res.HumanEvalatorInfos == null) res.HumanEvalatorInfos = new HumanEvalInfo[0]; return res; }
+    public static CompUserRole create(string value, CompRole role) {
+      if (value == null && role != 0) return new CompUserRole { Role = role }; else return FromString(value);
+    }
+    public bool isEmpty() {
+      return Role == 0 && (HumanEvalatorInfos == null || HumanEvalatorInfos.Length == 0);
+    }
+  }
+  public class HumanEvalInfo {
+    public LineIds lang;
+    //public string[] Levels; // A1, ...
+  }
+  //public class HumanEvalLang {
+  //  public Langs lang;
+  //}
+
+  public class MyCourse {
+    public string ProductId; //@PRODID
+    public Int64 Expired; //-1 (pouze pro isTest): jiz neni licence k testu, je tedy mozne prohlizet jen archiv
+    public int LicCount; //pocet licenci pro eTestMe produkt
+    public string[] LicenceKeys; //licencni klice: seznam "<UserLicences.LicenceId>|<UserLicences.Counter>"
+  }
+
+  public class LMCookieJS {
+    // Identifikace uzivatele v databazi profilu
+    public Int64 id;
+
+    //LMNEW
+    //[JsonIgnore] 
+    public int created;
+
+    // Login uzivatele = EMail
+    public string EMail;
+    /// Login uzivatele (bez emailu)
+    public string Login; //obsolete. Login je ulozen v EMail ve formatu "@login"
+    public string LoginEMail;
+
+    // Externi identifikace uzivatele
+    public OtherType Type;
+    public string TypeId;
+
+    public string FirstName;
+    public string LastName;
+
+    public string OtherData; //ostatni data v json formatu
+
+    //LMNEW
+    //[JsonIgnore]
+    public Role Roles;
+    //LMNEW
+    //[JsonIgnore]
+    public VerifyStates VerifyStatus;
+    //LMNEW - prijde vyhodit
+    public MyCompanyLow Company;
+  }
+
+
   //Objekt, ktery si pro JS serialiazci pamatuje svuj typ
   public class JSTyped {
     public JSTyped() { Type = GetType().Name; }

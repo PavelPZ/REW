@@ -24,7 +24,7 @@ namespace LMComLib {
     LangLists,
     LangToLineNames,
     LineToLangNames,
-    LangToEADir,
+    //LangToEADir,
     gaffFill_normTable,
     authorWebXSD,
     //InheritanceTree,
@@ -111,7 +111,7 @@ namespace LMComLib {
       if (info.generateFeature(FeatureType.LangToLineNames)) GenLangToLine(sb);
       if (info.generateFeature(FeatureType.LineToLangNames)) GenLinesToLang(sb);
       if (info.generateFeature(FeatureType.LangLists)) GenLangLists(sb);
-      if (info.generateFeature(FeatureType.LangToEADir)) GenLangToEADir(sb);
+      //if (info.generateFeature(FeatureType.LangToEADir)) GenLangToEADir(sb);
       if (info.generateFeature(FeatureType.gaffFill_normTable)) GenGaffFill_normTable(sb);
       if (info.generateFeature(FeatureType.authorWebXSD)) GenAuthorWebXSD(sb);
       //GenInheritanceTree(info, sb);
@@ -206,17 +206,17 @@ namespace LMComLib {
       sb.AppendLine("};");
     }
 
-    static void GenLangToEADir(StringBuilder sb) {
-      sb.Append("export var LangToEADir = {");
-      foreach (var l in LowUtils.EnumGetValues<Langs>()) {
-        string dir = null;
-        try { dir = LMComLib.urlInfo.LangToEADir(l); } catch { dir = null; }
-        if (dir == null) continue;
-        sb.Append("'"); sb.Append(((int)l).ToString()); sb.Append("'"); sb.Append(":'"); sb.Append(dir); sb.Append("',");
-      }
-      sb.Length = sb.Length - 1;
-      sb.AppendLine("};");
-    }
+    //static void GenLangToEADir(StringBuilder sb) {
+    //  sb.Append("export var LangToEADir = {");
+    //  foreach (var l in LowUtils.EnumGetValues<Langs>()) {
+    //    string dir = null;
+    //    try { dir = LMComLib.urlInfo.LangToEADir(l); } catch { dir = null; }
+    //    if (dir == null) continue;
+    //    sb.Append("'"); sb.Append(((int)l).ToString()); sb.Append("'"); sb.Append(":'"); sb.Append(dir); sb.Append("',");
+    //  }
+    //  sb.Length = sb.Length - 1;
+    //  sb.AppendLine("};");
+    //}
 
 
     public static string GenInlineTypeParse(Type type, HashSet<string> allTypes) {
