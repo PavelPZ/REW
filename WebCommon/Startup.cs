@@ -15,9 +15,8 @@ namespace WebApp {
   public class Startup {
 
     public Startup(IHostingEnvironment env, IApplicationEnvironment appEnv) {
-      Trace.AutoFlush = true;
+      //Trace.AutoFlush = true;
       Trace.TraceInformation("WebApp.Startup: " + appEnv.ApplicationBasePath);
-      return;
 
       //var builder = new ConfigurationBuilder()
       //  .SetBasePath(appEnv.ApplicationBasePath)
@@ -34,7 +33,6 @@ namespace WebApp {
     string applicationBasePath;
 
     public void ConfigureServices(IServiceCollection services) {
-      return;
       //services.AddOptions();
       //services.Configure<AppSettings>(appset => appset.web4Dir = Configuration["AppSettings:web4Dir"]);
       //services.AddInstance(Configuration);
@@ -43,11 +41,9 @@ namespace WebApp {
 
     public void Configure(IApplicationBuilder app) {
 
-      app.Run(async (context) => {
-        await context.Response.WriteAsync("Hello World! ");
-      });
-
-      return;
+      //app.Run(async (context) => {
+      //  await context.Response.WriteAsync("Hello World! ");
+      //});
 
       app.UseDeveloperExceptionPage();
       app.UseRuntimeInfoPage();

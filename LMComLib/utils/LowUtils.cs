@@ -176,29 +176,29 @@ namespace LMNetLib {
 
     public Dictionary<string, HashSet<string>> data = new Dictionary<string, HashSet<string>>();
   }
-  public class LoggerMemory_ : LoggerMemory {
-    public LoggerMemory_(bool strictChecking) { this.strictChecking = strictChecking; }
-    StringWriter wr = new StringWriter();
-    protected override void write(string msg) { wr.Write(msg); }
-    public string Log() {
-      StringBuilder sb = new StringBuilder();
-      foreach (var grp in wr.ToString().Split(new string[] { "####" }, StringSplitOptions.RemoveEmptyEntries).Select(l => l.Trim(new char[] { '\r', '\n', ' ' }).Split(new string[] { "$$$$" }, StringSplitOptions.RemoveEmptyEntries)).GroupBy(l => l[0])) {
-        sb.Append("****** "); sb.AppendLine(grp.Key);
-        foreach (var s in grp) {
-          sb.Append("=== ");
-          if (s.Length < 2) System.Diagnostics.Debugger.Break();
-          //sb.AppendLine(s[1]);
-          sb.AppendLine(s[s.Length < 2 ? 0 : 1]);
-        }
-        sb.AppendLine();
-      }
-      return sb.ToString();
-    }
-    protected override string erroPr(string ctx) {
-      //System.Diagnostics.Debugger.Break();
-      return "####" + ctx + "$$$$";
-    }
-  }
+  //public class LoggerMemory_ : LoggerMemory {
+  //  public LoggerMemory_(bool strictChecking) { this.strictChecking = strictChecking; }
+  //  StringWriter wr = new StringWriter();
+  //  protected override void write(string msg) { wr.Write(msg); }
+  //  public string Log() {
+  //    StringBuilder sb = new StringBuilder();
+  //    foreach (var grp in wr.ToString().Split(new string[] { "####" }, StringSplitOptions.RemoveEmptyEntries).Select(l => l.Trim(new char[] { '\r', '\n', ' ' }).Split(new string[] { "$$$$" }, StringSplitOptions.RemoveEmptyEntries)).GroupBy(l => l[0])) {
+  //      sb.Append("****** "); sb.AppendLine(grp.Key);
+  //      foreach (var s in grp) {
+  //        sb.Append("=== ");
+  //        if (s.Length < 2) System.Diagnostics.Debugger.Break();
+  //        //sb.AppendLine(s[1]);
+  //        sb.AppendLine(s[s.Length < 2 ? 0 : 1]);
+  //      }
+  //      sb.AppendLine();
+  //    }
+  //    return sb.ToString();
+  //  }
+  //  protected override string erroPr(string ctx) {
+  //    //System.Diagnostics.Debugger.Break();
+  //    return "####" + ctx + "$$$$";
+  //  }
+  //}
 
   public class NameValue<T> {
     [XmlAttribute]

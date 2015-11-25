@@ -38,7 +38,7 @@ namespace Packager {
     public string loggerUrl; //url pro zaslani logu
 
     //*** funkce
-    public schools.config copyTo(schools.config cfg) {
+    public new schools.config copyTo(schools.config cfg) {
       base.copyTo(cfg);
       if (!(cfg is ConfigLow)) return cfg;
       ConfigLow cl = cfg as ConfigLow;

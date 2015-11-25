@@ -30,3 +30,7 @@ WinLess konfigurace v C:\Program Files (x86)\Mark Lagendijk\WinLess\node_modules
 dnu wrap "d:\LMCom\rew\LMComLib\bin\Debug\LMComLib.dll" --framework dnx46
 dnu wrap "d:\LMCom\rew\NewLMComModel\bin\Debug\NewLMComModel.dll" --framework dnx46
 dnu wrap "d:\LMCom\rew\DataLib2\bin\Debug\DataLib2.dll" --framework dnx46
+
+aktualizuje dostupnost DNU: dnvm upgrade
+
+MUSI BYT DNX46, dnx451 nefunguje
