@@ -1323,12 +1323,12 @@
           "System.Numerics"
         ],
         "compile": {
-          "ref/net46/_._": {},
-          "ref/net46/System.Numerics.Vectors.dll": {}
+          "ref/net46/System.Numerics.Vectors.dll": {},
+          "ref/net46/_._": {}
         },
         "runtime": {
-          "lib/net46/_._": {},
-          "lib/net46/System.Numerics.Vectors.dll": {}
+          "lib/net46/System.Numerics.Vectors.dll": {},
+          "lib/net46/_._": {}
         }
       },
       "System.Reflection/4.0.0": {
@@ -2771,12 +2771,12 @@
           "System.Numerics"
         ],
         "compile": {
-          "ref/net46/_._": {},
-          "ref/net46/System.Numerics.Vectors.dll": {}
+          "ref/net46/System.Numerics.Vectors.dll": {},
+          "ref/net46/_._": {}
         },
         "runtime": {
-          "lib/net46/_._": {},
-          "lib/net46/System.Numerics.Vectors.dll": {}
+          "lib/net46/System.Numerics.Vectors.dll": {},
+          "lib/net46/_._": {}
         }
       },
       "System.Reflection/4.0.0": {
@@ -4219,12 +4219,12 @@
           "System.Numerics"
         ],
         "compile": {
-          "ref/net46/_._": {},
-          "ref/net46/System.Numerics.Vectors.dll": {}
+          "ref/net46/System.Numerics.Vectors.dll": {},
+          "ref/net46/_._": {}
         },
         "runtime": {
-          "lib/net46/_._": {},
-          "lib/net46/System.Numerics.Vectors.dll": {}
+          "lib/net46/System.Numerics.Vectors.dll": {},
+          "lib/net46/_._": {}
         }
       },
       "System.Reflection/4.0.0": {

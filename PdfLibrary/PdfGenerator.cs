@@ -1,23 +1,15 @@
 ﻿using System.Collections;
-using System.Configuration;
 using System.IO;
 using iTextSharp.text.pdf;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Pkcs;
 using System;
+using System.Collections.Generic;
 
-namespace LMComLib {
-
-  public class GeneratePdfItem {
-    public string Name;
-    public string Value;
-    public int FontSize;
-    public bool IsBold;
-  }
-
+namespace PdfGeneratorLow {
 
   //http://thoughtfulcode.wordpress.com/2010/09/29/embedding-arbitrary-language-glyphs-in-pdf-with-itextsharp/
-  public static class PdfGeneratorLow {
+  public static class Lib {
 
     public static string fontPath; //=string.Format(ConfigurationManager.AppSettings["PDF.Font"], Machines.rootPath)
     public static string fontBoldPath;
@@ -27,15 +19,15 @@ namespace LMComLib {
     static BaseFont fontBold;
     static AsymmetricKeyParameter akp; static Org.BouncyCastle.X509.X509Certificate[] chain;
 
-    public static byte[] createPdf(string template, string fontPath, string fontBoldPath, string certPath, string password, GeneratePdfItem[] fields) {
+    public static byte[] createPdf(string template, string fontPath, string fontBoldPath, string certPath, string password, IEnumerable<Tuple<string, string, int, bool>> fields) {
       return createPdf(template, fontPath, fontBoldPath, certPath, password, (flds, fill) => {
-        foreach (GeneratePdfItem fld in fields) fill(flds, fld.Name, fld.Value, fld.FontSize, fld.IsBold);
+        foreach (var fld in fields) fill(flds, fld.Item1, fld.Item2, fld.Item3, fld.Item4);
       });
     }
 
     static byte[] createPdf(string template, string fontPath, string fontBoldPath, string certPath, string password, Action<AcroFields, Action<AcroFields, string, string, int, bool>> setFields) {
       if (font == null)
-        lock (typeof(PdfGeneratorLow))
+        lock (typeof(Lib))
           if (font == null) {
             var path = fontPath;
             font = BaseFont.CreateFont(path, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
