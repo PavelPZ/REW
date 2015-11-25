@@ -1,25 +1,23 @@
 ﻿using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
-using Microsoft.Extensions.PlatformAbstractions;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
 using Microsoft.AspNet.Http;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Routing;
 using Microsoft.AspNet.Routing.Template;
-using System.IO;
-using DesignNew;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.PlatformAbstractions;
+using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace WebApp {
 
   public class Startup {
 
     public Startup(IHostingEnvironment env, IApplicationEnvironment appEnv) {
+      Trace.AutoFlush = true;
       Trace.TraceInformation("WebApp.Startup: " + appEnv.ApplicationBasePath);
+      return;
 
       //var builder = new ConfigurationBuilder()
       //  .SetBasePath(appEnv.ApplicationBasePath)
@@ -36,6 +34,7 @@ namespace WebApp {
     string applicationBasePath;
 
     public void ConfigureServices(IServiceCollection services) {
+      return;
       //services.AddOptions();
       //services.Configure<AppSettings>(appset => appset.web4Dir = Configuration["AppSettings:web4Dir"]);
       //services.AddInstance(Configuration);
@@ -44,6 +43,14 @@ namespace WebApp {
 
     public void Configure(IApplicationBuilder app) {
 
+      app.Run(async (context) => {
+        await context.Response.WriteAsync("Hello World! ");
+      });
+
+      return;
+
+      app.UseDeveloperExceptionPage();
+      app.UseRuntimeInfoPage();
       app.UseIISPlatformHandler();
 
       //login page - vraci prazdnou login stranku (pouze se scriptem na oAUth login)
