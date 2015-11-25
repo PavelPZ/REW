@@ -1,0 +1,4 @@
+﻿Install-Package Newtonsoft.Json -Version 7.0.1
+
+Install-Package EntityFramework.Commands -Pre
+Install-Package Microsoft.AspNet.WebApi
