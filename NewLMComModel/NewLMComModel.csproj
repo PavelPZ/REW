@@ -187,6 +187,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>withError.tt</DependentUpon>
     </Compile>
+    <Compile Include="Runtime\PdfGenerator.cs" />
     <Compile Include="Runtime\Reports.cs" />
     <Compile Include="Runtime\ReverseProxy.cs" />
     <Compile Include="Runtime\StatisticsToc.cs" />
