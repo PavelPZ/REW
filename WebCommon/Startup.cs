@@ -15,6 +15,7 @@ namespace WebApp {
   public class Startup {
 
     public Startup(IHostingEnvironment env, IApplicationEnvironment appEnv) {
+      return;
       //Trace.AutoFlush = true;
       Trace.TraceInformation("WebApp.Startup: " + appEnv.ApplicationBasePath);
 
@@ -36,15 +37,17 @@ namespace WebApp {
       //services.AddOptions();
       //services.Configure<AppSettings>(appset => appset.web4Dir = Configuration["AppSettings:web4Dir"]);
       //services.AddInstance(Configuration);
+      return;
       services.AddMvc();
     }
 
     public void Configure(IApplicationBuilder app) {
 
-      //app.Run(async (context) => {
-      //  await context.Response.WriteAsync("Hello World! ");
-      //});
+      app.Run(async (context) => {
+        await context.Response.WriteAsync("Hello World! ");
+      });
 
+      return;
       app.UseDeveloperExceptionPage();
       app.UseRuntimeInfoPage();
       app.UseIISPlatformHandler();
@@ -74,7 +77,8 @@ namespace WebApp {
 
     }
     // Entry point for the application.
-    public static void Main(string[] args) => WebApplication.Run<Startup>(args);
+    public static void Main(string[] args) { }
+    //public static void Main(string[] args) => WebApplication.Run<Startup>(args);
 
   }
 

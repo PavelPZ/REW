@@ -1,4 +1,4 @@
-﻿HtmlAgilityPack
+﻿iTextSharp
 Install-Package EntityFramework.MicrosoftSqlServer -Pre
 Install-Package EntityFramework.Commands -Pre
 Install-Package EntityFramework.SQLite -Pre

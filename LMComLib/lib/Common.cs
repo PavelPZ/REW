@@ -175,13 +175,6 @@ namespace LMComLib {
     highSchool_PartnerTest = 0x20,
   }
 
-  public class GeneratePdfItem {
-    public string Name;
-    public string Value;
-    public int FontSize;
-    public bool IsBold;
-  }
-
   public static class AppConfig {
 
 #if !SILVERLIGHT
