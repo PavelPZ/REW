@@ -233,6 +233,7 @@
     <Content Include="Views\home\Error.cshtml" />
     <Content Include="Views\home\OAuth.cshtml" />
     <Content Include="Views\home\Schools.cshtml" />
+    <Content Include="Views\home\File.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

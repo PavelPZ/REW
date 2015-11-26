@@ -37,39 +37,24 @@ namespace TheWeb {
     HomeViewPars rememberApp(HomeViewPars par) { HttpContext.Items["par"] = par; return par; }
     public static HomeViewPars getRememberedApp(HttpContextBase ctx) { return (HomeViewPars)ctx.Items["par"]; }
 
-    //protected override void OnResultExecuting(ResultExecutingContext context) {
-    //  var par = HomeController.getRememberedApp(HttpContext);
-    //  var cacheKey = par.getCacheKey();
-    //  if (Cache.makeResponseFromCache(cacheKey, HttpContext)) { context.Cancel = true; return; };
-    //  responseStream = HttpContext.Response.Filter;
-    //  HttpContext.Response.Filter = new MemoryStream();
-    //}
-    //protected override void OnResultExecuted(ResultExecutedContext context) {
-    //  var par = HomeController.getRememberedApp(HttpContext);
-    //  var cacheKey = par.getCacheKey();
-    //  var myStream = (MemoryStream)HttpContext.Response.Filter;
-    //  var data = myStream.ToArray();
-    //  var sf = swFile.addToCache(cacheKey, ".html", data);
-    //  HttpContext.Response.Headers["Etag"] = sf.eTag;
-    //  myStream.CopyTo(responseStream);
-    //}
-    //Stream responseStream;
-
   }
 
   public class FilterStream : MemoryStream {
     public FilterStream(Stream stream, string cacheKey, HttpContextBase context) { this.stream = stream; this.cacheKey = cacheKey; this.context = context; }
     public FilterStream(Stream stream, byte[] cachedData) { this.stream = stream; this.cachedData = cachedData; }
-    Stream stream; byte[] cachedData; string cacheKey; HttpContextBase context;
+    public FilterStream(Stream stream, string fileName) { this.stream = stream; this.fileName = fileName; }
+    Stream stream; byte[] cachedData; string cacheKey; HttpContextBase context; string fileName;
     public override void Flush() {
       base.Flush();
-      if (cachedData == null) {//dej do cache a write
+      if (cachedData != null) { //vem z cache
+        stream.Write(cachedData, 0, cachedData.Length);
+      } else if (fileName != null) { //vem z filesystemu
+        using (var fs = System.IO.File.OpenRead(FileSources.pathFromUrl(cacheKey))) fs.CopyTo(stream);
+      } else { //dej do cache a write
         var data = ToArray();
         var sf = swFile.addToCache(cacheKey, ".html", data);
         context.Response.AddHeader("Etag", sf.eTag);
         stream.Write(data, 0, data.Length);
-      } else {//vem z cache
-        stream.Write(cachedData, 0, cachedData.Length);
       }
       stream.Flush();
     }
@@ -93,7 +78,7 @@ namespace TheWeb {
           newFilter = new FilterStream(context.HttpContext.Response.Filter, cachedData);
           context.HttpContext.Response.Filter = newFilter;
           context.Cancel = true;
-          return;
+          break;
       }
     }
 
@@ -101,30 +86,33 @@ namespace TheWeb {
 
   //************** FILES
   public class AppFileController : Controller {
-    //[CacheFilter]
+    [CacheFilter]
     public ActionResult File(string path) {
-      return null;
+      return View("File");
     }
-    protected override void OnResultExecuting(ResultExecutingContext context) {
+  }
+
+  public class CacheFilter : ActionFilterAttribute {
+    public override void OnResultExecuting(ResultExecutingContext context) {
       var cacheKey = itemUrl(context.HttpContext.Request.Url.AbsolutePath);
+      Stream newFilter;
       if (Cfg.cfg.defaultPars.swFromFileSystem) {
-        using (var fs = System.IO.File.OpenRead(FileSources.pathFromUrl(cacheKey))) fs.CopyTo(HttpContext.Response.OutputStream);
+        newFilter = new FilterStream(context.HttpContext.Response.Filter, FileSources.pathFromUrl(cacheKey));
+        context.HttpContext.Response.Filter = newFilter;
         context.Cancel = true;
       } else {
-        //if (Cache.makeResponseFromCache(cacheKey, HttpContext)) { context.Cancel = true; return; };
+        byte[] cachedData;
+        switch (Cache.makeResponseFromCache(cacheKey, context.HttpContext, out cachedData)) {
+          case Cache.makeResponseFromCacheResult.writeCached:
+            newFilter = new FilterStream(context.HttpContext.Response.Filter, cachedData);
+            context.HttpContext.Response.Filter = newFilter;
+            context.Cancel = true;
+            break;
+        }
       }
     }
     static string itemUrl(string url) { return url.Split('~')[1]; }
   }
-
-  //public class CacheFilter : ActionFilterAttribute {
-  //  public override void OnResultExecuting(ResultExecutingContext filterContext) {
-  //    filterContext.HttpContext.Response.Write("<h1>OK</H1>");
-  //    filterContext.Cancel = true;
-  //  }
-  //  public override void OnResultExecuted(ResultExecutedContext filterContext) {
-  //  }
-  //}
 
   public class AppFileConstraint : IRouteConstraint {
     public bool Match(HttpContextBase httpContext, Route route, string parameterName, RouteValueDictionary values, RouteDirection routeDirection) {
