@@ -9,8 +9,9 @@ using System.Web;
 
 namespace TheWeb {
   public static class Cache {
-    public static void init(string path) {
+    public static void init() {
       try {
+        var path = Cfg.cfg.server.basicPath + @"\swfiles.zip";
         Trace.TraceInformation("WebApp.Cache.init: " + path);
         swFile.extractSwFilesToCache(path); //soubory z swfiles.zip do cache
       } catch (Exception exp) {
@@ -27,8 +28,10 @@ namespace TheWeb {
       data = null;
       if (string.IsNullOrEmpty(cacheKey)) return makeResponseFromCacheResult.no;
       swFile sf;
-      lock (swFile.swFiles) swFile.swFiles.TryGetValue(cacheKey.ToLower(), out sf);
-      if (sf == null) return makeResponseFromCacheResult.no;
+      lock (swFile.swFiles) {
+        swFile.swFiles.TryGetValue(cacheKey.ToLower(), out sf);
+        if (sf == null) return makeResponseFromCacheResult.no;
+      }
 
       //ano => vrat z cache
       string eTag = ctx.Request.Headers["If-None-Match"];

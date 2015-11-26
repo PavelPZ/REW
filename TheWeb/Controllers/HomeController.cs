@@ -1,10 +1,6 @@
 ﻿using DesignNew;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -42,14 +38,11 @@ namespace TheWeb {
   public class FilterStream : MemoryStream {
     public FilterStream(Stream stream, string cacheKey, HttpContextBase context) { this.stream = stream; this.cacheKey = cacheKey; this.context = context; }
     public FilterStream(Stream stream, byte[] cachedData) { this.stream = stream; this.cachedData = cachedData; }
-    public FilterStream(Stream stream, string fileName) { this.stream = stream; this.fileName = fileName; }
-    Stream stream; byte[] cachedData; string cacheKey; HttpContextBase context; string fileName;
+    Stream stream; byte[] cachedData; string cacheKey; HttpContextBase context;
     public override void Flush() {
       base.Flush();
       if (cachedData != null) { //vem z cache
         stream.Write(cachedData, 0, cachedData.Length);
-      } else if (fileName != null) { //vem z filesystemu
-        using (var fs = System.IO.File.OpenRead(FileSources.pathFromUrl(cacheKey))) fs.CopyTo(stream);
       } else { //dej do cache a write
         var data = ToArray();
         var sf = swFile.addToCache(cacheKey, ".html", data);
@@ -63,6 +56,7 @@ namespace TheWeb {
   public class IndexFilter : ActionFilterAttribute {
     public override void OnResultExecuting(ResultExecutingContext context) {
       base.OnResultExecuting(context);
+      if (Cfg.cfg.defaultPars.swFromFileSystem) return;
       var par = HomeController.getRememberedApp(context.HttpContext);
       var cacheKey = par.getCacheKey();
       byte[] cachedData; Stream newFilter;
@@ -85,38 +79,69 @@ namespace TheWeb {
   }
 
   //************** FILES
-  public class AppFileController : Controller {
-    [CacheFilter]
-    public ActionResult File(string path) {
-      return View("File");
-    }
-  }
 
-  public class CacheFilter : ActionFilterAttribute {
-    public override void OnResultExecuting(ResultExecutingContext context) {
-      var cacheKey = itemUrl(context.HttpContext.Request.Url.AbsolutePath);
-      Stream newFilter;
-      if (Cfg.cfg.defaultPars.swFromFileSystem) {
-        newFilter = new FilterStream(context.HttpContext.Response.Filter, FileSources.pathFromUrl(cacheKey));
-        context.HttpContext.Response.Filter = newFilter;
-        context.Cancel = true;
-      } else {
-        byte[] cachedData;
-        switch (Cache.makeResponseFromCache(cacheKey, context.HttpContext, out cachedData)) {
-          case Cache.makeResponseFromCacheResult.writeCached:
-            newFilter = new FilterStream(context.HttpContext.Response.Filter, cachedData);
-            context.HttpContext.Response.Filter = newFilter;
-            context.Cancel = true;
-            break;
+  public class GetFileModule : IHttpModule {
+    void IHttpModule.Init(HttpApplication context) {
+      context.BeginRequest += (app, a) => {
+        var ctx = ((HttpApplication)app).Context;
+        var cacheKey = itemUrl(ctx.Request.Url.AbsolutePath); if (cacheKey == null) return;
+        if (Cfg.cfg.defaultPars.swFromFileSystem) {
+          ctx.Response.WriteFile(FileSources.pathFromUrl(cacheKey));
+          ctx.Response.Flush(); ctx.Response.End();
+        } else {
+          byte[] cachedData;
+          var ctxBase = new System.Web.HttpContextWrapper(ctx);
+          switch (Cache.makeResponseFromCache(cacheKey, ctxBase, out cachedData)) {
+            case Cache.makeResponseFromCacheResult.writeCached:
+              ctx.Response.OutputStream.Write(cachedData, 0, cachedData.Length);
+              ctx.Response.Flush(); ctx.Response.End();
+              break;
+            case Cache.makeResponseFromCacheResult.notModified:
+              ctx.Response.Flush(); ctx.Response.End();
+              break;
+            default:
+              throw new Exception("GetFileModule.BeginRequest: missing file in cache " + ctx.Request.Url.AbsolutePath);
+          }
         }
-      }
+      };
     }
-    static string itemUrl(string url) { return url.Split('~')[1]; }
-  }
+    void IHttpModule.Dispose() {
+    }
+    static string itemUrl(string url) { var parts = url.Split('~'); return parts.Length == 2 ? parts[1] : null; }
 
-  public class AppFileConstraint : IRouteConstraint {
-    public bool Match(HttpContextBase httpContext, Route route, string parameterName, RouteValueDictionary values, RouteDirection routeDirection) {
-      return httpContext.Request.Url.AbsolutePath.IndexOf("~") >= 0;
-    }
   }
+  //public class AppFileController : Controller {
+  //  [CacheFilter]
+  //  public ActionResult File(string path) {
+  //    return View("File");
+  //  }
+  //}
+
+  //public class CacheFilter : ActionFilterAttribute {
+  //  public override void OnResultExecuting(ResultExecutingContext context) {
+  //    var cacheKey = itemUrl(context.HttpContext.Request.Url.AbsolutePath);
+  //    Stream newFilter;
+  //    if (Cfg.cfg.defaultPars.swFromFileSystem) {
+  //      newFilter = new FilterStream(context.HttpContext.Response.Filter, FileSources.pathFromUrl(cacheKey));
+  //      context.HttpContext.Response.Filter = newFilter;
+  //      context.Cancel = true;
+  //    } else {
+  //      byte[] cachedData;
+  //      switch (Cache.makeResponseFromCache(cacheKey, context.HttpContext, out cachedData)) {
+  //        case Cache.makeResponseFromCacheResult.writeCached:
+  //          newFilter = new FilterStream(context.HttpContext.Response.Filter, cachedData);
+  //          context.HttpContext.Response.Filter = newFilter;
+  //          context.Cancel = true;
+  //          break;
+  //      }
+  //    }
+  //  }
+  //  static string itemUrl(string url) { return url.Split('~')[1]; }
+  //}
+
+  //public class AppFileConstraint : IRouteConstraint {
+  //  public bool Match(HttpContextBase httpContext, Route route, string parameterName, RouteValueDictionary values, RouteDirection routeDirection) {
+  //    return httpContext.Request.Url.AbsolutePath.IndexOf("~") >= 0;
+  //  }
+  //}
 }

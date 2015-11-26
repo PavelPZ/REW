@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace TheWeb {
@@ -10,12 +6,12 @@ namespace TheWeb {
     public static void RegisterRoutes(RouteCollection routes) {
       routes.LowercaseUrls = true;
 
-      routes.MapRoute(
-          name: "AppFile",
-          url: "{*path}",
-          defaults: new { controller = "AppFile", action = "File", path = "" },
-          constraints: new { path = new AppFileConstraint() }
-      );
+      //routes.MapRoute(
+      //    name: "AppFile",
+      //    url: "{*path}",
+      //    defaults: new { controller = "AppFile", action = "File", path = "" },
+      //    constraints: new { path = new AppFileConstraint() }
+      //);
       routes.MapRoute(
           name: "CommonTest",
           url: "web/{appPart}",

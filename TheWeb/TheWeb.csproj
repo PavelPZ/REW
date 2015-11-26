@@ -234,6 +234,7 @@
     <Content Include="Views\home\OAuth.cshtml" />
     <Content Include="Views\home\Schools.cshtml" />
     <Content Include="Views\home\File.cshtml" />
+    <Content Include="swfiles.zip" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
