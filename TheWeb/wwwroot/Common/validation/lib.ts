@@ -154,7 +154,7 @@ namespace validation {
         keyDown: ev => this.driver.keyDown(ev),
         error: this.driver.state.error
       };
-      return getInputTemplate(templ);
+      return validation.getInputTemplate(templ);
     }
   }
   
@@ -183,7 +183,7 @@ namespace validation {
     }
     driver: groupError;
     static contextTypes = { validation: React.PropTypes.any, [config.ctxPropName]: React.PropTypes.any };
-    render() { return getGroupErrorTemplate({ value: this.driver.state.value }); }
+    render() { return validation.getGroupErrorTemplate({ value: this.driver.state.value }); }
   }
   export interface IGroupErrorTemplate { value: string; }
 }

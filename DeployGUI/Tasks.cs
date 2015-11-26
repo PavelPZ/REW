@@ -10,7 +10,7 @@ namespace DeployGUI {
     public object XElement { get; private set; }
 
     [TestMethod]
-    public void TYPESCRIPT_compile_web() { buildTasks.TYPESCRIPT_compile(@"d:\LMCom\rew\WebCommon\wwwroot"); }
+    public void TYPESCRIPT_compile_web() { buildTasks.TYPESCRIPT_compile(); }
 
     [TestMethod]
     public void CS_to_typescrit_web() { buildTasks.CS_to_typescrit_web(); }
@@ -40,7 +40,7 @@ namespace DeployGUI {
     public void SW_web4() { buildTasks.SW_web4(); }
     [TestMethod]
     public void SW_web_and_web4() {
-      buildTasks.TYPESCRIPT_compile(@"d:\LMCom\rew\WebCommon\wwwroot");
+      buildTasks.TYPESCRIPT_compile();
       buildTasks.SW_web_and_web4(); }
   }
 

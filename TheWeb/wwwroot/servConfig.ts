@@ -11,7 +11,7 @@
     app: servConfig.Apps.web,
     //app: servConfig.Apps.web4,
     brand: servConfig.Brands.lm,
-    debug: false,
+    debug: true,
     lang: LMComLib.Langs.cs_cz,
     skin: servConfig.SkinIds.bs,
     swFromFileSystem: false,
@@ -25,5 +25,9 @@
       { clientId: '765138080284696' }, //FB
       { clientId: '' } //MS
     ]
+  },
+  server: {
+    basicPath: '',
+    web4Path:''
   }
 }

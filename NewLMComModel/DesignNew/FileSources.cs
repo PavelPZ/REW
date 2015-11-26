@@ -12,6 +12,10 @@ namespace DesignNew {
 
   public static class FileSources {
 
+    public static void init (string _web4Dir, string _theWebDir) {
+      web4Dir = _web4Dir;  theWebDir = _theWebDir;
+    }
+
     public static IEnumerable<string> pathsFromDpl(string dplPath, Langs lang = Langs.no) {
       var urls = filesFromDpl(dplPath, lang == Langs.no ? null : Consts.swLangs);
       return urls.Select(f => pathFromUrl(f));
@@ -98,10 +102,11 @@ namespace DesignNew {
 
     //************************ PRIVATES
     static HashSet<string> web4Dirs = new HashSet<string>(new string[] { "admin", "app_data", "author", "blendedapi", "courses", "jslib", "login", "schools", "testme" });
-    static string web4Dir = ConfigurationManager.AppSettings["filesources.web4"] ?? @"d:\LMCom\rew\Web4";
-    static string commonDir = ConfigurationManager.AppSettings["filesources.webcommon"] ?? @"d:\LMCom\rew\WebCommon\wwwroot";
-    static string basicPath(string url) { return web4Dirs.Contains(url.Split(new char[] { '/' }, 3)[1]) ? web4Dir : commonDir; }
-    public static string urlFromPath(string path) { return (path.Substring(path.StartsWith(web4Dir) ? web4Dir.Length : commonDir.Length)).Replace('\\', '/'); }
+    public static string web4Dir = ConfigurationManager.AppSettings["filesources.web4"];// ?? @"d:\LMCom\rew\Web4";
+    public static string theWebDir = ConfigurationManager.AppSettings["filesources.theWeb"];// ?? @"d:\LMCom\rew\WebCommon";
+    public static string theWebWwwRoot { get { return theWebDir + @"\wwwroot"; } }
+    static string basicPath(string url) { return web4Dirs.Contains(url.Split(new char[] { '/' }, 3)[1]) ? web4Dir : theWebWwwRoot; }
+    public static string urlFromPath(string path) { return (path.Substring(path.StartsWith(web4Dir) ? web4Dir.Length : theWebWwwRoot.Length)).Replace('\\', '/'); }
 
     static IEnumerable<string> filesFromDpl(string dplUrl, Langs[] langs) {
       var dplPath = pathFromUrl(dplUrl);
@@ -117,7 +122,7 @@ namespace DesignNew {
           foreach (var inc in cfg.includes) {
             if (inc.StartsWith("@")) {
               var regEx = inc.Substring(1);
-              var urls = Directory.GetFiles(commonDir, "*.*", SearchOption.AllDirectories).Select(f => urlFromPath(f)).ToArray();
+              var urls = Directory.GetFiles(theWebWwwRoot, "*.*", SearchOption.AllDirectories).Select(f => urlFromPath(f)).ToArray();
               var rx = new Regex(regEx, RegexOptions.IgnoreCase);
               foreach (var url in urls) if (rx.IsMatch(url)) res.Add(url);
             } else if (inc.EndsWith(".json")) res.UnionWith(filesFromDpl(fullUrl(inc), langs));
@@ -170,6 +175,7 @@ namespace DesignNew {
     public byte[] gzipData;
 
     public static swFile addToCache(string name, string ext, byte[] data) { //index-*.html do cache
+      if (data.Length == 0) return null;
       lock (swFiles) {
         swFile actFile;
         if (swFiles.TryGetValue(name, out actFile)) return actFile;
@@ -183,8 +189,8 @@ namespace DesignNew {
       }
     }
 
-    public static void extractSwFilesToCache(string path) { //soubory z d:\LMCom\rew\WebCode\App_Data\swfiles.zip do cache pri startu aplikace
-      var zipFn = path; // HostingEnvironment.MapPath("~/app_data/swfiles.zip");
+    public static void extractSwFilesToCache(string path) { //soubory z swfiles.zip do cache pri startu aplikace
+      var zipFn = path; 
       var mStr = new MemoryStream();
       using (MD5 md5 = MD5.Create())
       using (var zipStr = File.OpenRead(zipFn))

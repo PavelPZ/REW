@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -9,14 +10,13 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F4762C9C-4FA9-42E1-94FC-BDB9FFB8F760}</ProjectGuid>
+    <ProjectGuid>{BA1029D6-998E-4AFC-A29C-0F20326163C9}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TheWeb</RootNamespace>
     <AssemblyName>TheWeb</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
-    <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>1.7</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -53,46 +54,46 @@
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http">
-    </Reference>
-    <Reference Include="System.Net.Http.WebRequest">
-    </Reference>
-    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Deployment">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http.Formatting">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
@@ -104,57 +105,399 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Global.asax" />
+    <Content Include="Web.config" />
+    <Content Include="wwwroot\app-test\testHome.js" />
+    <Content Include="wwwroot\bs3\css\bootstrap-rtl.css" />
+    <Content Include="wwwroot\bs3\css\_Bootstrap.css" />
+    <Content Include="wwwroot\bs3\css\_Bootstrap.min.css" />
+    <Content Include="wwwroot\bs3\js\affix.js" />
+    <Content Include="wwwroot\bs3\js\alert.js" />
+    <Content Include="wwwroot\bs3\js\button.js" />
+    <Content Include="wwwroot\bs3\js\carousel.js" />
+    <Content Include="wwwroot\bs3\js\collapse.js" />
+    <Content Include="wwwroot\bs3\js\dropdown.js" />
+    <Content Include="wwwroot\bs3\js\modal.js" />
+    <Content Include="wwwroot\bs3\js\popover.js" />
+    <Content Include="wwwroot\bs3\js\scrollspy.js" />
+    <Content Include="wwwroot\bs3\js\tab.js" />
+    <Content Include="wwwroot\bs3\js\tooltip.js" />
+    <Content Include="wwwroot\bs3\js\transition.js" />
+    <Content Include="wwwroot\bs3\less\bootsWatch-flatly\variables.css" />
+    <Content Include="wwwroot\bs3\less\RTL\button-groups-rtl.css" />
+    <Content Include="wwwroot\bs3\less\RTL\button-groups-rtl.min.css" />
+    <Content Include="wwwroot\bs3\less\RTL\grid-rtl.css" />
+    <Content Include="wwwroot\bs3\less\RTL\grid-rtl.min.css" />
+    <Content Include="wwwroot\bs3\less\RTL\lm-rtl.css" />
+    <Content Include="wwwroot\bs3\less\RTL\lm-rtl.min.css" />
+    <Content Include="wwwroot\bs3\less\RTL\merged-rtl.css" />
+    <Content Include="wwwroot\bs3\less\RTL\merged-rtl.min.css" />
+    <Content Include="wwwroot\bs3\less\RTL\type-rtl.css" />
+    <Content Include="wwwroot\bs3\less\RTL\type-rtl.min.css" />
+    <Content Include="wwwroot\bs3\less\RTL\variables.css" />
+    <Content Include="wwwroot\bs3\less\RTL\variables.min.css" />
+    <Content Include="wwwroot\Common\closure\cookies.js" />
+    <Content Include="wwwroot\Common\closure\crypt.js" />
+    <Content Include="wwwroot\Common\closure\sha1.js" />
+    <Content Include="wwwroot\Common\CsShared.js" />
+    <Content Include="wwwroot\Common\flux\flux.js" />
+    <Content Include="wwwroot\Common\flux\Index.html" />
+    <Content Include="wwwroot\Common\flux\test.js" />
+    <Content Include="wwwroot\Common\Layout\index.html" />
+    <Content Include="wwwroot\Common\Layout\Layout.js" />
+    <Content Include="wwwroot\Common\Layout\test.js" />
+    <Content Include="wwwroot\Common\lib\ajax.js" />
+    <Content Include="wwwroot\Common\lib\Common.js" />
+    <Content Include="wwwroot\Common\lib\encrypt.js" />
+    <Content Include="wwwroot\Common\lib\index.html" />
+    <Content Include="wwwroot\Common\lib\oAuth-low.js" />
+    <Content Include="wwwroot\Common\lib\oauth.js" />
+    <Content Include="wwwroot\Common\lib\test.js" />
+    <Content Include="wwwroot\Common\login\auth.js" />
+    <Content Include="wwwroot\Common\login\dispatcher.js" />
+    <Content Include="wwwroot\Common\login\index.html" />
+    <Content Include="wwwroot\Common\login\index.js" />
+    <Content Include="wwwroot\Common\login\test.js" />
+    <Content Include="wwwroot\Common\login\views\home-bs.js" />
+    <Content Include="wwwroot\Common\login\views\panel.js" />
+    <Content Include="wwwroot\Common\persist\persist.js" />
+    <Content Include="wwwroot\Common\persist\test.js" />
+    <Content Include="wwwroot\Common\uiRouter\angularCommon.js" />
+    <Content Include="wwwroot\Common\uiRouter\index.html" />
+    <Content Include="wwwroot\Common\uiRouter\router.js" />
+    <Content Include="wwwroot\Common\uiRouter\routerCommon.js" />
+    <Content Include="wwwroot\Common\uiRouter\test.js" />
+    <Content Include="wwwroot\Common\uiRouter\urlMatcherFactory.js" />
+    <Content Include="wwwroot\Common\validation\Index.html" />
+    <Content Include="wwwroot\Common\validation\lib.js" />
+    <Content Include="wwwroot\Common\validation\templates-bs.js" />
+    <Content Include="wwwroot\Common\validation\templates-mdl.js" />
+    <Content Include="wwwroot\Common\validation\test.js" />
+    <Content Include="wwwroot\deploy\oauth\mins\all.min.js" />
+    <Content Include="wwwroot\deploy\web4\index-parts\edusoft.html" />
+    <Content Include="wwwroot\deploy\web4\index-parts\grafia.html" />
+    <Content Include="wwwroot\deploy\web4\index-parts\lm.html" />
+    <Content Include="wwwroot\deploy\web4\index-parts\skrivanek.html" />
+    <Content Include="wwwroot\deploy\web4\mins\ar-sa.min.js" />
+    <Content Include="wwwroot\deploy\web4\mins\bg-bg.min.js" />
+    <Content Include="wwwroot\deploy\web4\mins\bs.min.js" />
+    <Content Include="wwwroot\deploy\web4\mins\cs-cz.min.js" />
+    <Content Include="wwwroot\deploy\web4\mins\de-de.min.js" />
+    <Content Include="wwwroot\deploy\web4\mins\es-es.min.js" />
+    <Content Include="wwwroot\deploy\web4\mins\externals.min.js" />
+    <Content Include="wwwroot\deploy\web4\mins\fr-fr.min.js" />
+    <Content Include="wwwroot\deploy\web4\mins\it-it.min.js" />
+    <Content Include="wwwroot\deploy\web4\mins\lt-lt.min.js" />
+    <Content Include="wwwroot\deploy\web4\mins\pl-pl.min.js" />
+    <Content Include="wwwroot\deploy\web4\mins\ru-ru.min.js" />
+    <Content Include="wwwroot\deploy\web4\mins\sk-sk.min.js" />
+    <Content Include="wwwroot\deploy\web4\mins\tr-tr.min.js" />
+    <Content Include="wwwroot\deploy\web4\mins\vi-vn.min.js" />
+    <Content Include="wwwroot\deploy\web4\mins\web.min.js" />
+    <Content Include="wwwroot\deploy\web4\mins\zh-cn.min.js" />
+    <Content Include="wwwroot\deploy\web\mins\common.min.js" />
+    <Content Include="wwwroot\deploy\web\mins\externals.min.js" />
+    <Content Include="wwwroot\font-awesome\css\font-awesome.css" />
+    <Content Include="wwwroot\font-awesome\css\font-awesome.min.css" />
+    <Content Include="wwwroot\font-awesome\css\_font-awesome.css" />
+    <Content Include="wwwroot\font-awesome\css\_font-awesome.min.css" />
+    <Content Include="wwwroot\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="wwwroot\font-awesome\lm\externals-bootsWatch-flatly.css" />
+    <Content Include="wwwroot\font-awesome\lm\externals.css" />
+    <Content Include="wwwroot\font-awesome\lm\externals.min.css" />
+    <Content Include="wwwroot\Material\material.css" />
+    <Content Include="wwwroot\Material\material.js" />
+    <Content Include="wwwroot\scripts\core.js" />
+    <Content Include="wwwroot\scripts\react-bootstrap.js" />
+    <Content Include="wwwroot\scripts\react-dom.js" />
+    <Content Include="wwwroot\scripts\react-with-addons.js" />
+    <Content Include="wwwroot\servConfig.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\AppConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Cache.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Models.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\model.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Global.asax" />
-    <Content Include="packages.txt" />
-    <Content Include="Web.config" />
+    <Content Include="Views\web.config" />
+    <Content Include="packages.config" />
+    <Content Include="Views\home\Common.cshtml" />
+    <Content Include="Views\home\CommonTest.cshtml" />
+    <Content Include="Views\home\Error.cshtml" />
+    <Content Include="Views\home\OAuth.cshtml" />
+    <Content Include="Views\home\Schools.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <Content Include="wwwroot\app-test\testHome.js.map" />
+    <Content Include="wwwroot\bs3\less\alerts.less" />
+    <Content Include="wwwroot\bs3\less\badges.less" />
+    <Content Include="wwwroot\bs3\less\bootstrap-externals.less" />
+    <Content Include="wwwroot\bs3\less\bootstrap.less" />
+    <Content Include="wwwroot\bs3\less\bootsWatch-flatly\bootswatch.less" />
+    <Content Include="wwwroot\bs3\less\bootsWatch-flatly\variables.less" />
+    <Content Include="wwwroot\bs3\less\breadcrumbs.less" />
+    <Content Include="wwwroot\bs3\less\button-groups.less" />
+    <Content Include="wwwroot\bs3\less\buttons.less" />
+    <Content Include="wwwroot\bs3\less\carousel.less" />
+    <Content Include="wwwroot\bs3\less\close.less" />
+    <Content Include="wwwroot\bs3\less\code.less" />
+    <Content Include="wwwroot\bs3\less\component-animations.less" />
+    <Content Include="wwwroot\bs3\less\dropdowns.less" />
+    <Content Include="wwwroot\bs3\less\forms.less" />
+    <Content Include="wwwroot\bs3\less\grid.less" />
+    <Content Include="wwwroot\bs3\less\input-groups.less" />
+    <Content Include="wwwroot\bs3\less\jumbotron.less" />
+    <Content Include="wwwroot\bs3\less\labels.less" />
+    <Content Include="wwwroot\bs3\less\list-group.less" />
+    <Content Include="wwwroot\bs3\less\media.less" />
+    <Content Include="wwwroot\bs3\less\mixins.less" />
+    <Content Include="wwwroot\bs3\less\mixins\alerts.less" />
+    <Content Include="wwwroot\bs3\less\mixins\background-variant.less" />
+    <Content Include="wwwroot\bs3\less\mixins\border-radius.less" />
+    <Content Include="wwwroot\bs3\less\mixins\buttons.less" />
+    <Content Include="wwwroot\bs3\less\mixins\center-block.less" />
+    <Content Include="wwwroot\bs3\less\mixins\clearfix.less" />
+    <Content Include="wwwroot\bs3\less\mixins\forms.less" />
+    <Content Include="wwwroot\bs3\less\mixins\gradients.less" />
+    <Content Include="wwwroot\bs3\less\mixins\grid-framework.less" />
+    <Content Include="wwwroot\bs3\less\mixins\grid.less" />
+    <Content Include="wwwroot\bs3\less\mixins\hide-text.less" />
+    <Content Include="wwwroot\bs3\less\mixins\image.less" />
+    <Content Include="wwwroot\bs3\less\mixins\labels.less" />
+    <Content Include="wwwroot\bs3\less\mixins\list-group.less" />
+    <Content Include="wwwroot\bs3\less\mixins\nav-divider.less" />
+    <Content Include="wwwroot\bs3\less\mixins\nav-vertical-align.less" />
+    <Content Include="wwwroot\bs3\less\mixins\opacity.less" />
+    <Content Include="wwwroot\bs3\less\mixins\pagination.less" />
+    <Content Include="wwwroot\bs3\less\mixins\panels.less" />
+    <Content Include="wwwroot\bs3\less\mixins\progress-bar.less" />
+    <Content Include="wwwroot\bs3\less\mixins\reset-filter.less" />
+    <Content Include="wwwroot\bs3\less\mixins\resize.less" />
+    <Content Include="wwwroot\bs3\less\mixins\responsive-visibility.less" />
+    <Content Include="wwwroot\bs3\less\mixins\size.less" />
+    <Content Include="wwwroot\bs3\less\mixins\tab-focus.less" />
+    <Content Include="wwwroot\bs3\less\mixins\table-row.less" />
+    <Content Include="wwwroot\bs3\less\mixins\text-emphasis.less" />
+    <Content Include="wwwroot\bs3\less\mixins\text-overflow.less" />
+    <Content Include="wwwroot\bs3\less\mixins\vendor-prefixes.less" />
+    <Content Include="wwwroot\bs3\less\modals.less" />
+    <Content Include="wwwroot\bs3\less\navbar.less" />
+    <Content Include="wwwroot\bs3\less\navs.less" />
+    <Content Include="wwwroot\bs3\less\normalize.less" />
+    <Content Include="wwwroot\bs3\less\pager.less" />
+    <Content Include="wwwroot\bs3\less\pagination.less" />
+    <Content Include="wwwroot\bs3\less\panels.less" />
+    <Content Include="wwwroot\bs3\less\popovers.less" />
+    <Content Include="wwwroot\bs3\less\print.less" />
+    <Content Include="wwwroot\bs3\less\progress-bars.less" />
+    <Content Include="wwwroot\bs3\less\responsive-embed.less" />
+    <Content Include="wwwroot\bs3\less\responsive-utilities.less" />
+    <Content Include="wwwroot\bs3\less\RTL\button-groups-rtl.less" />
+    <Content Include="wwwroot\bs3\less\RTL\grid-rtl.less" />
+    <Content Include="wwwroot\bs3\less\RTL\lm-rtl.less" />
+    <Content Include="wwwroot\bs3\less\RTL\merged-rtl.less" />
+    <Content Include="wwwroot\bs3\less\RTL\type-rtl.less" />
+    <Content Include="wwwroot\bs3\less\RTL\variables.less" />
+    <Content Include="wwwroot\bs3\less\scaffolding.less" />
+    <Content Include="wwwroot\bs3\less\tables.less" />
+    <Content Include="wwwroot\bs3\less\theme.less" />
+    <Content Include="wwwroot\bs3\less\thumbnails.less" />
+    <Content Include="wwwroot\bs3\less\tooltip.less" />
+    <Content Include="wwwroot\bs3\less\type.less" />
+    <Content Include="wwwroot\bs3\less\utilities.less" />
+    <Content Include="wwwroot\bs3\less\variables.less" />
+    <Content Include="wwwroot\bs3\less\wells.less" />
+    <Content Include="wwwroot\Common\closure\js.dpl.json" />
+    <Content Include="wwwroot\Common\CsShared.js.map" />
+    <Content Include="wwwroot\Common\flux\flux.js.map" />
+    <Content Include="wwwroot\Common\flux\test.js.map" />
+    <Content Include="wwwroot\Common\Layout\Layout.js.map" />
+    <Content Include="wwwroot\Common\Layout\test.js.map" />
+    <Content Include="wwwroot\Common\lib\ajax.js.map" />
+    <Content Include="wwwroot\Common\lib\Common.js.map" />
+    <Content Include="wwwroot\Common\lib\encrypt.js.map" />
+    <Content Include="wwwroot\Common\lib\js.dpl.json" />
+    <Content Include="wwwroot\Common\lib\oAuth-low.js.map" />
+    <Content Include="wwwroot\Common\lib\oauth.js.map" />
+    <Content Include="wwwroot\Common\lib\test.js.map" />
+    <Content Include="wwwroot\Common\login\auth.js.map" />
+    <Content Include="wwwroot\Common\login\dispatcher.js.map" />
+    <Content Include="wwwroot\Common\login\index.js.map" />
+    <Content Include="wwwroot\Common\login\js.dpl.json" />
+    <Content Include="wwwroot\Common\login\jsskin-bs.dpl.json" />
+    <Content Include="wwwroot\Common\login\test.js.map" />
+    <Content Include="wwwroot\Common\login\views\home-bs.js.map" />
+    <Content Include="wwwroot\Common\login\views\panel.js.map" />
+    <Content Include="wwwroot\Common\persist\persist.js.map" />
+    <Content Include="wwwroot\Common\persist\test.js.map" />
+    <Content Include="wwwroot\Common\uiRouter\angularCommon.js.map" />
+    <Content Include="wwwroot\Common\uiRouter\js.dpl.json" />
+    <Content Include="wwwroot\Common\uiRouter\router.js.map" />
+    <Content Include="wwwroot\Common\uiRouter\routerCommon.js.map" />
+    <Content Include="wwwroot\Common\uiRouter\test.js.map" />
+    <Content Include="wwwroot\Common\validation\lib.js.map" />
+    <Content Include="wwwroot\Common\validation\templates-bs.js.map" />
+    <Content Include="wwwroot\Common\validation\templates-mdl.js.map" />
+    <Content Include="wwwroot\Common\validation\test.js.map" />
+    <Content Include="wwwroot\deploy\oauth\js-all.dpl.json" />
+    <Content Include="wwwroot\deploy\oauth\js.dpl.json" />
+    <Content Include="wwwroot\deploy\oauth\jsmin.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\css.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\cssbrend-edusoft.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\cssbrend-grafia.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\cssbrend-skrivanek.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\cssmin.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\js-externals.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\js-web.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\js.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\jsbrend-edusoft.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\jsbrend-grafia.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\jsbrend-skrivanek.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\jsmin.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\js{loc}.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\js{loc}min.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\lists\js-admin.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\lists\js-blended.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\lists\js-course.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\lists\js-external.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\lists\js-ground.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\lists\js-login.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\lists\js-model.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\lists\js-school-end.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\lists\js-school-start.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\lists\js-scorm.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\lists\mm-client.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\lists\mm-server.dpl.json" />
+    <Content Include="wwwroot\deploy\web4\mm.dpl.json" />
+    <Content Include="wwwroot\deploy\web\js-common.dpl.json" />
+    <Content Include="wwwroot\deploy\web\js-externals.dpl.json" />
+    <Content Include="wwwroot\deploy\web\js-other.dpl.json" />
+    <Content Include="wwwroot\deploy\web\js.dpl.json" />
+    <Content Include="wwwroot\deploy\web\jsmin.dpl.json" />
+    <Content Include="wwwroot\deploy\web\jsskin-bs.dpl.json" />
+    <Content Include="wwwroot\deploy\web\jsskin-mdl.dpl.json" />
+    <Content Include="wwwroot\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="wwwroot\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="wwwroot\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="wwwroot\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="wwwroot\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="wwwroot\font-awesome\less\animated.less" />
+    <Content Include="wwwroot\font-awesome\less\bordered-pulled.less" />
+    <Content Include="wwwroot\font-awesome\less\core.less" />
+    <Content Include="wwwroot\font-awesome\less\fixed-width.less" />
+    <Content Include="wwwroot\font-awesome\less\font-awesome.less" />
+    <Content Include="wwwroot\font-awesome\less\icons.less" />
+    <Content Include="wwwroot\font-awesome\less\larger.less" />
+    <Content Include="wwwroot\font-awesome\less\list.less" />
+    <Content Include="wwwroot\font-awesome\less\mixins.less" />
+    <Content Include="wwwroot\font-awesome\less\path.less" />
+    <Content Include="wwwroot\font-awesome\less\rotated-flipped.less" />
+    <Content Include="wwwroot\font-awesome\less\stacked.less" />
+    <Content Include="wwwroot\font-awesome\less\variables.less" />
+    <Content Include="wwwroot\font-awesome\lm\externals-bootsWatch-flatly.less" />
+    <Content Include="wwwroot\font-awesome\lm\externals.less" />
+    <Content Include="wwwroot\scripts\js.dpl.json" />
+    <Content Include="wwwroot\servConfig.js.map" />
+    <Content Include="wwwroot\tsconfig.json" />
+    <Content Include="wwwroot\Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="wwwroot\bs3\less\1pxdeep\" />
+    <Folder Include="wwwroot\bs3\less\lavish\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\app-test\testHome.tsx" />
+    <TypeScriptCompile Include="wwwroot\bs3\js\bootstrap.d.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\closure\cookies.d.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\closure\crypt.d.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\closure\hash.d.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\closure\sha1.d.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\CsShared.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\flux\flux.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\flux\test.tsx" />
+    <TypeScriptCompile Include="wwwroot\Common\Layout\Layout.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\Layout\test.tsx" />
+    <TypeScriptCompile Include="wwwroot\Common\lib\ajax.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\lib\Common.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\lib\encrypt.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\lib\oAuth-low.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\lib\oauth.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\lib\test.tsx" />
+    <TypeScriptCompile Include="wwwroot\Common\login\auth.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\login\dispatcher.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\login\index.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\login\test.tsx" />
+    <TypeScriptCompile Include="wwwroot\Common\login\views\home-bs.tsx" />
+    <TypeScriptCompile Include="wwwroot\Common\login\views\panel.tsx" />
+    <TypeScriptCompile Include="wwwroot\Common\persist\persist.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\persist\test.tsx" />
+    <TypeScriptCompile Include="wwwroot\Common\uiRouter\angularCommon.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\uiRouter\router.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\uiRouter\routerCommon.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\uiRouter\test.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\validation\lib.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\validation\templates-bs.tsx" />
+    <TypeScriptCompile Include="wwwroot\Common\validation\templates-mdl.tsx" />
+    <TypeScriptCompile Include="wwwroot\Common\validation\test.tsx" />
+    <TypeScriptCompile Include="wwwroot\scripts\typings\core-js.d.ts" />
+    <TypeScriptCompile Include="wwwroot\scripts\typings\react-bootstrap.d.ts" />
+    <TypeScriptCompile Include="wwwroot\scripts\typings\react\react-addons-create-fragment.d.ts" />
+    <TypeScriptCompile Include="wwwroot\scripts\typings\react\react-addons-css-transition-group.d.ts" />
+    <TypeScriptCompile Include="wwwroot\scripts\typings\react\react-addons-linked-state-mixin.d.ts" />
+    <TypeScriptCompile Include="wwwroot\scripts\typings\react\react-addons-perf.d.ts" />
+    <TypeScriptCompile Include="wwwroot\scripts\typings\react\react-addons-pure-render-mixin.d.ts" />
+    <TypeScriptCompile Include="wwwroot\scripts\typings\react\react-addons-test-utils.d.ts" />
+    <TypeScriptCompile Include="wwwroot\scripts\typings\react\react-addons-transition-group.d.ts" />
+    <TypeScriptCompile Include="wwwroot\scripts\typings\react\react-addons-update.d.ts" />
+    <TypeScriptCompile Include="wwwroot\scripts\typings\react\react-dom.d.ts" />
+    <TypeScriptCompile Include="wwwroot\scripts\typings\react\react-global.d.ts" />
+    <TypeScriptCompile Include="wwwroot\scripts\typings\react\react.d.ts" />
+    <TypeScriptCompile Include="wwwroot\servConfig.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LMComLib\LMComLib.csproj">
+      <Project>{c4201447-b3c3-4f3a-9e5f-4ff9b5f48570}</Project>
+      <Name>LMComLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NewLMComModel\NewLMComModel.csproj">
       <Project>{81713f8f-6d25-4e48-ae82-ac1bd2565442}</Project>
       <Name>NewLMComModel</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\PublishProfiles\LMWebCommon - Web Deploy.pubxml" />
-    <Content Include="Views\Home\Common.cshtml" />
-    <Content Include="Views\Home\CommonTest.cshtml" />
-    <Content Include="Views\Home\Error.cshtml" />
-    <Content Include="Views\Home\OAuth.cshtml" />
-    <Content Include="Views\Home\Schools.cshtml" />
+    <ProjectReference Include="..\ObjectModel\ObjectModel.csproj">
+      <Project>{e88c653d-5518-4b96-9b99-6efbd46a9141}</Project>
+      <Name>ObjectModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
-    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
-  </Target>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>52138</DevelopmentServerPort>
+          <DevelopmentServerPort>55587</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:10101/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
@@ -173,10 +516,11 @@
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
-  </Target> -->
+  </Target>
+  -->
 </Project>

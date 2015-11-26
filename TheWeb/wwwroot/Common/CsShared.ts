@@ -127,6 +127,7 @@ export const enum Apps {
 }
 
 export interface Root {
+  server: Server;
   azure: Azure;
   defaultPars: ViewPars;
   oAuth: oAuthConfig;
@@ -135,6 +136,10 @@ export interface Azure {
   connectionString: string;
   blobJS: string;
   blobMM: string;
+}
+export interface Server {
+  basicPath: string;
+  web4Path: string;
 }
 export interface ViewPars {
   app: Apps;

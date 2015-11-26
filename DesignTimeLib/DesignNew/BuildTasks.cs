@@ -15,7 +15,7 @@ namespace DesignNew {
   public static class buildTasks {
 
     static buildTasks() {
-      Cfg.init(@"d:\lmcom\rew\webcommon\wwwroot\servconfig.js");
+      Cfg.init(FileSources.theWebWwwRoot + @"\servconfig.js");
     }
 
     //*********** AZURE_publish
@@ -83,11 +83,11 @@ namespace DesignNew {
     }
 
     //*********** TYPESCRIPT_compile
-    public static void TYPESCRIPT_compile(string tsconfig) {
+    public static void TYPESCRIPT_compile() {
       runTask("TYPESCRIPT_compile", () => {
-        Trace.TraceWarning("tsconfig: {0}", tsconfig);
+        Trace.TraceWarning("tsconfig: {0}", FileSources.theWebWwwRoot);
         string output;
-        var error = LowUtils.runExecutable(ConfigurationManager.AppSettings["tsc.exe"], "--project \"" + tsconfig + "\"", out output);
+        var error = LowUtils.runExecutable(ConfigurationManager.AppSettings["tsc.exe"], "--project \"" + FileSources.theWebWwwRoot + "\"", out output);
         return output;
       });
     }
@@ -122,8 +122,9 @@ namespace DesignNew {
         //*** ZIP
         var files = FileSources.getUrls(FileSources.zipSWFilesFilter(servConfig.Apps.web, servConfig.Apps.web4, servConfig.Apps.oauth)).ToArray();
         File.WriteAllLines(@"d:\temp\sw_deploy.txt", files);
-        var len = FileSources.zipSWFiles(@"D:\LMCom\rew\WebCommon\swfiles.zip", files);
-        Trace.TraceWarning("ZIP files: {0}, len: {1}", files.Length, len);
+        var zipFn = FileSources.theWebDir + @"\swfiles.zip";
+        var len = FileSources.zipSWFiles(zipFn, files);
+        Trace.TraceWarning("ZIP files: {0}, len: {1} to {2}", files.Length, len, zipFn);
         return null;
       });
     }
@@ -146,9 +147,9 @@ namespace DesignNew {
         CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("servConfig", null,
           null,
           new Type[] { typeof(servConfig.oAuthProviders), typeof(servConfig.SkinIds), typeof(servConfig.Brands), typeof(servConfig.Apps)},
-          typeof(servConfig.Root), typeof(servConfig.Azure), typeof(servConfig.ViewPars),
+          typeof(servConfig.Root), typeof(servConfig.Azure), typeof(servConfig.Server), typeof(servConfig.ViewPars),
           typeof(servConfig.oAuthConfig), typeof(servConfig.oAuthItem)));
-        File.WriteAllText(@"D:\LMCom\rew\WebCommon\wwwroot\Common\CsShared.ts", sb.ToString(), Encoding.ASCII);
+        File.WriteAllText(FileSources.theWebWwwRoot + @"\Common\CsShared.ts", sb.ToString(), Encoding.ASCII);
         return null;
       });
     }

@@ -3,6 +3,7 @@ using System.IO;
 
 namespace servConfig {
   public class Root {
+    public Server server;
     public Azure azure;
     public ViewPars defaultPars;
     public oAuthConfig oAuth;
@@ -11,6 +12,11 @@ namespace servConfig {
     public string connectionString;
     public string blobJS;
     public string blobMM;
+  }
+
+  public class Server {
+    public string basicPath;
+    public string web4Path;
   }
 
   public enum Brands { lm, skrivanek, grafia, edusoft }

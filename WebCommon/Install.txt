@@ -34,3 +34,7 @@ dnu wrap "d:\LMCom\rew\NewLMComModel\bin\Debug\NewLMComModel.dll" --framework dn
 aktualizuje dostupnost DNU: dnvm upgrade
 
 MUSI BYT DNX46, dnx451 nefunguje
+
+https://github.com/Microsoft/TypeScript/wiki/Setting-Compiler-Options-in-MSBuild-projects
+https://github.com/Microsoft/TypeScript/wiki/Compiler-Options
+c:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v14.0\TypeScript\

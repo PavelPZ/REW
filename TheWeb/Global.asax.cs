@@ -9,6 +9,7 @@ using System.Web.Routing;
 namespace TheWeb {
   public class MvcApplication : System.Web.HttpApplication {
     protected void Application_Start() {
+      AppConfig.Init(this);
       RouteConfig.RegisterRoutes(RouteTable.Routes);
     }
   }
