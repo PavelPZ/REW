@@ -1,4 +1,5 @@
 ﻿Install-Package Newtonsoft.Json -Version 7.0.1
+Install-Package System.Collections.Concurrent -Version 4.0.0
 
 Install-Package EntityFramework.MicrosoftSqlServer -Pre
 Install-Package EntityFramework.Commands -Pre

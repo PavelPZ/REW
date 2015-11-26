@@ -1,0 +1,4 @@
+﻿add system.web.http
+Install-Package Microsoft.AspNet.WebApi
+Install-Package Microsoft.AspNet.Mvc -Version 5.2.3
+Install-Package Newtonsoft.Json -Version 7.0.1
