@@ -127,6 +127,7 @@ export const enum Apps {
 }
 
 export interface Root {
+  lmapp_website_id: string;
   server: Server;
   azure: Azure;
   defaultPars: ViewPars;
@@ -136,6 +137,14 @@ export interface Azure {
   connectionString: string;
   blobJS: string;
   blobMM: string;
+  swDeployAccount: ftpAcount;
+  rootUrl: string;
+  azureRootUrl: string;
+}
+export interface ftpAcount {
+  url: string;
+  userName: string;
+  password: string;
 }
 export interface Server {
   basicPath: string;

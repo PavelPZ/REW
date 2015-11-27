@@ -2016,6 +2016,14 @@ namespace LMNetLib {
       return ExceptionToString(exp, true);
     }
 
+    public static void TraceErrorCall(string msg, Action fnc) {
+      Trace.TraceInformation(msg + " START");
+      Trace.Indent();
+      try { fnc(); } catch (Exception exp) { Trace.TraceError("***** ERROR " + msg + ": " + ExceptionToString(exp)); Trace.Unindent(); throw; }
+      Trace.Unindent();
+      Trace.TraceInformation(msg + " END");
+    }
+
     /// <summary>
     /// Encodes a string to be represented as a string literal. The format
     /// is essentially a JSON string.

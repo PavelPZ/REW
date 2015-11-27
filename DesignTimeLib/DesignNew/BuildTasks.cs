@@ -7,6 +7,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using Yahoo.Yui.Compressor;
 
@@ -15,7 +16,9 @@ namespace DesignNew {
   public static class buildTasks {
 
     static buildTasks() {
-      Cfg.init(FileSources.theWebWwwRoot + @"\servconfig.js");
+      string theWebDir = ConfigurationManager.AppSettings["filesources.theWeb"];
+      Cfg.init(theWebDir, "localhost");
+      FileSources.init(Cfg.cfg.server.web4Path, theWebDir);
     }
 
     //*********** AZURE_publish
@@ -122,11 +125,17 @@ namespace DesignNew {
         //*** ZIP
         var files = FileSources.getUrls(FileSources.zipSWFilesFilter(servConfig.Apps.web, servConfig.Apps.web4, servConfig.Apps.oauth)).ToArray();
         File.WriteAllLines(@"d:\temp\sw_deploy.txt", files);
-        var zipFn = FileSources.theWebDir + @"\swfiles.zip";
+        var zipFn = FileSources.theWebWwwRoot + @"\swfiles.zip";
         var len = FileSources.zipSWFiles(zipFn, files);
         Trace.TraceWarning("ZIP files: {0}, len: {1} to {2}", files.Length, len, zipFn);
         return null;
       });
+    }
+
+    //*********** Refresh_swfileZIP
+    public static void Refresh_swfileZIP() {
+      ftp.Ftp.upload(Cfg.cfg.azure.swDeployAccount, Cfg.cfg.server.basicPath + @"\wwwroot\swfiles.zip", "/site/wwwroot/wwwroot/swfiles.zip");
+      using (var wc = new WebClient()) wc.DownloadData(Cfg.cfg.azure.azureRootUrl + "/api/system/resetcache");
     }
 
     //*********** CODE
@@ -146,8 +155,8 @@ namespace DesignNew {
           ));
         CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("servConfig", null,
           null,
-          new Type[] { typeof(servConfig.oAuthProviders), typeof(servConfig.SkinIds), typeof(servConfig.Brands), typeof(servConfig.Apps)},
-          typeof(servConfig.Root), typeof(servConfig.Azure), typeof(servConfig.Server), typeof(servConfig.ViewPars),
+          new Type[] { typeof(servConfig.oAuthProviders), typeof(servConfig.SkinIds), typeof(servConfig.Brands), typeof(servConfig.Apps) },
+          typeof(servConfig.Root), typeof(servConfig.Azure), typeof(servConfig.ftpAcount), typeof(servConfig.Server), typeof(servConfig.ViewPars),
           typeof(servConfig.oAuthConfig), typeof(servConfig.oAuthItem)));
         File.WriteAllText(FileSources.theWebWwwRoot + @"\Common\CsShared.ts", sb.ToString(), Encoding.ASCII);
         return null;
@@ -155,15 +164,10 @@ namespace DesignNew {
     }
 
     static void runTask(string taskName, Func<string> task) {
-      Trace.WriteLine(taskName + " START");
-      Trace.Indent();
-      var error = task();
-      if (error != null) {
-        Trace.WriteLine(error);
-        throw new Exception("See details in Output");
-      }
-      Trace.Unindent();
-      Trace.WriteLine(taskName + " END");
+      LowUtils.TraceErrorCall(taskName, () => {
+        var error = task();
+        if (error != null) throw new Exception(error);
+      });
     }
 
     static string minify(string basicPath, IEnumerable<string> srcFiles, bool isJs, string lng) {
@@ -179,6 +183,39 @@ namespace DesignNew {
   }
 
 }
+
+namespace ftp {
+  public static class Ftp {
+    public static void upload(servConfig.ftpAcount acount, string from, string to) {
+      byte[] fileBytes = File.ReadAllBytes(from);
+
+      try {
+        //Create FTP Request.
+        FtpWebRequest request = (FtpWebRequest)WebRequest.Create(acount.url + to);
+        request.Method = WebRequestMethods.Ftp.UploadFile;
+
+        //Enter FTP Server credentials.
+        request.Credentials = new NetworkCredential(acount.userName, acount.password);
+        request.ContentLength = fileBytes.Length;
+        request.UsePassive = true;
+        request.UseBinary = true;
+        request.ServicePoint.ConnectionLimit = fileBytes.Length;
+        request.EnableSsl = false;
+
+        using (Stream requestStream = request.GetRequestStream()) {
+          requestStream.Write(fileBytes, 0, fileBytes.Length);
+          requestStream.Close();
+        }
+
+        using (var response = (FtpWebResponse)request.GetResponse()) { }
+
+      } catch (WebException ex) {
+        throw new Exception((ex.Response as FtpWebResponse).StatusDescription);
+      }
+    }
+  }
+}
+
 //public class deployToAzure : Task {
 //  public override bool Execute() {
 //    Log.LogMessage(">>> deployToAzure START");

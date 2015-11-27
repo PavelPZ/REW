@@ -9,14 +9,21 @@ using System.Web;
 
 namespace TheWeb {
   public static class Cache {
+
     public static void init() {
-      try {
-        var path = Cfg.cfg.server.basicPath + @"\swfiles.zip";
-        Trace.TraceInformation("WebApp.Cache.init: " + path);
-        swFile.extractSwFilesToCache(path); //soubory z swfiles.zip do cache
-      } catch (Exception exp) {
-        Trace.TraceError(LowUtils.ExceptionToString(exp));
-      }
+      LowUtils.TraceErrorCall("WebApp.Cache.init", () => {
+        var path = Cfg.cfg.server.basicPath + @"\wwwroot\swfiles.zip";
+        Trace.TraceInformation("WebApp.Cache.init path: " + path);
+        swFile.extractSwFilesToCache(path);
+      });
+      //try {
+      //  var path = Cfg.cfg.server.basicPath + @"\wwwroot\swfiles.zip";
+      //  Trace.TraceInformation("WebApp.Cache.init START: " + path);
+      //  LowUtils.TraceErrorCall("WebApp.Cache.init", () => swFile.extractSwFilesToCache(path));
+      //  Trace.TraceInformation("WebApp.Cache.init END");
+      //} catch (Exception exp) {
+      //  Trace.TraceError(LowUtils.ExceptionToString(exp));
+      //}
     }
     public enum makeResponseFromCacheResult {
       no,

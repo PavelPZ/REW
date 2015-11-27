@@ -4,6 +4,7 @@ using LMNetLib;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -31,6 +32,7 @@ namespace TheWeb {
       var csss = FileSources.getUrls(FileSources.indexPartFilter(false, pars.app, pars.skin, pars.brand, pars.lang, !pars.debug));
       css = urlsToTags(csss, false);
       var jss = FileSources.getUrls(FileSources.indexPartFilter(true, pars.app, pars.skin, pars.brand, pars.lang, !pars.debug));
+      //Trace.TraceInformation("JSS: " + jss.Join("; "));
       js = urlsToTags(jss, true);
       title = pars.brand == servConfig.Brands.skrivanek ? "Skřivánek" : "LANGMaster";
     }

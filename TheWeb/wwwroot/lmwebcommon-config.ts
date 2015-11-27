@@ -1,11 +1,15 @@
-﻿var servCfg: servConfig.Root = { 
+﻿var servCfg: servConfig.Root = {
+  lmapp_website_id: null,
   azure: {
     //connectionString: 'UseDevelopmentStorage=true',
     //blobJS: 'http://127.0.0.1:10000/devstoreaccount1/js-v001',
     //blobMM: 'http://127.0.0.1:10000/devstoreaccount1/mm-v001',
     connectionString: 'DefaultEndpointsProtocol=https;AccountName=lmdata;AccountKey=Hx//uWeo6vDSA2BHbBJP7HZviSSE6D8qZhGV7f4G778yPcfGOiBODF6o7Cg6029JiqnpMm1U8KrlD3+hycYiEw==',
     blobJS: 'http://lmdata.blob.core.windows.net/js-v001',
-    blobMM: 'http://lmdata.blob.core.windows.net/mm-v001',  
+    blobMM: 'http://lmdata.blob.core.windows.net/mm-v001',
+    swDeployAccount: null,
+    rootUrl: 'http://lmwebcommon.azurewebsites.net',
+    azureRootUrl: null
   },
   defaultPars: {
     app: servConfig.Apps.web,
@@ -18,7 +22,7 @@
     appPart: null,
   },
   oAuth: {
-    loginUrl:'',
+    loginUrl: '',
     items: [
       null,
       { clientId: '' }, //google
@@ -28,6 +32,6 @@
   },
   server: {
     basicPath: '',
-    web4Path:''
+    web4Path: ''
   }
 }

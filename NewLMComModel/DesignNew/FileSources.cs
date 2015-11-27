@@ -102,8 +102,8 @@ namespace DesignNew {
 
     //************************ PRIVATES
     static HashSet<string> web4Dirs = new HashSet<string>(new string[] { "admin", "app_data", "author", "blendedapi", "courses", "jslib", "login", "schools", "testme" });
-    public static string web4Dir = ConfigurationManager.AppSettings["filesources.web4"];// ?? @"d:\LMCom\rew\Web4";
-    public static string theWebDir = ConfigurationManager.AppSettings["filesources.theWeb"];// ?? @"d:\LMCom\rew\WebCommon";
+    public static string web4Dir;// = ConfigurationManager.AppSettings["filesources.web4"];// ?? @"d:\LMCom\rew\Web4";
+    public static string theWebDir;// = ConfigurationManager.AppSettings["filesources.theWeb"];// ?? @"d:\LMCom\rew\WebCommon";
     public static string theWebWwwRoot { get { return theWebDir + @"\wwwroot"; } }
     static string basicPath(string url) { return web4Dirs.Contains(url.Split(new char[] { '/' }, 3)[1]) ? web4Dir : theWebWwwRoot; }
     public static string urlFromPath(string path) { return (path.Substring(path.StartsWith(web4Dir) ? web4Dir.Length : theWebWwwRoot.Length)).Replace('\\', '/'); }

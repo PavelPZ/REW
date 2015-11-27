@@ -10,6 +10,7 @@ namespace TheWeb {
   public class MvcApplication : System.Web.HttpApplication {
     protected void Application_Start() {
       AppConfig.Init(this);
+      GlobalConfiguration.Configure(WebApiConfig.Register);
       RouteConfig.RegisterRoutes(RouteTable.Routes);
     }
   }

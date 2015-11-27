@@ -1,16 +1,35 @@
-﻿[
-  {
-    "groupId": 2,
-    "title": "Pokročilí2 - 3.A (2015/2016)",
-    "line": 1,
-    "num": "20",
-    "isPattern3": false
+﻿{
+  "lmapp_website_id": "localhost",
+  "server": {
+    "basicPath": "D:\\LMCom\\rew\\TheWeb",
+    "web4Path": "d:\\LMCom\\rew\\Web4"
   },
-  {
-    "groupId": 1,
-    "title": "Pokročilí1 - 3.A (2015/2016)",
-    "line": 1,
-    "num": "20",
-    "isPattern3": false
+  "azure": {
+    "connectionString": "UseDevelopmentStorage=true",
+    "blobJS": "http://127.0.0.1:10000/devstoreaccount1/js-v001",
+    "blobMM": "http://127.0.0.1:10000/devstoreaccount1/mm-v001",
+    "swDeployAccount": {
+      "url": "ftp://waws-prod-am2-033.ftp.azurewebsites.windows.net",
+      "userName": "LMWebCommon\\pavelzika",
+      "password": "pkzippkzip1_"
+    }
+  },
+  "defaultPars": {
+    "app": 1,
+    "appPart": null,
+    "lang": 2,
+    "brand": 0,
+    "skin": 0,
+    "debug": false,
+    "swFromFileSystem": true
+  },
+  "oAuth": {
+    "loginUrl": "",
+    "items": [
+      null,
+      { "clientId": "" },
+      { "clientId": "765138080284696" },
+      { "clientId": "" }
+    ]
   }
-]
+}
