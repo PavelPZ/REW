@@ -16,25 +16,20 @@ namespace jsWebApiProxy {
   //}
 
   public class ControllerDefinition {
-    public string Name { get; set; }
-    //public string Description { get; set; }
+    public string ControllerName { get; set; }
     public IEnumerable<ActionMethodDefinition> ActionMethods { get; set; }
   }
   public class ActionMethodDefinition {
     public string HttpMethod { get; set; }
-    public string Name { get; set; }
+    public string ActionName { get; set; }
     public string Url { get; set; }
     public IEnumerable<ParameterDefinition> UrlParameters { get; set; }
     public ParameterDefinition BodyParameter { get; set; }
-    //public string Description { get; set; }
     public Type ReturnType { get; set; }
   }
   public class ParameterDefinition {
     public string Name;
     public Type Type;
-    //public string Description;
-    //public bool IsOptional;
-    //public object DefaultValue;
   }
 
   //public static class HttpActionDescriptorExtensions {
@@ -62,12 +57,12 @@ namespace jsWebApiProxy {
           .ToLookup(a => a.ActionDescriptor.ControllerDescriptor);
 
       return apiGroups.Select(d => new ControllerDefinition {
-        Name = d.Key.ControllerName,
+        ControllerName = d.Key.ControllerName,
         ActionMethods = descriptions.Where(a => !a.RelativePath.Contains("Swagger")
           && !a.RelativePath.Contains("docs")
           && a.ActionDescriptor.ControllerDescriptor.ControllerName == d.Key.ControllerName).
         Select(a => new ActionMethodDefinition {
-          Name = a.ActionDescriptor.ActionName,
+          ActionName = a.ActionDescriptor.ActionName,
           BodyParameter = a.ParameterDescriptions.
             Where(b => b.Source == ApiParameterSource.FromBody).
             Select(b => new ParameterDefinition {
@@ -87,7 +82,7 @@ namespace jsWebApiProxy {
         })
       }).
       Distinct().
-      OrderBy(d => d.Name);
+      OrderBy(d => d.ControllerName);
     }
 
   }

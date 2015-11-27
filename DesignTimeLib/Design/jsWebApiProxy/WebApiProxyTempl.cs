@@ -46,7 +46,7 @@ namespace DesignTimeLib.Design.jsWebApiProxy
             this.Write("  export class ");
             
             #line 13 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(definition.Name.ToLower()));
+            this.Write(this.ToStringHelper.ToStringWithCulture(definition.ControllerName.ToLower()));
             
             #line default
             #line hidden
@@ -60,7 +60,7 @@ namespace DesignTimeLib.Design.jsWebApiProxy
             this.Write("  static ");
             
             #line 15 "D:\LMCom\rew\DesignTimeLib\Design\jsWebApiProxy\WebApiProxyTempl.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(method.Name));
+            this.Write(this.ToStringHelper.ToStringWithCulture(method.ActionName));
             
             #line default
             #line hidden

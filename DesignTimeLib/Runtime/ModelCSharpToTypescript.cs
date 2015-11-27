@@ -22,8 +22,9 @@ namespace Handlers {
     };
     public static void genAll() {
       CSharpToTypeScript.GenerateFromInfos(allObjects);
-      var js = jsWebApiProxy.jsProxyGenerator.LMGetJSProxy();
-      File.WriteAllText(@"d:\LMCom\rew\Web4\Schools\GenProxy.ts", js, Encoding.UTF8);
+      //27.11.2015, prestalo fungovat, je potreba zachovat puvodni JS
+      //var js = jsWebApiProxy.jsProxyGenerator.LMGetJSProxy();
+      //File.WriteAllText(@"d:\LMCom\rew\Web4\Schools\GenProxy.ts", js, Encoding.UTF8);
     }
   }
 

@@ -161,6 +161,7 @@
     <Compile Include="DesignNew\SWCache.cs" />
     <Compile Include="DesignNew\TsShared.cs" />
     <Compile Include="Design\CourseMeta.cs" />
+    <Compile Include="DesignNew\jsWebApiProxy.cs" />
     <Compile Include="Runtime\JSCrambler.cs" />
     <Compile Include="Runtime\LibMp3Lame.cs" />
     <Compile Include="Runtime\lmConsole\lmconsole.cs" />

@@ -75,12 +75,12 @@ module Pager {
       case pathType.restServicesScorm: return cfg.forceServiceUrl == null ? Pager.basicUrl + 'scormEx.ashx' : serviceUrl(); break;
 
       /*********** OBSOLETE **************/
-      case pathType.eTestMe: res = 'lmcom/eTestMe.com/Test.aspx'; break;
-      case pathType.eaScormServer: res = 'lmcom/services/rpc/ea/scormserver.aspx'; break;
-      case pathType.eaData:
-        res = LMComLib.LangToEADir[loc.toString()] + "/";
-        break;
-      case pathType.cpv: res = "lmcom/eTestMe.com/site/" + Trados.actLangCode + '/ListeningAndPronunc.aspx#/AppPronunc/FactSoundView.xaml?IsFactOnly=true&'; break;
+      //case pathType.eTestMe: res = 'lmcom/eTestMe.com/Test.aspx'; break;
+      //case pathType.eaScormServer: res = 'lmcom/services/rpc/ea/scormserver.aspx'; break;
+      //case pathType.eaData:
+      //  res = LMComLib.LangToEADir[loc.toString()] + "/";
+      //  break;
+      //case pathType.cpv: res = "lmcom/eTestMe.com/site/" + Trados.actLangCode + '/ListeningAndPronunc.aspx#/AppPronunc/FactSoundView.xaml?IsFactOnly=true&'; break;
       default: throw "NotImplemented";
     }
     return basicUrl + res + url;
