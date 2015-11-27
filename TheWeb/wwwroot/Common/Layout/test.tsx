@@ -88,10 +88,10 @@ namespace layoutTest {
   var placeOther = 'place-other';
   var sceneSecond = 'scene-second';
 
-  layout.registerRenderer(layout.placeContent, 'cont-cont', parent => <h2 key={flux.cnt() }>Other 1</h2>);
-  layout.registerRenderer(layout.placeContent, 'cont-panel', parent => <h2 key={flux.cnt() }>Panel 2</h2>);
-  layout.registerRenderer(placeOther, 'other-cont', parent => <h2 key={flux.cnt() }>Other 3</h2>);
-  layout.registerRenderer(placeOther, 'other-panel', parent => <h2 key={flux.cnt() }>Panel 4</h2>);
+  layout.registerRenderer(layout.placeContent, 'cont-cont', parent => <h2 key={flux.cnt() }>Other x1</h2>);
+  layout.registerRenderer(layout.placeContent, 'cont-panel', parent => <h2 key={flux.cnt() }>Panel x2</h2>);
+  layout.registerRenderer(placeOther, 'other-cont', parent => <h2 key={flux.cnt() }>Other x3</h2>);
+  layout.registerRenderer(placeOther, 'other-panel', parent => <h2 key={flux.cnt() }>Panel x4</h2>);
 
   var rootElement = () => <div key={flux.cnt() } >
       <a href={'#' + namedState.default.getHash({ defaultScene: true, defaultPlaces: true }) }>Default Scene, default places</a> |
