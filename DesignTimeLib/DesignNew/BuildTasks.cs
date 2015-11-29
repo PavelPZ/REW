@@ -154,7 +154,7 @@ namespace DesignNew {
         //servConfig
         CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("servConfig", null, null, servCfgEnums, servCfgTypes));
         //WebAPI
-        var proxies = jsWebApiProxyNew.controllerGenerator.generate(LMComLib.CSharpToTypeScript.GenInlineTypeParse, lmclibEnums.Concat(servCfgEnums).Concat(servCfgTypes), 
+        var proxies = jsWebApiProxyNew.controllerGenerator.generate(CSharpToTypeScript.GenInlineTypeParse, lmclibEnums.Concat(servCfgEnums).Concat(servCfgTypes), 
           jsWebApiProxyNew.ControllerDefinition.getControllers(@"d:\LMCom\rew\TheWeb\bin\TheWeb.dll", "loginServices.AuthController"));
         sb.AppendLine(proxies);
         File.WriteAllText(FileSources.theWebWwwRoot + @"\Common\CsShared.ts", sb.ToString(), Encoding.ASCII);

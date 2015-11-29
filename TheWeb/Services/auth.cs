@@ -13,13 +13,17 @@ namespace LoginServices {
     public LoginResult Login(string email, string pswhash) {
       return null;
     }
-    public enum LoginResultError { no, }
     public class LoginResult {
       public string email;
       public string firstName;
       public string lastName;
-      public string errorMsg;
+      public LoginResultError errorMsg;
+      public LMComLib.Langs lang;
+    }
+
+    [ActionName("register"), HttpGet]
+    public void Register(string email, string pswhash, string firstName, string lastName) {
     }
   }
-
+  public enum LoginResultError { no, wrongEMail, wrongPassword }
 }

@@ -24,8 +24,8 @@ namespace DesignTimeLib.Design.jsWebApiProxy {
     public string declarePars(pr.ActionMethodDefinition method) {
       var allParameters = method.UrlParameters.AsEnumerable();
       if (method.BodyParameter != null) allParameters = allParameters.Concat(new[] { method.BodyParameter });
-      var selectedParameters = allParameters.Where(m => m != null).Select(m => m.Name.ToLower() + ": " + LMComLib.CSharpToTypeScript.GenInlineTypeParse(m.Type,allTypes)).ToList();
-      var retType = LMComLib.CSharpToTypeScript.GenInlineTypeParse(method.ReturnType, allTypes);
+      var selectedParameters = allParameters.Where(m => m != null).Select(m => m.Name.ToLower() + ": " + LMComLib.CSharpToTypeScript.GenInlineTypeParse(m.Type, new LMComLib.InlineContext { typeDefined = allTypes})).ToList();
+      var retType = LMComLib.CSharpToTypeScript.GenInlineTypeParse(method.ReturnType, new LMComLib.InlineContext { typeDefined = allTypes });
       selectedParameters.Add("completed: " + (string.IsNullOrEmpty(retType) ? "() => void" : "(res: " + retType + ") => void"));
       return string.Join(", ", selectedParameters);
     }

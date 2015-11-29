@@ -18,7 +18,8 @@ namespace jsWebApiProxyNew {
     public ControllerDefinition(Type tp) { controllerParser.parseController(tp, this); }
     public string ControllerName;
     public ActionMethodDefinition[] ActionMethods;
-    public static IEnumerable<ControllerDefinition> getControllers(string assemblyPath, params string[] typeFullNames) {return LowUtils.loadAssemblyTypes(assemblyPath, typeFullNames).Select(t => new ControllerDefinition(t));
+    public static IEnumerable<ControllerDefinition> getControllers(string assemblyPath, params string[] typeFullNames) {
+      return LowUtils.loadAssemblyTypes(assemblyPath, typeFullNames).Select(t => new ControllerDefinition(t));
     }
   }
   public class ActionMethodDefinition {
@@ -35,14 +36,15 @@ namespace jsWebApiProxyNew {
   }
 
   public static class controllerGenerator {
-    public static string generate(Func<Type, HashSet<string>, string> inlineTypeGenerator, IEnumerable<Type> alreadyDefinedtypes, IEnumerable<ControllerDefinition> controllers) {
+    public static string generate(Func<Type, LMComLib.InlineContext, string> inlineTypeGenerator, IEnumerable<Type> defined, IEnumerable<ControllerDefinition> controllers) {
       var ctx = new context {
         sb = new StringBuilder(),
-        alreadyDefinedtypes = new HashSet<string>(alreadyDefinedtypes.Select(t => t.FullName)),
+        typeDefined = new HashSet<string>(defined.Select(t => t.FullName)),
         inlineTypeGenerator = inlineTypeGenerator
       };
       ctx.sb.AppendLine("namespace proxies {");
       ctx.sb.AppendLine("  export var invoke: (url: string, type: string, queryPars: Object, body: string, completed: (res) => void) => void;");
+      ctx.enumToDefine = new List<Type>();
       foreach (var nm in controllers) generate(ctx, nm);
       ctx.sb.AppendLine("}");
       return ctx.sb.ToString();
@@ -50,6 +52,9 @@ namespace jsWebApiProxyNew {
     static void generate(context ctx, ControllerDefinition def) {
       ctx.sb.AppendFormat("  export namespace {0} {{", def.ControllerName); ctx.sb.AppendLine();
       foreach (var act in def.ActionMethods) generate(ctx, def, act);
+      if (ctx.enumToDefine != null && ctx.enumToDefine.Count > 0) {
+        foreach (var tp in ctx.enumToDefine.Distinct()) LMComLib.CSharpToTypeScript.GenEnum(tp, ctx.sb, true);
+      }
       ctx.sb.AppendLine("  }"); ctx.sb.AppendLine();
     }
     static void generate(context ctx, ControllerDefinition controller, ActionMethodDefinition method) {
@@ -58,9 +63,10 @@ namespace jsWebApiProxyNew {
       ctx.sb.AppendLine("    }");
     }
     static string declarePars(context ctx, ActionMethodDefinition method) {
-      var allParameters = method.UrlParameters;
-      var selectedParameters = allParameters.Where(m => m != null).Select(m => m.Name.ToLower() + ": " + ctx.inlineTypeGenerator(m.Type, ctx.alreadyDefinedtypes)).ToList();
-      var retType = ctx.inlineTypeGenerator(method.ReturnType, ctx.alreadyDefinedtypes);
+      var allParameters = method.UrlParameters; var enums = new List<Type>();
+      var inlineCtx = new LMComLib.InlineContext { typeDefined = ctx.typeDefined, enumToDefine = ctx.enumToDefine };
+      var selectedParameters = allParameters.Where(m => m != null).Select(m => m.Name.ToLower() + ": " + ctx.inlineTypeGenerator(m.Type, inlineCtx)).ToList();
+      var retType = ctx.inlineTypeGenerator(method.ReturnType, inlineCtx);
       selectedParameters.Add("completed: " + (string.IsNullOrEmpty(retType) ? "() => void" : "(res: " + retType + ") => void"));
       return string.Join(", ", selectedParameters);
     }
@@ -75,24 +81,25 @@ namespace jsWebApiProxyNew {
     }
     public class context {
       public StringBuilder sb;
-      public HashSet<string> alreadyDefinedtypes;
-      public Func<Type, HashSet<string>, string> inlineTypeGenerator;
+      public HashSet<string> typeDefined;
+      public List<Type> enumToDefine;
+      public Func<Type, LMComLib.InlineContext, string> inlineTypeGenerator;
     }
   }
 
   public static class controllerParser {
     public static void parseController(Type cls, ControllerDefinition res) {
-      var prefix = cls.GetCustomAttributes().OfType<RoutePrefixAttribute>().First();
+      //var prefix = cls.GetCustomAttributes().OfType<RoutePrefixAttribute>().First();
       var nm = cls.Name.ToLower(); if (!nm.EndsWith("controller")) throw new Exception();
       res.ControllerName = nm.Substring(0, nm.Length - "controller".Length);
       res.ActionMethods = cls.GetMethods().Select(m => getMethodDefinition(m)).Where(ma => ma != null).ToArray();
     }
     static ActionMethodDefinition getMethodDefinition(MethodInfo method) {
-      RouteAttribute actAttr = null; HttpGetAttribute getAttr = null; HttpPostAttribute postAttr = null;
-      foreach (var attr in method.GetCustomAttributes()) { actAttr = actAttr ?? attr as RouteAttribute; getAttr = getAttr ?? attr as HttpGetAttribute; postAttr = postAttr ?? attr as HttpPostAttribute; }
+      ActionNameAttribute actAttr = null; HttpGetAttribute getAttr = null; HttpPostAttribute postAttr = null;
+      foreach (var attr in method.GetCustomAttributes()) { actAttr = actAttr ?? attr as ActionNameAttribute; getAttr = getAttr ?? attr as HttpGetAttribute; postAttr = postAttr ?? attr as HttpPostAttribute; }
       if (actAttr == null || (getAttr == null && postAttr == null)) return null;
       var res = new ActionMethodDefinition {
-        ActionName = actAttr.Template,
+        ActionName = actAttr.Name,
         HttpMethod = getAttr != null ? "GET" : "POST",
         ReturnType = method.ReturnType.Name == "Void" ? null : method.ReturnType
       };

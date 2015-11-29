@@ -48,7 +48,8 @@ namespace LMComLib {
       this.nameSpace = nameSpace; this.tsPath = tsPath;
       this.enums = enums == null ? new Type[0] : enums.ToArray();
       this.constEnums = constEnums == null ? new Type[0] : constEnums.ToArray();
-      this.types = types == null ? new Type[0] : types; }
+      this.types = types == null ? new Type[0] : types;
+    }
     string nameSpace; string tsPath; Type[] enums; Type[] constEnums; Type[] types;
     public IEnumerable<Type> Types() { return types; }
     public IEnumerable<Type> ExtendedTypes() { yield break; }
@@ -61,6 +62,10 @@ namespace LMComLib {
     public jsonMLMeta getJsonMLMeta() { return null; }
   }
 
+  public class InlineContext {
+    public HashSet<string> typeDefined;
+    public List<Type> enumToDefine;
+  }
 
   public static class CSharpToTypeScript {
 
@@ -145,7 +150,7 @@ namespace LMComLib {
       sb.Append("])");
     }
 
-    static void GenEnum(Type tp, StringBuilder sb, bool isConst) {
+    public static void GenEnum(Type tp, StringBuilder sb, bool isConst) {
       sb.Append("export " + (isConst ? "const " : null) + "enum "); sb.Append(tp.Name); sb.AppendLine(" {");
       try {
         var vals = Enum.GetValues(tp).Cast<object>();
@@ -219,22 +224,25 @@ namespace LMComLib {
     //}
 
 
-    public static string GenInlineTypeParse(Type type, HashSet<string> allTypes) {
+    public static string GenInlineTypeParse(Type type, InlineContext inlineCtx) {
       if (type == null) return "";
       if (type.ToString() == "System.Void") return "void";
-      if (type.FullName.StartsWith("System.") || !type.IsClass || allTypes.Contains(type.FullName))
-        return LMComLib.CSharpToTypeScript.fieldTypeForProxy(type);
+      if (type.IsEnum && !inlineCtx.typeDefined.Contains(type.FullName)) {
+        if (inlineCtx.enumToDefine != null) inlineCtx.enumToDefine.Add(type);
+        return type.Name;
+      } else if (type.FullName.StartsWith("System.") || !type.IsClass || inlineCtx.typeDefined.Contains(type.FullName))
+        return fieldTypeForProxy(type);
       else if (type.IsArray) {
         var tp = type.GetElementType();
-        if (tp.FullName.StartsWith("System.") || !tp.IsClass || allTypes.Contains(tp.FullName))
-          return LMComLib.CSharpToTypeScript.fieldTypeForProxy(tp) + "[]";
+        if (tp.FullName.StartsWith("System.") || !tp.IsClass || inlineCtx.typeDefined.Contains(tp.FullName))
+          return fieldTypeForProxy(tp) + "[]";
         else
-          return LMComLib.CSharpToTypeScript.GenInlineTypeForProxy(tp, allTypes) + "[]";
+          return GenInlineTypeForProxy(tp, inlineCtx) + "[]";
       } else
-        return LMComLib.CSharpToTypeScript.GenInlineTypeForProxy(type, allTypes);
+        return GenInlineTypeForProxy(type, inlineCtx);
     }
 
-    public static string GenInlineTypeForProxy(Type tp, HashSet<string> allTypes) {
+    public static string GenInlineTypeForProxy(Type tp, InlineContext inlineCtx) {
       StringBuilder sb = new StringBuilder();
       //if (tp.Name == "evaluatorsForLineResult")
       //  sb.Append("");
@@ -246,8 +254,7 @@ namespace LMComLib {
         sb.Append(fld.Name);
         if (nulableFieldType(fld.FieldType)) sb.Append('?');
         sb.Append(": ");
-        sb.Append(GenInlineTypeParse(fld.FieldType, allTypes));
-        //fieldType(fld.FieldType, "", sb);
+        sb.Append(GenInlineTypeParse(fld.FieldType, inlineCtx));
         sb.Append("; ");
       }
       sb.Append(" }");
