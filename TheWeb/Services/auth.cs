@@ -5,13 +5,12 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace TheWeb.Services {
+namespace LoginServices {
 
   public class authController : ApiController {
 
     [ActionName("login"), HttpGet]
-    public LoginResult Login(string email, string pswHash) {
-      
+    public LoginResult Login(string email, string pswhash) {
       return null;
     }
     public enum LoginResultError { no, }

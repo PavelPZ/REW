@@ -44,7 +44,7 @@ namespace LMComLib {
   }
 
   public class RegisterImpl : ICSharpToTypeScript {
-    public RegisterImpl(string nameSpace, string tsPath, IEnumerable<Type> enums, IEnumerable<Type> constEnums, params Type[] types) {
+    public RegisterImpl(string nameSpace, string tsPath, IEnumerable<Type> enums, IEnumerable<Type> constEnums, Type[] types) {
       this.nameSpace = nameSpace; this.tsPath = tsPath;
       this.enums = enums == null ? new Type[0] : enums.ToArray();
       this.constEnums = constEnums == null ? new Type[0] : constEnums.ToArray();

@@ -5,8 +5,9 @@
     return new Promise<IAjaxResult>((resolve, reject) => ajaxLow(url, method, option, resolve, reject));
   }
 
-  export function ajaxLow(url: string, method: ajaxMethod, option: ajaxOptions, resolve: (res: IAjaxResult) => void, reject: (err: IAjaxError) => void) {
+  export function ajaxLow(url: string, method: ajaxMethod | string, option: ajaxOptions, resolve: (res: IAjaxResult) => void, reject: (err: IAjaxError) => void) {
     if (!option) option = {};
+    if (utils.isString(method)) method = ajaxMethod[method];
     var httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = () => {
       if (httpRequest.readyState !== 4) return;
@@ -24,6 +25,11 @@
     httpRequest.open(ajaxMethod[method ? method : ajaxMethod.GET], url, true);
     httpRequest.setRequestHeader('Content-Type', getAjaxContentType(option.contentType ? option.contentType : ajaxContentType.txt));
     httpRequest.send(option.data);
+  };
+
+  proxies.invoke = (url, method, queryPars, body, completed) => {
+    url = servCfg.azure.rootUrl + utils.urlStringify(url, queryPars);
+    ajaxLow(url, method, { data: body, contentType: ajaxContentType.json }, res => completed(res.responseText), err => throwError(url, err));
   };
    
   export interface IAjaxResult {
@@ -52,6 +58,9 @@
   export interface ajaxOptions {
     data?: any;
     contentType?: ajaxContentType;
+  }
+  export function throwError(url: string, err: IAjaxError) {
+    throw `*** AJAX ERROR on ${url}: status=${err.status}, statusText=${err.statusText}, ${err.result.responseText}`;
   }
 
 }

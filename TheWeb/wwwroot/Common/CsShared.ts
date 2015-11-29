@@ -168,3 +168,13 @@ export interface oAuthItem {
 }
 }
 
+namespace proxies {
+  export var invoke: (url: string, type: string, queryPars: Object, body: string, completed: (res) => void) => void;
+  export namespace auth {
+    export function login (email: string, pswhash: string, completed: (res: {  email: string;  firstName: string;  lastName: string;  errorMsg: string;  }) => void): void {
+      invoke('/api/auth/login', 'get', { email: email, pswhash: pswhash }, null, completed);
+    }
+  }
+
+}
+

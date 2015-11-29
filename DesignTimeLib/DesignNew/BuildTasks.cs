@@ -149,19 +149,22 @@ namespace DesignNew {
     public static void CS_to_typescrit_web() {
       runTask("TYPESCRIPT_fromCS_web", () => {
         StringBuilder sb = new StringBuilder();
-        CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("LMComLib", null,
-          null,
-          new Type[] { typeof(Langs) }
-          ));
-        CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("servConfig", null,
-          null,
-          new Type[] { typeof(servConfig.oAuthProviders), typeof(servConfig.SkinIds), typeof(servConfig.Brands), typeof(servConfig.Apps) },
-          typeof(servConfig.Root), typeof(servConfig.Azure), typeof(servConfig.ftpAcount), typeof(servConfig.Server), typeof(servConfig.ViewPars),
-          typeof(servConfig.oAuthConfig), typeof(servConfig.oAuthItem)));
+        //LMComLib
+        CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("LMComLib", null, null, lmclibEnums, null));
+        //servConfig
+        CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("servConfig", null, null, servCfgEnums, servCfgTypes));
+        //WebAPI
+        var proxies = jsWebApiProxyNew.controllerGenerator.generate(LMComLib.CSharpToTypeScript.GenInlineTypeParse, lmclibEnums.Concat(servCfgEnums).Concat(servCfgTypes), 
+          jsWebApiProxyNew.ControllerDefinition.getControllers(@"d:\LMCom\rew\TheWeb\bin\TheWeb.dll", "loginServices.AuthController"));
+        sb.AppendLine(proxies);
         File.WriteAllText(FileSources.theWebWwwRoot + @"\Common\CsShared.ts", sb.ToString(), Encoding.ASCII);
         return null;
       });
     }
+    static Type[] lmclibEnums = new Type[] { typeof(Langs) };
+    static Type[] servCfgEnums = new Type[] { typeof(servConfig.oAuthProviders), typeof(servConfig.SkinIds), typeof(servConfig.Brands), typeof(servConfig.Apps) };
+    static Type[] servCfgTypes = new Type[] { typeof(servConfig.Root), typeof(servConfig.Azure), typeof(servConfig.ftpAcount), typeof(servConfig.Server),
+      typeof(servConfig.ViewPars), typeof(servConfig.oAuthConfig), typeof(servConfig.oAuthItem)};
 
     static void runTask(string taskName, Func<string> task) {
       LowUtils.TraceErrorCall(taskName, () => {

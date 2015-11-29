@@ -872,6 +872,12 @@ namespace LMNetLib {
       return res;
     }
 
+    public static IEnumerable<Type> loadAssemblyTypes(string assemblyPath, IEnumerable<string> typeFullName) {
+      var ass = Assembly.LoadFile(assemblyPath);
+      return typeFullName.Select(t => ass.GetType(t, true, true));
+    }
+
+
     /*public static Type FindClassType(string id)
     {
       TObjId objId = new TObjId(id);
