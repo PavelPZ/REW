@@ -19,6 +19,7 @@ namespace DesignNew {
       string theWebDir = ConfigurationManager.AppSettings["filesources.theWeb"];
       Cfg.init(theWebDir, "localhost");
       FileSources.init(Cfg.cfg.server.web4Path, theWebDir);
+      AzureLib.Factory.init(Cfg.cfg.azure.connectionString);
     }
 
     //*********** AZURE_publish
@@ -38,7 +39,7 @@ namespace DesignNew {
           );
         var msg = SynchronizeDirs.synchronize(
           isJS,
-          new azureDriver(Cfg.cfg.azure.connectionString, container),
+          new azureDriver(container),
           buildIds,
           locs
         );
@@ -50,7 +51,7 @@ namespace DesignNew {
     //*********** AZURE_delete
     public static void AZURE_delete(string container/*napr. "js-v001" nebo "mm-v001"*/) {
       runTask("AZURE_delete", () => {
-        new azureDriver(Cfg.cfg.azure.connectionString, container).deleteContainer();
+        new azureDriver(container).deleteContainer();
         Trace.WriteLine("Container: " + container);
         return null;
       });
@@ -153,9 +154,14 @@ namespace DesignNew {
         CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("LMComLib", null, null, lmclibEnums, null));
         //servConfig
         CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("servConfig", null, null, servCfgEnums, servCfgTypes));
+        //EMailServices
+        CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("emailer", null, null, null, emailTypes));
         //WebAPI
-        var proxies = jsWebApiProxyNew.controllerGenerator.generate(CSharpToTypeScript.GenInlineTypeParse, lmclibEnums.Concat(servCfgEnums).Concat(servCfgTypes), 
-          jsWebApiProxyNew.ControllerDefinition.getControllers(@"d:\LMCom\rew\TheWeb\bin\TheWeb.dll", "loginServices.AuthController"));
+        var proxies = jsWebApiProxyNew.controllerGenerator.generate(CSharpToTypeScript.GenInlineTypeParse, lmclibEnums.Concat(servCfgEnums).Concat(servCfgTypes).Concat(emailTypes),
+          jsWebApiProxyNew.ControllerDefinition.getControllers(@"d:\LMCom\rew\TheWebServices\Email\bin\Debug\Email.dll", "emailer.emailController").Concat(
+            jsWebApiProxyNew.ControllerDefinition.getControllers(@"d:\LMCom\rew\TheWebServices\Auth\bin\Debug\Auth.dll", "loginServices.AuthController")
+          )
+        );
         sb.AppendLine(proxies);
         File.WriteAllText(FileSources.theWebWwwRoot + @"\Common\CsShared.ts", sb.ToString(), Encoding.ASCII);
         return null;
@@ -165,6 +171,7 @@ namespace DesignNew {
     static Type[] servCfgEnums = new Type[] { typeof(servConfig.oAuthProviders), typeof(servConfig.SkinIds), typeof(servConfig.Brands), typeof(servConfig.Apps) };
     static Type[] servCfgTypes = new Type[] { typeof(servConfig.Root), typeof(servConfig.Azure), typeof(servConfig.ftpAcount), typeof(servConfig.Server),
       typeof(servConfig.ViewPars), typeof(servConfig.oAuthConfig), typeof(servConfig.oAuthItem)};
+    static Type[] emailTypes = new Type[] { typeof(emailer.emailMsg), typeof(emailer.att), typeof(emailer.mail) };
 
     static void runTask(string taskName, Func<string> task) {
       LowUtils.TraceErrorCall(taskName, () => {

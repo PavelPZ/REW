@@ -28,6 +28,9 @@ using System.Xml.Serialization;
 
 namespace LMNetLib {
 
+
+  public class NullableAttribute : Attribute { }
+
   public static class ThreadRandom {
     private static Random _global = new Random();
     [ThreadStatic]

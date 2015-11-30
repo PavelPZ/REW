@@ -252,7 +252,7 @@ namespace LMComLib {
         if (fld.Name == "typeOfs" || (fld.GetCustomAttributes(typeof(JsonIgnoreAttribute), false).Any() && !fld.GetCustomAttributes(typeof(JsonGenOnlyAttribute), false).Any())) continue;
         sb.Append(" ");
         sb.Append(fld.Name);
-        if (nulableFieldType(fld.FieldType)) sb.Append('?');
+        if (nulableFieldType(fld.FieldType, fld)) sb.Append('?');
         sb.Append(": ");
         sb.Append(GenInlineTypeParse(fld.FieldType, inlineCtx));
         sb.Append("; ");
@@ -277,7 +277,7 @@ namespace LMComLib {
         if (fld.Name == "typeOfs" || (fld.GetCustomAttributes(typeof(JsonIgnoreAttribute), false).Any() && !fld.GetCustomAttributes(typeof(JsonGenOnlyAttribute), false).Any())) continue;
         sb.Append("  ");
         sb.Append(fld.Name);
-        if (nulableFieldType(fld.FieldType)) sb.Append('?');
+        if (nulableFieldType(fld.FieldType, fld)) sb.Append('?');
         sb.Append(": ");
         fieldType(fld.FieldType, module, sb);
         sb.AppendLine(";");
@@ -286,7 +286,7 @@ namespace LMComLib {
         if (prop.GetCustomAttributes(typeof(JsonIgnoreAttribute), false).Any() && !prop.GetCustomAttributes(typeof(JsonGenOnlyAttribute), false).Any()) continue;
         sb.Append("  ");
         sb.Append(prop.Name);
-        if (nulableFieldType(prop.PropertyType)) sb.Append('?');
+        if (nulableFieldType(prop.PropertyType, prop)) sb.Append('?');
         sb.Append(": ");
         fieldType(prop.PropertyType, module, sb);
         sb.AppendLine(";");
@@ -322,12 +322,14 @@ namespace LMComLib {
       }
     }
 
-    static bool nulableFieldType(Type type) {
-      return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+    static bool nulableFieldType(Type type, MemberInfo member) {
+      var res = type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+      if (member != null) res = res || member.GetCustomAttribute(typeof(NullableAttribute)) != null;
+      return res;
     }
     static void fieldType(Type FieldType, string module, StringBuilder sb) {
       if (sb == null) sb = new StringBuilder();
-      if (nulableFieldType(FieldType))
+      if (nulableFieldType(FieldType, null))
         FieldType = Nullable.GetUnderlyingType(FieldType);
       if (FieldType.IsGenericType && FieldType.GetGenericTypeDefinition() == typeof(Dictionary<,>) && FieldType.GetGenericArguments()[0] == typeof(string)) {
         sb.Append("{ [id:string]: ");

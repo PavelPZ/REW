@@ -23,7 +23,7 @@ namespace loginTest {
 
   //** INIT app
   var rootElement = () => <div key={flux.cnt() }>
-      <div><a href='#' onClick={() => { proxies.auth.login('am', 'psw', res => { }); return false; } }>Ajax</a></div>
+      <div><a href='#' onClick={() => { proxies.auth.Login('am', 'psw', res => { }); return false; } }>Ajax</a></div>
       <div><a href={router.getHomeHash() }>Home</a></div>
       <div><login.Panel initState={flux.getState().auth } parentId={null} id='login-panel'/></div>
       <layout.Scene initState={flux.getState().layout.scene } parentId={null} id='scene' cases={{

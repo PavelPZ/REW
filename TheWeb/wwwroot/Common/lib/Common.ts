@@ -62,12 +62,12 @@ namespace utils {
   export function toNumber(par: any, def: number = 0): number { var res = parseFloat(par); return isNaN(res) ? 0 : res; }
   export function toBoolean(par: any, def: boolean = false): boolean { return par === 'true'; }
 
-  export function guid(): string {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
-  }
+  //export function guid(): string {
+  //  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+  //    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+  //    return v.toString(16);
+  //  });
+  //}
 
   export function assignDeep(src: Object, dest: Object) {
     if (!src || !dest) return;
@@ -84,6 +84,12 @@ namespace utils {
   }
   export type TAsync<T> = (compl: utils.TCallback, par?: T) => void;
 
+  export function guid(): string {
+    return sessionStart.toString() + '-' + (guidCount++).toString();
+  }
+
+  var sessionStart = new Date().getTime();
+  var guidCount = Math.random();
 }
 
 namespace base64 {

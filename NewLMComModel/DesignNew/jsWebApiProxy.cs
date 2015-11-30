@@ -32,7 +32,6 @@ namespace jsWebApiProxyNew {
   public class ParameterDefinition {
     public string Name;
     public Type Type;
-    public bool isBody;
   }
 
   public static class controllerGenerator {
@@ -43,14 +42,14 @@ namespace jsWebApiProxyNew {
         inlineTypeGenerator = inlineTypeGenerator
       };
       ctx.sb.AppendLine("namespace proxies {");
-      ctx.sb.AppendLine("  export var invoke: (url: string, type: string, queryPars: Object, body: string, completed: (res) => void) => void;");
-      ctx.enumToDefine = new List<Type>();
+      ctx.sb.AppendLine("  export var invoke: (url: string, type: string, queryPars: Object, body: string, completed: (res) => void) => void;"); ctx.sb.AppendLine();
       foreach (var nm in controllers) generate(ctx, nm);
       ctx.sb.AppendLine("}");
       return ctx.sb.ToString();
     }
     static void generate(context ctx, ControllerDefinition def) {
       ctx.sb.AppendFormat("  export namespace {0} {{", def.ControllerName); ctx.sb.AppendLine();
+      ctx.enumToDefine = new List<Type>();
       foreach (var act in def.ActionMethods) generate(ctx, def, act);
       if (ctx.enumToDefine != null && ctx.enumToDefine.Count > 0) {
         foreach (var tp in ctx.enumToDefine.Distinct()) LMComLib.CSharpToTypeScript.GenEnum(tp, ctx.sb, true);
@@ -63,7 +62,8 @@ namespace jsWebApiProxyNew {
       ctx.sb.AppendLine("    }");
     }
     static string declarePars(context ctx, ActionMethodDefinition method) {
-      var allParameters = method.UrlParameters; var enums = new List<Type>();
+      var allParameters = method.UrlParameters.ToList(); if (method.BodyParameter != null) allParameters.Add(method.BodyParameter);
+      var enums = new List<Type>();
       var inlineCtx = new LMComLib.InlineContext { typeDefined = ctx.typeDefined, enumToDefine = ctx.enumToDefine };
       var selectedParameters = allParameters.Where(m => m != null).Select(m => m.Name.ToLower() + ": " + ctx.inlineTypeGenerator(m.Type, inlineCtx)).ToList();
       var retType = ctx.inlineTypeGenerator(method.ReturnType, inlineCtx);
@@ -73,8 +73,10 @@ namespace jsWebApiProxyNew {
     static string invokePars(ControllerDefinition controller, ActionMethodDefinition method) {
       var invokePar = new {
         url = "/api/" + controller.ControllerName + '/' + method.ActionName.ToLower(),
-        method = method.HttpMethod.ToLower(),
-        queryPars = method.UrlParameters.Count() == 0 ? (string)null : "{ " + method.UrlParameters.Select(p => p.Name.ToLower()).Select(p => p + ": " + p).DefaultIfEmpty().Aggregate((r, i) => r + ", " + i) + " }",
+        method = method.HttpMethod,
+        queryPars = method.UrlParameters.Count() == 0
+          ? (string)null
+          : "{ " + method.UrlParameters.Select(p => p.Name.ToLower()).Select(p => p + ": " + p).DefaultIfEmpty().Aggregate((r, i) => r + ", " + i) + " }",
         body = method.BodyParameter != null ? "JSON.stringify(" + method.BodyParameter.Name.ToLower() + ")" : "null"
       };
       return string.Format("'{0}', '{1}', {2}, {3}, completed", invokePar.url, invokePar.method, invokePar.queryPars ?? "null", invokePar.body);
@@ -103,13 +105,11 @@ namespace jsWebApiProxyNew {
         HttpMethod = getAttr != null ? "GET" : "POST",
         ReturnType = method.ReturnType.Name == "Void" ? null : method.ReturnType
       };
-      ParameterDefinition bodyPar = null;
       foreach (var par in method.GetParameters().OrderBy(p => p.Position)) {
         var pd = new ParameterDefinition { Name = par.Name, Type = par.ParameterType };
-        pd.isBody = par.GetCustomAttributes(typeof(FromBodyAttribute), false).Length > 0;
-        if (pd.isBody) bodyPar = pd; else res.UrlParameters.Add(pd);
+        var isBody = par.GetCustomAttributes(typeof(FromBodyAttribute), false).Length > 0;
+        if (isBody) res.BodyParameter = pd; else res.UrlParameters.Add(pd);
       }
-      if (bodyPar != null) res.UrlParameters.Add(bodyPar);
       return res;
     }
   }

@@ -169,12 +169,12 @@ namespace DesignNew {
   //http://justazure.com/azure-blob-storage-part-6-blob-properties-metadata-etc/
   public class azureDriver : IDriver {
     CloudBlobContainer container;
-    CloudBlobClient blobClient;
-    public azureDriver(string connStr, string containerName) {
+    //CloudBlobClient blobClient;
+    public azureDriver(string containerName) {
       //var connStr = string.Format("DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1}", accountName, accountKey);
-      CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connStr);
-      blobClient = storageAccount.CreateCloudBlobClient();
-      var props = blobClient.GetServiceProperties();
+      //CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connStr);
+      //blobClient = storageAccount.CreateCloudBlobClient();
+      var props = AzureLib.Factory.blobClient.GetServiceProperties();
       if (props.Cors.CorsRules.Count == 0) {
         props.Cors.CorsRules.Add(new CorsRule() {
           AllowedHeaders = new List<string>() { "*" },
@@ -183,9 +183,9 @@ namespace DesignNew {
           ExposedHeaders = new List<string>() { "*" },
           MaxAgeInSeconds = 18000 // 300 minutes
         });
-        blobClient.SetServiceProperties(props);
+        AzureLib.Factory.blobClient.SetServiceProperties(props);
       }
-      container = blobClient.GetContainerReference(containerName);
+      container = AzureLib.Factory.createBlob(containerName); // blobClient.GetContainerReference(containerName);
       if (container.CreateIfNotExists()) container.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
     }
     public void deleteContainer() {

@@ -168,19 +168,65 @@ module servConfig {
   }
 }
 
+module emailer {
+  export interface emailMsg {
+    from: mail;
+    to: Array<mail>;
+    title: string;
+    body: string;
+    plainBody: string;
+    attachments?: Array<att>;
+  }
+  export interface att {
+    fileName: string;
+    body: string;
+  }
+  export interface mail {
+    email: string;
+    title: string;
+  }
+}
+
 namespace proxies {
   export var invoke: (url: string, type: string, queryPars: Object, body: string, completed: (res) => void) => void;
+
+  export namespace email {
+    export function Send(msg: emailer.emailMsg, completed: () => void): void {
+      invoke('/api/email/send', 'POST', null, JSON.stringify(msg), completed);
+    }
+  }
+
   export namespace auth {
-    export function login(email: string, pswhash: string, completed: (res: { email: string; firstName: string; lastName: string; errorMsg: LoginResultError; lang: LMComLib.Langs; }) => void): void {
-      invoke('/api/auth/login', 'get', { email: email, pswhash: pswhash }, null, completed);
+    export function Login(email: string, psw: string, completed: (res: { email: string; firstName: string; lastName: string; result: ServiceResult; }) => void): void {
+      invoke('/api/auth/login', 'GET', { email: email, psw: psw }, null, completed);
     }
-    export function register(email: string, pswhash: string, firstname: string, lastname: string, completed: () => void): void {
-      invoke('/api/auth/register', 'get', { email: email, pswhash: pswhash, firstname: firstname, lastname: lastname }, null, completed);
+    export function Register(email: string, psw: string, firstname: string, lastname: string, confirmid: string, completed: () => void): void {
+      invoke('/api/auth/register', 'GET', { email: email, psw: psw, firstname: firstname, lastname: lastname, confirmid: confirmid }, null, completed);
     }
-    export const enum LoginResultError {
-      no = 0,
+    export function ConfirmRegistration(confirmid: string, completed: (res: { email: string; firstName: string; lastName: string; result: ServiceResult; }) => void): void {
+      invoke('/api/auth/confirmregistration', 'GET', { confirmid: confirmid }, null, completed);
+    }
+    export function ChangeProfile(email: string, firstname: string, lastname: string, completed: () => void): void {
+      invoke('/api/auth/changeprofile', 'GET', { email: email, firstname: firstname, lastname: lastname }, null, completed);
+    }
+    export function ChangePassword(email: string, oldpsw: string, newpsw: string, completed: (res: boolean) => void): void {
+      invoke('/api/auth/changepassword', 'GET', { email: email, oldpsw: oldpsw, newpsw: newpsw }, null, completed);
+    }
+    export function ForgotPassword(email: string, completed: () => void): void {
+      invoke('/api/auth/forgotpassword', 'GET', { email: email }, null, completed);
+    }
+    export function ConfirmForgotPassword(confirmid: string, newpsw: string, completed: (res: { email: string; firstName: string; lastName: string; result: ServiceResult; }) => void): void {
+      invoke('/api/auth/confirmforgotpassword', 'GET', { confirmid: confirmid, newpsw: newpsw }, null, completed);
+    }
+    export function oAuthNotify(email: string, firstname: string, lastname: string, completed: () => void): void {
+      invoke('/api/auth/oauthnotify', 'GET', { email: email, firstname: firstname, lastname: lastname }, null, completed);
+    }
+    export const enum ServiceResult {
+      ok = 0,
       wrongEMail = 1,
       wrongPassword = 2,
+      confirmExpired = 3,
+      regAlreadyConfirmed = 4,
     }
 
   }

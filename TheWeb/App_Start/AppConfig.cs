@@ -16,6 +16,10 @@ namespace TheWeb {
         DesignNew.FileSources.init(Cfg.cfg.server.web4Path, Cfg.cfg.server.basicPath);
         //Cache
         if (!Cfg.cfg.defaultPars.swFromFileSystem) Cache.init();
+        //Azure
+        AzureLib.Factory.init(Cfg.cfg.azure.connectionString);
+        //Auth
+        LoginServices.tableLow.init();
       });
     }
   }
