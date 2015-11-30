@@ -19,7 +19,7 @@ namespace DesignNew {
       string theWebDir = ConfigurationManager.AppSettings["filesources.theWeb"];
       Cfg.init(theWebDir, "localhost");
       FileSources.init(Cfg.cfg.server.web4Path, theWebDir);
-      AzureLib.Factory.init(Cfg.cfg.azure.connectionString);
+      AzureLib.Factory.init();
     }
 
     //*********** AZURE_publish
@@ -158,9 +158,10 @@ namespace DesignNew {
         CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("emailer", null, null, null, emailTypes));
         //WebAPI
         var proxies = jsWebApiProxyNew.controllerGenerator.generate(CSharpToTypeScript.GenInlineTypeParse, lmclibEnums.Concat(servCfgEnums).Concat(servCfgTypes).Concat(emailTypes),
-          jsWebApiProxyNew.ControllerDefinition.getControllers(@"d:\LMCom\rew\TheWebServices\Email\bin\Debug\Email.dll", "emailer.emailController").Concat(
-            jsWebApiProxyNew.ControllerDefinition.getControllers(@"d:\LMCom\rew\TheWebServices\Auth\bin\Debug\Auth.dll", "loginServices.AuthController")
-          )
+          new jsWebApiProxyNew.ControllerDefinition[] {
+            new jsWebApiProxyNew.ControllerDefinition(typeof(emailer.emailController)),
+            new jsWebApiProxyNew.ControllerDefinition(typeof(LoginServices.authController))}
+          //jsWebApiProxyNew.ControllerDefinition.getControllers(@"d:\LMCom\rew\TheWebServices\Email\bin\Debug\Email.dll", "emailer.emailController")
         );
         sb.AppendLine(proxies);
         File.WriteAllText(FileSources.theWebWwwRoot + @"\Common\CsShared.ts", sb.ToString(), Encoding.ASCII);
@@ -170,7 +171,7 @@ namespace DesignNew {
     static Type[] lmclibEnums = new Type[] { typeof(Langs) };
     static Type[] servCfgEnums = new Type[] { typeof(servConfig.oAuthProviders), typeof(servConfig.SkinIds), typeof(servConfig.Brands), typeof(servConfig.Apps) };
     static Type[] servCfgTypes = new Type[] { typeof(servConfig.Root), typeof(servConfig.Azure), typeof(servConfig.ftpAcount), typeof(servConfig.Server),
-      typeof(servConfig.ViewPars), typeof(servConfig.oAuthConfig), typeof(servConfig.oAuthItem)};
+      typeof(servConfig.ViewPars), typeof(servConfig.oAuthConfig), typeof(servConfig.oAuthItem), typeof(servConfig.SendGrid)};
     static Type[] emailTypes = new Type[] { typeof(emailer.emailMsg), typeof(emailer.att), typeof(emailer.mail) };
 
     static void runTask(string taskName, Func<string> task) {

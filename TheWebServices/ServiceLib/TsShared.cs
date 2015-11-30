@@ -11,6 +11,7 @@ namespace servConfig {
     public Azure azure;
     public ViewPars defaultPars;
     public oAuthConfig oAuth;
+    public SendGrid sendGrid;
   }
   public class Azure {
     public string connectionString;
@@ -25,6 +26,10 @@ namespace servConfig {
     public string url; public string userName; public string password;
   }
 
+  public class SendGrid {
+    public string userName;
+    public string password;
+  }
 
   public class Server {
     public string basicPath;
@@ -47,11 +52,34 @@ namespace servConfig {
 
   public enum oAuthProviders { no = 0, google = 1, facebook = 2, microsoft = 3, }
   public class oAuthConfig {
+    public emailer.mail lmLoginEmailSender;
     public string loginUrl; //plna URL k oAuth login strance
     public oAuthItem[] items; //musi byt pevne poradi, napr. items[2] je facebook
   }
   public class oAuthItem {
     public string clientId;
+  }
+}
+
+namespace emailer {
+  public class emailMsg {
+    public mail from;
+    public mail[] to;
+    public mail[] cc;
+    public mail[] bcc;
+    public string subject;
+    public string body;
+    public string plainBody;
+    [Nullable]
+    public att[] attachments;
+  }
+  public class mail {
+    public string email;
+    public string title;
+  }
+  public class att {
+    public string fileName;
+    public string body;
   }
 }
 

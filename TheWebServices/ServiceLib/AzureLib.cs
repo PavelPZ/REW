@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace AzureLib {
   public static class Factory {
-    public static void init(string connStr) {
-      CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connStr);
+    public static void init() {
+      CloudStorageAccount storageAccount = CloudStorageAccount.Parse(Cfg.cfg.azure.connectionString);
       tableClient = storageAccount.CreateCloudTableClient();
       blobClient = storageAccount.CreateCloudBlobClient();
     }

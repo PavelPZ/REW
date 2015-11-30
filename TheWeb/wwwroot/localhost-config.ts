@@ -1,5 +1,5 @@
 ﻿var servCfg: servConfig.Root = {
-  lmapp_website_id:null,
+  lmapp_website_id: null,
   azure: {
     connectionString: 'UseDevelopmentStorage=true',
     blobJS: 'http://127.0.0.1:10000/devstoreaccount1/js-v001',
@@ -10,10 +10,14 @@
     swDeployAccount: {
       url: 'ftp://waws-prod-am2-033.ftp.azurewebsites.windows.net',
       userName: 'LMWebCommon\\pavelzika',
-      password:'pkzippkzip1_'
+      password: 'pkzippkzip1_'
     },
     rootUrl: 'http://localhost:10101',
     azureRootUrl: 'http://lmwebcommon.azurewebsites.net'
+  },
+  sendGrid: {
+    userName: 'langmaster-email',
+    password: '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',
   },
   defaultPars: {
     app: servConfig.Apps.web,
@@ -26,7 +30,8 @@
     appPart: null,
   },
   oAuth: {
-    loginUrl:'',
+    lmLoginEmailSender: { email: '', title: '' },
+    loginUrl: '',
     items: [
       null,
       { clientId: '' }, //google
@@ -36,6 +41,6 @@
   },
   server: {
     basicPath: '',
-    web4Path:'d:\\LMCom\\rew\\Web4'
+    web4Path: 'd:\\LMCom\\rew\\Web4'
   }
 }

@@ -11,6 +11,10 @@
     rootUrl: 'http://lmwebcommon.azurewebsites.net',
     azureRootUrl: null
   },
+  sendGrid: {
+    userName: 'langmaster-email',
+    password: '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',
+  },
   defaultPars: {
     app: servConfig.Apps.web,
     //app: servConfig.Apps.web4,
@@ -22,6 +26,7 @@
     appPart: null,
   },
   oAuth: {
+    lmLoginEmailSender: { email: '', title: '' },
     loginUrl: '',
     items: [
       null,
