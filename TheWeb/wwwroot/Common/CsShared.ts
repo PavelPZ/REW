@@ -206,20 +206,20 @@ namespace proxies {
     export function ConfirmRegistration(confirmid: string, completed: (res: { email: string; firstName: string; lastName: string; result: ServiceResult; }) => void): void {
       invoke('/api/auth/confirmregistration', 'GET', { confirmid: confirmid }, null, completed);
     }
-    export function ChangeProfile(email: string, firstname: string, lastname: string, completed: () => void): void {
+    export function ChangeProfile(email: string, firstname: string, lastname: string, completed: (res: ServiceResult) => void): void {
       invoke('/api/auth/changeprofile', 'GET', { email: email, firstname: firstname, lastname: lastname }, null, completed);
     }
-    export function ChangePassword(email: string, oldpsw: string, newpsw: string, completed: (res: boolean) => void): void {
+    export function ChangePassword(email: string, oldpsw: string, newpsw: string, completed: (res: ServiceResult) => void): void {
       invoke('/api/auth/changepassword', 'GET', { email: email, oldpsw: oldpsw, newpsw: newpsw }, null, completed);
     }
-    export function ForgotPassword(email: string, completed: () => void): void {
-      invoke('/api/auth/forgotpassword', 'GET', { email: email }, null, completed);
+    export function ForgotPassword(email: string, confirmid: string, completed: (res: ServiceResult) => void): void {
+      invoke('/api/auth/forgotpassword', 'GET', { email: email, confirmid: confirmid }, null, completed);
     }
     export function ConfirmForgotPassword(confirmid: string, newpsw: string, completed: (res: { email: string; firstName: string; lastName: string; result: ServiceResult; }) => void): void {
       invoke('/api/auth/confirmforgotpassword', 'GET', { confirmid: confirmid, newpsw: newpsw }, null, completed);
     }
-    export function oAuthNotify(email: string, firstname: string, lastname: string, completed: () => void): void {
-      invoke('/api/auth/oauthnotify', 'GET', { email: email, firstname: firstname, lastname: lastname }, null, completed);
+    export function oAuthNotify(email: string, firstname: string, lastname: string, provider: servConfig.oAuthProviders, providerid: string, completed: () => void): void {
+      invoke('/api/auth/oauthnotify', 'GET', { email: email, firstname: firstname, lastname: lastname, provider: provider, providerid: providerid }, null, completed);
     }
     export const enum ServiceResult {
       ok = 0,

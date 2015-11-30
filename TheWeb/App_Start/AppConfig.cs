@@ -19,7 +19,7 @@ namespace TheWeb {
         //Azure
         AzureLib.Factory.init(Cfg.cfg.azure.connectionString);
         //Auth
-        LoginServices.tableLow.init();
+        LoginServices.authController.init();
       });
     }
   }
