@@ -6,6 +6,7 @@
     "/common/layout/layout.js",
     "/common/validation/lib.js",
     "/common/uirouter/js.dpl.json",
-    "/common/login/js.dpl.json"
+    "/common/login/js.dpl.json",
+    "/common/testing/testing.js"
   ]
 }

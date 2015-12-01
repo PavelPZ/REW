@@ -8,7 +8,7 @@ namespace config {
   }
   cfg.data.layout = {
     scenePlaceRenderers: {},
-    stateCreated: (compl) => {
+    initAppState: (compl) => {
       flux.getState().layout = {
         scene: { ids: [], caseId: layout.sceneDefault },
         scenePlaces: {}
@@ -35,30 +35,29 @@ namespace layout {
   }
 
   export function changeScene(sceneId: string, first: IScenePlaceState | string, ...other: Array<IScenePlaceState>) {
-    //loger.log('>changeLayout ' + routeAction.moduleId + '[' + routeAction.actionId + ']');
     var firstPs: IScenePlaceState = utils.isString(first) ? { ids: [], rendererId: <string>first } : <IScenePlaceState>first;
     var scenePlaces = [firstPs].concat(other);
     var layCfg = config.cfg.data.layout;
-    //if (!layCfg.routeActionToSceneId) throw 'Missing config.cfg.data.layout.routeActionToSceneId config';
-    //var sceneId = layCfg.routeActionToSceneId(routeAction);
     var layState = flux.getState().layout;
-    if (!flux.stateConnected(layState.scene)) throw 'Scene component does not exists or does not bind to flux.getState().layout.scene state';
+    if (!flux.stateConnected(layState.scene)) loger.doThrow('Scene component does not exists or does not bind to flux.getState().layout.scene state');
     var sceneOK = sceneId == layState.scene.caseId;
     for (var newPl of scenePlaces) {
       var plId = newPl.placeId || placeContent;
       var oldPl = layState.scenePlaces[plId];
-      if (!oldPl) layState.scenePlaces[plId] = oldPl = { ids: [], placeId: plId, rendererId: undefined }; //throw 'Cannot find scenePlace in layout state: ' + plId;
+      if (!oldPl) layState.scenePlaces[plId] = oldPl = { ids: [], placeId: plId, rendererId: undefined }; 
       if (oldPl.rendererId == newPl.rendererId) continue;
       oldPl.rendererId = newPl.rendererId;
       //overeni existence renderera
       var rends = config.cfg.data.layout.scenePlaceRenderers;
-      if (!rends[oldPl.placeId] || !rends[oldPl.placeId][oldPl.rendererId]) throw `Unregistered "{oldPl.rendererId}" renderer for "{oldPl.placeId}" place.`;
+      if (!rends[oldPl.placeId] || !rends[oldPl.placeId][oldPl.rendererId]) loger.doThrow(`Unregistered "{oldPl.rendererId}" renderer for "{oldPl.placeId}" place.`);
       if (sceneOK) {
+        loger.log('changeScene, sceneOK=true');
         flux.onStateChanged(oldPl);
       }
     }
     if (sceneOK) return;
     layState.scene.caseId = sceneId;
+    loger.log('changeScene, sceneOK=false');
     flux.onStateChanged(layState.scene);
   }
 
@@ -66,7 +65,7 @@ namespace layout {
     var renderers = config.cfg.data.layout.scenePlaceRenderers;
     if (!renderers[scenePlaceId]) renderers[scenePlaceId] = {};
     var place = renderers[scenePlaceId];
-    if (place[rendererId]) throw `Place renderer ${scenePlaceId}.${rendererId} already exists `;
+    if (place[rendererId]) loger.doThrow(`Place renderer ${scenePlaceId}.${rendererId} already exists `);
     place[rendererId] = render;
   }
 
@@ -105,7 +104,7 @@ namespace layout {
       super.render();
       var caseId = this.props.initState.caseId; if (!caseId) return null;
       var cont = this.props.cases[caseId];
-      if (!cont) throw 'flux.Switcher.render: wrong case ' + caseId;
+      if (!cont) loger.doThrow('flux.Switcher.render: wrong case ' + caseId);
       return cont(this.id);
     }
   }

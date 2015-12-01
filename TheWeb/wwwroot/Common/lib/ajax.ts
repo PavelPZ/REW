@@ -52,7 +52,7 @@
       case ajaxContentType.txt: return 'text/plain';
       case ajaxContentType.json: return 'application/json';
       case ajaxContentType.javascript: return 'application/javascript';
-      default: throw 'not implemented';
+      default: loger.doThrow('not implemented');
     }
   }
   export interface ajaxOptions {
@@ -60,7 +60,7 @@
     contentType?: ajaxContentType;
   }
   export function throwError(url: string, err: IAjaxError) {
-    throw `*** AJAX ERROR on ${url}: status=${err.status}, statusText=${err.statusText}, ${err.result.responseText}`;
+    loger.doThrow(`*** AJAX ERROR on ${url}: status=${err.status}, statusText=${err.statusText}, ${err.result.responseText}`);
   }
 
 }

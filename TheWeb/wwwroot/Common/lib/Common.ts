@@ -12,23 +12,26 @@ namespace config {
   export interface IObj { data: IData }
   export var cfg: IObj = { data: <any>{} };
   export interface IInitProcConfig {
-    stateCreated?: utils.TAsync<void>;
-    authKnown?: utils.TAsync<oauth.IAuthCookie>;
+    initAppState?: utils.TAsync; //inicializace bez ohledu na aktualni ROUTE. Volana na zacatku "flux.initApplication", napr. sance inicializovat svoji cast STATE
+    //init_authKnown?: utils.TAsync; //inicializace modulu v okamziku po prihlaseni. POZOR: po LM prihlaseni se musi volat refresh stranky (preruseni SPA aplikace)
+    //init_domTreeReady?: utils.TAsync<void>; //inicializace modulu v okamziku po vykresleni DOM.
   }
   export var ctxPropName = 'data';
   export var webConfig: IData;
 
-  export function callStateCreated(compl: utils.TCallback) {
-    var creates: Array<utils.TAsync<void>> = [];
-    for (var p in cfg.data) { var ic: IInitProcConfig = cfg.data[p]; if (ic.stateCreated) creates.push(ic.stateCreated); }
-    utils.callAsyncs<void>(creates, compl);
+  //asynchronni init: zacatek "flux.initApplication", napr. sance inicializovat svoji cast STATE
+  export function onInitAppState(compl: utils.TCallback) {
+    var creates: Array<utils.TAsync> = [];
+    for (var p in cfg.data) { var ic: IInitProcConfig = cfg.data[p]; if (ic.initAppState) creates.push(ic.initAppState); }
+    utils.callAsyncs(creates, compl);
   }
 
-  export function callAuthKnown(auth: oauth.IAuthCookie, compl: utils.TCallback) {
-    var creates: Array<utils.TAsync<oauth.IAuthCookie>> = [];
-    for (var p in cfg.data) { var ic: IInitProcConfig = cfg.data[p]; if (ic.authKnown) creates.push(ic.authKnown); }
-    utils.callAsyncs<oauth.IAuthCookie>(creates, compl);
-  }
+  //asynchronni init: volana po prihlaseni
+  //export function onInit_authKnown(compl: utils.TCallback) {
+  //  var creates: Array<utils.TAsync> = [];
+  //  for (var p in cfg.data) { var ic: IInitProcConfig = cfg.data[p]; if (ic.init_authKnown) creates.push(ic.init_authKnown); }
+  //  utils.callAsyncs(creates, compl);
+  //}
 
 }
 
@@ -38,6 +41,10 @@ namespace loger {
     if (ind < 0 && indent.length >= 2) indent = indent.substr(2);
     console.log(indent + msg);
     if (ind > 0) indent += '  ';
+  }
+  export function doThrow(msg: string):any {
+    debugger;
+    throw msg;
   }
 }
 
@@ -50,6 +57,7 @@ namespace utils {
   export type byte = number;
   export type char = string;
   export type base64 = string;
+  export var Noop: TCallback = () => { };
 
   export type TDirectory<T> = { [name: string]: T; };
 
@@ -78,11 +86,11 @@ namespace utils {
     }
   }
 
-  export function callAsyncs<T>(creates: Array<TAsync<T>>, compl: utils.TCallback, par?: T) {
-    var promises = creates.map(create => new Promise((resolve, reject) => create(() => resolve(), par)));
+  export function callAsyncs(creates: Array<TAsync>, compl: utils.TCallback) {
+    var promises = creates.map(create => new Promise((resolve, reject) => create(() => resolve())));
     Promise.all(promises).then(() => compl());
   }
-  export type TAsync<T> = (compl: utils.TCallback, par?: T) => void;
+  export type TAsync = (compl: utils.TCallback) => void;
 
   export function guid(): string {
     return sessionStart.toString() + '-' + (guidCount++).toString();

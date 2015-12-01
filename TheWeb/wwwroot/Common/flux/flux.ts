@@ -1,28 +1,52 @@
-﻿const listenHashChange = () => router.listenHashChange;
-const tryDispatchRoute = () => router.tryDispatchRoute;
+﻿const router_listenHashChange = () => router.listenHashChange;
+const router_tryDispatchRoute = () => router.tryDispatchRoute;
+const testing_getAppAndRouteState = () => testing.getAppAndRouteState;
+const router_onInitRoute = () => router.onInitRoute;
+
+namespace config {
+  export interface IData { flux?: { playInterval: number; }; }
+  cfg.data.flux = { playInterval: 300 };
+}
 
 namespace flux {  
 
   //**************** getState, trigger
   export function getState(): IAppState { return state; }
   export function trigger(action: IAction, compl?: utils.TCallback) {
-    if (!action || !action.moduleId || !action.actionId) throw '!action || !action.type';
+    if (!action || !action.moduleId || !action.actionId) loger.doThrow('!action || !action.type');
     if (recording) recording.actions.push(action);
     loger.log('ACTION ' + JSON.stringify(action), 1);
-    tryDispatchRoute()(action as router.IActionType, routerProcessed => {
-      if (routerProcessed) {
-        if (compl) compl();
-        loger.log('action', -1);
-        return;
+    if (triggerExternalNavigateAction(action)) { loger.log('action', -1); return; }
+    router_tryDispatchRoute()(action as router.IActionType, routeProcessed => {
+      if (routeProcessed) {
+        compl();
+      } else {
+        var res = allModules[action.moduleId]; if (!res) loger.doThrow('Cannot find module ' + action.moduleId);
+        res.dispatchAction(action, compl);
       }
-      var res = allModules[action.moduleId]; if (!res) throw 'Cannot find module ' + action.moduleId;
-      res.dispatchAction(action, compl);
-      loger.log('action', -1);
+      loger.log('action', -1); 
     })
   }
   export type triggerCompleted = (action: IAction) => void;
   export function actionPath(act: IAction) { return act.moduleId + '/' + act.actionId; }
   export function cnt(): string { return (_cnt++).toString(); } var _cnt = 0;
+  export function doExternalNavigate(url: string, ev?: React.SyntheticEvent) {
+    if (ev) ev.preventDefault();
+    var act: IExternalNavigateAction = { moduleId: moduleId, actionId: 'externalnavigate', url: url };
+    trigger(act);
+  }
+
+  var moduleId = 'flux';
+  interface IExternalNavigateAction extends flux.IAction { url: string; } //navigace na externi ULR
+  function triggerExternalNavigateAction(action: IAction): boolean {
+    if (action.moduleId != moduleId || action.actionId != 'externalnavigate') return false;
+    setTimeout(() => {
+      var url = (action as IExternalNavigateAction).url;
+      location.href = url;
+      loger.log('flux.triggerExternalNavigateAction: ' + url);
+    }, 1);
+    return true;
+  }
 
   //*********** COMPONENTS
   export class DumpComponent<T extends React.Props<any>, S> extends React.Component<T, S> { props: T; }
@@ -32,12 +56,12 @@ namespace flux {
       super(props, ctx);
       //vypocet id a registrace
       this.id = !utils.isEmpty(props.parentId) ? props.id + '<' + props.parentId : props.id;
-      if (allComponents[this.id]) throw 'Just created component: ' + this.id + ' already exists (allComponents[this.id]: ';
+      if (allComponents[this.id]) loger.doThrow('Just created component: ' + this.id + ' already exists (allComponents[this.id]: ');
       allComponents[this.id] = this;
       //self id do meho state
       var st = this.getState();
-      if (!st.ids) throw 'Not smart state';
-      loger.log('>new ' + this.id + ', initState=' + JSON.stringify(st, (key, value) => key == 'ids' ? undefined : value));
+      if (!st.ids) loger.doThrow('Not smart state');
+      loger.log('new ' + this.id + ', initState=' + JSON.stringify(st, (key, value) => key == 'ids' ? undefined : value));
       //if (!st.ids) st.ids = [];
       if (st.ids.indexOf(this.id) < 0) st.ids.push(this.id);
     }
@@ -51,9 +75,9 @@ namespace flux {
       var st = this.getState();
       var idx = st.ids.indexOf(this.id); if (idx >= 0) st.ids.splice(idx, 1);
       delete allComponents[this.id.toString()];
-      loger.log('>unmount ' + this.id);
+      loger.log('unmount ' + this.id);
     };
-    render(): JSX.Element { loger.log('>render ' + this.id); return null; }
+    render(): JSX.Element { loger.log('render ' + this.id); return null; }
     getState(): S { return this.props.initState; }
   }
   export interface ISmartProps<S extends ISmartState> extends IComponentProps { initState: S; parentId: string, id: string }
@@ -62,7 +86,7 @@ namespace flux {
 
   //**** SET STATE => rerender
   export function onStateChanged(st: ISmartState) {
-    if (!st || !st.ids) throw 'Not smart state, onStateChanged: !st || !st.ids';
+    if (!st || !st.ids) loger.doThrow('Not smart state, onStateChanged: !st || !st.ids');
     //if (!st.ids) st.ids = [];
     st.ids.forEach(id => {
       var comp = allComponents[id]; if (!comp) return;
@@ -73,6 +97,7 @@ namespace flux {
   }
   export function stateConnected(st: ISmartState): boolean {
     if (!st || !st.ids) return false;
+    if (!appInitialized) return true;
     return !!st.ids.find(id => !!allComponents[id]);
   }
   export function findComponent<C extends SmartComponent<any, any>>(id: string): C { return <C>(allComponents[id]); }
@@ -80,55 +105,66 @@ namespace flux {
   //****************  RECORDING
   export function recordStart() { recording = { initStatus: JSON.parse(JSON.stringify(getState()/*, (k,v) => k=='ids' ? undefined : v*/)), actions: [] }; }
   export function recordEnd(): string { try { return recording ? JSON.stringify(recording, null, 2) : null; } finally { recording = null; } }
-  export function play(recStr: string, interval: number, completed: () => void) {
+  export function play(recStr: string, completed: () => void) {
     if (!recStr) return;
     console.log('>play: ' + recStr);
     var rec: IRecording = JSON.parse(recStr);
-    var doPlay: () => void;
-    doPlay = () => {
-      if (rec.actions.length == 0) { completed(); return; }
-      var act = rec.actions.splice(0, 1);
-      trigger(act[0], () => setTimeout(() => doPlay(), interval));
-    };
     state = rec.initStatus;
     buildDOMTree();
-    setTimeout(() => doPlay(), interval);
+    doPlayActions(rec.actions, completed);
   }
-  //export function resetState() {
-  //  if (!recording) return;
-  //  recording.actions = [];
-  //  refreshRoot(recording.initStatus);
-  //}
+  export function doPlayActions(actions: Array<IAction>, completed: () => void) {
+    var doPlay: () => void;
+    doPlay = () => {
+      if (actions.length == 0) { completed(); return; }
+      var act = actions.splice(0, 1);
+      trigger(act[0], () => setTimeout(() => doPlay(), config.cfg.data.flux.playInterval));
+    };
+    setTimeout(() => doPlay(), config.cfg.data.flux.playInterval);
+  }
 
   //****************  WEB START
   export function initApplication(dom: Element, root: () => JSX.Element) {
-    buildDOMTree = () => {
-      ReactDOM.unmountComponentAtNode(dom);
-      ReactDOM.render(root(), dom);
+
+
+    buildDOMTree = () => { ReactDOM.unmountComponentAtNode(dom); ReactDOM.render(root(), dom); }
+
+    var st = testing_getAppAndRouteState()(); //sance testing modulu naladovat uplne jiny APP state)
+    if (st) {
+      state = st.initStatus;
+      buildDOMTree(); //ReactDOM.render
+      router_listenHashChange()(); //"hashchange" event binding
+      appInitialized = true;
+      doPlayActions(st.actions, utils.Noop);
+      return;
     }
-    config.callStateCreated(() => config.callAuthKnown(getState().auth, () => {
-      buildDOMTree();
-      listenHashChange()();
-    }));
+
+    config.onInitAppState(() => { //staticka inicializace app state (bez ohledu na aktualne naladovanou ROUTE)
+      router_onInitRoute()(() => { //inicializace default route (call initialni "hashchange" event)
+        buildDOMTree(); //ReactDOM.render
+        router_listenHashChange()(); //"hashchange" event binding
+        appInitialized = true;
+      });
+    });
   } var buildDOMTree: () => void;
 
-
+  export var appInitialized = false;
 
   export interface IAppState { }
 
   //************ MODULE
   export class Dispatcher {
     constructor(public id: string) {
-      if (allModules[id]) throw 'Module "' + id + '" already exists.';
+      if (allModules[id]) loger.doThrow('Module "' + id + '" already exists.');
       allModules[id] = this;
     }
     //childs: Array<Dispatcher>;
-    dispatchAction(action: IAction, complete: utils.TCallback) { throw 'notImplemented'; }
+    dispatchAction(action: IAction, complete: utils.TCallback) { loger.doThrow('notImplemented'); }
   }
 
   //**************** PRIVATE
-  interface IRecording { initStatus: IAppState; actions: Array<IAction>; }
-  var recording: IRecording;
+  export interface IRecording { initStatus: IAppState; actions: Array<IAction>; }
+  export var recording: IRecording;
   var state: IAppState = {};
   //var webRender: (parentId: string) => JSX.Element;
   var allModules: { [id: string]: Dispatcher; } = {};

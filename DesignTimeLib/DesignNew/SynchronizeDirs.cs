@@ -174,7 +174,7 @@ namespace DesignNew {
       //var connStr = string.Format("DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1}", accountName, accountKey);
       //CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connStr);
       //blobClient = storageAccount.CreateCloudBlobClient();
-      var props = AzureLib.Factory.blobClient.GetServiceProperties();
+      var props = AzureLib.Lib.blobClient.GetServiceProperties();
       if (props.Cors.CorsRules.Count == 0) {
         props.Cors.CorsRules.Add(new CorsRule() {
           AllowedHeaders = new List<string>() { "*" },
@@ -183,9 +183,9 @@ namespace DesignNew {
           ExposedHeaders = new List<string>() { "*" },
           MaxAgeInSeconds = 18000 // 300 minutes
         });
-        AzureLib.Factory.blobClient.SetServiceProperties(props);
+        AzureLib.Lib.blobClient.SetServiceProperties(props);
       }
-      container = AzureLib.Factory.createBlob(containerName); // blobClient.GetContainerReference(containerName);
+      container = AzureLib.Lib.createBlob(containerName); // blobClient.GetContainerReference(containerName);
       if (container.CreateIfNotExists()) container.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
     }
     public void deleteContainer() {

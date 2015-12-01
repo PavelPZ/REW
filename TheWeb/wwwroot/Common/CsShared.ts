@@ -133,6 +133,7 @@ export interface Root {
   defaultPars: ViewPars;
   oAuth: oAuthConfig;
   sendGrid: SendGrid;
+  testing: Testing;
 }
 export interface Azure {
   connectionString: string;
@@ -171,6 +172,9 @@ export interface oAuthItem {
 export interface SendGrid {
   userName: string;
   password: string;
+}
+export interface Testing {
+  testUserEMail: string;
 }
 }
 

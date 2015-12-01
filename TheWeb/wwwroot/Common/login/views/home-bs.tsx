@@ -5,7 +5,7 @@
   layout.registerRenderer(layout.placeContent, moduleId + '.home', pid =>
     <div key={flux.cnt() }>
     <h2>Select login</h2>
-    <a href={auth.getOAuthLink(servConfig.oAuthProviders.facebook) }>Facebook</a> <br/>
+    <a href='#' onClick={ev => auth.gotoOAuth(servConfig.oAuthProviders.facebook, ev) }>Facebook</a> <br/>
       </div>
   );
 }

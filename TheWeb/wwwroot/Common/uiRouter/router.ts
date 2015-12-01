@@ -24,10 +24,9 @@ namespace router {
   //navazan routeru na HASH change notifikaci
   export function listenHashChange() {
     window.addEventListener('hashchange', () => {
-      console.log(">hashchange fired: " + window.location.href);
-      onHashChange();
+      loger.log("hashchange fired: " + window.location.href);
+      onInitRoute(utils.Noop);
     });
-    onHashChange();
   }
 
   //NAVIGATE
@@ -81,32 +80,55 @@ namespace router {
   //- potreba AUTH => nevola se COMPL callback
   //- jedna se o router action => compl(true)
   //- nejedna se o router action => compl(false)
-  export function tryDispatchRoute(action: IActionType, compl: (routerProcessed:boolean) => void): void {
+  export function tryDispatchRoute(action: IActionType, compl: (routeProcessed: boolean) => void): void {
     var stName = action.moduleId + '/' + action.actionId;
     var rt = routeDir[stName]; if (!rt) { compl(false); return; }
     //route action => kontrola na authentifikaci a dispatch akce
-    onDispatchRouteAction(rt, action, needsAuth => {
-      if (needsAuth) return;
+    var inUrl: IUrlType = { route: rt, par: (action as IActionType).par };
+    onDispatchRouteAction(inUrl, outUrl => {
       //dokonci dispatch
-      if (!rt.dispatch) throw 'Missing toute dispatch ' + rt.globalId();
-      rt.dispatch((action as IActionType).par, () => compl(true));
+      if (!outUrl.route.dispatch) loger.doThrow('Missing route dispatch ' + outUrl.route.globalId());
+      outUrl.route.dispatch(outUrl.par, () => compl(true));
     })
   }
 
+  function onDispatchRouteAction(inUrl: IUrlType, compl: (outUrl: IUrlType) => void) {
+    //test na authentifikaci => vymen ev. aktualni route za login route
+    if (inUrl.route.needsAuth) {
+      var loginRoute = loginRedirectWhenNeeded()();
+      if (loginRoute != null) inUrl = loginRoute;
+      //if (loginRedirectWhenNeeded()()) { compl(true); return; } //proveden redirect na prihlaseni (s navratem na HASH)
+    }
+    //route names, do kterych se vstupuje
+    var r = inUrl.route; var newr: Array<string> = []; do { newr.push(r.globalId()); r = r.parent; } while (r != null);
+    actRoutes = newr;
+    //zjisti seznam novych a starych routes
+    var add: Array<string> = []; var del: Array<string> = [];
+    for (var n of newr) if (actRoutes.indexOf(n) < 0) add.push(n);
+    for (var o of actRoutes) if (newr.indexOf(o) < 0) del.push(o);
+    //leaved routes
+    if (del.length > 0) { del.sort(); del.reverse(); del.forEach(d => routeDir[d].onLeave()); }
+    //entered routes
+    if (newr.length > 0) {
+      newr.sort();
+      var callbacks = newr.map(n => new Promise((resolve, reject) => routeDir[n].onEnter(() => resolve())));
+      Promise.all(callbacks).then(() => compl(inUrl));
+    } else compl(inUrl);
+  }
+
   //*** onHashChange
-  function onHashChange(hashStr?: string) {
-    //hack pro navrat z oAuth loginu
-    //if (auth.returnedFromOAuth(window.location.hash)) return;
+  export function onInitRoute(compl: utils.TCallback) {
     //trigger
-    var url = toUrl(hashStr);
+    var url = toUrl();
     if (!url) url = homeUrl;
-    if (!url) return; //throw 'Missing uiRouter.States.setDefault call';
+    if (!url) return; 
     var act = url.route.createAction(url.par);
-    trigger()(act);
+    tryDispatchRoute(act, () => compl());
+    //trigger()(act, compl);
   }
 
   //*** PARSES
-  export function toUrl<T extends IPar>(par: IQuery | string): IUrl<T> {
+  export function toUrl<T extends IPar>(par?: IQuery | string): IUrl<T> {
     var q: IQuery;
     if (!par) par = '';
     if (typeof par === 'string') q = toQuery(par); else q = par as IQuery;
@@ -143,27 +165,6 @@ namespace router {
   export var homeUrl: IUrlType;
 
   //**** route CHANGING
-  function onDispatchRouteAction(route: RouteType, action: IActionType, compl: (needsAuth:boolean) => void) {
-    //test na authentifikaci
-    if (route.needsAuth) {
-      if (loginRedirectWhenNeeded()()) { compl(true); return; } //proveden redirect na prihlaseni (s navratem na HASH)
-    }
-    //route names, do kterych se vstupuje
-    var r = route; var newr: Array<string> = []; do { newr.push(r.globalId()); r = r.parent; } while (r != null);
-    actRoutes = newr;
-    //zjisti seznam novych a starych routes
-    var add: Array<string> = []; var del: Array<string> = [];
-    for (var n of newr) if (actRoutes.indexOf(n)<0) add.push(n);
-    for (var o of actRoutes) if (newr.indexOf(o)<0) del.push(o);
-    //leaved routes
-    if (del.length > 0) { del.sort(); del.reverse(); del.forEach(d => routeDir[d].onLeave()); }
-    //entered routes
-    if (newr.length > 0) {
-      newr.sort(); 
-      var callbacks = newr.map(n => new Promise((resolve, reject) => routeDir[n].onEnter(() => resolve())));
-      Promise.all(callbacks).then(() => compl(false));
-    } else compl(false);
-  }
   var actRoutes: Array<string> = []; //names aktualnich routes, slouzi k notifikaci systemu o zmene route
 
 
@@ -178,7 +179,7 @@ namespace router {
     getHash(par?: T): string { return this.matcher.format(par || {}); }
     navigate(par?: T) {
       var hash = this.getHash(par);
-      loger.log('>set hash: ' + hash);
+      loger.log('set hash: ' + hash);
       window.location.hash = hash
     }
     globalId(): string { return this.moduleId + '/' + this.actionId; }
@@ -202,21 +203,21 @@ namespace router {
       this.matcher = new uiRouter.UrlMatcher(this.pattern);
       //self registrace
       var nm = this.globalId();
-      if (routeDir[nm]) throw `Route ${nm} already exists`;
+      if (routeDir[nm]) loger.doThrow(`Route ${nm} already exists`);
       routeDir[nm] = this; routes.push(this);
     }
     parent: RouteType;
     private matcher: uiRouter.UrlMatcher;
     dispatch: (par: T, compl: utils.TCallback) => void; //sance osetrit dispatch mez Dispatch modulu
 
-    onLeave() { console.log('>routeLeave: ' + this.globalId()); if (this.onLeaveProc) this.onLeaveProc(); } //notifikace o opusteni route
-    onEnter(compl: utils.TCallback) { console.log('>routeEnter: ' + this.globalId()); if (this.onEnterProc) this.onEnterProc(compl); else compl(); } //notifikace o vstupu do route
+    onLeave() { loger.log('routeLeave: ' + this.globalId()); if (this.onLeaveProc) this.onLeaveProc(); } //notifikace o opusteni route
+    onEnter(compl: utils.TCallback) { loger.log('routeEnter: ' + this.globalId()); if (this.onEnterProc) this.onEnterProc(compl); else compl(); } //notifikace o vstupu do route
 
     //IConstruct
     needsAuth: boolean;
     finishRoutePar: (h: T) => void;
     onLeaveProc: utils.TCallback;
-    onEnterProc: utils.TAsync<void>;
+    onEnterProc: utils.TAsync;
   }
   export class RouteType extends Route<IPar> { }
 
@@ -224,7 +225,7 @@ namespace router {
     needsAuth?: boolean;
     finishRoutePar?: (h: T) => void;
     onLeaveProc?: utils.TCallback;
-    onEnterProc?: utils.TAsync<void>;
+    onEnterProc?: utils.TAsync;
   }
 
   new uiRouter.$UrlMatcherFactory();

@@ -416,6 +416,8 @@
     <TypeScriptCompile Include="wwwroot\Common\persist\persist.ts" />
     <TypeScriptCompile Include="wwwroot\Common\persist\test.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\proxies.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\testing\test.tsx" />
+    <TypeScriptCompile Include="wwwroot\Common\testing\testing.ts" />
     <TypeScriptCompile Include="wwwroot\Common\uiRouter\angularCommon.ts" />
     <TypeScriptCompile Include="wwwroot\Common\uiRouter\router.ts" />
     <TypeScriptCompile Include="wwwroot\Common\uiRouter\routerCommon.ts" />
@@ -455,10 +457,6 @@
     <ProjectReference Include="..\ObjectModel\ObjectModel.csproj">
       <Project>{e88c653d-5518-4b96-9b99-6efbd46a9141}</Project>
       <Name>ObjectModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TheWebServices\Auth\Auth.csproj">
-      <Project>{62027c14-6f93-48f5-9e8a-bec7dc0826e2}</Project>
-      <Name>Auth</Name>
     </ProjectReference>
     <ProjectReference Include="..\TheWebServices\ServiceLib\ServiceLib.csproj">
       <Project>{6577015c-229d-46c5-a8ec-e1dcbee55bf1}</Project>

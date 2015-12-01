@@ -17,7 +17,7 @@ namespace TheWeb {
         //Cache
         if (!Cfg.cfg.defaultPars.swFromFileSystem) Cache.init();
         //Azure
-        AzureLib.Factory.init();
+        AzureLib.Lib.init();
         //Auth
         LoginServices.authController.init();
       });

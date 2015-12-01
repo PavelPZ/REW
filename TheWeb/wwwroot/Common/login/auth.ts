@@ -5,7 +5,7 @@
 namespace config {
   export interface IData { auth?: auth.IConfig; }
   cfg.data.auth = {
-    stateCreated: compl => {
+    initAppState: compl => {
       var auth = flux.getState().auth = { ids: [], email: null, providerId:0 };
       oauth.authFromCookie(auth);
       compl();
@@ -35,11 +35,12 @@ namespace auth {
 
   //zkontroluje authentifikaci. Kdyz neni auth, provede prihlaseni. Po dokonceni prihlaseni se vrati na location.href.
   //volana pri route changed.
-  export function loginRedirectWhenNeeded(): boolean {
-    if (isLogged()) return false;
+  export function loginRedirectWhenNeeded(): router.IUrlType {
+    if (isLogged()) return null;
     oauth.saveLoginSourcePage(location.href); //URL pro navrat z uspesneho OAUTH
-    router.gotoRoute(login.namedRoute.home);
-    return true;
+    //router.gotoRoute(login.namedRoute.home);
+    //setTimeout(() => router.gotoRoute(login.namedRoute.home),1);
+    return { route: login.namedRoute.home, par: null };
   }
   oauth.saveLoginSourcePage(null); //nova browser session => vyhod uschovanou URL s login source page
 
@@ -56,7 +57,7 @@ namespace auth {
   //  return res;
   //}
 
-  export function getOAuthLink(providerId: servConfig.oAuthProviders): string {
+  export function gotoOAuth(providerId: servConfig.oAuthProviders, ev?: React.SyntheticEvent) {
 
     //URL pro navrat z uspesneho OAUTH je prazdna => dej home page
     var retUrl = oauth.useLoginSourcePage();
@@ -68,7 +69,7 @@ namespace auth {
     var res = servCfg.oAuth.loginUrl + '#' + utils.urlStringifyQuery(par);
 
     //var res = auth.getOAuthLink(servCfg.oAuth.loginUrl, { client_id: par.clientId, providerId: providerId });
-    return res;
+    flux.doExternalNavigate(res, ev);
   }
 
 

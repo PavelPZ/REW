@@ -39,7 +39,7 @@ namespace login {
     constructor() { super(moduleId); }
     dispatchAction(action: flux.IAction, compl: utils.TCallback) {
       //if (router.tryDispatch(action, complete)) return; //dispath proveden primo v route.dispatch
-      throw `Missing action dispatch: ${action.actionId}`;
+      loger.doThrow(`Missing action dispatch: ${action.actionId}`);
     }
   }
 

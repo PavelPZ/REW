@@ -12,6 +12,7 @@ namespace servConfig {
     public ViewPars defaultPars;
     public oAuthConfig oAuth;
     public SendGrid sendGrid;
+    public Testing testing;
   }
   public class Azure {
     public string connectionString;
@@ -29,6 +30,10 @@ namespace servConfig {
   public class SendGrid {
     public string userName;
     public string password;
+  }
+
+  public class Testing {
+    public string testUserEMail;
   }
 
   public class Server {

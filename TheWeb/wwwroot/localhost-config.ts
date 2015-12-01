@@ -29,6 +29,9 @@
     swFromFileSystem: true,
     appPart: null,
   },
+  testing: {
+    testUserEMail: 'kubakaca@gmail.com',
+  },
   oAuth: {
     lmLoginEmailSender: { email: '', title: '' },
     loginUrl: '',

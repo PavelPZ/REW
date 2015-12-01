@@ -1,10 +1,7 @@
-﻿using LMComLib;
+﻿using AzureLib;
 using Microsoft.WindowsAzure.Storage.Table;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace LoginServices {
@@ -12,7 +9,7 @@ namespace LoginServices {
   public class authController : ApiController {
 
     public static void init() {
-      table = AzureLib.Factory.createTable(tableName);
+      table = AzureLib.Lib.createTable(tableName);
     }
     public static CloudTable table;
     const string tableName = "auth";
@@ -43,9 +40,9 @@ namespace LoginServices {
       if (reg==null) return new LoginResult { result = ServiceResult.alreadyConfirmed };
       if ((DateTime.Now - reg.created).TotalSeconds > 60 * 60 * 24 * 7) return new LoginResult { result = ServiceResult.confirmExpired };
       var user = new tableUser(reg.email) { psw = reg.psw, firstName = reg.firstName, lastName = reg.lastName };
-      var batch = new TableBatchOperation();
+      var batch = new TableBatch(table);
       batch.InsertOrReplace(user); batch.Delete(reg);
-      table.ExecuteBatch(batch);
+      batch.Execute();
       return new LoginResult { email = user.email, firstName = user.firstName, lastName = user.lastName };
     }
 
@@ -89,6 +86,13 @@ namespace LoginServices {
     public void oAuthNotify(string email, string firstName, string lastName, servConfig.oAuthProviders provider, string providerId) {
       new tableOAuthUser(email, provider, providerId) { firstName = firstName, lastName = lastName }.insert();
     }
+
+    public static void resetUser(string email) {
+      var rowKeys = Lib.rowKeyRange<tableOAuthUser>(table, tableLow.usersPartKey, email).Select(u => u.RowKey);
+      var batch = new TableBatch(table);
+      foreach (var rwk in rowKeys) batch.Delete(new TableEntity(tableLow.usersPartKey, rwk) { ETag = "*" });
+      batch.Execute();
+    }
   }
   public enum ServiceResult { ok, wrongEMail, wrongPassword, confirmExpired, alreadyConfirmed }
 
@@ -122,6 +126,7 @@ namespace LoginServices {
   }
 
   public class tableOAuthUser : tableUserLow {
+    public tableOAuthUser() : base() { }
     public tableOAuthUser(string email, servConfig.oAuthProviders provider, string providerId) : base() {
       RowKey = string.Format("{0} {1} {2}", email.ToLower(), provider, providerId);
     }

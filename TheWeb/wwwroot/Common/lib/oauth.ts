@@ -28,7 +28,7 @@ namespace oauth {
       let authReqCook = utils.fromCookie<IAuthRequestCookie>(authrequestCookieName);
       let authReturnUrl = useLoginSourcePage(); removeLoginSourcePage();
       cookies.remove(authrequestCookieName);
-      if (authReqCook.state != authResponse.state) throw 'authReqCook.state != authResponse.state';
+      if (authReqCook.state != authResponse.state) loger.doThrow('authReqCook.state != authResponse.state');
       let provider = getProvider(authReqCook.providerId);
       getProfileFromProvider(provider, authResponse.access_token, res => {
         if (res.error) { writeError(res.error); return; }
@@ -53,7 +53,7 @@ namespace oauth {
       //public ajaxUrlJsonp: string, //url pro ziskani profile informaci pomoci jsonp
       public scopes: string //povol ziskani emailu apod.
     ) { }
-    parseProfile(obj: any): IOutputPar { throw 'not implemented'; } //vytazeni profile informaci z ajaxUrl
+    parseProfile(obj: any): IOutputPar { return loger.doThrow('not implemented'); } //vytazeni profile informaci z ajaxUrl
 
     authrequest(inputPar: IInputPar) {
       console.log("authrequest start: " + JSON.stringify(inputPar));
@@ -170,7 +170,7 @@ namespace oauth {
       case servConfig.oAuthProviders.google: return new GoogleProvider(providerId);
       case servConfig.oAuthProviders.microsoft: return new MicrosoftProvider(providerId);
       case servConfig.oAuthProviders.facebook: return new FacebookProvider(providerId);
-      default: throw 'oauth.getProvider: wrong providerId';
+      default: loger.doThrow('oauth.getProvider: wrong providerId');
     }
   }
 

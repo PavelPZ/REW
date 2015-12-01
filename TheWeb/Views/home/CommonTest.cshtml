@@ -15,7 +15,7 @@
   <hr />
   <p>
     <a href="#" onclick="flux.recordStart(); return false;">recordStart</a><br />
-    <a href="#" onclick="flux.play(flux.recordEnd(), 300, function () {/*alert('done');*/ }); return false;">recordEnd and play</a><br />
+    <a href="#" onclick="flux.play(flux.recordEnd(), function () {/*alert('done');*/ }); return false;">recordEnd and play</a><br />
     <a href="#" onclick="flux.resetState(); return false;">reset</a><br />
   </p>
   @Html.Raw(Model.startJS)
