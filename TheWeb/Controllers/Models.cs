@@ -55,7 +55,7 @@ namespace TheWeb {
       var rq = ctx.Request;
       var req = HttpContext.Current.Request;
       UrlHelper url = new UrlHelper(req.RequestContext);
-      var loginUrl = url.Action("OAuth", "Home", null, "", req.Url.Scheme);
+      var loginUrl = url.Action("OAuth", "Home", null, req.Url.Scheme, req.Url.Host);
       //var loginUrl = Microsoft.AspNet.Http.Extensions.UriHelper.Encode(rq.Scheme, rq.Host, rq.PathBase, new PathString("/" + HomeController.oAuthMask));
       cfg = "<script type='text/javascript'>var servCfg = " + Cfg.toJS(loginUrl) + ";</script>";
     }

@@ -1,4 +1,6 @@
-﻿namespace oauth {
+﻿const loginNotify = () => proxies.auth.oAuthNotify;
+
+namespace oauth {
 
   const authrequestCookieName = 'authrequestCookieName';
 
@@ -31,8 +33,11 @@
       getProfileFromProvider(provider, authResponse.access_token, res => {
         if (res.error) { writeError(res.error); return; }
         authToCookie(res); //uloz AUTHO do cookie
-        //navrat z oAuth stranky
-        if (authReturnUrl) location.href = authReturnUrl; else writeError(JSON.stringify(res, null, 2));
+        loginNotify()(res.email, res.firstName, res.lastName, res.providerId as number, res.id, () => {
+          //navrat z oAuth stranky
+          if (authReturnUrl) location.href = authReturnUrl; else writeError(JSON.stringify(res, null, 2));
+        });
+
       });
     } catch (msg) {
       writeError(msg);
@@ -109,7 +114,7 @@
         'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile');
     }
     parseProfile(obj: any): IOutputPar { //vytazeni profile informaci z ajaxUrl
-      var res: IOutputPar = { id: obj.id, email: obj.email, firstName: obj.given_name, lastName: obj.family_name, providerId: oAuthProviders.google }; return res;
+      var res: IOutputPar = { id: obj.id, email: obj.email, firstName: obj.given_name, lastName: obj.family_name, providerId: servConfig.oAuthProviders.google }; return res;
     }
   }
 
@@ -119,7 +124,7 @@
       super(providerId, 'https://www.facebook.com/dialog/oauth', 'https://graph.facebook.com/me', 'https://www.facebook.com', 'email');
     }
     parseProfile(obj: any): IOutputPar { //vytazeni profile informaci z ajaxUrl
-      var res: IOutputPar = { id: obj.id, email: obj.email, firstName: obj.first_name, lastName: obj.last_name ? obj.last_name : obj.name, providerId: oAuthProviders.facebook }; return res;
+      var res: IOutputPar = { id: obj.id, email: obj.email, firstName: obj.first_name, lastName: obj.last_name ? obj.last_name : obj.name, providerId: servConfig.oAuthProviders.facebook }; return res;
     }
   }
 
@@ -130,11 +135,11 @@
       super(providerId, 'https://login.live.com/oauth20_authorize.srf', 'https://apis.live.net/v5.0/me', 'https://login.live.com/', 'wl.signin wl.basic wl.emails');
     }
     parseProfile(obj: any): IOutputPar { //vytazeni profile informaci z ajaxUrl
-      var res: IOutputPar = { id: obj.id, email: '' /*TODO _.compact(_.values(obj.emails))[0]*/, firstName: obj.first_name, lastName: obj.last_name, providerId: oAuthProviders.microsoft }; return res;
+      var res: IOutputPar = { id: obj.id, email: '' /*TODO _.compact(_.values(obj.emails))[0]*/, firstName: obj.first_name, lastName: obj.last_name, providerId: servConfig.oAuthProviders.microsoft }; return res;
     }
   }
 
-  function getAuthResponse(hash:string): IAuthResponse {
+  function getAuthResponse(hash: string): IAuthResponse {
     //check and normalize hash
     if (!hash) return null;
     while (hash.indexOf('#') >= 0) hash = hash.substring(hash.indexOf('#') + 1);

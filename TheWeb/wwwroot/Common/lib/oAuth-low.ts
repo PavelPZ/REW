@@ -1,7 +1,5 @@
 ﻿namespace oauth {
 
-  export const enum oAuthProviders { no, google, facebook, microsoft, }
-
   //obsah cookie: vstupni informace pro login
   export interface IInputPar {
     providerId: servConfig.oAuthProviders;
@@ -11,7 +9,7 @@
   //Login uzivatele
   export interface IAuthCookie {
     email: string;
-    providerId: oauth.oAuthProviders;
+    providerId: servConfig.oAuthProviders;
     firstName?: string;
     lastName?: string;
   }

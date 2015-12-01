@@ -15,7 +15,9 @@ namespace AzureLib {
       blobClient = storageAccount.CreateCloudBlobClient();
     }
     public static CloudTable createTable(string containerName) {
-      return tableClient.GetTableReference(containerName);
+      var res = tableClient.GetTableReference(containerName);
+      res.CreateIfNotExists();
+      return res;
     }
     public static CloudBlobContainer createBlob(string containerName) {
       return blobClient.GetContainerReference(containerName);

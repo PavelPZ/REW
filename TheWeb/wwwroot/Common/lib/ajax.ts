@@ -12,7 +12,7 @@
     httpRequest.onreadystatechange = () => {
       if (httpRequest.readyState !== 4) return;
       var result: IAjaxResult = { xhr: httpRequest, responseText: httpRequest.responseText, responseType: httpRequest.responseType };
-      if (httpRequest.status === 200) resolve(result);
+      if (httpRequest.status <= 299) resolve(result);
       else {
         var error: IAjaxError = { status: httpRequest.status, statusText: httpRequest.statusText, result: result };
         reject(error);

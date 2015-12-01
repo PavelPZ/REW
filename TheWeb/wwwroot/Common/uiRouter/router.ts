@@ -1,4 +1,6 @@
-﻿
+﻿const loginRedirectWhenNeeded = () => auth.loginRedirectWhenNeeded;
+const trigger = () => flux.trigger;
+
 declare namespace uiRouter {
   class UrlMatcher {
     constructor(pattern: string);
@@ -100,7 +102,7 @@ namespace router {
     if (!url) url = homeUrl;
     if (!url) return; //throw 'Missing uiRouter.States.setDefault call';
     var act = url.route.createAction(url.par);
-    flux.trigger(act);
+    trigger()(act);
   }
 
   //*** PARSES
@@ -144,7 +146,7 @@ namespace router {
   function onDispatchRouteAction(route: RouteType, action: IActionType, compl: (needsAuth:boolean) => void) {
     //test na authentifikaci
     if (route.needsAuth) {
-      if (auth.loginRedirectWhenNeeded()) { compl(true); return; } //proveden redirect na prihlaseni (s navratem na HASH)
+      if (loginRedirectWhenNeeded()()) { compl(true); return; } //proveden redirect na prihlaseni (s navratem na HASH)
     }
     //route names, do kterych se vstupuje
     var r = route; var newr: Array<string> = []; do { newr.push(r.globalId()); r = r.parent; } while (r != null);

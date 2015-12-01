@@ -43,11 +43,33 @@ namespace auth {
   }
   oauth.saveLoginSourcePage(null); //nova browser session => vyhod uschovanou URL s login source page
 
-  export function getOAuthLink(loginHtmlUrl: string, par: oauth.IInputPar): string { //link na oAuth stranku providera
-    var retUrl = oauth.useLoginSourcePage();
+  //export function getOAuthLink(loginHtmlUrl: string, par: oauth.IInputPar): string { //link na oAuth stranku providera
+  //  var retUrl = oauth.useLoginSourcePage();
+  //  //URL pro navrat z uspesneho OAUTH je prazdna => dej home page
+  //  if (utils.isEmpty(retUrl)) oauth.saveLoginSourcePage(router.fullPath(router.getHomeHash()));
+  //  return loginHtmlUrl + '#' + utils.urlStringifyQuery(par);
+  //}
+
+  //function getOAuthLink(providerId: servConfig.oAuthProviders): string {
+  //  var par = servCfg.oAuth.items[providerId];
+  //  var res = auth.getOAuthLink(servCfg.oAuth.loginUrl, { client_id: par.clientId, providerId: providerId });
+  //  return res;
+  //}
+
+  export function getOAuthLink(providerId: servConfig.oAuthProviders): string {
+
     //URL pro navrat z uspesneho OAUTH je prazdna => dej home page
+    var retUrl = oauth.useLoginSourcePage();
     if (utils.isEmpty(retUrl)) oauth.saveLoginSourcePage(router.fullPath(router.getHomeHash()));
-    return loginHtmlUrl + '#' + utils.urlStringifyQuery(par);
+
+    //oAuth url
+    var providerPar = servCfg.oAuth.items[providerId];
+    var par: oauth.IInputPar = { client_id: providerPar.clientId, providerId: providerId };
+    var res = servCfg.oAuth.loginUrl + '#' + utils.urlStringifyQuery(par);
+
+    //var res = auth.getOAuthLink(servCfg.oAuth.loginUrl, { client_id: par.clientId, providerId: providerId });
+    return res;
   }
+
 
 }

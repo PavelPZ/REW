@@ -1,7 +1,6 @@
-﻿//namespace config {
-//  export interface IData {
-//  }
-//}
+﻿const listenHashChange = () => router.listenHashChange;
+const tryDispatchRoute = () => router.tryDispatchRoute;
+
 namespace flux {  
 
   //**************** getState, trigger
@@ -10,7 +9,7 @@ namespace flux {
     if (!action || !action.moduleId || !action.actionId) throw '!action || !action.type';
     if (recording) recording.actions.push(action);
     loger.log('ACTION ' + JSON.stringify(action), 1);
-    router.tryDispatchRoute(action as router.IActionType, routerProcessed => {
+    tryDispatchRoute()(action as router.IActionType, routerProcessed => {
       if (routerProcessed) {
         if (compl) compl();
         loger.log('action', -1);
@@ -109,7 +108,7 @@ namespace flux {
     }
     config.callStateCreated(() => config.callAuthKnown(getState().auth, () => {
       buildDOMTree();
-      router.listenHashChange();
+      listenHashChange()();
     }));
   } var buildDOMTree: () => void;
 

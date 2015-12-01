@@ -156,15 +156,15 @@ namespace DesignNew {
         CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("servConfig", null, null, servCfgEnums, servCfgTypes));
         //EMailServices
         CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("emailer", null, null, null, emailTypes));
-        //WebAPI
+        File.WriteAllText(FileSources.theWebWwwRoot + @"\Common\CsShared.ts", sb.ToString(), Encoding.ASCII);
+        //WebAPI PROXIES
         var proxies = jsWebApiProxyNew.controllerGenerator.generate(CSharpToTypeScript.GenInlineTypeParse, lmclibEnums.Concat(servCfgEnums).Concat(servCfgTypes).Concat(emailTypes),
           new jsWebApiProxyNew.ControllerDefinition[] {
             new jsWebApiProxyNew.ControllerDefinition(typeof(emailer.emailController)),
             new jsWebApiProxyNew.ControllerDefinition(typeof(LoginServices.authController))}
           //jsWebApiProxyNew.ControllerDefinition.getControllers(@"d:\LMCom\rew\TheWebServices\Email\bin\Debug\Email.dll", "emailer.emailController")
         );
-        sb.AppendLine(proxies);
-        File.WriteAllText(FileSources.theWebWwwRoot + @"\Common\CsShared.ts", sb.ToString(), Encoding.ASCII);
+        File.WriteAllText(FileSources.theWebWwwRoot + @"\Common\proxies.ts", proxies, Encoding.ASCII);
         return null;
       });
     }

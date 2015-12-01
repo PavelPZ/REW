@@ -415,6 +415,7 @@
     <TypeScriptCompile Include="wwwroot\Common\login\views\panel.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\persist\persist.ts" />
     <TypeScriptCompile Include="wwwroot\Common\persist\test.tsx" />
+    <TypeScriptCompile Include="wwwroot\Common\proxies.ts" />
     <TypeScriptCompile Include="wwwroot\Common\uiRouter\angularCommon.ts" />
     <TypeScriptCompile Include="wwwroot\Common\uiRouter\router.ts" />
     <TypeScriptCompile Include="wwwroot\Common\uiRouter\routerCommon.ts" />
