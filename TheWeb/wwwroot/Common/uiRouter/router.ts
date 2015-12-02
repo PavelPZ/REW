@@ -102,11 +102,15 @@ namespace router {
   }
 
   function onDispatchRouteAction(inUrl: IUrlType, compl: (outUrl: IUrlType) => void) {
-    //test na authentifikaci => vymen ev. aktualni route za login route
+    //test na authentifikaci => vymen ev. aktualni URL za login URL
     if (inUrl.route.needsAuth) {
       var loginRoute = loginRedirectWhenNeeded()();
-      if (loginRoute != null) inUrl = loginRoute;
-      //if (loginRedirectWhenNeeded()()) { compl(true); return; } //proveden redirect na prihlaseni (s navratem na HASH)
+      if (loginRoute != null) {
+        var hist = url2History(loginRoute);
+        history.replaceState(hist, null, loginRoute.route.getPath(loginRoute.par));
+        inUrl = loginRoute;
+        loger.log('router.onDispatchRouteAction: auth redirect to ' + JSON.stringify(hist));
+      }
     }
     //route names, do kterych se vstupuje
     var r = inUrl.route; var newr: Array<string> = []; do { newr.push(r.globalId()); r = r.parent; } while (r != null);
@@ -195,6 +199,7 @@ namespace router {
     globalId(): string { return this.moduleId + '/' + this.actionId; }
 
     parseRoute(pre: IQuery): T {
+      if (this.abstract) return null;
       var res = this.matcher.exec<T>(pre.path, pre.query);
       if (res && this.finishRoutePar) this.finishRoutePar(res);
       return res;
@@ -225,6 +230,7 @@ namespace router {
 
     //IConstruct
     needsAuth: boolean;
+    abstract: boolean;
     finishRoutePar: (h: T) => void;
     onLeaveProc: utils.TCallback;
     onEnterProc: utils.TAsync;
@@ -233,6 +239,7 @@ namespace router {
 
   export interface IConstruct<T extends IPar> {
     needsAuth?: boolean;
+    abstract?: boolean;
     finishRoutePar?: (h: T) => void;
     onLeaveProc?: utils.TCallback;
     onEnterProc?: utils.TAsync;

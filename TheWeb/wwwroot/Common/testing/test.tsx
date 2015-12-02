@@ -25,7 +25,7 @@ namespace testing {
     <a href='#' onClick={ev => { stopRecording(); ev.preventDefault(); } }>Stop recording</a> |
     <a href='#' onClick={ev => { startPlay(); ev.preventDefault(); } }>Play</a> |
     <h3>Applications: </h3>
-    <a href='#' onClick={ev => flux.doExternalNavigate('http://localhost:10101/web/login', ev) }>Login</a> |
+    <a href='#' onClick={ev => flux.doExternalNavigate('http://localhost:10101/web/login/login-test-home', ev) }>Login</a> |
     <a href='#' onClick={ev => flux.doExternalNavigate('http://localhost:10101/web/layout', ev) }>Layout</a>
     </div>;
 

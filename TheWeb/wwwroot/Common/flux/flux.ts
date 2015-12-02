@@ -1,6 +1,6 @@
 ﻿const router_listenHashChange = () => router.listenUrlChange;
 const router_tryDispatchRoute = () => router.tryDispatchRoute;
-const testing_getAppAndRouteState = () => testing.continuePlaying;
+const testing_continuePlaying = () => testing.continuePlaying;
 const router_onInitRoute = () => router.onInitRoute;
 
 namespace config {
@@ -129,18 +129,20 @@ namespace flux {
   export function initApplication(dom: Element, root: () => JSX.Element) {
     buildDOMTree = () => { ReactDOM.unmountComponentAtNode(dom); ReactDOM.render(root(), dom); }
 
-    var st = testing_getAppAndRouteState()(); //sance testing modulu naladovat uplne jiny APP state)
+    var st = testing_continuePlaying()(); //sance testing modulu naladovat uplne jiny APP state pro PLAYING)
     if (st) {
       state = st.initStatus;
-      buildDOMTree(); //ReactDOM.render
-      router_listenHashChange()(); //"hashchange" event binding
-      appInitialized = true;
-      doPlayActions(st.actions, utils.Noop);
+      router_onInitRoute()(() => {
+        buildDOMTree(); //ReactDOM.render
+        router_listenHashChange()(); //"hashchange" event binding
+        appInitialized = true;
+        doPlayActions(st.actions, utils.Noop);
+      });
       return;
     }
 
     config.onInitAppState(() => { //staticka inicializace app state (bez ohledu na aktualne naladovanou ROUTE)
-      router_onInitRoute()(() => { //inicializace default route (call initialni "hashchange" event)
+      router_onInitRoute()(() => { //inicializace default route (call initialni "hashchange" event). Pres flux.trigger se vola onDispatchRouteAction, kde je ev. redirekt na LOGIN.
         testing.continueRecording();
         buildDOMTree(); //ReactDOM.render
         router_listenHashChange()(); //"hashchange" event binding

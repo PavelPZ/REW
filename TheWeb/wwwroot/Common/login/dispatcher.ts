@@ -20,7 +20,7 @@ namespace login {
 
   export var namedRoute = router.named.login; //pojmenovane stavy
   router.init(
-    new router.RouteType(moduleId, moduleId, '/login', { needsAuth: false },
+    new router.RouteType(moduleId, moduleId, '/web/login', { needsAuth: false, abstract:true },
       namedRoute.home = new router.Route(moduleId, 'r-home', '/home?{authReturnUrl}'),
       namedRoute.login = new router.RouteType(moduleId, 'r-login', '/login'),
       namedRoute.register = new router.RouteType(moduleId, 'r-register', '/login'),
@@ -31,9 +31,9 @@ namespace login {
     )
   );
 
-  export function setHome<T extends router.IPar>(state: router.Route<T>, par: T) { homeUrl = { route: state, par: par } }
-  export function goHome() { router.navigUrl(homeUrl); }
-  var homeUrl: router.IUrl<any>;
+  //export function setHome<T extends router.IPar>(state: router.Route<T>, par: T) { homeUrl = { route: state, par: par } }
+  //export function goHome() { router.navigUrl(homeUrl); }
+  export function homeUrl(): router.IUrlType { return { route: namedRoute.home, par: {}}; }
 
   export class Dispatcher extends flux.Dispatcher {
     constructor() { super(moduleId); }

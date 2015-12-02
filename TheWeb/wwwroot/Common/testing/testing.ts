@@ -3,6 +3,8 @@
   //*** PLAYING
   export function startPlay() {
     var rec = getNextRecording();
+    oauth.authToCookie(rec.initStatus.auth);
+    rec.initStatus.auth
     if (!rec) return;
     cookieSet({ isPlaying: true, isRecording: false });
     //playList musi zacinat external navigate akci

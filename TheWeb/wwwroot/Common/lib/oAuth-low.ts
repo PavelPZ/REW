@@ -75,7 +75,7 @@ namespace utils {
   }
 
   export function toCookie(cookName: string, obj: any, expireSec: number = -1): void {
-    if (isEmpty(obj)) cookies.remove(cookName);
+    if (isEmpty(obj)) { cookies.remove(cookName); return; }
     try { cookies.set(cookName, JSON.stringify(obj), expireSec); } catch (msg) { cookies.remove(cookName) }
   }
 

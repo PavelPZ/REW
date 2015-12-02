@@ -38,9 +38,7 @@ namespace auth {
   export function loginRedirectWhenNeeded(): router.IUrlType {
     if (isLogged()) return null;
     oauth.saveLoginSourcePage(location.href); //URL pro navrat z uspesneho OAUTH
-    //router.gotoRoute(login.namedRoute.home);
-    //setTimeout(() => router.gotoRoute(login.namedRoute.home),1);
-    return { route: login.namedRoute.home, par: null };
+    return login.homeUrl();
   }
   oauth.saveLoginSourcePage(null); //nova browser session => vyhod uschovanou URL s login source page
 
@@ -70,6 +68,7 @@ namespace auth {
 
     //var res = auth.getOAuthLink(servCfg.oAuth.loginUrl, { client_id: par.clientId, providerId: providerId });
     flux.doExternalNavigate(res, ev);
+    //location.href = res;
   }
 
 
