@@ -2,6 +2,7 @@
   //******************* AJAX 
   //https://developer.mozilla.org/en-US/docs/AJAX/Getting_Started, https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest, https://msdn.microsoft.com/cs-cz/library/ms535874(v=vs.85).aspx
   export function ajax(url: string, method: ajaxMethod = ajaxMethod.GET, option?: ajaxOptions): Promise<IAjaxResult> {
+    if (option.data && typeof option.data != 'string') option.data = JSON.stringify(option.data);
     return new Promise<IAjaxResult>((resolve, reject) => ajaxLow(url, method, option, resolve, reject));
   }
 
@@ -29,7 +30,7 @@
 
   proxies.invoke = (url, method, queryPars, body, completed) => {
     url = servCfg.azure.rootUrl + utils.urlStringify(url, queryPars);
-    ajaxLow(url, method, { data: body, contentType: ajaxContentType.json }, res => completed(res.responseText), err => throwError(url, err));
+    ajaxLow(url, method, { data: body, contentType: ajaxContentType.txt }, res => completed(res.responseText), err => throwError(url, err));
   };
    
   export interface IAjaxResult {

@@ -1,11 +1,17 @@
 ﻿namespace testing {
 
   //*** PLAYING
+  export function save() {
+    var st = storageGet(); if (!st || !st.recordings) return null;
+    var data = JSON.stringify(st, null, 2);
+    proxies.testing.SaveTestPlaylist(data, () => alert('PlayList in wwwroot/TestPlaylists/noname.json'));
+  }
+
+  //*** PLAYING
   export function startPlay() {
     var rec = getNextRecording();
-    oauth.authToCookie(rec.initStatus.auth);
-    rec.initStatus.auth
     if (!rec) return;
+    oauth.authToCookie(rec.initStatus.auth); //dle initStatus.auth nastav AUTH cookie
     cookieSet({ isPlaying: true, isRecording: false });
     //playList musi zacinat external navigate akci
     flux.doPlayActions(rec.actions, utils.Noop);

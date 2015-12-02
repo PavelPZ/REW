@@ -129,6 +129,7 @@ namespace flux {
   export function initApplication(dom: Element, root: () => JSX.Element) {
     buildDOMTree = () => { ReactDOM.unmountComponentAtNode(dom); ReactDOM.render(root(), dom); }
 
+    //** acion PLAYING inicializace
     var st = testing_continuePlaying()(); //sance testing modulu naladovat uplne jiny APP state pro PLAYING)
     if (st) {
       state = st.initStatus;
@@ -141,6 +142,7 @@ namespace flux {
       return;
     }
 
+    //** normalni inicializace
     config.onInitAppState(() => { //staticka inicializace app state (bez ohledu na aktualne naladovanou ROUTE)
       router_onInitRoute()(() => { //inicializace default route (call initialni "hashchange" event). Pres flux.trigger se vola onDispatchRouteAction, kde je ev. redirekt na LOGIN.
         testing.continueRecording();

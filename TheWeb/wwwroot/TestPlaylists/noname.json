@@ -1,0 +1,85 @@
+{
+  "recordings": [
+    {
+      "initStatus": {
+        "layout": {
+          "scene": {
+            "ids": [ ],
+            "caseId": "scene-default"
+          },
+          "scenePlaces": { }
+        },
+        "auth": {
+          "ids": [ ],
+          "email": null,
+          "providerId": 0,
+          "lastName": null,
+          "firstName": null
+        }
+      },
+      "actions": [
+        {
+          "moduleId": "flux",
+          "actionId": "externalnavigate",
+          "url": "http://localhost:10101/web/layout"
+        }
+      ]
+    },
+    {
+      "initStatus": {
+        "layoutTest": { },
+        "layout": {
+          "scene": {
+            "ids": [ ],
+            "caseId": "scene-default"
+          },
+          "scenePlaces": {
+            "place-content": {
+              "ids": [ ],
+              "placeId": "place-content",
+              "rendererId": "cont-cont"
+            },
+            "place-other": {
+              "ids": [ ],
+              "placeId": "place-other",
+              "rendererId": "other-cont"
+            }
+          }
+        },
+        "auth": {
+          "ids": [ ],
+          "email": null,
+          "providerId": 0,
+          "lastName": null,
+          "firstName": null
+        }
+      },
+      "actions": [
+        {
+          "moduleId": "flux",
+          "actionId": "externalnavigate",
+          "url": "http://localhost:10101/web/testing"
+        }
+      ]
+    },
+    {
+      "initStatus": {
+        "layout": {
+          "scene": {
+            "ids": [ ],
+            "caseId": "scene-default"
+          },
+          "scenePlaces": { }
+        },
+        "auth": {
+          "ids": [ ],
+          "email": null,
+          "providerId": 0,
+          "lastName": null,
+          "firstName": null
+        }
+      },
+      "actions": [ ]
+    }
+  ]
+}

@@ -210,6 +210,7 @@
     <Content Include="wwwroot\scripts\react-bootstrap.js" />
     <Content Include="wwwroot\scripts\react-dom.js" />
     <Content Include="wwwroot\scripts\react-with-addons.js" />
+    <Content Include="wwwroot\TestPlaylists\noname.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AppConfig.cs" />

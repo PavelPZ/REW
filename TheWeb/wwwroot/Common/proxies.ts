@@ -3,13 +3,16 @@ namespace proxies {
 
   export namespace email {
     export function Send (msgstr: string, completed: () => void): void {
-      invoke('/api/email/send', 'POST', null, JSON.stringify(msgstr), completed);
+      invoke('/api/email/send', 'POST', null, msgstr, completed);
     }
   }
 
   export namespace testing {
-    export function ResetAll (email: string, completed: () => void): void {
-      invoke('/api/testing/resetall', 'GET', { email: email }, null, completed);
+    export function ResetServerData (email: string, completed: () => void): void {
+      invoke('/api/testing/resetserverdata', 'GET', { email: email }, null, completed);
+    }
+    export function SaveTestPlaylist (json: any, completed: () => void): void {
+      invoke('/api/testing/savetestplaylist', 'POST', null, json, completed);
     }
   }
 

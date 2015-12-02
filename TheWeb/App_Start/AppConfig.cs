@@ -1,7 +1,5 @@
 ﻿using LMNetLib;
 using System;
-using System.Configuration;
-using System.Diagnostics;
 using System.Web;
 
 namespace TheWeb {
@@ -23,4 +21,5 @@ namespace TheWeb {
       });
     }
   }
+
 }

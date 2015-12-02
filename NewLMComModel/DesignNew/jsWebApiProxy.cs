@@ -77,7 +77,8 @@ namespace jsWebApiProxyNew {
         queryPars = method.UrlParameters.Count() == 0
           ? (string)null
           : "{ " + method.UrlParameters.Select(p => p.Name.ToLower()).Select(p => p + ": " + p).DefaultIfEmpty().Aggregate((r, i) => r + ", " + i) + " }",
-        body = method.BodyParameter != null ? "JSON.stringify(" + method.BodyParameter.Name.ToLower() + ")" : "null"
+        //body = method.BodyParameter != null ? string.Format("typeof {0} == 'string' ? {0} : JSON.stringify({0})", method.BodyParameter.Name.ToLower()) : "null"
+        body = method.BodyParameter != null ? string.Format("{0}", method.BodyParameter.Name.ToLower()) : "null"
       };
       return string.Format("'{0}', '{1}', {2}, {3}, completed", invokePar.url, invokePar.method, invokePar.queryPars ?? "null", invokePar.body);
     }
