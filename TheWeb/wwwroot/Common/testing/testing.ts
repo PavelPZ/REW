@@ -1,21 +1,24 @@
 ﻿namespace testing {
 
   //*** PLAYING
-  export function startPlay(playList: IPlayList) {
-    if (!playList) return;
-    cookieSet({ isPlaying: true, isRecording: false });
-    storageSet(playList);
+  export function startPlay() {
     var rec = getNextRecording();
+    if (!rec) return;
+    cookieSet({ isPlaying: true, isRecording: false });
     //playList musi zacinat external navigate akci
     flux.doPlayActions(rec.actions, utils.Noop);
   }
 
-  export function getAppAndRouteState(): flux.IRecording {
-    var cook = cookieGet(); if (!cook) return null;
-    if (cook.isPlaying) return getNextRecording();
-    if (cook.isRecording) flux.recordStart();
-    return null;
+  export function continuePlaying(): flux.IRecording {
+    var cook = cookieGet(); if (!cook || !cook.isPlaying) return null;
+    return getNextRecording();
   }
+
+  export function continueRecording() {
+    var cook = cookieGet(); if (!cook || !cook.isRecording) return;
+    flux.recordStart();
+  }
+
 
   //*** RECORDING
   export function startRecording() {
@@ -24,23 +27,30 @@
     flux.recordStart();
   }
   export function onExternalLink(): IPlayList {
-    var cook = cookieGet(); if (!cook || cook.isRecording) return;
-    var st = storageGet(); if (!st || !st.recordings) loger.doThrow('!st || !st.recordings');
-    st.recordings.push(flux.recording);
-    storageSet(st);
-    return st;
+    var cook = cookieGet(); if (!cook || !cook.isRecording) return;
+    return addLastRecording();
   }
-  export function stopRecording(): IPlayList  {
-    cookieSet(null); storageSet(null);
-    return onExternalLink();
+  export function stopRecording(): void  {
+    addLastRecording()
+    cookieSet(null); 
   }
 
 
   //*** IMPL
+  function addLastRecording(): IPlayList {
+    var st = storageGet(); if (!st || !st.recordings) loger.doThrow('!st || !st.recordings');
+    loger.log('testing.addLastRecording: ' + JSON.stringify(flux.recording));
+    st.recordings.push(flux.recording); delete flux.recording;
+    storageSet(st);
+    return st;
+  }
+
   function getNextRecording(): flux.IRecording {
     var st = storageGet(); if (!st || !st.recordings) return null;
     var res = st.recordings[0]; if (!res) { cookieSet(null); storageSet(null); return null; }
+    loger.log('testing.getNextRecording: ' + JSON.stringify(res));
     st.recordings.splice(0, 1);
+    storageSet(st);
     return res;
   }
 

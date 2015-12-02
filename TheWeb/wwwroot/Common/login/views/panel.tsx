@@ -4,7 +4,7 @@
       if (auth.isLogged())
         return <b>LOGIN PANEL</b>;
       else
-        return <a href={router.getHash(login.namedRoute.home)} >LOGIN</a>;
+        return <a href='#' onClick={ev => router.navigRoute(login.namedRoute.home, {}, ev) } >LOGIN</a>;
     }
   }
   interface IPanelProps extends flux.ISmartProps<auth.IUser> { }

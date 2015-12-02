@@ -22,40 +22,43 @@ namespace router {
 
   export var routerActionId = 'router-action'; //actionId pro router action 
   //navazan routeru na HASH change notifikaci
-  export function listenHashChange() {
-    window.addEventListener('hashchange', () => {
-      loger.log("hashchange fired: " + window.location.href);
-      onInitRoute(utils.Noop);
+  export function listenUrlChange() {
+    window.addEventListener('popstate', e => {
+      var hist: IHistoryType = e.state;
+      var url = history2Url(hist);
+      loger.log("listenUrlChange fired: " + window.location.href);
+      var act = url.route.createAction(url.par);
+      trigger()(act, utils.Noop);
+      //tryDispatchRoute(act, utils.Noop);
     });
   }
 
   //NAVIGATE
-  export function getHashUrl<T extends IPar>(src: IUrl<T>): string { return '#' + src.route.getHash(src.par); }
-  export function getHash<T extends IPar>(route: RouteType, par?: T): string { return getHashUrl({ route: route, par: par }); }
-  export function gotoUrl<T extends IPar>(src: IUrl<T>, ev?: React.SyntheticEvent) { if (ev) ev.preventDefault(); src.route.navigate(src.par); }
-  export function gotoRoute<T extends IPar>(route: RouteType, par?: T, ev?: React.SyntheticEvent) { gotoUrl({ route: route, par: par }, ev); }
+  export function navigUrl<T extends IPar>(src: IUrl<T>, ev?: React.SyntheticEvent) { src.route.navig(src.par, ev); }
+  export function navigRoute<T extends IPar>(route: RouteType, par?: T, ev?: React.SyntheticEvent) { navigUrl({ route: route, par: par }, ev); }
+  export function navigHome(ev?: React.SyntheticEvent) { navigUrl(homeUrl, ev); }
 
   //export function _getHashUrl(src: IUrl<any>): string { return '#' + src.route.getHash(src.par); }
   //export function _getHash(route: RouteType, par?: IPar): string { return getHashUrl({ route: route, par: par }); }
   //export function _gotoUrl(src: IUrl<any>, ev?: React.SyntheticEvent) { if (ev) ev.preventDefault(); src.route.navigate(src.par); }
   //export function _goto(route: RouteType, par?: IPar, ev?: React.SyntheticEvent) { gotoUrl({ route: route, par: par }, ev); }
 
-  export function goHome(ev?: React.SyntheticEvent) { gotoUrl(homeUrl, ev); }
-  export function getHomeHash(): string { return getHashUrl(homeUrl); }
+  export function getRouteUrl<T extends IPar>(src: IUrl<T>): string { return src.route.getPath(src.par); }
+  export function getUrl<T extends IPar>(route: RouteType, par?: T): string { return getRouteUrl({ route: route, par: par }); }
+  export function getHomeHash(): string { return getRouteUrl(homeUrl); }
 
   export function fullPath(hash: string): string { return location.href.split('#')[0] + hash; }
 
   //URL stringify
-  const urlStrDelim = '~|~';
-  export function urlStringify(url: IUrlType): string {
-    return url.route.globalId() + urlStrDelim + (url.par ? JSON.stringify(url.par) : '');
-  }
-  export function urlParse(urlStr: string): IUrlType {
-    var parts = urlStr.split(urlStrDelim);
-    var par: IPar = utils.isEmpty(parts[1]) ? null : JSON.parse(parts[1]);
-    return { route: routeDir[parts[0]], par: par };
-  }
-
+  //const urlStrDelim = '~|~';
+  //export function urlStringify(url: IUrlType): string {
+  //  return url.route.globalId() + urlStrDelim + (url.par ? JSON.stringify(url.par) : '');
+  //}
+  //export function urlParse(urlStr: string): IUrlType {
+  //  var parts = urlStr.split(urlStrDelim);
+  //  var par: IPar = utils.isEmpty(parts[1]) ? null : JSON.parse(parts[1]);
+  //  return { route: routeDir[parts[0]], par: par };
+  //}
 
   //pojmenovane globalne dostupne a typed router stavy
   export var named: INamedRoutes = <any>{};
@@ -69,6 +72,12 @@ namespace router {
   //predchudce vsech router akci
   export interface IAction<T extends IPar> extends flux.IAction { par: T; }
   export type IActionType = IAction<IPar>;
+
+  //***** HISTORY
+  export interface IHistory<T extends IPar> { moduleId: string; actionId: string; par: T; }
+  export type IHistoryType = IHistory<IPar>;
+  function url2History(url: IUrlType): IHistoryType { return { moduleId: url.route.moduleId, actionId: url.route.actionId, par: url.par } }
+  function history2Url(hist: IHistoryType): IUrlType { return { route: routeDir[hist.moduleId + '/' + hist.actionId], par: hist.par } }
 
   //*** inicilizace 
   export function init(...roots: Array<RouteType>): void { //definice stavu
@@ -101,17 +110,17 @@ namespace router {
     }
     //route names, do kterych se vstupuje
     var r = inUrl.route; var newr: Array<string> = []; do { newr.push(r.globalId()); r = r.parent; } while (r != null);
-    actRoutes = newr;
     //zjisti seznam novych a starych routes
     var add: Array<string> = []; var del: Array<string> = [];
     for (var n of newr) if (actRoutes.indexOf(n) < 0) add.push(n);
     for (var o of actRoutes) if (newr.indexOf(o) < 0) del.push(o);
+    actRoutes = newr;
     //leaved routes
     if (del.length > 0) { del.sort(); del.reverse(); del.forEach(d => routeDir[d].onLeave()); }
     //entered routes
-    if (newr.length > 0) {
-      newr.sort();
-      var callbacks = newr.map(n => new Promise((resolve, reject) => routeDir[n].onEnter(() => resolve())));
+    if (add.length > 0) {
+      add.sort();
+      var callbacks = add.map(n => new Promise((resolve, reject) => routeDir[n].onEnter(() => resolve())));
       Promise.all(callbacks).then(() => compl(inUrl));
     } else compl(inUrl);
   }
@@ -121,10 +130,8 @@ namespace router {
     //trigger
     var url = toUrl();
     if (!url) url = homeUrl;
-    if (!url) return; 
-    var act = url.route.createAction(url.par);
-    tryDispatchRoute(act, () => compl());
-    //trigger()(act, compl);
+    if (!url) return;
+    url.route.navig(url.par, null, true, compl);
   }
 
   //*** PARSES
@@ -135,20 +142,20 @@ namespace router {
     //angular uiRouter match
     var res: IUrl<T> = null;
     routes.find((st: Route<T>) => {
-      var par = st.parseHash(q) as T; if (!par) return false;
+      var par = st.parseRoute(q) as T; if (!par) return false;
       res = { route: st, par: par };
       return true;
     });
     return res;
   }
-  export function toQuery(hashStr?: string): IQuery {
+  export function toQuery(path?: string): IQuery {
     //normalizacu par: zacina '/', neobsahuje '#'
-    if (!hashStr) hashStr = window.location.hash;
-    if (hashStr && hashStr.length > 0 && hashStr[0] == '#') hashStr = hashStr.substr(1);
-    if (!hashStr || hashStr.length < 1) hashStr = '/';
-    if (hashStr[0] != '/') hashStr = hashStr = '/' + hashStr;
+    if (!path) path = location.pathname;
+    //if (path && path.length > 0 && path[0] == '#') path = path.substr(1);
+    if (!path || path.length < 1) path = '/';
+    if (path[0] != '/') path = path = '/' + path;
     //oddeleni a parse query stringu
-    var parts = hashStr.split('?'); var path = parts[0];
+    var parts = path.split('?'); var path = parts[0];
     var query: utils.TDirectory<string> = {};
     if (parts[1]) parts[1].split('&').forEach(p => {
       var nv = p.split('=');
@@ -176,15 +183,18 @@ namespace router {
       if (childs) childs.forEach(ch => ch.afterConstructor(this));
     }
 
-    getHash(par?: T): string { return this.matcher.format(par || {}); }
-    navigate(par?: T) {
-      var hash = this.getHash(par);
-      loger.log('set hash: ' + hash);
-      window.location.hash = hash
+    getPath(par?: T): string { return servCfg.azure.rootUrl + this.matcher.format(par || {}); }
+    navig(par?: T, ev?: React.SyntheticEvent, replace?: boolean, compl?: utils.TCallback) {
+      if (ev) ev.preventDefault();
+      var hist = url2History({ route: this, par: par });
+      if (replace) history.replaceState(hist, null, this.getPath(par)); else history.pushState(hist, null, this.getPath(par));
+      var act = this.createAction(par);
+      trigger()(act, compl);
     }
+
     globalId(): string { return this.moduleId + '/' + this.actionId; }
 
-    parseHash(pre: IQuery): T {
+    parseRoute(pre: IQuery): T {
       var res = this.matcher.exec<T>(pre.path, pre.query);
       if (res && this.finishRoutePar) this.finishRoutePar(res);
       return res;

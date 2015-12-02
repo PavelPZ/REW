@@ -14,7 +14,7 @@ namespace TheWeb {
       //);
       routes.MapRoute(
           name: "CommonTest",
-          url: "web/{appPart}",
+          url: "web/{appPart}/{*path}",
           defaults: new { controller = "Home", action = "CommonTest", appPart = "" }
       );
       routes.MapRoute(

@@ -110,38 +110,4 @@ namespace TheWeb {
     static string itemUrl(string url) { var parts = url.Split('~'); return parts.Length == 2 ? parts[1] : null; }
 
   }
-  //public class AppFileController : Controller {
-  //  [CacheFilter]
-  //  public ActionResult File(string path) {
-  //    return View("File");
-  //  }
-  //}
-
-  //public class CacheFilter : ActionFilterAttribute {
-  //  public override void OnResultExecuting(ResultExecutingContext context) {
-  //    var cacheKey = itemUrl(context.HttpContext.Request.Url.AbsolutePath);
-  //    Stream newFilter;
-  //    if (Cfg.cfg.defaultPars.swFromFileSystem) {
-  //      newFilter = new FilterStream(context.HttpContext.Response.Filter, FileSources.pathFromUrl(cacheKey));
-  //      context.HttpContext.Response.Filter = newFilter;
-  //      context.Cancel = true;
-  //    } else {
-  //      byte[] cachedData;
-  //      switch (Cache.makeResponseFromCache(cacheKey, context.HttpContext, out cachedData)) {
-  //        case Cache.makeResponseFromCacheResult.writeCached:
-  //          newFilter = new FilterStream(context.HttpContext.Response.Filter, cachedData);
-  //          context.HttpContext.Response.Filter = newFilter;
-  //          context.Cancel = true;
-  //          break;
-  //      }
-  //    }
-  //  }
-  //  static string itemUrl(string url) { return url.Split('~')[1]; }
-  //}
-
-  //public class AppFileConstraint : IRouteConstraint {
-  //  public bool Match(HttpContextBase httpContext, Route route, string parameterName, RouteValueDictionary values, RouteDirection routeDirection) {
-  //    return httpContext.Request.Url.AbsolutePath.IndexOf("~") >= 0;
-  //  }
-  //}
 }

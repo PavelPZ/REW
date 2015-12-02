@@ -14,9 +14,10 @@
   <div id="app"></div>
   <hr />
   <p>
-    <a href="#" onclick="flux.recordStart(); return false;">recordStart</a><br />
+    <a href='#' onClick="flux.doExternalNavigate('http://localhost:10101/web/testing', event)">Login</a>
+    @*<a href="#" onclick="flux.recordStart(); return false;">recordStart</a><br />
     <a href="#" onclick="flux.play(flux.recordEnd(), function () {/*alert('done');*/ }); return false;">recordEnd and play</a><br />
-    <a href="#" onclick="flux.resetState(); return false;">reset</a><br />
+    <a href="#" onclick="flux.resetState(); return false;">reset</a><br />*@
   </p>
   @Html.Raw(Model.startJS)
 </body>

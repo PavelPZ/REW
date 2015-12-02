@@ -65,7 +65,7 @@ namespace layoutTest {
   }
 
   router.init(
-    namedState.default = new router.Route<ITestModuleRoutePar>(layoutTest.moduleId, 'r-default', '/layoutTest/:defaultScene/:defaultPlaces', {
+    namedState.default = new router.Route<ITestModuleRoutePar>(layoutTest.moduleId, 'r-default', '/web/layout/layoutTest/:defaultScene/:defaultPlaces', {
       needsAuth: false,
       finishRoutePar: st => { st.defaultPlaces = utils.toBoolean(st.defaultPlaces); st.defaultScene = utils.toBoolean(st.defaultScene); } 
     })
@@ -94,10 +94,10 @@ namespace layoutTest {
   layout.registerRenderer(placeOther, 'other-panel', parent => <h2 key={flux.cnt() }>Panel x4</h2>);
 
   var rootElement = () => <div key={flux.cnt() } >
-      <a href={'#' + namedState.default.getHash({ defaultScene: true, defaultPlaces: true }) }>Default Scene, default places</a> |
-      <a href={'#' + namedState.default.getHash({ defaultScene: false, defaultPlaces: true }) }>Other Scene, default places</a> |
-      <a href={'#' + namedState.default.getHash({ defaultScene: true, defaultPlaces: false }) }>Default Scene, other places</a> |
-      <a href={'#' + namedState.default.getHash({ defaultScene: false, defaultPlaces: false }) }>Other Scene, other places</a> |
+      <a href='#' onClick={ev => namedState.default.navig({ defaultScene: true, defaultPlaces: true }, ev) }>Default Scene, default places</a> |
+      <a href='#' onClick={ev => namedState.default.navig({ defaultScene: false, defaultPlaces: true }, ev) }>Other Scene, default places</a> |
+      <a href='#' onClick={ev => namedState.default.navig({ defaultScene: true, defaultPlaces: false }, ev) }>Default Scene, other places</a> |
+      <a href='#' onClick={ev => namedState.default.navig({ defaultScene: false, defaultPlaces: false }, ev) }>Other Scene, other places</a> |
 
       <layout.Scene initState={flux.getState().layout.scene } parentId={''} id='scene' cases={{
 

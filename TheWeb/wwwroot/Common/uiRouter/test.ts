@@ -34,7 +34,7 @@ namespace routerTest {
     router.setHome<ITestHash>(namesState.default, { id: 1, opt1: '', opt2: '' });
 
     //*** rucni MATCH
-    var par = namesState.default.parseHash(router.toQuery('/useR/123/Name/alex?opt1=xxx&opt2=yyy'));
+    var par = namesState.default.parseRoute(router.toQuery('/useR/123/Name/alex?opt1=xxx&opt2=yyy'));
     var d1 = router.toUrl('/login.select');
     var d2 = router.toUrl('/useR/123/Name/alex?opt1=xxx&opt2=yyy');
     var d3 = router.toUrl('/login.login');

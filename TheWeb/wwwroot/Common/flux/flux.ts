@@ -1,6 +1,6 @@
-﻿const router_listenHashChange = () => router.listenHashChange;
+﻿const router_listenHashChange = () => router.listenUrlChange;
 const router_tryDispatchRoute = () => router.tryDispatchRoute;
-const testing_getAppAndRouteState = () => testing.getAppAndRouteState;
+const testing_getAppAndRouteState = () => testing.continuePlaying;
 const router_onInitRoute = () => router.onInitRoute;
 
 namespace config {
@@ -14,9 +14,10 @@ namespace flux {
   export function getState(): IAppState { return state; }
   export function trigger(action: IAction, compl?: utils.TCallback) {
     if (!action || !action.moduleId || !action.actionId) loger.doThrow('!action || !action.type');
+    if (!compl) compl = utils.Noop;
     if (recording) recording.actions.push(action);
     loger.log('ACTION ' + JSON.stringify(action), 1);
-    if (triggerExternalNavigateAction(action)) { loger.log('action', -1); return; }
+    if (triggerExternalNavigateAction(action)) { loger.log('action', -1); compl(); return; }
     router_tryDispatchRoute()(action as router.IActionType, routeProcessed => {
       if (routeProcessed) {
         compl();
@@ -24,7 +25,7 @@ namespace flux {
         var res = allModules[action.moduleId]; if (!res) loger.doThrow('Cannot find module ' + action.moduleId);
         res.dispatchAction(action, compl);
       }
-      loger.log('action', -1); 
+      loger.log('action', -1);
     })
   }
   export type triggerCompleted = (action: IAction) => void;
@@ -33,7 +34,8 @@ namespace flux {
   export function doExternalNavigate(url: string, ev?: React.SyntheticEvent) {
     if (ev) ev.preventDefault();
     var act: IExternalNavigateAction = { moduleId: moduleId, actionId: 'externalnavigate', url: url };
-    trigger(act);
+    trigger(act, utils.Noop);
+    testing.onExternalLink();
   }
 
   var moduleId = 'flux';
@@ -125,8 +127,6 @@ namespace flux {
 
   //****************  WEB START
   export function initApplication(dom: Element, root: () => JSX.Element) {
-
-
     buildDOMTree = () => { ReactDOM.unmountComponentAtNode(dom); ReactDOM.render(root(), dom); }
 
     var st = testing_getAppAndRouteState()(); //sance testing modulu naladovat uplne jiny APP state)
@@ -141,6 +141,7 @@ namespace flux {
 
     config.onInitAppState(() => { //staticka inicializace app state (bez ohledu na aktualne naladovanou ROUTE)
       router_onInitRoute()(() => { //inicializace default route (call initialni "hashchange" event)
+        testing.continueRecording();
         buildDOMTree(); //ReactDOM.render
         router_listenHashChange()(); //"hashchange" event binding
         appInitialized = true;
