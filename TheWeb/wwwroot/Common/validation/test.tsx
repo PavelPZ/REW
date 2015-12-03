@@ -20,7 +20,7 @@ namespace validationTest {
   //** ROUTERS and its dispatch
   var namedState = router.named.validationTest; //pojmenovane stavy
   router.init(
-    namedState.index = new router.RouteType(moduleId, 'default', config.appPrefix() + '/validation/test-home')
+    namedState.index = new router.RouteType(moduleId, 'default', '/validation/test-home')
   );
 
   //*********************** DISPATCH MODULE definition

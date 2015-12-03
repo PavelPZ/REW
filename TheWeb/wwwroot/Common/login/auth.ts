@@ -26,7 +26,7 @@ namespace auth {
 
   var moduleId = 'oauth';
   router.init(
-    router.named.oauth.index = new router.Route<auth.IOAuthPar>(moduleId, 'default', config.appPrefix(servConfig.Apps.oauth))
+    router.named.oauth.index = new router.Route<auth.IOAuthPar>(moduleId, 'default', '') //config.appPrefix(servConfig.Apps.oauth))
   );
   export interface IOAuthPar extends router.IPar{
     providerId: servConfig.oAuthProviders;
@@ -91,7 +91,7 @@ namespace auth {
     var par: IOAuthPar = { providerId: providerId, client_id:'' };
 
     //var res = config.loginUrl() + '#' + utils.urlStringifyQuery(par);
-    flux.doExternalNavigate(router.named.oauth.index, ev, par);
+    flux.doExternalNavigate(router.named.oauth.index, ev, par, servConfig.Apps.oauth);
     //location.href = res;
   }
 

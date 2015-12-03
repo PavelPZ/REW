@@ -122,9 +122,10 @@ export const enum Brands {
 }
 
 export const enum Apps {
-  web4 = 0,
-  web = 1,
-  oauth = 2,
+  no = 0,
+  web4 = 1,
+  web = 2,
+  oauth = 3,
 }
 
 export interface Root {

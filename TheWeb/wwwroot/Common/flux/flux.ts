@@ -16,7 +16,7 @@ namespace flux {
     if (!compl) compl = utils.Noop;
     if (recording) recording.actions.push(action);
     loger.log('ACTION ' + JSON.stringify(action), 1);
-    if (triggerExternalNavigateAction(action)) { loger.log('action', -1); compl(); return; }
+    if (triggerExternalNavigateAction(action as IExternalNavigateAction)) { loger.log('action', -1); compl(); return; }
     router_tryDispatchRoute()(action as router.IHistoryType, inHistoryPopState, routeProcessed => {
       if (routeProcessed) {
         compl();
@@ -32,26 +32,31 @@ namespace flux {
   export function actionPath(act: IAction) { return act.moduleId + '/' + act.actionId; }
   export function cnt(): string { return (_cnt++).toString(); } var _cnt = 0;
   const appPrefixPlace = '\\~\\';
-  export function doExternalNavigate<T extends router.IPar>(route: router.Route<T>, ev?: React.SyntheticEvent, par?: T) {
+  export function doExternalNavigate<T extends router.IPar>(route: router.Route<T>, ev: React.SyntheticEvent, par: T, app: servConfig.Apps) {
     if (ev) ev.preventDefault();
-    var act: IExternalNavigateAction = { moduleId: moduleId, actionId: 'externalnavigate', hist: router.url2History({ route: route, par: par }) };
+    var act: IExternalNavigateAction = { moduleId: moduleId, actionId: 'externalnavigate', hist: router.url2History({ route: route, par: par }), app: app || servCfg.server.app };
+    debugger;
     trigger(act);
     testingTest.onExternalLink();
   }
 
   var moduleId = 'flux';
-  interface IExternalNavigateAction extends flux.IAction { hist: router.IHistoryType; } //navigace na externi ULR
-  function triggerExternalNavigateAction(action: IAction): boolean {
+  interface IExternalNavigateAction extends flux.IAction { hist: router.IHistoryType; app: servConfig.Apps; } //navigace na externi ULR
+
+  function triggerExternalNavigateAction(action: IExternalNavigateAction): boolean {
     if (action.moduleId != moduleId || action.actionId != 'externalnavigate') return false;
-    var hist = (action as IExternalNavigateAction).hist;
+    var extNavig = action as IExternalNavigateAction;
+    if (!extNavig) loger.doThrow('!extNavig');
+    var hist = extNavig.hist;
     var url = router.history2Url(hist);
+    debugger;
     if (url.route == router.named.oauth.index) { //Specialni osetrneni oAuth URL: dosad aktualni provider client_id, QUERY je v hash stringu
       var par = JSON.parse(JSON.stringify(url.par)) as auth.IOAuthPar; url.par = null;
       par.client_id = servCfg.oAuth.items[par.providerId].clientId;
-      var href = router.getRouteUrl(url) + '#' + utils.urlStringifyQuery(par);
+      var href = router.getRouteUrl(url, extNavig.app) + '#' + utils.urlStringifyQuery(par);
       location.href = href;
     } else
-      location.href = router.getRouteUrl(url);
+      location.href = router.getRouteUrl(url, extNavig.app);
     loger.log('flux.triggerExternalNavigateAction: ' + JSON.stringify(hist));
     return true;
   }

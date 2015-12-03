@@ -13,7 +13,7 @@ namespace testingTest {
   //** ROUTERS and its dispatch
   var namedState = router.named.testingTest; //pojmenovane stavy
   router.init(
-    namedState.index = new router.RouteType(moduleId, 'default', config.appPrefix() + '/testing')
+    namedState.index = new router.RouteType(moduleId, 'default', '/testing')
   );
 
   export function doRunApp() {
@@ -54,10 +54,10 @@ namespace testingTest {
     <a href='#' onClick={ev => { startPlay(); ev.preventDefault(); } }>Play or ...</a> |
     <a href='#' onClick={ev => { save(); ev.preventDefault(); } }>...save</a>
     <h3>Applications: </h3>
-    <a href='#' onClick={ev => flux.doExternalNavigate(router.named.loginTest.index, ev) }>Login</a> |
-    <a href='#' onClick={ev => flux.doExternalNavigate<layoutTest.ITestModuleRoutePar>(router.named.layoutTest.index, ev, { defaultPlaces: true, defaultScene:true }) }>Layout</a> |
-    <a href='#' onClick={ev => flux.doExternalNavigate(router.named.validationTest.index, ev) }>Validation</a> |
-    <a href='#' onClick={ev => flux.doExternalNavigate(router.named.fluxTest.index, ev) }>Flux</a>
+    <a href='#' onClick={ev => flux.doExternalNavigate(router.named.loginTest.index, ev, null, servConfig.Apps.web) }>Login</a> |
+    <a href='#' onClick={ev => flux.doExternalNavigate<layoutTest.ITestModuleRoutePar>(router.named.layoutTest.index, ev, { defaultPlaces: true, defaultScene: true }, servConfig.Apps.web) }>Layout</a> |
+    <a href='#' onClick={ev => flux.doExternalNavigate(router.named.validationTest.index, ev, null, servConfig.Apps.web) }>Validation</a> |
+    <a href='#' onClick={ev => flux.doExternalNavigate(router.named.fluxTest.index, ev, null, servConfig.Apps.web) }>Flux</a>
     <h3>System</h3>
     <a href="/api/system/resetcache">Reset Cache</a><br />
     <a href="/api/system/deletelogfiles">Delete logs</a><br />

@@ -12,7 +12,7 @@ namespace loginTest {
   //** ROUTERS and its dispatch
   var namedState = router.named.loginTest; //pojmenovane stavy
   router.init(
-    namedState.index = new router.RouteType(moduleId, 'default', config.appPrefix() + '/login/login-test-home', { needsAuth: true })
+    namedState.index = new router.RouteType(moduleId, 'default', '/login/login-test-home', { needsAuth: true })
   );
 
   export function doRunApp() {

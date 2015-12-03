@@ -48,7 +48,7 @@ namespace fluxTest {
   //** ROUTERS and its dispatch
   var namedState = router.named.fluxTest; //pojmenovane stavy
   router.init(
-    namedState.index = new router.RouteType(moduleId, 'default', config.appPrefix() + '/flux/flux-test-home')
+    namedState.index = new router.RouteType(moduleId, 'default', '/flux/flux-test-home')
   );
 
   //*********************** DISPATCH MODULE definition

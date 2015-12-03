@@ -49,7 +49,7 @@ namespace servConfig {
 
   public enum Brands { lm, skrivanek, grafia, edusoft }
   public enum SkinIds { bs, mdl }
-  public enum Apps { web4, web, oauth }
+  public enum Apps { no, web4, web, oauth }
 
   public class ViewPars {
     public Apps app;
@@ -112,7 +112,7 @@ public static class Cfg {
   public static string toJS(servConfig.Apps app, string loginUrl) {
     var copy = JsonConvert.DeserializeObject<servConfig.Root>(JsonConvert.SerializeObject(cfg));
     //copy.oAuth.loginUrl = loginUrl;
-    copy.server.appPrefixes = LowUtils.EnumGetValues<servConfig.Apps>().Select(ap => "/" + appPrefixes[ap]).ToArray();
+    copy.server.appPrefixes = LowUtils.EnumGetValues<servConfig.Apps>().Select(ap => ap==servConfig.Apps.no ? "" : "/" + appPrefixes[ap]).ToArray();
     copy.server.app = app;
     copy.azure.connectionString = null;
     copy.sendGrid = null;
