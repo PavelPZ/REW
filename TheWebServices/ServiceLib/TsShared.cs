@@ -52,8 +52,9 @@ namespace servConfig {
   public enum Brands { lm, skrivanek, grafia, edusoft }
   public enum SkinIds { bs, mdl }
   public enum MvcViewType { no, web4, web, oauth }
-  public enum RoutePrefix { no, web, web4, oAuth, some_other }
-  public enum StartProc { no, empty, fluxTest, layoutTest, loginTest, validationTest, testingTest, oauth }
+  //RoutePrefix a StartProc by se mely vylucovat
+  public enum RoutePrefix { no, web, web4, some_other }
+  public enum StartProc { no, empty, fluxTest, layoutTest, loginTest, validationTest, testingTest, oauthStartProc }
 
   public class MvcViewPars {
     public MvcViewType type;

@@ -1,6 +1,7 @@
 {
   "includes": [
     "/common/closure/cookies.js",
+    "/common/csshared.js",
     "/common/proxies.js",
     "/common/lib/oauth-low.js",
     "/common/lib/ajax.js",

@@ -7,6 +7,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   @Html.Raw(Model.css)
+  @Html.Raw(Model.cfg)
+  @Html.Raw(Model.js)
 </head>
 <body>
   <div id="app"></div>
@@ -17,8 +19,6 @@
     <a href="#" onclick="flux.play(flux.recordEnd(), function () {/*alert('done');*/ }); return false;">recordEnd and play</a><br />
     <a href="#" onclick="flux.resetState(); return false;">reset</a><br />*@
   </p>
-  @Html.Raw(Model.cfg)
-  @Html.Raw(Model.js)
   <script type="text/javascript">startProc();</script>
 </body>
 </html>

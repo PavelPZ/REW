@@ -19,7 +19,7 @@ namespace TheWeb {
       return string.Format("{0}/{1}/{2}/{3}/{4}", type, skin, brand, lang, debug).ToLower();
     }
 
-    public MvcViewPars(HttpContextBase ctx, string typeStr, string routePrefixStr, string startProcStr) : this(ctx, LowUtils.EnumParse<servConfig.MvcViewType>(typeStr), LowUtils.EnumParse<servConfig.StartProc>(startProcStr), LowUtils.EnumParse<servConfig.RoutePrefix>(routePrefixStr)) {
+    public MvcViewPars(HttpContextBase ctx, string typeStr, string startProcStr, string routePrefixStr) : this(ctx, LowUtils.EnumParse<servConfig.MvcViewType>(typeStr), LowUtils.EnumParse<servConfig.StartProc>(startProcStr), LowUtils.EnumParse<servConfig.RoutePrefix>(routePrefixStr)) {
     }
 
     public MvcViewPars(HttpContextBase ctx, servConfig.MvcViewType type, servConfig.StartProc startProc, servConfig.RoutePrefix routePrefix) {
@@ -61,13 +61,14 @@ namespace TheWeb {
 
     public ModelCfg(HttpContextBase ctx, MvcViewPars pars) : base(ctx, pars) {
 
-      var cfgObj = JsonConvert.DeserializeObject<servConfig.Root>(JsonConvert.SerializeObject(cfg));
+      var cfgObj = JsonConvert.DeserializeObject<servConfig.Root>(JsonConvert.SerializeObject(Cfg.cfg));
       //cfgObj.server.app = pars.app;
       cfgObj.routePrefix = pars.routePrefix; cfgObj.startProc = pars.startProc;
       //cisteni informaci
       cfgObj.azure.connectionString = null;
       cfgObj.sendGrid = null;
       cfgObj.mvcViewPars = null;
+      cfgObj.azure.swDeployAccount = null;
       //vysledek
       cfg = "<script type='text/javascript'>var servCfg = " + JsonConvert.SerializeObject(cfgObj) + ";</script>";
     }

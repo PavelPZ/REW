@@ -134,7 +134,7 @@ namespace router {
     //normalizacu par: zacina '/', neobsahuje '#'
     if (!path) path = location.pathname;
     if (!path || path.length < 1) path = '/';
-    if (path[0] != '/') path = path = '/' + path;
+    if (path[0] != '/') path = '/' + path;
     var appPrefix = config.routePrefix();
     if (path.length >= appPrefix.length) {
       if (!path.toLowerCase().startsWith(appPrefix)) loger.doThrow(`router.toQuery: path=${path}m appPrefix=${appPrefix}`);
@@ -171,7 +171,7 @@ namespace router {
     }
 
     getPath(par: T, routePrefix: servConfig.RoutePrefix, startProc: servConfig.StartProc): string {
-      return servCfg.server.rootUrl + config.routePrefix(routePrefix, startProc) + this.matcher.format(par || {});
+      return (servCfg.server.rootUrl + config.routePrefix(routePrefix, startProc)).toLowerCase() + this.matcher.format(par || {});
     }
 
     navig(par?: T, ev?: React.SyntheticEvent, replace?: boolean, compl?: utils.TCallback) {

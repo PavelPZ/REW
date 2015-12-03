@@ -105,8 +105,7 @@ export enum RoutePrefix {
   no = 0,
   web = 1,
   web4 = 2,
-  oAuth = 3,
-  some_other = 4,
+  some_other = 3,
 }
 
 export enum StartProc {
@@ -117,7 +116,7 @@ export enum StartProc {
   loginTest = 4,
   validationTest = 5,
   testingTest = 6,
-  oauth = 7,
+  oauthStartProc = 7,
 }
 
 export const enum oAuthProviders {

@@ -1,5 +1,6 @@
 ﻿{
   "includes": [
+    "/common/csshared.js",
     "/common/proxies.js",
     "/common/lib/js.dpl.json",
     "/common/flux/flux.js",

@@ -17,10 +17,13 @@ namespace TheWeb {
       return View("Web", new ModelCfg(HttpContext, rememberCacheKey(new MvcViewPars(HttpContext, servConfig.MvcViewType.web.ToString(), startProc, routePrefix))));
     }
     public ActionResult OAuth() {
-      return View("OAuth", new ModelCfg(HttpContext, rememberCacheKey(new MvcViewPars(HttpContext, servConfig.MvcViewType.oauth, servConfig.StartProc.oauth, servConfig.RoutePrefix.oAuth ))));
+      return View("OAuth", new ModelCfg(HttpContext, rememberCacheKey(new MvcViewPars(HttpContext, servConfig.MvcViewType.oauth, servConfig.StartProc.oauthStartProc, servConfig.RoutePrefix.no ))));
     }
     public ActionResult Web4() {
       return View("Web4", new ModelWeb4(HttpContext, rememberCacheKey(new MvcViewPars(HttpContext, servConfig.MvcViewType.web4, servConfig.StartProc.empty, servConfig.RoutePrefix.web4))));
+    }
+    public ActionResult Error() {
+      return View("Error");
     }
     MvcViewPars rememberCacheKey(MvcViewPars par) { HttpContext.Items["cache-key"] = par.getCacheKey(); return par; }
     public static string getRememberedCacheKey(HttpContextBase ctx) { return (string)ctx.Items["cache-key"]; }

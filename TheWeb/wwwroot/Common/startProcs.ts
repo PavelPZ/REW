@@ -5,7 +5,7 @@ function startProc() {
     case servConfig.StartProc.loginTest: loginTest.doRunApp(); break;
     case servConfig.StartProc.validationTest: validationTest.doRunApp(); break;
     case servConfig.StartProc.testingTest: testingTest.doRunApp(); break;
-    case servConfig.StartProc.oauth: oauth.loginPageEnter(); break;
+    case servConfig.StartProc.oauthStartProc: oauth.loginPageEnter(); break;
     case servConfig.StartProc.empty: utils.Noop(); break;
     default: loger.doThrow('startProc: ' + servCfg.startProc.toString()); break;
   }

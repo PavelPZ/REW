@@ -24,7 +24,7 @@ namespace flux {
         var res = allModules[action.moduleId]; if (!res) loger.doThrow('Cannot find module ' + action.moduleId);
         res.dispatchAction(action, compl);
       }
-      loger.log('action', -1);
+      loger.log('action', -1); 
     })
   }
   export function getState(): IAppState { return state; }
@@ -35,7 +35,6 @@ namespace flux {
   export function doExternalNavigate<T extends router.IPar>(route: router.Route<T>, ev: React.SyntheticEvent, par: T, prefix: servConfig.RoutePrefix, startProc: servConfig.StartProc) {
     if (ev) ev.preventDefault();
     var act: IExternalNavigateAction = { moduleId: moduleId, actionId: 'externalnavigate', hist: router.url2History({ route: route, par: par }), prefix: prefix || servCfg.routePrefix, startProc: startProc || servCfg.startProc };
-    debugger;
     trigger(act);
     testingTest.onExternalLink();
   }

@@ -30,10 +30,10 @@ namespace config {
     var res = '';
     if (routePref != servConfig.RoutePrefix.no) res += '/' + servConfig.RoutePrefix[routePref].replace('_', '/');
     if (startProc != servConfig.StartProc.no) res += '/' + servConfig.StartProc[startProc];
-    return res;
+    return res.toLowerCase();
   }
   function appPrefixAll(routePref: servConfig.RoutePrefix, startProc: servConfig.StartProc): string { return servCfg.server.rootUrl + routePrefix(routePref, startProc); }
-  export function loginUrl(): string { return appPrefixAll(servConfig.RoutePrefix.oAuth, servConfig.StartProc.oauth); }
+  export function loginUrl(): string { return appPrefixAll(servConfig.RoutePrefix.no, servConfig.StartProc.oauthStartProc); }
   //asynchronni init: volana po prihlaseni
   //export function onInit_authKnown(compl: utils.TCallback) {
   //  var creates: Array<utils.TAsync> = [];

@@ -1,7 +1,7 @@
 ﻿namespace testingTest {
 
   export function gotoTesting(ev: React.SyntheticEvent) {
-    flux.doExternalNavigate(router.named.testingTest.index, null, ev, servConfig.RoutePrefix.web, servConfig.StartProc.testingTest);
+    flux.doExternalNavigate(router.named.testingTest.index, null, ev, servConfig.RoutePrefix.no, servConfig.StartProc.testingTest);
   }
 
   //*** PLAYING

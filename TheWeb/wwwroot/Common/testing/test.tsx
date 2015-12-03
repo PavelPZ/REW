@@ -55,10 +55,10 @@ namespace testingTest {
     <a href='#' onClick={ev => { startPlay(); ev.preventDefault(); } }>Play or ...</a> |
     <a href='#' onClick={ev => { save(); ev.preventDefault(); } }>...save</a>
     <h3>Applications: </h3>
-    <a href='#' onClick={ev => flux.doExternalNavigate(router.named.loginTest.index, ev, null, servConfig.RoutePrefix.web, servConfig.StartProc.loginTest) }>Login</a> |
-    <a href='#' onClick={ev => flux.doExternalNavigate<layoutTest.ITestModuleRoutePar>(router.named.layoutTest.index, ev, { defaultPlaces: true, defaultScene: true }, servConfig.RoutePrefix.web, servConfig.StartProc.layoutTest) }>Layout</a> |
-    <a href='#' onClick={ev => flux.doExternalNavigate(router.named.validationTest.index, ev, null, servConfig.RoutePrefix.web, servConfig.StartProc.validationTest) }>Validation</a> |
-    <a href='#' onClick={ev => flux.doExternalNavigate(router.named.fluxTest.index, ev, null, servConfig.RoutePrefix.web, servConfig.StartProc.fluxTest) }>Flux</a>
+    <a href='#' onClick={ev => flux.doExternalNavigate(router.named.loginTest.index, ev, null, servConfig.RoutePrefix.no, servConfig.StartProc.loginTest) }>Login</a> |
+    <a href='#' onClick={ev => flux.doExternalNavigate<layoutTest.ITestModuleRoutePar>(router.named.layoutTest.index, ev, { defaultPlaces: true, defaultScene: true }, servConfig.RoutePrefix.some_other, servConfig.StartProc.layoutTest) }>Layout</a> |
+    <a href='#' onClick={ev => flux.doExternalNavigate(router.named.validationTest.index, ev, null, servConfig.RoutePrefix.no, servConfig.StartProc.validationTest) }>Validation</a> |
+    <a href='#' onClick={ev => flux.doExternalNavigate(router.named.fluxTest.index, ev, null, servConfig.RoutePrefix.no, servConfig.StartProc.fluxTest) }>Flux</a>
     <h3>System</h3>
     <a href="/api/system/resetcache">Reset Cache</a><br />
     <a href="/api/system/deletelogfiles">Delete logs</a><br />

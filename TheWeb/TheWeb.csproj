@@ -234,6 +234,7 @@
     <Content Include="Views\home\OAuth.cshtml" />
     <Content Include="Views\home\Web4.cshtml" />
     <None Include="Properties\PublishProfiles\LMWebCommon - Web Deploy.pubxml" />
+    <Content Include="Views\home\Error.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
