@@ -16,7 +16,7 @@ namespace TheWeb {
   public class MvcViewPars : servConfig.MvcViewPars {
 
     public string getCacheKey() {
-      return string.Format("{0}/{1}/{2}/{3}/{4}", type, skin, brand, lang, debug).ToLower();
+      return string.Format("{0}/{1}/{2}/{3}/{4}/{5}/{6}", type, skin, brand, lang, debug, routePrefix, startProc).ToLower();
     }
 
     public MvcViewPars(HttpContextBase ctx, string typeStr, string startProcStr, string routePrefixStr) : this(ctx, LowUtils.EnumParse<servConfig.MvcViewType>(typeStr), LowUtils.EnumParse<servConfig.StartProc>(startProcStr), LowUtils.EnumParse<servConfig.RoutePrefix>(routePrefixStr)) {

@@ -43,7 +43,7 @@ namespace DeployGUI {
       buildTasks.TYPESCRIPT_compile();
       buildTasks.SW_web_and_web4(); }
     [TestMethod]
-    public void Refresh_swfileZIP() { buildTasks.Refresh_swfileZIP(); }
+    public void SW_azure_copy() { buildTasks.SW_azure_copy(); }
   }
 
   [TestClass]

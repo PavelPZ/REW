@@ -134,7 +134,7 @@ namespace DesignNew {
     }
 
     //*********** Refresh_swfileZIP
-    public static void Refresh_swfileZIP() {
+    public static void SW_azure_copy() {
       ftp.Ftp.upload(Cfg.cfg.azure.swDeployAccount, Cfg.cfg.server.basicPath + @"\wwwroot\swfiles.zip", "/site/wwwroot/wwwroot/swfiles.zip");
       using (var wc = new WebClient()) wc.DownloadData(Cfg.cfg.azure.azureRootUrl + "/api/system/resetcache");
     }

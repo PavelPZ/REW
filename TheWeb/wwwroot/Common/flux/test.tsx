@@ -184,7 +184,7 @@ namespace fluxTest {
     router.setHome(namedState.index, {});
     namedState.index.dispatch = (par, comp) => { comp(); };
 
-    testRouterLow();
+    //testRouterLow();
 
     new mod1();
 
