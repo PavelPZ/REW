@@ -212,6 +212,7 @@
     <Content Include="wwwroot\scripts\react-with-addons.js" />
     <Content Include="wwwroot\TestPlaylists\fullTest.json" />
     <Content Include="wwwroot\deploy\web\js-tests.dpl.json" />
+    <Content Include="wwwroot\TestPlaylists\noname.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AppConfig.cs" />

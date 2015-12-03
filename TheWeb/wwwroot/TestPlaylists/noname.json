@@ -1,0 +1,145 @@
+{
+  "recordings": [
+    {
+      "initStatus": {
+        "layout": {
+          "scene": {
+            "ids": [],
+            "caseId": "scene-default"
+          },
+          "scenePlaces": {}
+        },
+        "auth": {
+          "ids": [],
+          "email": null,
+          "providerId": 0,
+          "lastName": null,
+          "firstName": null
+        }
+      },
+      "actions": [
+        {
+          "moduleId": "flux",
+          "actionId": "externalnavigate",
+          "hist": {
+            "moduleId": "layoutTest",
+            "actionId": "r-default",
+            "par": {
+              "defaultPlaces": true,
+              "defaultScene": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "initStatus": {
+        "layoutTest": {},
+        "layout": {
+          "scene": {
+            "ids": [],
+            "caseId": "scene-default"
+          },
+          "scenePlaces": {
+            "place-content": {
+              "ids": [],
+              "placeId": "place-content",
+              "rendererId": "cont-cont"
+            },
+            "place-other": {
+              "ids": [],
+              "placeId": "place-other",
+              "rendererId": "other-cont"
+            }
+          }
+        },
+        "auth": {
+          "ids": [],
+          "email": null,
+          "providerId": 0,
+          "lastName": null,
+          "firstName": null
+        }
+      },
+      "actions": [
+        {
+          "moduleId": "layoutTest",
+          "actionId": "r-default",
+          "par": {
+            "defaultScene": false,
+            "defaultPlaces": true
+          }
+        },
+        {
+          "moduleId": "layoutTest",
+          "actionId": "r-default",
+          "par": {
+            "defaultScene": true,
+            "defaultPlaces": false
+          }
+        },
+        {
+          "moduleId": "layoutTest",
+          "actionId": "r-default",
+          "par": {
+            "defaultScene": false,
+            "defaultPlaces": false
+          }
+        },
+        {
+          "moduleId": "layoutTest",
+          "actionId": "r-default",
+          "par": {
+            "defaultScene": true,
+            "defaultPlaces": false
+          }
+        },
+        {
+          "moduleId": "layoutTest",
+          "actionId": "r-default",
+          "par": {
+            "defaultScene": false,
+            "defaultPlaces": true
+          }
+        },
+        {
+          "moduleId": "layoutTest",
+          "actionId": "r-default",
+          "par": {
+            "defaultScene": true,
+            "defaultPlaces": true
+          },
+          "replace": true
+        },
+        {
+          "moduleId": "flux",
+          "actionId": "externalnavigate",
+          "hist": {
+            "moduleId": "testing",
+            "actionId": "default",
+            "par": {}
+          }
+        }
+      ]
+    },
+    {
+      "initStatus": {
+        "layout": {
+          "scene": {
+            "ids": [],
+            "caseId": "scene-default"
+          },
+          "scenePlaces": {}
+        },
+        "auth": {
+          "ids": [],
+          "email": null,
+          "providerId": 0,
+          "lastName": null,
+          "firstName": null
+        }
+      },
+      "actions": []
+    }
+  ]
+}

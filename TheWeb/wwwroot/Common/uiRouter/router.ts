@@ -25,43 +25,40 @@ namespace router {
   export function listenUrlChange() {
     window.addEventListener('popstate', e => {
       var hist: IHistoryType = e.state;
-      var url = history2Url(hist);
-      loger.log("listenUrlChange fired: " + window.location.href);
-      //var act = url.route.createAction(url.par);
-      trigger()(hist, utils.Noop);
-      //tryDispatchRoute(act, utils.Noop);
+      loger.log("history popstate: " + JSON.stringify(hist));
+      trigger()(hist, null, true);
     });
   }
 
   //NAVIGATE
   export function navigUrl<T extends IPar>(src: IUrl<T>, ev?: React.SyntheticEvent) { src.route.navig(src.par, ev); }
-  export function navigRoute<T extends IPar>(route: RouteType, ev?: React.SyntheticEvent, par?: T) { navigUrl({ route: route, par: par }, ev); }
+  export function navigRoute<T extends IPar>(route: RouteType, ev?: React.SyntheticEvent, par?: T, replace?: boolean) { navigUrl({ route: route, par: par, replace: replace }, ev); }
   export function navigHome(ev?: React.SyntheticEvent) { navigUrl(homeUrl, ev); }
 
   //vyjimecne pouzivane, obecne se musi pouzivat NAVIG nebo IHistory
   export function getRouteUrl<T extends IPar>(src: IUrl<T>): string { return src.route.getPath(src.par); }
-  export function getUrl<T extends IPar>(route: RouteType, par?: T): string { return getRouteUrl({ route: route, par: par }); }
+  export function getUrl<T extends IPar>(route: RouteType, par?: T, replace?: boolean): string { return getRouteUrl({ route: route, par: par, replace: replace }); }
   export function getHomeUrl(): string { return getRouteUrl(homeUrl); }
 
   //pojmenovane globalne dostupne a typed router stavy
   export var named: INamedRoutes = <any>{};
   export interface INamedRoutes { }; //rozsirovatelny interface s name router states
 
-  //objektova reprezentace HASH casti URL
-  export interface IUrl<T extends IPar> { route: Route<T>; par: T; }
+  //objektova reprezentace URL
+  export interface IUrl<T extends IPar> { route: Route<T>; par?: T; replace?: boolean; }
   export type IUrlType = IUrl<IPar>;
   //predchudce vsech router state parametru
   export interface IPar { }
   //predchudce vsech router akci
-  export interface IAction<T extends IPar> extends flux.IAction { par: T; }
+  export interface IAction<T extends IPar> extends flux.IAction { par: T; replace: boolean; }
   export type IActionType = IAction<IPar>;
 
   //***** HISTORY
   export type IHistory<T> = IAction<T>;
   //export interface IHistory<T extends IPar> { moduleId: string; actionId: string; par: T; }
   export type IHistoryType = IActionType;
-  export function url2History(url: IUrlType): IHistoryType { return { moduleId: url.route.moduleId, actionId: url.route.actionId, par: url.par } }
-  export function history2Url(hist: IHistoryType): IUrlType { var route = routeDir[hist.moduleId + '/' + hist.actionId]; return route ? { route: route , par: hist.par } : null; }
+  export function url2History(url: IUrlType): IHistoryType { return { moduleId: url.route.moduleId, actionId: url.route.actionId, par: url.par, replace: url.replace } }
+  export function history2Url(hist: IHistoryType): IUrlType { var route = routeDir[hist.moduleId + '/' + hist.actionId]; return route ? { route: route, par: hist.par, replace: hist.replace } : null; }
 
   //*** inicilizace 
   export function init(...roots: Array<RouteType>): void { //definice stavu
@@ -73,13 +70,18 @@ namespace router {
   //- potreba AUTH => nevola se COMPL callback
   //- jedna se o router action => compl(true)
   //- nejedna se o router action => compl(false)
-  export function tryDispatchRoute(action: IActionType, compl: (routeProcessed: boolean) => void): void {
+  export function tryDispatchRoute(action: IActionType, inHistoryPopState:boolean, compl: (routeProcessed: boolean) => void): void {
     var inUrl = history2Url(action); if (!inUrl) { compl(false); return; }
     //var stName = action.moduleId + '/' + action.actionId;
     //var rt = routeDir[stName]; if (!rt) { compl(false); return; }
     ////route action => kontrola na authentifikaci a dispatch akce
     //var inUrl: IUrlType = { route: rt, par: (action as IActionType).par };
     onDispatchRouteAction(inUrl, outUrl => {
+      if (!inHistoryPopState) {
+        var path = outUrl.route.getPath(outUrl.par); var hist = url2History(outUrl)
+        if (outUrl.replace) history.replaceState(hist, null, path); else history.pushState(hist, null, path);
+        loger.log(`history pushState: replace=${hist.replace ? "true" : "false"}, hist=${JSON.stringify(hist)}`);
+      }
       //dokonci dispatch
       if (!outUrl.route.dispatch) loger.doThrow('Missing route dispatch ' + outUrl.route.globalId());
       outUrl.route.dispatch(outUrl.par, () => compl(true));
@@ -91,10 +93,10 @@ namespace router {
     if (inUrl.route.needsAuth) {
       var loginRoute = loginRedirectWhenNeeded()();
       if (loginRoute != null) {
-        var hist = url2History(loginRoute);
-        history.replaceState(hist, null, loginRoute.route.getPath(loginRoute.par));
-        inUrl = loginRoute;
-        loger.log('router.onDispatchRouteAction: auth redirect to ' + JSON.stringify(hist));
+        //var hist = url2History(loginRoute);
+        //history.replaceState(hist, null, loginRoute.route.getPath(loginRoute.par));
+        inUrl = { route: loginRoute.route, par: loginRoute.par, replace: true };
+        loger.log('router.onDispatchRouteAction: auth redirect to loginRoute');
       }
     }
     //route names, do kterych se vstupuje
@@ -176,8 +178,8 @@ namespace router {
 
     navig(par?: T, ev?: React.SyntheticEvent, replace?: boolean, compl?: utils.TCallback) {
       if (ev) ev.preventDefault();
-      var hist = url2History({ route: this, par: par });
-      if (replace) history.replaceState(hist, null, this.getPath(par)); else history.pushState(hist, null, this.getPath(par));
+      var hist = url2History({ route: this, par: par, replace: replace }); 
+      //if (replace) history.replaceState(hist, null, this.getPath(par)); else history.pushState(hist, null, this.getPath(par));
       //var act = this.createAction(par);
       trigger()(hist, compl);
     }

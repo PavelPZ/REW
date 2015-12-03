@@ -35,7 +35,7 @@ namespace login {
 
   //export function setHome<T extends router.IPar>(state: router.Route<T>, par: T) { homeUrl = { route: state, par: par } }
   //export function goHome() { router.navigUrl(homeUrl); }
-  export function homeUrl(): router.IUrlType { return { route: namedRoute.home, par: {}}; }
+  export function homeUrl(): router.IUrlType { return { route: namedRoute.home }; }
 
   export class Dispatcher extends flux.Dispatcher {
     constructor() { super(moduleId); }

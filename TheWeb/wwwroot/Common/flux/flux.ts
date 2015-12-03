@@ -11,14 +11,13 @@ namespace config {
 namespace flux {  
 
   //**************** getState, trigger
-  export function getState(): IAppState { return state; }
-  export function trigger(action: IAction, compl?: utils.TCallback) {
+  export function trigger(action: IAction, compl?: utils.TCallback, inHistoryPopState?:boolean) {
     if (!action || !action.moduleId || !action.actionId) loger.doThrow('!action || !action.type');
     if (!compl) compl = utils.Noop;
     if (recording) recording.actions.push(action);
     loger.log('ACTION ' + JSON.stringify(action), 1);
     if (triggerExternalNavigateAction(action)) { loger.log('action', -1); compl(); return; }
-    router_tryDispatchRoute()(action as router.IActionType, routeProcessed => {
+    router_tryDispatchRoute()(action as router.IActionType, inHistoryPopState, routeProcessed => {
       if (routeProcessed) {
         compl();
       } else {
@@ -28,14 +27,15 @@ namespace flux {
       loger.log('action', -1);
     })
   }
+  export function getState(): IAppState { return state; }
   export type triggerCompleted = (action: IAction) => void;
   export function actionPath(act: IAction) { return act.moduleId + '/' + act.actionId; }
   export function cnt(): string { return (_cnt++).toString(); } var _cnt = 0;
   const appPrefixPlace = '\\~\\';
-  export function doExternalNavigate(route: router.RouteType, par?: router.IPar, ev?: React.SyntheticEvent) {
+  export function doExternalNavigate<T extends router.IPar>(route: router.Route<T>, ev?: React.SyntheticEvent, par?: T) {
     if (ev) ev.preventDefault();
     var act: IExternalNavigateAction = { moduleId: moduleId, actionId: 'externalnavigate', hist: router.url2History({ route: route, par: par }) };
-    trigger(act, utils.Noop);
+    trigger(act);
     testingTest.onExternalLink();
   }
 
