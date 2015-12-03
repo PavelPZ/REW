@@ -38,7 +38,7 @@ namespace layoutTest {
     dispatchAction(action: flux.IAction, compl: utils.TCallback) {
       switch (action.actionId) {
         case 'r-default':
-          var act = action as router.IAction<ITestModuleRoutePar>;
+          var act = action as router.IHistory<ITestModuleRoutePar>;
           layout.changeScene(act.par.defaultScene ? layout.sceneDefault : sceneSecond,
             { ids: [], placeId: layout.placeContent, rendererId: act.par.defaultPlaces ? 'cont-cont' : 'cont-panel' },
             { ids: [], placeId: placeOther, rendererId: act.par.defaultPlaces ? 'other-cont' : 'other-panel' }

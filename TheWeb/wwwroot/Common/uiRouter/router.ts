@@ -50,13 +50,10 @@ namespace router {
   //predchudce vsech router state parametru
   export interface IPar { }
   //predchudce vsech router akci
-  export interface IAction<T extends IPar> extends flux.IAction { par: T; replace: boolean; }
-  export type IActionType = IAction<IPar>;
+  export interface IHistory<T extends IPar> extends flux.IAction { par: T; replace: boolean; }
+  export type IHistoryType = IHistory<IPar>;
 
   //***** HISTORY
-  export type IHistory<T> = IAction<T>;
-  //export interface IHistory<T extends IPar> { moduleId: string; actionId: string; par: T; }
-  export type IHistoryType = IActionType;
   export function url2History(url: IUrlType): IHistoryType { return { moduleId: url.route.moduleId, actionId: url.route.actionId, par: url.par, replace: url.replace } }
   export function history2Url(hist: IHistoryType): IUrlType { var route = routeDir[hist.moduleId + '/' + hist.actionId]; return route ? { route: route, par: hist.par, replace: hist.replace } : null; }
 
@@ -70,12 +67,8 @@ namespace router {
   //- potreba AUTH => nevola se COMPL callback
   //- jedna se o router action => compl(true)
   //- nejedna se o router action => compl(false)
-  export function tryDispatchRoute(action: IActionType, inHistoryPopState:boolean, compl: (routeProcessed: boolean) => void): void {
+  export function tryDispatchRoute(action: IHistoryType, inHistoryPopState:boolean, compl: (routeProcessed: boolean) => void): void {
     var inUrl = history2Url(action); if (!inUrl) { compl(false); return; }
-    //var stName = action.moduleId + '/' + action.actionId;
-    //var rt = routeDir[stName]; if (!rt) { compl(false); return; }
-    ////route action => kontrola na authentifikaci a dispatch akce
-    //var inUrl: IUrlType = { route: rt, par: (action as IActionType).par };
     onDispatchRouteAction(inUrl, outUrl => {
       if (!inHistoryPopState) {
         var path = outUrl.route.getPath(outUrl.par); var hist = url2History(outUrl)
@@ -93,8 +86,6 @@ namespace router {
     if (inUrl.route.needsAuth) {
       var loginRoute = loginRedirectWhenNeeded()();
       if (loginRoute != null) {
-        //var hist = url2History(loginRoute);
-        //history.replaceState(hist, null, loginRoute.route.getPath(loginRoute.par));
         inUrl = { route: loginRoute.route, par: loginRoute.par, replace: true };
         loger.log('router.onDispatchRouteAction: auth redirect to loginRoute');
       }
@@ -179,8 +170,6 @@ namespace router {
     navig(par?: T, ev?: React.SyntheticEvent, replace?: boolean, compl?: utils.TCallback) {
       if (ev) ev.preventDefault();
       var hist = url2History({ route: this, par: par, replace: replace }); 
-      //if (replace) history.replaceState(hist, null, this.getPath(par)); else history.pushState(hist, null, this.getPath(par));
-      //var act = this.createAction(par);
       trigger()(hist, compl);
     }
 
@@ -192,9 +181,6 @@ namespace router {
       if (res && this.finishRoutePar) this.finishRoutePar(res);
       return res;
     }
-    //createAction(par: T): IAction<T> {
-    //  return { moduleId: this.moduleId, actionId: this.actionId, par: par };
-    //}
 
     afterConstructor(parent: RouteType) {
       if (parent) {

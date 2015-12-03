@@ -22,19 +22,14 @@
           "moduleId": "flux",
           "actionId": "externalnavigate",
           "hist": {
-            "moduleId": "layoutTest",
-            "actionId": "r-default",
-            "par": {
-              "defaultPlaces": true,
-              "defaultScene": true
-            }
+            "moduleId": "loginTest",
+            "actionId": "default"
           }
         }
       ]
     },
     {
       "initStatus": {
-        "layoutTest": {},
         "layout": {
           "scene": {
             "ids": [],
@@ -44,12 +39,7 @@
             "place-content": {
               "ids": [],
               "placeId": "place-content",
-              "rendererId": "cont-cont"
-            },
-            "place-other": {
-              "ids": [],
-              "placeId": "place-other",
-              "rendererId": "other-cont"
+              "rendererId": "login.home"
             }
           }
         },
@@ -63,52 +53,28 @@
       },
       "actions": [
         {
-          "moduleId": "layoutTest",
-          "actionId": "r-default",
-          "par": {
-            "defaultScene": false,
-            "defaultPlaces": true
-          }
+          "moduleId": "login",
+          "actionId": "login.r-login"
         },
         {
-          "moduleId": "layoutTest",
-          "actionId": "r-default",
-          "par": {
-            "defaultScene": true,
-            "defaultPlaces": false
-          }
+          "moduleId": "login",
+          "actionId": "login.r-register"
         },
         {
-          "moduleId": "layoutTest",
-          "actionId": "r-default",
-          "par": {
-            "defaultScene": false,
-            "defaultPlaces": false
-          }
+          "moduleId": "login",
+          "actionId": "login.r-login"
         },
         {
-          "moduleId": "layoutTest",
-          "actionId": "r-default",
-          "par": {
-            "defaultScene": true,
-            "defaultPlaces": false
-          }
+          "moduleId": "login",
+          "actionId": "login.r-forgotPsw"
         },
         {
-          "moduleId": "layoutTest",
-          "actionId": "r-default",
-          "par": {
-            "defaultScene": false,
-            "defaultPlaces": true
-          }
+          "moduleId": "login",
+          "actionId": "login.r-login"
         },
         {
-          "moduleId": "layoutTest",
-          "actionId": "r-default",
-          "par": {
-            "defaultScene": true,
-            "defaultPlaces": true
-          },
+          "moduleId": "login",
+          "actionId": "login.r-home",
           "replace": true
         },
         {

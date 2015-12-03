@@ -17,7 +17,7 @@ namespace flux {
     if (recording) recording.actions.push(action);
     loger.log('ACTION ' + JSON.stringify(action), 1);
     if (triggerExternalNavigateAction(action)) { loger.log('action', -1); compl(); return; }
-    router_tryDispatchRoute()(action as router.IActionType, inHistoryPopState, routeProcessed => {
+    router_tryDispatchRoute()(action as router.IHistoryType, inHistoryPopState, routeProcessed => {
       if (routeProcessed) {
         compl();
       } else {
