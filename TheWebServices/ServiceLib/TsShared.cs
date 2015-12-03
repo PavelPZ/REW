@@ -1,6 +1,8 @@
 ﻿using LMComLib;
 using LMNetLib;
 using Newtonsoft.Json;
+using System.Linq;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
@@ -19,12 +21,13 @@ namespace servConfig {
     public string blobJS;
     public string blobMM;
     public ftpAcount swDeployAccount;
-    public string rootUrl;
     public string azureRootUrl; //prave ladena azure site, pro Design time
   }
 
   public class ftpAcount {
-    public string url; public string userName; public string password;
+    public string url;
+    public string userName;
+    public string password;
   }
 
   public class SendGrid {
@@ -39,6 +42,9 @@ namespace servConfig {
   public class Server {
     public string basicPath;
     public string web4Path;
+    public string rootUrl;
+    public Apps app;
+    public string[] appPrefixes;
   }
 
   public enum Brands { lm, skrivanek, grafia, edusoft }
@@ -103,10 +109,13 @@ public static class Cfg {
       Trace.TraceInformation("Cfg.Init, config=" + Newtonsoft.Json.JsonConvert.SerializeObject(cfg));
     });
   }
-  public static string toJS(string loginUrl) {
+  public static string toJS(servConfig.Apps app, string loginUrl) {
     var copy = JsonConvert.DeserializeObject<servConfig.Root>(JsonConvert.SerializeObject(cfg));
     copy.oAuth.loginUrl = loginUrl;
+    copy.server.appPrefixes = LowUtils.EnumGetValues<servConfig.Apps>().Select(ap => "/" + appPrefixes[ap]).ToArray();
+    copy.server.app = app;
     copy.azure.connectionString = null;
     return JsonConvert.SerializeObject(copy);
   }
+  public static Dictionary<servConfig.Apps, string> appPrefixes = new Dictionary<servConfig.Apps, string> { { servConfig.Apps.oauth, "oauth" }, { servConfig.Apps.web, "web" }, { servConfig.Apps.web4, "web4" } };
 }

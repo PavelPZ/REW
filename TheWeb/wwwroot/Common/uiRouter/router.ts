@@ -187,7 +187,7 @@ namespace router {
       if (childs) childs.forEach(ch => ch.afterConstructor(this));
     }
 
-    getPath(par?: T): string { return servCfg.azure.rootUrl + this.matcher.format(par || {}); }
+    getPath(par?: T): string { return servCfg.server.rootUrl + this.matcher.format(par || {}); }
     navig(par?: T, ev?: React.SyntheticEvent, replace?: boolean, compl?: utils.TCallback) {
       if (ev) ev.preventDefault();
       var hist = url2History({ route: this, par: par });

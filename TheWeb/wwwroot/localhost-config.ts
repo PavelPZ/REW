@@ -12,7 +12,6 @@
       userName: 'LMWebCommon\\pavelzika',
       password: 'pkzippkzip1_'
     },
-    rootUrl: 'http://localhost:10101',
     azureRootUrl: 'http://lmwebcommon.azurewebsites.net'
   },
   sendGrid: {
@@ -44,6 +43,9 @@
   },
   server: {
     basicPath: '',
-    web4Path: 'd:\\LMCom\\rew\\Web4'
-  }
+    web4Path: 'd:\\LMCom\\rew\\Web4',
+    rootUrl: 'http://localhost:10101',
+    app: 0,
+    appPrefixes: null
+ }
 }

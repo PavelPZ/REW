@@ -51,13 +51,15 @@ namespace TheWeb {
   }
 
   public abstract class ModelCommonCfg : ModelLow {
+
+    public static Dictionary<servConfig.Apps, string> appPrefixes = new Dictionary<servConfig.Apps, string> { { servConfig.Apps.oauth, "oauth" }, { servConfig.Apps.web, "web" }, { servConfig.Apps.web4, "web4" } };
+
     public ModelCommonCfg(HttpContextBase ctx, HomeViewPars pars) : base(ctx, pars) {
-      var rq = ctx.Request;
       var req = HttpContext.Current.Request;
       UrlHelper url = new UrlHelper(req.RequestContext);
       var loginUrl = url.Action("OAuth", "Home", null, req.Url.Scheme, req.Url.Host);
       //var loginUrl = Microsoft.AspNet.Http.Extensions.UriHelper.Encode(rq.Scheme, rq.Host, rq.PathBase, new PathString("/" + HomeController.oAuthMask));
-      cfg = "<script type='text/javascript'>var servCfg = " + Cfg.toJS(loginUrl) + ";</script>";
+      cfg = "<script type='text/javascript'>var servCfg = " + Cfg.toJS(pars.app, loginUrl) + ";</script>";
     }
     public string cfg;
   }

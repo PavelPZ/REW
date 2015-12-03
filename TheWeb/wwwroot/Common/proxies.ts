@@ -11,7 +11,7 @@ namespace proxies {
     export function ResetServerData (email: string, completed: () => void): void {
       invoke('/api/testing/resetserverdata', 'GET', { email: email }, null, completed);
     }
-    export function SaveTestPlaylist (json: any, completed: () => void): void {
+    export function SaveTestPlaylist (json: string, completed: () => void): void {
       invoke('/api/testing/savetestplaylist', 'POST', null, json, completed);
     }
   }

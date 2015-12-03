@@ -65,7 +65,7 @@ namespace layoutTest {
   }
 
   router.init(
-    namedState.default = new router.Route<ITestModuleRoutePar>(layoutTest.moduleId, 'r-default', '/web/layout/layoutTest/:defaultScene/:defaultPlaces', {
+    namedState.default = new router.Route<ITestModuleRoutePar>(layoutTest.moduleId, 'r-default', config.appPrefix() + '/layout/layoutTest/:defaultScene/:defaultPlaces', {
       needsAuth: false,
       finishRoutePar: st => { st.defaultPlaces = utils.toBoolean(st.defaultPlaces); st.defaultScene = utils.toBoolean(st.defaultScene); } 
     })

@@ -26,6 +26,8 @@ namespace config {
     utils.callAsyncs(creates, compl);
   }
 
+  export function appPrefix(): string { return servCfg.server.appPrefixes[servCfg.server.app]; }
+  export function appPrefixAll(): string { return servCfg.server.rootUrl + appPrefix(); }
   //asynchronni init: volana po prihlaseni
   //export function onInit_authKnown(compl: utils.TCallback) {
   //  var creates: Array<utils.TAsync> = [];

@@ -140,7 +140,6 @@ export interface Azure {
   blobJS: string;
   blobMM: string;
   swDeployAccount: ftpAcount;
-  rootUrl: string;
   azureRootUrl: string;
 }
 export interface ftpAcount {
@@ -151,6 +150,9 @@ export interface ftpAcount {
 export interface Server {
   basicPath: string;
   web4Path: string;
+  rootUrl: string;
+  app: Apps;
+  appPrefixes: Array<string>;
 }
 export interface ViewPars {
   app: Apps;

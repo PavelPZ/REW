@@ -8,7 +8,6 @@
     blobJS: 'http://lmdata.blob.core.windows.net/js-v001',
     blobMM: 'http://lmdata.blob.core.windows.net/mm-v001',
     swDeployAccount: null,
-    rootUrl: 'http://lmwebcommon.azurewebsites.net',
     azureRootUrl: null
   },
   sendGrid: {
@@ -40,6 +39,9 @@
   },
   server: {
     basicPath: '',
-    web4Path: ''
+    web4Path: '',
+    rootUrl: 'http://lmwebcommon.azurewebsites.net',
+    app: 0,
+    appPrefixes: null
   }
 }

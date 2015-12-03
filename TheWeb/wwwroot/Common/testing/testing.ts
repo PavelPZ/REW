@@ -74,7 +74,7 @@
   const cookName = 'testing-playlist';
   function cookieSet(cook: IPlayListCookie) { if (cook) cookies.set(cookName, JSON.stringify(cook)); else cookies.remove(cookName); }
   function cookieGet(): IPlayListCookie { var str = cookies.get(cookName) as string; return utils.isEmpty(str) ? null : JSON.parse(str); }
-  function storageSet(pl: IPlayList) { if (pl) localStorage.setItem(cookName, JSON.stringify(pl)); else localStorage.removeItem(cookName); }
+  export function storageSet(pl: IPlayList) { if (pl) localStorage.setItem(cookName, JSON.stringify(pl)); else localStorage.removeItem(cookName); }
   function storageGet(): IPlayList { var str = localStorage.getItem(cookName) as string; return utils.isEmpty(str) ? null : JSON.parse(str); }
 
 }

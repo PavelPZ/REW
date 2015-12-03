@@ -31,19 +31,22 @@ namespace flux {
   export type triggerCompleted = (action: IAction) => void;
   export function actionPath(act: IAction) { return act.moduleId + '/' + act.actionId; }
   export function cnt(): string { return (_cnt++).toString(); } var _cnt = 0;
+  const appPrefixPlace = '\\~\\';
   export function doExternalNavigate(url: string, ev?: React.SyntheticEvent) {
     if (ev) ev.preventDefault();
+    if (url.startsWith(servCfg.server.rootUrl)) url = appPrefixPlace + url.substr(servCfg.server.rootUrl.length);
     var act: IExternalNavigateAction = { moduleId: moduleId, actionId: 'externalnavigate', url: url };
     trigger(act, utils.Noop);
     testing.onExternalLink();
   }
 
-  var moduleId = 'flux';
+  var moduleId = 'flux'; 
   interface IExternalNavigateAction extends flux.IAction { url: string; } //navigace na externi ULR
   function triggerExternalNavigateAction(action: IAction): boolean {
     if (action.moduleId != moduleId || action.actionId != 'externalnavigate') return false;
     setTimeout(() => {
       var url = (action as IExternalNavigateAction).url;
+      if (url.startsWith(appPrefixPlace)) url = servCfg.server.rootUrl + url.substr(appPrefixPlace.length);
       location.href = url;
       loger.log('flux.triggerExternalNavigateAction: ' + url);
     }, 1);

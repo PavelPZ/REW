@@ -29,7 +29,7 @@
   };
 
   proxies.invoke = (url, method, queryPars, body, completed) => {
-    url = servCfg.azure.rootUrl + utils.urlStringify(url, queryPars);
+    url = servCfg.server.rootUrl + utils.urlStringify(url, queryPars);
     ajaxLow(url, method, { data: body, contentType: ajaxContentType.txt }, res => completed(res.responseText), err => throwError(url, err));
   };
    

@@ -12,7 +12,7 @@ namespace testing {
   //** ROUTERS and its dispatch
   var namedState = router.named.testing; //pojmenovane stavy
   router.init(
-    namedState.default = new router.RouteType(moduleId, 'default', '/web/testing')
+    namedState.default = new router.RouteType(moduleId, 'default', config.appPrefix() + '/testing')
   );
   router.setHome(namedState.default, {});
 
@@ -22,7 +22,15 @@ namespace testing {
     ev.preventDefault();
     var files = ev.dataTransfer.files; if (files.length <= 0) return;
     var file = files[0];
-    alert(`Len=${file.size}, name=${file.name}, type=${file.type}`);
+    //alert(`Len=${file.size}, name=${file.name}, type=${file.type}`);
+    var reader = new FileReader();
+    reader.onload = (ev:any) => {
+      var contents: string = ev.target.result;
+      storageSet(JSON.parse(contents));
+      startPlay();
+    };
+    reader.readAsText(file);
+
     
     //var formData = new FormData(); 
     //for (var i = 0; i < files.length; i++) formData.append('file', files[i]);

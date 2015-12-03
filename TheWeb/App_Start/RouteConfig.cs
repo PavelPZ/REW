@@ -14,22 +14,22 @@ namespace TheWeb {
       //);
       routes.MapRoute(
           name: "CommonTest",
-          url: "web/{appPart}/{*path}",
+          url: Cfg.appPrefixes[servConfig.Apps.web] + "/{appPart}/{*path}",
           defaults: new { controller = "Home", action = "CommonTest", appPart = "" }
       );
       routes.MapRoute(
           name: "Common",
-          url: "web",
+          url: Cfg.appPrefixes[servConfig.Apps.web],
           defaults: new { controller = "Home", action = "Common" }
       );
       routes.MapRoute(
           name: "OAuth",
-          url: "oauth",
+          url: Cfg.appPrefixes[servConfig.Apps.oauth],
           defaults: new { controller = "Home", action = "OAuth" }
       );
       routes.MapRoute(
           name: "Schools",
-          url: "web4",
+          url: Cfg.appPrefixes[servConfig.Apps.web4],
           defaults: new { controller = "Home", action = "Schools" }
       );
       routes.MapRoute(

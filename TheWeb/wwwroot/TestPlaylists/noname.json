@@ -4,13 +4,13 @@
       "initStatus": {
         "layout": {
           "scene": {
-            "ids": [ ],
+            "ids": [],
             "caseId": "scene-default"
           },
-          "scenePlaces": { }
+          "scenePlaces": {}
         },
         "auth": {
-          "ids": [ ],
+          "ids": [],
           "email": null,
           "providerId": 0,
           "lastName": null,
@@ -21,33 +21,33 @@
         {
           "moduleId": "flux",
           "actionId": "externalnavigate",
-          "url": "http://localhost:10101/web/layout"
+          "url": "\\~\\/web/layout"
         }
       ]
     },
     {
       "initStatus": {
-        "layoutTest": { },
+        "layoutTest": {},
         "layout": {
           "scene": {
-            "ids": [ ],
+            "ids": [],
             "caseId": "scene-default"
           },
           "scenePlaces": {
             "place-content": {
-              "ids": [ ],
+              "ids": [],
               "placeId": "place-content",
               "rendererId": "cont-cont"
             },
             "place-other": {
-              "ids": [ ],
+              "ids": [],
               "placeId": "place-other",
               "rendererId": "other-cont"
             }
           }
         },
         "auth": {
-          "ids": [ ],
+          "ids": [],
           "email": null,
           "providerId": 0,
           "lastName": null,
@@ -56,9 +56,25 @@
       },
       "actions": [
         {
+          "moduleId": "layoutTest",
+          "actionId": "r-default",
+          "par": {
+            "defaultScene": false,
+            "defaultPlaces": true
+          }
+        },
+        {
+          "moduleId": "layoutTest",
+          "actionId": "r-default",
+          "par": {
+            "defaultScene": true,
+            "defaultPlaces": false
+          }
+        },
+        {
           "moduleId": "flux",
           "actionId": "externalnavigate",
-          "url": "http://localhost:10101/web/testing"
+          "url": "\\~\\/web/testing"
         }
       ]
     },
@@ -66,20 +82,20 @@
       "initStatus": {
         "layout": {
           "scene": {
-            "ids": [ ],
+            "ids": [],
             "caseId": "scene-default"
           },
-          "scenePlaces": { }
+          "scenePlaces": {}
         },
         "auth": {
-          "ids": [ ],
+          "ids": [],
           "email": null,
           "providerId": 0,
           "lastName": null,
           "firstName": null
         }
       },
-      "actions": [ ]
+      "actions": []
     }
   ]
 }
