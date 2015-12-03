@@ -199,7 +199,7 @@ namespace router {
     globalId(): string { return this.moduleId + '/' + this.actionId; }
 
     parseRoute(pre: IQuery): T {
-      if (this.abstract) return null;
+      if (this.isAbstract) return null;
       var res = this.matcher.exec<T>(pre.path, pre.query);
       if (res && this.finishRoutePar) this.finishRoutePar(res);
       return res;
@@ -230,7 +230,7 @@ namespace router {
 
     //IConstruct
     needsAuth: boolean;
-    abstract: boolean;
+    isAbstract: boolean;
     finishRoutePar: (h: T) => void;
     onLeaveProc: utils.TCallback;
     onEnterProc: utils.TAsync;
@@ -239,7 +239,7 @@ namespace router {
 
   export interface IConstruct<T extends IPar> {
     needsAuth?: boolean;
-    abstract?: boolean;
+    isAbstract?: boolean;
     finishRoutePar?: (h: T) => void;
     onLeaveProc?: utils.TCallback;
     onEnterProc?: utils.TAsync;

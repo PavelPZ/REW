@@ -11,10 +11,10 @@
         },
         "auth": {
           "ids": [],
-          "email": null,
-          "providerId": 0,
-          "lastName": null,
-          "firstName": null
+          "email": "kubakaca@gmail.com",
+          "providerId": 2,
+          "lastName": "Zika",
+          "firstName": "Pavel"
         }
       },
       "actions": [
@@ -48,10 +48,10 @@
         },
         "auth": {
           "ids": [],
-          "email": null,
-          "providerId": 0,
-          "lastName": null,
-          "firstName": null
+          "email": "kubakaca@gmail.com",
+          "providerId": 2,
+          "lastName": "Zika",
+          "firstName": "Pavel"
         }
       },
       "actions": [
@@ -67,8 +67,32 @@
           "moduleId": "layoutTest",
           "actionId": "r-default",
           "par": {
+            "defaultScene": false,
+            "defaultPlaces": true
+          }
+        },
+        {
+          "moduleId": "layoutTest",
+          "actionId": "r-default",
+          "par": {
             "defaultScene": true,
             "defaultPlaces": false
+          }
+        },
+        {
+          "moduleId": "layoutTest",
+          "actionId": "r-default",
+          "par": {
+            "defaultScene": false,
+            "defaultPlaces": false
+          }
+        },
+        {
+          "moduleId": "layoutTest",
+          "actionId": "r-default",
+          "par": {
+            "defaultScene": true,
+            "defaultPlaces": true
           }
         },
         {
@@ -89,10 +113,10 @@
         },
         "auth": {
           "ids": [],
-          "email": null,
-          "providerId": 0,
-          "lastName": null,
-          "firstName": null
+          "email": "kubakaca@gmail.com",
+          "providerId": 2,
+          "lastName": "Zika",
+          "firstName": "Pavel"
         }
       },
       "actions": []

@@ -7,6 +7,7 @@
     "/common/persist/test.js",
     "/common/uirouter/test.js",
     "/common/validation/test.js",
+    "/common/testing/test.js",
     "@^/common/.*\\.map$"
   ]
 }

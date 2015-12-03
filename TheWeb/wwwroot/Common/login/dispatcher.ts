@@ -20,7 +20,7 @@ namespace login {
 
   export var namedRoute = router.named.login; //pojmenovane stavy
   router.init(
-    new router.RouteType(moduleId, moduleId, config.appPrefix() + '/login', { needsAuth: false, abstract:true },
+    new router.RouteType(moduleId, moduleId, config.appPrefix() + '/login', { needsAuth: false, isAbstract:true },
       namedRoute.home = new router.Route(moduleId, 'r-home', '/home?{authReturnUrl}'),
       namedRoute.login = new router.RouteType(moduleId, 'r-login', '/login'),
       namedRoute.register = new router.RouteType(moduleId, 'r-register', '/login'),
