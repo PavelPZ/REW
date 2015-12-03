@@ -8,6 +8,7 @@
       forgotPsw: router.RouteType;
       confirmForgotPsw: router.RouteType;
       editProfile: router.RouteType;
+      changePasssword: router.RouteType;
     }
   };
   named.login = {} as any;
@@ -23,11 +24,12 @@ namespace login {
     new router.RouteType(moduleId, moduleId, config.appPrefix() + '/login', { needsAuth: false, isAbstract:true },
       namedRoute.home = new router.Route(moduleId, 'r-home', '/home?{authReturnUrl}'),
       namedRoute.login = new router.RouteType(moduleId, 'r-login', '/login'),
-      namedRoute.register = new router.RouteType(moduleId, 'r-register', '/login'),
+      namedRoute.register = new router.RouteType(moduleId, 'r-register', '/register'),
       namedRoute.confirmRegister = new router.RouteType(moduleId, 'r-confirmRegister', '/confirmRegister'),
       namedRoute.forgotPsw = new router.RouteType(moduleId, 'r-forgotPsw', '/forgotPsw'),
       namedRoute.confirmForgotPsw = new router.RouteType(moduleId, 'r-confirmForgotPsw', '/confirmForgotPsw'),
-      namedRoute.editProfile = new router.RouteType(moduleId, 'r-editProfile', '/editProfile', { needsAuth: true })
+      namedRoute.editProfile = new router.RouteType(moduleId, 'r-editProfile', '/editProfile', { needsAuth: true }),
+      namedRoute.changePasssword = new router.RouteType(moduleId, 'r-changePasssword', '/changePasssword', { needsAuth: true })
     )
   );
 

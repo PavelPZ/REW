@@ -61,7 +61,7 @@ namespace servConfig {
     public bool swFromFileSystem; //SW soubory se berou z filesystemu. Jinak ze swFiles.zip
   }
 
-  public enum oAuthProviders { no = 0, google = 1, facebook = 2, microsoft = 3, }
+  public enum oAuthProviders { no = 0, google = 1, facebook = 2, microsoft = 3, lm = 4 }
   public class oAuthConfig {
     public emailer.mail lmLoginEmailSender;
     //public string loginUrl; //plna URL k oAuth login strance

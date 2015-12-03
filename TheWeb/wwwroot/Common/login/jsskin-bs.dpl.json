@@ -1,5 +1,12 @@
 ﻿{
   "includes": [
     "views/home-bs.js",
+    "views/login-bs.js",
+    "views/register-bs.js",
+    "views/confirmRegister-bs.js",
+    "views/forgotPsw-bs.js",
+    "views/confirmForgotPsw-bs.js",
+    "views/editProfile-bs.js",
+    "views/changePasssword-bs.js",
   ]
 }

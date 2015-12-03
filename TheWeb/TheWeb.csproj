@@ -210,7 +210,7 @@
     <Content Include="wwwroot\scripts\react-bootstrap.js" />
     <Content Include="wwwroot\scripts\react-dom.js" />
     <Content Include="wwwroot\scripts\react-with-addons.js" />
-    <Content Include="wwwroot\TestPlaylists\noname.json" />
+    <Content Include="wwwroot\TestPlaylists\fullTest.json" />
     <Content Include="wwwroot\deploy\web\js-tests.dpl.json" />
   </ItemGroup>
   <ItemGroup>
@@ -411,6 +411,13 @@
     <TypeScriptCompile Include="wwwroot\Common\login\dispatcher.ts" />
     <TypeScriptCompile Include="wwwroot\Common\login\index.ts" />
     <TypeScriptCompile Include="wwwroot\Common\login\test.tsx" />
+    <TypeScriptCompile Include="wwwroot\Common\login\views\editProfile-bs.tsx" />
+    <TypeScriptCompile Include="wwwroot\Common\login\views\confirmForgotPsw-bs.tsx" />
+    <TypeScriptCompile Include="wwwroot\Common\login\views\forgotPsw-bs.tsx" />
+    <TypeScriptCompile Include="wwwroot\Common\login\views\confirmRegister-bs.tsx" />
+    <TypeScriptCompile Include="wwwroot\Common\login\views\changePasssword-bs.tsx" />
+    <TypeScriptCompile Include="wwwroot\Common\login\views\register-bs.tsx" />
+    <TypeScriptCompile Include="wwwroot\Common\login\views\login-bs.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\login\views\home-bs.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\login\views\panel.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\proxies.ts" />

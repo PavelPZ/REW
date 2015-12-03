@@ -27,38 +27,21 @@ namespace router {
       var hist: IHistoryType = e.state;
       var url = history2Url(hist);
       loger.log("listenUrlChange fired: " + window.location.href);
-      var act = url.route.createAction(url.par);
-      trigger()(act, utils.Noop);
+      //var act = url.route.createAction(url.par);
+      trigger()(hist, utils.Noop);
       //tryDispatchRoute(act, utils.Noop);
     });
   }
 
   //NAVIGATE
   export function navigUrl<T extends IPar>(src: IUrl<T>, ev?: React.SyntheticEvent) { src.route.navig(src.par, ev); }
-  export function navigRoute<T extends IPar>(route: RouteType, par?: T, ev?: React.SyntheticEvent) { navigUrl({ route: route, par: par }, ev); }
+  export function navigRoute<T extends IPar>(route: RouteType, ev?: React.SyntheticEvent, par?: T) { navigUrl({ route: route, par: par }, ev); }
   export function navigHome(ev?: React.SyntheticEvent) { navigUrl(homeUrl, ev); }
 
-  //export function _getHashUrl(src: IUrl<any>): string { return '#' + src.route.getHash(src.par); }
-  //export function _getHash(route: RouteType, par?: IPar): string { return getHashUrl({ route: route, par: par }); }
-  //export function _gotoUrl(src: IUrl<any>, ev?: React.SyntheticEvent) { if (ev) ev.preventDefault(); src.route.navigate(src.par); }
-  //export function _goto(route: RouteType, par?: IPar, ev?: React.SyntheticEvent) { gotoUrl({ route: route, par: par }, ev); }
-
+  //vyjimecne pouzivane, obecne se musi pouzivat NAVIG nebo IHistory
   export function getRouteUrl<T extends IPar>(src: IUrl<T>): string { return src.route.getPath(src.par); }
   export function getUrl<T extends IPar>(route: RouteType, par?: T): string { return getRouteUrl({ route: route, par: par }); }
   export function getHomeUrl(): string { return getRouteUrl(homeUrl); }
-
-  //export function fullPath(url: string): string { return servCfg.server.rootUrl + url; }
-
-  //URL stringify
-  //const urlStrDelim = '~|~';
-  //export function urlStringify(url: IUrlType): string {
-  //  return url.route.globalId() + urlStrDelim + (url.par ? JSON.stringify(url.par) : '');
-  //}
-  //export function urlParse(urlStr: string): IUrlType {
-  //  var parts = urlStr.split(urlStrDelim);
-  //  var par: IPar = utils.isEmpty(parts[1]) ? null : JSON.parse(parts[1]);
-  //  return { route: routeDir[parts[0]], par: par };
-  //}
 
   //pojmenovane globalne dostupne a typed router stavy
   export var named: INamedRoutes = <any>{};
@@ -74,10 +57,11 @@ namespace router {
   export type IActionType = IAction<IPar>;
 
   //***** HISTORY
-  export interface IHistory<T extends IPar> { moduleId: string; actionId: string; par: T; }
-  export type IHistoryType = IHistory<IPar>;
+  export type IHistory<T> = IAction<T>;
+  //export interface IHistory<T extends IPar> { moduleId: string; actionId: string; par: T; }
+  export type IHistoryType = IActionType;
   export function url2History(url: IUrlType): IHistoryType { return { moduleId: url.route.moduleId, actionId: url.route.actionId, par: url.par } }
-  export function history2Url(hist: IHistoryType): IUrlType { return { route: routeDir[hist.moduleId + '/' + hist.actionId], par: hist.par } }
+  export function history2Url(hist: IHistoryType): IUrlType { var route = routeDir[hist.moduleId + '/' + hist.actionId]; return route ? { route: route , par: hist.par } : null; }
 
   //*** inicilizace 
   export function init(...roots: Array<RouteType>): void { //definice stavu
@@ -90,10 +74,11 @@ namespace router {
   //- jedna se o router action => compl(true)
   //- nejedna se o router action => compl(false)
   export function tryDispatchRoute(action: IActionType, compl: (routeProcessed: boolean) => void): void {
-    var stName = action.moduleId + '/' + action.actionId;
-    var rt = routeDir[stName]; if (!rt) { compl(false); return; }
-    //route action => kontrola na authentifikaci a dispatch akce
-    var inUrl: IUrlType = { route: rt, par: (action as IActionType).par };
+    var inUrl = history2Url(action); if (!inUrl) { compl(false); return; }
+    //var stName = action.moduleId + '/' + action.actionId;
+    //var rt = routeDir[stName]; if (!rt) { compl(false); return; }
+    ////route action => kontrola na authentifikaci a dispatch akce
+    //var inUrl: IUrlType = { route: rt, par: (action as IActionType).par };
     onDispatchRouteAction(inUrl, outUrl => {
       //dokonci dispatch
       if (!outUrl.route.dispatch) loger.doThrow('Missing route dispatch ' + outUrl.route.globalId());
@@ -188,12 +173,13 @@ namespace router {
     }
 
     getPath(par?: T): string { return servCfg.server.rootUrl + this.matcher.format(par || {}); }
+
     navig(par?: T, ev?: React.SyntheticEvent, replace?: boolean, compl?: utils.TCallback) {
       if (ev) ev.preventDefault();
       var hist = url2History({ route: this, par: par });
       if (replace) history.replaceState(hist, null, this.getPath(par)); else history.pushState(hist, null, this.getPath(par));
-      var act = this.createAction(par);
-      trigger()(act, compl);
+      //var act = this.createAction(par);
+      trigger()(hist, compl);
     }
 
     globalId(): string { return this.moduleId + '/' + this.actionId; }
@@ -204,9 +190,9 @@ namespace router {
       if (res && this.finishRoutePar) this.finishRoutePar(res);
       return res;
     }
-    createAction(par: T): IAction<T> {
-      return { moduleId: this.moduleId, actionId: this.actionId, par: par };
-    }
+    //createAction(par: T): IAction<T> {
+    //  return { moduleId: this.moduleId, actionId: this.actionId, par: par };
+    //}
 
     afterConstructor(parent: RouteType) {
       if (parent) {

@@ -73,10 +73,17 @@ namespace auth {
   //  return res;
   //}
 
-  export function gotoOAuth(providerId: servConfig.oAuthProviders, ev?: React.SyntheticEvent) {
+  export function gotoAuth(providerId: servConfig.oAuthProviders, ev?: React.SyntheticEvent) {
+    ev.preventDefault();
+
     //URL pro navrat z uspesneho OAUTH je prazdna => dej home page
     var retUrl = oauth.useLoginSourcePage();
     if (utils.isEmpty(retUrl)) oauth.saveLoginSourcePage(router.getHomeUrl());
+
+    if (providerId == servConfig.oAuthProviders.lm) {
+      router.navigRoute(router.named.login.login);
+      return;
+    }
 
     //oAuth url
     var providerPar = servCfg.oAuth.items[providerId];

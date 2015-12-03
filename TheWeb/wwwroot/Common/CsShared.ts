@@ -106,6 +106,7 @@ export const enum oAuthProviders {
   google = 1,
   facebook = 2,
   microsoft = 3,
+  lm = 4,
 }
 
 export const enum SkinIds {

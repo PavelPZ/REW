@@ -34,7 +34,6 @@ namespace flux {
   const appPrefixPlace = '\\~\\';
   export function doExternalNavigate(route: router.RouteType, par?: router.IPar, ev?: React.SyntheticEvent) {
     if (ev) ev.preventDefault();
-    //if (url.startsWith(servCfg.server.rootUrl)) url = appPrefixPlace + url.substr(servCfg.server.rootUrl.length);
     var act: IExternalNavigateAction = { moduleId: moduleId, actionId: 'externalnavigate', hist: router.url2History({ route: route, par: par }) };
     trigger(act, utils.Noop);
     testingTest.onExternalLink();
@@ -44,20 +43,16 @@ namespace flux {
   interface IExternalNavigateAction extends flux.IAction { hist: router.IHistoryType; } //navigace na externi ULR
   function triggerExternalNavigateAction(action: IAction): boolean {
     if (action.moduleId != moduleId || action.actionId != 'externalnavigate') return false;
-    //setTimeout(() => {
     var hist = (action as IExternalNavigateAction).hist;
-    //if (url.startsWith(appPrefixPlace)) url = servCfg.server.rootUrl + url.substr(appPrefixPlace.length);
-    //var res = config.loginUrl() + '#' + utils.urlStringifyQuery(par);
     var url = router.history2Url(hist);
-    if (url.route == router.named.oauth.index) { //hash misto query par
-      var par = JSON.parse(JSON.stringify(url.par)) as auth.IOAuthPar;
+    if (url.route == router.named.oauth.index) { //Specialni osetrneni oAuth URL: dosad aktualni provider client_id, QUERY je v hash stringu
+      var par = JSON.parse(JSON.stringify(url.par)) as auth.IOAuthPar; url.par = null;
       par.client_id = servCfg.oAuth.items[par.providerId].clientId;
       var href = router.getRouteUrl(url) + '#' + utils.urlStringifyQuery(par);
       location.href = href;
     } else
       location.href = router.getRouteUrl(url);
-    loger.log('flux.triggerExternalNavigateAction: ' + hist);
-    //}, 1);
+    loger.log('flux.triggerExternalNavigateAction: ' + JSON.stringify(hist));
     return true;
   }
 
