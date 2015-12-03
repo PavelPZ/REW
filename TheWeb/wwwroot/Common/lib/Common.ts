@@ -26,9 +26,14 @@ namespace config {
     utils.callAsyncs(creates, compl);
   }
 
-  export function routePrefix(routePref: servConfig.RoutePrefix = servCfg.routePrefix): string { return servConfig.RoutePrefix[routePref].replace('_','/'); }
-  export function appPrefixAll(routePref: servConfig.RoutePrefix = servCfg.routePrefix): string { return servCfg.server.rootUrl + routePrefix(routePref); }
-  export function loginUrl(): string { return appPrefixAll(servConfig.RoutePrefix.oAuth); }
+  export function routePrefix(routePref: servConfig.RoutePrefix = servCfg.routePrefix, startProc: servConfig.StartProc = servCfg.startProc): string {
+    var res = '';
+    if (routePref != servConfig.RoutePrefix.no) res += '/' + servConfig.RoutePrefix[routePref].replace('_', '/');
+    if (startProc != servConfig.StartProc.no) res += '/' + servConfig.StartProc[startProc];
+    return res;
+  }
+  function appPrefixAll(routePref: servConfig.RoutePrefix, startProc: servConfig.StartProc): string { return servCfg.server.rootUrl + routePrefix(routePref, startProc); }
+  export function loginUrl(): string { return appPrefixAll(servConfig.RoutePrefix.oAuth, servConfig.StartProc.oauth); }
   //asynchronni init: volana po prihlaseni
   //export function onInit_authKnown(compl: utils.TCallback) {
   //  var creates: Array<utils.TAsync> = [];
@@ -45,7 +50,7 @@ namespace loger {
     console.log(indent + msg);
     if (ind > 0) indent += '  ';
   }
-  export function doThrow(msg: string):any {
+  export function doThrow(msg: string): any {
     debugger;
     throw msg;
   }

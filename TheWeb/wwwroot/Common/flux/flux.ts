@@ -52,10 +52,10 @@ namespace flux {
     if (url.route == router.named.oauth.index) { //Specialni osetrneni oAuth URL: dosad aktualni provider client_id, QUERY je v hash stringu
       var par = JSON.parse(JSON.stringify(url.par)) as auth.IOAuthPar; url.par = null;
       par.client_id = servCfg.oAuth.items[par.providerId].clientId;
-      var href = router.getRouteUrl(url, extNavig.prefix) + '#' + utils.urlStringifyQuery(par);
+      var href = router.getRouteUrl(url, extNavig.prefix, extNavig.startProc) + '#' + utils.urlStringifyQuery(par);
       location.href = href;
     } else
-      location.href = router.getRouteUrl(url, extNavig.prefix);
+      location.href = router.getRouteUrl(url, extNavig.prefix, extNavig.startProc);
     loger.log('flux.triggerExternalNavigateAction: ' + JSON.stringify(hist));
     return true;
   }

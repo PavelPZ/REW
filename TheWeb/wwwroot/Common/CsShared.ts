@@ -109,6 +109,17 @@ export enum RoutePrefix {
   some_other = 4,
 }
 
+export enum StartProc {
+  no = 0,
+  empty = 1,
+  fluxTest = 2,
+  layoutTest = 3,
+  loginTest = 4,
+  validationTest = 5,
+  testingTest = 6,
+  oauth = 7,
+}
+
 export const enum oAuthProviders {
   no = 0,
   google = 1,
@@ -134,17 +145,6 @@ export const enum MvcViewType {
   web4 = 1,
   web = 2,
   oauth = 3,
-}
-
-export const enum StartProc {
-  no = 0,
-  empty = 1,
-  fluxTest = 2,
-  layoutTest = 3,
-  loginTest = 4,
-  validationTest = 5,
-  testingTest = 6,
-  oauth = 7,
 }
 
 export interface Root {

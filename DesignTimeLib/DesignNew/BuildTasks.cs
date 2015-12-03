@@ -171,8 +171,8 @@ namespace DesignNew {
       });
     }
     static Type[] lmclibEnums = new Type[] { typeof(Langs) };
-    static Type[] servCfgEnumsNoConst = new Type[] { typeof(servConfig.RoutePrefix) };
-    static Type[] servCfgEnums = new Type[] { typeof(servConfig.oAuthProviders), typeof(servConfig.SkinIds), typeof(servConfig.Brands), typeof(servConfig.MvcViewType), typeof(servConfig.StartProc) };
+    static Type[] servCfgEnumsNoConst = new Type[] { typeof(servConfig.RoutePrefix), typeof(servConfig.StartProc) };
+    static Type[] servCfgEnums = new Type[] { typeof(servConfig.oAuthProviders), typeof(servConfig.SkinIds), typeof(servConfig.Brands), typeof(servConfig.MvcViewType) };
     static Type[] servCfgTypes = new Type[] { typeof(servConfig.Root), typeof(servConfig.Azure), typeof(servConfig.ftpAcount), typeof(servConfig.Server),
       typeof(servConfig.MvcViewPars), typeof(servConfig.oAuthConfig), typeof(servConfig.oAuthItem), typeof(servConfig.SendGrid), typeof(servConfig.Testing)};
     static Type[] emailTypes = new Type[] { typeof(emailer.emailMsg), typeof(emailer.att), typeof(emailer.mail) };

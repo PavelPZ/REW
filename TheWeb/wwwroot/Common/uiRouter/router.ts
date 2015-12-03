@@ -36,9 +36,9 @@ namespace router {
   export function navigHome(ev?: React.SyntheticEvent) { navigUrl(homeUrl, ev); }
 
   //vyjimecne pouzivane, obecne se musi pouzivat NAVIG nebo IHistory
-  export function getRouteUrl<T extends IPar>(src: IUrl<T>, routePrefix: servConfig.RoutePrefix): string { return src.route.getPath(src.par, routePrefix); }
+  export function getRouteUrl<T extends IPar>(src: IUrl<T>, routePrefix: servConfig.RoutePrefix, startProc: servConfig.StartProc): string { return src.route.getPath(src.par, routePrefix, startProc); }
   //export function getUrl<T extends IPar>(route: RouteType, par?: T, replace?: boolean): string { return getRouteUrl({ route: route, par: par, replace: replace }); }
-  export function getHomeUrl(): string { return getRouteUrl(homeUrl, servCfg.routePrefix); }
+  export function getHomeUrl(): string { return getRouteUrl(homeUrl, servCfg.routePrefix, servCfg.startProc); }
 
   //pojmenovane globalne dostupne a typed router stavy
   export var named: INamedRoutes = <any>{};
@@ -71,7 +71,7 @@ namespace router {
     var inUrl = history2Url(action); if (!inUrl) { compl(false); return; }
     onDispatchRouteAction(inUrl, outUrl => {
       if (!inHistoryPopState) {
-        var path = outUrl.route.getPath(outUrl.par, servCfg.routePrefix); var hist = url2History(outUrl)
+        var path = outUrl.route.getPath(outUrl.par, servCfg.routePrefix, servCfg.startProc); var hist = url2History(outUrl)
         if (outUrl.replace) history.replaceState(hist, null, path); else history.pushState(hist, null, path);
         loger.log(`history pushState: replace=${hist.replace ? "true" : "false"}, hist=${JSON.stringify(hist)}`);
       }
@@ -136,7 +136,10 @@ namespace router {
     if (!path || path.length < 1) path = '/';
     if (path[0] != '/') path = path = '/' + path;
     var appPrefix = config.routePrefix();
-    if (path.length > appPrefix.length) path = path.substr(appPrefix.length);
+    if (path.length >= appPrefix.length) {
+      if (!path.toLowerCase().startsWith(appPrefix)) loger.doThrow(`router.toQuery: path=${path}m appPrefix=${appPrefix}`);
+      path = path.substr(appPrefix.length);
+    }
     //oddeleni a parse query stringu
     var parts = path.split('?'); var path = parts[0];
     var query: utils.TDirectory<string> = {};
@@ -167,7 +170,9 @@ namespace router {
       if (childs) childs.forEach(ch => ch.afterConstructor(this));
     }
 
-    getPath(par: T, routePrefix: servConfig.RoutePrefix): string { return servCfg.server.rootUrl + config.routePrefix(routePrefix) + this.matcher.format(par || {}); }
+    getPath(par: T, routePrefix: servConfig.RoutePrefix, startProc: servConfig.StartProc): string {
+      return servCfg.server.rootUrl + config.routePrefix(routePrefix, startProc) + this.matcher.format(par || {});
+    }
 
     navig(par?: T, ev?: React.SyntheticEvent, replace?: boolean, compl?: utils.TCallback) {
       if (ev) ev.preventDefault();
