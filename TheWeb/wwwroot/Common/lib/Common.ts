@@ -26,9 +26,9 @@ namespace config {
     utils.callAsyncs(creates, compl);
   }
 
-  export function appPrefix(app: servConfig.Apps = servCfg.server.app): string { return servCfg.server.appPrefixes[app]; }
-  export function appPrefixAll(app: servConfig.Apps = servCfg.server.app): string { return servCfg.server.rootUrl + appPrefix(app); }
-  export function loginUrl(): string { return appPrefixAll(servConfig.Apps.oauth); }
+  export function routePrefix(routePref: servConfig.RoutePrefix = servCfg.routePrefix): string { return servConfig.RoutePrefix[routePref].replace('_','/'); }
+  export function appPrefixAll(routePref: servConfig.RoutePrefix = servCfg.routePrefix): string { return servCfg.server.rootUrl + routePrefix(routePref); }
+  export function loginUrl(): string { return appPrefixAll(servConfig.RoutePrefix.oAuth); }
   //asynchronni init: volana po prihlaseni
   //export function onInit_authKnown(compl: utils.TCallback) {
   //  var creates: Array<utils.TAsync> = [];

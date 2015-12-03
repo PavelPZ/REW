@@ -230,11 +230,9 @@
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
-    <Content Include="Views\home\CommonTest.cshtml" />
-    <Content Include="Views\home\Error.cshtml" />
+    <Content Include="Views\home\Web.cshtml" />
     <Content Include="Views\home\OAuth.cshtml" />
-    <Content Include="Views\home\Schools.cshtml" />
-    <Content Include="Views\home\File.cshtml" />
+    <Content Include="Views\home\Web4.cshtml" />
     <None Include="Properties\PublishProfiles\LMWebCommon - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -421,6 +419,7 @@
     <TypeScriptCompile Include="wwwroot\Common\login\views\login-bs.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\login\views\home-bs.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\login\views\panel.tsx" />
+    <TypeScriptCompile Include="wwwroot\Common\startProcs.ts" />
     <TypeScriptCompile Include="wwwroot\Common\proxies.ts" />
     <TypeScriptCompile Include="wwwroot\Common\testing\test.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\testing\testing.ts" />

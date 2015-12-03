@@ -13,31 +13,17 @@ namespace TheWeb {
   public class HomeController : Controller {
     public HomeController() : base() {
     }
-    public ActionResult Empty() {
-      //var app = Cfg.cfg.defaultPars.app == servConfig.Apps.web ? servConfig.Apps.web : servConfig.Apps.web4;
-      //var view = Cfg.cfg.defaultPars.app == servConfig.Apps.web ? "Common" : "Schools";
-      //return View(view, rememberApp(new HomeViewPars(HttpContext, app)));
-      return Cfg.cfg.defaultPars.app == servConfig.Apps.web ? getCommonTestView("testing") : View("Schools", rememberApp(new HomeViewPars(HttpContext, servConfig.Apps.web4)));
+    public ActionResult Web(string routePrefix, string startProc) {
+      return View("Web", new ModelCfg(HttpContext, rememberCacheKey(new MvcViewPars(HttpContext, servConfig.MvcViewType.web.ToString(), startProc, routePrefix))));
     }
-    public ActionResult CommonTest(string appPart) {
-      return getCommonTestView(appPart);
-      //return View("CommonTest", new ModelCommonTest(HttpContext, rememberApp(new HomeViewPars(HttpContext, servConfig.Apps.web) { appPart = appPart })));
-    }
-    //public ActionResult Common() {
-    //  return View("Common");
-    //}
     public ActionResult OAuth() {
-      return View("OAuth", new ModelOAuth(HttpContext, rememberApp(new HomeViewPars(HttpContext, servConfig.Apps.oauth))));
+      return View("OAuth", new ModelCfg(HttpContext, rememberCacheKey(new MvcViewPars(HttpContext, servConfig.MvcViewType.oauth, servConfig.StartProc.oauth, servConfig.RoutePrefix.oAuth ))));
     }
-    public ActionResult Schools() {
-      return View("Schools", new ModelWeb4(HttpContext, rememberApp(new HomeViewPars(HttpContext, servConfig.Apps.web4))));
+    public ActionResult Web4() {
+      return View("Web4", new ModelWeb4(HttpContext, rememberCacheKey(new MvcViewPars(HttpContext, servConfig.MvcViewType.web4, servConfig.StartProc.empty, servConfig.RoutePrefix.web4))));
     }
-    HomeViewPars rememberApp(HomeViewPars par) { HttpContext.Items["par"] = par; return par; }
-    public static HomeViewPars getRememberedApp(HttpContextBase ctx) { return (HomeViewPars)ctx.Items["par"]; }
-
-    ViewResult getCommonTestView(string appPart) {
-      return View("CommonTest", new ModelCommonTest(HttpContext, rememberApp(new HomeViewPars(HttpContext, servConfig.Apps.web) { appPart = appPart })));
-    }
+    MvcViewPars rememberCacheKey(MvcViewPars par) { HttpContext.Items["cache-key"] = par.getCacheKey(); return par; }
+    public static string getRememberedCacheKey(HttpContextBase ctx) { return (string)ctx.Items["cache-key"]; }
 
   }
 
@@ -62,9 +48,9 @@ namespace TheWeb {
   public class IndexFilter : ActionFilterAttribute {
     public override void OnResultExecuting(ResultExecutingContext context) {
       base.OnResultExecuting(context);
-      if (Cfg.cfg.defaultPars.swFromFileSystem) return;
-      var par = HomeController.getRememberedApp(context.HttpContext);
-      var cacheKey = par.getCacheKey();
+      if (Cfg.cfg.mvcViewPars.swFromFileSystem) return;
+      var cacheKey = HomeController.getRememberedCacheKey(context.HttpContext);
+      //var cacheKey = par.getCacheKey();
       byte[] cachedData; Stream newFilter;
       switch (Cache.makeResponseFromCache(cacheKey, context.HttpContext, out cachedData)) {
         case Cache.makeResponseFromCacheResult.no:
@@ -91,7 +77,7 @@ namespace TheWeb {
       context.BeginRequest += (app, a) => {
         var ctx = ((HttpApplication)app).Context;
         var cacheKey = itemUrl(ctx.Request.Url.AbsolutePath); if (cacheKey == null) return;
-        if (Cfg.cfg.defaultPars.swFromFileSystem) {
+        if (Cfg.cfg.mvcViewPars.swFromFileSystem) {
           ctx.Response.WriteFile(FileSources.pathFromUrl(cacheKey));
           ctx.Response.Flush(); ctx.Response.End();
         } else {

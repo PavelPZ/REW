@@ -124,7 +124,7 @@ namespace DesignNew {
         minifier.jsMinify("/deploy/web/js-externals.dpl.json", "/deploy/web/mins/externals.min.js");
         minifier.jsMinify("/deploy/web/js-common.dpl.json", "/deploy/web/mins/common.min.js");
         //*** ZIP
-        var files = FileSources.getUrls(FileSources.zipSWFilesFilter(servConfig.Apps.web, servConfig.Apps.web4, servConfig.Apps.oauth)).ToArray();
+        var files = FileSources.getUrls(FileSources.zipSWFilesFilter(servConfig.MvcViewType.web, servConfig.MvcViewType.web4, servConfig.MvcViewType.oauth)).ToArray();
         File.WriteAllLines(@"d:\temp\sw_deploy.txt", files);
         var zipFn = FileSources.theWebWwwRoot + @"\swfiles.zip";
         var len = FileSources.zipSWFiles(zipFn, files);
@@ -153,7 +153,7 @@ namespace DesignNew {
         //LMComLib
         CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("LMComLib", null, null, lmclibEnums, null));
         //servConfig
-        CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("servConfig", null, null, servCfgEnums, servCfgTypes));
+        CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("servConfig", null, servCfgEnumsNoConst, servCfgEnums, servCfgTypes));
         //EMailServices
         CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("emailer", null, null, null, emailTypes));
         File.WriteAllText(FileSources.theWebWwwRoot + @"\Common\CsShared.ts", sb.ToString(), Encoding.ASCII);
@@ -171,9 +171,10 @@ namespace DesignNew {
       });
     }
     static Type[] lmclibEnums = new Type[] { typeof(Langs) };
-    static Type[] servCfgEnums = new Type[] { typeof(servConfig.oAuthProviders), typeof(servConfig.SkinIds), typeof(servConfig.Brands), typeof(servConfig.Apps) };
+    static Type[] servCfgEnumsNoConst = new Type[] { typeof(servConfig.RoutePrefix) };
+    static Type[] servCfgEnums = new Type[] { typeof(servConfig.oAuthProviders), typeof(servConfig.SkinIds), typeof(servConfig.Brands), typeof(servConfig.MvcViewType), typeof(servConfig.StartProc) };
     static Type[] servCfgTypes = new Type[] { typeof(servConfig.Root), typeof(servConfig.Azure), typeof(servConfig.ftpAcount), typeof(servConfig.Server),
-      typeof(servConfig.ViewPars), typeof(servConfig.oAuthConfig), typeof(servConfig.oAuthItem), typeof(servConfig.SendGrid), typeof(servConfig.Testing)};
+      typeof(servConfig.MvcViewPars), typeof(servConfig.oAuthConfig), typeof(servConfig.oAuthItem), typeof(servConfig.SendGrid), typeof(servConfig.Testing)};
     static Type[] emailTypes = new Type[] { typeof(emailer.emailMsg), typeof(emailer.att), typeof(emailer.mail) };
 
     static void runTask(string taskName, Func<string> task) {

@@ -13,7 +13,7 @@ namespace TheWeb {
         //FileSourcer
         DesignNew.FileSources.init(Cfg.cfg.server.web4Path, Cfg.cfg.server.basicPath);
         //Cache
-        if (!Cfg.cfg.defaultPars.swFromFileSystem) Cache.init();
+        if (!Cfg.cfg.mvcViewPars.swFromFileSystem) Cache.init();
         //Azure
         AzureLib.Lib.init();
         //Auth

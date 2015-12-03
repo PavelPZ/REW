@@ -9,9 +9,11 @@ using System.IO;
 namespace servConfig {
   public class Root {
     public string lmapp_website_id;
+    public RoutePrefix routePrefix;
+    public StartProc startProc;
     public Server server;
     public Azure azure;
-    public ViewPars defaultPars;
+    public MvcViewPars mvcViewPars;
     public oAuthConfig oAuth;
     public SendGrid sendGrid;
     public Testing testing;
@@ -43,18 +45,20 @@ namespace servConfig {
     public string basicPath;
     public string web4Path;
     public string rootUrl;
-    public Apps app;
-    public string[] appPrefixes;
+    //public Apps app;
+    //public string[] appPrefixes;
   }
 
   public enum Brands { lm, skrivanek, grafia, edusoft }
   public enum SkinIds { bs, mdl }
-  public enum Apps { no, web4, web, oauth }
+  public enum MvcViewType { no, web4, web, oauth }
+  public enum RoutePrefix { no, web, web4, oAuth, some_other }
+  public enum StartProc { no, empty, fluxTest, layoutTest, loginTest, validationTest, testingTest, oauth }
 
-  public class ViewPars {
-    public Apps app;
-    public string appPart;
-    public LMComLib.Langs lang;
+  public class MvcViewPars {
+    public MvcViewType type;
+    //public string appPart;
+    public Langs lang;
     public Brands brand;
     public SkinIds skin;
     public bool debug;
@@ -109,14 +113,8 @@ public static class Cfg {
       Trace.TraceInformation("Cfg.Init, config=" + Newtonsoft.Json.JsonConvert.SerializeObject(cfg));
     });
   }
-  public static string toJS(servConfig.Apps app, string loginUrl) {
-    var copy = JsonConvert.DeserializeObject<servConfig.Root>(JsonConvert.SerializeObject(cfg));
-    //copy.oAuth.loginUrl = loginUrl;
-    copy.server.appPrefixes = LowUtils.EnumGetValues<servConfig.Apps>().Select(ap => ap==servConfig.Apps.no ? "" : "/" + appPrefixes[ap]).ToArray();
-    copy.server.app = app;
-    copy.azure.connectionString = null;
-    copy.sendGrid = null;
-    return JsonConvert.SerializeObject(copy);
+
+  public static string routePrefix(servConfig.RoutePrefix prefix) {
+    return prefix == servConfig.RoutePrefix.no ? "" : prefix.ToString().Replace('_','/') + "/";
   }
-  public static Dictionary<servConfig.Apps, string> appPrefixes = new Dictionary<servConfig.Apps, string> { { servConfig.Apps.oauth, "oauth" }, { servConfig.Apps.web, "web" }, { servConfig.Apps.web4, "web4" } };
 }

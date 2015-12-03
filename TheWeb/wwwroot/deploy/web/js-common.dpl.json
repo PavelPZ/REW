@@ -8,6 +8,7 @@
     "/common/uirouter/js.dpl.json",
     "/common/login/js.dpl.json",
     "/common/testing/testing.js",
+    "/common/startprocs.js",
     "js-tests.dpl.json"
   ]
 }

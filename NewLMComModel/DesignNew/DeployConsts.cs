@@ -15,7 +15,7 @@ namespace DesignNew {
 
     public static HashSet<string> allBrands = new HashSet<string>(LowUtils.EnumGetValues<servConfig.Brands>().Select(b => b.ToString()));
     public static HashSet<string> allSkins = new HashSet<string>(LowUtils.EnumGetValues<servConfig.SkinIds>().Select(b => b.ToString()));
-    public static HashSet<string> allApps = new HashSet<string>(LowUtils.EnumGetValues<servConfig.Apps>().Select(b => b.ToString()));
+    public static HashSet<string> allApps = new HashSet<string>(LowUtils.EnumGetValues<servConfig.MvcViewType>().Select(b => b.ToString()));
 
     public static Langs[] swLangs = new Langs[] { Langs.ar_sa, Langs.bg_bg, Langs.bs, Langs.cs_cz, Langs.de_de, Langs.sp_sp, Langs.fr_fr, Langs.it_it, Langs.lt_lt, Langs.pl_pl, Langs.ru_ru, Langs.sk_sk, Langs.tr_tr, Langs.vi_vn, Langs.zh_cn };
     public static HashSet<string> allSwLangs = new HashSet<string>(swLangs.Select(l => l.ToString())); //dir vsech sw lokalizaci

@@ -91,7 +91,7 @@ namespace auth {
     var par: IOAuthPar = { providerId: providerId, client_id:'' };
 
     //var res = config.loginUrl() + '#' + utils.urlStringifyQuery(par);
-    flux.doExternalNavigate(router.named.oauth.index, ev, par, servConfig.Apps.oauth);
+    flux.doExternalNavigate(router.named.oauth.index, ev, par, servConfig.RoutePrefix.oAuth, servConfig.StartProc.oauth);
     //location.href = res;
   }
 

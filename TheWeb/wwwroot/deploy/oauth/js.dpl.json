@@ -4,6 +4,7 @@
     "/common/proxies.js",
     "/common/lib/oauth-low.js",
     "/common/lib/ajax.js",
-    "/common/lib/oauth.js"
+    "/common/lib/oauth.js",
+    "/common/startprocs.js"
   ],
 }

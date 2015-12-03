@@ -6,31 +6,26 @@ namespace TheWeb {
     public static void RegisterRoutes(RouteCollection routes) {
       routes.LowercaseUrls = true;
 
-      //routes.MapRoute(
-      //    name: "AppFile",
-      //    url: "{*path}",
-      //    defaults: new { controller = "AppFile", action = "File", path = "" },
-      //    constraints: new { path = new AppFileConstraint() }
-      //);
+      servConfig.RoutePrefix actRoutePrefix;
       routes.MapRoute(
-          name: "CommonTest",
-          url: Cfg.appPrefixes[servConfig.Apps.web] + "/{appPart}/{*path}",
-          defaults: new { controller = "Home", action = "CommonTest", appPart = "" }
+          name: "Web",
+          url: Cfg.routePrefix(actRoutePrefix = servConfig.RoutePrefix.no) + "{startProc}/{*path}",
+          defaults: new { controller = "Home", action = "Web", routePrefix = actRoutePrefix, startProc = servConfig.StartProc.testingTest.ToString() }
       );
       routes.MapRoute(
-          name: "Common",
-          url: Cfg.appPrefixes[servConfig.Apps.web],
-          defaults: new { controller = "Home", action = "Common" }
+          name: "Web-other",
+          url: Cfg.routePrefix(actRoutePrefix = servConfig.RoutePrefix.some_other) + "{startProc}/{*path}",
+          defaults: new { controller = "Home", action = "Web", routePrefix = actRoutePrefix, startProc = servConfig.StartProc.testingTest.ToString() }
       );
       routes.MapRoute(
           name: "OAuth",
-          url: Cfg.appPrefixes[servConfig.Apps.oauth],
+          url: Cfg.routePrefix(servConfig.RoutePrefix.no),
           defaults: new { controller = "Home", action = "OAuth" }
       );
       routes.MapRoute(
-          name: "Schools",
-          url: Cfg.appPrefixes[servConfig.Apps.web4],
-          defaults: new { controller = "Home", action = "Schools" }
+          name: "Web4",
+          url: Cfg.routePrefix(servConfig.RoutePrefix.web4),
+          defaults: new { controller = "Home", action = "Web4" }
       );
       routes.MapRoute(
           name: "Empty",

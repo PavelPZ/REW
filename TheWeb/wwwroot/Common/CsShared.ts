@@ -101,6 +101,14 @@ export const enum Langs {
 }
 
 module servConfig {
+export enum RoutePrefix {
+  no = 0,
+  web = 1,
+  web4 = 2,
+  oAuth = 3,
+  some_other = 4,
+}
+
 export const enum oAuthProviders {
   no = 0,
   google = 1,
@@ -121,18 +129,31 @@ export const enum Brands {
   edusoft = 3,
 }
 
-export const enum Apps {
+export const enum MvcViewType {
   no = 0,
   web4 = 1,
   web = 2,
   oauth = 3,
 }
 
+export const enum StartProc {
+  no = 0,
+  empty = 1,
+  fluxTest = 2,
+  layoutTest = 3,
+  loginTest = 4,
+  validationTest = 5,
+  testingTest = 6,
+  oauth = 7,
+}
+
 export interface Root {
   lmapp_website_id: string;
+  routePrefix: RoutePrefix;
+  startProc: StartProc;
   server: Server;
   azure: Azure;
-  defaultPars: ViewPars;
+  mvcViewPars: MvcViewPars;
   oAuth: oAuthConfig;
   sendGrid: SendGrid;
   testing: Testing;
@@ -153,12 +174,9 @@ export interface Server {
   basicPath: string;
   web4Path: string;
   rootUrl: string;
-  app: Apps;
-  appPrefixes: Array<string>;
 }
-export interface ViewPars {
-  app: Apps;
-  appPart: string;
+export interface MvcViewPars {
+  type: MvcViewType;
   lang: LMComLib.Langs;
   brand: Brands;
   skin: SkinIds;

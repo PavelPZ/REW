@@ -1,5 +1,9 @@
 ﻿namespace testingTest {
 
+  export function gotoTesting(ev: React.SyntheticEvent) {
+    flux.doExternalNavigate(router.named.testingTest.index, null, ev, servConfig.RoutePrefix.web, servConfig.StartProc.testingTest);
+  }
+
   //*** PLAYING
   export function save() {
     var st = storageGet(); if (!st || !st.recordings) return null;
