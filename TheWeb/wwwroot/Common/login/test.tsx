@@ -1,6 +1,6 @@
 ﻿namespace router {
   export interface INamedRoutes {
-    loginTest: { default: router.RouteType; }
+    loginTest: { index: router.RouteType; }
   };
   named.loginTest = {} as any;
 }
@@ -12,17 +12,19 @@ namespace loginTest {
   //** ROUTERS and its dispatch
   var namedState = router.named.loginTest; //pojmenovane stavy
   router.init(
-    namedState.default = new router.RouteType(moduleId, 'default', config.appPrefix() + '/login/login-test-home', { needsAuth: true })
+    namedState.index = new router.RouteType(moduleId, 'default', config.appPrefix() + '/login/login-test-home', { needsAuth: true })
   );
-  router.setHome(namedState.default, {});
 
-  namedState.default.dispatch = (par, comp) => { layout.changeScene(layout.sceneDefault, moduleId + '.content'); comp(); };
+  export function doRunApp() {
+    router.setHome(namedState.index, {});
 
-  //** LAYOUT
-  layout.registerRenderer(layout.placeContent, moduleId + '.content', pid => <h2 key={flux.cnt() }>Login test home</h2>);
+    namedState.index.dispatch = (par, comp) => { layout.changeScene(layout.sceneDefault, moduleId + '.content'); comp(); };
 
-  //** INIT app
-  var rootElement = () => <div key={flux.cnt() }>
+    //** LAYOUT
+    layout.registerRenderer(layout.placeContent, moduleId + '.content', pid => <h2 key={flux.cnt() }>Login test home</h2>);
+
+    //** INIT app
+    var rootElement = () => <div key={flux.cnt() }>
       <div><a href='#' onClick={() => { proxies.auth.Login('am', 'psw', res => { }); return false; } }>Ajax</a></div>
       <div><a href='#' onClick={ev => router.navigHome(ev) }>Home</a></div>
       <div><login.Panel initState={flux.getState().auth } parentId={null} id='login-panel'/></div>
@@ -31,8 +33,9 @@ namespace loginTest {
         <layout.ScenePlace initState={layout.scenePlaceState(layout.placeContent) } parentId={pid} id='place-content'/>
           </div>
       }}/>
-    </div>;
+      </div>;
 
-  flux.initApplication(document.getElementById('app'), rootElement);
+    flux.initApplication(document.getElementById('app'), rootElement);
+  }
 
 }

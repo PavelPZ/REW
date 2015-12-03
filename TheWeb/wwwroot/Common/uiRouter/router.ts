@@ -45,9 +45,9 @@ namespace router {
 
   export function getRouteUrl<T extends IPar>(src: IUrl<T>): string { return src.route.getPath(src.par); }
   export function getUrl<T extends IPar>(route: RouteType, par?: T): string { return getRouteUrl({ route: route, par: par }); }
-  export function getHomeHash(): string { return getRouteUrl(homeUrl); }
+  export function getHomeUrl(): string { return getRouteUrl(homeUrl); }
 
-  export function fullPath(hash: string): string { return location.href.split('#')[0] + hash; }
+  //export function fullPath(url: string): string { return servCfg.server.rootUrl + url; }
 
   //URL stringify
   //const urlStrDelim = '~|~';
@@ -76,8 +76,8 @@ namespace router {
   //***** HISTORY
   export interface IHistory<T extends IPar> { moduleId: string; actionId: string; par: T; }
   export type IHistoryType = IHistory<IPar>;
-  function url2History(url: IUrlType): IHistoryType { return { moduleId: url.route.moduleId, actionId: url.route.actionId, par: url.par } }
-  function history2Url(hist: IHistoryType): IUrlType { return { route: routeDir[hist.moduleId + '/' + hist.actionId], par: hist.par } }
+  export function url2History(url: IUrlType): IHistoryType { return { moduleId: url.route.moduleId, actionId: url.route.actionId, par: url.par } }
+  export function history2Url(hist: IHistoryType): IUrlType { return { route: routeDir[hist.moduleId + '/' + hist.actionId], par: hist.par } }
 
   //*** inicilizace 
   export function init(...roots: Array<RouteType>): void { //definice stavu

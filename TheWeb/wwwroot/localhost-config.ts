@@ -22,10 +22,10 @@
     app: servConfig.Apps.web,
     //app: servConfig.Apps.web4,
     brand: servConfig.Brands.lm,
-    debug: false,
+    debug: true,
     lang: LMComLib.Langs.cs_cz,
     skin: servConfig.SkinIds.bs,
-    swFromFileSystem: false,
+    swFromFileSystem: true,
     appPart: null,
   },
   testing: {
@@ -33,7 +33,7 @@
   },
   oAuth: {
     lmLoginEmailSender: { email: '', title: '' },
-    loginUrl: '',
+    //loginUrl: '',
     items: [
       null,
       { clientId: '' }, //google

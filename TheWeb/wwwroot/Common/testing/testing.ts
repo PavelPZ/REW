@@ -1,4 +1,4 @@
-﻿namespace testing {
+﻿namespace testingTest {
 
   //*** PLAYING
   export function save() {

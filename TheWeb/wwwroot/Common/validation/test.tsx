@@ -4,7 +4,24 @@
   }
 }
 
-namespace valTest {
+namespace router {
+  export interface INamedRoutes {
+    validationTest: { index: router.RouteType; }
+  };
+  named.validationTest = {} as any;
+}
+
+
+namespace validationTest {
+
+  //***** ROUTE init
+  var moduleId = 'validationTest';
+
+  //** ROUTERS and its dispatch
+  var namedState = router.named.validationTest; //pojmenovane stavy
+  router.init(
+    namedState.index = new router.RouteType(moduleId, 'default', config.appPrefix() + '/validation/test-home')
+  );
 
   //*********************** DISPATCH MODULE definition
   interface IValTestClickAction extends flux.IAction { }
@@ -43,9 +60,14 @@ namespace valTest {
   //************* WHOLE APP
   //** inicializace aplikace
 
-  new valTest();
+  export function doRunApp() {
 
-  var root = () => <ValTest key={flux.cnt() } initState={flux.getState().valTest} id='valTest.ValTest' parentId={''} >
+    router.setHome(namedState.index, {});
+    namedState.index.dispatch = (par, comp) => { comp(); };
+
+    new valTest();
+
+    var root = () => <ValTest key={flux.cnt() } initState={flux.getState().valTest} id='valTest.ValTest' parentId={''} >
       {/*<validation.Input validator={{ type: validation.types.stringLength | validation.types.stringLength, minLength: 2, maxLength: 4 }}/>*/}
       {/*<validation.Input validator={{ type: validation.types.email }}/>*/}
       <validation.Group>
@@ -53,10 +75,11 @@ namespace valTest {
       <validation.Input validator={{ type: validation.types.equalTo, equalToId: 'psw' }} title='Confirm password'/>
         </validation.Group>
       <p><validation.Input title='???'/></p>
-    </ValTest>;
+      </ValTest>;
 
-  flux.getState().valTest = { ids: [] };
+    flux.getState().valTest = { ids: [] };
 
-  flux.initApplication(document.getElementById('app'), root);
+    flux.initApplication(document.getElementById('app'), root);
+  }
 
 }

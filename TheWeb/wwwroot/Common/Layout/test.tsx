@@ -12,7 +12,7 @@ namespace config {
 namespace router {
   export interface INamedRoutes {
     layoutTest: { //pojmenovane uiRouter.State's aplikace
-      default: router.Route<layoutTest.ITestModuleRoutePar>; //uiRouter.State hlavni stranky aplikace
+      index: router.Route<layoutTest.ITestModuleRoutePar>; //uiRouter.State hlavni stranky aplikace
     }
   };
   named.layoutTest = {} as any;
@@ -25,6 +25,10 @@ namespace flux {
 }
 
 namespace layoutTest {
+
+  const placeOther = 'place-other';
+  const sceneSecond = 'scene-second';
+
 
   //*********************** DISPATCH MODULE definition
   class layoutTest extends flux.Dispatcher {
@@ -51,12 +55,8 @@ namespace layoutTest {
   }
   interface ILayoutTestClickAction extends flux.IAction { }
 
-  //************* WHOLE APP
-  //** definice DISPATCH modulu
-  new layoutTest();
-
   //** ROUTE configuration
-  export var namedState = router.named.layoutTest; //pojmenovane stavy
+  var namedState = router.named.layoutTest; //pojmenovane stavy
 
   //
   export interface ITestModuleRoutePar extends router.IPar {
@@ -65,39 +65,42 @@ namespace layoutTest {
   }
 
   router.init(
-    namedState.default = new router.Route<ITestModuleRoutePar>(layoutTest.moduleId, 'r-default', config.appPrefix() + '/layout/layoutTest/:defaultScene/:defaultPlaces', {
+    namedState.index = new router.Route<ITestModuleRoutePar>(layoutTest.moduleId, 'r-default', config.appPrefix() + '/layout/layoutTest/:defaultScene/:defaultPlaces', {
       needsAuth: false,
-      finishRoutePar: st => { st.defaultPlaces = utils.toBoolean(st.defaultPlaces); st.defaultScene = utils.toBoolean(st.defaultScene); } 
+      finishRoutePar: st => { st.defaultPlaces = utils.toBoolean(st.defaultPlaces); st.defaultScene = utils.toBoolean(st.defaultScene); }
     })
   );
-  router.setHome<ITestModuleRoutePar>(namedState.default, { defaultScene: true, defaultPlaces: true });
 
-  namedState.default.dispatch = (par, comp) => {
-    layout.changeScene(par.defaultScene ? layout.sceneDefault : sceneSecond,
-      { ids: [], placeId: layout.placeContent, rendererId: par.defaultPlaces ? 'cont-cont' : 'cont-panel' },
-      { ids: [], placeId: placeOther, rendererId: par.defaultPlaces ? 'other-cont' : 'other-panel' }
-    );
-    comp();
-  };
+  export function doRunApp() {
+    //************* WHOLE APP
+    //** definice DISPATCH modulu
+    new layoutTest();
 
-  //** SCENE configuration
-  // Jsou 2 sceny (layout.sceneDefault a sceneSecond)
-  // kazda z nich ma 2 places (layout.placeContent a placeOther)
-  // jsou 4 renderery: 'cont-cont', 'cont-panel', 'other-cont', 'other-panel'
+    router.setHome<ITestModuleRoutePar>(namedState.index, { defaultScene: true, defaultPlaces: true });
 
-  var placeOther = 'place-other';
-  var sceneSecond = 'scene-second';
+    namedState.index.dispatch = (par, comp) => {
+      layout.changeScene(par.defaultScene ? layout.sceneDefault : sceneSecond,
+        { ids: [], placeId: layout.placeContent, rendererId: par.defaultPlaces ? 'cont-cont' : 'cont-panel' },
+        { ids: [], placeId: placeOther, rendererId: par.defaultPlaces ? 'other-cont' : 'other-panel' }
+      );
+      comp();
+    };
 
-  layout.registerRenderer(layout.placeContent, 'cont-cont', parent => <h2 key={flux.cnt() }>Other x1</h2>);
-  layout.registerRenderer(layout.placeContent, 'cont-panel', parent => <h2 key={flux.cnt() }>Panel x2</h2>);
-  layout.registerRenderer(placeOther, 'other-cont', parent => <h2 key={flux.cnt() }>Other x3</h2>);
-  layout.registerRenderer(placeOther, 'other-panel', parent => <h2 key={flux.cnt() }>Panel x4</h2>);
+    //** SCENE configuration
+    // Jsou 2 sceny (layout.sceneDefault a sceneSecond)
+    // kazda z nich ma 2 places (layout.placeContent a placeOther)
+    // jsou 4 renderery: 'cont-cont', 'cont-panel', 'other-cont', 'other-panel'
 
-  var rootElement = () => <div key={flux.cnt() } >
-      <a href='#' onClick={ev => namedState.default.navig({ defaultScene: true, defaultPlaces: true }, ev) }>Default Scene, default places</a> |
-      <a href='#' onClick={ev => namedState.default.navig({ defaultScene: false, defaultPlaces: true }, ev) }>Other Scene, default places</a> |
-      <a href='#' onClick={ev => namedState.default.navig({ defaultScene: true, defaultPlaces: false }, ev) }>Default Scene, other places</a> |
-      <a href='#' onClick={ev => namedState.default.navig({ defaultScene: false, defaultPlaces: false }, ev) }>Other Scene, other places</a> |
+    layout.registerRenderer(layout.placeContent, 'cont-cont', parent => <h2 key={flux.cnt() }>Other x1</h2>);
+    layout.registerRenderer(layout.placeContent, 'cont-panel', parent => <h2 key={flux.cnt() }>Panel x2</h2>);
+    layout.registerRenderer(placeOther, 'other-cont', parent => <h2 key={flux.cnt() }>Other x3</h2>);
+    layout.registerRenderer(placeOther, 'other-panel', parent => <h2 key={flux.cnt() }>Panel x4</h2>);
+
+    var rootElement = () => <div key={flux.cnt() } >
+      <a href='#' onClick={ev => namedState.index.navig({ defaultScene: true, defaultPlaces: true }, ev) }>Default Scene, default places</a> |
+      <a href='#' onClick={ev => namedState.index.navig({ defaultScene: false, defaultPlaces: true }, ev) }>Other Scene, default places</a> |
+      <a href='#' onClick={ev => namedState.index.navig({ defaultScene: true, defaultPlaces: false }, ev) }>Default Scene, other places</a> |
+      <a href='#' onClick={ev => namedState.index.navig({ defaultScene: false, defaultPlaces: false }, ev) }>Other Scene, other places</a> |
 
       <layout.Scene initState={flux.getState().layout.scene } parentId={''} id='scene' cases={{
 
@@ -119,10 +122,11 @@ namespace layoutTest {
         <div>Footer: {sceneSecond}</div>
           </div>
       }}/>
-    </div>;
+      </div>;
 
-  flux.getState().layoutTest = {};
+    flux.getState().layoutTest = {};
 
-  flux.initApplication(document.getElementById('app'), rootElement);
+    flux.initApplication(document.getElementById('app'), rootElement);
+  }
 
 }

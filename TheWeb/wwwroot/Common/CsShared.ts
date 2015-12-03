@@ -165,7 +165,6 @@ export interface ViewPars {
 }
 export interface oAuthConfig {
   lmLoginEmailSender: emailer.mail;
-  loginUrl: string;
   items: Array<oAuthItem>;
 }
 export interface oAuthItem {

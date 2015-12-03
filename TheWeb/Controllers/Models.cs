@@ -70,7 +70,8 @@ namespace TheWeb {
 
   public class ModelCommonTest : ModelCommonCfg {
     public ModelCommonTest(HttpContextBase ctx, HomeViewPars pars) : base(ctx, pars) {
-      startJS = "<script type='text/javascript' src='~/common/" + pars.appPart + "/test.js'></script>";
+      //startJS = "<script type='text/javascript' src='~/common/" + pars.appPart + "/test.js'></script>";
+      startJS = string.Format("<script type='text/javascript'>{0}Test.doRunApp()</script>", pars.appPart);
     }
     public string startJS;
   }

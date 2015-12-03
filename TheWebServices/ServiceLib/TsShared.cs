@@ -64,7 +64,7 @@ namespace servConfig {
   public enum oAuthProviders { no = 0, google = 1, facebook = 2, microsoft = 3, }
   public class oAuthConfig {
     public emailer.mail lmLoginEmailSender;
-    public string loginUrl; //plna URL k oAuth login strance
+    //public string loginUrl; //plna URL k oAuth login strance
     public oAuthItem[] items; //musi byt pevne poradi, napr. items[2] je facebook
   }
   public class oAuthItem {
@@ -111,10 +111,11 @@ public static class Cfg {
   }
   public static string toJS(servConfig.Apps app, string loginUrl) {
     var copy = JsonConvert.DeserializeObject<servConfig.Root>(JsonConvert.SerializeObject(cfg));
-    copy.oAuth.loginUrl = loginUrl;
+    //copy.oAuth.loginUrl = loginUrl;
     copy.server.appPrefixes = LowUtils.EnumGetValues<servConfig.Apps>().Select(ap => "/" + appPrefixes[ap]).ToArray();
     copy.server.app = app;
     copy.azure.connectionString = null;
+    copy.sendGrid = null;
     return JsonConvert.SerializeObject(copy);
   }
   public static Dictionary<servConfig.Apps, string> appPrefixes = new Dictionary<servConfig.Apps, string> { { servConfig.Apps.oauth, "oauth" }, { servConfig.Apps.web, "web" }, { servConfig.Apps.web4, "web4" } };

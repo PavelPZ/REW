@@ -1,0 +1,394 @@
+{
+  "recordings": [
+    {
+      "initStatus": {
+        "layout": {
+          "scene": {
+            "ids": [],
+            "caseId": "scene-default"
+          },
+          "scenePlaces": {}
+        },
+        "auth": {
+          "ids": [],
+          "email": "pavel.zika@langmaster.com",
+          "providerId": 2,
+          "lastName": "Zika",
+          "firstName": "Pavel"
+        }
+      },
+      "actions": [
+        {
+          "moduleId": "flux",
+          "actionId": "externalnavigate",
+          "hist": {
+            "moduleId": "loginTest",
+            "actionId": "default",
+            "par": null
+          }
+        }
+      ]
+    },
+    {
+      "initStatus": {
+        "layout": {
+          "scene": {
+            "ids": [],
+            "caseId": "scene-default"
+          },
+          "scenePlaces": {
+            "place-content": {
+              "ids": [],
+              "placeId": "place-content",
+              "rendererId": "login.home"
+            }
+          }
+        },
+        "auth": {
+          "ids": [],
+          "email": null,
+          "providerId": 0,
+          "lastName": null,
+          "firstName": null
+        }
+      },
+      "actions": [
+        {
+          "moduleId": "flux",
+          "actionId": "externalnavigate",
+          "hist": {
+            "moduleId": "oauth",
+            "actionId": "default",
+            "par": {
+              "providerId": 2,
+              "client_id": ""
+            }
+          }
+        }
+      ]
+    },
+    {
+      "initStatus": {
+        "layout": {
+          "scene": {
+            "ids": [],
+            "caseId": "scene-default"
+          },
+          "scenePlaces": {
+            "place-content": {
+              "ids": [],
+              "placeId": "place-content",
+              "rendererId": "loginTest.content"
+            }
+          }
+        },
+        "auth": {
+          "ids": [],
+          "email": "pavel.zika@langmaster.com",
+          "providerId": 2,
+          "lastName": "Zika",
+          "firstName": "Pavel"
+        }
+      },
+      "actions": [
+        {
+          "moduleId": "flux",
+          "actionId": "externalnavigate",
+          "hist": {
+            "moduleId": "testing",
+            "actionId": "default",
+            "par": null
+          }
+        }
+      ]
+    },
+    {
+      "initStatus": {
+        "layout": {
+          "scene": {
+            "ids": [],
+            "caseId": "scene-default"
+          },
+          "scenePlaces": {}
+        },
+        "auth": {
+          "ids": [],
+          "email": "pavel.zika@langmaster.com",
+          "providerId": 2,
+          "lastName": "Zika",
+          "firstName": "Pavel"
+        }
+      },
+      "actions": [
+        {
+          "moduleId": "flux",
+          "actionId": "externalnavigate",
+          "hist": {
+            "moduleId": "layoutTest",
+            "actionId": "r-default",
+            "par": null
+          }
+        }
+      ]
+    },
+    {
+      "initStatus": {
+        "layoutTest": {},
+        "layout": {
+          "scene": {
+            "ids": [],
+            "caseId": "scene-second"
+          },
+          "scenePlaces": {
+            "place-content": {
+              "ids": [],
+              "placeId": "place-content",
+              "rendererId": "cont-panel"
+            },
+            "place-other": {
+              "ids": [],
+              "placeId": "place-other",
+              "rendererId": "other-panel"
+            }
+          }
+        },
+        "auth": {
+          "ids": [],
+          "email": "pavel.zika@langmaster.com",
+          "providerId": 2,
+          "lastName": "Zika",
+          "firstName": "Pavel"
+        }
+      },
+      "actions": [
+        {
+          "moduleId": "layoutTest",
+          "actionId": "r-default",
+          "par": {
+            "defaultScene": false,
+            "defaultPlaces": true
+          }
+        },
+        {
+          "moduleId": "layoutTest",
+          "actionId": "r-default",
+          "par": {
+            "defaultScene": true,
+            "defaultPlaces": false
+          }
+        },
+        {
+          "moduleId": "layoutTest",
+          "actionId": "r-default",
+          "par": {
+            "defaultScene": false,
+            "defaultPlaces": false
+          }
+        },
+        {
+          "moduleId": "flux",
+          "actionId": "externalnavigate",
+          "hist": {
+            "moduleId": "testing",
+            "actionId": "default",
+            "par": null
+          }
+        }
+      ]
+    },
+    {
+      "initStatus": {
+        "layout": {
+          "scene": {
+            "ids": [],
+            "caseId": "scene-default"
+          },
+          "scenePlaces": {}
+        },
+        "auth": {
+          "ids": [],
+          "email": "pavel.zika@langmaster.com",
+          "providerId": 2,
+          "lastName": "Zika",
+          "firstName": "Pavel"
+        }
+      },
+      "actions": [
+        {
+          "moduleId": "flux",
+          "actionId": "externalnavigate",
+          "hist": {
+            "moduleId": "validationTest",
+            "actionId": "default",
+            "par": null
+          }
+        }
+      ]
+    },
+    {
+      "initStatus": {
+        "valTest": {
+          "ids": []
+        },
+        "layout": {
+          "scene": {
+            "ids": [],
+            "caseId": "scene-default"
+          },
+          "scenePlaces": {}
+        },
+        "auth": {
+          "ids": [],
+          "email": "pavel.zika@langmaster.com",
+          "providerId": 2,
+          "lastName": "Zika",
+          "firstName": "Pavel"
+        }
+      },
+      "actions": [
+        {
+          "moduleId": "flux",
+          "actionId": "externalnavigate",
+          "hist": {
+            "moduleId": "testing",
+            "actionId": "default",
+            "par": null
+          }
+        }
+      ]
+    },
+    {
+      "initStatus": {
+        "layout": {
+          "scene": {
+            "ids": [],
+            "caseId": "scene-default"
+          },
+          "scenePlaces": {}
+        },
+        "auth": {
+          "ids": [],
+          "email": "pavel.zika@langmaster.com",
+          "providerId": 2,
+          "lastName": "Zika",
+          "firstName": "Pavel"
+        }
+      },
+      "actions": [
+        {
+          "moduleId": "flux",
+          "actionId": "externalnavigate",
+          "hist": {
+            "moduleId": "fluxTest",
+            "actionId": "default",
+            "par": null
+          }
+        }
+      ]
+    },
+    {
+      "initStatus": {
+        "fluxTest": {
+          "ids": [],
+          "clickTitle": "Click",
+          "hello1": {
+            "actName": "John",
+            "ids": []
+          },
+          "hello2": {
+            "actName": "Marthy",
+            "ids": []
+          }
+        },
+        "fluxTestPlacer": {
+          "ids": [],
+          "isApp": false,
+          "hello": {
+            "ids": [],
+            "actName": "John"
+          }
+        },
+        "fluxTestSwitcher": {
+          "ids": [],
+          "caseId": "place"
+        },
+        "layout": {
+          "scene": {
+            "ids": [],
+            "caseId": "scene-default"
+          },
+          "scenePlaces": {}
+        },
+        "auth": {
+          "ids": [],
+          "email": "pavel.zika@langmaster.com",
+          "providerId": 2,
+          "lastName": "Zika",
+          "firstName": "Pavel"
+        }
+      },
+      "actions": [
+        {
+          "moduleId": "mod1",
+          "actionId": "click",
+          "scopeComponent": "fluxTest.HelloMessage<fluxTest.Switcher<layout.PlaceHolder"
+        },
+        {
+          "moduleId": "mod1",
+          "actionId": "placehloderClick"
+        },
+        {
+          "moduleId": "mod1",
+          "actionId": "click",
+          "scopeComponent": "fluxTest.HelloMessage4<fluxTest.App<fluxTest.Switcher<layout.PlaceHolder"
+        },
+        {
+          "moduleId": "mod1",
+          "actionId": "appclick"
+        },
+        {
+          "moduleId": "mod1",
+          "actionId": "click",
+          "scopeComponent": "fluxTest.HelloMessage1<fluxTest.App<fluxTest.Switcher<layout.PlaceHolder"
+        },
+        {
+          "moduleId": "mod1",
+          "actionId": "placehloderClick"
+        },
+        {
+          "moduleId": "mod1",
+          "actionId": "click",
+          "scopeComponent": "fluxTest.HelloMessage<fluxTest.Switcher<layout.PlaceHolder"
+        },
+        {
+          "moduleId": "flux",
+          "actionId": "externalnavigate",
+          "hist": {
+            "moduleId": "testing",
+            "actionId": "default",
+            "par": null
+          }
+        }
+      ]
+    },
+    {
+      "initStatus": {
+        "layout": {
+          "scene": {
+            "ids": [],
+            "caseId": "scene-default"
+          },
+          "scenePlaces": {}
+        },
+        "auth": {
+          "ids": [],
+          "email": "pavel.zika@langmaster.com",
+          "providerId": 2,
+          "lastName": "Zika",
+          "firstName": "Pavel"
+        }
+      },
+      "actions": []
+    }
+  ]
+}

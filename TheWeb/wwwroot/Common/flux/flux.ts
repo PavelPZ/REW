@@ -1,6 +1,6 @@
 ﻿const router_listenHashChange = () => router.listenUrlChange;
 const router_tryDispatchRoute = () => router.tryDispatchRoute;
-const testing_continuePlaying = () => testing.continuePlaying;
+const testing_continuePlaying = () => testingTest.continuePlaying;
 const router_onInitRoute = () => router.onInitRoute;
 
 namespace config {
@@ -32,24 +32,32 @@ namespace flux {
   export function actionPath(act: IAction) { return act.moduleId + '/' + act.actionId; }
   export function cnt(): string { return (_cnt++).toString(); } var _cnt = 0;
   const appPrefixPlace = '\\~\\';
-  export function doExternalNavigate(url: string, ev?: React.SyntheticEvent) {
+  export function doExternalNavigate(route: router.RouteType, par?: router.IPar, ev?: React.SyntheticEvent) {
     if (ev) ev.preventDefault();
-    if (url.startsWith(servCfg.server.rootUrl)) url = appPrefixPlace + url.substr(servCfg.server.rootUrl.length);
-    var act: IExternalNavigateAction = { moduleId: moduleId, actionId: 'externalnavigate', url: url };
+    //if (url.startsWith(servCfg.server.rootUrl)) url = appPrefixPlace + url.substr(servCfg.server.rootUrl.length);
+    var act: IExternalNavigateAction = { moduleId: moduleId, actionId: 'externalnavigate', hist: router.url2History({ route: route, par: par }) };
     trigger(act, utils.Noop);
-    testing.onExternalLink();
+    testingTest.onExternalLink();
   }
 
-  var moduleId = 'flux'; 
-  interface IExternalNavigateAction extends flux.IAction { url: string; } //navigace na externi ULR
+  var moduleId = 'flux';
+  interface IExternalNavigateAction extends flux.IAction { hist: router.IHistoryType; } //navigace na externi ULR
   function triggerExternalNavigateAction(action: IAction): boolean {
     if (action.moduleId != moduleId || action.actionId != 'externalnavigate') return false;
-    setTimeout(() => {
-      var url = (action as IExternalNavigateAction).url;
-      if (url.startsWith(appPrefixPlace)) url = servCfg.server.rootUrl + url.substr(appPrefixPlace.length);
-      location.href = url;
-      loger.log('flux.triggerExternalNavigateAction: ' + url);
-    }, 1);
+    //setTimeout(() => {
+    var hist = (action as IExternalNavigateAction).hist;
+    //if (url.startsWith(appPrefixPlace)) url = servCfg.server.rootUrl + url.substr(appPrefixPlace.length);
+    //var res = config.loginUrl() + '#' + utils.urlStringifyQuery(par);
+    var url = router.history2Url(hist);
+    if (url.route == router.named.oauth.index) { //hash misto query par
+      var par = JSON.parse(JSON.stringify(url.par)) as auth.IOAuthPar;
+      par.client_id = servCfg.oAuth.items[par.providerId].clientId;
+      var href = router.getRouteUrl(url) + '#' + utils.urlStringifyQuery(par);
+      location.href = href;
+    } else
+      location.href = router.getRouteUrl(url);
+    loger.log('flux.triggerExternalNavigateAction: ' + hist);
+    //}, 1);
     return true;
   }
 
@@ -148,7 +156,7 @@ namespace flux {
     //** normalni inicializace
     config.onInitAppState(() => { //staticka inicializace app state (bez ohledu na aktualne naladovanou ROUTE)
       router_onInitRoute()(() => { //inicializace default route (call initialni "hashchange" event). Pres flux.trigger se vola onDispatchRouteAction, kde je ev. redirekt na LOGIN.
-        testing.continueRecording();
+        testingTest.continueRecording();
         buildDOMTree(); //ReactDOM.render
         router_listenHashChange()(); //"hashchange" event binding
         appInitialized = true;

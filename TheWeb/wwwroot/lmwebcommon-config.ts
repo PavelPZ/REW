@@ -29,11 +29,11 @@
   },
   oAuth: {
     lmLoginEmailSender: { email: '', title: '' },
-    loginUrl: '',
+    //loginUrl: '',
     items: [
       null,
       { clientId: '' }, //google
-      { clientId: '765138080284696' }, //FB
+      { clientId: '1672186266357328' }, //FB
       { clientId: '' } //MS
     ]
   },

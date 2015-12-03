@@ -14,16 +14,18 @@ namespace TheWeb {
     public HomeController() : base() {
     }
     public ActionResult Empty() {
-      var app = Cfg.cfg.defaultPars.app == servConfig.Apps.web ? servConfig.Apps.web : servConfig.Apps.web4;
-      var view = Cfg.cfg.defaultPars.app == servConfig.Apps.web ? "Common" : "Schools";
-      return View(view, rememberApp(new HomeViewPars(HttpContext, app)));
+      //var app = Cfg.cfg.defaultPars.app == servConfig.Apps.web ? servConfig.Apps.web : servConfig.Apps.web4;
+      //var view = Cfg.cfg.defaultPars.app == servConfig.Apps.web ? "Common" : "Schools";
+      //return View(view, rememberApp(new HomeViewPars(HttpContext, app)));
+      return Cfg.cfg.defaultPars.app == servConfig.Apps.web ? getCommonTestView("testing") : View("Schools", rememberApp(new HomeViewPars(HttpContext, servConfig.Apps.web4)));
     }
     public ActionResult CommonTest(string appPart) {
-      return View("CommonTest", new ModelCommonTest(HttpContext, rememberApp(new HomeViewPars(HttpContext, servConfig.Apps.web) { appPart = appPart })));
+      return getCommonTestView(appPart);
+      //return View("CommonTest", new ModelCommonTest(HttpContext, rememberApp(new HomeViewPars(HttpContext, servConfig.Apps.web) { appPart = appPart })));
     }
-    public ActionResult Common() {
-      return View("Common");
-    }
+    //public ActionResult Common() {
+    //  return View("Common");
+    //}
     public ActionResult OAuth() {
       return View("OAuth", new ModelOAuth(HttpContext, rememberApp(new HomeViewPars(HttpContext, servConfig.Apps.oauth))));
     }
@@ -32,6 +34,10 @@ namespace TheWeb {
     }
     HomeViewPars rememberApp(HomeViewPars par) { HttpContext.Items["par"] = par; return par; }
     public static HomeViewPars getRememberedApp(HttpContextBase ctx) { return (HomeViewPars)ctx.Items["par"]; }
+
+    ViewResult getCommonTestView(string appPart) {
+      return View("CommonTest", new ModelCommonTest(HttpContext, rememberApp(new HomeViewPars(HttpContext, servConfig.Apps.web) { appPart = appPart })));
+    }
 
   }
 

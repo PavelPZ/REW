@@ -211,6 +211,7 @@
     <Content Include="wwwroot\scripts\react-dom.js" />
     <Content Include="wwwroot\scripts\react-with-addons.js" />
     <Content Include="wwwroot\TestPlaylists\noname.json" />
+    <Content Include="wwwroot\deploy\web\js-tests.dpl.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AppConfig.cs" />
@@ -228,7 +229,6 @@
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
-    <Content Include="Views\home\Common.cshtml" />
     <Content Include="Views\home\CommonTest.cshtml" />
     <Content Include="Views\home\Error.cshtml" />
     <Content Include="Views\home\OAuth.cshtml" />
@@ -407,22 +407,18 @@
     <TypeScriptCompile Include="wwwroot\Common\lib\encrypt.ts" />
     <TypeScriptCompile Include="wwwroot\Common\lib\oAuth-low.ts" />
     <TypeScriptCompile Include="wwwroot\Common\lib\oauth.ts" />
-    <TypeScriptCompile Include="wwwroot\Common\lib\test.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\login\auth.ts" />
     <TypeScriptCompile Include="wwwroot\Common\login\dispatcher.ts" />
     <TypeScriptCompile Include="wwwroot\Common\login\index.ts" />
     <TypeScriptCompile Include="wwwroot\Common\login\test.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\login\views\home-bs.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\login\views\panel.tsx" />
-    <TypeScriptCompile Include="wwwroot\Common\persist\persist.ts" />
-    <TypeScriptCompile Include="wwwroot\Common\persist\test.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\proxies.ts" />
     <TypeScriptCompile Include="wwwroot\Common\testing\test.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\testing\testing.ts" />
     <TypeScriptCompile Include="wwwroot\Common\uiRouter\angularCommon.ts" />
     <TypeScriptCompile Include="wwwroot\Common\uiRouter\router.ts" />
     <TypeScriptCompile Include="wwwroot\Common\uiRouter\routerCommon.ts" />
-    <TypeScriptCompile Include="wwwroot\Common\uiRouter\test.ts" />
     <TypeScriptCompile Include="wwwroot\Common\validation\lib.ts" />
     <TypeScriptCompile Include="wwwroot\Common\validation\templates-bs.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\validation\templates-mdl.tsx" />

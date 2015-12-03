@@ -23,6 +23,7 @@ namespace config {
   }
   cfg.data.mod1 = {} as any;
 }
+
 namespace flux {
   export interface IAppState {
     fluxTest?: fluxTest.IAppState;
@@ -31,7 +32,24 @@ namespace flux {
   }
 }
 
+namespace router {
+  export interface INamedRoutes {
+    fluxTest: { index: router.RouteType; }
+  };
+  named.fluxTest = {} as any;
+}
+
+
 namespace fluxTest {
+
+  //***** ROUTE init
+  var moduleId = 'fluxTest';
+
+  //** ROUTERS and its dispatch
+  var namedState = router.named.fluxTest; //pojmenovane stavy
+  router.init(
+    namedState.index = new router.RouteType(moduleId, 'default', config.appPrefix() + '/flux/flux-test-home')
+  );
 
   //*********************** DISPATCH MODULE definition
   interface IAppClickAction extends flux.IAction { }
@@ -127,31 +145,69 @@ namespace fluxTest {
   interface IPlaceHolderProps extends flux.ISmartProps<IPlaceHolderState> { }
   export interface IPlaceHolderState extends flux.ISmartState { isApp: boolean; hello: IHelloWorldState; }
 
+  export interface IRouteTestHash extends router.IPar { id: number; opt1: string; opt2: string; }
+  
+  function testRouterLow() {
+    //** inicializace aplikace
+
+    //*** low level UrlMatcher test
+    var urlMatcher = new uiRouter.UrlMatcher('/user/:id/name/:name?opt1&opt2');
+    var pars = urlMatcher.exec('/useR/123/Name/alex', { opt1: 'xxx', opt2: 'yyy' });
+    var url = urlMatcher.format(pars);
+    url = urlMatcher.format({ id: 123, opt1: true, opt2: 'yyy' });
+
+    var defaultRoute: router.Route<IRouteTestHash>;
+    //*** router konfiguration
+    router.init(
+      new router.Route('m1', 'x1', '/login', null,
+        new router.Route('m1', 'x2', '/login'),
+        new router.Route('m1', 'x3', '/select')
+      ),
+      defaultRoute = new router.Route<IRouteTestHash>('m1', 'y', '/user/:id/name/:name?opt1&opt2', {
+        finishRoutePar: st => { st.id = utils.toNumber(st.id); }
+      })
+    );
+
+    //*** rucni MATCH
+    var par = defaultRoute.parseRoute(router.toQuery('/useR/123/Name/alex?opt1=xxx&opt2=yyy'));
+    var d1 = router.toUrl('/login.select');
+    var d2 = router.toUrl('/useR/123/Name/alex?opt1=xxx&opt2=yyy');
+    var d3 = router.toUrl('/login.login');
+  }
+
 
   //************* WHOLE APP
   //** inicializace aplikace x
 
-  new mod1();
+  export function doRunApp() {
 
-  var root = () => <layout.Switcher key={flux.cnt() } initState={flux.getState().fluxTestSwitcher} parentId={''} id='layout.PlaceHolder' cases={{
-    app: pid => <App  key={flux.cnt() } initState={flux.getState().fluxTest} parentId={pid} id='fluxTest.App'/>,
-    place: pid => <Switcher  key={flux.cnt() } initState={flux.getState().fluxTestPlacer} parentId={pid} id='fluxTest.Switcher'/>
-  }}/>;
+    router.setHome(namedState.index, {});
+    namedState.index.dispatch = (par, comp) => { comp(); };
 
-  var st = flux.getState();
-  st.fluxTest = {
-    ids: [],
-    clickTitle: 'Click',
-    hello1: { actName: 'John', ids: [] },
-    hello2: { actName: 'Marthy', ids: [] }
-  };
-  st.fluxTestPlacer = {
-    ids: [],
-    isApp: false,
-    hello: { ids: [], actName: 'John' },
-  };
-  st.fluxTestSwitcher = { ids: [], caseId: 'place' };
+    testRouterLow();
 
-  flux.initApplication(document.getElementById('app'), root);
+    new mod1();
+
+    var root = () => <layout.Switcher key={flux.cnt() } initState={flux.getState().fluxTestSwitcher} parentId={''} id='layout.PlaceHolder' cases={{
+      app: pid => <App  key={flux.cnt() } initState={flux.getState().fluxTest} parentId={pid} id='fluxTest.App'/>,
+      place: pid => <Switcher  key={flux.cnt() } initState={flux.getState().fluxTestPlacer} parentId={pid} id='fluxTest.Switcher'/>
+    }}/>;
+
+    var st = flux.getState();
+    st.fluxTest = {
+      ids: [],
+      clickTitle: 'Click',
+      hello1: { actName: 'John', ids: [] },
+      hello2: { actName: 'Marthy', ids: [] }
+    };
+    st.fluxTestPlacer = {
+      ids: [],
+      isApp: false,
+      hello: { ids: [], actName: 'John' },
+    };
+    st.fluxTestSwitcher = { ids: [], caseId: 'place' };
+
+    flux.initApplication(document.getElementById('app'), root);
+  }
 
 }

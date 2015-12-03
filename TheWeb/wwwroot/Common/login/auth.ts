@@ -2,6 +2,14 @@
   export interface IAppState { auth?: auth.IUser; }
 }
 
+namespace router {
+  export interface INamedRoutes {
+    oauth: { index: router.Route<auth.IOAuthPar>; }
+  };
+  named.oauth = {} as any;
+}
+
+
 namespace config {
   export interface IData { auth?: auth.IConfig; }
   cfg.data.auth = {
@@ -15,6 +23,16 @@ namespace config {
 }
 
 namespace auth {
+
+  var moduleId = 'oauth';
+  router.init(
+    router.named.oauth.index = new router.Route<auth.IOAuthPar>(moduleId, 'default', config.appPrefix(servConfig.Apps.oauth))
+  );
+  export interface IOAuthPar extends router.IPar{
+    providerId: servConfig.oAuthProviders;
+    client_id: string;
+  }
+
 
   //************** DEKLARACE
 
@@ -56,18 +74,17 @@ namespace auth {
   //}
 
   export function gotoOAuth(providerId: servConfig.oAuthProviders, ev?: React.SyntheticEvent) {
-
     //URL pro navrat z uspesneho OAUTH je prazdna => dej home page
     var retUrl = oauth.useLoginSourcePage();
-    if (utils.isEmpty(retUrl)) oauth.saveLoginSourcePage(router.fullPath(router.getHomeHash()));
+    if (utils.isEmpty(retUrl)) oauth.saveLoginSourcePage(router.getHomeUrl());
 
     //oAuth url
     var providerPar = servCfg.oAuth.items[providerId];
-    var par: oauth.IInputPar = { client_id: providerPar.clientId, providerId: providerId };
-    var res = servCfg.oAuth.loginUrl + '#' + utils.urlStringifyQuery(par);
+    //var par: oauth.IInputPar = { client_id: providerPar.clientId, providerId: providerId };
+    var par: IOAuthPar = { providerId: providerId, client_id:'' };
 
-    //var res = auth.getOAuthLink(servCfg.oAuth.loginUrl, { client_id: par.clientId, providerId: providerId });
-    flux.doExternalNavigate(res, ev);
+    //var res = config.loginUrl() + '#' + utils.urlStringifyQuery(par);
+    flux.doExternalNavigate(router.named.oauth.index, par, ev);
     //location.href = res;
   }
 

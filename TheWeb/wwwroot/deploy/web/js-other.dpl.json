@@ -1,13 +1,5 @@
 {
   "includes": [
-    "/common/lib/test.js",
-    "/common/flux/test.js",
-    "/common/layout/test.js",
-    "/common/login/test.js",
-    "/common/persist/test.js",
-    "/common/uirouter/test.js",
-    "/common/validation/test.js",
-    "/common/testing/test.js",
     "@^/common/.*\\.map$"
   ]
 }
