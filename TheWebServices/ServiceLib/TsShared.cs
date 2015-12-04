@@ -81,16 +81,20 @@ namespace emailer {
   public class emailMsg {
     public mail from;
     public mail[] to;
+    [Nullable]
     public mail[] cc;
+    [Nullable]
     public mail[] bcc;
     public string subject;
     public string body;
+    [Nullable]
     public string plainBody;
     [Nullable]
     public att[] attachments;
   }
   public class mail {
     public string email;
+    [Nullable]
     public string title;
   }
   public class att {

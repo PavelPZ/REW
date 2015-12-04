@@ -1,32 +1,14 @@
 ﻿{
-  "lmapp_website_id": "lmwebcommon",
-  "server": {
-    "basicPath": "D:\\home\\site\\wwwroot",
-    "web4Path": ""
+  "from": {
+    "email": "support@langmaster.cz",
+    "title": "LANGMaster Support"
   },
-  "azure": {
-    "connectionString": "DefaultEndpointsProtocol=https;AccountName=lmdata;AccountKey=Hx//uWeo6vDSA2BHbBJP7HZviSSE6D8qZhGV7f4G778yPcfGOiBODF6o7Cg6029JiqnpMm1U8KrlD3+hycYiEw==",
-    "blobJS": "http://lmdata.blob.core.windows.net/js-v001",
-    "blobMM": "http://lmdata.blob.core.windows.net/mm-v001",
-    "swDeployAccount": null,
-    "rootUrl": "http://lmwebcommon.azurewebsites.net"
-  },
-  "defaultPars": {
-    "app": 1,
-    "appPart": null,
-    "lang": 2,
-    "brand": 0,
-    "skin": 0,
-    "debug": true,
-    "swFromFileSystem": false
-  },
-  "oAuth": {
-    "loginUrl": "",
-    "items": [
-      null,
-      { "clientId": "" },
-      { "clientId": "765138080284696" },
-      { "clientId": "" }
-    ]
-  }
+  "to": [
+    {
+      "email": "pzika@langmaster.cz",
+      "title": " "
+    }
+  ],
+  "subject": "LANGMaster Confirm Registration",
+  "body": "<div><a href=\"#\">Confirm</a></div>"
 }

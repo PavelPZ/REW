@@ -14,26 +14,31 @@
         if (!prop.tabIndex) this.tabIndex = this.myGroup.lastTabIndex++;
       } else
         this.tabIndex = prop.tabIndex || 0;
+      this.id = utils.propName(this.props.idPtr);
     }
     myGroup: Group;
     tabIndex: number;
+    id: string;
     render() {
       return validation.getInputTemplate(this, { value: this.state.value, requestChange: newVal => this.change(newVal) }); //https://facebook.github.io/react/docs/two-way-binding-helpers.html
     }
+    //pozdrzeni BLUR event, vola se nekdy sama
+    componentDidMount() { setTimeout(() => this.blur = () => { this.state.blured = true; this.doValidate(); }, 1); }
 
     doValidate() {
       if (!this.props.validator) return;
       if (this.state.blured) {
         this.state.error = null;
-        if (this.myGroup) this.myGroup.validate();
+        if (this.myGroup) this.myGroup.multiValidate();
         validate(this.props.validator, this.state);
       }
       this.setState(this.state);
     }
 
     change(newVal: string) { this.state.value = newVal; this.doValidate(); } //zmena hodnoty
-    keyDown(ev: React.KeyboardEvent) { if (ev.keyCode != 13) return; this.blur(); } //ENTER
-    blur() { this.state.blured = true; this.doValidate(); } //ztrata fokusu
+    keyDown(ev: React.KeyboardEvent) { if (ev.keyCode != 13) return; this.doBlur(); } //ENTER
+    blur: () => void; //ztrata fokusu
+    doBlur() { if (this.blur) this.blur(); }
 
     static contextTypes = { myGroup: React.PropTypes.any };
   }
@@ -42,34 +47,44 @@
     validator?: IValidPars;
     initValue?: string;
     title: string;
-    id?: string;
+    idPtr: utils.propNameType;
     type?: string; tabIndex?: number;
   }
 
   //--- GROUP
   export class Group extends flux.DumpComponent<IGroupProps, any>{
-    render() {
-      return validation.getGroupTemplate(this);
-    }
+
+    render() { return validation.getGroupTemplate(this); }
 
     id: string;
     lastTabIndex = 1;
     inputs: Array<Input> = [];
-    validate() {
-      var th = this;
+    multiValidate():boolean {
+      var th = this; var isError = false;
       //validace stejnych hesel
       th.inputs.filter(sp => sp.props.validator && sp.state.blured && (sp.props.validator.type & types.equalTo) != 0).forEach(sp => {
-        var pp = th.inputs.find(p => p.props.validator && p.state.blured && p.props.id == sp.props.validator.equalToId); if (!pp) return;
+        var pp = th.inputs.find(p => p.props.validator && p.state.blured && p.id == sp.props.validator.equalToId); if (!pp) return;
         sp.state.error = pp.state.value != sp.state.value ? messages.equalTo() : null;
+        isError = isError || !!sp.state.error;
         sp.setState(sp.state);
       });
+      return !isError;
+    }
+    validate(): Object {
+      var res = {}; var isError = false;
+      this.inputs.forEach(inp => {
+        inp.state.blured = true; inp.state.error = null;
+        validate(inp.props.validator, inp.state);
+        inp.setState(inp.state);
+        res[inp.id] = inp.state.value;
+        isError = isError || !!inp.state.error;
+      });
+      isError = !this.multiValidate() || isError;
+      return isError ? null : res;
     }
     onSubmit(ev: React.FormEvent) { //autocomplete: "VCARD_NAME" "x-autocompletetype"
       ev.preventDefault();
-      var firstError = this.inputs.find(inp => !!inp.state.error);
-      if (firstError) return;
-      var res = {};
-      this.inputs.forEach(inp => res[inp.props.id] = inp.state.value);
+      var res = this.validate(); if (!res) return;
       this.props.onOk(res);
     }
 

@@ -13,6 +13,7 @@
 
   }
   export enum types {
+    no = 0,
     required = 0x1,
     email = 0x2,
     number = 0x4,

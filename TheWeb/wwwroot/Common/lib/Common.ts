@@ -101,11 +101,19 @@ namespace utils {
   export type TAsync = (compl: utils.TCallback) => void;
 
   export function guid(): string {
-    return sessionStart.toString() + '-' + (guidCount++).toString();
+    return sessionStart.toString() + '-' + new Date().getTime().toString();
   }
 
+  //propName((p:IAny) => p.prop); vrati 'prop'
+  export function propName(property: propNameType) {
+    var chaine = property.toString();
+    var arr = chaine.match(/[\s\S]*{[\s\S]*\.([^\.; ]*)[ ;\n]*}/);
+    return arr[1];
+  };
+  export type propNameType = (object: any) => void;
+
   var sessionStart = new Date().getTime();
-  var guidCount = Math.random();
+  //var guidCount = Math.random();
 }
 
 namespace base64 {

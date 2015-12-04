@@ -59,6 +59,11 @@ namespace validationTest {
 
   //************* WHOLE APP
   //** inicializace aplikace
+  interface IRes {
+    email: string;
+    psw: string;
+    pswc: string;
+  }
 
   export function doRunApp() {
 
@@ -68,10 +73,10 @@ namespace validationTest {
     new valTest();
 
     var root = () => <ValTest key={flux.cnt() } initState={flux.getState().valTest} id='valTest.ValTest' parentId={''} >
-      <validation.Group okTitle='Ok' cancelTitle='Cancel' onCancel={() => alert('cancel') } onOk={val => alert(JSON.stringify(val)) }>
-        <validation.Input validator={{ type: validation.types.email }} id='email' title='eMail'/><br/>
-        <validation.Input validator={{ type: validation.types.required }} id='psw' title='Password' type='password'/><br/>
-        <validation.Input validator={{ type: validation.types.equalTo, equalToId: 'psw' }} id='pswConf' title='Confirm password' type='password'/>
+      <validation.Group okTitle='Ok' cancelTitle='Cancel' onCancel={() => alert('cancel') } onOk={(val: IRes) => alert(JSON.stringify(val)) }>
+        <validation.Input validator={{ type: validation.types.email }} idPtr={(r: IRes) => r.email} title='eMail'/><br/>
+        <validation.Input validator={{ type: validation.types.required }} idPtr={(r: IRes) => r.psw} title='Password' type='password'/><br/>
+        <validation.Input validator={{ type: validation.types.equalTo, equalToId: 'psw' }} idPtr={(r: IRes) => r.pswc} title='Confirm password' type='password'/>
         </validation.Group>
       </ValTest>;
 

@@ -202,11 +202,11 @@ module emailer {
 export interface emailMsg {
   from: mail;
   to: Array<mail>;
-  cc: Array<mail>;
-  bcc: Array<mail>;
+  cc?: Array<mail>;
+  bcc?: Array<mail>;
   subject: string;
   body: string;
-  plainBody: string;
+  plainBody?: string;
   attachments?: Array<att>;
 }
 export interface att {
@@ -215,7 +215,7 @@ export interface att {
 }
 export interface mail {
   email: string;
-  title: string;
+  title?: string;
 }
 }
 

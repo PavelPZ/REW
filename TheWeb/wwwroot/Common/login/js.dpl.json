@@ -3,5 +3,6 @@
     "auth.js",
     "dispatcher.js",
     "views/panel.js",
+    "views/emailregister.js"
   ]
 }

@@ -42,7 +42,7 @@ namespace jsWebApiProxyNew {
         inlineTypeGenerator = inlineTypeGenerator
       };
       ctx.sb.AppendLine("namespace proxies {");
-      ctx.sb.AppendLine("  export var invoke: (url: string, type: string, queryPars: Object, body: string, completed: (res) => void) => void;"); ctx.sb.AppendLine();
+      ctx.sb.AppendLine("  export var invoke: (url: string, type: string, queryPars: Object, body: string, completed, error: ajax.TError) => void;"); ctx.sb.AppendLine();
       foreach (var nm in controllers) generate(ctx, nm);
       ctx.sb.AppendLine("}");
       return ctx.sb.ToString();
@@ -68,6 +68,7 @@ namespace jsWebApiProxyNew {
       var selectedParameters = allParameters.Where(m => m != null).Select(m => m.Name.ToLower() + ": " + ctx.inlineTypeGenerator(m.Type, inlineCtx)).ToList();
       var retType = ctx.inlineTypeGenerator(method.ReturnType, inlineCtx);
       selectedParameters.Add("completed: " + (string.IsNullOrEmpty(retType) ? "() => void" : "(res: " + retType + ") => void"));
+      selectedParameters.Add("error?: ajax.TError");
       return string.Join(", ", selectedParameters);
     }
     static string invokePars(ControllerDefinition controller, ActionMethodDefinition method) {
@@ -80,7 +81,7 @@ namespace jsWebApiProxyNew {
         //body = method.BodyParameter != null ? string.Format("typeof {0} == 'string' ? {0} : JSON.stringify({0})", method.BodyParameter.Name.ToLower()) : "null"
         body = method.BodyParameter != null ? string.Format("{0}", method.BodyParameter.Name.ToLower()) : "null"
       };
-      return string.Format("'{0}', '{1}', {2}, {3}, completed", invokePar.url, invokePar.method, invokePar.queryPars ?? "null", invokePar.body);
+      return string.Format("'{0}', '{1}', {2}, {3}, completed, error", invokePar.url, invokePar.method, invokePar.queryPars ?? "null", invokePar.body);
     }
     public class context {
       public StringBuilder sb;

@@ -16,6 +16,7 @@
 
 import React = __React;
 import ReactDOM = __React.__DOM;
+import ReactDOMServer = __React.__DOMServer;
 
 declare namespace __React {
     export import addons = __React.__Addons;

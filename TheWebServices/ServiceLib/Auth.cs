@@ -29,9 +29,11 @@ namespace LoginServices {
     }
 
     [ActionName("Register"), HttpGet]
-    public void Register(string email, string psw, string firstName, string lastName, string confirmId) {
+    public ServiceResult Register(string email, string psw, string firstName, string lastName, string confirmId) {
+      if (tableLow.Retrieve<tableUser>(email) != null) return ServiceResult.userAlreadyExists;
       var reg = new tableConfirmReg(confirmId) { email = email, psw = psw, firstName = firstName, lastName = lastName, created = DateTime.UtcNow };
       reg.insert();
+      return ServiceResult.ok;
     }
 
     [ActionName("ConfirmRegistration"), HttpGet]
@@ -94,7 +96,7 @@ namespace LoginServices {
       batch.Execute();
     }
   }
-  public enum ServiceResult { ok, wrongEMail, wrongPassword, confirmExpired, alreadyConfirmed }
+  public enum ServiceResult { ok, userAlreadyExists, wrongEMail, wrongPassword, confirmExpired, alreadyConfirmed }
 
   public class tableLow : TableEntity {
     public tableLow() {

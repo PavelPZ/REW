@@ -15,12 +15,12 @@
       var result: IAjaxResult = { xhr: httpRequest, responseText: httpRequest.responseText, responseType: httpRequest.responseType };
       if (httpRequest.status <= 299) resolve(result);
       else {
-        var error: IAjaxError = { status: httpRequest.status, statusText: httpRequest.statusText, result: result };
+        var error: IAjaxError = { status: httpRequest.status, statusText: httpRequest.statusText, result: result, url: url };
         reject(error);
       }
     };
     httpRequest.ontimeout = () => {
-      var error: IAjaxError = { status: 999, statusText: 'timeout', result: null };
+      var error: IAjaxError = { status: 999, statusText: 'timeout', result: null, url: url };
       reject(error);
     };
     httpRequest.open(ajaxMethod[method ? method : ajaxMethod.GET], url, true);
@@ -28,10 +28,12 @@
     httpRequest.send(option.data);
   };
 
-  proxies.invoke = (url, method, queryPars, body, completed) => {
+  proxies.invoke = (url, method, queryPars, body, completed, error: TError) => {
     url = servCfg.server.rootUrl + utils.urlStringify(url, queryPars);
-    ajaxLow(url, method, { data: body, contentType: ajaxContentType.txt }, res => completed(res.responseText), err => throwError(url, err));
+    ajaxLow(url, method, { data: body, contentType: ajaxContentType.txt }, res => completed(res.responseText), err => { error ? error(err) : throwError(err); });
   };
+
+  export type TError = (err: IAjaxError) => void;
    
   export interface IAjaxResult {
     responseText: string;
@@ -39,6 +41,7 @@
     xhr: XMLHttpRequest;
   }
   export interface IAjaxError {
+    url: string;
     status: number;
     statusText: string;
     result: IAjaxResult;
@@ -60,8 +63,8 @@
     data?: any;
     contentType?: ajaxContentType;
   }
-  export function throwError(url: string, err: IAjaxError) {
-    loger.doThrow(`*** AJAX ERROR on ${url}: status=${err.status}, statusText=${err.statusText}, ${err.result.responseText}`);
+  export function throwError(err: IAjaxError) {
+    loger.doThrow(`*** AJAX ERROR on ${err.url}: status=${err.status}, statusText=${err.statusText}, ${err.result.responseText}`);
   }
 
 }

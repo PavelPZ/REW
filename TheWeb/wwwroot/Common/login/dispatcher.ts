@@ -4,9 +4,9 @@
       home: router.RouteType;
       login: router.RouteType;
       register: router.RouteType;
-      confirmRegister: router.RouteType;
+      confirmRegister: router.Route<login.IConfirmRoutePar>;
       forgotPsw: router.RouteType;
-      confirmForgotPsw: router.RouteType;
+      confirmForgotPsw: router.Route<login.IConfirmRoutePar>;
       editProfile: router.RouteType;
       changePasssword: router.RouteType;
     }
@@ -25,13 +25,15 @@ namespace login {
       namedRoute.home = new router.Route(moduleId, 'r-home', '/home?{authReturnUrl}'),
       namedRoute.login = new router.RouteType(moduleId, 'r-login', '/login'),
       namedRoute.register = new router.RouteType(moduleId, 'r-register', '/register'),
-      namedRoute.confirmRegister = new router.RouteType(moduleId, 'r-confirmRegister', '/confirmRegister'),
+      namedRoute.confirmRegister = new router.Route<IConfirmRoutePar>(moduleId, 'r-confirmRegister', '/confirmRegister'),
       namedRoute.forgotPsw = new router.RouteType(moduleId, 'r-forgotPsw', '/forgotPsw'),
-      namedRoute.confirmForgotPsw = new router.RouteType(moduleId, 'r-confirmForgotPsw', '/confirmForgotPsw'),
+      namedRoute.confirmForgotPsw = new router.Route<IConfirmRoutePar>(moduleId, 'r-confirmForgotPsw', '/confirmForgotPsw'),
       namedRoute.editProfile = new router.RouteType(moduleId, 'r-editProfile', '/editProfile', { needsAuth: true }),
       namedRoute.changePasssword = new router.RouteType(moduleId, 'r-changePasssword', '/changePasssword', { needsAuth: true })
     )
   );
+
+  export interface IConfirmRoutePar extends router.IPar { confirmId: string; }
 
   //export function setHome<T extends router.IPar>(state: router.Route<T>, par: T) { homeUrl = { route: state, par: par } }
   //export function goHome() { router.navigUrl(homeUrl); }
