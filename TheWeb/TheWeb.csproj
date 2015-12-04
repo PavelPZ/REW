@@ -427,7 +427,8 @@
     <TypeScriptCompile Include="wwwroot\Common\uiRouter\angularCommon.ts" />
     <TypeScriptCompile Include="wwwroot\Common\uiRouter\router.ts" />
     <TypeScriptCompile Include="wwwroot\Common\uiRouter\routerCommon.ts" />
-    <TypeScriptCompile Include="wwwroot\Common\validation\lib.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\validation\validator.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\validation\validation.ts" />
     <TypeScriptCompile Include="wwwroot\Common\validation\templates-bs.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\validation\templates-mdl.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\validation\test.tsx" />

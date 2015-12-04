@@ -1,22 +1,33 @@
 ﻿namespace validation {
 
-  export var getInputTemplate = (templ: IInputTemplate) => {
-    var error = templ.error ? [<br/>, <span>{templ.error}</span>] : null;
+  export var getInputTemplate = (self: Input, valueLink: React.ReactLink<string>) => {
+    var error = self.state.error ? [<br key={flux.cnt() }/>, <span key={flux.cnt() }>{self.state.error}</span>] : null;
     return <span>
-        <input type={templ.props.type || 'text'} name={templ.props.validator.id} id={templ.props.validator.id} valueLink={templ.valueLink} onBlur={templ.blur} onKeyDown={templ.keyDown}/>
+      <input
+          type={self.props.type || 'text'}
+          name={self.props.id}
+          id={self.props.id}
+          onBlur={() => self.blur() }
+          onKeyDown={ev => self.keyDown(ev) }
+          tabIndex = {self.tabIndex}
+          valueLink={valueLink}
+          autoComplete={self.props.type == 'password' ? 'off' : 'on'}
+          autoFocus={self.tabIndex==1}
+        />
         {error}
       </span>;
   };
 
-  export var getGroupErrorTemplate = (templ: IGroupErrorTemplate) => {
-    return templ.value ? <span>{ templ.value } </span> : null;
-  };
+  //export var getGroupErrorTemplate = (templ: IGroupErrorTemplate) => {
+  //  return templ.value ? <span>{ templ.value } </span> : null;
+  //};
 
-  export var getGroupTemplate = (templ: IGroupTemplate) => {
+  export var getGroupTemplate = (self: Group) => {
     return <div>
-      <iframe name={templ.id} style={{ display: 'none' }} src="about:blank"></iframe>;
-      <form target={templ.id} action="about:blank" onSubmit={ev => templ.onSubmit(ev) }>
-        <input value={templ.props.cancelTitle} type="button"/> | <input value={templ.props.okTitle} type="submit"/>
+      <iframe name={self.id} style={{ display: 'none' }} src="about:blank"></iframe>;
+      <form target={self.id} action="about:blank" onSubmit={ev => self.onSubmit(ev) }>
+        {self.props.children}<br/>
+        <input value={self.props.cancelTitle} type="button" onClick={self.props.onCancel}/> | <input value={self.props.okTitle} type="submit"/>
         </form>
       </div>;
   };

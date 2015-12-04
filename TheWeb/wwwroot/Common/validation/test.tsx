@@ -68,10 +68,10 @@ namespace validationTest {
     new valTest();
 
     var root = () => <ValTest key={flux.cnt() } initState={flux.getState().valTest} id='valTest.ValTest' parentId={''} >
-      <validation.Group okTitle='Ok' cancelTitle='Cancel'>
-        <validation.Input validator={{ type: validation.types.email, id: 'email' }} title='eMail' ref={inp => inp.focus() }/><br/>
-        <validation.Input validator={{ type: validation.types.required, id: 'psw' }} title='Password' type='password'/><br/>
-        <validation.Input validator={{ type: validation.types.equalTo, equalToId: 'psw' }} title='Confirm password' type='password'/>
+      <validation.Group okTitle='Ok' cancelTitle='Cancel' onCancel={() => alert('cancel') } onOk={val => alert(JSON.stringify(val)) }>
+        <validation.Input validator={{ type: validation.types.email }} id='email' title='eMail'/><br/>
+        <validation.Input validator={{ type: validation.types.required }} id='psw' title='Password' type='password'/><br/>
+        <validation.Input validator={{ type: validation.types.equalTo, equalToId: 'psw' }} id='pswConf' title='Confirm password' type='password'/>
         </validation.Group>
       </ValTest>;
 
