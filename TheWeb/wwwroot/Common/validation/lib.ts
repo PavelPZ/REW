@@ -1,10 +1,10 @@
-﻿namespace config {
-  export interface IData {
-    validation?: {
-      group: validation.Group;
-    };
-  }
-}
+﻿//namespace config {
+//  export interface IData {
+//    validation?: {
+//      group: validation.Group;
+//    };
+//  }
+//}
 
 namespace validation {
 
@@ -139,40 +139,64 @@ namespace validation {
   //*********************** COMPONENTS
   interface IGroupContext { validation: group; }
 
-  //--- IPUT
+  //--- INPUT
   export class Input extends flux.DumpComponent<IInputProps, any>{ 
-    constructor(prop, ctx: IGroupContext) {
+    constructor(prop: IInputProps, ctx: IGroupContext) {
       super(prop, ctx);
+      this.tabIndex = prop.tabIndex || 0;
       this.driver = new inputDriver(ctx ? ctx.validation : null, this.props.validator, this.props.initValue, () => this.setState(this.driver.state));
     }
     static contextTypes = { validation: React.PropTypes.any }; //, [config.ctxPropName]: React.PropTypes.any };
     driver: inputDriver;
+    tabIndex: number;
     render() {
       var templ: IInputTemplate = {
         valueLink: { value: this.driver.state.value, requestChange: newVal => this.driver.change(newVal) }, //https://facebook.github.io/react/docs/two-way-binding-helpers.html
         blur: () => this.driver.blur(),
         keyDown: ev => this.driver.keyDown(ev),
-        error: this.driver.state.error
+        error: this.driver.state.error,
+        self: this
       };
       return validation.getInputTemplate(templ);
     }
   }
   
-  interface IInputProps extends flux.IComponentProps { validator?: IValidPars; initValue?: string; title: string;}
+  interface IInputProps extends flux.IComponentProps {
+    validator?: IValidPars; initValue?: string; title: string;
+    type?: string; tabIndex?: number;
+  }
 
+  //interface na BS nebo MDL view
   export interface IInputTemplate {
     valueLink: React.ReactLink<string>; //two way binding
     blur: () => void; //ztrata fokusu
     keyDown: React.KeyboardEventHandler; //enter
     error: string; //validation error
+    self: Input; //mj. pro autocomplete
   }
 
   //--- GROUP
-  export class Group extends React.Component<any, any>{
+  export class Group extends flux.DumpComponent<IGroupProps, any>{
     static childContextTypes = { validation: React.PropTypes.element };
     getChildContext: () => IGroupContext = () => { return { validation: this.driver = new group() }; }
-    render() { return React.createElement("div", null, this.props.children); } //nikdy nebude mit vizualni podobu
+    render() {
+      var templ: IGroupTemplate = {
+        id: 'frm', props: this.props, onSubmit: null
+      };
+      return validation.getGroupTemplate(templ);
+    } 
     driver: group;
+  }
+  interface IGroupProps extends flux.IComponentProps {
+    okTitle: string;
+    cancelTitle: string;
+  }
+
+  //autocomplete: "VCARD_NAME" "x-autocompletetype"
+  export class IGroupTemplate {
+    id: string;
+    props: IGroupProps;
+    onSubmit: (ev: React.SyntheticEvent) => void;
   }
 
   //--- GROUP ERROR

@@ -20,9 +20,9 @@ namespace TheWeb {
       servConfig.RoutePrefix actRoutePrefix;
       routes.MapRoute(
           name: "Web-other",
-          url: Cfg.routePrefix(actRoutePrefix = servConfig.RoutePrefix.some_other) + "{startProc}/{*path}",
-          defaults: new { controller = "Home", action = "Web", routePrefix = actRoutePrefix, startProc = servConfig.StartProc.testingTest.ToString() },
-          constraints: new { startProc = new StartProcConstraint() }
+          url: Cfg.routePrefix(actRoutePrefix = servConfig.RoutePrefix.some_other) + "{*path}",
+          defaults: new { controller = "Home", action = "Web", routePrefix = actRoutePrefix, startProc = servConfig.StartProc.no }
+          //constraints: new { startProc = new StartProcConstraint() }
       );
       routes.MapRoute(
           name: "Web",

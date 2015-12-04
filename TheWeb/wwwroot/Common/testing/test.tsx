@@ -56,7 +56,7 @@ namespace testingTest {
     <a href='#' onClick={ev => { save(); ev.preventDefault(); } }>...save</a>
     <h3>Applications: </h3>
     <a href='#' onClick={ev => flux.doExternalNavigate(router.named.loginTest.index, ev, null, servConfig.RoutePrefix.no, servConfig.StartProc.loginTest) }>Login</a> |
-    <a href='#' onClick={ev => flux.doExternalNavigate<layoutTest.ITestModuleRoutePar>(router.named.layoutTest.index, ev, { defaultPlaces: true, defaultScene: true }, servConfig.RoutePrefix.some_other, servConfig.StartProc.layoutTest) }>Layout</a> |
+    <a href='#' onClick={ev => flux.doExternalNavigate<layoutTest.ITestModuleRoutePar>(router.named.layoutTest.index, ev, { defaultPlaces: true, defaultScene: true }, servConfig.RoutePrefix.some_other, servConfig.StartProc.no) }>Layout</a> |
     <a href='#' onClick={ev => flux.doExternalNavigate(router.named.validationTest.index, ev, null, servConfig.RoutePrefix.no, servConfig.StartProc.validationTest) }>Validation</a> |
     <a href='#' onClick={ev => flux.doExternalNavigate(router.named.fluxTest.index, ev, null, servConfig.RoutePrefix.no, servConfig.StartProc.fluxTest) }>Flux</a>
     <h3>System</h3>
