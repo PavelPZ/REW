@@ -73,14 +73,9 @@ namespace flux {
       var st = this.getState();
       if (!st.ids) loger.doThrow('Not smart state');
       loger.log('new ' + this.id + ', initState=' + JSON.stringify(st, (key, value) => key == 'ids' ? undefined : value));
-      //if (!st.ids) st.ids = [];
       if (st.ids.indexOf(this.id) < 0) st.ids.push(this.id);
     }
-    //context: config.IObj;
     props: T; id: string;
-    //probublani contextu od parenta k childs
-    //static contextTypes = { [config.ctxPropName]: React.PropTypes.any }
-    //static childContextTypes = { [config.ctxPropName]: React.PropTypes.any }
     componentWillUnmount = () => {
       //clear state a unregister
       var st = this.getState();

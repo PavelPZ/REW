@@ -1,4 +1,4 @@
-﻿module login {
+﻿module loginReg {
   export interface IEmailRegisterPar {
     url: string;
     title: string;

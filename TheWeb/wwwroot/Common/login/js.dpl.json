@@ -2,7 +2,9 @@
   "includes": [
     "auth.js",
     "dispatcher.js",
+    "lmlogin.js",
+    "register.js",
     "views/panel.js",
-    "views/emailregister.js"
+    "views/register-email.js"
   ]
 }

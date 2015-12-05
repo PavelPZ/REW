@@ -39,6 +39,7 @@ namespace router {
   export function getRouteUrl<T extends IPar>(src: IUrl<T>, routePrefix: servConfig.RoutePrefix, startProc: servConfig.StartProc): string { return src.route.getPath(src.par, routePrefix, startProc); }
   //export function getUrl<T extends IPar>(route: RouteType, par?: T, replace?: boolean): string { return getRouteUrl({ route: route, par: par, replace: replace }); }
   export function getHomeUrl(): string { return getRouteUrl(homeUrl, servCfg.routePrefix, servCfg.startProc); }
+  export function getInternalUrl<T extends IPar>(route: RouteType, par?: T): string { return getRouteUrl({ route: route, par: par }, servCfg.routePrefix, servCfg.startProc); }
 
   //pojmenovane globalne dostupne a typed router stavy
   export var named: INamedRoutes = <any>{};
@@ -59,7 +60,7 @@ namespace router {
 
   //*** inicilizace 
   export function init(...roots: Array<RouteType>): void { //definice stavu
-    roots.forEach(s => s.afterConstructor(null));
+    roots.forEach(s => s.addChildTo(null));
   }
   export function setHome<T extends IPar>(state: Route<T>, par: T) { homeUrl = { route: state, par: par } } //definice difotniho stavu
 
@@ -167,7 +168,7 @@ namespace router {
     //public appId: servConfig.Apps, 
     constructor(public moduleId: string, public actionId: string, public pattern: string, otherPar: IConstruct<T> = null, ...childs: Array<RouteType>) {
       if (otherPar) Object.assign(this, otherPar);
-      if (childs) childs.forEach(ch => ch.afterConstructor(this));
+      if (childs) childs.forEach(ch => ch.addChildTo(this));
     }
 
     getPath(par: T, routePrefix: servConfig.RoutePrefix, startProc: servConfig.StartProc): string {
@@ -189,7 +190,7 @@ namespace router {
       return res;
     }
 
-    afterConstructor(parent: RouteType) {
+    addChildTo(parent: RouteType) {
       if (parent) {
         this.parent = parent;
         this.pattern = parent.pattern + this.pattern;
@@ -225,6 +226,7 @@ namespace router {
     onLeaveProc?: utils.TCallback;
     onEnterProc?: utils.TAsync;
   }
+  export type IConstructType = IConstruct<IPar>;
 
   new uiRouter.$UrlMatcherFactory();
 
