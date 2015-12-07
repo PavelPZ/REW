@@ -81,7 +81,9 @@ namespace TheWeb {
         var ctx = ((HttpApplication)app).Context;
         var cacheKey = itemUrl(ctx.Request.Url.AbsolutePath); if (cacheKey == null) return;
         if (Cfg.cfg.mvcViewPars.swFromFileSystem) {
-          ctx.Response.WriteFile(FileSources.pathFromUrl(cacheKey));
+          var path = FileSources.pathFromUrl(cacheKey).ToLower();
+          ctx.Response.ContentType = Consts.contentTypes[Path.GetExtension(path)];
+          ctx.Response.WriteFile(path);
           ctx.Response.Flush(); ctx.Response.End();
         } else {
           byte[] cachedData;

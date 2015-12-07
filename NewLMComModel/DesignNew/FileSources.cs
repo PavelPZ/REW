@@ -101,7 +101,7 @@ namespace DesignNew {
     }
 
     //************************ PRIVATES
-    static HashSet<string> web4Dirs = new HashSet<string>(new string[] { "admin", "app_data", "author", "blendedapi", "courses", "jslib", "login", "schools", "testme" });
+    static HashSet<string> web4Dirs = new HashSet<string>(new string[] { "admin", "app_data", "author", "blendedapi", "courses", "jslib", "login", "schools", "testme", "bs3", "font-awesome" });
     public static string web4Dir;// = ConfigurationManager.AppSettings["filesources.web4"];// ?? @"d:\LMCom\rew\Web4";
     public static string theWebDir;// = ConfigurationManager.AppSettings["filesources.theWeb"];// ?? @"d:\LMCom\rew\WebCommon";
     public static string theWebWwwRoot { get { return theWebDir + @"\wwwroot"; } }

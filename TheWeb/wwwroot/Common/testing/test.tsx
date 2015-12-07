@@ -49,6 +49,7 @@ namespace testingTest {
     var rootElement = () => <div key={flux.cnt() }>
     <h3>D&D</h3>
     <input onDrop={ev => doDrop(ev) } onDragOver={ev => ev.preventDefault() } onDragEnd={ev => ev.preventDefault() } style={{ backgroundColor: 'red', height: '100px', width: '100px' }}/>
+      <i className='fa fa-play'/> <bs.Button>Default</bs.Button>
     <h1>Testing</h1>
     <a href='#' onClick={ev => { startRecording(); ev.preventDefault(); } }>Start recording</a> |
     <a href='#' onClick={ev => { stopRecording(); ev.preventDefault(); } }>Stop recording</a> |

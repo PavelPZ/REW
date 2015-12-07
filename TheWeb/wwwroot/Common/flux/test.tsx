@@ -10,9 +10,9 @@
 //export function connect<P>(mapStateToProps?: MapStateToProps,
 //  mapDispatchToProps?: MapDispatchToPropsFunction | MapDispatchToPropsObject,
 //  mergeProps?: MergeProps,
-//  options?: Options): (cls: React.ClassicComponentClass<P>) => React.ClassicComponentClass<P>; 
+//  options?: Options): (cls: React.ClassicComponentClass<P>) => React.ClassicComponentClass<P>;
 
-//D:\LMCom\rew\WebLogin\scripts\typings\react-global.d.ts 
+//D:\LMCom\rew\WebLogin\scripts\typings\react-global.d.ts
 
 
 namespace config {
@@ -76,7 +76,6 @@ namespace fluxTest {
             if (compl) compl(); //async complete, musi nasledovat return;
           }, 300);
           return;
-          break;
         case 'click':
           let act = action as IClickAction;
           var comp = flux.findComponent<HelloMessage>(act.scopeComponent);
@@ -146,7 +145,7 @@ namespace fluxTest {
   export interface IPlaceHolderState extends flux.ISmartState { isApp: boolean; hello: IHelloWorldState; }
 
   export interface IRouteTestHash extends router.IPar { id: number; opt1: string; opt2: string; }
-  
+
   function testRouterLow() {
     //** inicializace aplikace
 
@@ -174,7 +173,6 @@ namespace fluxTest {
     var d2 = router.toUrl('/useR/123/Name/alex?opt1=xxx&opt2=yyy');
     var d3 = router.toUrl('/login.login');
   }
-
 
   //************* WHOLE APP
   //** inicializace aplikace x

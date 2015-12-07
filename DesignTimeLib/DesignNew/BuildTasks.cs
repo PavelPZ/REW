@@ -123,6 +123,9 @@ namespace DesignNew {
         minifier.jsMinify("/deploy/oauth/js-all.dpl.json", "/deploy/oauth/mins/all.min.js");
         minifier.jsMinify("/deploy/web/js-externals.dpl.json", "/deploy/web/mins/externals.min.js");
         minifier.jsMinify("/deploy/web/js-common.dpl.json", "/deploy/web/mins/common.min.js");
+        minifier.jsMinify("/deploy/web/jsskin-bs.dpl.json", "/deploy/web/mins/bs.min.js");
+        //CSS minify
+        minifier.cssInPlaceMinify("/deploy/web/cssskin-bs.dpl.json");
         //*** ZIP
         var files = FileSources.getUrls(FileSources.zipSWFilesFilter(servConfig.MvcViewType.web, servConfig.MvcViewType.web4, servConfig.MvcViewType.oauth)).ToArray();
         File.WriteAllLines(@"d:\temp\sw_deploy.txt", files);

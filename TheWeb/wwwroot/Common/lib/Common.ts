@@ -1,4 +1,6 @@
-﻿namespace flux {
+﻿var bs = ReactBootstrap; //LM 
+
+namespace flux {
   export interface IAction {
     moduleId: string;
     actionId: string;

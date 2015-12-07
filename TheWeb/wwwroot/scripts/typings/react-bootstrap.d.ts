@@ -3,9 +3,9 @@
 // Definitions by: Walker Burgin <https://github.com/walkerburgin>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
 
-declare module "react-bootstrap" {
+declare module ReactBootstrap { //LM 
   // Import React 
-  import React = require("react");
+  //import React = React; //LM
 
 
   // <Button />
