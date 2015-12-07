@@ -28,7 +28,7 @@
       <iframe name={self.id} style={{ display: 'none' }} src="about:blank"></iframe>;
       <form target={self.id} action="about:blank" onSubmit={ev => self.onSubmit(ev) }>
         {self.props.children}<br/>
-        <input value={self.props.cancelTitle} type="button" onClick={self.props.onCancel}/> | <input value={self.props.okTitle} type="submit"/>
+        <input value={self.props.cancelTitle} type="button" onMouseDown={validation.asCancel} onClick={self.props.onCancel}/> | <input value={self.props.okTitle} onMouseDown={validation.asCancel} type="submit"/>
         </form>
       </div>;
   };

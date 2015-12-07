@@ -263,6 +263,9 @@ Web4/signature.sign
 Web4/Data/buildLogs/
 Web4/Data/instr/
 Web4/Data/XmlSource/
+
+TheWeb/wwwroot/content/
+
 ndependout/
 *.s3db
 

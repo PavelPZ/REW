@@ -38,10 +38,12 @@
     change(newVal: string) { this.state.value = newVal; this.doValidate(); } //zmena hodnoty
     keyDown(ev: React.KeyboardEvent) { if (ev.keyCode != 13) return; this.doBlur(); } //ENTER
     blur: () => void; //ztrata fokusu
-    doBlur() { if (this.blur) this.blur(); }
-
+    doBlur() { if (!this.blur || ignoreNextBlur) return; this.blur(); }
     static contextTypes = { myGroup: React.PropTypes.any };
   }
+
+  export function asCancel() { ignoreNextBlur = true; setTimeout(() => ignoreNextBlur = false, 1); }
+  var ignoreNextBlur = false; //sance ignorovat blur pri kliku na OK nebo Cacnel button
 
   interface IInputProps extends flux.IComponentProps {
     validator?: IValidPars;
@@ -59,7 +61,7 @@
     id: string;
     lastTabIndex = 1;
     inputs: Array<Input> = [];
-    multiValidate():boolean {
+    multiValidate(): boolean {
       var th = this; var isError = false;
       //validace stejnych hesel
       th.inputs.filter(sp => sp.props.validator && sp.state.blured && (sp.props.validator.type & types.equalTo) != 0).forEach(sp => {
