@@ -177,7 +177,7 @@ module TreeView {
         var ptr = self;
         while (ptr != null) {
           if (ptr == cutCopied) return false;
-          ptr = ptr.parent;
+          ptr = <any>ptr.parent;
         }
         return true;
       });
