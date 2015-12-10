@@ -199,6 +199,7 @@ namespace blended {
           IAlocatedKey lector = usr == null ? null : e.allUsers[usr._myLectorLmcomId];
           int lev = t == null ? 0 : (t.module is pretestItem ? ((pretestItem)t.module).lev : t.module.level.lev);
           return new object[] {
+              t==null ? "_id" : usr.email,
               t==null ? "_student" : usr.lastName + " " + usr.firstName,
               t==null ? "_studyGroup" : usr._myGroup.title + " (učitel " + lector.firstName + " " + lector.lastName + ")",
               t==null ? "_course" : exporter.lineToText(t.module.product.line),

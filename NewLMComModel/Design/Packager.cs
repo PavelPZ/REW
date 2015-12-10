@@ -808,8 +808,8 @@ namespace Packager {
     static IEnumerable<Consts.file> scormFiles(ScormBatch batch, ScormBatchItem cfg, bool toZip, LoggerMemory log) {
       IEnumerable<Consts.file> zipExtra = toZip ? XExtension.Create<Consts.file>(
         new Consts.file(@"schools\index.htm", Encoding.UTF8.GetBytes(HomePage(cfg.cfg))),
-        new Consts.file(@"signature.sign"),
-        new Consts.file(@"signature.sign"),
+        //new Consts.file(@"signature.sign"),
+        //new Consts.file(@"signature.sign"),
         new Consts.file("imsmanifest.xml", Encoding.UTF8.GetBytes(scormManifest(batch, cfg))),
         new Consts.file("siteroot.js", cfg.webBatch.products[0].siteRoot(cfg.prod))
         ) : Enumerable.Empty<Consts.file>();
@@ -875,7 +875,7 @@ namespace Packager {
       //yield return new Consts.file(@"Schools\statistics.odc");
       yield return new Consts.file(@"Schools\SLExtension.xap");
       yield return new Consts.file("Web.config");
-      yield return new Consts.file(@"signature.sign");
+      //yield return new Consts.file(@"signature.sign");
       //if (!batch.isDataOnly) yield return new Consts.file(@"app_data\stamp.txt", Encoding.UTF8.GetBytes(DateTime.UtcNow.ToString("yyyy_MM_dd_hh_mm_ss")));
       yield return new Consts.file(@"app_data\stamp.js", Encoding.UTF8.GetBytes(DateTime.UtcNow.ToString("yyyy_MM_dd_hh_mm_ss")));
       foreach (var cfg in batch.Items)
@@ -886,7 +886,8 @@ namespace Packager {
     }
 
     public static void genWeb(string webBatchId) {
-      var batchFn = string.Format(Machines.basicPath + @"rew\Downloads\Common\batches\webs\{0}.xml", webBatchId);
+      //var batchFn = string.Format(Machines.basicPath + @"rew\Downloads\Common\batches\webs\{0}.xml", webBatchId);
+      var batchFn = string.Format(Machines.basicPath + @"rew\Web4\Deploy\batchs\{0}.xml", webBatchId);
       //try {
       WebSoftwareBatch batch = (WebSoftwareBatch)XmlUtils.FileToObject<BatchLow>(batchFn);
       //if (batch.isDataOnly) {
@@ -1008,7 +1009,8 @@ namespace Packager {
     /****************** BUILD **************************************/
     public static void BUILD(string id, Targets target, LoggerMemory log, BatchLow par) {
       //var parts = opId.ToLower().Split(':'); var email = parts[1];
-      var batchFn = string.Format(Machines.basicPath + @"rew\Downloads\Common\batches\{0}{1}.xml", target == Targets.scorm ? null : @"webs\", id);
+      //var batchFn = string.Format(Machines.basicPath + @"rew\Downloads\Common\batches\{0}{1}.xml", target == Targets.scorm ? null : @"webs\", id);
+      var batchFn = string.Format(Machines.basicPath + @"rew\Web4\Deploy\batchs\{0}.xml", id);
       XElement backup = null;
       try {
         XElement root = XElement.Load(batchFn); backup = XElement.Load(batchFn);
