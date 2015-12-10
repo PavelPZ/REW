@@ -1,0 +1,929 @@
+<!-- 
+http://sourceforge.net/projects/cssed/files/?source=navbar
+-->
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml-stylesheet type="text/css" href="style-def.css"?>
+<csssed-def implementation="CSS-2">
+	<element name="azimuth">
+			<value type="string" name="(angle)" />
+			<value type="fixed-string" name="inherit" />
+			<value type="fixed-string" name="left-side" />
+			<value type="fixed-string" name="far-left" />
+			<value type="fixed-string" name="left" />
+			<value type="fixed-string" name="center-left" />
+			<value type="fixed-string" name="center-right" />
+			<value type="fixed-string" name="right" />
+			<value type="fixed-string" name="far-right" />
+			<value type="fixed-string" name="right-side" />
+			<value type="fixed-string" name="behind" />
+			<value type="fixed-string" name="leftwards" />
+			<value type="fixed-string" name="rightwards" />
+	</element>
+	<element name="background">
+			<value type="string" name="(background)" />
+			<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="background-attachment">
+			<value type="string" name="(color)" />
+			<value type="fixed-string" name="fixed" />
+			<value type="fixed-string" name="aqua" />
+			<value type="fixed-string" name="black" />
+			<value type="fixed-string" name="blue" />
+			<value type="fixed-string" name="fucshia" />
+			<value type="fixed-string" name="gray" />
+			<value type="fixed-string" name="green" />
+			<value type="fixed-string" name="maroon" />
+			<value type="fixed-string" name="navy" />
+			<value type="fixed-string" name="olive" />
+			<value type="fixed-string" name="purple" />
+			<value type="fixed-string" name="red" />
+			<value type="fixed-string" name="silver" />
+			<value type="fixed-string" name="teal" />
+			<value type="fixed-string" name="white" />
+			<value type="fixed-string" name="yellow" />
+			<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="background-color">
+			<value type="string" name="(color)" />
+			<value type="fixed-string" name="transparent" />
+			<value type="fixed-string" name="aqua" />
+			<value type="fixed-string" name="black" />
+			<value type="fixed-string" name="blue" />
+			<value type="fixed-string" name="fucshia" />
+			<value type="fixed-string" name="gray" />
+			<value type="fixed-string" name="green" />
+			<value type="fixed-string" name="maroon" />
+			<value type="fixed-string" name="navy" />
+			<value type="fixed-string" name="olive" />
+			<value type="fixed-string" name="purple" />
+			<value type="fixed-string" name="red" />
+			<value type="fixed-string" name="silver" />
+			<value type="fixed-string" name="teal" />
+			<value type="fixed-string" name="white" />
+			<value type="fixed-string" name="yellow" />
+			<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="background-image">
+			<value type="string" name="(uri)" />
+			<value type="fixed-string" name="none" />
+			<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="background-position">
+			<value type="string" name="(percentage-length)" />
+			<value type="fixed-string" name="top" />
+			<value type="fixed-string" name="center" />
+			<value type="fixed-string" name="bottom" />
+			<value type="fixed-string" name="left" />
+			<value type="fixed-string" name="center" />
+			<value type="fixed-string" name="right" />
+			<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="background-repeat">
+			<value type="fixed-string" name="repeat" />
+			<value type="fixed-string" name="repeat-x" />
+			<value type="fixed-string" name="repeat-y" />
+			<value type="fixed-string" name="no-repeat" />
+			<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="border">
+			<value type="string" name="(border)" />	
+			<value type="string" name="(color)" />	
+			<value type="string" name="(percentage-length)" />
+			<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="border-collapse">
+			<value type="fixed-string" name="collapse" />
+			<value type="fixed-string" name="separate" />
+			<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="border-color">
+			<value type="string" name="(color)" />
+			<value type="fixed-string" name="transparent" />
+			<value type="fixed-string" name="aqua" />
+			<value type="fixed-string" name="black" />
+			<value type="fixed-string" name="blue" />
+			<value type="fixed-string" name="fucshia" />
+			<value type="fixed-string" name="gray" />
+			<value type="fixed-string" name="green" />
+			<value type="fixed-string" name="maroon" />
+			<value type="fixed-string" name="navy" />
+			<value type="fixed-string" name="olive" />
+			<value type="fixed-string" name="purple" />
+			<value type="fixed-string" name="red" />
+			<value type="fixed-string" name="silver" />
+			<value type="fixed-string" name="teal" />
+			<value type="fixed-string" name="white" />
+			<value type="fixed-string" name="yellow" />
+			<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="border-spacing">
+			<value type="string" name="(length)" />
+			<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="border-style">
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="hidden" />
+		<value type="fixed-string" name="dotted" />
+		<value type="fixed-string" name="dashed" />
+		<value type="fixed-string" name="solid" />
+		<value type="fixed-string" name="double" />
+		<value type="fixed-string" name="groove" />
+		<value type="fixed-string" name="ridge" />
+		<value type="fixed-string" name="inset" />
+		<value type="fixed-string" name="outset" />
+		<value type="fixed-string" name="inherit" />
+		<value type="string" name="(border-style)" />		
+	</element>	
+	<element name="border-top">
+			<value type="string" name="(width-style-color)" />
+			<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="border-right">
+			<value type="string" name="(width-style-color)" />
+			<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="border-bottom">
+			<value type="string" name="(width-style-color)" />
+			<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="border-left">
+			<value type="string" name="(width-style-color)" />
+			<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="border-top-color">
+			<value type="string" name="(color)" />
+			<value type="fixed-string" name="aqua" />
+			<value type="fixed-string" name="black" />
+			<value type="fixed-string" name="blue" />
+			<value type="fixed-string" name="fucshia" />
+			<value type="fixed-string" name="gray" />
+			<value type="fixed-string" name="green" />
+			<value type="fixed-string" name="maroon" />
+			<value type="fixed-string" name="navy" />
+			<value type="fixed-string" name="olive" />
+			<value type="fixed-string" name="purple" />
+			<value type="fixed-string" name="red" />
+			<value type="fixed-string" name="silver" />
+			<value type="fixed-string" name="teal" />
+			<value type="fixed-string" name="white" />
+			<value type="fixed-string" name="yellow" />
+			<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="border-right-color">
+			<value type="string" name="(color)" />
+			<value type="fixed-string" name="aqua" />
+			<value type="fixed-string" name="black" />
+			<value type="fixed-string" name="blue" />
+			<value type="fixed-string" name="fucshia" />
+			<value type="fixed-string" name="gray" />
+			<value type="fixed-string" name="green" />
+			<value type="fixed-string" name="maroon" />
+			<value type="fixed-string" name="navy" />
+			<value type="fixed-string" name="olive" />
+			<value type="fixed-string" name="purple" />
+			<value type="fixed-string" name="red" />
+			<value type="fixed-string" name="silver" />
+			<value type="fixed-string" name="teal" />
+			<value type="fixed-string" name="white" />
+			<value type="fixed-string" name="yellow" />
+			<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="border-bottom-color">
+			<value type="string" name="(color)" />
+			<value type="fixed-string" name="aqua" />
+			<value type="fixed-string" name="black" />
+			<value type="fixed-string" name="blue" />
+			<value type="fixed-string" name="fucshia" />
+			<value type="fixed-string" name="gray" />
+			<value type="fixed-string" name="green" />
+			<value type="fixed-string" name="maroon" />
+			<value type="fixed-string" name="navy" />
+			<value type="fixed-string" name="olive" />
+			<value type="fixed-string" name="purple" />
+			<value type="fixed-string" name="red" />
+			<value type="fixed-string" name="silver" />
+			<value type="fixed-string" name="teal" />
+			<value type="fixed-string" name="white" />
+			<value type="fixed-string" name="yellow" />
+			<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="border-left-color">
+			<value type="string" name="(color)" />
+			<value type="fixed-string" name="aqua" />
+			<value type="fixed-string" name="black" />
+			<value type="fixed-string" name="blue" />
+			<value type="fixed-string" name="fucshia" />
+			<value type="fixed-string" name="gray" />
+			<value type="fixed-string" name="green" />
+			<value type="fixed-string" name="maroon" />
+			<value type="fixed-string" name="navy" />
+			<value type="fixed-string" name="olive" />
+			<value type="fixed-string" name="purple" />
+			<value type="fixed-string" name="red" />
+			<value type="fixed-string" name="silver" />
+			<value type="fixed-string" name="teal" />
+			<value type="fixed-string" name="white" />
+			<value type="fixed-string" name="yellow" />
+			<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="border-top-style">
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="hidden" />
+		<value type="fixed-string" name="dotted" />
+		<value type="fixed-string" name="dashed" />
+		<value type="fixed-string" name="solid" />
+		<value type="fixed-string" name="double" />
+		<value type="fixed-string" name="groove" />
+		<value type="fixed-string" name="ridge" />
+		<value type="fixed-string" name="inset" />
+		<value type="fixed-string" name="outset" />
+		<value type="fixed-string" name="inherit" />
+		<value type="string" name="(border-style)" />
+	</element>
+	<element name="border-right-style">
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="hidden" />
+		<value type="fixed-string" name="dotted" />
+		<value type="fixed-string" name="dashed" />
+		<value type="fixed-string" name="solid" />
+		<value type="fixed-string" name="double" />
+		<value type="fixed-string" name="groove" />
+		<value type="fixed-string" name="ridge" />
+		<value type="fixed-string" name="inset" />
+		<value type="fixed-string" name="outset" />
+		<value type="fixed-string" name="inherit" />
+		<value type="string" name="(border-style)" />
+	</element>
+	<element name="border-bottom-style">
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="hidden" />
+		<value type="fixed-string" name="dotted" />
+		<value type="fixed-string" name="dashed" />
+		<value type="fixed-string" name="solid" />
+		<value type="fixed-string" name="double" />
+		<value type="fixed-string" name="groove" />
+		<value type="fixed-string" name="ridge" />
+		<value type="fixed-string" name="inset" />
+		<value type="fixed-string" name="outset" />
+		<value type="fixed-string" name="inherit" />
+		<value type="string" name="(border-style)" />
+	</element>
+	<element name="border-left-style">
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="hidden" />
+		<value type="fixed-string" name="dotted" />
+		<value type="fixed-string" name="dashed" />
+		<value type="fixed-string" name="solid" />
+		<value type="fixed-string" name="double" />
+		<value type="fixed-string" name="groove" />
+		<value type="fixed-string" name="ridge" />
+		<value type="fixed-string" name="inset" />
+		<value type="fixed-string" name="outset" />
+		<value type="fixed-string" name="inherit" />
+		<value type="string" name="(border-style)" />
+	</element>	
+	<element name="border-top-width">
+		<value type="string" name="(border-width-single)" />
+		<value type="fixed-string" name="thin" />
+		<value type="fixed-string" name="medium" />
+		<value type="fixed-string" name="thick" />
+		<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="border-right-width">
+		<value type="string" name="(border-width-single)" />
+		<value type="fixed-string" name="thin" />
+		<value type="fixed-string" name="medium" />
+		<value type="fixed-string" name="thick" />
+		<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="border-bottom-width">
+		<value type="string" name="(border-width-single)" />
+		<value type="fixed-string" name="thin" />
+		<value type="fixed-string" name="medium" />
+		<value type="fixed-string" name="thick" />
+		<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="border-left-width">
+		<value type="string" name="(border-width-single)" />
+		<value type="fixed-string" name="thin" />
+		<value type="fixed-string" name="medium" />
+		<value type="fixed-string" name="thick" />
+		<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="border-width">
+		<value type="string" name="(border-width)" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="bottom">
+		<value type="string" name="(percentage-length)" />
+		<value type="fixed-string" name="auto" />
+		<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="caption-side">
+		<value type="fixed-string" name="top" />
+		<value type="fixed-string" name="bottom" />
+		<value type="fixed-string" name="left" />
+		<value type="fixed-string" name="right" />
+		<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="clear">
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="bottom" />
+		<value type="fixed-string" name="left" />
+		<value type="fixed-string" name="both" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="clip">
+		<value type="string" name="(shape)" /> 
+		<value type="fixed-string" name="auto" />
+		<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="color">
+		<value type="string" name="(color)" />
+		<value type="fixed-string" name="aqua" />
+		<value type="fixed-string" name="black" />
+		<value type="fixed-string" name="blue" />
+		<value type="fixed-string" name="fucshia" />
+		<value type="fixed-string" name="gray" />
+		<value type="fixed-string" name="green" />
+		<value type="fixed-string" name="maroon" />
+		<value type="fixed-string" name="navy" />
+		<value type="fixed-string" name="olive" />
+		<value type="fixed-string" name="purple" />
+		<value type="fixed-string" name="red" />
+		<value type="fixed-string" name="silver" />
+		<value type="fixed-string" name="teal" />
+		<value type="fixed-string" name="white" />
+		<value type="fixed-string" name="yellow" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="content">
+		<value type="string" name="(string)" />
+		<value type="string" name="(uri)" />
+		<value type="string" name="(counter)" />
+        <value type="string" name="(attr)" />
+		<value type="fixed-string" name="open-quote" />
+        <value type="fixed-string" name="close-quote" />
+        <value type="fixed-string" name="no-open-quote" />
+        <value type="fixed-string" name="no-close-quote" />
+        <value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="counter-increment">
+		<value type="string" name="(increment-reset)" />
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="inherit" />		
+	</element>	
+	<element name="counter-reset">
+		<value type="string" name="(increment-reset)" />
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="inherit" />		
+	</element>	
+	<element name="cue">
+		<value type="string" name="(uri)" />
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="inherit" />		
+	</element>	
+	<element name="cue-before">
+		<value type="string" name="(uri)" />
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="inherit" />		
+	</element>	
+	<element name="cue-after">
+		<value type="string" name="(uri)" />
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="inherit" />		
+	</element>	
+	<element name="cursor">
+		<value type="string" name="(uri)" />
+		<value type="fixed-string" name="auto" />
+		<value type="fixed-string" name="crosshair" />
+		<value type="fixed-string" name="default" />
+		<value type="fixed-string" name="pointer" />
+		<value type="fixed-string" name="move" />
+		<value type="fixed-string" name="e-resize" />
+		<value type="fixed-string" name="ne-resize" />
+		<value type="fixed-string" name="nw-resize" />
+		<value type="fixed-string" name="n-resize" />
+		<value type="fixed-string" name="se-resize" />
+		<value type="fixed-string" name="sw-resize" />
+		<value type="fixed-string" name="s-resize" />
+		<value type="fixed-string" name="w-resize" />
+		<value type="fixed-string" name="text" />
+		<value type="fixed-string" name="wait" />	
+		<value type="fixed-string" name="help" />	
+		<value type="fixed-string" name="inherit" />	
+	</element>	
+	<element name="direction">
+		<value type="fixed-string" name="ltr" />
+		<value type="fixed-string" name="rtl" />
+		<value type="fixed-string" name="inherit" />		
+	</element>	
+	<element name="display">
+		<value type="fixed-string" name="inline" />
+		<value type="fixed-string" name="block" />
+		<value type="fixed-string" name="list-item" />
+		<value type="fixed-string" name="run-in" />
+		<value type="fixed-string" name="compact" />
+		<value type="fixed-string" name="marker" />
+		<value type="fixed-string" name="table" />
+		<value type="fixed-string" name="inline-table" />
+		<value type="fixed-string" name="table-row-group " />
+		<value type="fixed-string" name="table-header-group" />
+		<value type="fixed-string" name="table-footer-group" />
+		<value type="fixed-string" name="table-row" />
+		<value type="fixed-string" name="table-column-group" />
+		<value type="fixed-string" name="table-column" />
+		<value type="fixed-string" name="table-cell" />
+		<value type="fixed-string" name="table-caption" />
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="elevation">
+		<value type="string" name="(angle)" />
+		<value type="fixed-string" name="below" />
+		<value type="fixed-string" name="above" />
+		<value type="fixed-string" name="higher" />
+		<value type="fixed-string" name="lower" />		
+		<value type="fixed-string" name="level" />
+		<value type="fixed-string" name="inherit" />		
+	</element>
+	<element name="empty-cells">
+		<value type="fixed-string" name="show" />
+		<value type="fixed-string" name="hide" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="float">
+		<value type="fixed-string" name="left" />
+		<value type="fixed-string" name="right" />
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="font">
+		<value type="string" name="(font)" />
+		<value type="fixed-string" name="caption" />
+		<value type="fixed-string" name="icon " />		
+		<value type="fixed-string" name="menu" />		
+		<value type="fixed-string" name="message-box" />		
+		<value type="fixed-string" name="small-caption" />		
+		<value type="fixed-string" name="status-bar" />		
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="font-family">
+		<value type="string" name="(font-family)" />
+		<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="font-size">
+		<value type="string" name="(font-size)" />
+		<value type="fixed-string" name="smaller" />
+		<value type="fixed-string" name="xx-small" />
+		<value type="fixed-string" name="x-small" />
+		<value type="fixed-string" name="small" />
+		<value type="fixed-string" name="medium" />
+		<value type="fixed-string" name="large" />
+		<value type="fixed-string" name="x-large" />
+		<value type="fixed-string" name="xx-large" />
+		<value type="fixed-string" name="larger" />
+		<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="font-size-adjust">
+		<value type="string" name="(integer)" />
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="font-stretch">
+		<value type="fixed-string" name="normal" />
+		<value type="fixed-string" name="wider" />
+		<value type="fixed-string" name="ultra-condensed" />
+		<value type="fixed-string" name="extra-condensed" />
+		<value type="fixed-string" name="condensed" />
+		<value type="fixed-string" name="semi-condensed" />
+		<value type="fixed-string" name="semi-expanded" />
+		<value type="fixed-string" name="expanded" />
+		<value type="fixed-string" name="extra-expanded" />
+		<value type="fixed-string" name="ultra-expanded" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="font-style">
+		<value type="fixed-string" name="normal" />
+		<value type="fixed-string" name="italic" />
+		<value type="fixed-string" name="oblique" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="font-variant">
+		<value type="fixed-string" name="normal" />
+		<value type="fixed-string" name="small-caps" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="font-weight">
+		<value type="fixed-string" name="normal" />
+		<value type="fixed-string" name="bold" />
+		<value type="fixed-string" name="bolder" />
+		<value type="fixed-string" name="lighter" />
+		<value type="fixed-string" name="100" />
+		<value type="fixed-string" name="200" />
+		<value type="fixed-string" name="300" />
+		<value type="fixed-string" name="400" />
+		<value type="fixed-string" name="500" />
+		<value type="fixed-string" name="600" />
+		<value type="fixed-string" name="700" />
+		<value type="fixed-string" name="800" />
+		<value type="fixed-string" name="900" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="height">
+		<value type="string" name="(percentage-length)" />
+		<value type="fixed-string" name="auto" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="left">
+		<value type="string" name="(percentage-length)" />
+		<value type="fixed-string" name="auto" />
+		<value type="fixed-string" name="inherit" />
+	</element>		 
+	<element name="letter-spacing">
+		<value type="string" name="(length)" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="line-height">
+		<value type="string" name="(percentage-length)" />
+		<value type="fixed-string" name="normal" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="list-style">
+		<value type="string" name="(list-style)" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="list-style-image">
+		<value type="string" name="(uri)" />
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="list-style-position">
+		<value type="fixed-string" name="inside" />
+		<value type="fixed-string" name="outside" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="list-style-type">
+		<value type="fixed-string" name="none" />	
+		<value type="fixed-string" name="disc" />
+		<value type="fixed-string" name="circle" />
+		<value type="fixed-string" name="square" />
+		<value type="fixed-string" name="decimal" />
+		<value type="fixed-string" name="decimal-leading-zero" />
+		<value type="fixed-string" name="lower-roman" />
+		<value type="fixed-string" name="upper-roman" />
+		<value type="fixed-string" name="lower-greek" />
+		<value type="fixed-string" name="lower-alpha" />
+		<value type="fixed-string" name="lower-latin" />
+		<value type="fixed-string" name="upper-alpha" />
+		<value type="fixed-string" name="upper-latin" />
+		<value type="fixed-string" name="hebrew" />
+		<value type="fixed-string" name="armenian" />
+		<value type="fixed-string" name="georgian" />
+		<value type="fixed-string" name="cjk-ideographic" />
+		<value type="fixed-string" name="hiragana" />
+		<value type="fixed-string" name="katakana" />
+		<value type="fixed-string" name="hiragana-iroha" />
+		<value type="fixed-string" name="katakana-iroha" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="margin">
+		<value type="string" name="(margin)" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="margin-top">
+		<value type="string" name="(margin-width)" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="margin-right">
+		<value type="string" name="(margin-width)" />
+		<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="margin-bottom">
+		<value type="string" name="(margin-width)" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="margin-left">
+		<value type="string" name="(margin-width)" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="marker-offset">
+		<value type="string" name="(length)" />
+		<value type="fixed-string" name="auto" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="marks">
+		<value type="fixed-string" name="crop" />	
+		<value type="fixed-string" name="cross" />
+		<value type="fixed-string" name="auto" />
+		<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="max-height">
+		<value type="string" name="(percentage-length)" />
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="max-width">
+		<value type="string" name="(percentage-length)" />
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="min-height">
+		<value type="string" name="(percentage-length)" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="min-width">
+		<value type="string" name="(percentage-length)" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="orphans">
+		<value type="string" name="(integer)" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="outline">
+		<value type="string" name="(outline)" />
+		<value type="fixed-string" name="invert" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="outline-color">
+		<value type="string" name="(color)" />
+		<value type="fixed-string" name="invert" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="outline-style">	
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="hidden" />
+		<value type="fixed-string" name="dotted" />
+		<value type="fixed-string" name="dashed" />
+		<value type="fixed-string" name="solid" />
+		<value type="fixed-string" name="double" />
+		<value type="fixed-string" name="groove" />
+		<value type="fixed-string" name="ridge" />
+		<value type="fixed-string" name="inset" />
+		<value type="fixed-string" name="outset" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="outline-width">
+		<value type="string" name="(border-width)" />
+		<value type="fixed-string" name="inherit" />	
+	</element>
+	<element name="overflow">
+		<value type="fixed-string" name="visible" />
+		<value type="fixed-string" name="hidden" />
+		<value type="fixed-string" name="scroll" />
+		<value type="fixed-string" name="auto" />		
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="padding">
+		<value type="string" name="(padding)" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="padding-top">
+		<value type="string" name="(percentage-length)" />
+		<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="padding-right">
+		<value type="string" name="(percentage-length)" />
+		<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="padding-bottom">
+		<value type="string" name="(percentage-length)" />
+		<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="padding-left">
+		<value type="string" name="(percentage-length)" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="page">
+		<value type="string" name="(identifier)" />
+		<value type="fixed-string" name="auto" />
+	</element>	
+	<element name="page-break-after">
+		<value type="fixed-string" name="auto" />
+		<value type="fixed-string" name="always" />
+		<value type="fixed-string" name="avoid" />
+		<value type="fixed-string" name="left" />
+		<value type="fixed-string" name="right" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="page-break-before">
+		<value type="fixed-string" name="auto" />
+		<value type="fixed-string" name="always" />
+		<value type="fixed-string" name="avoid" />
+		<value type="fixed-string" name="left" />
+		<value type="fixed-string" name="right" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="page-break-inside">
+		<value type="fixed-string" name="avoid" />
+		<value type="fixed-string" name="auto" />
+	</element>	
+	<element name="pause">
+		<value type="string" name="(pause)" />
+		<value type="string" name="(percentage)" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="pause-after">
+		<value type="string" name="(pause)" />
+		<value type="string" name="(percentage)" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="pause-before">
+		<value type="string" name="(pause)" />
+		<value type="string" name="(percentage)" />
+		<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="pitch">
+		<value type="string" name="(frequency)" />
+		<value type="fixed-string" name="x-low" />
+		<value type="fixed-string" name="low" />
+		<value type="fixed-string" name="medium" />
+		<value type="fixed-string" name="high" />
+		<value type="fixed-string" name="x-high" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="pitch-range">
+		<value type="string" name="(number)" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="play-during">
+		<value type="string" name="(play-during)" />
+		<value type="fixed-string" name="auto" />
+		<value type="fixed-string" name="none" />		
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="position">
+		<value type="fixed-string" name="static" />
+		<value type="fixed-string" name="relative" />
+		<value type="fixed-string" name="absolute" />
+		<value type="fixed-string" name="fixed" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="quotes">
+		<value type="string" name="(quotes)" />
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="richness">
+		<value type="string" name="(number)" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="right">
+		<value type="string" name="(percentage-length)" />
+		<value type="fixed-string" name="auto" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="size">
+		<value type="string" name="(size-length)" />
+		<value type="fixed-string" name="auto" />
+		<value type="fixed-string" name="portrait" />		
+		<value type="fixed-string" name="landscape" />		
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="speak">
+		<value type="fixed-string" name="normal" />
+		<value type="fixed-string" name="none" />		
+		<value type="fixed-string" name="spell-out" />		
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="speak-header">
+		<value type="fixed-string" name="once" />
+		<value type="fixed-string" name="always" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="speak-numeral">
+		<value type="fixed-string" name="digits" />
+		<value type="fixed-string" name="continuous" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="speak-punctuation">
+		<value type="fixed-string" name="code" />
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="speech-rate">
+		<value type="string" name="(number)" />
+		<value type="fixed-string" name="x-slow" />
+		<value type="fixed-string" name="slow" />	
+		<value type="fixed-string" name="medium" />
+		<value type="fixed-string" name="fast" />
+		<value type="fixed-string" name="x-fast" />
+		<value type="fixed-string" name="faster" />		
+		<value type="fixed-string" name="slower" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="stress">
+		<value type="string" name="(number)" />
+		<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="table-layout">
+		<value type="fixed-string" name="auto" />
+		<value type="fixed-string" name="fixed" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="text-align">
+		<value type="string" name="(string)" />	
+		<value type="fixed-string" name="left" />
+		<value type="fixed-string" name="right" />
+		<value type="fixed-string" name="center" />
+		<value type="fixed-string" name="justify" />		
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="text-decoration">
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="underline" />
+		<value type="fixed-string" name="overline" />
+		<value type="fixed-string" name="line-through" />
+		<value type="fixed-string" name="blink" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="text-indent">
+		<value type="string" name="(percentage-length)" />		
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="text-shadow">
+		<value type="fixed-string" name="(text-shadow)" />
+		<value type="fixed-string" name="none" />
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="text-transform">
+		<value type="fixed-string" name="capitalize" />
+		<value type="fixed-string" name="uppercase" />
+		<value type="fixed-string" name="lowercase" />
+		<value type="fixed-string" name="none" />		
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="top">
+		<value type="fixed-string" name="(percentage-length)" />
+		<value type="fixed-string" name="auto" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="unicode-bidi">
+		<value type="fixed-string" name="normal" />
+		<value type="fixed-string" name="embed" />
+		<value type="fixed-string" name="bidi-override" />		
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="vertical-align">
+		<value type="string" name="(percentage-length)" />	
+		<value type="fixed-string" name="baseline" />
+		<value type="fixed-string" name="sub" />
+		<value type="fixed-string" name="super" />
+		<value type="fixed-string" name="top" />
+		<value type="fixed-string" name="text-top" />
+		<value type="fixed-string" name="middle" />
+		<value type="fixed-string" name="bottom" />
+		<value type="fixed-string" name="text-bottom" />		
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="visibility">
+		<value type="fixed-string" name="visible" />	
+		<value type="fixed-string" name="hidden" />
+		<value type="fixed-string" name="collapse" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="voice-family">
+		<value type="string" name="(voice-family)" />	
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="volume">
+		<value type="string" name="(number)" />	
+		<value type="string" name="(percentage)" />		
+		<value type="fixed-string" name="silent" />
+		<value type="fixed-string" name="x-soft" />	
+		<value type="fixed-string" name="soft" />
+		<value type="fixed-string" name="medium" />
+		<value type="fixed-string" name="loud" />
+		<value type="fixed-string" name="x-loud" />
+		<value type="fixed-string" name="inherit" />
+	</element>		
+	<element name="white-space">
+		<value type="fixed-string" name="normal" />
+		<value type="fixed-string" name="pre" />
+		<value type="fixed-string" name="nowrap" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="widows">
+		<value type="string" name="(integer)" />		
+		<value type="fixed-string" name="inherit" />
+	</element>	
+	<element name="width">
+		<value type="string" name="(percentage-length)" />		
+		<value type="fixed-string" name="auto" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="word-spacing">
+		<value type="string" name="(length)" />
+		<value type="fixed-string" name="normal" />
+		<value type="fixed-string" name="inherit" />
+	</element>
+	<element name="z-index">
+		<value type="string" name="(integer)" />	
+		<value type="fixed-string" name="auto" />		
+		<value type="fixed-string" name="inherit" />
+	</element>	
+</csssed-def>
+
+
+
+

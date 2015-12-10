@@ -113,6 +113,7 @@ namespace fluxTest {
           <HelloMessage initState={st.hello2 } is1={2} parentId={this.id} id='fluxTest.HelloMessage4'/>
           <br/>
           </div>
+        <div className={classNames('btn', { [`btn-${"primary"}`]: true }) } >Button</div>
         </div>;
     }
   };

@@ -131,6 +131,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="wwwroot\bs.css" />
     <Content Include="wwwroot\Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
     <Content Include="wwwroot\Content\bootstrap\wells.less" />
@@ -260,6 +261,7 @@
     <Content Include="wwwroot\deploy\web\mins\externals.min.js" />
     <Content Include="wwwroot\Material\material.css" />
     <Content Include="wwwroot\Material\material.js" />
+    <Content Include="wwwroot\scripts\classNames.js" />
     <Content Include="wwwroot\scripts\core.js" />
     <Content Include="wwwroot\scripts\react-bootstrap.js" />
     <Content Include="wwwroot\scripts\react-dom.js" />
@@ -400,6 +402,7 @@
     <TypeScriptCompile Include="wwwroot\scripts\typings\react\react-addons-update.d.ts" />
     <TypeScriptCompile Include="wwwroot\scripts\typings\react\react-dom.d.ts" />
     <TypeScriptCompile Include="wwwroot\scripts\typings\react\react-global.d.ts" />
+    <TypeScriptCompile Include="wwwroot\scripts\typings\react\classNames.d.ts" />
     <TypeScriptCompile Include="wwwroot\scripts\typings\react\react.d.ts" />
     <TypeScriptCompile Include="wwwroot\lmwebcommon-config.ts" />
     <TypeScriptCompile Include="wwwroot\localhost-config.ts" />

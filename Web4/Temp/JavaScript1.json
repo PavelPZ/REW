@@ -1,35 +1,91 @@
 ﻿{
-  "lmapp_website_id": "localhost",
-  "server": {
-    "basicPath": "D:\\LMCom\\rew\\TheWeb",
-    "web4Path": "d:\\LMCom\\rew\\Web4"
-  },
-  "azure": {
-    "connectionString": "UseDevelopmentStorage=true",
-    "blobJS": "http://127.0.0.1:10000/devstoreaccount1/js-v001",
-    "blobMM": "http://127.0.0.1:10000/devstoreaccount1/mm-v001",
-    "swDeployAccount": {
-      "url": "ftp://waws-prod-am2-033.ftp.azurewebsites.windows.net",
-      "userName": "LMWebCommon\\pavelzika",
-      "password": "pkzippkzip1_"
+  "charset": "'utf-8'",
+  "imports": [
+    { "import": "'custom.css'" },
+    { "import": "url(\"fineprint.css\")" },
+    {
+      "import": "url(\"fineprint.css\")",
+      "mediaqueries": "print"
+    },
+    {
+      "import": "url(\"bluish.css\")",
+      "mediaqueries": "projection,tv"
+    },
+    {
+      "import": "\"common.css\"",
+      "mediaqueries": "screen,projection"
+    },
+    {
+      "import": "url('landscape.css')",
+      "mediaqueries": "screen and (orientation:landscape)"
     }
-  },
-  "defaultPars": {
-    "app": 1,
-    "appPart": null,
-    "lang": 2,
-    "brand": 0,
-    "skin": 0,
-    "debug": false,
-    "swFromFileSystem": true
-  },
-  "oAuth": {
-    "loginUrl": "",
-    "items": [
-      null,
-      { "clientId": "" },
-      { "clientId": "765138080284696" },
-      { "clientId": "" }
-    ]
-  }
+  ],
+  "namespaces": [
+    { "namespace": "\"http://www.w3c.org\"" },
+    {
+      "namespace": "\"http://www.w3c.org/svg\"",
+      "prefix": "svg"
+    }
+  ],
+  "rulelist": [
+    {
+      "type": "media",
+      "mediaqueries": "screen",
+      "children": [
+        {
+          "type": "style",
+          "selector": "*",
+          "declarations": { "position": "absolute" }
+        },
+        {
+          "type": "style",
+          "selector": ".box_shadow ",
+          "declarations": {
+            "-webkit-box-shadow": "0px 0px 4px 0px #ffffff",
+            "box-shadow": "0px 0px 4px 0px #ffffff"
+          }
+        }
+      ]
+    },
+    {
+      "type": "keyframes",
+      "id": "myanim",
+      "keyframes": [
+        {
+          "type": "keyframe",
+          "offset": "0%",
+          "declarations": { "opacity": "0.0" }
+        },
+        {
+          "type": "keyframe",
+          "offset": "50%",
+          "declarations": { "opacity": "0.5" }
+        },
+        {
+          "type": "keyframe",
+          "offset": "100%",
+          "declarations": { "opacity": "1.0" }
+        }
+      ],
+      "prefix": "-webkit-"
+    },
+    {
+      "type": "style",
+      "selector": ".matrix ",
+      "declarations": {
+        "-webkit-transform": "matrix(1.186,-0.069,0.102,1.036,16.595,73.291)",
+        "-moz-transform": "matrix(1.186,-0.069,0.102,1.036,16.595px,73.291px)",
+        "-ms-transform": "matrix(1.186,-0.069,0.102,1.036,16.595,73.291)",
+        "-o-transform": "matrix(1.186,-0.069,0.102,1.036,16.595,73.291)",
+        "transform": "matrix(1.186,-0.069,0.102,1.036,16.595,73.291)"
+      }
+    },
+    {
+      "type": "fontface",
+      "declarations": {
+        "font-family": "'WebFont'",
+        "src": "url('myfont.woff') format('woff'),url('myfont.ttf') format('truetype')"
+      }
+    }
+  ]
 }

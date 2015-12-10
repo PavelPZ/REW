@@ -3,6 +3,7 @@
     "core.js",
     "react-with-addons.js",
     "react-dom.js",
-    "react-bootstrap.js"
+    "react-bootstrap.js",
+    "classnames.js"
   ]
 }

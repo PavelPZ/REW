@@ -1,0 +1,1 @@
+declare function classNames(...pars: Array<string|number|Array<any>|Object>);
