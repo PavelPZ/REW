@@ -221,6 +221,9 @@ web4/data/productscurrent.xml
 web4/data/productsexpanded.xml
 web4/data/actproductsexpanded.xml
 web4/data/productsitemap.xml
+web4/products/blended-expanded.xml
+web4/products/blended.xml
+web4/deploy/envelopes.xml
 lmcom/
 
 web4/siteroot.js
@@ -245,6 +248,9 @@ Web4/Data/buildLogs/
 Web4/Data/instr/
 Web4/Data/XmlSource/
 ndependout/
+closurelib/
+wrap/
+theweb/
 
 !Web4/blendedapi/styles/style.css 
 !Web4/jslib/css/lm.css 
