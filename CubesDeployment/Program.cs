@@ -333,7 +333,7 @@ namespace CubesDeployment {
                 //TradosLib.oper1NewTradosPages(pages, true);
 
                 //Oper1
-                CourseMeta.Lib.publishers.tradosOper1(log);
+                //CourseMeta.Lib.publishers.tradosOper1(log);
 
                 //Oper2 na data a instrukce
                 Parallel.ForEach(CommonLib.bigLocalizations.Where(l => l != Langs.en_gb).Select(l => l == Langs.sp_sp ? Langs.es_es : l), lng => {
