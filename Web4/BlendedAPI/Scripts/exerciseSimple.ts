@@ -40,8 +40,7 @@
         var html = JsRenderTemplateEngine.render("c_gen", pg);
         CourseMeta.actExPageControl = pg; //na chvili: knockout pro cviceni binduje CourseMeta.actExPageControl
         ko.cleanNode(el[0]);
-        el.html('');
-        el.html(html);
+        el.html(''); el.html(html);
         ko.applyBindings({}, el[0]);
         pg.callInitProcs(Course.initPhase.afterRender, () => {
           pg.callInitProcs(Course.initPhase.afterRender2, () => {

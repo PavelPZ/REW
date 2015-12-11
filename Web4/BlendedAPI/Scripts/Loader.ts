@@ -158,7 +158,7 @@ module blended {
 
   export module loader {
 
-    //baseUrlRelToRoot: relativni adresa rootu Web4 aplikace vyhledem k aktualni HTML strance
+    //baseUrlRelToRoot: relativni adresa rootu Web4 aplikace vzhledem k aktualni HTML strance
     export function adjustProduct(ctx: learnContext): ng.IPromise<IProductEx> {
       try {
         var deferred = ctx.$q.defer();
