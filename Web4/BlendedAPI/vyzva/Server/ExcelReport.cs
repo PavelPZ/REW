@@ -59,7 +59,7 @@ namespace blended {
         var res = new Dictionary<lineUser, IAlocatedKey>(new blendedMeta.lineUserEqualityComparer());
         foreach (var kv in groups.SelectMany(grp => grp.studentKeys.Where(k => k.lmcomId > 0).Select(k => new { grp, key = k }))) {
           var lineUser = new blendedMeta.lineUser(kv.grp.line, kv.key.lmcomId);
-          kv.key._myLectorLmcomId = kv.grp.lectorKeys.Select(lk => lk.lmcomId).First(id => id > 0);
+          kv.key._myLectorLmcomId = kv.grp.lectorKeys.Select(lk => lk.lmcomId).FirstOrDefault(id => id > 0);
           kv.key._myGroup = kv.grp;
           res[lineUser] = kv.key;
         }
@@ -143,11 +143,12 @@ namespace blended {
         foreach (var module in allModules) blendedMeta.MetaInfo.addModule(userProducts, module); //zatrideni existujicich dat
         foreach (var lmcId in e.courseUsers.Keys) blendedMeta.MetaInfo.addDummyUsers(userProducts, lmcId); //doplneni studentu, co jeste nedokoncili nic z kurzu (tj. nemaji zadna DONE data v DB)
         return lib.emptyAndHeader(userProducts.uproducts.Select(kv => new { kv.Key, kv.Value })).Select(t => {
-          IAlocatedKey usr = null; if (t != null) {
+          IAlocatedKey usr = null; IAlocatedKey lector = null;
+          if (t != null) {
             e.courseUsers.TryGetValue(t.Key, out usr);
-            if (usr == null) return null;
+            if (usr == null || usr._myLectorLmcomId == 0) return null;
+            lector = e.allUsers[usr._myLectorLmcomId];
           }
-          IAlocatedKey lector = usr == null ? null : e.allUsers[usr._myLectorLmcomId];
           return new object[] {
               t==null ? "_student" : usr.lastName + " " + usr.firstName,
               t==null ? "_studyGroup" : usr._myGroup.title + " (učitel " + lector.firstName + " " + lector.lastName + ")",
@@ -179,7 +180,7 @@ namespace blended {
         //zpracovani raw dat
         var allExercises = query2.
           Select(kd => {
-            var res = JsonConvert.DeserializeObject<uEx>(kd.ShortData);
+            var res = JsonConvert.DeserializeObject<uEx>(kd.ShortData.Replace(":null,", ":0,"));
             res.url = kd.Key; res.productUrl = kd.ProductUrl; res.lmcomId = kd.LMComId;
             return res;
           }).
