@@ -68,7 +68,7 @@ namespace NewData {
         ex.d.UserId = ex.m.UserId;
         ex.d.UserInfo = ex.m.UserInfo;
         ex.d.AttemptId = ex.m.AttemptId;
-        ex.d.exScore = ex.p.s == null || ex.p.ms == 0 ? -1 : (int)(100.0 * ex.p.s / ex.p.ms);
+        ex.d.exScore = /*ex.p.s == null ||*/ ex.p.ms == 0 ? -1 : (int)(100.0 * ex.p.s / ex.p.ms);
         ex.d.modStart = ex.m.ModuleData.bt;
         ex.d.modEnd = ex.m.ModuleData.et;
       }
@@ -166,6 +166,6 @@ namespace NewData {
         //foreach (var testEx in _exDir.Values.OrderBy(e => e.course).ThenBy(e => e.modId)) testEx.Order = cnt++;
         return _exDir;
       }
-    } static Dictionary<string, schools.dumpRow> _exDir;
+    } static Dictionary<string, schools.dumpRow> _exDir = null;
   }
 }

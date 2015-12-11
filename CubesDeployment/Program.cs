@@ -405,7 +405,7 @@ namespace CubesDeployment {
                 CourseMeta.Lib.init(lg3, @"d:\lmcom\", false);
                 if (!lg3.hasError) {
 
-                  string tempZip;
+                  //string tempZip;
 
                   /***** VS.NET AUTHOR - d:\LMCom\rew\Web4\Author\ExFormData.htm ****/
                   //string html;

@@ -628,7 +628,7 @@ namespace excelReport {
     static Type[] realTypes = new Type[] { typeof(float), typeof(double) };
 
 
-    static string resultKey = "result";
+    //static string resultKey = "result";
 
     public static void tests(int companyId) {
       //var db = Lib.CreateContext();

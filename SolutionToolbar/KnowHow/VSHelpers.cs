@@ -17,7 +17,7 @@ namespace Microsoft.Data.Entity.Design.VisualStudio {
 
   internal static class VSHelpers {
 
-    static dynamic NativeMethods;
+    static dynamic NativeMethods = null;
     // keeping as int so the GetVsColor would cache into the same table if we need it
     private static readonly Dictionary<int, Color> _cachedColors = new Dictionary<int, Color>();
 

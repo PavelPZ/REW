@@ -222,7 +222,7 @@ namespace DesignNew {
       //  </cross-domain-access>
       //</access-policy>");
 
-      if (delta == null || delta.empty()) ;
+      if (delta == null || delta.empty()) return;
       Parallel.ForEach(delta.delete, new ParallelOptions { MaxDegreeOfParallelism = paralelCount }, it => container.GetBlockBlobReference(it.url.Substring(1)).Delete());
       Parallel.ForEach(delta.update.Concat(delta.insert), new ParallelOptions { MaxDegreeOfParallelism = paralelCount }, it => {
         var blob = container.GetBlockBlobReference(it.url.Substring(1));

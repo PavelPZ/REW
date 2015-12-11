@@ -182,7 +182,7 @@ namespace LMMedia {
       return res;
     }
 
-    static Dictionary<BasicPathType, string> configPaths;
+    static Dictionary<BasicPathType, string> configPaths = null;
 
     static string OldEncodeWordToFn(string w) {
       string res = "";

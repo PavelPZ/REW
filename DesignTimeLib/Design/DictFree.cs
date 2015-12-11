@@ -47,7 +47,7 @@ namespace FreeDict {
           //var data = wc.DownloadData(url);
           writeWord(word.word, data);
           inError = false;
-        } catch (Exception exp) {
+        } catch {
           if (!inError) { Console.Write('*'); }
           inError = true;
           Thread.Sleep(2000); goto start;

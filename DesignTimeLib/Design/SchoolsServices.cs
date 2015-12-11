@@ -25,7 +25,7 @@ namespace NewData {
       string html = null;
       try {
         html = LowUtils.DownloadStr(url);
-      } catch (Exception exp) {
+      } catch {
         html = "*" + url;
       }
       //html = LowUtils.DownloadStr(url);
@@ -45,7 +45,7 @@ namespace NewData {
         html = html.Replace('\'','"');
         XElement root = XElement.Parse(html);
         html = root.ToString();
-      } catch (Exception exp) {
+      } catch {
         html = "*" + url;
       }
       return html;

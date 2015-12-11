@@ -11,7 +11,7 @@ namespace Microsoft.Data.Tools.VSXmlDesignerBase.Common {
   using Microsoft.VisualStudio.Shell.Interop;
 
   internal static class CommonVsUtilities {
-    static dynamic NativeMethods;
+    static dynamic NativeMethods = null;
     // Used for InvokeRequired
     private static Control _marshalingControl;
 

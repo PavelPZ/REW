@@ -180,7 +180,7 @@ namespace DictK {
     }
     public List<MExample> examples = new List<MExample>();
     public List<MTranslation> translations = new List<MTranslation>();
-    public override IEnumerable<MItem> childs() { return examples; return translations; }
+    public override IEnumerable<MItem> childs() { return examples; } //return translations; }
   }
 
   public class MPartOfSpeech : MItem {
