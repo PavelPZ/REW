@@ -22,9 +22,113 @@
           "moduleId": "flux",
           "actionId": "externalnavigate",
           "hist": {
-            "moduleId": "loginTest",
-            "actionId": "default"
+            "moduleId": "layoutTest",
+            "actionId": "r-default",
+            "par": {
+              "defaultPlaces": true,
+              "defaultScene": true
+            }
+          },
+          "prefix": 3,
+          "startProc": 0
+        }
+      ]
+    },
+    {
+      "initStatus": {
+        "layoutTest": {},
+        "layout": {
+          "scene": {
+            "ids": [],
+            "caseId": "scene-default"
+          },
+          "scenePlaces": {
+            "place-content": {
+              "ids": [],
+              "placeId": "place-content",
+              "rendererId": "cont-cont"
+            },
+            "place-other": {
+              "ids": [],
+              "placeId": "place-other",
+              "rendererId": "other-cont"
+            }
           }
+        },
+        "auth": {
+          "ids": [],
+          "email": null,
+          "providerId": 0,
+          "lastName": null,
+          "firstName": null
+        }
+      },
+      "actions": [
+        {
+          "moduleId": "layoutTest",
+          "actionId": "r-default",
+          "par": {
+            "defaultScene": false,
+            "defaultPlaces": true
+          }
+        },
+        {
+          "moduleId": "layoutTest",
+          "actionId": "r-default",
+          "par": {
+            "defaultScene": true,
+            "defaultPlaces": false
+          }
+        },
+        {
+          "moduleId": "layoutTest",
+          "actionId": "r-default",
+          "par": {
+            "defaultScene": false,
+            "defaultPlaces": false
+          }
+        },
+        {
+          "moduleId": "flux",
+          "actionId": "externalnavigate",
+          "hist": {
+            "moduleId": "testing",
+            "actionId": "default",
+            "par": {}
+          },
+          "prefix": 0,
+          "startProc": 6
+        }
+      ]
+    },
+    {
+      "initStatus": {
+        "layout": {
+          "scene": {
+            "ids": [],
+            "caseId": "scene-default"
+          },
+          "scenePlaces": {}
+        },
+        "auth": {
+          "ids": [],
+          "email": null,
+          "providerId": 0,
+          "lastName": null,
+          "firstName": null
+        }
+      },
+      "actions": [
+        {
+          "moduleId": "flux",
+          "actionId": "externalnavigate",
+          "hist": {
+            "moduleId": "loginTest",
+            "actionId": "default",
+            "par": null
+          },
+          "prefix": 0,
+          "startProc": 4
         }
       ]
     },
@@ -53,30 +157,45 @@
       },
       "actions": [
         {
-          "moduleId": "login",
-          "actionId": "login.r-login"
+          "moduleId": "flux",
+          "actionId": "externalnavigate",
+          "hist": {
+            "moduleId": "oauth",
+            "actionId": "default",
+            "par": {
+              "providerId": 2,
+              "client_id": ""
+            }
+          },
+          "prefix": 0,
+          "startProc": 7
+        }
+      ]
+    },
+    {
+      "initStatus": {
+        "layout": {
+          "scene": {
+            "ids": [],
+            "caseId": "scene-default"
+          },
+          "scenePlaces": {
+            "place-content": {
+              "ids": [],
+              "placeId": "place-content",
+              "rendererId": "loginTest.content"
+            }
+          }
         },
-        {
-          "moduleId": "login",
-          "actionId": "login.r-register"
-        },
-        {
-          "moduleId": "login",
-          "actionId": "login.r-login"
-        },
-        {
-          "moduleId": "login",
-          "actionId": "login.r-forgotPsw"
-        },
-        {
-          "moduleId": "login",
-          "actionId": "login.r-login"
-        },
-        {
-          "moduleId": "login",
-          "actionId": "login.r-home",
-          "replace": true
-        },
+        "auth": {
+          "ids": [],
+          "email": "kubakaca@gmail.com",
+          "providerId": 2,
+          "lastName": "Zika",
+          "firstName": "Pavel"
+        }
+      },
+      "actions": [
         {
           "moduleId": "flux",
           "actionId": "externalnavigate",
@@ -84,7 +203,9 @@
             "moduleId": "testing",
             "actionId": "default",
             "par": {}
-          }
+          },
+          "prefix": 0,
+          "startProc": 6
         }
       ]
     },
@@ -99,10 +220,10 @@
         },
         "auth": {
           "ids": [],
-          "email": null,
-          "providerId": 0,
-          "lastName": null,
-          "firstName": null
+          "email": "kubakaca@gmail.com",
+          "providerId": 2,
+          "lastName": "Zika",
+          "firstName": "Pavel"
         }
       },
       "actions": []

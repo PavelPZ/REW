@@ -32,8 +32,6 @@ namespace testingTest {
         startPlay();
       };
       reader.readAsText(file);
-
-    
       //var formData = new FormData(); 
       //for (var i = 0; i < files.length; i++) formData.append('file', files[i]);
       //var xhr = new XMLHttpRequest();

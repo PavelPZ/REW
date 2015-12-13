@@ -1,30 +1,32 @@
-﻿const router_listenHashChange = () => router.listenUrlChange;
-const router_tryDispatchRoute = () => router.tryDispatchRoute;
-const testing_continuePlaying = () => testingTest.continuePlaying;
-const router_onInitRoute = () => router.onInitRoute;
+﻿//const router_listenHashChange = () => router.listenUrlChange;
+//const router_tryDispatchRoute = () => router.tryDispatchRoute;
+//const testing_continuePlaying = () => testingTest.continuePlaying;
+//const router_onInitRoute = () => router.onInitRoute;
 
 namespace config {
-  export interface IData { flux?: { playInterval: number; }; }
-  cfg.data.flux = { playInterval: 300 };
+  export interface IData {
+    flux?: { playInterval: number; appInitialized: boolean; };
+  }
+  cfg.data.flux = { playInterval: 300, appInitialized:false };
 }
 
 namespace flux {  
 
   //**************** getState, trigger
-  export function trigger(action: IAction, compl?: utils.TCallback, inHistoryPopState?:boolean) {
+  export function trigger(action: IAction, compl?: utils.TCallback, inHistoryPopState?: boolean) {
     if (!action || !action.moduleId || !action.actionId) loger.doThrow('!action || !action.type');
     if (!compl) compl = utils.Noop;
     if (recording) recording.actions.push(action);
     loger.log('ACTION ' + JSON.stringify(action), 1);
     if (triggerExternalNavigateAction(action as IExternalNavigateAction)) { loger.log('action', -1); compl(); return; }
-    router_tryDispatchRoute()(action as router.IHistoryType, inHistoryPopState, routeProcessed => {
+    router.tryDispatchRoute(action as router.IHistoryType, inHistoryPopState, routeProcessed => {
       if (routeProcessed) {
         compl();
       } else {
         var res = allModules[action.moduleId]; if (!res) loger.doThrow('Cannot find module ' + action.moduleId);
         res.dispatchAction(action, compl);
       }
-      loger.log('action', -1); 
+      loger.log('action', -1);
     })
   }
   export function getState(): IAppState { return state; }
@@ -103,22 +105,22 @@ namespace flux {
   }
   export function stateConnected(st: ISmartState): boolean {
     if (!st || !st.ids) return false;
-    if (!appInitialized) return true;
+    if (!config.cfg.data.flux.appInitialized) return true;
     return !!st.ids.find(id => !!allComponents[id]);
   }
   export function findComponent<C extends SmartComponent<any, any>>(id: string): C { return <C>(allComponents[id]); }
 
   //****************  RECORDING
-  export function recordStart() { recording = { initStatus: JSON.parse(JSON.stringify(getState()/*, (k,v) => k=='ids' ? undefined : v*/)), actions: [] }; }
-  export function recordEnd(): string { try { return recording ? JSON.stringify(recording, null, 2) : null; } finally { recording = null; } }
-  export function play(recStr: string, completed: () => void) {
-    if (!recStr) return;
-    console.log('>play: ' + recStr);
-    var rec: IRecording = JSON.parse(recStr);
-    state = rec.initStatus;
-    buildDOMTree();
-    doPlayActions(rec.actions, completed);
-  }
+  export function recordStart() { recording = { initStatus: JSON.parse(JSON.stringify(getState())), actions: [] }; }
+  //export function recordEnd(): string { try { return recording ? JSON.stringify(recording, null, 2) : null; } finally { recording = null; } }
+  //export function play(recStr: string, completed: () => void) {
+  //  if (!recStr) return;
+  //  console.log('>play: ' + recStr);
+  //  var rec: IRecording = JSON.parse(recStr);
+  //  state = rec.initStatus;
+  //  buildDOMTree();
+  //  doPlayActions(rec.actions, completed);
+  //}
   export function doPlayActions(actions: Array<IAction>, completed: () => void) {
     var doPlay: () => void;
     doPlay = () => {
@@ -133,14 +135,14 @@ namespace flux {
   export function initApplication(dom: Element, root: () => JSX.Element) {
     buildDOMTree = () => { ReactDOM.unmountComponentAtNode(dom); ReactDOM.render(root(), dom); }
 
-    //** acion PLAYING inicializace
-    var st = testing_continuePlaying()(); //sance testing modulu naladovat uplne jiny APP state pro PLAYING)
+    //** action PLAYING inicializace
+    var st = testingTest.continuePlaying(); //sance testing modulu naladovat uplne jiny APP state pro PLAYING)
     if (st) {
       state = st.initStatus;
-      router_onInitRoute()(() => {
+      router.onInitRoute(() => {
         buildDOMTree(); //ReactDOM.render
-        router_listenHashChange()(); //"hashchange" event binding
-        appInitialized = true;
+        router.listenUrlChange(); //"hashchange" event binding
+        config.cfg.data.flux.appInitialized = true;
         doPlayActions(st.actions, utils.Noop);
       });
       return;
@@ -148,16 +150,14 @@ namespace flux {
 
     //** normalni inicializace
     config.onInitAppState(() => { //staticka inicializace app state (bez ohledu na aktualne naladovanou ROUTE)
-      router_onInitRoute()(() => { //inicializace default route (call initialni "hashchange" event). Pres flux.trigger se vola onDispatchRouteAction, kde je ev. redirekt na LOGIN.
+      router.onInitRoute(() => { //inicializace default route (call initialni "hashchange" event). Pres flux.trigger se vola onDispatchRouteAction, kde je ev. redirekt na LOGIN.
         testingTest.continueRecording();
         buildDOMTree(); //ReactDOM.render
-        router_listenHashChange()(); //"hashchange" event binding
-        appInitialized = true;
+        router.listenUrlChange(); //"hashchange" event binding
+        config.cfg.data.flux.appInitialized = true;
       });
     });
   } var buildDOMTree: () => void;
-
-  export var appInitialized = false;
 
   export interface IAppState { }
 

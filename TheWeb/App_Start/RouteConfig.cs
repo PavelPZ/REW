@@ -26,8 +26,8 @@ namespace TheWeb {
       );
       routes.MapRoute(
           name: "Web",
-          url: Cfg.routePrefix(actRoutePrefix = servConfig.RoutePrefix.no) + "{startProc}/{*path}",
-          defaults: new { controller = "Home", action = "Web", routePrefix = actRoutePrefix },
+          url: Cfg.routePrefix(servConfig.RoutePrefix.no) + "{startProc}/{*path}",
+          defaults: new { controller = "Home", action = "Web", routePrefix = servConfig.RoutePrefix.no },
           constraints: new { startProc = new StartProcConstraint() }
       );
 

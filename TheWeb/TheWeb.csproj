@@ -247,6 +247,7 @@
     <Content Include="wwwroot\Common\uiRouter\index.html" />
     <Content Include="wwwroot\Common\uiRouter\urlMatcherFactory.js" />
     <Content Include="wwwroot\Common\validation\Index.html" />
+    <Content Include="wwwroot\Course\index.html" />
     <Content Include="wwwroot\deploy\oauth\mins\all.min.js" />
     <Content Include="wwwroot\deploy\web4\index-parts\edusoft.html" />
     <Content Include="wwwroot\deploy\web4\index-parts\grafia.html" />
@@ -401,6 +402,9 @@
     <TypeScriptCompile Include="wwwroot\Common\validation\templates-bs.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\validation\templates-mdl.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\validation\test.tsx" />
+    <TypeScriptCompile Include="wwwroot\Course\course.tsx" />
+    <TypeScriptCompile Include="wwwroot\Course\gapFill.ts" />
+    <TypeScriptCompile Include="wwwroot\Course\test.tsx" />
     <TypeScriptCompile Include="wwwroot\scripts\typings\core-js.d.ts" />
     <TypeScriptCompile Include="wwwroot\scripts\typings\react-bootstrap.d.ts" />
     <TypeScriptCompile Include="wwwroot\scripts\typings\react\react-addons-create-fragment.d.ts" />

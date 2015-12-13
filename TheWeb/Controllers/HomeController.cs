@@ -79,7 +79,9 @@ namespace TheWeb {
     void IHttpModule.Init(HttpApplication context) {
       context.BeginRequest += (app, a) => {
         var ctx = ((HttpApplication)app).Context;
-        var cacheKey = itemUrl(ctx.Request.Url.AbsolutePath); if (cacheKey == null) return;
+        var cacheKey = ctx.Request.Url.AbsolutePath.ToLower();
+        cacheKey = itemUrl(ctx.Request.Url.AbsolutePath) ?? staticHtmlUrl(cacheKey);
+        if (cacheKey == null) return;
         if (Cfg.cfg.mvcViewPars.swFromFileSystem) {
           var path = FileSources.pathFromUrl(cacheKey).ToLower();
           ctx.Response.ContentType = Consts.contentTypes[Path.GetExtension(path)];
@@ -105,6 +107,7 @@ namespace TheWeb {
     void IHttpModule.Dispose() {
     }
     static string itemUrl(string url) { var parts = url.Split('~'); return parts.Length == 2 ? parts[1] : null; }
+    static string staticHtmlUrl(string url) { return url.EndsWith(".html") && url.StartsWith("/wwwroot/") ? url.Substring(8) : null; }
 
   }
 }
