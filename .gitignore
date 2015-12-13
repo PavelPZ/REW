@@ -220,8 +220,15 @@ web4/data/products.xml
 web4/data/productscurrent.xml
 web4/data/productsexpanded.xml
 web4/data/actproductsexpanded.xml
+web4/products/blended-expanded.xml
+web4/products/blended.xml
 web4/data/productsitemap.xml
+web4/deploy/envelopes.xml
 lmcom/
+wrap/
+theweb/
+closurelib/
+weblogin/
 
 web4/siteroot.js
 web4/siteroot.all.js
