@@ -1629,10 +1629,10 @@
   </xs:attributeGroup>
   <xs:group name="LM-all-elements">
     <xs:choice>
-      <xs:element ref="smart-element-low" />
       <xs:element ref="smart-pairing" />
       <xs:element ref="smart-offering" />
       <xs:element ref="smart-element" />
+      <xs:element ref="smart-element-low" />
       <xs:element ref="macro-article" />
       <xs:element ref="macro-vocabulary" />
       <xs:element ref="macro-video" />
@@ -1667,8 +1667,8 @@
       <xs:element ref="list-group" />
       <xs:element ref="two-column" />
       <xs:element ref="panel" />
-      <xs:element ref="url-tag" />
       <xs:element ref="media-text" />
+      <xs:element ref="url-tag" />
       <xs:element ref="media-big-mark" />
       <xs:element ref="media-player" />
       <xs:element ref="media-video" />
@@ -1700,14 +1700,6 @@
       <xs:pattern value="^\d+\.\d+$" />
     </xs:restriction>
   </xs:simpleType>
-  <xs:element name="smart-element-low" type="smart-element-low-type" />
-  <xs:complexType name="smart-element-low-type">
-    <xs:attribute name="name" type="xs:string" />
-    <xs:attribute name="cdata" type="xs:string" />
-    <xs:attribute name="id" type="xs:ID" />
-    <xs:attribute name="style-sheet" type="xs:string" />
-    <xs:attribute name="class" />
-  </xs:complexType>
   <xs:element name="smart-pairing" type="smart-pairing-type" />
   <xs:complexType name="smart-pairing-type">
     <xs:simpleContent>
@@ -1748,6 +1740,14 @@
         <xs:attribute name="class" />
       </xs:extension>
     </xs:simpleContent>
+  </xs:complexType>
+  <xs:element name="smart-element-low" type="smart-element-low-type" />
+  <xs:complexType name="smart-element-low-type">
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="cdata" type="xs:string" />
+    <xs:attribute name="id" type="xs:ID" />
+    <xs:attribute name="style-sheet" type="xs:string" />
+    <xs:attribute name="class" />
   </xs:complexType>
   <xs:element name="macro-article" type="macro-article-type" />
   <xs:complexType name="macro-article-type">
@@ -2189,13 +2189,6 @@
     <xs:attribute name="style-sheet" type="xs:string" />
     <xs:attribute name="class" />
   </xs:complexType>
-  <xs:element name="url-tag" type="url-tag-type" />
-  <xs:complexType name="url-tag-type">
-    <xs:attribute name="media-url" type="format-type" />
-    <xs:attribute name="id" type="xs:ID" />
-    <xs:attribute name="style-sheet" type="xs:string" />
-    <xs:attribute name="class" />
-  </xs:complexType>
   <xs:element name="media-text" type="media-text-type" />
   <xs:complexType name="media-text-type">
     <xs:choice minOccurs="0" maxOccurs="1">
@@ -2278,6 +2271,13 @@
     <xs:attribute default="no" name="actor-id" type="IconIds" />
     <xs:attribute name="actor-name" type="xs:string" />
     <xs:attribute default="0" name="number-of-phrases" type="xs:int" />
+  </xs:complexType>
+  <xs:element name="url-tag" type="url-tag-type" />
+  <xs:complexType name="url-tag-type">
+    <xs:attribute name="media-url" type="format-type" />
+    <xs:attribute name="id" type="xs:ID" />
+    <xs:attribute name="style-sheet" type="xs:string" />
+    <xs:attribute name="class" />
   </xs:complexType>
   <xs:element name="media-big-mark" type="media-big-mark-type" />
   <xs:complexType name="media-big-mark-type">

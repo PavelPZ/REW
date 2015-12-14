@@ -78,7 +78,6 @@ var mp3WorkerLib;
 })(mp3WorkerLib || (mp3WorkerLib = {}));
 var mp3Worker;
 (function (mp3Worker) {
-    mp3Worker.worker;
     var cfg;
     var toUploadChunks;
     var toUploadChunksLen;

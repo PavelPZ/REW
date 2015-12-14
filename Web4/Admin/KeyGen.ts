@@ -76,7 +76,7 @@ module schoolAdmin {
             To: LMStatus.Cookie.EMail,
             Cc: null,
             Subject: CSLocalize('c270a7643d5b4fba8569342961ee108c', 'License keys'),
-            emailId: "TAdminEmailKeys",
+            //emailId: "TAdminEmailKeys",
             productName: title,
             isForgotPassword: false,
             From: null,

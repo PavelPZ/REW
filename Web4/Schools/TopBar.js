@@ -25,7 +25,7 @@ var schools;
         TopBarModel.prototype.isTitle = function () { return this.is(schools.tTest); };
         //logo
         TopBarModel.prototype.logoBig = function () { return !this.logoSmall() && !this.is(schools.tEx); }; //this.is(tMy); }
-        TopBarModel.prototype.logoSmall = function () { return this.is(schools.tCourseMeta, schools.tCoursePretest, schools.tGrammFolder, schools.tGrammPage, schools.tGrammContent, schools.tDictInfo, schools.tTest); };
+        TopBarModel.prototype.logoSmall = function () { return this.is(schools.tCourseMeta, schools.tCoursePretest, /*tHome, tCourse, tLess, tMod, tCpv,*/ schools.tGrammFolder, schools.tGrammPage, schools.tGrammContent, schools.tDictInfo, schools.tTest); };
         TopBarModel.prototype.greenArrow = function () { return !this.needsLogin() && this.is(schools.tCourseMeta, schools.tCoursePretest, schools.tEx); };
         TopBarModel.prototype.phoneMore = function () { return !this.needsLogin() && this.is(schools.tMy /*, tHome*/) ? "#collapse-logout" : null; }; //pokud je phone, id DIVu s more informaci, #collapse-more nebo #collapse-more-ex
         //login x logout x profile
@@ -47,7 +47,7 @@ var schools;
         //supplements
         TopBarModel.prototype.hasSupl = function () { return true; };
         //suplGrammarLink(): boolean { return !this.needsLogin() && this.is(tCourseMeta, tCourse, tLess, tMod, tEx) && schools.data.crsStatic2.grammar != null; } //pro ne-phone: staticka podminka na nekontextovou gramatika
-        TopBarModel.prototype.suplGrammarLink = function () { return !this.needsLogin() && this.is(schools.tCourseMeta, schools.tEx) && CourseMeta.actGrammar != null; }; //pro ne-phone: staticka podminka na nekontextovou gramatika
+        TopBarModel.prototype.suplGrammarLink = function () { return !this.needsLogin() && this.is(schools.tCourseMeta, /*tCourse, tLess, tMod,*/ schools.tEx) && CourseMeta.actGrammar != null; }; //pro ne-phone: staticka podminka na nekontextovou gramatika
         TopBarModel.prototype.suplDict = function () { return !this.needsLogin() && this.is(schools.tEx, schools.tGrammPage) && DictConnector.actDictData != null; /*cfg.dictType!=schools.dictTypes.no;*/ }; //pomocna stranka s vysvetlenim slovniku
         TopBarModel.prototype.suplEval = function () { return !this.needsLogin() && this.is(schools.tEx); }; //informace o vyhodnocenem cviceni
         TopBarModel.prototype.resetClick = function () { CourseMeta.actEx.reset(); }; //??(<schoolEx.Model>(Pager.ActPage)).reset(); }
@@ -63,7 +63,7 @@ var schools;
         TopBarModel.prototype.vocabularyClick = function () { alert("vocabularyClick"); };
         TopBarModel.prototype.suplBreadcrumb = function () { return !this.needsLogin() && this.is(schools.tEx); };
         //navrat do kurzu pro supplements
-        TopBarModel.prototype.backToCourse = function () { return this.is(schools.tDictInfo, schools.tGrammFolder, schools.tGrammPage, schools.tGrammContent, (typeof schoolAdmin == 'undefined' ? '' : schoolAdmin.schoolUserResultsTypeName)) && LMStatus.isReturnUrl(); };
+        TopBarModel.prototype.backToCourse = function () { return this.is(/*tCpv,*/ schools.tDictInfo, schools.tGrammFolder, schools.tGrammPage, schools.tGrammContent, (typeof schoolAdmin == 'undefined' ? '' : schoolAdmin.schoolUserResultsTypeName)) && LMStatus.isReturnUrl(); };
         TopBarModel.prototype.backToCourseClick = function () { LMStatus.gotoReturnUrl(); }; //Pager.navigateTo(getReturnUrl()); }
         return TopBarModel;
     })();

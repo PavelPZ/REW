@@ -7,26 +7,6 @@ function gotoHref(event, url) {
 }
 var CourseMeta;
 (function (CourseMeta) {
-    CourseMeta.allProductList; //hlavicky (metadata) vsech produktu
-    CourseMeta.actProduct; //aktualni produkt
-    CourseMeta.actProductPersistence; //persistence pro aktualni produkt VSNET
-    CourseMeta.actProductLmcomId; //uzivatel aktualniho produktu
-    CourseMeta.actNode; //aktualni node
-    CourseMeta.actCompanyId;
-    CourseMeta.actExPageControl; //aktualni model stranky se cvicenim
-    CourseMeta.actInstr; //aktualni instrukce
-    //export var forceEval: boolean;
-    //Kurz
-    CourseMeta.actModule; //aktualni modul
-    CourseMeta.actCourseRoot; //course nebo test
-    CourseMeta.actIsPublIndiv; //course nebo test bezi v 
-    CourseMeta.actEx;
-    CourseMeta.actExModel;
-    //gramatika
-    CourseMeta.actGrammar;
-    CourseMeta.actGrammarEx;
-    CourseMeta.actGrammarModule;
-    CourseMeta.actGrammarExCount;
     //inline contrtols
     var oliReplace = 'olireplace';
     function processInlineControls(scriptId, completed) {
@@ -686,7 +666,6 @@ var CourseMeta;
             lib.keepGreen = false;
         }
         lib.fillInfo = fillInfo;
-        lib.keepGreen;
         function fillArrowInfo(info) { fillInfo(info.title, info.disable, info.css, info.iconId, info.greenClick); }
         lib.fillArrowInfo = fillArrowInfo;
     })(lib = CourseMeta.lib || (CourseMeta.lib = {}));

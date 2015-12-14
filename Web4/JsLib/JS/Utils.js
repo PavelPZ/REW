@@ -454,7 +454,8 @@ var Trados;
         } //scorm nebo local: jiz naladovano
         /************ naladovani .JS souboru *****************/
         var spHack = lng == "sp-sp" ? "es-es" : lng;
-        $.when($.ajax({
+        $.when(//ladovani
+        $.ajax({
             cache: true,
             dataType: "script",
             url: Pager.path(Pager.pathType.relPath, Utils.string_format("jslib/scripts/cultures/globalize.culture.{0}.js", [spHack]))

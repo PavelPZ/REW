@@ -55,7 +55,7 @@ module Login {
             var url = location.href.split('#')[0];
             url += url.indexOf('?') < 0 ? "?" : "&";
             url += "key=" + key + "#" + getHash(pageConfirmRegistration);
-            var email: emailConfirm = {
+            var email: emailConfirm = <any>{
               From: null, //default
               To: this.email(),
               Cc: null,

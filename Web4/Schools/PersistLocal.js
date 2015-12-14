@@ -15,31 +15,6 @@ var persistLocal;
         testResults: function (userId, companyId, productId, completed) {
         }
     };
-    //export function Init(target: LMComLib.Targets, completed: () => void ): void {
-    //  schools.resetModules = resetModules;
-    //  schools.readCrsResults = readCrsResults;
-    //  schools.readModuleResult = readModuleResult;
-    //  schools.writeModuleResult = writeModuleResult;
-    //  schools.setMetaCourse = setMetaCourse;
-    //  schools.getMetaCourse = getMetaCourse;
-    //  //schools.createTest = createTest;
-    //  //schools.readTestResults = readTestResults;
-    //  schools.readCrsInfo = schools.libReadCrsInfo;
-    //  switch (target) {
-    //    case LMComLib.Targets.download:
-    //    //case LMComLib.Targets.sl:
-    //      //persistDownload.Init(target == LMComLib.Targets.sl, completed);
-    //      persistDownload.Init(false, completed);
-    //      break;
-    //    case LMComLib.Targets.phoneGap:
-    //      persistPhonegap.Init(completed);
-    //      break;
-    //    default: throw "not implemented";
-    //  }
-    //}
-    persistLocal.readFile;
-    persistLocal.writeFile;
-    persistLocal.deleteFile;
     var modCache = [];
     var fCrsResults = "crs_result.txt";
     var fMetaCourse = "meta_course.txt";

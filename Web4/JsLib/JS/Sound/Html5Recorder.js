@@ -58,7 +58,8 @@ var html5Recorder;
             //var alowMicrophoneTimer: number;
             //if (!bowser.agent.firefox)
             //  alowMicrophoneTimer = setTimeout(() => { alert('Allow the microphone, please!\r\n(using the button rigth above the content of the page)'); alowMicrophoneTimer = 0; }, 3000);
-            navigator.getUserMedia({ audio: true, video: false }, function (stream) {
+            navigator.getUserMedia({ audio: true, video: false }, //napoj se na user media
+            function (stream) {
                 //BT 2247 if (alowMicrophoneTimer) clearTimeout(alowMicrophoneTimer); //mikrofon povolen => zrus upozorneni
                 audioContext = new AudioContext();
                 microphoneNode = audioContext.createMediaStreamSource(stream);

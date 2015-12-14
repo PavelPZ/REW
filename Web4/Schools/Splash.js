@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 //POUZIVA se pro zobrazeni chyby v JSCrambler ochrane, viz boot.ts,  export function Error(): void { Pager.loadPage(new splash.licenceError());  }
 var splash;
@@ -17,7 +16,6 @@ var splash;
         return Page;
     })(Pager.Page);
     splash.Page = Page;
-    splash.error;
     var licenceError = (function (_super) {
         __extends(licenceError, _super);
         function licenceError() {

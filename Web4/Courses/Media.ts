@@ -707,7 +707,7 @@ module Course {
             if (grp.Items.length != 1) { debugger; throw 'Only single sound interval is alowed for media-player'; }
             self.slider = $('#' + this.id + '-slider');
             //http://api.jqueryui.com/slider
-            self.slider.slider({
+            self.slider.slider(<any>{
               start: (event, ui) => grp.player().stop(),
               "max": 100000,
               disabled: true,

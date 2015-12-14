@@ -11,7 +11,7 @@ module anim {
     actModal = modal;
   }
   export function onModalHide(modal: JQuery) {
-    if (!modal || !modal.data('bs.modal').isShown) return;
+    if (!modal || !(modal.data('bs.modal') as any).isShown) return;
     if (modal != actModal) { debugger; throw 'modal!=actModal'; }
     actModal = null;
   }

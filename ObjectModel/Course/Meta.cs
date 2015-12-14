@@ -76,6 +76,7 @@ namespace CourseMeta {
     multiQuestionnaire = 0x8000000, //dotaznik multitestu
     testDemo = 0x10000000, //demo test
     //runtimePage = 0x400000,
+    productNew = 0x20000000, 
   }
 
   [XmlInclude(typeof(data)), XmlInclude(typeof(products)), XmlInclude(typeof(publisher)), XmlInclude(typeof(project)), XmlInclude(typeof(sitemap)), XmlInclude(typeof(ex)),
@@ -1217,7 +1218,7 @@ namespace CourseMeta {
     public static string stdStyle {
       get {
         if (_stdStyle == null) {
-          _stdStyle = File.ReadAllText(Machines.dataPath + @"default.css", Encoding.UTF8).Trim() + " ";
+          _stdStyle = ""; // File.ReadAllText(Machines.dataPath + @"default.css", Encoding.UTF8).Trim() + " ";
           //var fn = Machines.dataPath + @"default.css";
           //if (File.Exists(fn)) _stdStyle = File.ReadAllText(Machines.rootPath + @"data\default.css").Trim() + " ";
           //else {

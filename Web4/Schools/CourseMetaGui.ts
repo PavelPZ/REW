@@ -117,7 +117,7 @@ module CourseMeta {
   $(window).bind("resize", () => {
     $(".cbtn").each(function () {
       var btn = $(this);
-      var url = btn.data("node-url"); if (!url) return;
+      var url = btn.data("node-url") as any; if (!url) return;
       var nd: courseNode = <courseNode>(actProduct.getNode(url)); if (!nd) return;
       var w = btn.outerWidth(true); var sum = nd.exCount;
       var skiped = nd.isSkiped ? w : w * nd.skipedCount / sum;

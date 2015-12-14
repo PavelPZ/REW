@@ -122,7 +122,7 @@
       this.$content.on('click', '.sm-edit-block-lnk', ev => {
         var target = <HTMLElement>(ev.target);
         var $block = $(target.parentElement.parentElement);
-        var bl: block = <block>($block.data('wa'));
+        var bl: block = <block><any>($block.data('wa'));
         new DlgEditBlock($(target), res => {
           switch (res) {
             case 'content': bl.delContent(); break;

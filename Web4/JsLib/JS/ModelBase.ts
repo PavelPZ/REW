@@ -139,7 +139,7 @@ module Pager {
 
   export function renderTemplateEx(tagId: string, templateId: string, bindingObject: Object) {
     var root = $('#' + tagId);
-    var oldObj = root.data('binding-obj');
+    var oldObj = root.data('binding-obj') as any;
     if (oldObj) {
       if (oldObj.dispose) oldObj.dispose();
       root.data('binding-obj', null);

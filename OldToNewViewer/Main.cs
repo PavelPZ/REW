@@ -367,7 +367,6 @@ namespace OldToNewViewer {
       Clipboard.SetText(fileEx.url);
     }
 
-
   }
 
   public class typeObj {

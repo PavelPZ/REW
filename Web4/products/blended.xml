@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<products xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" url="/prods/" type="products">
+  <product title="Vyzva 57: LANGMaster Manager" order="386" url="/lm/blcourse/langmastermanager.product/" line="English" type="product productNew" />
+  <product title="Vyzva 57: Správce školy" order="387" url="/lm/blcourse/schoolmanager.product/" line="English" type="product productNew" />
+  <product title="Kurzy angličtiny - blended learning" order="377" url="/lm/prods_lm_blcourse_english/" line="English" type="product productNew" />
+  <product title="Kurzy francouzštiny - blended learning" order="379" url="/lm/prods_lm_blcourse_french/" line="French" type="product productNew" />
+  <product title="Kurzy němčiny - blended learning" order="378" url="/lm/prods_lm_blcourse_german/" line="German" type="product productNew" />
+</products>

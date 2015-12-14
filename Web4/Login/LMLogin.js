@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Login;
 (function (Login) {
@@ -38,7 +37,8 @@ var Login;
     Login.LMLoginModel = LMLoginModel;
     function login(isEMail, email, login, password, ticket, completed, onError) {
         password = _.isEmpty(password) ? null : Utils.encryptStr(password);
-        Pager.ajaxGet(Pager.pathType.restServices, Login.CmdLmLogin_Type, Login.CmdLmLogin_Create(isEMail ? null : login, isEMail ? email : null, password, null, ticket), function (res) { return completed(res.Cookie); }, onError);
+        Pager.ajaxGet(Pager.pathType.restServices, Login.CmdLmLogin_Type, Login.CmdLmLogin_Create(isEMail ? null : login, isEMail ? email : null, password, null, ticket), function (res) { return completed(res.Cookie); }, //dej usera do cookie a proved redirekt
+        onError);
     }
     Login.login = login;
 })(Login || (Login = {}));

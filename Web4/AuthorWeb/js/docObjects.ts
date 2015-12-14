@@ -32,7 +32,7 @@
 
     constructor(json?: IItem, $parent?: JQuery, public parent?: block) {
       if (!json) return;
-      this.root = parent ? parent.root : <rootBlock>this;
+      this.root = parent ? parent.root : <rootBlock><any>this;
       if (json) for (var p in json) this[p] = json[p];
       this.$self = $(this.toHTMLString());
       this.$self.data('wa', this);
@@ -67,7 +67,7 @@
     });
   }
 
-  var testJson: IItem = {
+  var testJson: IItem = <any>{
     type: itemType.rootBlock, name: '', pars: '',
     childs: [
       //{ type: itemType.text, text: '{+gap-fill(id=gp; smart-width=sw1;)}' },

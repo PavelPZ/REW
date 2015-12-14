@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{A4B29FE9-48FA-4973-A5A4-B02F9920761A}" 
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{A4B29FE9-48FA-4973-A5A4-B02F9920761A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SLLibs", "SLLibs", "{AA8F1558-9FE4-4C50-9F9F-2DC43EEA5232}"
 EndProject
@@ -47,6 +47,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "EduAuthorNew", "http://loca
 	ProjectSection(WebsiteProperties) = preProject
 		UseIISExpress = "true"
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		ProjectReferences = "{A0024FC2-C528-45F8-9391-4B45889E53D9}|LMComExternal.dll;{c4201447-b3c3-4f3a-9e5f-4ff9b5f48570}|LMComLib.dll;{81713f8f-6d25-4e48-ae82-ac1bd2565442}|NewLMComModel.dll;{E88C653D-5518-4B96-9B99-6EFBD46A9141}|ObjectModel.dll;{0FD4B1DD-45A8-4F02-BEB0-5881CD512573}|CommonMark.dll;{0e71cdce-d1c8-459e-ac82-2869f3200953}|EduAuthor.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_59768"
 		Debug.AspNetCompiler.PhysicalPath = "EduAuthorNew\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_59768\"
@@ -416,7 +417,6 @@ Global
 		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.Debug|x86.Build.0 = Debug|Any CPU
 		{8984CA52-5F01-4E5D-A6BF-D0A614ABBE00}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU

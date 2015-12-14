@@ -1,17 +1,14 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Login;
 (function (Login) {
-    Login.cfg;
     function getHash(type) {
         return [Login.appId, type].join('@');
     }
     Login.getHash = getHash;
-    Login.myData; //info o mojich firmach, produktech a rolich
     //pro Admin.html
     function isSystemAdmin() { return ((Login.myData.Roles & Login.Role.Admin) != 0) || ((Login.myData.Roles & Login.Role.Comps) != 0); }
     Login.isSystemAdmin = isSystemAdmin; //PZ
@@ -38,7 +35,6 @@ var Login;
         }
         //info o firmach, produktech a rolich
         Pager.ajaxGet(Pager.pathType.restServices, Login.CmdMyInit_Type, LMStatus.createCmd(function (r) { return r.lmcomId = LMStatus.Cookie.id; }), 
-        //Login.CmdMyInit_Create(LMStatus.Cookie.id),
         //Login.CmdMyInit_Create(LMStatus.Cookie.id),
         function (res) {
             Login.myData = res;

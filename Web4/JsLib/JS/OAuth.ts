@@ -126,7 +126,7 @@ module OAuth {
   var cfg: provider[] = [];
   function addCfg(providerid: LMComLib.OtherType, client_id: client, authorizationUrl: string, ajaxUrl: string, scopes: string, logoutUrl: string, ajaxUrlJsonp: string,
     parseProfile: (obj: Object, providerid: LMComLib.OtherType) => profile, isCode: boolean = false, client_secret: string = null) {
-    var c: provider = { providerid: providerid, client_id: client_id, authorizationUrl: authorizationUrl, ajaxUrl: ajaxUrl, scopes: scopes, parseProfile: parseProfile, isCode: isCode, client_secret: client_secret, logoutUrl: logoutUrl, ajaxUrlJsonp: ajaxUrlJsonp };
+    var c: provider = <any>{ providerid: providerid, client_id: client_id, authorizationUrl: authorizationUrl, ajaxUrl: ajaxUrl, scopes: scopes, parseProfile: parseProfile, isCode: isCode, client_secret: client_secret, logoutUrl: logoutUrl, ajaxUrlJsonp: ajaxUrlJsonp };
     cfg[c.providerid.toString()] = c;
   }
 
@@ -135,7 +135,7 @@ module OAuth {
   //https://developers.facebook.com/docs/reference/dialogs/oauth/ 
   //pavel.zika@langmaster.com / edurom
   addCfg(LMComLib.OtherType.Facebook,
-    {
+    <any>{
       www_lm: '217099001634050',
       test_lm: '202002813170094',
       s_www_lm: '600606046618350',
@@ -158,7 +158,7 @@ module OAuth {
   //https://developers.google.com/accounts/docs/OAuth2UserAgent
   //https://code.google.com/apis/console/#project:475616334704:access, langmaster.com@gmail.com / asdfghjkl123_
   addCfg(LMComLib.OtherType.Google,
-    {
+    <any>{
       www_lm: '475616334704.apps.googleusercontent.com',
       test_lm: '475616334704-7caok7nqami8aio7aircs52rd1qag254.apps.googleusercontent.com',
       s_www_lm: '475616334704.apps.googleusercontent.com',
@@ -184,7 +184,7 @@ module OAuth {
   //http://msdn.microsoft.com/en-us/library/live/hh826532.aspx
   //https://manage.dev.live.com/Applications/Index, pjanecek@langmaster.cz / cz.langmaster
   addCfg(LMComLib.OtherType.Microsoft,
-    {
+    <any>{
       www_lm: '00000000400DF001',
       test_lm: '00000000440EEFCD',
       s_www_lm: '00000000400DF001',

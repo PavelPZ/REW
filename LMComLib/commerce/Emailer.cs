@@ -37,8 +37,9 @@ namespace LMComLib {
       get { return html; }
       set {
         html = value;
-        Chilkat.Mht mht = new Chilkat.Mht();
-        bool success = mht.UnlockComponent(Emailer.Chilkat_Mht);
+        //Chilkat.Mht mht = new Chilkat.Mht();
+        dynamic mht = null;;
+        bool success = false; // mht.UnlockComponent(Emailer.Chilkat_Mht);
         if (success != true) {
           throw new Exception("Chilkat Mht trial expired!");
         }
@@ -48,7 +49,7 @@ namespace LMComLib {
         // Create an email from an HTML file.
         // Call mht.HtmlToEML to get the MIME source of an email,
         // then load it into an email object.
-        email = new Chilkat.Email();
+        email = null; // new Chilkat.Email();
         string mime;
         mime = mht.HtmlToEML(html);
         email.SetFromMimeText(mime);
@@ -81,7 +82,8 @@ namespace LMComLib {
 
     private Dictionary<string, string> to;
     private List<Attachment> attachments;
-    Chilkat.Email email;
+    dynamic email;
+    //Chilkat.Email email;
 
     public static string sendEMail(string toEMails, string fromEMail, string subject, string body, bool isHtml, Emailer.Attachment att, string cc = null) {
       Emailer em = new Emailer();
@@ -99,7 +101,7 @@ namespace LMComLib {
     }
 
     public Emailer() {
-      email = new Chilkat.Email();
+      email = null;// new Chilkat.Email();
       attachments = new List<Attachment>();
       to = new Dictionary<string, string>();
     }
@@ -158,7 +160,8 @@ namespace LMComLib {
     public string sendMail() {
       RefreshMail();
 
-      Chilkat.MailMan mailman = new Chilkat.MailMan();
+      //Chilkat.MailMan mailman = new Chilkat.MailMan();
+      dynamic mailman = null;
       if (!mailman.UnlockComponent(Emailer.Chilkat_MailMan)) {
         throw new Exception("Chilkat MailMan trial expired!");
       }

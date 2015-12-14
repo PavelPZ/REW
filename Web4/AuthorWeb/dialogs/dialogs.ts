@@ -26,7 +26,7 @@
       //*** init focus grid
       _.each(dlg.$mod.find('[data-focus-grid]'),(el: HTMLElement) => {
         var $el = $(el);
-        var d = $el.data('focusGrid').split(':');
+        var d = ($el.data('focusGrid') as any).split(':');
         var row = parseInt(d[0]); var cell = parseInt(d[1]);
         if (!dlg.btnGrid[row]) dlg.btnGrid[row] = [];
         dlg.btnGrid[row][cell] = $el;
@@ -57,7 +57,7 @@
     btnGridEvents() {
       this.$mod.on('keydown', '[data-focus-grid]', ev => {
         var $btn = $(<HTMLElement>(ev.target));
-        var d = $btn.data('focusGrid').split(':');
+        var d = ($btn.data('focusGrid') as any).split(':');
         var row = parseInt(d[0]); var cell = parseInt(d[1]);
         //enter
         if (ev.keyCode == key.enter) { if ($btn.data('dlgRes')) { this.btnGridOK($btn); return false; } else return true; }

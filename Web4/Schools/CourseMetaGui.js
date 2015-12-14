@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var CourseMeta;
 (function (CourseMeta) {
@@ -14,9 +13,6 @@ var CourseMeta;
     CourseMeta.greenIcon = ko.observable(); //ikona buttonu
     CourseMeta.greenCss = ko.observable(); //barva buttonu
     CourseMeta.greenDisabled = ko.observable(); //vse hotovo => disabled
-    CourseMeta.greenClick;
-    CourseMeta.greenArrowDict;
-    CourseMeta.foundGreenEx; //aktualni zelene cviceni
     function doGreenClick() { CourseMeta.lib.keepGreen = CourseMeta.greenCss() == 'success'; CourseMeta.greenClick(); }
     CourseMeta.doGreenClick = doGreenClick; //pres klik na sipku se drzi zelena barva sipky
     function btnClick(url) {
@@ -51,8 +47,6 @@ var CourseMeta;
             Pager.reloadPage();
         }
         gui.onReload = onReload;
-        gui.exerciseHtml;
-        gui.exerciseCls;
         function init() { gui.exerciseHtml = $.noop; gui.exerciseCls = $.noop; }
         gui.init = init;
     })(gui = CourseMeta.gui || (CourseMeta.gui = {}));

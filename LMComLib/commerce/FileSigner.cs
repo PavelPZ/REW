@@ -35,7 +35,8 @@ namespace LMComLib.Commerce.PDF {
 
     public static void SignCER(MemoryStream inStream, MemoryStream outStream, string myCert) //private certificate must be installed in system
     {
-      Chilkat.Crypt2 crypt = new Chilkat.Crypt2();
+      //Chilkat.Crypt2 crypt = new Chilkat.Crypt2();
+      dynamic crypt = null;
 
       crypt.UnlockComponent("SGORDICCrypt_790vQhSI2v9G");
       if (crypt.IsUnlocked() == false) {
@@ -47,7 +48,8 @@ namespace LMComLib.Commerce.PDF {
 
       // Indicate which digital certificate is to be used.
       // This certificate must have the private key installed on the system.
-      Chilkat.Cert cert = new Chilkat.Cert();
+      //Chilkat.Cert cert = new Chilkat.Cert();
+      dynamic cert = null;
       // Replace this line with your own .cer or .p7b file.
       if (!cert.LoadFromFile(myCert)) {
         //System.Windows.Forms.MessageBox.Show(cert.LastErrorText);
@@ -68,7 +70,9 @@ namespace LMComLib.Commerce.PDF {
 
     public static bool VerifyCER(string inFile, string outFile, string myCert) //private certificate must be installed in system
     {
-      Chilkat.Crypt2 crypt = new Chilkat.Crypt2();
+      
+      //Chilkat.Crypt2 crypt = new Chilkat.Crypt2();
+      dynamic crypt = null;
 
       crypt.UnlockComponent("SGORDICCrypt_790vQhSI2v9G");
       if (crypt.IsUnlocked() == false) {
@@ -83,7 +87,8 @@ namespace LMComLib.Commerce.PDF {
 
       // Indicate which digital certificate is to be used.
       // This certificate must have the private key installed on the system.
-      Chilkat.Cert cert = new Chilkat.Cert();
+      //Chilkat.Cert cert = new Chilkat.Cert();
+      dynamic cert = null;
       // Replace this line with your own .cer or .p7b file.
       if (!cert.LoadFromFile(myCert)) {
         //System.Windows.Forms.MessageBox.Show(cert.LastErrorText);

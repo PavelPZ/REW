@@ -18,7 +18,7 @@ module Login {
     email = ko.observable<string>("");
 
     doOK() {
-      var email: emailForgotPassword = {
+      var email: emailForgotPassword = <any>{
         From: null, //default
         To: this.email(),
         Cc: null,

@@ -9,8 +9,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Login;
 (function (Login) {
@@ -52,7 +51,6 @@ var Login;
                 LMStatus.Cookie.LoginEMail = this.email();
                 LMStatus.setCookie(LMStatus.Cookie);
                 Pager.ajaxGet(Pager.pathType.restServices, Login.CmdProfile_Type, LMStatus.createCmd(function (r) { r.Cookie = LMStatus.Cookie, r.lmcomId = LMStatus.Cookie.id; }), 
-                //CmdProfile_Create(LMStatus.Cookie, LMStatus.Cookie.id),
                 //CmdProfile_Create(LMStatus.Cookie, LMStatus.Cookie.id),
                 function () {
                     _this.success(CSLocalize('e56e6bad75e54dea9191cab418eda74d', 'Success'));

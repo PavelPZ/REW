@@ -6,7 +6,7 @@ module lmConsole {
 
   export function sendEnd(el: HTMLElement) {
     var bd = $(el).data('btn-down'); if (!bd) return;
-    var btnDownTime = parseInt(bd);
+    var btnDownTime = parseInt(<any>bd);
     if (Utils.nowToInt() - btnDownTime < 2000) return;
     send();
   }

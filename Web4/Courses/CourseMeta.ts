@@ -31,7 +31,7 @@ module CourseMeta {
     find<TRes extends dataImpl, TCond extends dataImpl>(cond: (it: TCond) => boolean): TRes { return <TRes>(_.find(this.Items,(it: TCond) => cond(it))); }
     findParent<TRes extends dataImpl>(cond: (it: data) => boolean): TRes {
       var c = this;
-      while (c != null) { if (cond(c)) return <TRes>c; c = c.parent; }
+      while (c != null) { if (cond(c)) return <TRes><any>c; c = c.parent as any; }
       return null;
     }
     hrefCompl(companyId: number, productUrl: string, persistence: string): string {
@@ -46,7 +46,7 @@ module CourseMeta {
     }
 
     iconId(): string {
-      if (this == actCourseRoot) return "book";
+      if (this == <any>actCourseRoot) return "book";
       else if (isType(this, runtimeType.ex)) return isType(this, runtimeType.grammar) ? "file-o" : "edit";
       else return "folder-open";
     }

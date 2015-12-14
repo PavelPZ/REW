@@ -90,7 +90,8 @@ var Pager;
     function locatePageFromHashLow(hash, completed) {
         if (hash != null && hash.indexOf("access_token=") >= 0) {
             OAuth.checkForToken(function (obj) {
-                Pager.ajaxGet(Pager.pathType.restServices, Login.CmdAdjustUser_Type, Login.CmdAdjustUser_Create(obj.providerid, obj.id, obj.email, obj.firstName, obj.lastName), function (res) {
+                Pager.ajaxGet(//dle externiho ID zjisti LM Id (a ev. zaloz usera)
+                Pager.pathType.restServices, Login.CmdAdjustUser_Type, Login.CmdAdjustUser_Create(obj.providerid, obj.id, obj.email, obj.firstName, obj.lastName), function (res) {
                     LMStatus.logged(res.Cookie, false);
                 });
             });
@@ -121,8 +122,6 @@ var Pager;
         }
         proc(parts.length <= 2 ? null : parts.slice(2), completed);
     }
-    Pager.ActPage;
-    Pager.htmlOwner;
     $.views.helpers({
         ActPage: function () { return Pager.ActPage; },
     });
@@ -273,6 +272,4 @@ var Pager;
     }
     Pager.renderHtmlEx = renderHtmlEx;
     Pager.rootVM = new ViewModelRoot();
-    Pager.initHash; //inicialni hash URL
-    Pager.afterLoginInit; //sance po zalogovani naladovat zakodovane javascripty
 })(Pager || (Pager = {}));

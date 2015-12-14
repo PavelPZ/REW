@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var CourseModel;
 (function (CourseModel) {
@@ -21,7 +20,6 @@ var CourseMeta;
 (function (CourseMeta) {
     function finishedAndLocked() { return CourseMeta.actCourseRoot.done && CourseMeta.previewMode; }
     CourseMeta.finishedAndLocked = finishedAndLocked;
-    CourseMeta.previewMode;
     var dataImpl = (function () {
         function dataImpl() {
         }

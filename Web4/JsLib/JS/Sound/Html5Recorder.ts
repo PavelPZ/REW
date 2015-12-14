@@ -4,7 +4,7 @@
 
 interface Window {
   webkitURL: URL;
-  URL: URL;
+  //URL: URL;
   AudioContext: { new (): AudioContext; }
   webkitAudioContext: { new (): AudioContext; }
 }

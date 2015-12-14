@@ -79,10 +79,10 @@ module waObjs {
         } else { //insert
           new DlgOpenBracket(self.edit, rng, mark.$self,($btn: JQuery) => {
           //dlgOpenBracket.showForText(self.edit, rng, mark.$self,($btn: JQuery) => {
-            var dlgRes = <string>($btn.data('dlgRes'));
+            var dlgRes = <string><any>($btn.data('dlgRes'));
             var parts = dlgRes.split(':'); var grp = parts[0]; var grpItem = parts[1];
             if (grp == 'inline' || grp == 'style' || (grp == 'span' && rng.start == rng.end)) { //vlozeni obou zavorek
-              return self.insertSnipset($btn.data('sm-gen'), rng);
+              return self.insertSnipset($btn.data('sm-gen') as any, rng);
             } else if (grp == 'span') { //obaleni selekce {**} zavorkami
               return self.surroundSpan(rng);
             } else if (grp == 'block') {

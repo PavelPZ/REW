@@ -8,8 +8,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Login;
 (function (Login) {
@@ -28,7 +27,6 @@ var Login;
                 if (Utils.Empty(userId) || userId <= 0)
                     throw "Wrong User id format";
                 Pager.ajaxGet(Pager.pathType.restServices, Login.CmdConfirmRegistration_Type, LMStatus.createCmd(function (r) { r.lmcomId = userId; }), 
-                //CmdConfirmRegistration_Create(userId),
                 //CmdConfirmRegistration_Create(userId),
                 function () {
                     _this.success(CSLocalize('b28146649ad7498cb4109b6b1276fcef', 'Account') + ' ' + CSLocalize('c0b339ea24054072999d990c2e7b8db9', 'was activated.'));

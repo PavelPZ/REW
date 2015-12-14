@@ -8,8 +8,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Login;
 (function (Login) {
@@ -36,7 +35,6 @@ var Login;
             else {
                 LMStatus.getCookie();
                 Pager.ajaxGet(Pager.pathType.restServices, Login.CmdChangePassword_Type, LMStatus.createCmd(function (r) { r.oldPassword = _this.oldPassword(); r.newPassword = _this.password(); r.lmcomId = LMStatus.Cookie.id; }), 
-                //CmdChangePassword_Create(this.oldPassword(), this.password(), LMStatus.Cookie.id),
                 //CmdChangePassword_Create(this.oldPassword(), this.password(), LMStatus.Cookie.id),
                 function () {
                     _this.success(CSLocalize('4ec7f9623a684f708844bce43ad51d26', 'Password changed successfully'));

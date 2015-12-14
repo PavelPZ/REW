@@ -15,8 +15,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var schoolAdmin;
 (function (schoolAdmin) {
@@ -79,7 +78,7 @@ var schoolAdmin;
                     To: LMStatus.Cookie.EMail,
                     Cc: null,
                     Subject: CSLocalize('c270a7643d5b4fba8569342961ee108c', 'License keys'),
-                    emailId: "TAdminEmailKeys",
+                    //emailId: "TAdminEmailKeys",
                     productName: title,
                     isForgotPassword: false,
                     From: null,
