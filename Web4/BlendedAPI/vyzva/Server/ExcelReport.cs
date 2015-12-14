@@ -175,14 +175,18 @@ namespace blended {
         }
         //vyber raw data z databaze
         var query2 = query.
-          Select(cd => new { cd.Key, cd.ShortData, cd.CourseUser.ProductUrl, cd.CourseUser.LMComId }).
+          Select(cd => new { cd.Key, cd.ShortData, cd.CourseUser.ProductUrl, cd.CourseUser.LMComId, cd.Id }).
           ToArray();
         //zpracovani raw dat
         var allExercises = query2.
           Select(kd => {
-            var res = JsonConvert.DeserializeObject<uEx>(kd.ShortData.Replace(":null,", ":0,"));
-            res.url = kd.Key; res.productUrl = kd.ProductUrl; res.lmcomId = kd.LMComId;
-            return res;
+            try {
+              var res = JsonConvert.DeserializeObject<uEx>(kd.ShortData.Replace(":null,", ":0,"));
+              res.url = kd.Key; res.productUrl = kd.ProductUrl; res.lmcomId = kd.LMComId;
+              return res;
+            } catch (Exception exp) {
+              throw new Exception(string.Format("CourseData.Id={0}", kd.Id), exp);
+            }
           }).
           ToArray();
         //merge user data s product sitemap
