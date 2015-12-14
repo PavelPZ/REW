@@ -37,7 +37,7 @@
   <doc-type name="gapFill" descendants-and-self="gapFill" my-props="gapFill.hint gapFill.initValue gapFill.readOnly gapFill.skipEvaluation edit.correctValue edit.widthGroup edit.width edit.offeringId edit.caseSensitive evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="headerProp" is-ign="true" descendants-and-self="headerProp" my-props="tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="htmlTag" is-ign="true" descendants-and-self="htmlTag" my-props="htmlTag.tagName tag.id tag.styleSheet tag.temporaryMacroItem" />
-  <doc-type name="humanEval" is-ign="true" descendants-and-self="humanEval writing recording" my-props="evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="humanEval" is-ign="true" descendants-and-self="humanEval writing recording" my-props="humanEval.isPassive evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="img" is-ign="true" descendants-and-self="img" my-props="img.src tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="include" is-ign="true" descendants-and-self="include includeText includeDialog" my-props="include.cutUrl tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="includeDialog" descendants-and-self="includeDialog" my-props="include.cutUrl tag.id tag.styleSheet tag.temporaryMacroItem" />
@@ -45,7 +45,7 @@
   <doc-type name="inlineTag" descendants-and-self="inlineTag" my-props="inlineTag.inlineType macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="list" descendants-and-self="list" my-props="list.delim list.isStriped list.icon list.color tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="listGroup" descendants-and-self="listGroup" my-props="listGroup.isStriped tag.id tag.styleSheet tag.temporaryMacroItem" />
-  <doc-type name="macro" is-ign="true" descendants-and-self="smartPairing smartOffering smartElement smartElementLow macroArticle macroVocabulary macroVideo macroTrueFalse macroSingleChoices macroListWordOrdering macroPairing macroTable macroList macroIconList macro list listGroup twoColumn panel macroTemplate inlineTag" my-props="tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="macro" is-ign="true" descendants-and-self="macroArticle macroVocabulary macroVideo macroTrueFalse macroSingleChoices macroListWordOrdering macroPairing macroTable macroList macroIconList smartElementLow smartElement smartPairing smartOffering macro list listGroup twoColumn panel macroTemplate inlineTag" my-props="tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="macroArticle" descendants-and-self="macroArticle" my-props="macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="macroIconList" descendants-and-self="macroIconList" my-props="macroIconList.delim macroIconList.isStriped macroIconList.icon macroIconList.color macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="macroList" descendants-and-self="macroList" my-props="macroList.inlineType macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
@@ -53,7 +53,7 @@
   <doc-type name="macroPairing" descendants-and-self="macroPairing" my-props="macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="macroSingleChoices" descendants-and-self="macroSingleChoices" my-props="macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="macroTable" descendants-and-self="macroTable" my-props="macroTable.inlineType macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
-  <doc-type name="macroTemplate" is-ign="true" descendants-and-self="smartPairing smartOffering smartElement smartElementLow macroArticle macroVocabulary macroVideo macroTrueFalse macroSingleChoices macroListWordOrdering macroPairing macroTable macroList macroIconList macroTemplate inlineTag" my-props="macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="macroTemplate" is-ign="true" descendants-and-self="macroArticle macroVocabulary macroVideo macroTrueFalse macroSingleChoices macroListWordOrdering macroPairing macroTable macroList macroIconList smartElementLow smartElement smartPairing smartOffering macroTemplate inlineTag" my-props="macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="macroTrueFalse" descendants-and-self="macroTrueFalse" my-props="macroTrueFalse.textId macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="macroVideo" descendants-and-self="macroVideo" my-props="macroVideo.cutUrl macroVideo.mediaUrl macroVideo.displayStyle macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="macroVocabulary" descendants-and-self="macroVocabulary" my-props="macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
@@ -70,18 +70,18 @@
   <doc-type name="phrase" descendants-and-self="phrase" my-props="phrase.begPos phrase.endPos phrase.idx phrase.text phrase.actor tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="phraseReplace" descendants-and-self="phraseReplace" my-props="phraseReplace.phraseIdx phraseReplace.replicaPhraseIdx tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="radioButton" descendants-and-self="radioButton" my-props="radioButton.correctValue radioButton.initValue radioButton.readOnly radioButton.skipEvaluation evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
-  <doc-type name="recording" descendants-and-self="recording" my-props="recording.limitRecommend recording.limitMin recording.limitMax recording.recordInDialog recording.dialogHeaderId recording.dialogSize recording.singleAttempt evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="recording" descendants-and-self="recording" my-props="recording.limitRecommend recording.limitMin recording.limitMax recording.recordInDialog recording.dialogHeaderId recording.dialogSize recording.singleAttempt humanEval.isPassive evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="replica" descendants-and-self="replica" my-props="replica.actorId replica.actorName replica.numberOfPhrases tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="script" is-ign="true" descendants-and-self="script" my-props="script.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="sentenceOrdering" descendants-and-self="sentenceOrdering" my-props="evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="sentenceOrderingItem" descendants-and-self="sentenceOrderingItem" my-props="tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="singleChoice" descendants-and-self="singleChoice" my-props="singleChoice.readOnly singleChoice.skipEvaluation singleChoice.scoreWeight singleChoice.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="smartElement" descendants-and-self="smartElement" my-props="smartElement.inlineType macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
-  <doc-type name="smartElementLow" descendants-and-self="smartPairing smartOffering smartElement smartElementLow" my-props="macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="smartElementLow" descendants-and-self="smartElementLow smartElement smartPairing smartOffering" my-props="macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="smartOffering" descendants-and-self="smartOffering" my-props="smartOffering.words smartOffering.mode macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="smartPairing" descendants-and-self="smartPairing" my-props="smartPairing.random smartPairing.leftWidth macroTemplate.name macroTemplate.cdata tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="smartTag" is-ign="true" descendants-and-self="smartTag" my-props="smartTag.correct smartTag.smartText tag.id tag.styleSheet tag.temporaryMacroItem" />
-  <doc-type name="tag" summary=" tag descr" is-ign="true" descendants-and-self="smartPairing smartOffering smartElement smartElementLow macroArticle macroVocabulary macroVideo macroTrueFalse macroSingleChoices macroListWordOrdering macroPairing macroTable macroList macroIconList tag smartTag node text error headerProp evalControl body evalButton checkLow checkBox checkItem offering radioButton singleChoice wordSelection wordMultiSelection wordOrdering sentenceOrdering sentenceOrderingItem edit gapFill dropDown pairing pairingItem humanEval writing recording macro list listGroup twoColumn panel _evalPage _evalBtn _evalGroup _sndPage _sndFileGroup _sndGroup _sndInterval _sndSent mediaText _mediaReplica _mediaSent include includeText includeDialog phraseReplace _sndFile cutDialog cutText phrase replica urlTag mediaTag mediaBigMark mediaPlayer mediaVideo ttsSound macroTemplate inlineTag htmlTag script img extension docExample dragTarget docNamed docType docEnum docEnumItem docProp docDescr docTagsMeta" my-props="tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="tag" summary=" tag descr" is-ign="true" descendants-and-self="macroArticle macroVocabulary macroVideo macroTrueFalse macroSingleChoices macroListWordOrdering macroPairing macroTable macroList macroIconList tag smartTag smartElementLow smartElement smartPairing smartOffering node text error headerProp evalControl body evalButton checkLow checkBox checkItem offering radioButton singleChoice wordSelection wordMultiSelection wordOrdering sentenceOrdering sentenceOrderingItem edit gapFill dropDown pairing pairingItem humanEval writing recording macro list listGroup twoColumn panel _evalPage _evalBtn _evalGroup _sndPage _sndFileGroup _sndGroup _sndInterval _sndSent mediaText _mediaReplica _mediaSent include includeText includeDialog phraseReplace _sndFile cutDialog cutText phrase replica urlTag mediaTag mediaBigMark mediaPlayer mediaVideo ttsSound macroTemplate inlineTag htmlTag script img extension docExample dragTarget docNamed docType docEnum docEnumItem docProp docDescr docTagsMeta" my-props="tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="text" is-ign="true" descendants-and-self="text" my-props="text.title tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="ttsSound" is-ign="true" descendants-and-self="ttsSound" my-props="ttsSound.text mediaTag.cutUrl mediaTag.subset mediaTag.shareMediaId urlTag.mediaUrl tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="twoColumn" descendants-and-self="twoColumn" my-props="tag.id tag.styleSheet tag.temporaryMacroItem" />
@@ -89,7 +89,7 @@
   <doc-type name="wordMultiSelection" descendants-and-self="wordMultiSelection" my-props="wordMultiSelection.words evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="wordOrdering" descendants-and-self="wordOrdering" my-props="wordOrdering.correctOrder evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-type name="wordSelection" descendants-and-self="wordSelection" my-props="wordSelection.words evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
-  <doc-type name="writing" descendants-and-self="writing" my-props="writing.limitRecommend writing.limitMin writing.limitMax writing.numberOfRows evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
+  <doc-type name="writing" descendants-and-self="writing" my-props="writing.limitRecommend writing.limitMin writing.limitMax writing.numberOfRows humanEval.isPassive evalControl.evalGroup evalControl.scoreWeight evalControl.evalButtonId tag.id tag.styleSheet tag.temporaryMacroItem" />
   <doc-prop name="actor" owner-type="_sndSent" data-type="@sys:String" />
   <doc-prop name="actor" owner-type="_mediaReplica" data-type="@sys:String" />
   <doc-prop name="actor" owner-type="phrase" data-type="@sys:String" />
@@ -154,9 +154,9 @@ Pro radioButton pouze [id]??
   <doc-prop name="initValue" owner-type="checkLow" data-type="@enum:threeStateBool" />
   <doc-prop name="initValue" owner-type="radioButton" data-type="@sys:Boolean" />
   <doc-prop name="initValue" owner-type="gapFill" data-type="@sys:String" />
-  <doc-prop name="inlineType" owner-type="smartElement" data-type="@enum:smartElementTypes" />
   <doc-prop name="inlineType" owner-type="macroTable" data-type="@enum:inlineControlTypes" />
   <doc-prop name="inlineType" owner-type="macroList" data-type="@enum:inlineControlTypes" />
+  <doc-prop name="inlineType" owner-type="smartElement" data-type="@enum:smartElementTypes" />
   <doc-prop name="inlineType" owner-type="inlineTag" data-type="@enum:inlineElementTypes" />
   <doc-prop name="instrBody" owner-type="body" data-type="@sys:String" />
   <doc-prop name="instrs" owner-type="body" data-type="@arraysys:String" />
@@ -167,6 +167,7 @@ Pro radioButton pouze [id]??
   <doc-prop name="isHtml" owner-type="docType" data-type="@sys:Boolean" />
   <doc-prop name="isHtml" owner-type="docProp" data-type="@sys:Boolean" />
   <doc-prop name="isIgn" owner-type="docType" data-type="@sys:Boolean" />
+  <doc-prop name="isPassive" owner-type="humanEval" data-type="@sys:Boolean" />
   <doc-prop name="isPassive" owner-type="_sndGroup" data-type="@sys:Boolean" />
   <doc-prop name="isStriped" owner-type="macroIconList" data-type="@sys:Boolean" />
   <doc-prop name="isStriped" owner-type="list" data-type="@sys:Boolean" />
@@ -246,26 +247,6 @@ Pro radioButton pouze [id]??
   <doc-prop name="xref" owner-type="docEnum" data-type="@sys:String" />
   <doc-prop name="xref" owner-type="docEnumItem" data-type="@sys:String" />
   <doc-prop name="xref" owner-type="docProp" data-type="@sys:String" />
-  <doc-enum name="pairingLeftWidth">
-    <doc-enum-item name="normal" />
-    <doc-enum-item name="small" />
-    <doc-enum-item name="xsmall" />
-    <doc-enum-item name="large" />
-  </doc-enum>
-  <doc-enum name="smartOfferingMode">
-    <doc-enum-item name="gapFill" />
-    <doc-enum-item name="dropDownDiscard" />
-    <doc-enum-item name="dropDownKeep" />
-    <doc-enum-item name="gapFillPassive" />
-  </doc-enum>
-  <doc-enum name="smartElementTypes">
-    <doc-enum-item name="no" />
-    <doc-enum-item name="gapFill" />
-    <doc-enum-item name="dropDown" />
-    <doc-enum-item name="offering" />
-    <doc-enum-item name="img" />
-    <doc-enum-item name="wordSelection" />
-  </doc-enum>
   <doc-enum name="CheckItemTexts">
     <doc-enum-item name="yesNo" />
     <doc-enum-item name="trueFalse" />
@@ -318,6 +299,26 @@ Pro radioButton pouze [id]??
     <doc-enum-item name="info" />
     <doc-enum-item name="warning" />
     <doc-enum-item name="danger" />
+  </doc-enum>
+  <doc-enum name="smartElementTypes">
+    <doc-enum-item name="no" />
+    <doc-enum-item name="gapFill" />
+    <doc-enum-item name="dropDown" />
+    <doc-enum-item name="offering" />
+    <doc-enum-item name="img" />
+    <doc-enum-item name="wordSelection" />
+  </doc-enum>
+  <doc-enum name="pairingLeftWidth">
+    <doc-enum-item name="normal" />
+    <doc-enum-item name="small" />
+    <doc-enum-item name="xsmall" />
+    <doc-enum-item name="large" />
+  </doc-enum>
+  <doc-enum name="smartOfferingMode">
+    <doc-enum-item name="gapFill" />
+    <doc-enum-item name="dropDownDiscard" />
+    <doc-enum-item name="dropDownKeep" />
+    <doc-enum-item name="gapFillPassive" />
   </doc-enum>
   <doc-enum name="threeStateBool">
     <doc-enum-item name="no" />

@@ -9,6 +9,7 @@ using System.Text;
 using LMNetLib;
 using Newtonsoft.Json;
 using System.Configuration;
+using System.Threading.Tasks;
 
 namespace OldToNew {
 
@@ -166,6 +167,23 @@ namespace OldToNew {
       exFile fileEx;
       if (!OldToNew.fileGroup.getAllFiles().TryGetValue(url, out fileEx)) return null;
       return fileEx.getFileContentString(dataType, logger);
+    }
+
+    public static void getAllServerScript(LoggerMemory logger, Action<exFile,string> saveXmlNew) {
+      //if (CourseMeta.Lib.publishers == null) return;
+      //Parallel.ForEach(fileGroup.getAllFiles().Values, fileEx => {
+      //  var xml = fileEx.getFileContentString(CourseMeta.oldeaDataType.xmlNew, logger);
+      //  var fn = fileEx.fileName(CourseMeta.oldeaDataType.xmlNew).Replace(@"\oldea\", @"\oldea-new\");
+      //  LowUtils.AdjustFileDir(fn);
+      //  File.WriteAllText(fn, xml);
+      //  //saveXmlNew(fileEx, xml);
+      //});
+      foreach (var fileEx in fileGroup.getAllFiles().Values) {
+        var xml = fileEx.getFileContentString(CourseMeta.oldeaDataType.xmlNew, logger);
+        var fn = fileEx.fileName(CourseMeta.oldeaDataType.xmlNew).Replace(@"\oldea\", @"\oldea-new\");
+        LowUtils.AdjustFileDir(fn);
+        File.WriteAllText(fn, xml);
+      }
     }
 
 

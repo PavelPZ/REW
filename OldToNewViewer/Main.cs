@@ -23,6 +23,9 @@ namespace OldToNewViewer {
   public partial class Main : Form {
     public Main() {
       InitializeComponent();
+      //exFile.getAllServerScript(logger, (e, c) => {});
+      //checkLog();
+      //return;
       TopPanel.AllowDrop = BottomPanel.AllowDrop = true;
       try { if (Directory.Exists(tempDir)) Directory.Delete(tempDir); Directory.CreateDirectory(tempDir); } catch { }
       CourseMeta.Lib.init(logger);
