@@ -30,7 +30,7 @@ namespace CubesDeployment {
 
     static void Main(string[] args) {
 
-      xmlToTsx.convert.toTsx(@"d:\LMCom\rew\Web4\lm\etestme", @"d:\temp\lm\etestme");
+      xmlToTsx.convert.toTsx(@"d:\LMCom\rew\Web4\lm\oldea-new", @"d:\temp\lm\oldea-new");
 
       //var str = xmlToTsx.convert.toTsx(XElement.Load(@"d:\LMCom\rew\Web4\skrivanek\english\a1\reading\readingpairing_multitask\v1_1.xml"));
       //str = null;

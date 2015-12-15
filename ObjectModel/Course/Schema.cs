@@ -1065,7 +1065,7 @@ namespace CourseModel {
   public partial class mediaText : mediaTag {
 
     [tgAt(0, xsdType = "xs:IDREF", _oldName = "continue-id")]
-    [XmlAttribute(AttributeName = "continue-media-id"), JsonIgnore]
+    [XmlAttribute(AttributeName = "continue-media-id")] //, JsonIgnore]
     public string continueMediaId; //pointer na mediaTag, definujici pokracovani v hrani
 
     [tgAt(0, _oldName = "is-passive")]
@@ -1144,7 +1144,7 @@ namespace CourseModel {
     public const string mediaTag_sequence = "sequence-type";
     public const string mediaTag_sequence_regex = @"^(\d+|-\d+|\d+-\d+|\d+-)(,\d+|,-\d+|,\d+-\d+|,\d+-)*$";
 
-    [XmlIgnore, JsonIgnore, JsonGenOnly]
+    [XmlIgnore, JsonGenOnly] //JsonIgnore
     [tgAt(tgSt.docIgnore, childPropTypes = "include-text|include-dialog")]
     public include file;
 
@@ -1176,7 +1176,7 @@ namespace CourseModel {
     [XmlAttribute(AttributeName = "end-pos"), DefaultValue(0)]
     public int endPos;
 
-    [XmlIgnore, JsonIgnore]
+    [XmlIgnore] //, JsonIgnore]
     public int idx;
   }
 

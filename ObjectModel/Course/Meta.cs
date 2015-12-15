@@ -476,7 +476,8 @@ namespace CourseMeta {
       foreach (var m in regExItem.Parse(text, localizePartsRegex)) {
         //foreach (var m in localizePartsRegex.Matches(text).OfType<Match>()) {
         if (sb == null) sb = new StringBuilder();
-        if (!m.IsMatch) { sb.Append(m.Value); continue; }
+        //if (!m.IsMatch) { if (isPlainText) sb.AppendFormat("{{'{0}'}}", HttpUtility.JavaScriptStringEncode(m.Value)); else sb.Append(m.Value); continue; }
+        if (!m.IsMatch) { sb.Append(m.Value.Replace("{","{'{'}").Replace("}", "{'}'}")); continue; }
         var parts = m.Value.Substring(2, m.Value.Length - 4).Split('|');
         sb.AppendFormat("{{$localize('{0}','{1}')}}", parts[0], HttpUtility.JavaScriptStringEncode(parts[1]));
       }

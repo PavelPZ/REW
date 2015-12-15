@@ -281,6 +281,7 @@ export interface IBodyProps extends ITagProps {
   instrTitle?: string;
   instrBody?: string;
   seeAlsoStr?: string;
+  externals?: string;
 }
 export interface IHeaderPropState extends ITagState { }
 export interface IHeaderPropProps extends ITagProps {
@@ -440,6 +441,7 @@ export interface IMediaVideoProps extends IMediaTagProps {
 }
 export interface IMediaTextState extends IMediaTagState { }
 export interface IMediaTextProps extends IMediaTagProps {
+  continueMediaId?: string;
   passive?: boolean;
   isOldToNew?: boolean;
   hidden?: boolean;
@@ -458,6 +460,7 @@ export interface IPhraseState extends ITagState { }
 export interface IPhraseProps extends ITagProps {
   begPos?: number;
   endPos?: number;
+  idx?: number;
 }
 export interface IReplicaState extends ITagState { }
 export interface IReplicaProps extends ITagProps {

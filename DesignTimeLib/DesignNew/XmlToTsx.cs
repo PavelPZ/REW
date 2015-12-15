@@ -7,6 +7,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Web;
 
 namespace xmlToTsx {
   public static class convert {
@@ -30,6 +31,7 @@ namespace xmlToTsx {
             case "class": renameAttr(attr, "className"); break;
             case "colspan": var a = renameAttr(attr, "colSpan"); a.Value = "@{" + a.Value + "}@";  break;
             case "rowspan": var a2 = renameAttr(attr, "rowSpan"); a2.Value = "@{" + a2.Value + "}@"; break;
+            case "maxlength": var a3 = renameAttr(attr, "maxLength"); a3.Value = "@{" + a3.Value + "}@"; break;
           }
           //tags
           if (!isTag) continue;
@@ -54,10 +56,12 @@ namespace xmlToTsx {
       }
       //lokalizace textu
       foreach (var el in body.DescendantNodes().OfType<XText>()) {
-        el.Value = CourseMeta.locLib.localizeForTsx(el.Value);
+        var val = CourseMeta.locLib.localizeForTsx(el.Value);
+        val = "{'" + HttpUtility.JavaScriptStringEncode(val) + "'}";
+        el.Value = val;
       }
       var instrTitle = body.Attribute("instrTitle");
-      if (instrTitle != null) instrTitle.Value = CourseMeta.locLib.localizeForTsx(instrTitle.Value);
+      if (instrTitle != null) instrTitle.Value = "@" + CourseMeta.locLib.localizeForTsx(instrTitle.Value) + "@";
       //to string
       foreach (var attr in body.Attributes().Where(a => a.IsNamespaceDeclaration || a.Name.LocalName == "noNamespaceSchemaLocation").ToArray()) attr.Remove();
       StringBuilder sb = new StringBuilder();
@@ -82,7 +86,8 @@ namespace xmlToTsx {
       return res;
     }
     static HashSet<string> numProps = new HashSet<string>(new string[] { "width", "scoreWeight", "limitRecommend", "limitMin", "limitMax", "numberOfRows", "begPos", "endPos", "numberOfPhrases", "phraseIdx" });
-    static HashSet<string> boolProps = new HashSet<string>(new string[] { "isPassive", "scoreAsRatio", "gapFillLike", "caseSensitive", "readOnly", "skipEvaluation", "leftRandom", "recordInDialog", "singleAttempt", "isStriped", "hidden", "passive", "correct", "random",
+    static HashSet<string> boolProps = new HashSet<string>(new string[] { "isPassive", "scoreAsRatio", "gapFillLike", "caseSensitive",
+      "readOnly", "skipEvaluation", "leftRandom", "recordInDialog", "singleAttempt", "isStriped", "hidden", "passive", "correct", "random", "isOldToNew",
       "radioButton.correctValue","radioButton.initValue","checkItem.correctValue","checkBox.correctValue"
     });
     static Dictionary<string, string> enumProps = new Dictionary<string, string> {

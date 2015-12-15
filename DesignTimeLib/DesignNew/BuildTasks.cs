@@ -96,6 +96,16 @@ namespace DesignNew {
       });
     }
 
+    public static void TYPESCRIPT_JSX() {
+      runTask("TYPESCRIPT_JSX", () => {
+        Trace.TraceWarning("tsconfig: {0}", @"");
+        string output;
+        var error = LowUtils.runExecutable(ConfigurationManager.AppSettings["tsc.exe"], "--project \"" + @"d:\temp\lm" + "\"", out output);
+        File.WriteAllText(@"d:\temp\TYPESCRIPT_JSX.txt", output);
+        return null;
+      });
+    }
+
     //*********** SW_WEB4refresh
     public static void SW_web4() {
       runTask("SW_WEB4refresh", () => {
