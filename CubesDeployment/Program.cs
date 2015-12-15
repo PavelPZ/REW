@@ -32,7 +32,7 @@ namespace CubesDeployment {
 
       xmlToTsx.convert.toTsx(@"d:\LMCom\rew\Web4\lm\oldea-new", @"d:\temp\lm\oldea-new");
 
-      //var str = xmlToTsx.convert.toTsx(XElement.Load(@"d:\LMCom\rew\Web4\skrivanek\english\a1\reading\readingpairing_multitask\v1_1.xml"));
+      //var str = xmlToTsx.convert.toTsx(XElement.Load(@"d:\lmcom\rew\web4\lm\oldea-new\english1\l01\a\hueex0_l01_a03.new.xml"));
       //str = null;
 
       //DesignNew.SynchronizeDirs.synchronize(new DesignNew.fileSystemDriver(@"d:\temp\azure", "v1-0"), new DesignNew.BuildIds[] { DesignNew.BuildIds .blended }, new Langs[] { Langs .cs_cz });

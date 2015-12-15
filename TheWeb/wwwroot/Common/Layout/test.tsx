@@ -97,7 +97,7 @@ namespace layoutTest {
     layout.registerRenderer(placeOther, 'other-panel', parent => <h2 key={flux.cnt() }>Panel x4</h2>);
 
     var rootElement = () => <div key={flux.cnt() } >
-      <a href='#' onClick={ev => namedState.index.navig({ defaultScene: true, defaultPlaces: true }, ev) }>Default Scene, default places</a> |
+      <a href='#' onClick={ev => namedState.index.navig({ defaultScene: true, defaultPlaces: true }, ev) } style={{}}>Default Scene, default places</a> |
       <a href='#' onClick={ev => namedState.index.navig({ defaultScene: false, defaultPlaces: true }, ev) }>Other Scene, default places</a> |
       <a href='#' onClick={ev => namedState.index.navig({ defaultScene: true, defaultPlaces: false }, ev) }>Default Scene, other places</a> |
       <a href='#' onClick={ev => namedState.index.navig({ defaultScene: false, defaultPlaces: false }, ev) }>Other Scene, other places</a> |

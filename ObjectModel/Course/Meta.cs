@@ -471,42 +471,6 @@ namespace CourseMeta {
       return localizePartsRegex.Matches(text).OfType<Match>().Select(m => m.Value.Substring(2, m.Value.Length - 4).Split('|')[0]);
     }
 
-    public static string localizeForTsx(string text) {
-      StringBuilder sb = null;
-      foreach (var m in regExItem.Parse(text, localizePartsRegex)) {
-        //foreach (var m in localizePartsRegex.Matches(text).OfType<Match>()) {
-        if (sb == null) sb = new StringBuilder();
-        //if (!m.IsMatch) { if (isPlainText) sb.AppendFormat("{{'{0}'}}", HttpUtility.JavaScriptStringEncode(m.Value)); else sb.Append(m.Value); continue; }
-        if (!m.IsMatch) { sb.Append(m.Value.Replace("{","{'{'}").Replace("}", "{'}'}")); continue; }
-        var parts = m.Value.Substring(2, m.Value.Length - 4).Split('|');
-        sb.AppendFormat("{{$localize('{0}','{1}')}}", parts[0], HttpUtility.JavaScriptStringEncode(parts[1]));
-      }
-      return sb == null ? text : sb.ToString();
-    }
-    //public static string initOldEALocalizeText(string text, Dictionary<string,string> loc, Action<string> notLoc ) {
-    //public static string localizeText(string text, Dict<string, string> replace) {
-    //  return transBracket.Replace(text, m => {
-    //    var key = m.Value.Substring(2, m.Value.Length - 4);
-    //    var val = replace(key);
-    //    //switch (type) {
-    //    //  case CourseModel.textItemType.javascript: val = val.Replace("\"", "\\\""); break;
-    //    //  case CourseModel.textItemType.attribute:
-    //    //    val = attrEntities.Replace(val, mm => {
-    //    //      var ent = "";
-    //    //      switch (mm.Value[0]) {
-    //    //        case '&': ent = "amp"; break;
-    //    //        case '\'': ent = "apos"; break;
-    //    //        case '"': ent = "quot"; break;
-    //    //        case '<': ent = "lt"; break;
-    //    //        case '>': ent = "gt"; break;
-    //    //        default: throw new NotImplementedException();
-    //    //      }
-    //    //      return "&" + ent + ";";
-    //    //    }); break;
-    //    //}
-    //    return "{{" + key + "|" + val + "}}";
-    //  });
-    //} 
     public static Regex localizePartsRegex = new Regex("{{.*?}}", RegexOptions.Singleline);
     //static Regex attrEntities = new Regex(@"(&|""|'|<|>)");
 

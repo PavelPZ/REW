@@ -1,8 +1,90 @@
-﻿<product title="English Courses" url="/lm/english_0_10/" line="English" type="product" defaultDictType="L">
-  <data title="English">
-    <data title="A1">
-      <ex title="??? Fiona and Her English Class" url="/lm/oldea/english1/l01/a/hueex0_l01_a01"/>
-      <ex title="??? In a Café" url="/lm/oldea/english1/l01/a/hueex0_l01_a02"/>
-    </data>
-  </data>
-</product>
+﻿<Body id="hueex0_l01_a03" externals="/lm/oldea/english1wma/lesson01/hueex0_l01_a03.mp3" title="Nicole and Fiona" instrTitle={$localize('ahtmltitle','Listen to the dialogue and answer the questions.')} instrBody="sound_playback|filling_in|information" seeAlsoStr="/lm/oldea/english1/grammar/sec04/g02|Forms of “to be” and “to have” in Simple Present Tense">
+  <div id="content" className="ea  ">
+    <div id="alwaysVisiblePanel" style="width: 100%; background-color: White; position: relative; z-index: 10000;"></div>
+    <div id="lessonContentPanel" className="lesson-content  ">
+      <div id="allwaysVisibleContent"></div>
+      <div className="layHolder layTypeRow layFlowCenter">
+        <table className="layItem  ">
+          <tbody>
+            <tr>
+              <td className="layCell layValignMiddle layAlignLeft layPaddingTrue">
+                <MediaText id="on_1" subset="0" continueMediaId="on_2" isOldToNew={"true"}>
+                  <CutDialog mediaUrl="/lm/oldea/english1wma/lesson01/hueex0_l01_a03.mp3">
+                    <Replica actorName="Fiona" numberOfPhrases={"0"}>
+                      <Phrase begPos={"5497"} endPos={"6959"}>Where are you from, Nicole?</Phrase>
+                    </Replica>
+                    <Replica actorName="Nicole" numberOfPhrases={"0"}>
+                      <Phrase begPos={"6959"} endPos={"8880"}>I'm from Toronto.</Phrase>
+                    </Replica>
+                    <Replica actorName="Fiona" numberOfPhrases={"0"}>
+                      <Phrase begPos={"8880"} endPos={"11753"}>Oh, Toronto is a beautiful city.</Phrase>
+                    </Replica>
+                    <Replica actorName="Nicole" numberOfPhrases={"0"}>
+                      <Phrase begPos={"11753"} endPos={"14073"}>And where are you from, Fiona?</Phrase>
+                    </Replica>
+                    <Replica actorName="Fiona" numberOfPhrases={"0"}>
+                      <Phrase begPos={"14073"} endPos={"15474"}>I'm from Dublin.</Phrase>
+                    </Replica>
+                    <Replica actorName="Nicole" numberOfPhrases={"0"}>
+                      <Phrase begPos={"15474"} endPos={"17715"}>Oh, how interesting.</Phrase>
+                    </Replica>
+                  </CutDialog>
+                </MediaText>
+                <MediaText id="on_2" subset="1" continueMediaId="on_3" isOldToNew={"true"} />
+                <MediaText id="on_3" subset="2" continueMediaId="on_4" isOldToNew={"true"} />
+                <MediaText id="on_4" subset="3" continueMediaId="on_5" isOldToNew={"true"} />
+                <MediaText id="on_5" subset="4" continueMediaId="on_6" isOldToNew={"true"} />
+                <MediaText id="on_6" subset="5" isOldToNew={"true"} />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div className="layHolder layTypeRow layFlowCenter">
+        <table className="layItem  ">
+          <tbody>
+            <tr>
+              <td className="layCell layValignTop layAlignLeft layPaddingTrue">
+                <img src="/lm/oldea/english1/img/coursebook/lesson01/page08/s8_b.gif" className="  " />
+              </td>
+              <td className="layCell layValignMiddle layAlignLeft layPaddingTrue">
+                1. Where is Fiona from? Fiona is from{' '}<GapFill id="g202" correctValue="Dublin" widthGroup="vse" />.{' '}<br />{' '}2. Where is Nicole from? Nicole is from{' '}<GapFill id="g249" correctValue="Toronto" widthGroup="vse" />.{' '}<br />{' '}3. Where are you from? I’m from{' '}<GapFill id="g296" correctValue="…………" widthGroup="vse" skipEvaluation={"true"} />. &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div className="layHolder layTypeCell layFlowCenter">
+        <table className="layItem  ">
+          <tr>
+            <td className="layCell layValignMiddle layAlignLeft layPaddingTrue">
+              <div style="width:12em;" className="box bxNote">
+                <h4>Note</h4>
+                <table className="table  ">
+                  <tbody>
+                    <tr>
+                      <td className=" tbValignTop tbAlignLeft">how</td>
+                      <td className=" tbValignTop tbAlignLeft">=</td>
+                      <td className=" tbValignTop tbAlignLeft">{$localize('ttrans','how')}</td>
+                    </tr>
+                    <tr>
+                      <td className=" tbValignTop tbAlignLeft">where</td>
+                      <td className=" tbValignTop tbAlignLeft">=</td>
+                      <td className=" tbValignTop tbAlignLeft">{$localize('ttrans1','where')}</td>
+                    </tr>
+                    <tr>
+                      <td className=" tbValignTop tbAlignLeft">I’m = I am</td>
+                      <td className=" tbValignTop tbAlignLeft">=</td>
+                      <td className=" tbValignTop tbAlignLeft">{$localize('ttrans2','I am')}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div className="break  "></div>
+  </div>
+</Body>

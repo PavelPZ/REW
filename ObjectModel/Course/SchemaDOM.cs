@@ -1239,14 +1239,22 @@ namespace CourseModel {
       }
     }
 
-    public static void normalizeXml(XElement root) {
+    // znak '`' znamena, ze se mezery ignoruji. Napr. ...</span> ` xx  ` <span>... znamena ...</span>xx<span>...
+    //ignorovani probiha: 
+    // - leva cast textu, ktery je prvni child inline parenta nebo je za inline elementem.
+    // - prava cast textu, ktery je posledni child inline parenta nebo je za nim inline element.
+    public static void normalizeXml(XElement root, string blankText = " ") {
       root.DescendantNodes().OfType<XComment>().Remove();
-      var txts = root.DescendantNodes().OfType<XText>().Where(t => t.Value.IndexOf('`') >= 0).ToArray();
-      if (txts == null) return;
+      //15.12.2015: k cemu je tento kod? K if (txts == null) return snad nikdy nedojde
+      //var txts = root.DescendantNodes().OfType<XText>().Where(t => t.Value.IndexOf('`') >= 0).ToArray();
+      //if (txts == null) return;
       foreach (var txt in root.DescendantNodes().OfType<XText>().Where(t => !(t is XCData))) {
+        //leva cast textu, ktery je prvni child inline parenta nebo za inline elementem.
         var prevEl = txt.PreviousNode as XElement; var left = prevEl == null ? txt.Parent : prevEl; var leftInline = isInline(left);
+        //prava cast textu, ktery je posledni child inline parenta nebo nasledovaneho inlene elementem.
         var rightEl = txt.NextNode as XElement; var right = rightEl == null ? txt.Parent : rightEl; var rightInline = isInline(right);
-        txt.Value = blanks.Replace(txt.Value, m => trimNormalize(m.Groups["lblanks"].Value, m.Groups["cont"].Value, m.Groups["rblanks"].Value, leftInline, rightInline));
+        //nahrad pocatecni ci koncove mezery budto "" nebo " " ("" pokud obsahuji `)
+        txt.Value = blanks.Replace(txt.Value, m => trimNormalize(m.Groups["lblanks"].Value, m.Groups["cont"].Value, m.Groups["rblanks"].Value, leftInline, rightInline, blankText));
       }
       //var emptyTexts = root.DescendantNodes().OfType<XText>().Where(t => string.IsNullOrEmpty(t.Value)).ToArray();
       //var str = root.ToString(SaveOptions.DisableFormatting);
@@ -1254,9 +1262,10 @@ namespace CourseModel {
       //str = root.ToString(SaveOptions.DisableFormatting);
       root.DescendantNodes().OfType<XText>().Where(t => string.IsNullOrEmpty(t.Value)).Remove();
     }
-    static string trimNormalize(string lblank, string cont, string rblank, bool leftInline, bool rightInline) {
-      if (!string.IsNullOrEmpty(lblank)) lblank = leftInline && lblank.IndexOf('`') < 0 ? " " : "";
-      if (!string.IsNullOrEmpty(rblank)) rblank = rightInline && rblank.IndexOf('`') < 0 ? " " : "";
+    //ignoruj mezery s ` 
+    static string trimNormalize(string lblank, string cont, string rblank, bool leftInline, bool rightInline, string blankText) {
+      if (!string.IsNullOrEmpty(lblank)) lblank = leftInline && lblank.IndexOf('`') < 0 ? blankText : ""; 
+      if (!string.IsNullOrEmpty(rblank)) rblank = rightInline && rblank.IndexOf('`') < 0 ? blankText : "";
       return lblank + cont + rblank;
     }
     static Regex blanks = new Regex(@"^(?<lblanks>(\s|`)*)(?<cont>.*?)(?<rblanks>(\s|`)*)$");
@@ -1266,7 +1275,7 @@ namespace CourseModel {
       "drag-target", "gap-fill", "smart-element", "smart-tag", "word-selection", 
       //https://developer.mozilla.org/en-US/docs/Web/HTML/Inline_elemente
       "b", "big", "i", "small", "tt", "abbr", "acronym", "cite", "code", "dfn", "em", "kbd", "strong", "samp", "var", "u", "s",
-      "a", "bdo", "br", "img", "map", "object", "q", "script", "span", "sub", "sup", "button", "input", "label", "select", "textarea",
+      "a", "bdo", /*"br", 15.12.2015 - neni inline*/ "img", "map", "object", "q", "script", "span", "sub", "sup", "button", "input", "label", "select", "textarea",
     };
     //https://developer.mozilla.org/en-US/docs/Web/HTML/Block-level_elements
     static HashSet<string> blocks = new HashSet<string>() {
