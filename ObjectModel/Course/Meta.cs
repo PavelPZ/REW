@@ -142,8 +142,10 @@ namespace CourseMeta {
     //public string css;
 
     [XmlIgnore, JsonIgnore]
-    public string style {
-      get {
+    public string style
+    {
+      get
+      {
         if (_style == "?") {
           var styleFn = Machines.rootDir + url.Replace('/', '\\') + "meta.css";
           _style = File.Exists(styleFn) ? File.ReadAllText(styleFn, Encoding.UTF8) : null;
@@ -314,8 +316,7 @@ namespace CourseMeta {
           res.url = fn.Substring(Machines.rootDir.Length).Replace('\\', '/').Replace("/meta.xml", "/").Replace(".xml", null);
           return res;
         }
-      }
-      catch (Exception exp) {
+      } catch (Exception exp) {
         throw new Exception(fn, exp);
       }
     }
@@ -372,8 +373,7 @@ namespace CourseMeta {
         var cssFn = Path.ChangeExtension(fn, ".css");
         if (File.Exists(cssFn)) r.styleSheet = File.ReadAllText(cssFn, Encoding.UTF8);
         return r;
-      }
-      catch (Exception e) { throw new Exception(fn, e); }
+      } catch (Exception e) { throw new Exception(fn, e); }
     }
 
     public static data readExForSitemap(string fn, LoggerMemory logger) {
@@ -382,8 +382,7 @@ namespace CourseMeta {
         XElement root;
         try {
           root = XElement.Load(fn);
-        }
-        catch (Exception exp) {
+        } catch (Exception exp) {
           if (logger == null) throw exp;
           logger.ErrorLineFmt(url, "wrong XML format, {1}", fn, exp.Message);
           return null;
@@ -406,8 +405,7 @@ namespace CourseMeta {
           return new data { url = url, type = runtimeType.mediaCutFile, title = "Media cut file" };
         else
           return new data { url = url, type = runtimeType.error, title = "Error file" };
-      }
-      catch (Exception e) {
+      } catch (Exception e) {
         logger.ErrorLine(url, LowUtils.ExceptionToString(e));
         return null;
       }
@@ -473,6 +471,17 @@ namespace CourseMeta {
       return localizePartsRegex.Matches(text).OfType<Match>().Select(m => m.Value.Substring(2, m.Value.Length - 4).Split('|')[0]);
     }
 
+    public static string localizeForTsx(string text) {
+      StringBuilder sb = null;
+      foreach (var m in regExItem.Parse(text, localizePartsRegex)) {
+        //foreach (var m in localizePartsRegex.Matches(text).OfType<Match>()) {
+        if (sb == null) sb = new StringBuilder();
+        if (!m.IsMatch) { sb.Append(m.Value); continue; }
+        var parts = m.Value.Substring(2, m.Value.Length - 4).Split('|');
+        sb.AppendFormat("{{$localize('{0}','{1}')}}", parts[0], HttpUtility.JavaScriptStringEncode(parts[1]));
+      }
+      return sb == null ? text : sb.ToString();
+    }
     //public static string initOldEALocalizeText(string text, Dictionary<string,string> loc, Action<string> notLoc ) {
     //public static string localizeText(string text, Dict<string, string> replace) {
     //  return transBracket.Replace(text, m => {
@@ -692,8 +701,7 @@ namespace CourseMeta {
         data res;
         if (pattern != null) {
           res = pattern.clone(); dt.AssignTo(res); res.Items = dt.clone().Items;
-        }
-        else {
+        } else {
           res = dt.clone();
           if (modify != null) {
             foreach (var par in modify.Split(';').Select(p => p.Split('='))) {
@@ -704,8 +712,7 @@ namespace CourseMeta {
                   case "needs": t.needs = LowUtils.EnumParse<testNeeds>(par[1]); break;
                   default: throw new Exception("Canot use test par: " + par[0]);
                 }
-              }
-              else throw new Exception("Canot use ptr.modify par: " + par[0]);
+              } else throw new Exception("Canot use ptr.modify par: " + par[0]);
             }
           }
         }
@@ -1041,8 +1048,7 @@ namespace CourseMeta {
         var crsStr = root.Parent.AttributeValue("id");
         var idx = root.Parent.Elements("folder").IndexOf(el => el == root);
         res.globalId = oldGramm.pathName(crsStr, idx);
-      }
-      else
+      } else
         res.globalId = res.globalId = cnt++.ToString();
       if (deep == 1) res.type = res.type | runtimeType.mod;
       //res2.type = runtimeType.lesson;
@@ -1089,8 +1095,7 @@ namespace CourseMeta {
         res.isOldEaPassive = oldEx.AttributeValue("old-ea-is-passive") == "true";
         //res.ms = oldEx.AttributeValue("old-ea-is-passive") == "true" ? 0 : 1;
         fromSitemapLow(res, parent, root, null);
-      }
-      else {
+      } else {
         res.title = getLocOldGrammTitle(root);
         fromSitemapLow(res, parent, root, null);
         res.spaceId = "/lm/oldea/" + res.spaceId;
@@ -1247,8 +1252,10 @@ namespace CourseMeta {
 
     public override data clone() { return cloneLow<ex>(c => { c.isOldEa = isOldEa; c.isOldEaPassive = isOldEaPassive; c.instrs = instrs == null ? null : instrs.Select(i => i).ToArray(); /*c.inPlace = inPlace;*/ }); }
 
-    public static string stdStyle {
-      get {
+    public static string stdStyle
+    {
+      get
+      {
         if (_stdStyle == null) {
           _stdStyle = File.ReadAllText(Machines.dataPath + @"default.css", Encoding.UTF8).Trim() + " ";
           //var fn = Machines.dataPath + @"default.css";

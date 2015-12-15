@@ -1,21 +1,13 @@
 ﻿using LMComLib;
-using LMNetLib;
 //http://usejsdoc.org/index.html
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Xml;
-using System.Xml.Linq;
-using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace CourseModel {
@@ -203,21 +195,23 @@ namespace CourseModel {
      *  @descr ??
     */
     [tgAt(tgSt.isArray | tgSt.docIgnore), XmlAttribute]
-    public string[] @class {
+    public string[] @class
+    {
       get { return cls != null && cls.Length == 1 ? cls.Concat(new string[] { " " }).ToArray() : cls; } //nejaka chyba v XML serializaci: class="no-class" nefunguje
       set { cls = value == null ? null : value.ToArray(); }
     }
     string[] cls;
 
     [tgAt(tgSt.docIgnore), XmlIgnore, JsonIgnore]
-    public string classSetter {
+    public string classSetter
+    {
       set { if (string.IsNullOrEmpty(value)) cls = null; else cls = value.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries); }
     }
 
     /** @summary CSS pro descendant elementy tohoto elementu, napr. gap-fill { case-sensitive:true; }
      *  @descr 
     */
-    [XmlAttribute(AttributeName = "style-sheet"), JsonIgnore]
+    [XmlAttribute(AttributeName = "style-sheet")] //, JsonIgnore]
     public string styleSheet;
 
     [XmlAttribute, tgAt(tgSt.docIgnore | tgSt.xsdIgnore)]
@@ -258,7 +252,7 @@ namespace CourseModel {
   /// Dialog speaker identification
   /// </summary>
   /// descr
-  [tgAt(0, _oldName="replica-actor")]
+  [tgAt(0, _oldName = "replica-actor")]
   public enum IconIds {
     no,
     /// <summary>
@@ -478,6 +472,9 @@ namespace CourseModel {
     public override IEnumerable<tag> getTagProps() { if (sndPage != null) yield return sndPage; if (evalPage != null) yield return evalPage; }
 
     [XmlAttribute]
+    public string title;
+
+    [XmlAttribute]
     [tgAt(tgSt.docIgnore | tgSt.xsdIgnore)]
     public string url;
 
@@ -494,11 +491,14 @@ namespace CourseModel {
     [XmlAttribute(AttributeName = "see-also-str")]
     [tgAt(tgSt.docIgnore)]
     //[Doc(ignore = true)]
-    public string seeAlsoStr {
-      get {
+    public string seeAlsoStr
+    {
+      get
+      {
         return seeAlso == null ? null : seeAlso.Select(sa => sa.url + "|" + sa.title).Aggregate((r, i) => r + "#" + i);
       }
-      set {
+      set
+      {
         seeAlso = string.IsNullOrEmpty(value) ? null : value.Split('#').Select(l => l.Split('|')).Select(arr => new seeAlsoLink() { url = arr[0], title = arr.Length > 1 ? arr[1] : null }).ToArray();
       }
     }
@@ -520,7 +520,8 @@ namespace CourseModel {
     public bool isOldEa;
 
     [XmlIgnore, JsonIgnore]
-    public string[] instrs { get { return _instrs; } set { _instrs = value == null ? null : value.Where(v => v != null).Select(v => v.ToLower()).ToArray(); } } string[] _instrs;
+    public string[] instrs { get { return _instrs; } set { _instrs = value == null ? null : value.Where(v => v != null).Select(v => v.ToLower()).ToArray(); } }
+    string[] _instrs;
 
     [XmlIgnore, JsonIgnore]
     [tgAt(tgSt.docIgnore)]
@@ -972,13 +973,16 @@ namespace CourseModel {
 
     //skupiny radiobuttonu. V javascript se jimi ridi zaskrtnuti pouze jednoho radio v skupine
     [XmlAttribute(AttributeName = "radio-groups")]
-    public string radioGroups {
-      get {
+    public string radioGroups
+    {
+      get
+      {
         if (radioGroupsObj == null) return null;
         var groups = radioGroupsObj.Select(kv => kv.Key + ":" + kv.Value.DefaultIfEmpty().Aggregate((r, i) => r + "," + i));
         return groups.DefaultIfEmpty().Aggregate((r, i) => r + "|" + i);
       }
-      set {
+      set
+      {
         if (string.IsNullOrEmpty(value)) { radioGroupsObj = null; return; }
         radioGroupsObj = value.Split('|').Select(grp => grp.Split(':')).Select(kv => new { key = kv[0], value = kv[1].Split(',') }).ToDictionary(kv => kv.key, kv => kv.value);
       }
@@ -1205,7 +1209,7 @@ namespace CourseModel {
     public const string mediaTag_format = "format-type";
     public const string mediaTag_format_regex = @"^.*\.mp3$|^.*@((std-4|std-2)$|(16by9|4by3):((\d+|\*)-((\w|\.)*webm|(\w|\.)*mp4)+(,(\w|\.)*webm|,(\w|\.)*mp4)*)+(\|(\d+|\*)-((\w|\.)*webm|(\w|\.)*mp4)+(,(\w|\.)*webm|,(\w|\.)*mp4)*)*)$";
 
-    [XmlAttribute(AttributeName = "media-url"), JsonIgnore]
+    [XmlAttribute(AttributeName = "media-url")] //, JsonIgnore vyhozeno, TSX prevod
     [tgAt(0, xsdType = mediaTag_format)]
     public string mediaUrl;
 
@@ -1218,15 +1222,15 @@ namespace CourseModel {
 
     public const string mediaXsdChilds = "c01: ['include-text','include-dialog','cut-text','cut-dialog']";
 
-    [XmlAttribute(AttributeName = "cut-url"), JsonIgnore]
+    [XmlAttribute(AttributeName = "cut-url")] //, JsonIgnore vyhozeno, TSX prevod
     [tgAt(0)]
     public string cutUrl;
 
     [XmlAttribute]
-    [tgAt(0, xsdType = _sndFile.mediaTag_sequence), JsonIgnore]
+    [tgAt(0, xsdType = _sndFile.mediaTag_sequence)] //, JsonIgnore vyhozeno, TSX prevod
     public string subset;
 
-    [XmlAttribute(AttributeName = "share-media-id"), JsonIgnore]
+    [XmlAttribute(AttributeName = "share-media-id")] //, JsonIgnore vyhozeno, TSX prevod
     [tgAt(0, xsdType = "xs:IDREF", _oldName = "share-id")]
     public string shareMediaId; //pointer na mediaTag, jehoz zvukovou sekvenci sdilim 
 
@@ -1702,10 +1706,7 @@ namespace CourseModel {
       yield return typeof(JSStatus);
       yield return typeof(CourseDataFlag);
       yield return typeof(modalSize);
-      //yield return typeof(htmlDir);
-      //yield return typeof(parentProps);
       yield return typeof(tgSt);
-      //yield return typeof(smartTagStyle); 
       yield return typeof(offeringDropDownMode);
       yield return typeof(smartOfferingMode);
       yield return typeof(inlineElementTypes);
@@ -1714,20 +1715,11 @@ namespace CourseModel {
       yield return typeof(listIcon);
       yield return typeof(pairingLeftWidth);
       yield return typeof(threeStateBool);
-      //yield return typeof(mediaSentHidden);
     }
-
+    
     public static IEnumerable<Type> Types() {
-
-      //yield return typeof(sndFormat);
-      //yield return typeof(sndFormatExt);
-      //yield return typeof(sndFormatItem);
-      //yield return typeof(sndFormatRatio);
-
       //ancestors
       yield return typeof(tag);
-      //yield return typeof(tagStyled);
-      //yield return typeof(tagHtml);
 
       yield return typeof(seeAlsoLink);
       yield return typeof(html);
@@ -1741,7 +1733,6 @@ namespace CourseModel {
       yield return typeof(attr);
       yield return typeof(script);
       yield return typeof(img);
-      //yield return typeof(a);
 
       //Objects
       yield return typeof(TagStatic);
@@ -1754,11 +1745,8 @@ namespace CourseModel {
       yield return typeof(Score);
       yield return typeof(ttsSound);
 
-      //yield return typeof(singleChoiceLow);
-
       //vyhodnoceni
       yield return typeof(evalButton);//obsolete
-      //yield return typeof(evalGroupBtn);
       yield return typeof(dropDown);
       yield return typeof(edit);
       yield return typeof(gapFill);
@@ -1788,31 +1776,13 @@ namespace CourseModel {
       yield return typeof(node);
       yield return typeof(offering);
 
-      //yield return typeof(dragSource);//obsolete
-      //yield return typeof(dragTarget);//obsolete
-      //yield return typeof(possibilities); //obsolete
-
       //zvuk
-      //yield return typeof(media);
       yield return typeof(urlTag);
       yield return typeof(mediaTag);
       yield return typeof(mediaBigMark);
       yield return typeof(mediaPlayer);
-      //yield return typeof(mediaTitle);
       yield return typeof(mediaVideo);
-      //yield return typeof(include);
-      //yield return typeof(mediaDialog);
-      //yield return typeof(mediaReplica);
       yield return typeof(mediaText);
-      //yield return typeof(sent);
-      //yield return typeof(replica);
-      //yield return typeof(includeText);
-      //yield return typeof(includeDialog);
-      //yield return typeof(sentReplace);
-      //yield return typeof(sndPage);
-      //yield return typeof(_sndFile);
-      //yield return typeof(sndDialog);
-      //yield return typeof(sndText);
       yield return typeof(_mediaReplica);
       yield return typeof(_mediaSent);
       yield return typeof(_sndPage);
@@ -1835,7 +1805,6 @@ namespace CourseModel {
       yield return typeof(_evalPage);
       yield return typeof(_evalBtn);
       yield return typeof(_evalGroup);
-      //yield return typeof(PassiveDialog);
 
       //macro Templates. V JS nejsou viditelna
       yield return typeof(macroTemplate);
@@ -1864,9 +1833,7 @@ namespace CourseModel {
       yield return typeof(docEnumItem);
       yield return typeof(docProp);
       yield return typeof(docDescr);
-      //yield return typeof(summary);
       yield return typeof(docExample);
-      //yield return typeof(remarks);
 
       //results
       yield return typeof(Result);
@@ -1884,6 +1851,154 @@ namespace CourseModel {
       yield return typeof(extensionResult);
 
     }
+
+    public static Type[] allEnums = new Type[] {
+      typeof(IconIds),
+      typeof(CheckItemTexts),
+      typeof(inlineControlTypes),
+      //typeof(JSStatus),
+      //typeof(CourseDataFlag),
+      typeof(modalSize),
+      //typeof(tgSt),
+      typeof(offeringDropDownMode),
+      typeof(smartOfferingMode),
+      typeof(inlineElementTypes),
+      typeof(smartElementTypes),
+      typeof(colors),
+      typeof(listIcon),
+      typeof(pairingLeftWidth),
+      typeof(threeStateBool),
+      typeof(LMComLib.ExerciseStatus),
+      typeof(CourseModel.CourseDataFlag),
+    };
+
+    public static Type[] allTypes = new Type[] {
+      typeof(tag),
+      //typeof(seeAlsoLink),
+      //typeof(html),
+      //typeof(head),
+      typeof(evalControl),
+      //typeof(jsonMLMeta),
+      //typeof(jsClassMeta),
+      //typeof(jsPropMeta),
+
+      //typeof(htmlTag),
+      //typeof(attr),
+      //typeof(script),
+      //typeof(img),
+
+      //Objects
+      //typeof(TagStatic),
+
+      //typeof(text),
+      typeof(body),
+      typeof(headerProp),
+      typeof(macro),
+      typeof(humanEval),
+      //typeof(Score),
+      //typeof(ttsSound),
+
+      //vyhodnoceni
+      typeof(evalButton),//obsolete
+      typeof(dropDown),
+      typeof(edit),
+      typeof(gapFill),
+      typeof(radioButton),
+      typeof(checkLow),
+      typeof(checkItem),
+      typeof(checkBox),
+      typeof(pairingItem),
+      typeof(pairing),
+      typeof(singleChoice),
+      typeof(wordSelection),
+      typeof(wordMultiSelection),
+      typeof(wordOrdering),
+      typeof(sentenceOrdering),
+      typeof(sentenceOrderingItem),
+      typeof(extension),
+
+      typeof(writing),
+      typeof(recording),
+
+      //bez vyhodnoceni
+      typeof(list),
+      typeof(listGroup),
+      typeof(twoColumn),
+      typeof(panel),
+      typeof(node),
+      typeof(offering),
+
+      //zvuk
+      typeof(urlTag),
+      typeof(mediaTag),
+      typeof(mediaBigMark),
+      typeof(mediaPlayer),
+      typeof(mediaVideo),
+      typeof(mediaText),
+
+      //kvuli (jen) dokumentaci?
+      typeof(_sndFile),
+      typeof(cutDialog),
+      typeof(cutText),
+      typeof(phrase),
+      typeof(replica),
+      typeof(include),
+      typeof(includeText),
+      typeof(includeDialog),
+      typeof(phraseReplace),
+
+
+      //macro Templates. V JS nejsou viditelna
+      typeof(macroTemplate),
+      typeof(macroTrueFalse),
+      typeof(macroSingleChoices),
+      typeof(macroPairing),
+      typeof(macroTable),
+      typeof(macroListWordOrdering),
+      typeof(macroList),
+      typeof(macroIconList),
+      typeof(macroArticle),
+      typeof(macroVocabulary),
+      typeof(macroVideo),
+      typeof(inlineTag),
+
+      typeof(smartTag),
+      typeof(smartElementLow),
+      typeof(smartElement),
+      typeof(smartOffering),
+      typeof(smartPairing),
+    };
+
+    public static Type[] otherTypes = new Type[] {
+      typeof(Score),
+      typeof(Result),
+      typeof(orderingResult),
+      typeof(PageUser),
+      typeof(PairingResult),
+      typeof(SingleChoiceResult),
+      typeof(WordSelectionResult),
+      typeof(audioCaptureResult),
+      typeof(WritingResult),
+      typeof(GapFillResult),
+      typeof(HumanEvalResult),
+      typeof(CheckItemResult),
+      typeof(evalBtnResult),
+      typeof(wordMultiSelectionResult),
+      typeof(extensionResult),
+      typeof(_mediaReplica),
+      typeof(_mediaSent),
+      typeof(_sndPage),
+      typeof(_sndFileGroup),
+      typeof(_sndGroup),
+      typeof(_sndInterval),
+      typeof(_sndSent),
+      typeof(_evalPage),
+      typeof(_evalBtn),
+      typeof(_evalGroup),
+      typeof(tag),
+      typeof(urlTag),
+    };
+
   }
 
   #endregion

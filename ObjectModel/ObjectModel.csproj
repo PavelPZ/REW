@@ -57,6 +57,7 @@
     <Compile Include="Course\Meta.cs" />
     <Compile Include="Course\Schema.cs" />
     <Compile Include="Course\SchemaDOM.cs" />
+    <Compile Include="Model\CSharpToTypeScriptCourse.cs" />
     <Compile Include="Model\CSharpToTypeScript.cs" />
     <Compile Include="Course\SchemaDoc.cs" />
     <Compile Include="Model\Exercises.cs" />

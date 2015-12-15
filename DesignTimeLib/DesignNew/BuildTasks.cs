@@ -149,9 +149,21 @@ namespace DesignNew {
       });
     }
 
+    //*********** CS_to_typescrit_course
+    public static void CS_to_typescrit_course() {
+      runTask("CS_to_typescrit_course", () => {
+        StringBuilder sb = new StringBuilder();
+        //LMComLib
+        CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("CourseModel", null, null, CourseModel.getAll.allEnums, CourseModel.getAll.otherTypes));
+        CSharpToTypeScriptCourse.GenerateStr(sb, new RegisterImpl("CourseModel", null, null, null, CourseModel.getAll.allTypes));
+        File.WriteAllText(FileSources.theWebWwwRoot + @"\course\types.ts", sb.ToString(), Encoding.ASCII);
+        return null;
+      });
+    }
+
     //*********** TYPESCRIPT_fromCS_web
     public static void CS_to_typescrit_web() {
-      runTask("TYPESCRIPT_fromCS_web", () => {
+      runTask("CS_to_typescrit_web", () => {
         StringBuilder sb = new StringBuilder();
         //LMComLib
         CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("LMComLib", null, null, lmclibEnums, null));

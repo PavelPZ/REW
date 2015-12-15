@@ -1514,9 +1514,6 @@ namespace CourseModel {
   public partial class body {
     //[XmlAttribute, DefaultValue(0), JsonIgnore]
     //public bool sitemapIgnore;
-    [XmlIgnore, JsonIgnore]
-    //[Doc(ignore = true)]
-    public string title;
 
     [XmlIgnore, JsonIgnore]
     public string bodyStyle;

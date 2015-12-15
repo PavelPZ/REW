@@ -15,6 +15,9 @@ namespace DeployGUI {
     [TestMethod]
     public void CS_to_typescrit_web() { buildTasks.CS_to_typescrit_web(); }
 
+    [TestMethod]
+    public void CS_to_typescrit_course() { buildTasks.CS_to_typescrit_course(); }
+
     //[TestMethod]
     //public void CS_to_typescrit_web4() { Handlers.CSharpToTypescript.genAll(); }
 

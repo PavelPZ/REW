@@ -405,6 +405,7 @@
     <TypeScriptCompile Include="wwwroot\Course\course.tsx" />
     <TypeScriptCompile Include="wwwroot\Course\gapFill.ts" />
     <TypeScriptCompile Include="wwwroot\Course\test.tsx" />
+    <TypeScriptCompile Include="wwwroot\Course\types.ts" />
     <TypeScriptCompile Include="wwwroot\scripts\typings\core-js.d.ts" />
     <TypeScriptCompile Include="wwwroot\scripts\typings\react-bootstrap.d.ts" />
     <TypeScriptCompile Include="wwwroot\scripts\typings\react\react-addons-create-fragment.d.ts" />

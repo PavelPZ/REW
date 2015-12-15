@@ -15,59 +15,7 @@ using System.Xml.Serialization;
 
 namespace LMComLib {
 
-  //JsonIgnore - Newtonsoft i generace JS ignoruje
-  //JsonIgnore + JsonGenOnly - Newtonsoft ignoruje, generace JS neignoruje
-  public class JsonGenOnlyAttribute : Attribute { }
-
-  public enum FeatureType {
-    LineNames,
-    LangLists,
-    LangToLineNames,
-    LineToLangNames,
-    //LangToEADir,
-    gaffFill_normTable,
-    authorWebXSD,
-    //InheritanceTree,
-  }
-
-  public interface ICSharpToTypeScript {
-    IEnumerable<Type> Types();
-    IEnumerable<Type> ExtendedTypes();
-    IEnumerable<Type> Enums();
-    IEnumerable<Type> ConstEnums();
-    string TsPath();
-    string Module();
-    IEnumerable<string> Uses();
-    bool generateFeature(FeatureType type);
-    jsonMLMeta getJsonMLMeta();
-    //string code();
-  }
-
-  public class RegisterImpl : ICSharpToTypeScript {
-    public RegisterImpl(string nameSpace, string tsPath, IEnumerable<Type> enums, IEnumerable<Type> constEnums, Type[] types) {
-      this.nameSpace = nameSpace; this.tsPath = tsPath;
-      this.enums = enums == null ? new Type[0] : enums.ToArray();
-      this.constEnums = constEnums == null ? new Type[0] : constEnums.ToArray();
-      this.types = types == null ? new Type[0] : types;
-    }
-    string nameSpace; string tsPath; Type[] enums; Type[] constEnums; Type[] types;
-    public IEnumerable<Type> Types() { return types; }
-    public IEnumerable<Type> ExtendedTypes() { yield break; }
-    public IEnumerable<Type> Enums() { return enums; }
-    public IEnumerable<Type> ConstEnums() { return constEnums; }
-    public string TsPath() { return tsPath; }
-    public string Module() { return nameSpace; }
-    public IEnumerable<string> Uses() { yield break; }
-    public bool generateFeature(FeatureType type) { return false; }
-    public jsonMLMeta getJsonMLMeta() { return null; }
-  }
-
-  public class InlineContext {
-    public HashSet<string> typeDefined;
-    public List<Type> enumToDefine;
-  }
-
-  public static class CSharpToTypeScript {
+  public static class CSharpToTypeScriptCourse {
 
     static Assembly cmdAss;
     static bool isCourseModel(ICSharpToTypeScript info) { return info.Module() == "CourseModel"; }
@@ -98,28 +46,13 @@ namespace LMComLib {
       //if (info.getJsonMLMeta() != null) sb.AppendLine(" export var meta: { [type:string]:CourseModel.jsClassMeta;} = null;"); //{'~rootTag':<any>'" + info.getJsonMLMeta().root.Name + "' };");
       foreach (var en in info.Enums()) GenEnum(en, sb, false);
       foreach (var en in info.ConstEnums()) GenEnum(en, sb, true);
-      foreach (var en in info.Types()) GenType(en, info.ExtendedTypes().ToArray(), info.Module(), sb);
-      var meta = info.getJsonMLMeta();
-      if (meta != null) {
-        sb.Append("export var meta: CourseModel.jsonMLMeta = <any>");
-        var json = JsonConvert.SerializeObject(meta, Formatting.None, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
-        sb.Append(json.Replace("###\"", null).Replace("\"###", null)); sb.AppendLine(";");
-        foreach (var tp in meta.types.Values) {
-          sb.Append(string.Format("export var t{0} = '{1}'; ", tp.name, tp.tagName));
-        }
+      foreach (var en in info.Types()) {
+        GenType(en, info.ExtendedTypes().ToArray(), info.Module(), sb);
       }
-
-      if (info.generateFeature(FeatureType.LineNames)) generateLineNames(sb);
-      if (info.generateFeature(FeatureType.LangToLineNames)) GenLangToLine(sb);
-      if (info.generateFeature(FeatureType.LineToLangNames)) GenLinesToLang(sb);
-      if (info.generateFeature(FeatureType.LangLists)) GenLangLists(sb);
-      //if (info.generateFeature(FeatureType.LangToEADir)) GenLangToEADir(sb);
-      if (info.generateFeature(FeatureType.gaffFill_normTable)) GenGaffFill_normTable(sb);
-      if (info.generateFeature(FeatureType.authorWebXSD)) GenAuthorWebXSD(sb);
-      //GenInheritanceTree(info, sb);
-      //sb.AppendLine(info.code());
       sb.AppendLine("}");
-      sb.AppendLine();
+      foreach (var en in info.Types()) {
+        GenComponent(en, sb);
+      }
     }
     public static void Generate(ICSharpToTypeScript info) {
       StringBuilder sb = new StringBuilder();
@@ -145,25 +78,6 @@ namespace LMComLib {
       }
       sb.Length = sb.Length - 1;
       sb.Append("])");
-    }
-
-    public static void GenEnum(Type tp, StringBuilder sb, bool isConst) {
-      sb.Append("export " + (isConst ? "const " : null) + "enum "); sb.Append(tp.Name); sb.AppendLine(" {");
-      try {
-        var vals = Enum.GetValues(tp).Cast<object>();
-        if (tp == typeof(CourseIds)) vals = vals.Where(v => (int)v < (int)CourseIds.eTestMe_EnglishSmall);
-        foreach (var v in vals) {
-          sb.Append("  ");
-          sb.Append(v.ToString());
-          sb.Append(" = "); sb.Append((int)v);
-          sb.AppendLine(",");
-        }
-      } catch (Exception exp) {
-        sb.AppendLine("**** ERROR");
-        sb.AppendLine(exp.Message);
-      }
-      sb.AppendLine("}");
-      sb.AppendLine(null);
     }
 
     static void GenLangToLine(StringBuilder sb) {
@@ -264,23 +178,77 @@ namespace LMComLib {
       return sb.ToString();
     }
 
-    static void GenType(Type tp, Type[] extendedTypes, string module, StringBuilder sb) {
-      sb.Append("export interface "); sb.Append(tp.Name);
-      if (ancestors(tp).Any()) {
-        sb.Append(" extends "); sb.Append(module == tp.BaseType.Namespace ? tp.BaseType.Name : tp.BaseType.FullName);
+    public static void GenEnum(Type tp, StringBuilder sb, bool isConst) {
+      sb.Append("export " + (isConst ? "const " : null) + "enum "); sb.Append(tp.Name); sb.AppendLine(" {");
+      try {
+        var vals = Enum.GetValues(tp).Cast<object>();
+        if (tp == typeof(CourseIds)) vals = vals.Where(v => (int)v < (int)CourseIds.eTestMe_EnglishSmall);
+        foreach (var v in vals) {
+          sb.Append("  ");
+          sb.Append(v.ToString());
+          sb.Append(" = "); sb.Append((int)v);
+          sb.AppendLine(",");
+        }
+      } catch (Exception exp) {
+        sb.AppendLine("**** ERROR");
+        sb.AppendLine(exp.Message);
       }
+      sb.AppendLine("}");
+      sb.AppendLine(null);
+    }
+
+
+    static string typeNameProps(string tn) {
+      return "I" + typeName(tn) + "Props";
+    }
+    static string typeNameState(string tn) {
+      return "I" + typeName(tn) + "State";
+    }
+    public static string typeName(string tn) {
+      if (tn.StartsWith("_")) tn = tn.Substring(1);
+      return (tn=="node" ? "Dummy" : char.ToUpper(tn[0]) + tn.Substring(1));
+    }
+    static HashSet<string> ancess = new HashSet<string>(new string[] { "tag","evalControl","edit","macro","humanEval", "macroTemplate", "checkLow", "urlTag", "mediaTag", "smartElementLow", "_sndFile", "include" });
+
+    static void GenComponent(Type tp, StringBuilder sb) {
+      var tpName = char.ToUpper(tp.Name[0]) + tp.Name.Substring(1);
+      string ancName = null;
+      if (ancestors(tp).Any()) ancName = typeName(tp.BaseType.Name); else ancName = "React.Component";
+      //sb.AppendFormat("class {0}<P extends crs.I{0}Props, S extends crs.I{0}State> extends {1}<crs.I{0}Props, crs.I{0}State> ", typeName(tp.Name), ancName);
+      if (ancess.Contains(tp.Name))
+        sb.AppendFormat("class {0}<P extends CourseModel.I{0}Props, S extends CourseModel.I{0}State> extends {1}<P,S> ", typeName(tp.Name), ancName);
+      else
+       sb.AppendFormat("class {0} extends {1}<CourseModel.I{0}Props,CourseModel.I{0}State> ", typeName(tp.Name), ancName);
+      sb.AppendLine("{");
+      sb.AppendLine("}");
+    }
+
+    static HashSet<string> ignoreProps = new HashSet<string>(new string[] { "Items", "typeOfs", "header", "class", "sndPage", "evalPage", "order", "externals", "seeAlsoLinks", "oldEaIsPassive", "isOldEa" });
+    static void GenType(Type tp, Type[] extendedTypes, string module, StringBuilder sb) {
+      sb.Append("export interface "); sb.Append(typeNameState(tp.Name));
+      if (ancestors(tp).Any()) {
+        sb.Append(" extends ");
+        sb.Append(typeNameState(tp.BaseType.Name));
+      }
+      sb.AppendLine(" { }");
+      sb.Append("export interface "); sb.Append(typeNameProps(tp.Name));
+      sb.Append(" extends ");
+      if (ancestors(tp).Any()) {
+        sb.Append(typeNameProps(tp.BaseType.Name));
+      } else
+        sb.Append("React.Props<any>");
       sb.AppendLine(" {");
       foreach (var fld in tp.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)) {
-        if (fld.Name == "typeOfs" || (fld.GetCustomAttributes(typeof(JsonIgnoreAttribute), false).Any() && !fld.GetCustomAttributes(typeof(JsonGenOnlyAttribute), false).Any())) continue;
+        if (ignoreProps.Contains(fld.Name) || (fld.GetCustomAttributes(typeof(JsonIgnoreAttribute), false).Any() && !fld.GetCustomAttributes(typeof(JsonGenOnlyAttribute), false).Any())) continue;
         sb.Append("  ");
         sb.Append(fld.Name);
-        if (nulableFieldType(fld.FieldType, fld)) sb.Append('?');
+        sb.Append('?');
         sb.Append(": ");
         fieldType(fld.FieldType, module, sb);
         sb.AppendLine(";");
       }
       foreach (var prop in tp.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)) {
-        if (prop.GetCustomAttributes(typeof(JsonIgnoreAttribute), false).Any() && !prop.GetCustomAttributes(typeof(JsonGenOnlyAttribute), false).Any()) continue;
+        if (ignoreProps.Contains(prop.Name) || prop.GetCustomAttributes(typeof(JsonIgnoreAttribute), false).Any() && !prop.GetCustomAttributes(typeof(JsonGenOnlyAttribute), false).Any()) continue;
         sb.Append("  ");
         sb.Append(prop.Name);
         if (nulableFieldType(prop.PropertyType, prop)) sb.Append('?');
@@ -348,7 +316,7 @@ namespace LMComLib {
         sb.Append(">");
         //sb.Append("[]");
       } else if (FieldType.IsEnum) {
-        sb.Append(module == FieldType.Namespace ? FieldType.Name : FieldType.FullName);
+        sb.Append(FieldType.Name);
       } else
         sb.Append(getJsTypeName(FieldType, module));
     }
@@ -363,7 +331,7 @@ namespace LMComLib {
     static string getJsTypeName(Type tp, string module) {
       string res;
       if (jsTypes.TryGetValue(tp.Name, out res)) return res;
-      return module == tp.Namespace ? tp.Name : tp.FullName;
+      return tp.Name;
     }
     static IEnumerable<Type> ancestors(Type tp) {
       while (true) {

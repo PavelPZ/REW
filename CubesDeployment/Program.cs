@@ -30,7 +30,11 @@ namespace CubesDeployment {
 
     static void Main(string[] args) {
 
-      
+      xmlToTsx.convert.toTsx(@"d:\LMCom\rew\Web4\lm\etestme", @"d:\temp\lm\etestme");
+
+      //var str = xmlToTsx.convert.toTsx(XElement.Load(@"d:\LMCom\rew\Web4\skrivanek\english\a1\reading\readingpairing_multitask\v1_1.xml"));
+      //str = null;
+
       //DesignNew.SynchronizeDirs.synchronize(new DesignNew.fileSystemDriver(@"d:\temp\azure", "v1-0"), new DesignNew.BuildIds[] { DesignNew.BuildIds .blended }, new Langs[] { Langs .cs_cz });
       //DesignNew.SynchronizeDirs.synchronize(new DesignNew.azureDriver("lmdata", "Hx//uWeo6vDSA2BHbBJP7HZviSSE6D8qZhGV7f4G778yPcfGOiBODF6o7Cg6029JiqnpMm1U8KrlD3+hycYiEw==", "v1-0"), new DesignNew.BuildIds[] { DesignNew.BuildIds.blended }, new Langs[] { Langs.cs_cz });
       return;

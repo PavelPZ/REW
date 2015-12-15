@@ -1,4 +1,5 @@
-﻿namespace crs {
+﻿function $localize(id:string, value:string):string {return value;}
+namespace crs {
 
   export class control<P extends IControlProps, S extends IControlState> extends React.Component<P, S> {
     constructor(props: P, context: any) {
@@ -45,8 +46,8 @@
   }
 
   function finish(children: React.ReactNode) {
-    return React.Children.map(children, (ch: React.ReactElement<IGapFillProps>) => {
-      return React.cloneElement(ch, { id: 'gapfill-' + ch.props.id }, finish(ch.props.children));
+    return React.Children.map(children, (ch: React.ReactElement<CourseModel.IGapFillProps>) => {
+      return React.cloneElement<CourseModel.ITagProps>(ch, { id: 'gapfill-' + ch.props.id }, finish(ch.props.children));
     });
   }
 
