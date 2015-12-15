@@ -23,7 +23,7 @@ namespace OldToNewViewer {
   public partial class Main : Form {
     public Main() {
       InitializeComponent();
-      //exFile.getAllServerScript(logger, (e, c) => {});
+      //exFile.getAllServerScript(logger, (e, c) => { });
       //checkLog();
       //return;
       TopPanel.AllowDrop = BottomPanel.AllowDrop = true;

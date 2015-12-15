@@ -825,7 +825,12 @@ namespace CourseMeta {
 
     public static string dataFromEAStr(string exUrl, oldeaDataType lmdataType, LoggerMemory log, Action<XElement> modifier = null) {
       var ex = (ex)CourseMeta.Lib.publishers.find(exUrl, log);
-      return dataFromEAStr(ex, lmdataType, log, modifier);
+      try {
+        return dataFromEAStr(ex, lmdataType, log, modifier);
+      } catch (Exception exp) {
+        log.ErrorExp(exUrl, exp);
+        return null;
+      }
     }
 
     public static string dataFromEAStrUrl(string exUrl, oldeaDataType lmdataType, LoggerMemory log) {

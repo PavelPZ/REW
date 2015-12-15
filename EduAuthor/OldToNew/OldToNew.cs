@@ -170,17 +170,10 @@ namespace OldToNew {
     }
 
     public static void getAllServerScript(LoggerMemory logger, Action<exFile,string> saveXmlNew) {
-      //if (CourseMeta.Lib.publishers == null) return;
-      //Parallel.ForEach(fileGroup.getAllFiles().Values, fileEx => {
-      //  var xml = fileEx.getFileContentString(CourseMeta.oldeaDataType.xmlNew, logger);
-      //  var fn = fileEx.fileName(CourseMeta.oldeaDataType.xmlNew).Replace(@"\oldea\", @"\oldea-new\");
-      //  LowUtils.AdjustFileDir(fn);
-      //  File.WriteAllText(fn, xml);
-      //  //saveXmlNew(fileEx, xml);
-      //});
       foreach (var fileEx in fileGroup.getAllFiles().Values) {
-        var xml = fileEx.getFileContentString(CourseMeta.oldeaDataType.xmlNew, logger);
         var fn = fileEx.fileName(CourseMeta.oldeaDataType.xmlNew).Replace(@"\oldea\", @"\oldea-new\");
+        if (File.Exists(fn)) continue;
+        var xml = fileEx.getFileContentString(CourseMeta.oldeaDataType.xmlNew, logger); if (xml == null) continue;
         LowUtils.AdjustFileDir(fn);
         File.WriteAllText(fn, xml);
       }
