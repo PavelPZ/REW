@@ -54,12 +54,8 @@ namespace xmlToTsx {
         cd.Parent.Add(new XAttribute("cdata", "~{" + (cdatas.Count - 1).ToString() + "}~"));
         cd.Remove();
       }
-      //lokalizace textu
-      foreach (var el in body.DescendantNodes().OfType<XText>()) {
-        var val = localizeForTsx(el.Value, true);
-        //val = "{'" + HttpUtility.JavaScriptStringEncode(val) + "'}";
-        el.Value = val;
-      }
+      //lokalizace textu a instrTitle
+      foreach (var el in body.DescendantNodes().OfType<XText>()) el.Value = localizeForTsx(el.Value, true);
       var instrTitle = body.Attribute("instrTitle");
       if (instrTitle != null) instrTitle.Value = localizeForTsx(instrTitle.Value, false);
       //vyhod XML namespace
@@ -68,9 +64,9 @@ namespace xmlToTsx {
       StringBuilder sb = new StringBuilder();
       var wr = XmlWriter.Create(sb, new XmlWriterSettings { OmitXmlDeclaration = true, Encoding = Encoding.UTF8, Indent = true });//, NewLineHandling = NewLineHandling.Replace, NewLineChars = "\n" });
       body.Save(wr); wr.Flush();
-      //nahrada {} atributu {} vyrazem}
+      //nahrada atributu vyrazem }
       sb.Replace("\"@{", "{").Replace("}@\"", "}");
-      //cdata z atributu do ECM6 `` stringu
+      //cdata z atributu do ES6 `` stringu
       var res = sb.ToString(); sb = null;
       foreach (var m in regExItem.Parse(res, cdataRx)) {
         if (sb == null) sb = new StringBuilder();
@@ -80,7 +76,7 @@ namespace xmlToTsx {
       }
       return sb == null ? res : sb.ToString();
     }
-    const string blankCode = "~blank`";
+    const string blankCode = "~blank~";
     static Regex cdataRx = new Regex("\"~\\{\\d+\\}~\"");
     static XAttribute renameAttr(XAttribute attr, string newName) {
       var res = new XAttribute(newName, attr.Value);
@@ -109,21 +105,23 @@ namespace xmlToTsx {
         File.WriteAllText(Path.ChangeExtension(destPath, ".tsx"), s);
       }
     }
-    //mj. nahradi { v textu by {'{'}
+    //mj. nahradi { v textu by {'{'} 
     static string localizeForTsx(string text, bool plainText) {
       StringBuilder sb = null;
       foreach (var m in regExItem.Parse(text, CourseMeta.locLib.localizePartsRegex)) {
         if (sb == null) sb = new StringBuilder();
-        if (!m.IsMatch) { sb.Append(m.Value.Replace("{", "{'{'}").Replace("}", "{'}'}").Replace(blankCode, "{' '}")); continue; }
+        if (!m.IsMatch) { sb.Append(replaceBrackets(m.Value).Replace(blankCode, "{' '}")); continue; }
         var parts = m.Value.Substring(2, m.Value.Length - 4).Split('|');
         var txt = string.Format("{{$loc('{0}','{1}')}}", parts[0], HttpUtility.JavaScriptStringEncode(parts[1]));
         sb.Append(plainText ? txt : "@" + txt + "@");
       }
       return sb == null ? text : sb.ToString();
+      //.Replace("{", "{'{'}").Replace("}", "{'}'}")
     }
-    static void wrapExpression(XAttribute attr, string expr = null) {
-      attr.Value = "@{" + (expr != null ? expr : attr.Value) + "}@";
-    }
+    static string replaceBrackets(string s) { return s.Split('{').Select(r => r.Replace("}", "{'}'}")).Join("{'{'}"); }
+
+    static void wrapExpression(XAttribute attr, string expr = null) { attr.Value = "@{" + (expr != null ? expr : attr.Value) + "}@"; }
+
 
   }
 }
