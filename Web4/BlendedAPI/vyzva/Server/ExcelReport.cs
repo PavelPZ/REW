@@ -199,7 +199,7 @@ namespace blended {
           if (t != null) {
             if (t.module.level == null) return null; //pretest modul nema level
             e.courseUsers.TryGetValue(new lineUser(t.module.product.line, t.lmcomId), out usr);
-            if (usr == null) return null;
+            if (usr == null || usr._myLectorLmcomId==0) return null;
           }
           IAlocatedKey lector = usr == null ? null : e.allUsers[usr._myLectorLmcomId];
           int lev = t == null ? 0 : (t.module is pretestItem ? ((pretestItem)t.module).lev : t.module.level.lev);
