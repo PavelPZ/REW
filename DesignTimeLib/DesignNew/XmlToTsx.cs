@@ -105,7 +105,7 @@ namespace xmlToTsx {
         File.WriteAllText(Path.ChangeExtension(destPath, ".tsx"), s);
       }
     }
-    //mj. nahradi { v textu by {'{'} 
+    //mj. nahradi '{' v textu by {'{'} 
     static string localizeForTsx(string text, bool plainText) {
       StringBuilder sb = null;
       foreach (var m in regExItem.Parse(text, CourseMeta.locLib.localizePartsRegex)) {
@@ -116,7 +116,6 @@ namespace xmlToTsx {
         sb.Append(plainText ? txt : "@" + txt + "@");
       }
       return sb == null ? text : sb.ToString();
-      //.Replace("{", "{'{'}").Replace("}", "{'}'}")
     }
     static string replaceBrackets(string s) { return s.Split('{').Select(r => r.Replace("}", "{'}'}")).Join("{'{'}"); }
 
