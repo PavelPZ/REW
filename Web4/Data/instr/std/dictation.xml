@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.langmaster.com/new/author/coursemodelschema.xsd">
+  <head>
+    <title></title>
+    <style />
+  </head>
+  <body xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <h1 class="techInstr  ">{{th118|DICTATION}}</h1>
+  <p>{{tp27|Your task is to fill in the empty boxes with the words or sentences you hear. Proceed as follows:}}</p>
+  <ol>
+    <li>{{tli56|Listen to the word or the sentence.}}</li>
+    <li>{{tli57|Click on the empty space - a blinking cursor appears.}}</li>
+    <li>{{tli58|Type in the text that you hear using your keyboard.}}</li>
+  </ol>
+  <p>{{tp28|To edit the item, select it and make correction.}}</p>
+</body>
+</html>

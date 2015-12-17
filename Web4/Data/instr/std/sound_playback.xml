@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.langmaster.com/new/author/coursemodelschema.xsd">
+  <head>
+    <title></title>
+    <style />
+  </head>
+  <body xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <h1 class="techInstr  ">PŘEHRÁVÁNÍ ZVUKU</h1>
+  <p>Cvičení se zvukovou nahrávkou poznáte podle "zvukových značek". Existují dvě různé zvukové značky:</p>
+  <ol>
+    <li>Velká zvuková značka. Používá se pro přehrávání dlouhých nahrávek (článků, dialogů). Text v tomto případě nevidíte, jen ho slyšíte.</li>
+    <li>Malá zvuková značka se používá pro přehrávání slov, vět nebo jejich částí. Text v tomto případě zároveň vidíte na obrazovce.</li>
+    <li>Přehrávání zvuku spustíte kliknutím na zvukovou značku. Kliknutím mimo zvukovou značku přehrávání zvuku ukončíte.</li>
+  </ol>
+</body>
+</html>
