@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <h1 class="techInstr  ">{{th381|WRITING}}</h1>
+    <p>{{tp381|Your task is to write a text according to the assignment. We recommend to proceed as follows:}}</p>
+    <ol>
+      <li>{{tli381|First, read the assigned topic and think what you will write about. We recommend to make a draft on a piece of paper.}}</li>
+      <li>
+        {{tli382|Start to write the text using your keyboard. Above your text you can see an indicator counting how many words you have already written. The specified number of words is a recommendation which you should approach as much as possible.}}
+      </li>
+    </ol>
+  </body>
+</html>

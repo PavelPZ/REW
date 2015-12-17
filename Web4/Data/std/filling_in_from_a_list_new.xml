@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.langmaster.com/new/author/coursemodelschema.xsd">
+  <head>
+    <title></title>
+    <style />
+  </head>
+  <body xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <h1 class="techInstr  ">DOPLŇOVÁNÍ POLOŽEK Z NABÍDKY</h1>
+  <p>Vaším úkolem je vyplnit prázdná okénka v textu. Máte k dispozici seznam položek, který se může chovat následovně:</p>
+  <ol>
+    <li>po doplnění do textu bude položka v seznamu deaktivována</li>
+    <li>položka zůstane po doplnění do textu aktivní a bude moci být opakovaně použita</li>
+  </ol>
+  <p>Postupujte následovně:</p>
+  <ol>
+    <li>Klikněte do prázdného okénka - objeví se nabídka s položkami.</li>
+    <li>Klikněte na vybranou položku. Položka se doplní do okénka.</li>
+  </ol>
+  <p>Pokud chcete doplněnou položku změnit, doplňte na její místo jinou.</p>
+</body>
+</html>

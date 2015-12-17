@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.langmaster.com/new/author/coursemodelschema.xsd">
+  <head>
+    <title></title>
+    <style />
+  </head>
+  <body xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <h1 class="techInstr  ">{{th115|TRUE/FALSE SENTENCES}}</h1>
+  <p>{{tp24|Your task is to decide whether the sentences are true or false. Every sentence is marked with an icon. Proceed as follows:}}</p>
+  <ol>
+    <li>{{tli49|If the sentence is false, skip it.}}</li>
+    <li>{{tli50|If the sentence is true, click on it. It will be selected (marked).}}</li>
+    <li>{{tli51|To cancel your selection click on selected item again.}}</li>
+  </ol>
+</body>
+</html>

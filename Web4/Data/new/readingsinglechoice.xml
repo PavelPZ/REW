@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <h1 class="techInstr  ">{{th321|READING with SINGLE CHOICE}}</h1>
+    <p>{{tp321|Your task is to select the correct answers based on the initial text. We recommend to proceed as follows:}}</p>
+    <ol>
+      <li>{{tli321|First, go through all the tasks and the offered options.}}</li>
+      <li>
+        {{tli322|Then, go back to the initial text above. Read the text carefully and try to capture the information concerning the individual issues. When reading, you can simultaneously mark the correct answers.}}
+      </li>
+      <li>{{tli323|To choose the correct answer left click the selected option.}}</li>
+      <li>{{tli324|If you wish to change your selection, click another option.}}</li>
+    </ol>
+  </body>
+</html>
