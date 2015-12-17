@@ -1,8 +1,5 @@
 ﻿module vsNet {
 
-  var exModelTypeName = "vsNetExModel".toLowerCase();
-  var modModelTypeName = "vsNetModModel".toLowerCase();
-
   export class ModModel extends Pager.Page {
     constructor(urlParts: string[]) {
       super(appId, exModelTypeName, urlParts);
@@ -84,6 +81,10 @@
 
   //Pager.registerAppLocator(appId, exModelTypeName, (urlParts, completed) => completed(new ExModel(urlParts)));
   //Pager.registerAppLocator(appId, modModelTypeName, (urlParts, completed) => completed(new ModModel(urlParts)));
+
+  var exModelTypeName = "vsNetExModel".toLowerCase();
+  var modModelTypeName = "vsNetModModel".toLowerCase();
+
 
   blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, exModelTypeName, appId, exModelTypeName, 1, urlParts => new ExModel(urlParts)));
   blended.oldLocators.push($stateProvider => blended.registerOldLocator($stateProvider, modModelTypeName, appId, modModelTypeName, 1, urlParts => new ModModel(urlParts)));

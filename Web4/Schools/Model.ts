@@ -41,17 +41,20 @@ module schools {
     var qr = params['persistType'.toLowerCase()]; if (qr) cfg.persistType = persistTypes[qr];
     qr = params['displayMode'.toLowerCase()]; if (qr) cfg.displayMode = displayModes[qr];
 
-    var initHash = hash => { Pager.initHash = () => _.isEmpty(cfg.hash) ? hash : cfg.hash; };
+    //var initHash = hash => { Pager.initHash = () => _.isEmpty(cfg.hash) ? hash : cfg.hash; };
+    var initHash = hash => { debugger; throw 'call setInitHash instead as in LMComLib.Targets.author' };
+    var setInitHash = hash => setTimeout(() => location.hash = hash);
     switch (cfg.target) {
       case LMComLib.Targets.author:
         CourseMeta.persist = persistMemory.persistCourse;
         //var search = LowUtils.parseQuery(location.search);
         //CourseMeta.forceEval = search != null && search["forceeval"] == "true";
+        setInitHash(getHash(tCourseMeta, scormCompanyId, cfg.rootProductId, null, null));
         Trados.adjustLoc(() => {
           var cook = LMComLib.LMCookieJS_Create(scormCompanyId, 0, null, "id", null, LMComLib.OtherType.Moodle, "id", "firstName", "lastName", '', 0, 0, null);
           LMStatus.setCookie(cook, false);
           LMStatus.Cookie = cook;
-          initHash(getHash(tCourseMeta, scormCompanyId, cfg.rootProductId, null, null));
+          //initHash(getHash(tCourseMeta, scormCompanyId, cfg.rootProductId, null, null));
           completed();
         });
         break;
