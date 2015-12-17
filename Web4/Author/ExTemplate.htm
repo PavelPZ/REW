@@ -567,7 +567,7 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
 <script id="c_recording" type="text/x-jsrender">
 <!-- ko with: getItem('{{:id}}') -->
 <div class="oli-audio-capture" data-bind="css: {'human-eval-mode' : isRecorded() && isDone(), 'is-recorded': isRecorded, 'oli-hide-progress-bar': !recording(), recording: recording, playing: playing }" id="{{:id}}">
-  {{if !stopInModalDialog || isHumanEvalMode()}}
+  {{if !recordInDialog || isHumanEvalMode()}}
   {{if isHumanEvalMode()}}
   <div>
     {{:~CSLocalize('99eed25487184fe195aa42fa3b390d4f', 'Test level')}}: <b><span data-bind="text:humanLevel"></span></b><br />
@@ -602,7 +602,7 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
     <div class="recorded-icon pull-left">
       <i class="fa fa-check"></i>
     </div>
-    <div class="record btn btn-large btn-default pull-left" data-bind="click: record, clickBubble:false, css: {disabled: allDisabled() || isDone() || (disableReRecord && isRecorded())}">
+    <div class="record btn btn-large btn-default pull-left" data-bind="click: record, clickBubble:false, css: {disabled: allDisabled() || isDone() || (singleAttempt && isRecorded())}">
       <span class="fa fa-spinner fa-spin"></span>
       <span class="fa fa-2x fa-circle"></span>
       <span class="fa fa-2x fa-stop"></span>
@@ -613,7 +613,7 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
     <div class="recorded-icon pull-left">
       <i class="fa fa-check"></i>
     </div>
-    <div class="record btn btn-large btn-default pull-left" data-bind="click: record, clickBubble:false, css: {disabled: isDone() || (disableReRecord && isRecorded())}">
+    <div class="record btn btn-large btn-default pull-left" data-bind="click: record, clickBubble:false, css: {disabled: isDone() || (singleAttempt && isRecorded())}">
       <span class="fa fa-2x fa-circle"></span>
       <span class="fa fa-2x fa-stop"></span>
     </div>
@@ -625,7 +625,7 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
   {{/if}}
 </div>
 <div class="clearfix"></div>
-{{if stopInModalDialog}}
+{{if recordInDialog}}
 <div id="modal-{{:id}}" class="modal fade oli-audio-capture recording" role="dialog" data-bind="click: $.noop, clickBubble:false" data-backdrop="static" data-show="false">
   <div class="modal-dialog {{:modalDialogSizeCss()}} ">
     <div class="modal-content">
@@ -676,7 +676,7 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
   </form>
   <p class="clearfix"></p>
   {{/if}}
-  <textarea rows="{{:initRows}}" data-bind="disable: isDone(), textInput:textInput"></textarea>
+  <textarea rows="{{:numberOfRows}}" data-bind="disable: isDone(), textInput:textInput"></textarea>
 </div>
 <!-- /ko -->
 </script>
@@ -759,49 +759,84 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
 </div></script>
 <script id="docxsd" type="text/x-jsrender">
 <div class="doc">
+  {{if pars.forRename}}
   <h1>Elements</h1>
-  {{for data.rnRoot(false)}}{{include tmpl=~T('doctype')/}}{{/for}}
+  {{for data.rnRoot(false)}}{{include tmpl=~T('rndoctype')/}}{{/for}}
   <h1>Enumerations</h1>
-  {{for data.rnEnums()}}{{include tmpl=~T('docenum')/}}{{/for}}
+  {{for data.rnEnums()}}{{include tmpl=~T('rndocenum')/}}{{/for}}
   <h1>New elements</h1>
-  {{for data.rnElements()}}{{include tmpl=~T('doctypenew')/}}{{/for}}
+  {{for data.rnElements()}}{{include tmpl=~T('rndoctypenew')/}}{{/for}}
   <h1>ToRename</h1>
   <textarea style="width:100%" rows="10">
     {{>data.rnRenameJson()}}
   </textarea>
   <h1>Helper elements</h1>
-  {{for data.rnRoot(true)}}{{include tmpl=~T('doctype')/}}{{/for}}
+  {{for data.rnRoot(true)}}{{include tmpl=~T('rndoctype')/}}{{/for}}
+  {{else}}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2><a href="#" class="fa fa-minus" data-bind="click: data.tooglePanel"></a> Elements</h2>
+    </div>
+    <div class="panel-body">
+      {{for data.dcElements(false)}}{{include tmpl=~T('doctype')/}}{{/for}}
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2><a href="#" class="fa fa-plus" data-bind="click: data.tooglePanel"></a> Sound Cut Elements</h2>
+    </div>
+    <div class="panel-body" style="display:none;">
+      {{for data.dcElements(true)}}{{include tmpl=~T('doctype')/}}{{/for}}
+    </div>
+  </div>
+  {{/if}}
 </div>
 </script>
 <script id="doctype" type="text/x-jsrender">
+<h3>{{:name}}</h3>
+<blockquote class="doc-type">
+  {{for rnPropsNew()}}{{include tmpl=~T('docproppointer')/}}{{/for}}
+  <div class="alert alert-warning alert-dismissible" style="display:none">
+    <button type="button" class="close fa fa-close"></button>
+    <div class="prop-descr">
+      <div class="summary"></div>
+      <div class="descr"></div>
+    </div>
+  </div>
+</blockquote>
+</script>
+<script id="docproppointer" type="text/x-jsrender">
+<span><a href="#" data-bind="click: function(model, ev) {data.showProp(ev, '{{:propOf}}', '{{:name}}'); }">{{:name}}</a> |</span>
+</script>
+<script id="rndoctype" type="text/x-jsrender">
 <h3>{{:rnName()}}</h3>
 {{if rnProps()}}
 <div class="props">
-  {{for rnProps()}}{{include tmpl=~T('docprop')/}}{{/for}}
+  {{for rnProps()}}{{include tmpl=~T('rndocprop')/}}{{/for}}
 </div>
 {{/if}}
 {{if rnDescendants()}}
 <div class="descendants">
-  {{for rnDescendants()}}{{include tmpl=~T('doctype')/}}{{/for}}
+  {{for rnDescendants()}}{{include tmpl=~T('rndoctype')/}}{{/for}}
 </div>
 {{/if}}
 </script>
-<script id="doctypenew" type="text/x-jsrender">
-<h3>{{:rnNameNew()}} <small>{{for rnPropsNew()}}{{include tmpl=~T('docpropnew')/}}{{/for}}</small></h3>
+<script id="rndoctypenew" type="text/x-jsrender">
+<h3>{{:rnNameNew()}} <small>{{for rnPropsNew()}}{{include tmpl=~T('rndocpropnew')/}}{{/for}}</small></h3>
 </script>
-<script id="docpropnew" type="text/x-jsrender">
+<script id="rndocpropnew" type="text/x-jsrender">
 <span class="prop-new">{{:rnNameNew()}},</span>
 </script>
-<script id="docprop" type="text/x-jsrender">
+<script id="rndocprop" type="text/x-jsrender">
 <h4>{{:rnName()}}</h4>
 </script>
-<script id="docenum" type="text/x-jsrender">
+<script id="rndocenum" type="text/x-jsrender">
 <h3>{{:rnName()}}</h3>
 <div class="enums">
-  {{for enumData}}{{include tmpl=~T('docenumitem')/}}{{/for}}
+  {{for enumData}}{{include tmpl=~T('rndocenumitem')/}}{{/for}}
 </div>
 </script>
-<script id="docenumitem" type="text/x-jsrender">
+<script id="rndocenumitem" type="text/x-jsrender">
 <h4>{{:rnName()}}</h4>
 </script>
 <script id="c_listgroup" type="text/x-jsrender">
@@ -1303,11 +1338,11 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
 </blockquote>
 </script>
 <script id="testforrecording" type="text/x-jsrender">
-["html",["head",["title"],["style","\r\n.oli-gapfill, .oli-dropdown {\r\n width: 0;}\r\n.oli-gapfill, .oli-dropdown {\r\n width: 0;}\r\n/*\r\n*/\r\n"]],["body",{"id":"_0","url":"/testme/forrecording"},["media-player",{"id":"mp-1","media-url":"/testme/forPlaying.mp3","_sent-group-id":"seq_0"}],["audio-capture",{"id":"audio-1","recommend-seconds-from":1, "speak-seconds-to":10}],["_snd-page",["_snd-file-group",{"media-url":"/testme/forPlaying.mp3"},["_snd-group",{"id":"seq_0"},["_snd-interval",["_snd-sent",{"idx":0,"beg-pos":0,"end-pos":-1}]]]]],["_eval-page",{"max-score":100},["_eval-btn",["_eval-group",{"eval-control-ids":"audio-1"}]]]]]
+["html",["head",["title"],["style","\r\n/*\r\ngap-fill, drop-down {\r\n  width: 0;}\r\ngap-fill, drop-down {\r\n  width: 0;}\r\n*/\r\n"]],["body",{"id":"_0","url":"/lm/examples/temp/forrecording"},["media-player",{"id":"mp-1","media-url":"/testme/forPlaying.mp3","_sent-group-id":"seq_0"}],["recording",{"id":"audio-1","limit-recommend":1,"limit-max":10}],["_snd-page",["_snd-file-group",{"media-url":"/testme/forPlaying.mp3"},["_snd-group",{"id":"seq_0"},["_snd-interval",["_snd-sent",{"idx":0,"beg-pos":0,"end-pos":-1}]]]]],["_eval-page",{"max-score":100},["_eval-btn",["_eval-group",{"eval-control-ids":"audio-1"}]]]]]
 
 </script>
 <script id="testforplaying" type="text/x-jsrender">
-["html",["head",["title"],["style","\r\n.oli-gapfill, .oli-dropdown {\r\n width: 0;}\r\n.oli-gapfill, .oli-dropdown {\r\n width: 0;}\r\n/*\r\n*/\r\n"]],["body",{"id":"_0","url":"/testme/forplaying"},["media-player",{"id":"mp-2","media-url":"/testme/forPlaying.mp3","_sent-group-id":"seq_0"}],["_snd-page",["_snd-file-group",{"media-url":"/testme/forPlaying.mp3"},["_snd-group",{"id":"seq_0"},["_snd-interval",["_snd-sent",{"idx":0,"beg-pos":0,"end-pos":-1}]]]]],["_eval-page",{"max-score":0}]]]
+["html",["head",["title"],["style","\r\n/*\r\ngap-fill, drop-down {\r\n  width: 0;}\r\ngap-fill, drop-down {\r\n  width: 0;}\r\n*/\r\n"]],["body",{"id":"_0","url":"/lm/examples/temp/forplaying"},["media-player",{"id":"mp-2","media-url":"/testme/forPlaying.mp3","_sent-group-id":"seq_0"}],["_snd-page",["_snd-file-group",{"media-url":"/testme/forPlaying.mp3"},["_snd-group",{"id":"seq_0"},["_snd-interval",["_snd-sent",{"idx":0,"beg-pos":0,"end-pos":-1}]]]]],["_eval-page",{"max-score":0}]]]
 </script>
 <script id="vsnetex" type="text/x-jsrender" data-for="vsnetex">
   {{for ~ActPage()}}
