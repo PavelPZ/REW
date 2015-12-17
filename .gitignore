@@ -245,7 +245,7 @@ dll/
 
 Web4/signature.sign
 Web4/Data/buildLogs/
-//Web4/Data/instr/
+Web4/Data/instr/
 Web4/Data/XmlSource/
 ndependout/
 closurelib/
@@ -259,5 +259,3 @@ theweb/
 !Web4/JsLib/skins/grafia/css.css
 
 !ObjectModel/modelcssview.dll
-
-!Web4/Data/default.css
