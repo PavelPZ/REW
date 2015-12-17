@@ -36,19 +36,36 @@
 <base href="[%#baseTagUrl#%]/schools/" />
  <!--[if lt IE 9]>
   <script type='text/javascript' src='../jslib/scripts/jquery.js'></script>
+  <script src="../jslib/scripts/es5-shim.js" type="text/javascript" ></script>
+  <script src="../jslib/scripts/jquery-1.11.3.min.js" type="text/javascript" ></script>
+  <script src="../jslib/scripts/angular-ie8.js" type="text/javascript"></script>
+  <style>
+    .ng-hide, .alert.advertise {
+      display: none !important;
+     }
+     .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+  </style>
   <![endif]-->
-  <!--[if (gte IE 9)]><!-->
+  <!--[if (gt IE 8)|!(IE)]><!-->
   <script type='text/javascript' src='../jslib/scripts/jquery2.js'></script>
+  <script src="../jslib/scripts/angular.js" type="text/javascript"></script>
   <!--<![endif]-->
   <script type='text/javascript' src='../jslib/scripts/underscore.js'></script>
   <script type='text/javascript' src='../jslib/js/lmconsoleinit.js'></script>
 
+  <script src="../jslib/scripts/angular-route.js" type="text/javascript"></script>
+  <script src="../jslib/scripts/angular-animate.js" type="text/javascript"></script>
+  <script src="../jslib/scripts/angular-cookies.js" type="text/javascript"></script>
+  <script src="../jslib/scripts/angular-ui-router.js" type="text/javascript"></script>
+  <script src="../jslib/scripts/ui-bootstrap-tpls.js" type="text/javascript"></script>
+
   <link href="../font-awesome/lm/externals.css" rel="stylesheet"/>
   <link rel="stylesheet" type="text/css" href="../jslib/ea/ea.css" />
+  <link rel="stylesheet" type="text/css" href="../blendedapi/styles/style.css" />
   <link href="../jslib/css/lm.css" rel="stylesheet"/>
 
 <script type='text/javascript'>
-var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest":false,"canResetCourse":false,"canResetTest":false,"EADataPath":"eaimgmp3/","noCpv":false,"target":4,"version":1,"noOldEA":false,"persistType":4,"rootProductId":"/data/vsnet/mod/","forceServiceUrl":null,"forceLoggerUrl":null,"dictOfflineId":null,"dictNoSound":false,"scorm_driver":0,"debug_AddTimespanToJsonUrl":false,"designId":null,"replaceJSON":false,"debugTypes":null,"noDebugTypes":null,"logins":null,"startProcName":null,"lang":3,"UseParentCfg":false,"themeId":null,"hash":null,"forceEval":true,"themeDefauleNavbar":false,"testGroup_debug":false,"humanEvalMode":false,"basicPath":"d:\\lmcom\\","baseTagUrl":"[%#baseTagUrl#%]","forceDriver":2,"licenceConfig":null,"vocabulary":false};
+var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest":false,"canResetCourse":false,"canResetTest":false,"EADataPath":"eaimgmp3/","noCpv":false,"target":4,"version":1,"noOldEA":false,"persistType":4,"rootProductId":"/data/vsnet/mod/","forceServiceUrl":null,"forceLoggerUrl":null,"dictOfflineId":null,"dictNoSound":false,"scorm_driver":0,"debug_AddTimespanToJsonUrl":false,"designId":null,"replaceJSON":false,"debugTypes":null,"noDebugTypes":null,"logins":null,"startProcName":null,"lang":3,"UseParentCfg":false,"themeId":null,"hash":null,"forceEval":true,"themeDefauleNavbar":false,"testGroup_debug":false,"humanEvalMode":false,"basicPath":"d:\\lmcom\\","baseTagUrl":"[%#baseTagUrl#%]","forceDriver":2,"displayMode":0,"alowedParentDomain":null,"licenceConfig":null,"vocabulary":false};
 </script>
 
 
@@ -83,9 +100,9 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
   <script type='text/javascript' src='../jslib/js/ajax.js'></script>
   <script type='text/javascript' src='../jslib/js/validate.js'></script>
   <script type='text/javascript' src='../jslib/controls/treeview/treeview.js'></script>
+  <script type='text/javascript' src='../blendedapi/oldboot.js'></script>
   <script type='text/javascript' src='../jslib/js/lmconsole.js'></script>
   <script type='text/javascript' src='../jslib/scripts/waitforimages.js'></script>
-  <script type='text/javascript' src='../schools/gencourse.js'></script>
   <script type='text/javascript' src='../schools/genschools.js'></script>
   <script type='text/javascript' src='../schools/genproxy.js'></script>
   <script type='text/javascript' src='../schools/genazure.js'></script>
@@ -100,7 +117,6 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
   <script type='text/javascript' src='../jslib/ea/eaextension.js'></script>
   <script type='text/javascript' src='../jslib/controls/dict/dict.js'></script>
   <script type='text/javascript' src='../jslib/js/external/rjson.js'></script>
-  <script type='text/javascript' src='../schools/lib.js'></script>
   <script type='text/javascript' src='../schools/products.js'></script>
   <script type='text/javascript' src='../schools/topbar.js'></script>
   <script type='text/javascript' src='../schools/model.js'></script>
@@ -118,7 +134,6 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
   <script type='text/javascript' src='../schools/genscorm.js'></script>
   <script type='text/javascript' src='../schools/cpv.js'></script>
   <script type='text/javascript' src='../schools/gramm.js'></script>
-  <script type='text/javascript' src='../schools/statistics.js'></script>
   <script type='text/javascript' src='../courses/gencoursemodel.js'></script>
   <script type='text/javascript' src='../testme/gentestmodel.js'></script>
   <script type='text/javascript' src='../courses/gencoursemeta.js'></script>
@@ -142,21 +157,31 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
   <script type='text/javascript' src='../author/doc.js'></script>
   <script type='text/javascript' src='../author/xref.js'></script>
   <script type='text/javascript' src='../jslib/scripts/prettify.js'></script>
-  <script type='text/javascript' src='../authorweb/externals/commonmark/dist/commonmark.js'></script>
-  <script type='text/javascript' src='../authorweb/js/jquery-textrange.js'></script>
-  <script type='text/javascript' src='../authorweb/js/metajsgen.js'></script>
-  <script type='text/javascript' src='../authorweb/js/metajs.js'></script>
-  <script type='text/javascript' src='../authorweb/js/markslow.js'></script>
-  <script type='text/javascript' src='../authorweb/js/metamarks.js'></script>
-  <script type='text/javascript' src='../authorweb/js/encodelib.js'></script>
-  <script type='text/javascript' src='../authorweb/js/docobjects.js'></script>
-  <script type='text/javascript' src='../authorweb/js/marks.js'></script>
-  <script type='text/javascript' src='../authorweb/js/marksinline.js'></script>
-  <script type='text/javascript' src='../authorweb/js/doctext.js'></script>
-  <script type='text/javascript' src='../authorweb/js/docblock.js'></script>
-  <script type='text/javascript' src='../authorweb/dialogs/dialogs.js'></script>
-  <script type='text/javascript' src='../authorweb/js/compiler.js'></script>
-  <script type='text/javascript' src='../authorweb/js/comprendertag.js'></script>
+  <script type='text/javascript' src='../blendedapi/scripts/lib.js'></script>
+  <script type='text/javascript' src='../blendedapi/scripts/loader.js'></script>
+  <script type='text/javascript' src='../blendedapi/scripts/directives.js'></script>
+  <script type='text/javascript' src='../blendedapi/scripts/tasks.js'></script>
+  <script type='text/javascript' src='../blendedapi/scripts/exercise.js'></script>
+  <script type='text/javascript' src='../blendedapi/scripts/exercisesimple.js'></script>
+  <script type='text/javascript' src='../blendedapi/scripts/module.js'></script>
+  <script type='text/javascript' src='../blendedapi/scripts/stateman.js'></script>
+  <script type='text/javascript' src='../blendedapi/vyzva/scripts/lib.js'></script>
+  <script type='text/javascript' src='../blendedapi/vyzva/scripts/intranet.js'></script>
+  <script type='text/javascript' src='../blendedapi/vyzva/scripts/directives.js'></script>
+  <script type='text/javascript' src='../blendedapi/vyzva/views/managerlangmaster.js'></script>
+  <script type='text/javascript' src='../blendedapi/vyzva/views/managerschool.js'></script>
+  <script type='text/javascript' src='../blendedapi/vyzva/views/exercise.js'></script>
+  <script type='text/javascript' src='../blendedapi/vyzva/views/module.js'></script>
+  <script type='text/javascript' src='../blendedapi/vyzva/views/pretest.js'></script>
+  <script type='text/javascript' src='../blendedapi/vyzva/views/lector.js'></script>
+  <script type='text/javascript' src='../blendedapi/vyzva/views/home.js'></script>
+  <script type='text/javascript' src='../blendedapi/vyzva/views/faq.js'></script>
+  <script type='text/javascript' src='../blendedapi/vyzva/views/testhw.js'></script>
+  <script type='text/javascript' src='../blendedapi/vyzva/views/vyzvademo.js'></script>
+  <script type='text/javascript' src='../blendedapi/vyzva/views/vyzvaprovoz.js'></script>
+  <script type='text/javascript' src='../blendedapi/vyzva/views/lector/_tabs.js'></script>
+  <script type='text/javascript' src='../blendedapi/vyzva/app.js'></script>
+  <script type='text/javascript' src='../blendedapi/app.js'></script>
   <script type='text/javascript' src='../schools/loc/tradosdata.en-gb.js'></script>
   <script type='text/javascript' src='../jslib/scripts/cultures/globalize.culture.en-gb.js'></script>
 
@@ -174,6 +199,7 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
   <div id='lm-alert-place' class='rtl'></div>
   <div id='lm-console-place' class='rtl'></div>
   <div id='lm-docdlg-place' class='rtl'></div>
+  <div ng-app="appRoot" class="bl"><div data-ui-view></div></div>
   <div id='root'></div>
   <script id='dummy' type='text/x-jsrender' data-for='Dummy'>
     {{for ~ActPage()}}{{/for}}
@@ -278,6 +304,11 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
 <script id="c_tag" type="text/x-jsrender">{{:~c_tagstart(#data)}}{{include tmpl=~T("c_genitems")/}}{{:~c_tagend(#data)}}</script>
 <script id="c_body" type="text/x-jsrender">
 <div class="{{:~classes(#data)}}" data-bind="with: CourseMeta.actExPageControl">
+  {{include tmpl=~T("c_genitems")/}}
+</div>
+</script>
+<script id="c_blended_body" type="text/x-jsrender">
+<div class="{{:~classes(#data)}}">
   {{include tmpl=~T("c_genitems")/}}
 </div>
 </script>
@@ -471,7 +502,7 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
 <script id="c_mediatext" type="text/x-jsrender">
 <!-- ko with: getItem('{{:id}}') -->
 {{if isOldToNew}}
-  {{include tmpl=~T("c_genitemsex")/}}
+{{include tmpl=~T("c_genitemsex")/}}
 {{else}}
 <div class="{{:~classes(#data)}} " data-bind="css: {loading: loading, 'is-passive': passive }">
   {{include tmpl=~T("c_genitemsex")/}}
@@ -567,20 +598,22 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
 <script id="c_recording" type="text/x-jsrender">
 <!-- ko with: getItem('{{:id}}') -->
 <div class="oli-audio-capture" data-bind="css: {'human-eval-mode' : isRecorded() && isDone(), 'is-recorded': isRecorded, 'oli-hide-progress-bar': !recording(), recording: recording, playing: playing }" id="{{:id}}">
-  {{if !stopInModalDialog || isHumanEvalMode()}}
+  <!--<div data-bind="angularjs: 'course$audiocapture$humaneval'"></div>-->
+  {{if !recordInDialog || isHumanEvalMode()}}
   {{if isHumanEvalMode()}}
-  <div>
-    {{:~CSLocalize('99eed25487184fe195aa42fa3b390d4f', 'Test level')}}: <b><span data-bind="text:humanLevel"></span></b><br />
-    {{:~CSLocalize('5598d88071e7473c81f51a42a5f689eb', 'Recorded (recommended / actual):')}} <b><span data-bind="text:humanHelpTxt"></span></b>
+  <div class="alert alert-default lector">
+    <form id="form-{{:id}}" class="human-form form-inline has-error">
+      <div data-bind="visible: !_myPage.blendedExtension">
+        <div data-bind="visible:humanLevel">{{:~CSLocalize('99eed25487184fe195aa42fa3b390d4f', 'Test level')}}: <b><span data-bind="text:humanLevel"></span></b></div>
+        <div data-bind="visible:humanHelpTxt">{{:~CSLocalize('5598d88071e7473c81f51a42a5f689eb', 'Recorded (recommended / actual):')}} <b><span data-bind="text:humanHelpTxt"></span></b></div>
+      </div>
+      <div class="input-group">
+        <span class="input-group-addon">Hodnocení:</span>
+        <input type="text" class="form-control" id="human-ed-{{:id}}" name="human-ed-{{:id}}" placeholder="0-100" data-bind="textInput:human" />
+        <!--<span class="input-group-addon">0-100</span>-->
+      </div>
+    </form>
   </div>
-  <form id="form-{{:id}}" class="human-form form-inline has-error">
-    <div class="input-group">
-      <span class="input-group-addon">Hodnoceni:</span>
-      <input type="text" class="form-control" id="human-ed-{{:id}}" name="human-ed-{{:id}}" placeholder="0-{{:scoreWeight}}" data-bind="textInput:human" />
-      <span class="input-group-addon">0-{{:scoreWeight}}</span>
-    </div>
-  </form>
-  <br />
   {{/if}}
   <div class="ff-content-progress">
     <div class="content-inner">
@@ -602,7 +635,7 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
     <div class="recorded-icon pull-left">
       <i class="fa fa-check"></i>
     </div>
-    <div class="record btn btn-large btn-default pull-left" data-bind="click: record, clickBubble:false, css: {disabled: allDisabled() || isDone() || (disableReRecord && isRecorded())}">
+    <div class="record btn btn-large btn-default pull-left" data-bind="click: record, clickBubble:false, css: {disabled: allDisabled() || isDone() || (singleAttempt && isRecorded())}">
       <span class="fa fa-spinner fa-spin"></span>
       <span class="fa fa-2x fa-circle"></span>
       <span class="fa fa-2x fa-stop"></span>
@@ -613,7 +646,7 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
     <div class="recorded-icon pull-left">
       <i class="fa fa-check"></i>
     </div>
-    <div class="record btn btn-large btn-default pull-left" data-bind="click: record, clickBubble:false, css: {disabled: isDone() || (disableReRecord && isRecorded())}">
+    <div class="record btn btn-large btn-default pull-left" data-bind="click: record, clickBubble:false, css: {disabled: isDone() || (singleAttempt && isRecorded())}">
       <span class="fa fa-2x fa-circle"></span>
       <span class="fa fa-2x fa-stop"></span>
     </div>
@@ -625,7 +658,7 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
   {{/if}}
 </div>
 <div class="clearfix"></div>
-{{if stopInModalDialog}}
+{{if recordInDialog}}
 <div id="modal-{{:id}}" class="modal fade oli-audio-capture recording" role="dialog" data-bind="click: $.noop, clickBubble:false" data-backdrop="static" data-show="false">
   <div class="modal-dialog {{:modalDialogSizeCss()}} ">
     <div class="modal-content">
@@ -676,7 +709,7 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
   </form>
   <p class="clearfix"></p>
   {{/if}}
-  <textarea rows="{{:initRows}}" data-bind="disable: isDone(), textInput:textInput"></textarea>
+  <textarea rows="{{:numberOfRows}}" data-bind="disable: isDone(), textInput:textInput"></textarea>
 </div>
 <!-- /ko -->
 </script>
@@ -759,49 +792,84 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
 </div></script>
 <script id="docxsd" type="text/x-jsrender">
 <div class="doc">
+  {{if pars.forRename}}
   <h1>Elements</h1>
-  {{for data.rnRoot(false)}}{{include tmpl=~T('doctype')/}}{{/for}}
+  {{for data.rnRoot(false)}}{{include tmpl=~T('rndoctype')/}}{{/for}}
   <h1>Enumerations</h1>
-  {{for data.rnEnums()}}{{include tmpl=~T('docenum')/}}{{/for}}
+  {{for data.rnEnums()}}{{include tmpl=~T('rndocenum')/}}{{/for}}
   <h1>New elements</h1>
-  {{for data.rnElements()}}{{include tmpl=~T('doctypenew')/}}{{/for}}
+  {{for data.rnElements()}}{{include tmpl=~T('rndoctypenew')/}}{{/for}}
   <h1>ToRename</h1>
   <textarea style="width:100%" rows="10">
     {{>data.rnRenameJson()}}
   </textarea>
   <h1>Helper elements</h1>
-  {{for data.rnRoot(true)}}{{include tmpl=~T('doctype')/}}{{/for}}
+  {{for data.rnRoot(true)}}{{include tmpl=~T('rndoctype')/}}{{/for}}
+  {{else}}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2><a href="#" class="fa fa-minus" data-bind="click: data.tooglePanel"></a> Elements</h2>
+    </div>
+    <div class="panel-body">
+      {{for data.dcElements(false)}}{{include tmpl=~T('doctype')/}}{{/for}}
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2><a href="#" class="fa fa-plus" data-bind="click: data.tooglePanel"></a> Sound Cut Elements</h2>
+    </div>
+    <div class="panel-body" style="display:none;">
+      {{for data.dcElements(true)}}{{include tmpl=~T('doctype')/}}{{/for}}
+    </div>
+  </div>
+  {{/if}}
 </div>
 </script>
 <script id="doctype" type="text/x-jsrender">
+<h3>{{:name}}</h3>
+<blockquote class="doc-type">
+  {{for rnPropsNew()}}{{include tmpl=~T('docproppointer')/}}{{/for}}
+  <div class="alert alert-warning alert-dismissible" style="display:none">
+    <button type="button" class="close fa fa-close"></button>
+    <div class="prop-descr">
+      <div class="summary"></div>
+      <div class="descr"></div>
+    </div>
+  </div>
+</blockquote>
+</script>
+<script id="docproppointer" type="text/x-jsrender">
+<span><a href="#" data-bind="click: function(model, ev) {data.showProp(ev, '{{:propOf}}', '{{:name}}'); }">{{:name}}</a> |</span>
+</script>
+<script id="rndoctype" type="text/x-jsrender">
 <h3>{{:rnName()}}</h3>
 {{if rnProps()}}
 <div class="props">
-  {{for rnProps()}}{{include tmpl=~T('docprop')/}}{{/for}}
+  {{for rnProps()}}{{include tmpl=~T('rndocprop')/}}{{/for}}
 </div>
 {{/if}}
 {{if rnDescendants()}}
 <div class="descendants">
-  {{for rnDescendants()}}{{include tmpl=~T('doctype')/}}{{/for}}
+  {{for rnDescendants()}}{{include tmpl=~T('rndoctype')/}}{{/for}}
 </div>
 {{/if}}
 </script>
-<script id="doctypenew" type="text/x-jsrender">
-<h3>{{:rnNameNew()}} <small>{{for rnPropsNew()}}{{include tmpl=~T('docpropnew')/}}{{/for}}</small></h3>
+<script id="rndoctypenew" type="text/x-jsrender">
+<h3>{{:rnNameNew()}} <small>{{for rnPropsNew()}}{{include tmpl=~T('rndocpropnew')/}}{{/for}}</small></h3>
 </script>
-<script id="docpropnew" type="text/x-jsrender">
+<script id="rndocpropnew" type="text/x-jsrender">
 <span class="prop-new">{{:rnNameNew()}},</span>
 </script>
-<script id="docprop" type="text/x-jsrender">
+<script id="rndocprop" type="text/x-jsrender">
 <h4>{{:rnName()}}</h4>
 </script>
-<script id="docenum" type="text/x-jsrender">
+<script id="rndocenum" type="text/x-jsrender">
 <h3>{{:rnName()}}</h3>
 <div class="enums">
-  {{for enumData}}{{include tmpl=~T('docenumitem')/}}{{/for}}
+  {{for enumData}}{{include tmpl=~T('rndocenumitem')/}}{{/for}}
 </div>
 </script>
-<script id="docenumitem" type="text/x-jsrender">
+<script id="rndocenumitem" type="text/x-jsrender">
 <h4>{{:rnName()}}</h4>
 </script>
 <script id="c_listgroup" type="text/x-jsrender">
@@ -843,7 +911,7 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
 
   <div class="navbar navbar-{{:~CourseMeta.navBar()}}">
     <div class="container">
-      <a href="#" class="navbar-brand lm-logo-black lm-logo-black-small"></a>
+      <a href="#" class="navbar-brand lm-logo-black lm-logo-black-small" data-bind="click: Pager.gotoHomeUrl"></a>
       <div class="btn btn-large btn-success lm-green-btn pull-left" data-bind="test:'green', click: doGreenClick, css:{disabled:testDisabled}">
         <span>{{:greenTitle}}</span>
         <span class="fa fa-{{:greenIcon}} play"></span>
@@ -927,7 +995,7 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
 <div data-bind="with: Pager.ActPage" class="app-school testme">
   <div class="navbar navbar-{{:~CourseMeta.navBar()}}">
     <div class="container">
-      <a href="#" class="navbar-brand lm-logo-black"></a>
+      <a href="#" class="navbar-brand lm-logo-black" data-bind="click: Pager.gotoHomeUrl"></a>
       <button class="visible-small btn btn-default navbar-btn pull-left" data-bind="test:'ph-bread', " data-toggle="collapse" data-target="#collapse-breadcrumb"><i class="fa fa-ellipsis-h "></i></button>
       <h3 class="navbar-text hidden-xs title">{{:barTitle}}</h3>
     </div>
@@ -981,7 +1049,7 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
 <div data-bind="with: Pager.ActPage" class="app-school testme">
   <div class="navbar navbar-{{:~CourseMeta.navBar()}}">
     <div class="container">
-      <a href="#" class="btn btn-large btn-info lm-green-btn pull-left">
+      <a href="#" class="btn btn-large btn-info lm-green-btn pull-left" data-bind="click: Pager.gotoHomeUrl">
         <span class="fa-lg fa fa-arrow-circle-o-left fa-2x"></span>&nbsp;&nbsp;<span>{{:~CSLocalize('32a11f1214ed4d42935957ace60c1b1e', 'Back to home')}}</span>
       </a>
       <!--<a href="#" class="navbar-brand lm-logo-black"></a>-->
@@ -1303,11 +1371,11 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
 </blockquote>
 </script>
 <script id="testforrecording" type="text/x-jsrender">
-["html",["head",["title"],["style","\r\n.oli-gapfill, .oli-dropdown {\r\n width: 0;}\r\n.oli-gapfill, .oli-dropdown {\r\n width: 0;}\r\n/*\r\n*/\r\n"]],["body",{"id":"_0","url":"/testme/forrecording"},["media-player",{"id":"mp-1","media-url":"/testme/forPlaying.mp3","_sent-group-id":"seq_0"}],["audio-capture",{"id":"audio-1","recommend-seconds-from":1, "speak-seconds-to":10}],["_snd-page",["_snd-file-group",{"media-url":"/testme/forPlaying.mp3"},["_snd-group",{"id":"seq_0"},["_snd-interval",["_snd-sent",{"idx":0,"beg-pos":0,"end-pos":-1}]]]]],["_eval-page",{"max-score":100},["_eval-btn",["_eval-group",{"eval-control-ids":"audio-1"}]]]]]
+["html",["head",["title"],["style","\r\n/*\r\ngap-fill, drop-down {\r\n  width: 0;}\r\ngap-fill, drop-down {\r\n  width: 0;}\r\n*/\r\n"]],["body",{"id":"_0","url":"/lm/examples/temp/forrecording"},["media-player",{"id":"mp-1","media-url":"/testme/forPlaying.mp3","_sent-group-id":"seq_0"}],["recording",{"id":"audio-1","limit-recommend":1,"limit-max":10}],["_snd-page",["_snd-file-group",{"media-url":"/testme/forPlaying.mp3"},["_snd-group",{"id":"seq_0"},["_snd-interval",["_snd-sent",{"idx":0,"beg-pos":0,"end-pos":-1}]]]]],["_eval-page",{"max-score":100},["_eval-btn",["_eval-group",{"eval-control-ids":"audio-1"}]]]]]
 
 </script>
 <script id="testforplaying" type="text/x-jsrender">
-["html",["head",["title"],["style","\r\n.oli-gapfill, .oli-dropdown {\r\n width: 0;}\r\n.oli-gapfill, .oli-dropdown {\r\n width: 0;}\r\n/*\r\n*/\r\n"]],["body",{"id":"_0","url":"/testme/forplaying"},["media-player",{"id":"mp-2","media-url":"/testme/forPlaying.mp3","_sent-group-id":"seq_0"}],["_snd-page",["_snd-file-group",{"media-url":"/testme/forPlaying.mp3"},["_snd-group",{"id":"seq_0"},["_snd-interval",["_snd-sent",{"idx":0,"beg-pos":0,"end-pos":-1}]]]]],["_eval-page",{"max-score":0}]]]
+["html",["head",["title"],["style","\r\n/*\r\ngap-fill, drop-down {\r\n  width: 0;}\r\ngap-fill, drop-down {\r\n  width: 0;}\r\n*/\r\n"]],["body",{"id":"_0","url":"/lm/examples/temp/forplaying"},["media-player",{"id":"mp-2","media-url":"/testme/forPlaying.mp3","_sent-group-id":"seq_0"}],["_snd-page",["_snd-file-group",{"media-url":"/testme/forPlaying.mp3"},["_snd-group",{"id":"seq_0"},["_snd-interval",["_snd-sent",{"idx":0,"beg-pos":0,"end-pos":-1}]]]]],["_eval-page",{"max-score":0}]]]
 </script>
 <script id="vsnetex" type="text/x-jsrender" data-for="vsnetex">
   {{for ~ActPage()}}
@@ -1441,7 +1509,7 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
 <script id="docheader" type="text/x-jsrender">
 <nav class="navbar navbar-{{:~CourseMeta.navBar()}}" role="navigation">
   <div class="container">
-    <a href="#" class="navbar-brand lm-logo-black lm-logo-black-small"></a>
+    <a href="#" class="navbar-brand lm-logo-black lm-logo-black-small" data-bind="click: Pager.gotoHomeUrl"></a>
     <ul class="nav navbar-nav">
       <li class="{{if isTypesPage()}}active{{/if}}"><a href="#{{:typesLink()}}">Tags</a></li>
       <li class="{{if isPropsPage()}}active{{/if}}"><a href="#{{:propsLink()}}">Attributes</a></li>
@@ -1540,7 +1608,7 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
 <div data-bind="with: Pager.ActPage" class="app-doc xref">
   <nav class="navbar navbar-{{:~CourseMeta.navBar()}}" role="navigation">
     <div class="container">
-      <a href="author.aspx?mode=xref" class="navbar-brand lm-logo-black lm-logo-black-small"></a>
+      <a href="author.aspx?mode=xref" class="navbar-brand lm-logo-black lm-logo-black-small" data-bind="click: Pager.gotoHomeUrl"></a>
       <a href="author.aspx?mode=xref" class="navbar-brand">Cross reference</a>
       {{if urlContext()}}
       <ul class="nav navbar-nav navbar-left">
@@ -1691,8 +1759,11 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
   {{for ~ActPage()}}
   
 <div data-bind="with: Pager.ActPage" class="app-school">
+  {{if normalDisplay()}}
   <div class="rtl">{{for #data tmpl=~T('TTopBarNew')/}}</div>
+  {{/if}}
   {{if ~Cookie()}}
+  {{if normalDisplay()}}
   <div class="container">
     <div>{{for #data tmpl=~T('TSchoolCpv')/}}</div>
     
@@ -1719,10 +1790,14 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
     </div>
   </div>
   {{/if}}
+  {{/if}}
   <div class="container content-place">
+    {{if previewExDisplay()}}
+    {{for #data tmpl=~T('TInstructionsPreviewEx')/}}
+    {{/if}}
     {{if ~Cookie()}}
     <h3 class="hidden-small"><span class="fa fa-{{:iconId()}}"></span>&nbsp;{{:title()}}</h3>
-    <div id="exercise" class="{{:~CourseMeta.gui.exerciseCls()}}" >
+    <div id="exercise" class="{{:~CourseMeta.gui.exerciseCls()}}">
       {{:~CourseMeta.gui.exerciseHtml()}}
     </div>
     <div data-bind="template: seeAlsoTemplate"></div>
@@ -1773,6 +1848,21 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
     <span data-bind="text: instrTitle"></span>
   </a>
   <div id="collapse-instr2" class="lm-collapse" data-role="collapsed" data-bind="html: instrBody"></div>
+</div>
+
+</script>
+<script id="tinstructionspreviewex" type="text/x-jsrender">
+<div class="instr instr-display-ex">
+  <a class="btn btn-link btn-block btn-default header" data-toggle="collapse" data-target="#collapse-instr2" data-bind="css: { hidden: tb.exerciseEvaluated()}">
+    <span class="fa fa-info-circle fa-lg"></span>&nbsp;&nbsp;
+    <span data-bind="text: instrTitle"></span>
+  </a>
+  <div class="instr-display-score" data-bind="css: { hidden: !tb.exerciseEvaluated()}">
+    Score: <b data-bind="text:tb.score()"></b>
+  </div>
+  <button class="btn btn-sm btn-success display-ex-green-arrow hidden" data-bind="css: { hidden: tb.exerciseEvaluated() || tb.exercisePassive() }, click:CourseMeta.doGreenClick">Evaluate</button>
+  <button class="btn btn-sm btn-success display-ex-green-arrow hidden" data-bind="css: { hidden: !tb.exerciseEvaluated() || tb.exercisePassive() }, click: tb.resetClick">Reset</button>
+  <div id="collapse-instr2" class="lm-collapse" data-role="collapsed" data-bind="html: instrBody"></div>
 </div></script>
 <script id="ttopbarnew" type="text/x-jsrender">
 <div class="navbar navbar-{{:~CourseMeta.navBar()}}" data-bind="test:'top'">
@@ -1780,9 +1870,9 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
     
     
     {{if tb.logoBig()}}
-    <a href="#" class="navbar-brand lm-logo-black" onmousedown="lmConsole.sendStart(this)" onmouseup="lmConsole.sendEnd(this)"></a>
+    <a href="#" class="navbar-brand lm-logo-black" onmousedown="lmConsole.sendStart(this)" onmouseup="lmConsole.sendEnd(this)" data-bind="click: Pager.gotoHomeUrl"></a>
     {{else tb.logoSmall()}}
-    <a href="#" class="navbar-brand lm-logo-black lm-logo-black-small"></a>
+    <a href="#" class="navbar-brand lm-logo-black lm-logo-black-small" data-bind="click: Pager.gotoHomeUrl"></a>
     {{/if}}
 
     
@@ -1893,6 +1983,13 @@ var cfg = {"dataBatchUrl":null,"failLimit":0,"canSkipCourse":false,"canSkipTest"
     </div>
     {{if licKeyMsg()}}
     <div class="alert alert-info" style="margin: 15px 0;">{{:licKeyMsg()}}</div>
+    {{/if}}
+    {{if isBlended() && tb.logoutAndProfile}}
+    <div class="alert alert-warning">
+      <h2 style="margin-top:0;">{{:~userName()}}, vítejte</h2>
+      Nejste to vy? V tom případě se někdo zapomněl odhlásit. Přejděte na jednu ze stránek <a target="_blank" href="http://www.facebook.com">Facebook</a>, <a target="_blank" href="http://www.google.cz">Google</a> nebo <a target="_blank" href="http://www.microsoft.com">Microsoft</a> a proveďte odhlášení. 
+      Následně aktualizujte tuto stránku (tlačítkem F5) a přihlašte se pod vaším účtem.
+    </div>
     {{/if}}
     {{for companies}}
     <div class="panel panel-{{if data.PublisherOwnerUserId==~Cookie().id}}danger{{else}}default{{/if}}" data-bind="with: companies[{{:#index}}], test:'comp-{{:#index}}'">
