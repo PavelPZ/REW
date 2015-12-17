@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.langmaster.com/new/author/coursemodelschema.xsd">
+  <head>
+    <title></title>
+    <style />
+  </head>
+  <body xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <h1 class="techInstr  ">DOPLŇOVÁNÍ</h1>
+  <p>Vaším úkolem doplnit prázdná okénka v textu. Postupujte následovně:</p>
+  <ol>
+    <li>Klikněte do prázdného okénka - objeví se blikající kurzor.</li>
+    <li>Doplňte text pomocí klávesnice.</li>
+  </ol>
+</body>
+</html>

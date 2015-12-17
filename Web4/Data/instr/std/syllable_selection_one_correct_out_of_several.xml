@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.langmaster.com/new/author/coursemodelschema.xsd">
+  <head>
+    <title></title>
+    <style />
+  </head>
+  <body xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <h1 class="techInstr  ">VÝBĚR ( OZNAČOVÁNÍ )TEXTU - PRÁVĚ JEDNA SPRÁVNÁ MOŽNOST</h1>
+  <p>Vaším úkolem je označit části vět, slova, části slov nebo slabiky, přičemž vybíráte z více možností a pouze jedna možnost je správná. Postupujte následovně:</p>
+  <ol>
+    <li>Umístěte kurzor myši na položku (část věty, slovo, část slova nebo slabiku), kterou chcete označit.</li>
+    <li>Klikněte na položku levým tlačítkem myši - položka bude označena.</li>
+  </ol>
+  <p>Chcete-li svoji volbu změnit, klikněte na jinou možnost.</p>
+</body>
+</html>

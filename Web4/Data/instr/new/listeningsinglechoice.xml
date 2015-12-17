@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <h1 class="techInstr  ">POSLECH s VÝBĚREM Z VÍCE MOŽNOSTÍ</h1>
+    <p>
+      Vaším úkolem je na základě úvodního poslechu vybrat k zadáním správné odpovědi. Doporučujeme postupovat následovně:
+    </p>
+    <ol>
+      <li>Nejprve si zběžně přečtěte všechna zadání a nabídnuté možnosti.</li>
+      <li>
+        Potom si spusťte nahrávku a snažte se zachytit informace, týkající se textů k doplnění. Během poslechu můžete rovnou vyplňovat správné odpovědi.
+      </li>
+      <li>Pro výběr správné odpovědi klikněte levým tlačítkem myši na vybranou možnost.</li>
+      <li>Chcete-li svoji volbu změnit, klikněte na nově vybranou možnost.</li>
+      <li>Pokud informace nestačíte zachytit, můžete si nahrávku poslechnout opakovaně.</li>
+      <li>Přehrávání zvuku můžete kdykoli přerušit stisknutím tlačítka Pauza a následně stisknutím tlačítka Přehrát, pokračovat v přehrávání.</li>
+      <li>Nahrávku můžete spustit od libovolného místa, které si vyberete. Kliknutím do indikátoru průběhu nahrávky určete místo, od kterého se má nahrávka začít přehrávat. Potom klikněte na Přehrát.</li>
+    </ol>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?><html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <h1 class="techInstr  ">{{th311|READING with TRUE/FALSE SENTENCES}}</h1>
+    <p>{{tp311|Your task is to decide on the correctness of statements based on the initial text. We recommend to proceed as follows:}}</p>
+    <ol>
+      <li>{{tli311|First, go through all the statements.}}</li>
+      <li>{{tli312|Then, go back to the initial text above. Read the text carefully and try to capture the information concerning the individual statements. When reading, you can simultaneously mark the correct answers.}}</li>
+      <li>{{tli313|If the statement is true, left click TRUE. If the statement is false, left click FALSE.}}</li>
+      <li>{{tli314|If you wish to change your selection, click another option.}}</li>
+    </ol>
+  </body>
+</html>
