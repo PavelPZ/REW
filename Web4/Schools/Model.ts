@@ -43,9 +43,10 @@ module schools {
 
     //var initHash = hash => { Pager.initHash = () => _.isEmpty(cfg.hash) ? hash : cfg.hash; };
     var initHash = hash => { debugger; throw 'call setInitHash instead as in LMComLib.Targets.author' };
-    var setInitHash = hash => setTimeout(() => location.hash = hash);
+    var setInitHash = hash => setTimeout(() => location.hash = _.isEmpty(cfg.hash) ? hash : cfg.hash);
     switch (cfg.target) {
       case LMComLib.Targets.author:
+        //hash z D:\LMCom\rew\NewLMComModel\Design\CourseVSNet.cs, getHtmFromTemplate
         CourseMeta.persist = persistMemory.persistCourse;
         //var search = LowUtils.parseQuery(location.search);
         //CourseMeta.forceEval = search != null && search["forceeval"] == "true";

@@ -209,7 +209,7 @@ namespace Author {
 
     void adjustAddFile(string fileName, IVsProject3 pro) {
       int pfFound; VSDOCUMENTPRIORITY[] pdwPriority = new VSDOCUMENTPRIORITY[1];
-      int retVal; uint dirId, newFileId;
+      int retVal; uint newFileId;
       //Microsoft.VisualStudio.VSConstants.VSITEMID 
       //if (!File.Exists(fileName)) throw new Exception();
       //retVal = pro.IsDocumentInProject(fileName, out pfFound, pdwPriority, out newFileId);
