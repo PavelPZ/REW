@@ -244,14 +244,14 @@ namespace Author {
       vsNetServer.log.clear();
       vsNetServer.log.vsNetForBrowseAction = true;
       //var log = new LoggerMemory(true) { isVsNet = true, vsNetForBrowseAction = true };
-      var postData = vsNetServer.getPostDataStr(ctx, null, vsNetServer.log);
       var isMod = ctx.url.EndsWith("/");
+      var postData = vsNetServer.getPostDataStr(ctx, null, vsNetServer.log);
       //string hash = !isMod ? XExtension.Create("vsNet".ToLower(), "vsNetExModel".ToLower(), ctx.url).Aggregate((r, i) => r + "@" + i) : "";
       //hash se uplatni v 
       //- d:\lmcom\rew\web4\schools\model.ts, case LMComLib.Targets.author
       //- D:\LMCom\rew\Web4\BlendedAPI\app.ts, OldController
       //- D:\LMCom\rew\Web4\BlendedAPI\oldBoot.ts, registerOldLocator
-      string hash = "/pg/old/" + (isMod ? "schoolcoursemetamodel" : "schoolexmodel") + "/1342177278/@data@vsnet@mod@//" + (isMod ? "" : ctx.url.Replace('/','@'));
+      string hash = "/pg/old/school/" + (isMod ? "schoolcoursemetamodel" : "schoolexmodel") + "/1342177278/@data@vsnet@mod@//" + (isMod ? "" : ctx.url.Replace('/','@'));
       var tempFn = vsNetServer.resourcePath + "author/" + (isMod ? "modTemplate" : "exTemplate") + ".htm";
       var html = FormatNamedProps(File.ReadAllText(tempFn), key => {
         switch (key) {
@@ -302,9 +302,22 @@ namespace Author {
         File.WriteAllText(saveDlg.FileName, html);
     }
 
+    //pro cviceni: vytvori modul s jednim cvicenim
     public static IEnumerable<Packager.Consts.file> getPostDataFiles(INodeContext ctx, product prod, LoggerMemory log) {
-      var isModule = ctx.url.EndsWith("/");
-      return isModule ? vsNetServer.getModuleFiles(ctx, prod, log) : vsNetServer.buildExFiles(ctx.url, log);
+      var isModule = ctx.url.EndsWith("/"); string exUrl = null;
+      string oldUrl = ctx.url;
+      try {
+        if (!isModule) {
+          exUrl = ctx.url;
+          var idx = ctx.url.LastIndexOf('/'); ctx.url = ctx.url.Substring(0, idx + 1);
+          string fileName = ex.fileNameFromUrl(ctx.url);
+          ctx.actNode = data.readObject<data>(fileName);
+        }
+        return getModuleFiles(ctx, exUrl, prod, log);
+      } finally {
+        ctx.url = oldUrl;
+      }
+      //return isModule ? getModuleFiles(ctx, prod, log) : vsNetServer.buildExFiles(ctx.url, log);
     }
 
     public static StringBuilder getPostDataStr(INodeContext ctx, product prod, LoggerMemory log, Action<StringBuilder> finishScriptData = null) {
@@ -319,19 +332,23 @@ namespace Author {
 
     public const string vsNetProductId = "/data/vsnet/mod/";
 
-    public static IEnumerable<Packager.Consts.file> getModuleFiles(INodeContext ctx, product prod, LoggerMemory logger) {
+    public static IEnumerable<Packager.Consts.file> getModuleFiles(INodeContext ctx, string exUrl, product prod, LoggerMemory logger) {
       try {
         if (ctx.line == LineIds.no) { logger.ErrorLine("?", "Unknown product Line"); return Enumerable.Empty<Packager.Consts.file>(); }
-        var isModule = ctx.url.EndsWith("/");
         if (prod == null) prod = new product {
           url = vsNetProductId,
           styleSheet = ex.stdStyle,
           line = ctx.line,
           title = ctx.actNode.title,
-          Items = new data[] { new ptr(true, ctx.url) { takeChilds = childMode.selfChild } }
         };
         var sm = ctx.getSiteMap(logger);
-        prod = (product)prodDef.expand(prod, sm, logger);
+        if (exUrl == null) {
+          prod.Items = new data[] { new ptr(true, ctx.url) { takeChilds = childMode.selfChild } };
+          prod = (product)prodDef.expand(prod, sm, logger);
+        } else {
+          prod.Items = new data[] { ctx.actNode };
+          ctx.actNode.Items = new data[] { sm.find(exUrl) };
+        }
         prodDef.addInstructions(prod, logger);
         var bldProd = new buildProduct {
           prod = prod,

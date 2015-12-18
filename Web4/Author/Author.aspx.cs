@@ -71,7 +71,7 @@ namespace Author {
               Machines._dataDir = Machines.dataDir;
               Machines._rootDir = rootDir;
             }
-            serverScript = CourseMeta.buildLib.getServerScript(vsNetServer.getModuleFiles(new vsNetServer.serverContext(url, log), null, log)).ToString();
+            serverScript = CourseMeta.buildLib.getServerScript(vsNetServer.getModuleFiles(new vsNetServer.serverContext(url, log), null, null, log)).ToString();
             rootProductId = Author.vsNetServer.vsNetProductId;
             errorText = log.hasError ? log.Log() : null;
           } else {
