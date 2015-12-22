@@ -512,7 +512,7 @@ namespace CourseMeta {
 
       //priprav moduly produku (obsahuji url, nactene stranky a lokalizace)
       List<buildModule> resList = new List<buildModule>();
-      Parallel.ForEach(prod.scan().Where(d => d.isType(runtimeType.mod)),
+      Parallel.ForEach(prod.scan().Where(d => d.isType(runtimeType.mod) || d.isType(runtimeType.testTaskGroup)),
         //new ParallelOptions { MaxDegreeOfParallelism = 1 },
         parallelOptions,
         productModule => {

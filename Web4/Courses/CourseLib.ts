@@ -365,7 +365,7 @@ module CourseMeta {
 
     //zajisti existenci modulu (= lokalizace a slovnik)
     export function adjustMod(nd: dataImpl, completed: (actm: modImpl) => void) {
-      var actm = nd.findParent<modImpl>(n => isType(n, runtimeType.mod));
+      var actm = nd.findParent<modImpl>(n => isType(n, runtimeType.mod) || isType(n, runtimeType.testTaskGroup) /*22.12.2015: VE.NET plugin Browse na cviceni testu*/); 
       if (actm == null) { completed(null); return; }
       var isGramm = isType(actm, runtimeType.grammar);
       if ((isGramm && actm == actGrammarModule) || (!isGramm && actm == actModule)) { completed(actm); return; } //zadna zmena modulu

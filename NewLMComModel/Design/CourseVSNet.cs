@@ -312,6 +312,7 @@ namespace Author {
           var idx = ctx.url.LastIndexOf('/'); ctx.url = ctx.url.Substring(0, idx + 1);
           string fileName = ex.fileNameFromUrl(ctx.url);
           ctx.actNode = data.readObject<data>(fileName);
+          ctx.line = LineIds.English;
         }
         return getModuleFiles(ctx, exUrl, prod, log);
       } finally {

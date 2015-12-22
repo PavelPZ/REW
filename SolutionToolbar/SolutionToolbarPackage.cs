@@ -118,10 +118,11 @@ namespace Author {
       mcs.AddCommand(addModMenuItem);
 
       //build
-      CommandID BuildCommandID = new CommandID(GuidList.guidSolutionToolbarCmdSet, (int)PkgCmdIDList.cmd_Build);
-      OleMenuCommand BuildMenuItem = new OleMenuCommand((s, a) => doAction(actions.build), BuildCommandID);
-      BuildMenuItem.BeforeQueryStatus += (s, a) => queryAction(s, actions.build);
-      mcs.AddCommand(BuildMenuItem);
+      //vyhozeni Publish, 22.12.2015
+      //CommandID BuildCommandID = new CommandID(GuidList.guidSolutionToolbarCmdSet, (int)PkgCmdIDList.cmd_Build);
+      //OleMenuCommand BuildMenuItem = new OleMenuCommand((s, a) => doAction(actions.build), BuildCommandID);
+      //BuildMenuItem.BeforeQueryStatus += (s, a) => queryAction(s, actions.build);
+      //mcs.AddCommand(BuildMenuItem);
     }
 
     void queryAction(object sender, actions action) {

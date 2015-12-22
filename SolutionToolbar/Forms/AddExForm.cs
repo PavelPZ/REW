@@ -72,9 +72,9 @@ namespace Author {
     private void webBrowser_Navigated(object sender, WebBrowserNavigatedEventArgs e) {
       exUrl = null;
       try {
-        var parts = (webBrowser.Url.Fragment ?? "").Split(new char[] { '#', '@' }, StringSplitOptions.RemoveEmptyEntries);
-        if (parts.Length < 5 || parts[4].EndsWith("/")) return;
-        exUrl = parts[4]; 
+        var parts = (webBrowser.Url.Fragment ?? "").Split(new char[] { '#', '/' }, StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length < 7 || parts[6].EndsWith("@")) return;
+        exUrl = parts[6].Replace('@','/'); 
       } finally { OkBtn.Enabled = exUrl!=null; }
     }
 
