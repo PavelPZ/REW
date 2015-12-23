@@ -406,27 +406,27 @@ namespace CubesDeployment {
                   string tempZip;
 
                   /***** VS.NET AUTHOR - d:\LMCom\rew\Web4\Author\ExFormData.htm ****/
-                  string html;
-                  html = Author.vsNetServer.getHtmlFromScratch(new Author.vsNetServer.serverContext("/lm/author/demo/", lg3), "[%#baseTagUrl#%]", null, lg3, scriptData => {
-                    //html = Author.vsNetServer.getHtmlFromScratch(new Author.vsNetServer.serverContext("/lm/author/demo/", lg3), "http://testGlobalAdmin.langmaster.com/alpha/Schools/", null, lg3, scriptData => {
-                    foreach (var fn in Directory.GetFiles(@"d:\LMCom\rew\Web4\lm\author\shell\").Select(f => f.ToLower()).Where(f => f.EndsWith(".xml") && !f.EndsWith("\\meta.xml"))) {
-                      scriptData.AppendFormat("<script type=\"text/xml\" data-id=\"{0}\">", CourseMeta.data.urlFromFileName(fn));
-                      var root = XElement.Load(fn); root.Element("body").SetAttributeValue("id", Path.GetFileNameWithoutExtension(fn));
-                      scriptData.Append(root.ToString());
-                      scriptData.Append("</script>");
-                    }
-                  });
-                  File.WriteAllText(@"d:\LMCom\rew\Web4\Author\ExFormData.htm", "<!-- saved from url=(0014)about:internet -->\r\n" + html, Encoding.UTF8);
+                  //string html;
+                  //html = Author.vsNetServer.getHtmlFromScratch(new Author.vsNetServer.serverContext("/lm/author/demo/", lg3), "[%#baseTagUrl#%]", null, lg3, scriptData => {
+                  //  //html = Author.vsNetServer.getHtmlFromScratch(new Author.vsNetServer.serverContext("/lm/author/demo/", lg3), "http://testGlobalAdmin.langmaster.com/alpha/Schools/", null, lg3, scriptData => {
+                  //  foreach (var fn in Directory.GetFiles(@"d:\LMCom\rew\Web4\lm\author\shell\").Select(f => f.ToLower()).Where(f => f.EndsWith(".xml") && !f.EndsWith("\\meta.xml"))) {
+                  //    scriptData.AppendFormat("<script type=\"text/xml\" data-id=\"{0}\">", CourseMeta.data.urlFromFileName(fn));
+                  //    var root = XElement.Load(fn); root.Element("body").SetAttributeValue("id", Path.GetFileNameWithoutExtension(fn));
+                  //    scriptData.Append(root.ToString());
+                  //    scriptData.Append("</script>");
+                  //  }
+                  //});
+                  //File.WriteAllText(@"d:\LMCom\rew\Web4\Author\ExFormData.htm", "<!-- saved from url=(0014)about:internet -->\r\n" + html, Encoding.UTF8);
 
-                  html = Author.vsNetServer.getHtmlFromScratch(new Author.vsNetServer.serverContext("/lm/author/empty/", lg3), "[%#baseTagUrl#%]", null, lg3, scriptData => {
-                    scriptData.Clear(); scriptData.Append("[%#scriptData#%]");
-                  });
-                  File.WriteAllText(@"d:\LMCom\rew\Web4\Author\ModTemplate.htm", "<!-- saved from url=(0014)about:internet -->\r\n" + html, Encoding.UTF8);
+                  //html = Author.vsNetServer.getHtmlFromScratch(new Author.vsNetServer.serverContext("/lm/author/empty/", lg3), "[%#baseTagUrl#%]", null, lg3, scriptData => {
+                  //  scriptData.Clear(); scriptData.Append("[%#scriptData#%]");
+                  //});
+                  //File.WriteAllText(@"d:\LMCom\rew\Web4\Author\ModTemplate.htm", "<!-- saved from url=(0014)about:internet -->\r\n" + html, Encoding.UTF8);
 
-                  html = Author.vsNetServer.getHtmlFromScratch(new Author.fileContext("/lm/author/empty/empty"), "[%#baseTagUrl#%]", "[%#hash#%]", lg3, scriptData => {
-                    scriptData.Clear(); scriptData.Append("[%#scriptData#%]");
-                  });
-                  File.WriteAllText(@"d:\LMCom\rew\Web4\Author\ExTemplate.htm", "<!-- saved from url=(0014)about:internet -->\r\n" + html, Encoding.UTF8);
+                  //html = Author.vsNetServer.getHtmlFromScratch(new Author.fileContext("/lm/author/empty/empty"), "[%#baseTagUrl#%]", "[%#hash#%]", lg3, scriptData => {
+                  //  scriptData.Clear(); scriptData.Append("[%#scriptData#%]");
+                  //});
+                  //File.WriteAllText(@"d:\LMCom\rew\Web4\Author\ExTemplate.htm", "<!-- saved from url=(0014)about:internet -->\r\n" + html, Encoding.UTF8);
 
                   /***** LM FE5 web (=> .js files, ktere se prenesou na FE5) ****/
                   //CourseMeta.buildLib.writeVirtualFiles(CourseMeta.WebDataBatch.Load(@"d:\LMCom\rew\Downloads\Common\batches\webs\LM_Data_New.xml").getWebBatchFiles(lg3));
@@ -452,16 +452,16 @@ namespace CubesDeployment {
                   //File.Move(tempZip, zipFn);
 
                   //*************** Blended
-                  //webBatchId = "sw-blended";
-                  //Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
-                  //  actBatchVersion = Packager.batchVersion.release,
-                  //  version = schools.versions.debug,
-                  //  //version = schools.versions.minified,
-                  //  persistType = schools.persistTypes.persistNewEA,
-                  //  testGroup_debug = false,
-                  //});
-                  //zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; if (File.Exists(zipFn)) File.Delete(zipFn);
-                  //File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
+                  webBatchId = "sw-blended";
+                  Packager.RewApp.BUILD(webBatchId, Targets.web, lg3, new Packager.BatchLow {
+                    actBatchVersion = Packager.batchVersion.release,
+                    version = schools.versions.debug,
+                    //version = schools.versions.minified,
+                    persistType = schools.persistTypes.persistNewEA,
+                    testGroup_debug = false,
+                  });
+                  zipFn = Machines.basicPath + @"ReleaseDeploy\packs\" + webBatchId + ".zip"; if (File.Exists(zipFn)) File.Delete(zipFn);
+                  File.Move(Machines.basicPath + @"rew\Downloads\webs\" + webBatchId + ".zip", zipFn);
 
                   //*************** Skrivanek
                   //webBatchId = "skrivanek_software";
