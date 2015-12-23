@@ -223,7 +223,7 @@ namespace CourseModel {
 
     public const string _parentProp = "parent-prop";
     public const string _javascriptType = "data";
-    public static HashSet<string> preLike = new HashSet<string>() { "pre", "code", "script" };
+    //public static HashSet<string> preLike = new HashSet<string>() { "pre", "code", "script" };
     public tgAtAttribute tgAttribute() {
       return this.GetType().GetCustomAttributes(typeof(tgAtAttribute), false).Cast<tgAtAttribute>().FirstOrDefault();
     }

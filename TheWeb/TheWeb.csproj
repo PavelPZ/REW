@@ -403,7 +403,7 @@
     <TypeScriptCompile Include="wwwroot\Common\validation\templates-mdl.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\validation\test.tsx" />
     <TypeScriptCompile Include="wwwroot\Course\course.tsx" />
-    <TypeScriptCompile Include="wwwroot\Course\dict\WordUnderCursor.ts" />
+    <None Include="wwwroot\Course\dict\WordUnderCursor.ts_" />
     <TypeScriptCompile Include="wwwroot\Course\gapFill.ts" />
     <TypeScriptCompile Include="wwwroot\Course\test.tsx" />
     <TypeScriptCompile Include="wwwroot\Course\types.ts" />
