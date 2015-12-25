@@ -6,10 +6,10 @@
 namespace loginRegConfirm {
   const moduleId = 'login-reg-conf';
 
-  var namedRoute = router.named.login.confirmRegister = new router.Route<login.IConfirmRoutePar>(moduleId, 'r-confirmRegister', '/confirmRegister?{confirmId}', {
+  var namedRoute = router.named.login.confirmRegister = new router.Route<login.IConfirmRoutePar>(moduleId, 'r-confirmRegister', '/confirmRegister?{confirmId}', router.named.login.root, {
     onLeaveProc: () => delete flux.getState().loginRegConfirm
   });
-  namedRoute.addChildTo(router.named.login.root);
+  //namedRoute.addChildTo(router.named.login.root);
 
   login.namedRoute.confirmRegister.dispatch = (par: login.IConfirmRoutePar, comp) => {
     proxies.auth.ConfirmRegistration(par.confirmId, res => {

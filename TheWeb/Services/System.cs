@@ -25,10 +25,10 @@ namespace TheWeb.Services {
       foreach (var fn in Directory.GetFiles(dir)) try { File.Delete(fn); } catch { }
     }
 
-    [ActionName("generateWebApiProxy"), HttpGet]
-    public void generateWebApiProxy() {
-      //var js = jsWebApiProxy.jsProxyGenerator.LMGetJSProxy();
-      //File.WriteAllText(@"d:\LMCom\rew\Web4\Schools\GenProxy.ts", js, Encoding.UTF8);
-    }
+    //[ActionName("generateWebApiProxy"), HttpGet]
+    //public void generateWebApiProxy() {
+    //  //var js = jsWebApiProxy.jsProxyGenerator.LMGetJSProxy();
+    //  //File.WriteAllText(@"d:\LMCom\rew\Web4\Schools\GenProxy.ts", js, Encoding.UTF8);
+    //}
   }
 }

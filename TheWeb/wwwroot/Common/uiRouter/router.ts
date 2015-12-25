@@ -59,9 +59,7 @@ namespace router {
   export function history2Url(hist: IHistoryType): IUrlType { var route = routeDir[hist.moduleId + '/' + hist.actionId]; return route ? { route: route, par: hist.par, replace: hist.replace } : null; }
 
   //*** inicilizace 
-  export function init(...roots: Array<RouteType>): void { //definice stavu
-    roots.forEach(s => s.addChildTo(null));
-  }
+  export function activate(...roots: Array<RouteType>): void { roots.forEach(s => s.activate()); } //aktivuj routes
   export function setHome<T extends IPar>(state: Route<T>, par: T) { homeUrl = { route: state, par: par } } //definice difotniho stavu
 
   //3 moznosti navratu:
@@ -166,9 +164,19 @@ namespace router {
   export class Route<T extends IPar> implements IConstruct<T> {
 
     //public appId: servConfig.Apps, 
-    constructor(public moduleId: string, public actionId: string, public pattern: string, otherPar: IConstruct<T> = null, ...childs: Array<RouteType>) {
+    constructor(public moduleId: string, public actionId: string, public pattern: string, public parent?: RouteType, otherPar?: IConstruct<T>, createChilds?: (parent: RouteType) => Array<RouteType>) {//, ...childs: Array<RouteType>) {
       if (otherPar) Object.assign(this, otherPar);
-      if (childs) childs.forEach(ch => ch.addChildTo(this));
+      if (createChilds) this.childs = createChilds(this); //childs.forEach(ch => ch.addChildTo(this));
+      if (parent) {
+        this.pattern = parent.pattern + this.pattern;
+        this.actionId = parent.actionId + '.' + this.actionId;
+        if (this.needsAuth === undefined) this.needsAuth = parent.needsAuth;
+      }
+      this.matcher = new uiRouter.UrlMatcher(this.pattern);
+      //self registrace
+      var nm = this.globalId();
+      if (routeDir[nm]) loger.doThrow(`Route ${nm} already exists`);
+      routeDir[nm] = this; routes.push(this);
     }
 
     getPath(par: T, routePrefix: servConfig.RoutePrefix, startProc: servConfig.StartProc): string {
@@ -184,32 +192,37 @@ namespace router {
     globalId(): string { return this.moduleId + '/' + this.actionId; }
 
     parseRoute(pre: IQuery): T {
-      if (this.isAbstract) return null;
+      if (this.isAbstract || !this.isActive) return null;
       var res = this.matcher.exec<T>(pre.path, pre.query);
       if (res && this.finishRoutePar) this.finishRoutePar(res);
       return res;
     }
 
-    addChildTo(parent: RouteType) {
-      if (parent) {
-        this.parent = parent;
-        this.pattern = parent.pattern + this.pattern;
-        this.actionId = parent.actionId + '.' + this.actionId;
-        if (this.needsAuth === undefined) this.needsAuth = parent.needsAuth;
-      }
-      this.matcher = new uiRouter.UrlMatcher(this.pattern);
-      //self registrace
-      var nm = this.globalId();
-      if (routeDir[nm]) loger.doThrow(`Route ${nm} already exists`);
-      routeDir[nm] = this; routes.push(this);
+    activate() {
+      this.isActive = true;
+      if (this.childs) this.childs.forEach(ch => ch.activate());
     }
-    parent: RouteType;
+    //addChildTo(parent: RouteType) {
+      //if (parent) {
+      //  this.parent = parent;
+      //  this.pattern = parent.pattern + this.pattern;
+      //  this.actionId = parent.actionId + '.' + this.actionId;
+      //  if (this.needsAuth === undefined) this.needsAuth = parent.needsAuth;
+      //}
+      //this.matcher = new uiRouter.UrlMatcher(this.pattern);
+      ////self registrace
+      //var nm = this.globalId();
+      //if (routeDir[nm]) loger.doThrow(`Route ${nm} already exists`);
+      //routeDir[nm] = this; routes.push(this);
+    //}
     private matcher: uiRouter.UrlMatcher;
     dispatch: (par: T, compl: utils.TCallback) => void; //sance osetrit dispatch mez Dispatch modulu
 
     onLeave() { loger.log('routeLeave: ' + this.globalId()); if (this.onLeaveProc) this.onLeaveProc(); } //notifikace o opusteni route
     onEnter(compl: utils.TCallback) { loger.log('routeEnter: ' + this.globalId()); if (this.onEnterProc) this.onEnterProc(compl); else compl(); } //notifikace o vstupu do route
 
+    childs: Array<RouteType>; //child routes
+    isActive: boolean; //route je aktivni => matchuje se v parse route mechanismu
     //IConstruct
     needsAuth: boolean;
     isAbstract: boolean;

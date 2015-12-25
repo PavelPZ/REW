@@ -23,6 +23,7 @@ namespace DesignNew {
     public static HashSet<string> gzipExtensions = new HashSet<string>(new string[] { ".css", ".html", ".js", ".otf", ".svg", ".woff", ".woff2", ".ttf", ".eot", ".map" });
     public static Dictionary<string, string> contentTypes = new Dictionary<string, string> {
       {".js", "application/x-javascript"},
+      {".tsx", "application/x-javascript"},
       {".html", "text/html"},
       {".xml", "text/xml"},
       {".css", "text/css"},

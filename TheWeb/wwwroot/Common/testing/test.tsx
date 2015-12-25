@@ -9,14 +9,13 @@
 namespace testingTest {
   //***** ROUTE init
   var moduleId = 'testing';
-
-  //** ROUTERS and its dispatch
   var namedState = router.named.testingTest; //pojmenovane stavy
-  router.init(
-    namedState.index = new router.RouteType(moduleId, 'default', '/testing')
-  );
+  namedState.index = new router.RouteType(moduleId, 'default', '/testing')
 
   export function doRunApp() {
+    //** ROUTERS and its dispatch
+    router.activate(namedState.index);
+
     router.setHome(namedState.index, {});
     namedState.index.dispatch = (par, comp) => { comp(); };
 

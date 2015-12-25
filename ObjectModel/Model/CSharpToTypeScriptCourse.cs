@@ -38,25 +38,28 @@ namespace LMComLib {
     public static IEnumerable<Type> GeneratedTypes(IEnumerable<Object> infos) {
       return GetInfos(infos).SelectMany(inf => inf.Types());
     }
-    public static void GenerateStr(StringBuilder sb, ICSharpToTypeScript info) {
-      foreach (var u in info.Uses()) {
-        sb.Append("/// <reference path=\""); sb.Append(u); sb.AppendLine("\" />");
+    public static void GenerateStr(StringBuilder sb, StringBuilder sbComponents, ICSharpToTypeScript info) {
+      if (sb != null) {
+        foreach (var u in info.Uses()) {
+          sb.Append("/// <reference path=\""); sb.Append(u); sb.AppendLine("\" />");
+        }
+        sb.Append("module "); sb.Append(info.Module()); sb.AppendLine(" {");
+        //if (info.getJsonMLMeta() != null) sb.AppendLine(" export var meta: { [type:string]:CourseModel.jsClassMeta;} = null;"); //{'~rootTag':<any>'" + info.getJsonMLMeta().root.Name + "' };");
+        foreach (var en in info.Enums()) GenEnum(en, sb, false);
+        foreach (var en in info.ConstEnums()) GenEnum(en, sb, true);
+        foreach (var en in info.Types()) {
+          GenType(en, info.ExtendedTypes().ToArray(), info.Module(), sb);
+        }
+        sb.AppendLine("}");
       }
-      sb.Append("module "); sb.Append(info.Module()); sb.AppendLine(" {");
-      //if (info.getJsonMLMeta() != null) sb.AppendLine(" export var meta: { [type:string]:CourseModel.jsClassMeta;} = null;"); //{'~rootTag':<any>'" + info.getJsonMLMeta().root.Name + "' };");
-      foreach (var en in info.Enums()) GenEnum(en, sb, false);
-      foreach (var en in info.ConstEnums()) GenEnum(en, sb, true);
+      if (sbComponents!=null)
       foreach (var en in info.Types()) {
-        GenType(en, info.ExtendedTypes().ToArray(), info.Module(), sb);
-      }
-      sb.AppendLine("}");
-      foreach (var en in info.Types()) {
-        GenComponent(en, sb);
+        GenComponent(en, sbComponents);
       }
     }
     public static void Generate(ICSharpToTypeScript info) {
       StringBuilder sb = new StringBuilder();
-      GenerateStr(sb, info);
+      GenerateStr(sb, null, info);
       File.WriteAllText(info.TsPath(), sb.ToString(), Encoding.ASCII);
     }
 

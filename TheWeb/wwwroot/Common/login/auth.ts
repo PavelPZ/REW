@@ -25,9 +25,13 @@ namespace config {
 namespace auth {
 
   var moduleId = 'oauth';
-  router.init(
-    router.named.oauth.index = new router.Route<auth.IOAuthPar>(moduleId, 'default', '') //config.appPrefix(servConfig.Apps.oauth))
-  );
+
+  router.named.oauth.index = new router.Route<auth.IOAuthPar>(moduleId, 'default', '')
+
+  //export function initAuth() {
+  //  router.activate(router.named.oauth.index);
+  //}
+
   export interface IOAuthPar extends router.IPar{
     providerId: servConfig.oAuthProviders;
     client_id: string;

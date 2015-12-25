@@ -23,8 +23,8 @@ namespace DeployGUI {
     //[TestMethod]
     //public void CS_to_typescrit_web4() { Handlers.CSharpToTypescript.genAll(); }
 
-    [TestMethod]
-    public void CODE() { buildTasks.CODE(); }
+    //[TestMethod]
+    //public void CODE() { buildTasks.CODE(); }
   }
 
   [TestClass]

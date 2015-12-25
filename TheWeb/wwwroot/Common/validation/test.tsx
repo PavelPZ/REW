@@ -17,12 +17,6 @@ namespace validationTest {
   //***** ROUTE init
   var moduleId = 'validationTest';
 
-  //** ROUTERS and its dispatch
-  var namedState = router.named.validationTest; //pojmenovane stavy
-  router.init(
-    namedState.index = new router.RouteType(moduleId, 'default', '/validation/test-home')
-  );
-
   //*********************** DISPATCH MODULE definition
   interface IValTestClickAction extends flux.IAction { }
 
@@ -64,8 +58,13 @@ namespace validationTest {
     psw: string;
     pswc: string;
   }
+  var namedState = router.named.validationTest; //pojmenovane stavy
+  namedState.index = new router.RouteType(moduleId, 'default', '/validation/test-home')
 
   export function doRunApp() {
+
+    //** ROUTERS and its dispatch
+    router.activate(namedState.index);
 
     router.setHome(namedState.index, {});
     namedState.index.dispatch = (par, comp) => { comp(); };

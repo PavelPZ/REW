@@ -45,12 +45,6 @@ namespace fluxTest {
   //***** ROUTE init
   var moduleId = 'fluxTest';
 
-  //** ROUTERS and its dispatch
-  var namedState = router.named.fluxTest; //pojmenovane stavy
-  router.init(
-    namedState.index = new router.RouteType(moduleId, 'default', '/flux/flux-test-home')
-  );
-
   //*********************** DISPATCH MODULE definition
   interface IAppClickAction extends flux.IAction { }
   interface IClickAction extends flux.IAction { scopeComponent: string; /*akce nad self, ktera meni self stav*/ }
@@ -158,15 +152,16 @@ namespace fluxTest {
 
     var defaultRoute: router.Route<IRouteTestHash>;
     //*** router konfiguration
-    router.init(
-      new router.Route('m1', 'x1', '/login', null,
-        new router.Route('m1', 'x2', '/login'),
-        new router.Route('m1', 'x3', '/select')
-      ),
-      defaultRoute = new router.Route<IRouteTestHash>('m1', 'y', '/user/:id/name/:name?opt1&opt2', {
-        finishRoutePar: st => { st.id = utils.toNumber(st.id); }
-      })
+    //router.activate(
+    new router.Route('m1', 'x1', '/login', null, null,
+      parent => [
+        new router.Route('m1', 'x2', '/login', parent),
+        new router.Route('m1', 'x3', '/select', parent)]
     );
+    defaultRoute = new router.Route<IRouteTestHash>('m1', 'y', '/user/:id/name/:name?opt1&opt2', null, {
+      finishRoutePar: st => { st.id = utils.toNumber(st.id); }
+    });
+    //);
 
     //*** rucni MATCH
     var par = defaultRoute.parseRoute(router.toQuery('/useR/123/Name/alex?opt1=xxx&opt2=yyy'));
@@ -177,8 +172,13 @@ namespace fluxTest {
 
   //************* WHOLE APP
   //** inicializace aplikace x
+  var namedState = router.named.fluxTest; //pojmenovane stavy
+  namedState.index = new router.RouteType(moduleId, 'default', '/flux/flux-test-home')
 
   export function doRunApp() {
+
+    //** ROUTERS and its dispatch
+    router.activate(namedState.index);
 
     router.setHome(namedState.index, {});
     namedState.index.dispatch = (par, comp) => { comp(); };

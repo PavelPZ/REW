@@ -163,10 +163,12 @@ namespace DesignNew {
     public static void CS_to_typescrit_course() {
       runTask("CS_to_typescrit_course", () => {
         StringBuilder sb = new StringBuilder();
+        StringBuilder sbComponents = new StringBuilder();
         //LMComLib
         CSharpToTypeScript.GenerateStr(sb, new RegisterImpl("CourseModel", null, null, CourseModel.getAll.allEnums, CourseModel.getAll.otherTypes));
-        CSharpToTypeScriptCourse.GenerateStr(sb, new RegisterImpl("CourseModel", null, null, null, CourseModel.getAll.allTypes));
+        CSharpToTypeScriptCourse.GenerateStr(sb, sbComponents, new RegisterImpl("CourseModel", null, null, null, CourseModel.getAll.allTypes));
         File.WriteAllText(FileSources.theWebWwwRoot + @"\course\types.ts", sb.ToString(), Encoding.ASCII);
+        File.WriteAllText(FileSources.theWebWwwRoot + @"\course\components.ts_", sbComponents.ToString(), Encoding.ASCII);
         return null;
       });
     }

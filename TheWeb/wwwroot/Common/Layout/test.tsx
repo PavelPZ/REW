@@ -55,23 +55,23 @@ namespace layoutTest {
   }
   interface ILayoutTestClickAction extends flux.IAction { }
 
-  //** ROUTE configuration
-  var namedState = router.named.layoutTest; //pojmenovane stavy
-
   //
   export interface ITestModuleRoutePar extends router.IPar {
     defaultScene: boolean; //hlavni (layout.sceneDefault) nebo druha (sceneSecond) scena
     defaultPlaces: boolean; //zpusob navazani rendereru do places
   }
 
-  router.init(
-    namedState.index = new router.Route<ITestModuleRoutePar>(layoutTest.moduleId, 'r-default', '/layout/layoutTest/{defaultScene}/{defaultPlaces}', {
-      needsAuth: false,
-      finishRoutePar: st => { st.defaultPlaces = utils.toBoolean(st.defaultPlaces); st.defaultScene = utils.toBoolean(st.defaultScene); }
-    })
-  );
+  //** ROUTE configuration
+  var namedState = router.named.layoutTest; //pojmenovane stavy
+  namedState.index = new router.Route<ITestModuleRoutePar>(layoutTest.moduleId, 'r-default', '/layout/layoutTest/{defaultScene}/{defaultPlaces}', null, {
+    needsAuth: false,
+    finishRoutePar: st => { st.defaultPlaces = utils.toBoolean(st.defaultPlaces); st.defaultScene = utils.toBoolean(st.defaultScene); }
+  })
 
   export function doRunApp() {
+
+    router.activate(namedState.index);
+
     //************* WHOLE APP
     //** definice DISPATCH modulu
     new layoutTest();

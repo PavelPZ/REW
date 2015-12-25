@@ -2,20 +2,23 @@
   export interface INamedRoutes {
     loginTest: { index: router.RouteType; }
   };
-  named.loginTest = {} as any;
+  named.loginTest = { } as any;
 }
 
 namespace loginTest {
   //***** ROUTE init
-  var moduleId = 'loginTest';
+  export var moduleId = 'loginTest';
 
-  //** ROUTERS and its dispatch
   var namedState = router.named.loginTest; //pojmenovane stavy
-  router.init(
-    namedState.index = new router.RouteType(moduleId, 'default', '/login/login-test-home', { needsAuth: true })
-  );
+  namedState.index = new router.RouteType(moduleId, 'default', '/login/login-test-home', null, { needsAuth: true })
 
   export function doRunApp() {
+
+    //auth.initAuth();
+
+    //** ROUTERS and its dispatch
+    router.activate(router.named.login.root, router.named.oauth.index, namedState.index);
+
     router.setHome(namedState.index, {});
 
     namedState.index.dispatch = (par, comp) => { layout.changeScene(layout.sceneDefault, moduleId + '.content'); comp(); };

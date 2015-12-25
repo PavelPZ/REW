@@ -5,6 +5,7 @@ using System.Web.Http;
 
 namespace TestingServices {
   public class testingController : ApiController {
+
     [ActionName("ResetServerData"), HttpGet]
     public void ResetServerData(string email) {
       LoginServices.authController.resetUser(email);
