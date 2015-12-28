@@ -14,10 +14,8 @@ namespace loginTest {
 
   export function doRunApp() {
 
-    //auth.initAuth();
-
     //** ROUTERS and its dispatch
-    router.activate(router.named.login.root, router.named.oauth.index, namedState.index);
+    router.activate(router.named.login.index, router.named.oauth.index, router.named.loginTest.index);
 
     router.setHome(namedState.index, {});
 

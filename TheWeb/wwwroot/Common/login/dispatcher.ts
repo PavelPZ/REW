@@ -1,7 +1,7 @@
 ﻿namespace router {
   export interface INamedRoutes {
     login: {
-      root: router.RouteType;
+      index: router.RouteType;
       home: router.RouteType;
       login: router.RouteType;
       register: router.RouteType;
@@ -21,7 +21,7 @@ namespace login {
   export var moduleId = 'login';
 
   export var namedRoute = router.named.login; //pojmenovane stavy
-  namedRoute.root = new router.RouteType(moduleId, moduleId, '/login', null,
+  namedRoute.index = new router.RouteType(moduleId, moduleId, '/login', null,
     { needsAuth: false, isAbstract: true },
     parent => [
       namedRoute.home = new router.Route(moduleId, 'r-home', '/home?{authReturnUrl}', parent),

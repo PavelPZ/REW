@@ -7,7 +7,7 @@ namespace loginReg {
   const moduleId = 'login-reg';
 
   //loginReg - udrzba APP state: pridani a ubrani loginReg casti app state
-  var namedRoute = router.named.login.register = new router.RouteType(moduleId, 'r-register', '/register', router.named.login.root, {
+  var namedRoute = router.named.login.register = new router.RouteType(moduleId, 'r-register', '/register', router.named.login.index, {
     onEnterProc: compl => { flux.getState().loginReg = { ids: [], error: { ids: [], id: ErrorIds.no } }; compl(); },
     onLeaveProc: () => delete flux.getState().loginReg
   });

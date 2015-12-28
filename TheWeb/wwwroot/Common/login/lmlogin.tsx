@@ -7,7 +7,7 @@ namespace lmlogin {
   const moduleId = 'lmlogin';
 
   //loginReg - udrzba APP state: pridani a ubrani loginReg casti app state
-  var namedRoute = router.named.login.login = new router.RouteType(moduleId, 'r-login', '/login', router.named.login.root, {
+  var namedRoute = router.named.login.login = new router.RouteType(moduleId, 'r-login', '/login', router.named.login.index, {
     onEnterProc: compl => { flux.getState().lmlogin = { ids: [], error: { ids: [], id: ErrorIds.no } }; compl(); },
     onLeaveProc: () => delete flux.getState().lmlogin
   });
