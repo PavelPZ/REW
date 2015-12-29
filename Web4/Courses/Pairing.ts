@@ -48,7 +48,7 @@
     setScore(): void {
       var v = this.result.Value; var cnt = 0;
       for (var i = 0; i < v.length; i++) if (i == v[i]) cnt++;
-      var sw = this.scoreWeight ? this.scoreWeight : 100 * v.length;
+      var sw = (this.scoreWeight ? this.scoreWeight : 100) * v.length;
       this.result.ms = sw;
       this.result.s = Math.round(sw / v.length * cnt);
     }

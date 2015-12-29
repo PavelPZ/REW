@@ -782,7 +782,7 @@ namespace CourseModel {
     [XmlAttribute(AttributeName = "left-width"), tgAt(0), DefaultValue(pairingLeftWidth.normal)]
     public pairingLeftWidth leftWidth;
 
-    public override int getMaxScore() { return scoreWeight == 0 ? 100 * Items.Length : scoreWeight; }
+    public override int getMaxScore() { return (scoreWeight == 0 ? 100 : scoreWeight) * Items.Length; }
   }
   public enum pairingLeftWidth {
     normal, //300px
