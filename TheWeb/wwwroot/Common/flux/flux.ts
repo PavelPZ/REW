@@ -7,7 +7,7 @@ namespace config {
   export interface IData {
     flux?: { playInterval: number; appInitialized: boolean; };
   }
-  cfg.data.flux = { playInterval: 300, appInitialized:false };
+  cfg.data.flux = { playInterval: 300, appInitialized: false };
 }
 
 namespace flux {  
@@ -68,7 +68,7 @@ namespace flux {
     constructor(props: T, ctx: any) {
       super(props, ctx);
       //vypocet id a registrace
-      this.id = !utils.isEmpty(props.parentId) ? props.id + '<' + props.parentId : props.id;
+      this.id = !utils.isEmpty(props.parentId) ? props.id + '<-' + props.parentId : props.id;
       if (allComponents[this.id]) loger.doThrow('Just created component: ' + this.id + ' already exists (allComponents[this.id]: ');
       allComponents[this.id] = this;
       //self id do meho state
@@ -135,9 +135,9 @@ namespace flux {
   export function initApplication(dom: Element, root: () => JSX.Element) {
     buildDOMTree = () => { ReactDOM.unmountComponentAtNode(dom); ReactDOM.render(root(), dom); }
 
-    //** action PLAYING inicializace
     var st = testingTest.continuePlaying(); //sance testing modulu naladovat uplne jiny APP state pro PLAYING)
     if (st) {
+      //** action PLAYING inicializace
       state = st.initStatus;
       router.onInitRoute(() => {
         buildDOMTree(); //ReactDOM.render
@@ -145,18 +145,16 @@ namespace flux {
         config.cfg.data.flux.appInitialized = true;
         doPlayActions(st.actions, utils.Noop);
       });
-      return;
-    }
-
-    //** normalni inicializace
-    config.onInitAppState(() => { //staticka inicializace app state (bez ohledu na aktualne naladovanou ROUTE)
-      router.onInitRoute(() => { //inicializace default route (call initialni "hashchange" event). Pres flux.trigger se vola onDispatchRouteAction, kde je ev. redirekt na LOGIN.
-        testingTest.continueRecording();
-        buildDOMTree(); //ReactDOM.render
-        router.listenUrlChange(); //"hashchange" event binding
-        config.cfg.data.flux.appInitialized = true;
+    } else 
+      //** normalni inicializace
+      config.onInitAppState(() => { //staticka inicializace app state (bez ohledu na aktualne naladovanou ROUTE)
+        router.onInitRoute(() => { //inicializace default route (call initialni "hashchange" event). Pres flux.trigger se vola onDispatchRouteAction, kde je ev. redirekt na LOGIN.
+          testingTest.continueRecording();
+          buildDOMTree(); //ReactDOM.render
+          router.listenUrlChange(); //"hashchange" event binding
+          config.cfg.data.flux.appInitialized = true;
+        });
       });
-    });
   } var buildDOMTree: () => void;
 
   export interface IAppState { }

@@ -1,31 +1,20 @@
-class Tag<P extends CourseModel.ITagProps, S extends CourseModel.ITagState> extends React.Component<P, S> {
-  render(): JSX.Element {
-    return null;
-  }
-  //***** Context, https://github.com/Microsoft/TypeScript/issues/4785
-  static contextTypes = { pageContext: React.PropTypes.any }
-  context: crs.ITagContext;
+class Tag<P extends CourseModel.ITagProps, S extends CourseModel.ITagState> extends React.Component<P,S> {
 }
-class EvalControl<P extends CourseModel.IEvalControlProps, S extends CourseModel.IEvalControlState> extends Tag<P, S> {
+class EvalControl<P extends CourseModel.IEvalControlProps, S extends CourseModel.IEvalControlState> extends Tag<P,S> {
 }
-class Macro<P extends CourseModel.IMacroProps, S extends CourseModel.IMacroState> extends Tag<P, S> {
+class Body extends Tag<CourseModel.IBodyProps,CourseModel.IBodyState> {
 }
-class HumanEval<P extends CourseModel.IHumanEvalProps, S extends CourseModel.IHumanEvalState> extends EvalControl<P, S> {
+class HeaderProp extends Tag<CourseModel.IHeaderPropProps,CourseModel.IHeaderPropState> {
 }
-class Edit<P extends CourseModel.IEditProps, S extends CourseModel.IEditState> extends EvalControl<P, S> {
+class Macro<P extends CourseModel.IMacroProps, S extends CourseModel.IMacroState> extends Tag<P,S> {
 }
-
-class Body extends Tag<CourseModel.IBodyProps, CourseModel.IBodyState> {
-  constructor(props: CourseModel.IBodyProps, context: crs.ITagContext) {
-    super(props, context);
-  }
-}
-
-class HeaderProp extends Tag<CourseModel.IHeaderPropProps, CourseModel.IHeaderPropState> {
+class HumanEval<P extends CourseModel.IHumanEvalProps, S extends CourseModel.IHumanEvalState> extends EvalControl<P,S> {
 }
 class EvalButton extends EvalControl<CourseModel.IEvalButtonProps,CourseModel.IEvalButtonState> {
 }
 class DropDown extends Edit<CourseModel.IDropDownProps,CourseModel.IDropDownState> {
+}
+class Edit<P extends CourseModel.IEditProps, S extends CourseModel.IEditState> extends EvalControl<P,S> {
 }
 class GapFill extends Edit<CourseModel.IGapFillProps,CourseModel.IGapFillState> {
 }

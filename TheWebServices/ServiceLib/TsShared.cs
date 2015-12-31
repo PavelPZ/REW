@@ -54,7 +54,7 @@ namespace servConfig {
   public enum MvcViewType { no, web4, web, oauth }
   //RoutePrefix a StartProc by se mely vylucovat
   public enum RoutePrefix { no, web, web4, some_other }
-  public enum StartProc { no, empty, fluxTest, layoutTest, loginTest, validationTest, testingTest, oauthStartProc }
+  public enum StartProc { no, empty, fluxTest, layoutTest, loginTest, validationTest, testingTest, oauthStartProc, courseTest }
 
   public class MvcViewPars {
     public MvcViewType type;

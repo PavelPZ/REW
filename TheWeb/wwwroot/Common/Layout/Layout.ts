@@ -34,6 +34,10 @@ namespace layout {
     }
   }
 
+  export type TRenderToParent = (parentId: string) => JSX.Element;
+
+  export var onChangeScene: (sceneId: flux.IAction, ...renders: TRenderToParent[]) => void;
+
   export function changeScene(sceneId: string, first: IScenePlaceState | string, ...other: Array<IScenePlaceState>) {
     var firstPs: IScenePlaceState = utils.isString(first) ? { ids: [], rendererId: <string>first } : <IScenePlaceState>first;
     var scenePlaces = [firstPs].concat(other);
@@ -44,7 +48,7 @@ namespace layout {
     for (var newPl of scenePlaces) {
       var plId = newPl.placeId || placeContent;
       var oldPl = layState.scenePlaces[plId];
-      if (!oldPl) layState.scenePlaces[plId] = oldPl = { ids: [], placeId: plId, rendererId: undefined }; 
+      if (!oldPl) layState.scenePlaces[plId] = oldPl = { ids: [], placeId: plId, rendererId: undefined };
       if (oldPl.rendererId == newPl.rendererId) continue;
       oldPl.rendererId = newPl.rendererId;
       //overeni existence renderera

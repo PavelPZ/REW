@@ -101,3 +101,5 @@ namespace auth {
 
 
 }
+
+loginRedirectWhenNeeded = auth.loginRedirectWhenNeeded;

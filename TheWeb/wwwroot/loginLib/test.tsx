@@ -15,9 +15,9 @@ namespace loginTest {
   export function doRunApp() {
 
     //** ROUTERS and its dispatch
-    router.activate(router.named.login.index, router.named.oauth.index, router.named.loginTest.index);
+    router.activate(namedState.index, null, namedState.index, router.named.oauth.index, router.named.loginTest.index);
 
-    router.setHome(namedState.index, {});
+    //router.setHome(namedState.index, {});
 
     namedState.index.dispatch = (par, comp) => { layout.changeScene(layout.sceneDefault, moduleId + '.content'); comp(); };
 

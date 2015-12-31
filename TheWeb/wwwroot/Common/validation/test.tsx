@@ -66,7 +66,7 @@ namespace validationTest {
     //** ROUTERS and its dispatch
     router.activate(namedState.index);
 
-    router.setHome(namedState.index, {});
+    //router.setHome(namedState.index, {});
     namedState.index.dispatch = (par, comp) => { comp(); };
 
     new valTest();

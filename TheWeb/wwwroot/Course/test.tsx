@@ -1,6 +1,11 @@
-﻿<Body><div>{$loc('a', 'b') }xxx yyy zzz{3}{false}{new Date() }</div></Body>
+﻿/// <reference path="components.ts" />
 
-function a() {
-  //React.createElement(Body, null, $loc('a', 'b'), "xxx yyy zzz", 3, false, new Date());
-  //React.createElement(Body, null, $loc('a', 'b'), "xxx yyy zzz", 2, false);
+<Body><div>{$loc('a', 'b') }xxx yyy zzz{3}{false}{new Date() }</div></Body>
+namespace courseTest {
+
+  export function doRunApp() {
+    //return <Body><div>{$loc('a', 'b') }xxx yyy zzz{3}{false}{new Date() }</div></Body>;
+    //React.createElement(Body, null, $loc('a', 'b'), "xxx yyy zzz", 3, false, new Date());
+    //React.createElement(Body, null, $loc('a', 'b'), "xxx yyy zzz", 2, false);
+  }
 }

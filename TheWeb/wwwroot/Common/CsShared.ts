@@ -117,6 +117,7 @@ export enum StartProc {
   validationTest = 5,
   testingTest = 6,
   oauthStartProc = 7,
+  courseTest = 8,
 }
 
 export const enum oAuthProviders {

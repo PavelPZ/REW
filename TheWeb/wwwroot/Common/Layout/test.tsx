@@ -31,60 +31,65 @@ namespace layoutTest {
 
 
   //*********************** DISPATCH MODULE definition
-  class layoutTest extends flux.Dispatcher {
-    constructor() {
-      super(layoutTest.moduleId);
-    }
-    dispatchAction(action: flux.IAction, compl: utils.TCallback) {
-      switch (action.actionId) {
-        case 'r-default':
-          var act = action as router.IHistory<ITestModuleRoutePar>;
-          layout.changeScene(act.par.defaultScene ? layout.sceneDefault : sceneSecond,
-            { ids: [], placeId: layout.placeContent, rendererId: act.par.defaultPlaces ? 'cont-cont' : 'cont-panel' },
-            { ids: [], placeId: placeOther, rendererId: act.par.defaultPlaces ? 'other-cont' : 'other-panel' }
-          );
-          break;
-        case 'click':
-          alert('click');
-          break;
-      }
-      if (compl) compl();
-    }
-    static moduleId = 'layoutTest';
-    static createAppClickAction(): ILayoutTestClickAction { return { moduleId: layoutTest.moduleId, actionId: 'click' }; }
-  }
-  interface ILayoutTestClickAction extends flux.IAction { }
+  //class layoutTest extends flux.Dispatcher {
+  //  constructor() {
+  //    super(layoutTest.moduleId);
+  //  }
+  //  dispatchAction(action: flux.IAction, compl: utils.TCallback) {
+  //    switch (action.actionId) {
+  //      //case 'r-default':
+  //      //  var act = action as router.IHistory<ITestModuleRoutePar>;
+  //      //  layout.changeScene(act.par.defaultScene ? layout.sceneDefault : sceneSecond,
+  //      //    { ids: [], placeId: layout.placeContent, rendererId: act.par.defaultPlaces ? 'cont-cont' : 'cont-panel' },
+  //      //    { ids: [], placeId: placeOther, rendererId: act.par.defaultPlaces ? 'other-cont' : 'other-panel' }
+  //      //  );
+  //      //  break;
+  //      case 'click':
+  //        alert('click');
+  //        break;
+  //    }
+  //    if (compl) compl();
+  //  }
+  //  static moduleId = 'layoutTest';
+  //  static createAppClickAction(): ILayoutTestClickAction { return { moduleId: layoutTest.moduleId, actionId: 'click' }; }
+  //}
+  interface ILayoutTestClickAction extends flux.IAction { par: ITestModuleRoutePar;}
 
+  var moduleId = 'layoutTest';
   //
   export interface ITestModuleRoutePar extends router.IPar {
     defaultScene: boolean; //hlavni (layout.sceneDefault) nebo druha (sceneSecond) scena
     defaultPlaces: boolean; //zpusob navazani rendereru do places
   }
 
+  layout.onChangeScene = (sceneId, renders) => {
+  };
+
   //** ROUTE configuration
   var namedState = router.named.layoutTest; //pojmenovane stavy
-  namedState.index = new router.Route<ITestModuleRoutePar>(layoutTest.moduleId, 'r-default', '/layout/layoutTest/{defaultScene}/{defaultPlaces}', null, {
+  namedState.index = new router.Route<ITestModuleRoutePar>(moduleId, 'r-default', '/layout/layoutTest/{defaultScene}/{defaultPlaces}', null, {
     needsAuth: false,
-    finishRoutePar: st => { st.defaultPlaces = utils.toBoolean(st.defaultPlaces); st.defaultScene = utils.toBoolean(st.defaultScene); }
-  })
+    finishRoutePar: st => { st.defaultPlaces = utils.toBoolean(st.defaultPlaces); st.defaultScene = utils.toBoolean(st.defaultScene); },
+    //dispatch: (par, comp) => {
+    //  layout.changeScene(par.defaultScene ? layout.sceneDefault : sceneSecond,
+    //    { ids: [], placeId: layout.placeContent, rendererId: par.defaultPlaces ? 'cont-cont' : 'cont-panel' },
+    //    { ids: [], placeId: placeOther, rendererId: par.defaultPlaces ? 'other-cont' : 'other-panel' }
+    //  );
+    //  comp();
+    //}
+    dispatch: (par, comp) => {
+      layout.onChangeScene({ moduleId: moduleId, actionId: '', par: par } as ILayoutTestClickAction);
+      comp();
+    }
+  });
 
   export function doRunApp() {
 
-    router.activate(namedState.index);
+    router.activate(namedState.index, { defaultScene: true, defaultPlaces: true });
 
     //************* WHOLE APP
     //** definice DISPATCH modulu
-    new layoutTest();
-
-    router.setHome<ITestModuleRoutePar>(namedState.index, { defaultScene: true, defaultPlaces: true });
-
-    namedState.index.dispatch = (par, comp) => {
-      layout.changeScene(par.defaultScene ? layout.sceneDefault : sceneSecond,
-        { ids: [], placeId: layout.placeContent, rendererId: par.defaultPlaces ? 'cont-cont' : 'cont-panel' },
-        { ids: [], placeId: placeOther, rendererId: par.defaultPlaces ? 'other-cont' : 'other-panel' }
-      );
-      comp();
-    };
+    //new layoutTest();
 
     //** SCENE configuration
     // Jsou 2 sceny (layout.sceneDefault a sceneSecond)
@@ -97,7 +102,7 @@ namespace layoutTest {
     layout.registerRenderer(placeOther, 'other-panel', parent => <h2 key={flux.cnt() }>Panel x4</h2>);
 
     var rootElement = () => <div key={flux.cnt() } >
-      <a href='#' onClick={ev => namedState.index.navig({ defaultScene: true, defaultPlaces: true }, ev) } style={{}}>Default Scene, default places</a> |
+      <a href='#' onClick={ev => namedState.index.navig({ defaultScene: true, defaultPlaces: true }, ev) }>Default Scene, default places</a> |
       <a href='#' onClick={ev => namedState.index.navig({ defaultScene: false, defaultPlaces: true }, ev) }>Other Scene, default places</a> |
       <a href='#' onClick={ev => namedState.index.navig({ defaultScene: true, defaultPlaces: false }, ev) }>Default Scene, other places</a> |
       <a href='#' onClick={ev => namedState.index.navig({ defaultScene: false, defaultPlaces: false }, ev) }>Other Scene, other places</a> |

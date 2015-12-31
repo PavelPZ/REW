@@ -236,18 +236,19 @@
     <Content Include="wwwroot\Content\fontawesome\bordered-pulled.less" />
     <Content Include="wwwroot\Content\fontawesome\animated.less" />
     <None Include="JSON.json" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="wwwroot\Common\closure\cookies.js" />
     <Content Include="wwwroot\Common\closure\crypt.js" />
     <Content Include="wwwroot\Common\closure\sha1.js" />
     <Content Include="wwwroot\Common\flux\Index.html" />
     <Content Include="wwwroot\Common\Layout\index.html" />
     <Content Include="wwwroot\Common\lib\index.html" />
-    <Content Include="wwwroot\Common\login\index.html" />
+    <Content Include="wwwroot\loginLib\index.html" />
     <Content Include="wwwroot\Common\uiRouter\index.html" />
     <Content Include="wwwroot\Common\uiRouter\urlMatcherFactory.js" />
     <Content Include="wwwroot\Common\validation\Index.html" />
-    <Content Include="wwwroot\Course\index.html" />
     <Content Include="wwwroot\deploy\oauth\mins\all.min.js" />
     <Content Include="wwwroot\deploy\web4\index-parts\edusoft.html" />
     <Content Include="wwwroot\deploy\web4\index-parts\grafia.html" />
@@ -272,8 +273,6 @@
     <Content Include="wwwroot\deploy\web4\mins\zh-cn.min.js" />
     <Content Include="wwwroot\deploy\web\mins\common.min.js" />
     <Content Include="wwwroot\deploy\web\mins\externals.min.js" />
-    <Content Include="wwwroot\Material\material.css" />
-    <Content Include="wwwroot\Material\material.js" />
     <Content Include="wwwroot\scripts\classNames.js" />
     <Content Include="wwwroot\scripts\core.js" />
     <Content Include="wwwroot\scripts\react-bootstrap.js" />
@@ -284,6 +283,8 @@
     <Content Include="wwwroot\TestPlaylists\noname.json" />
     <Content Include="wwwroot\bs.less" />
     <Content Include="wwwroot\deploy\web\cssskin-bs.dpl.json" />
+    <Content Include="wwwroot\Course\js.dpl.json" />
+    <Content Include="wwwroot\Course\jsskin-bs.dpl.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AppConfig.cs" />
@@ -314,8 +315,8 @@
     </None>
     <Content Include="wwwroot\Common\closure\js.dpl.json" />
     <Content Include="wwwroot\Common\lib\js.dpl.json" />
-    <Content Include="wwwroot\Common\login\js.dpl.json" />
-    <Content Include="wwwroot\Common\login\jsskin-bs.dpl.json" />
+    <Content Include="wwwroot\loginLib\js.dpl.json" />
+    <Content Include="wwwroot\loginLib\jsskin-bs.dpl.json" />
     <Content Include="wwwroot\Common\uiRouter\js.dpl.json" />
     <Content Include="wwwroot\deploy\oauth\js-all.dpl.json" />
     <Content Include="wwwroot\deploy\oauth\js.dpl.json" />
@@ -360,7 +361,6 @@
     <Content Include="wwwroot\swfiles.zip" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="wwwroot\app-test\testHome.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\closure\cookies.d.ts" />
     <TypeScriptCompile Include="wwwroot\Common\closure\crypt.d.ts" />
     <TypeScriptCompile Include="wwwroot\Common\closure\hash.d.ts" />
@@ -373,23 +373,24 @@
     <TypeScriptCompile Include="wwwroot\Common\lib\ajax.ts" />
     <TypeScriptCompile Include="wwwroot\Common\lib\Common.ts" />
     <TypeScriptCompile Include="wwwroot\Common\lib\encrypt.ts" />
+    <TypeScriptCompile Include="wwwroot\Common\lib\loc.ts" />
     <TypeScriptCompile Include="wwwroot\Common\lib\oAuth-low.ts" />
     <TypeScriptCompile Include="wwwroot\Common\lib\oauth.ts" />
-    <TypeScriptCompile Include="wwwroot\Common\login\auth.ts" />
-    <TypeScriptCompile Include="wwwroot\Common\login\dispatcher.ts" />
-    <TypeScriptCompile Include="wwwroot\Common\login\lmlogin.tsx" />
-    <TypeScriptCompile Include="wwwroot\Common\login\register.tsx" />
-    <TypeScriptCompile Include="wwwroot\Common\login\test.tsx" />
-    <TypeScriptCompile Include="wwwroot\Common\login\views\editProfile-bs.tsx" />
-    <TypeScriptCompile Include="wwwroot\Common\login\views\confirmForgotPsw-bs.tsx" />
-    <TypeScriptCompile Include="wwwroot\Common\login\views\forgotPsw-bs.tsx" />
-    <TypeScriptCompile Include="wwwroot\Common\login\views\confirmRegister-bs.tsx" />
-    <TypeScriptCompile Include="wwwroot\Common\login\views\changePasssword-bs.tsx" />
-    <TypeScriptCompile Include="wwwroot\Common\login\views\lmlogin-bs.tsx" />
-    <TypeScriptCompile Include="wwwroot\Common\login\views\register-email.tsx" />
-    <TypeScriptCompile Include="wwwroot\Common\login\views\register-bs.tsx" />
-    <TypeScriptCompile Include="wwwroot\Common\login\views\home-bs.tsx" />
-    <TypeScriptCompile Include="wwwroot\Common\login\views\panel.tsx" />
+    <TypeScriptCompile Include="wwwroot\loginLib\auth.ts" />
+    <TypeScriptCompile Include="wwwroot\loginLib\dispatcher.ts" />
+    <TypeScriptCompile Include="wwwroot\loginLib\lmlogin.tsx" />
+    <TypeScriptCompile Include="wwwroot\loginLib\register.tsx" />
+    <TypeScriptCompile Include="wwwroot\loginLib\test.tsx" />
+    <TypeScriptCompile Include="wwwroot\loginLib\views\editProfile-bs.tsx" />
+    <TypeScriptCompile Include="wwwroot\loginLib\views\confirmForgotPsw-bs.tsx" />
+    <TypeScriptCompile Include="wwwroot\loginLib\views\forgotPsw-bs.tsx" />
+    <TypeScriptCompile Include="wwwroot\loginLib\views\confirmRegister-bs.tsx" />
+    <TypeScriptCompile Include="wwwroot\loginLib\views\changePasssword-bs.tsx" />
+    <TypeScriptCompile Include="wwwroot\loginLib\views\lmlogin-bs.tsx" />
+    <TypeScriptCompile Include="wwwroot\loginLib\views\register-email.tsx" />
+    <TypeScriptCompile Include="wwwroot\loginLib\views\register-bs.tsx" />
+    <TypeScriptCompile Include="wwwroot\loginLib\views\home-bs.tsx" />
+    <TypeScriptCompile Include="wwwroot\loginLib\views\panel.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\startProcs.ts" />
     <TypeScriptCompile Include="wwwroot\Common\proxies.ts" />
     <TypeScriptCompile Include="wwwroot\Common\testing\test.tsx" />
@@ -402,11 +403,10 @@
     <TypeScriptCompile Include="wwwroot\Common\validation\templates-bs.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\validation\templates-mdl.tsx" />
     <TypeScriptCompile Include="wwwroot\Common\validation\test.tsx" />
-    <TypeScriptCompile Include="wwwroot\Course\componentsImpl.ts" />
-    <TypeScriptCompile Include="wwwroot\Course\course.tsx" />
+    <TypeScriptCompile Include="wwwroot\Course\crs.ts" />
     <Content Include="wwwroot\Course\components.ts" />
+    <Content Include="wwwroot\Course\components.ts_" />
     <None Include="wwwroot\Course\dict\WordUnderCursor.ts_" />
-    <TypeScriptCompile Include="wwwroot\Course\gapFill.ts" />
     <TypeScriptCompile Include="wwwroot\Course\test.tsx" />
     <TypeScriptCompile Include="wwwroot\Course\types.ts" />
     <TypeScriptCompile Include="wwwroot\scripts\typings\core-js.d.ts" />

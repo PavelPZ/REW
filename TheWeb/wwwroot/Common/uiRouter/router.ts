@@ -1,5 +1,4 @@
-﻿const loginRedirectWhenNeeded = () => auth.loginRedirectWhenNeeded;
-const trigger = () => flux.trigger;
+﻿var loginRedirectWhenNeeded: () => router.IUrlType; // = () => auth.loginRedirectWhenNeeded;
 
 declare namespace uiRouter {
   class UrlMatcher {
@@ -26,7 +25,7 @@ namespace router {
     window.addEventListener('popstate', e => {
       var hist: IHistoryType = e.state;
       loger.log("history popstate: " + JSON.stringify(hist));
-      trigger()(hist, null, true);
+      flux.trigger(hist, null, true);
     });
   }
 
@@ -59,8 +58,12 @@ namespace router {
   export function history2Url(hist: IHistoryType): IUrlType { var route = routeDir[hist.moduleId + '/' + hist.actionId]; return route ? { route: route, par: hist.par, replace: hist.replace } : null; }
 
   //*** inicilizace 
-  export function activate(...roots: Array<RouteType>): void { roots.forEach(s => s.activate()); } //aktivuj routes
-  export function setHome<T extends IPar>(state: Route<T>, par: T) { homeUrl = { route: state, par: par } } //definice difotniho stavu
+  export function activate<T extends IPar>(state: Route<T>, par?: T, ...roots: Array<RouteType>): void {
+    if (!roots) roots = [state];
+    roots.forEach(s => s.activate());
+    homeUrl = { route: state, par: par ? par : {} };
+  } //aktivuj routes
+  //export function setHome<T extends IPar>(state: Route<T>, par: T) { homeUrl = { route: state, par: par } } //definice difotniho stavu
 
   //3 moznosti navratu:
   //- potreba AUTH => nevola se COMPL callback
@@ -83,7 +86,7 @@ namespace router {
   function onDispatchRouteAction(inUrl: IUrlType, compl: (outUrl: IUrlType) => void) {
     //test na authentifikaci => vymen ev. aktualni URL za login URL
     if (inUrl.route.needsAuth) {
-      var loginRoute = loginRedirectWhenNeeded()();
+      var loginRoute = loginRedirectWhenNeeded ? loginRedirectWhenNeeded() : null;
       if (loginRoute != null) {
         inUrl = { route: loginRoute.route, par: loginRoute.par, replace: true };
         loger.log('router.onDispatchRouteAction: auth redirect to loginRoute');
@@ -186,7 +189,7 @@ namespace router {
     navig(par?: T, ev?: React.SyntheticEvent, replace?: boolean, compl?: utils.TCallback) {
       if (ev) ev.preventDefault();
       var hist = url2History({ route: this, par: par, replace: replace }); 
-      trigger()(hist, compl);
+      flux.trigger(hist, compl);
     }
 
     globalId(): string { return this.moduleId + '/' + this.actionId; }
@@ -216,6 +219,7 @@ namespace router {
       //routeDir[nm] = this; routes.push(this);
     //}
     private matcher: uiRouter.UrlMatcher;
+
     dispatch: (par: T, compl: utils.TCallback) => void; //sance osetrit dispatch mez Dispatch modulu
 
     onLeave() { loger.log('routeLeave: ' + this.globalId()); if (this.onLeaveProc) this.onLeaveProc(); } //notifikace o opusteni route
@@ -238,6 +242,7 @@ namespace router {
     finishRoutePar?: (h: T) => void;
     onLeaveProc?: utils.TCallback;
     onEnterProc?: utils.TAsync;
+    dispatch?: (par: T, compl: utils.TCallback) => void; //sance osetrit ROUTE dispatch bez Dispatch modulu
   }
   export type IConstructType = IConstruct<IPar>;
 

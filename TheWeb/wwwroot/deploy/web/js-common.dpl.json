@@ -8,7 +8,8 @@
     "/common/validation/validator.js",
     "/common/validation/validation.js",
     "/common/uirouter/js.dpl.json",
-    "/common/login/js.dpl.json",
+    "/loginlib/js.dpl.json",
+    "/course/js.dpl.json",
     "/common/testing/testing.js",
     "/common/startprocs.js",
     "js-tests.dpl.json"

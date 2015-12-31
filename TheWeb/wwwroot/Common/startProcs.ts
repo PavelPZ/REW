@@ -7,6 +7,7 @@ function startProc() {
     case servConfig.StartProc.testingTest: testingTest.doRunApp(); break;
     case servConfig.StartProc.oauthStartProc: oauth.loginPageEnter(); break;
     case servConfig.StartProc.empty: utils.Noop(); break;
+    case servConfig.StartProc.courseTest: courseTest.doRunApp(); break;
     case servConfig.StartProc.no:
       switch (servCfg.routePrefix) {
         case servConfig.RoutePrefix.some_other: layoutTest.doRunApp(); break;
