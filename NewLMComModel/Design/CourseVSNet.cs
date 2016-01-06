@@ -362,7 +362,7 @@ namespace Author {
         logger.ErrorLineFmt("?", ">>>> Compiling Error {0}", LowUtils.ExceptionToString(exp));
         return Enumerable.Empty<Packager.Consts.file>();
       }
-    }
+    } 
 
     //public static product vsNetProduct(string url, serverContext ctx) { 
     //  new product {

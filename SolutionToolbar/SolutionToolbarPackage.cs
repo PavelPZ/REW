@@ -119,10 +119,10 @@ namespace Author {
 
       //build
       //vyhozeni Publish, 22.12.2015
-      //CommandID BuildCommandID = new CommandID(GuidList.guidSolutionToolbarCmdSet, (int)PkgCmdIDList.cmd_Build);
-      //OleMenuCommand BuildMenuItem = new OleMenuCommand((s, a) => doAction(actions.build), BuildCommandID);
-      //BuildMenuItem.BeforeQueryStatus += (s, a) => queryAction(s, actions.build);
-      //mcs.AddCommand(BuildMenuItem);
+      CommandID BuildCommandID = new CommandID(GuidList.guidSolutionToolbarCmdSet, (int)PkgCmdIDList.cmd_Build);
+      OleMenuCommand BuildMenuItem = new OleMenuCommand((s, a) => doAction(actions.build), BuildCommandID);
+      BuildMenuItem.BeforeQueryStatus += (s, a) => queryAction(s, actions.build);
+      mcs.AddCommand(BuildMenuItem);
     }
 
     void queryAction(object sender, actions action) {
@@ -164,7 +164,6 @@ namespace Author {
             break;
           case actions.build:
             DeployForm.show(actCtx);
-            //using (var str = File.OpenWrite(@"d:\temp\prod.zip")) vsNetServer.build(str, actCtx);
             break;
           default:
             new AddForm(action, actCtx, addFolder).ShowDialog();

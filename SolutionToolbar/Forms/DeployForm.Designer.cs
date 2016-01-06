@@ -126,6 +126,7 @@
       this.WebLinkBtn.TabIndex = 6;
       this.WebLinkBtn.TabStop = true;
       this.WebLinkBtn.Text = "Zalozte si jej zde.";
+      this.WebLinkBtn.Visible = false;
       this.WebLinkBtn.Click += new System.EventHandler(this.WebLinkBtn_Click);
       // 
       // label3
@@ -137,6 +138,7 @@
       this.label3.Size = new System.Drawing.Size(138, 13);
       this.label3.TabIndex = 5;
       this.label3.Text = "Nemate LANGMaster ucet?";
+      this.label3.Visible = false;
       // 
       // LoginBtn
       // 
@@ -182,7 +184,7 @@
       this.groupBox2.Size = new System.Drawing.Size(709, 126);
       this.groupBox2.TabIndex = 4;
       this.groupBox2.TabStop = false;
-      this.groupBox2.Text = "2. select company or individual account";
+      this.groupBox2.Text = "2. select company ";
       // 
       // textBox3
       // 
@@ -198,6 +200,7 @@
       this.textBox3.TabIndex = 5;
       this.textBox3.TabStop = false;
       this.textBox3.Text = resources.GetString("textBox3.Text");
+      this.textBox3.Visible = false;
       // 
       // IndividualCb
       // 
@@ -212,12 +215,13 @@
       this.IndividualCb.TabIndex = 4;
       this.IndividualCb.Text = "Individual account";
       this.IndividualCb.UseVisualStyleBackColor = true;
+      this.IndividualCb.Visible = false;
       // 
       // label4
       // 
       this.label4.AutoSize = true;
       this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label4.Location = new System.Drawing.Point(349, 18);
+      this.label4.Location = new System.Drawing.Point(172, 18);
       this.label4.Name = "label4";
       this.label4.Size = new System.Drawing.Size(110, 13);
       this.label4.TabIndex = 1;
@@ -227,7 +231,7 @@
       // 
       this.CompaniesCmb.Enabled = false;
       this.CompaniesCmb.FormattingEnabled = true;
-      this.CompaniesCmb.Location = new System.Drawing.Point(352, 34);
+      this.CompaniesCmb.Location = new System.Drawing.Point(175, 34);
       this.CompaniesCmb.Name = "CompaniesCmb";
       this.CompaniesCmb.Size = new System.Drawing.Size(315, 21);
       this.CompaniesCmb.TabIndex = 0;
@@ -258,6 +262,7 @@
       this.RunCb.TabIndex = 9;
       this.RunCb.Text = "Run web application";
       this.RunCb.UseVisualStyleBackColor = true;
+      this.RunCb.Visible = false;
       // 
       // ProgressBar
       // 

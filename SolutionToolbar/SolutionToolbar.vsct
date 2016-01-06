@@ -172,7 +172,7 @@
         </Strings>
       </Button>
 
-      <!--<Button guid="guidSolutionToolbarCmdSet" id="cmd_Build" priority="0x0108" type="Button">
+      <Button guid="guidSolutionToolbarCmdSet" id="cmd_Build" priority="0x0108" type="Button">
         <Parent guid="guidSolutionToolbarCmdSet" id="SolutionToolbarGroup" />
         <Icon guid="guidImages" id="bmpPicSearch" />
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -180,7 +180,7 @@
           <CommandName>cmd_Build</CommandName>
           <ButtonText>Publish to web</ButtonText>
         </Strings>
-      </Button>-->
+      </Button>
 
     </Buttons>
 
@@ -219,7 +219,7 @@
       <IDSymbol name="cmd_addTestSkill" value="0x106" />
       <IDSymbol name="cmd_addTestTaskGroup" value="0x107" />
       <IDSymbol name="cmd_addEx" value="0x108" />
-      <!--<IDSymbol name="cmd_Build" value="0x109" />-->
+      <IDSymbol name="cmd_Build" value="0x109" />
       <IDSymbol name="cmd_addMod" value="0x110" />
       <!--<IDSymbol name="cmdidShowCourse" value="0x0102" />
       <IDSymbol name="cmdidShowTest" value="0x0103" />-->
