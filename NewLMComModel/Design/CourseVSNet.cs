@@ -233,9 +233,12 @@ namespace Author {
         //defaultDictType = dictTypes.no,
         //defaultLocs = new Langs[] {Langs.en_gb},
         title = actCtx.actNode.title,
-        type = actCtx.actNode.isType(runtimeType.test) ? runtimeType.product | runtimeType.test : runtimeType.product,
+        type = runtimeType.product,
         Items = new data[] { new ptr(true, actCtx.url) { takeChilds = childMode.selfChild } }
       };
+      if (actCtx.actNode.isType(runtimeType.test)) {
+        prod.type |= runtimeType.test;
+      }
       getPostDataFilesZip(str, actCtx, prod, vsNetServer.log, files);
     }
 

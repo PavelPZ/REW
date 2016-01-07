@@ -44,7 +44,7 @@
     <BatchProduct id="/lm/prods/etestme-comp-demo/english/c2/" />
 
     <!-- Skrivanek tests -->
-    <BatchProduct id="/skrivanek/prods/etestme-comp/english/a1/" />
+    <!--<BatchProduct id="/skrivanek/prods/etestme-comp/english/a1/" />
     <BatchProduct id="/skrivanek/prods/etestme-std/english/a1/" />
     <BatchProduct id="/skrivanek/prods/etestme-comp/english/a2/" />
     <BatchProduct id="/skrivanek/prods/etestme-std/english/a2/" />
@@ -201,6 +201,6 @@
     <BatchProduct id="/skrivanek/prods/etestme-std/spanish/all/" />
     <BatchProduct id="/skrivanek/prods/etestme-comp/spanish/all/" />
     <BatchProduct id="/skrivanek/prods/etestme-std/german/all/" />
-    <BatchProduct id="/skrivanek/prods/etestme-comp/german/all/" />
+    <BatchProduct id="/skrivanek/prods/etestme-comp/german/all/" />-->
   </products>
 </WebDataBatch>

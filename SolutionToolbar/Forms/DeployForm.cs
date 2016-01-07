@@ -66,8 +66,8 @@ namespace Author {
     void adjustCompanyStatus() {
       if (publPersist.instance.cookie == null) return;
       IndividualCb.Enabled = publPersist.individualNotReady ? false : true;
-      CompaniesCmb.Enabled = individualChecked == CheckState.Unchecked;
-      DeployBtn.Enabled = RunCb.Enabled = RemoveBtn.Enabled = individualChecked == CheckState.Checked || (individualChecked == CheckState.Unchecked && CompaniesCmb.SelectedIndex >= 0);
+      CompaniesCmb.Enabled = individualChecked != CheckState.Checked;
+      DeployBtn.Enabled = RunCb.Enabled = RemoveBtn.Enabled = individualChecked == CheckState.Checked || (individualChecked != CheckState.Unchecked && CompaniesCmb.SelectedIndex >= 0);
     }
 
     void LoginBtn_Click(object sender, EventArgs e) {
@@ -171,12 +171,15 @@ namespace Author {
   }
 
   public class publPersist {
-    public const bool individualNotReady = false;
-    public static publPersist instance;
+
     public string email;
     public int companyId;
     public CheckState individualChecked;
     public bool runAfterDeploy;
+
+    public const bool individualNotReady = false;
+    public static publPersist instance;
+
     public override string ToString() {
       return LowUtils.Base64Decode(Encoding.UTF8.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(this)));
     }
@@ -190,10 +193,16 @@ namespace Author {
       cookie = profile.Cookie;
       myData = callRpc<MyData>(new Login.CmdMyInit { lmcomId = publPersist.instance.cookie.id });
       this.email = email;
+      save();
     }
     public void InitFromCompany(CheckState individualChecked, int companyId, bool runAfterDeploy, string publisherRoot) {
       this.individualChecked = individualChecked; this.companyId = companyId; this.runAfterDeploy = runAfterDeploy;
-      publ.vsNetData = ToString(); publ.publisherRoot = publisherRoot;
+      publ.publisherRoot = publisherRoot;
+      save();
+    }
+    void save() {
+      if (publ == null) return;
+      publ.vsNetData = ToString(); 
       CourseMeta.data.writeObject(publ, publFn);
     }
     public T callRpc<T>(object data) where T : class {
