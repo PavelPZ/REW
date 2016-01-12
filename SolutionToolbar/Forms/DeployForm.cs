@@ -67,7 +67,7 @@ namespace Author {
       if (publPersist.instance.cookie == null) return;
       IndividualCb.Enabled = publPersist.individualNotReady ? false : true;
       CompaniesCmb.Enabled = individualChecked != CheckState.Checked;
-      DeployBtn.Enabled = RunCb.Enabled = RemoveBtn.Enabled = individualChecked == CheckState.Checked || (individualChecked != CheckState.Unchecked && CompaniesCmb.SelectedIndex >= 0);
+      DeployBtn.Enabled = RunCb.Enabled = RemoveBtn.Enabled = individualChecked == CheckState.Checked || (individualChecked != CheckState.Checked && CompaniesCmb.SelectedIndex >= 0);
     }
 
     void LoginBtn_Click(object sender, EventArgs e) {
@@ -174,7 +174,7 @@ namespace Author {
 
     public string email;
     public int companyId;
-    public CheckState individualChecked;
+    public CheckState individualChecked = CheckState.Unchecked;
     public bool runAfterDeploy;
 
     public const bool individualNotReady = false;

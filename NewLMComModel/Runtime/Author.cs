@@ -131,6 +131,8 @@ namespace Author {
       //return LowUtils.join(parts, "/");
     }
     public static string urlFromDesignUrl(Int64 companyId, string designUrl) {
+      //designUrl = designUrl!=null ? designUrl.Substring(LowUtils.nthIndexesOf(designUrl, '/', 2)) : "";
+      //return designUrl;
       var mod = companyId % publisherSubpathModulo;
       var group = (int)((companyId - mod) / publisherSubpathModulo);
       return string.Format("/publ/{0}/{1}{2}", group, mod, designUrl == null ? "/" : designUrl.Substring(LowUtils.nthIndexesOf(designUrl, '/', 2)));
