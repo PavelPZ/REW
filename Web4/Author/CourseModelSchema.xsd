@@ -1629,10 +1629,6 @@
   </xs:attributeGroup>
   <xs:group name="LM-all-elements">
     <xs:choice>
-      <xs:element ref="smart-pairing" />
-      <xs:element ref="smart-offering" />
-      <xs:element ref="smart-element" />
-      <xs:element ref="smart-element-low" />
       <xs:element ref="macro-article" />
       <xs:element ref="macro-vocabulary" />
       <xs:element ref="macro-video" />
@@ -1643,6 +1639,10 @@
       <xs:element ref="macro-table" />
       <xs:element ref="macro-list" />
       <xs:element ref="macro-icon-list" />
+      <xs:element ref="smart-element-low" />
+      <xs:element ref="smart-element" />
+      <xs:element ref="smart-pairing" />
+      <xs:element ref="smart-offering" />
       <xs:element ref="node" />
       <xs:element ref="error" />
       <xs:element ref="eval-button" />
@@ -1700,55 +1700,6 @@
       <xs:pattern value="^\d+\.\d+$" />
     </xs:restriction>
   </xs:simpleType>
-  <xs:element name="smart-pairing" type="smart-pairing-type" />
-  <xs:complexType name="smart-pairing-type">
-    <xs:simpleContent>
-      <xs:extension base="xs:string">
-        <xs:attribute default="false" name="random" type="xs:boolean" />
-        <xs:attribute default="normal" name="left-width" type="pairingLeftWidth" />
-        <xs:attribute name="name" type="xs:string" />
-        <xs:attribute name="cdata" type="xs:string" />
-        <xs:attribute name="id" type="xs:ID" />
-        <xs:attribute name="style-sheet" type="xs:string" />
-        <xs:attribute name="class" />
-      </xs:extension>
-    </xs:simpleContent>
-  </xs:complexType>
-  <xs:element name="smart-offering" type="smart-offering-type" />
-  <xs:complexType name="smart-offering-type">
-    <xs:simpleContent>
-      <xs:extension base="xs:string">
-        <xs:attribute name="words" type="xs:string" />
-        <xs:attribute default="gap-fill" name="mode" type="smartOfferingMode" />
-        <xs:attribute name="name" type="xs:string" />
-        <xs:attribute name="cdata" type="xs:string" />
-        <xs:attribute name="id" type="xs:ID" />
-        <xs:attribute name="style-sheet" type="xs:string" />
-        <xs:attribute name="class" />
-      </xs:extension>
-    </xs:simpleContent>
-  </xs:complexType>
-  <xs:element name="smart-element" type="smart-element-type" />
-  <xs:complexType name="smart-element-type">
-    <xs:simpleContent>
-      <xs:extension base="xs:string">
-        <xs:attribute default="no" name="inline-type" type="smartElementTypes" />
-        <xs:attribute name="name" type="xs:string" />
-        <xs:attribute name="cdata" type="xs:string" />
-        <xs:attribute name="id" type="xs:ID" />
-        <xs:attribute name="style-sheet" type="xs:string" />
-        <xs:attribute name="class" />
-      </xs:extension>
-    </xs:simpleContent>
-  </xs:complexType>
-  <xs:element name="smart-element-low" type="smart-element-low-type" />
-  <xs:complexType name="smart-element-low-type">
-    <xs:attribute name="name" type="xs:string" />
-    <xs:attribute name="cdata" type="xs:string" />
-    <xs:attribute name="id" type="xs:ID" />
-    <xs:attribute name="style-sheet" type="xs:string" />
-    <xs:attribute name="class" />
-  </xs:complexType>
   <xs:element name="macro-article" type="macro-article-type" />
   <xs:complexType name="macro-article-type">
     <xs:simpleContent>
@@ -1871,6 +1822,55 @@
         <xs:attribute default="false" name="is-striped" type="xs:boolean" />
         <xs:attribute default="number" name="icon" type="listIcon" />
         <xs:attribute default="black" name="color" type="colors" />
+        <xs:attribute name="name" type="xs:string" />
+        <xs:attribute name="cdata" type="xs:string" />
+        <xs:attribute name="id" type="xs:ID" />
+        <xs:attribute name="style-sheet" type="xs:string" />
+        <xs:attribute name="class" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:element name="smart-element-low" type="smart-element-low-type" />
+  <xs:complexType name="smart-element-low-type">
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="cdata" type="xs:string" />
+    <xs:attribute name="id" type="xs:ID" />
+    <xs:attribute name="style-sheet" type="xs:string" />
+    <xs:attribute name="class" />
+  </xs:complexType>
+  <xs:element name="smart-element" type="smart-element-type" />
+  <xs:complexType name="smart-element-type">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute default="no" name="inline-type" type="smartElementTypes" />
+        <xs:attribute name="name" type="xs:string" />
+        <xs:attribute name="cdata" type="xs:string" />
+        <xs:attribute name="id" type="xs:ID" />
+        <xs:attribute name="style-sheet" type="xs:string" />
+        <xs:attribute name="class" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:element name="smart-pairing" type="smart-pairing-type" />
+  <xs:complexType name="smart-pairing-type">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute default="false" name="random" type="xs:boolean" />
+        <xs:attribute default="normal" name="left-width" type="pairingLeftWidth" />
+        <xs:attribute name="name" type="xs:string" />
+        <xs:attribute name="cdata" type="xs:string" />
+        <xs:attribute name="id" type="xs:ID" />
+        <xs:attribute name="style-sheet" type="xs:string" />
+        <xs:attribute name="class" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:element name="smart-offering" type="smart-offering-type" />
+  <xs:complexType name="smart-offering-type">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="words" type="xs:string" />
+        <xs:attribute default="gap-fill" name="mode" type="smartOfferingMode" />
         <xs:attribute name="name" type="xs:string" />
         <xs:attribute name="cdata" type="xs:string" />
         <xs:attribute name="id" type="xs:ID" />
@@ -2464,6 +2464,12 @@
       <xs:enumeration value="multiTestImpl" />
       <xs:enumeration value="testEx" />
       <xs:enumeration value="all" />
+      <xs:enumeration value="blPretestItem" />
+      <xs:enumeration value="blLesson" />
+      <xs:enumeration value="blTest" />
+      <xs:enumeration value="blPretest" />
+      <xs:enumeration value="blProductHome" />
+      <xs:enumeration value="blPretestEx" />
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="modalSize">

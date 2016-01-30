@@ -34,7 +34,9 @@ namespace vyzva {
       //lektori
       var lectors = oldDb.Users.Where(u => u.EMail.Contains("@lector-langmaster.cz")).
         Select(u => new { u.Id, u.FirstName, u.LastName, u.EMail }).ToArray().Select(u => new { u.Id, u.FirstName, u.LastName, u.EMail, companyId = int.Parse(u.EMail.Split('@')[0]) }).
-        ToDictionary(c => c.Id, c => c);
+        DistinctBy(c => c.companyId).
+      //ToDictionary(c => c.Id, c => c);
+        ToDictionary(c => c.companyId, c => c);
       //zaloz missingLectors
       var missings = withLectorComps.Where(comp => !lectors.ContainsKey(comp.dbData.Id)).ToArray();
       if (missings.Any()) { //dopln lector users a priprav jim course-product´s Licencni klice (pro kazdou skolu a kazdy kurz jeden)
@@ -112,7 +114,7 @@ namespace vyzva {
       var Companies = companies.Select(c => new {
         skola = companyTitle[c.dbData.Id].Title,
         spravce = c.data.managerKeys.FirstOrDefault(m => m.lmcomId > 0),
-      }).Where(c => c.spravce!=null && c.spravce.email!=null && !c.spravce.email.StartsWith("spravce@") && !c.spravce.email.StartsWith("spravce."));
+      }).Where(c => c.spravce != null && c.spravce.email != null && !c.spravce.email.StartsWith("spravce@") && !c.spravce.email.StartsWith("spravce."));
 
       using (var pck = new ExcelPackage()) {
         ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Vyhodnotit");

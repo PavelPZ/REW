@@ -662,7 +662,7 @@ module SndLow {
           //var src = Silverlight.createObject('slextension.xap', null, 'driver-' + id,
           { autoUpgrade: 'true', background: 'white', minRuntimeVersion: slVersion, alt: 'LANGMaster', enablehtmlaccess: 'true' },
           {
-            onError: (msg: string) => this.onError(msg),
+            onError: (msg: string) => { this.onError(msg); completed(null); },
             onLoad: (sender: slOnLoadSender) => {
               try {
                 Logger.trace_lmsnd('soundnew.ts: MediaDriver_SL.constructor: onLoad start');
@@ -684,7 +684,8 @@ module SndLow {
                 Logger.trace_lmsnd('soundnew.ts: MediaDriver_SL.constructor: onLoad end');
               } catch (msg) {
                 Logger.error_snd('soundnew.ts: MediaDriver_SL.constructor: onLoad', msg);
-                debugger; throw msg;
+                debugger; 
+                throw msg;
               }
             }
           },

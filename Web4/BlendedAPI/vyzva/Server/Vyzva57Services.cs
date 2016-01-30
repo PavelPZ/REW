@@ -57,7 +57,7 @@ namespace blended {
       var db = NewData.Lib.CreateContext();
       foreach (var requestedKey in requestedKeys) {
         var prodId = lineToProductId[requestedKey.line];
-        var lic = db.CompanyLicences.First(c => c.CompanyId == companyid && c.ProductId == prodId);
+        var lic = db.CompanyLicences.First(c => c.CompanyId == companyid && c.ProductId == prodId);   
         var firstFree = lic.LastCounter + 1;
         lic.LastCounter += requestedKey.num;
         requestedKey.keys = Enumerable.Range(firstFree, requestedKey.num).Select(counter => lic.Id.ToString() + "|" + counter.ToString()).ToArray();
